@@ -9,5 +9,5 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-Route::rule('/','index/index/index');		//主页
-Route::rule('welcome','index/welcome');			//欢迎页
+//系统设置路由
+Route::resource('sysbase','system/system_base');
