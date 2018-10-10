@@ -6,8 +6,13 @@ use app\common\controller\Base;
 // 引用与此控制器同名的数据模型
 use app\system\model\SystemBase as  sysbasemod;
 
+use think\auth\Auth;
+
 class Index extends Base
 {
+    //关闭自动时间
+    protected $autoWriteTimestamp = false;
+
     // 主页
     public function index()
     {
@@ -52,10 +57,10 @@ class Index extends Base
         // 模版赋值
         $this->assign('list',$list);
 
-        // $url = url('welcome');
-        // halt($url);
         
         // 渲染输出
         return $this->fetch();
     }
+
+
 }
