@@ -6,7 +6,6 @@ use app\common\controller\Base;
 // 引用与此控制器同名的数据模型
 use app\system\model\SystemBase as  sysbasemod;
 
-use think\auth\Auth;
 
 class Index extends Base
 {
@@ -27,7 +26,6 @@ class Index extends Base
             $sysbasemod->title = '学生成绩统计系统';
             $sysbasemod->save();
         }
-        dump('index初始化');
 
     }
 

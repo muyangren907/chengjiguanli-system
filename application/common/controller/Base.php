@@ -16,7 +16,7 @@ class Base extends Controller
 
     public function _empty()
     {
-        $this->redirect('error/index/index');
+        $this->redirect(url('/notfound'));
     }
 
 }

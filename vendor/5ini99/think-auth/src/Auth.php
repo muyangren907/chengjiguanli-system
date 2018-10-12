@@ -11,9 +11,9 @@
 namespace think\auth;
 
 use think\Db;
-use think\Config;
-use think\Session;
-use think\Request;
+use think\facade\Config;
+use think\facade\Session;
+use think\facade\Request;
 use think\Loader;
 
 /**
@@ -101,11 +101,11 @@ class Auth
     public function __construct()
     {
         //可设置配置项 auth, 此配置项为数组。
-        // if ($auth = Config::get('auth')) {
-        //     $this->config = array_merge($this->config, $auth);
-        // }
-        // // 初始化request
-        // $this->request = Request::instance();
+        if ($auth = Config::get('auth')) {
+            $this->config = array_merge($this->config, $auth);
+        }
+        // 初始化request
+        $this->request = Request::instance();
     }
 
     /**

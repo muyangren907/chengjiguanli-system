@@ -1,11 +1,11 @@
 <?php
 
-namespace app\error\controller;
+namespace app\index\controller;
 
+// 引用控制器类
 use think\Controller;
-use think\Request;
 
-class Index extends Controller
+class Error extends Controller
 {
     /**
      * 显示资源列表
@@ -14,9 +14,8 @@ class Index extends Controller
      */
     public function index()
     {
-        //
-        return $this->fetch();
+        // 跳转页面
+        $this->redirect(url('/notfound'));
     }
-
     
 }
