@@ -13,6 +13,26 @@ class Index extends Base
     //关闭自动时间
     protected $autoWriteTimestamp = false;
 
+    // 初始化
+    protected function initialize()
+    {
+        //实例化数据模型
+        $sysbasemod = new sysbasemod();
+
+        // 查询数据
+        $list = $sysbasemod
+            ->where('id','>',0)
+            ->find();
+
+        if( $list == null )
+        {
+            $sysbasemod->title = '学生成绩统计系统';
+            $sysbasemod->save();
+        }
+
+    }
+
+
     // 主页
     public function index()
     {
@@ -23,18 +43,15 @@ class Index extends Base
         $list = $sysbasemod
             ->order(['id'=>'desc'])
             ->field('title,keywords,description')
-            ->limit(1)
             ->find();
 
         // 获取版本号
-        $list->version = config('version');
+        $list->version = config('app.chengji.version');
 
         // 模版赋值
         $this->assign('list',$list);
 
-        // $url = url('welcome');
-        // halt($url);
-        
+
         // 渲染输出
         return $this->fetch();
     }
@@ -48,11 +65,10 @@ class Index extends Base
         $list = $sysbasemod
             ->order(['id'=>'desc'])
             ->field('title,copyright,thinks')
-            ->limit(1)
             ->find();
 
         // 获取版本号
-        $list->version = config('version');
+        $list->version = config('app.chengji.version');
 
         // 模版赋值
         $this->assign('list',$list);

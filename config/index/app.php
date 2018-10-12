@@ -2,5 +2,7 @@
 //配置文件
 return [
 	// 应用名称
-    'version'               => '1.0',
+    'chengji'               => [
+    	'version'		=>		'1.0',
+    ],
 ];

@@ -6,19 +6,10 @@ namespace app\common\controller;
 use think\Controller;
 // 引用权限验证类
 use think\auth\Auth;
-// 引用软删除类
-use think\model\concern\SoftDelete;
-
 
 
 class Base extends Controller
 {
-    // 开启全局自动时间戳
-    protected $autoWriteTimestamp = true;
-
-    // 开启软删除
-    use SoftDelete;
-    protected $deleteTime = 'delete_time';
 
     // 当前类初始化
     protected function initialize()
