@@ -10,8 +10,6 @@ use think\auth\Auth;
 
 class Index extends Base
 {
-    //关闭自动时间
-    protected $autoWriteTimestamp = false;
 
     // 初始化
     protected function initialize()
@@ -29,6 +27,7 @@ class Index extends Base
             $sysbasemod->title = '学生成绩统计系统';
             $sysbasemod->save();
         }
+        dump('index初始化');
 
     }
 

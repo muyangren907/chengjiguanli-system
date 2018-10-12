@@ -29,7 +29,7 @@ class AuthGroup extends Migrator
     public function change()
     {
         // 定义数据表名称
-        $table = $this->table('auth_rule_group');
+        $table = $this->table('auth_group');
 
         // 添加当前表字段
         $table
