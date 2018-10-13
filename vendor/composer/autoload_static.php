@@ -15,7 +15,10 @@ class ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053
         array (
             'think\\migration\\' => 16,
             'think\\composer\\' => 15,
-            'think\\auth\\' => 11,
+        ),
+        'p' => 
+        array (
+            'php4world\\' => 10,
         ),
         'a' => 
         array (
@@ -36,9 +39,9 @@ class ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053
         array (
             0 => __DIR__ . '/..' . '/topthink/think-installer/src',
         ),
-        'think\\auth\\' => 
+        'php4world\\' => 
         array (
-            0 => __DIR__ . '/..' . '/5ini99/think-auth/src',
+            0 => __DIR__ . '/..' . '/php4world/auth/src',
         ),
         'app\\' => 
         array (

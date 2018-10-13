@@ -1,17 +1,17 @@
 [
     {
-        "name": "5ini99/think-auth",
-        "version": "1.0.1",
-        "version_normalized": "1.0.1.0",
+        "name": "php4world/auth",
+        "version": "v1.0.3",
+        "version_normalized": "1.0.3.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/5ini99/think-auth.git",
-            "reference": "f9f20d18b5e400d67312a7ca75e4dc35be630a4c"
+            "url": "https://github.com/php4world/auth.git",
+            "reference": "e356cad8de77c3e27f78875685b309d561c0fa94"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/5ini99/think-auth/zipball/f9f20d18b5e400d67312a7ca75e4dc35be630a4c",
-            "reference": "f9f20d18b5e400d67312a7ca75e4dc35be630a4c",
+            "url": "https://api.github.com/repos/php4world/auth/zipball/e356cad8de77c3e27f78875685b309d561c0fa94",
+            "reference": "e356cad8de77c3e27f78875685b309d561c0fa94",
             "shasum": "",
             "mirrors": [
                 {
@@ -21,14 +21,14 @@
             ]
         },
         "require": {
-            "php": ">=5.4.0"
+            "topthink/framework": "5.1.*"
         },
-        "time": "2016-11-02T06:26:09+00:00",
+        "time": "2018-06-30T09:39:06+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
-                "think\\auth\\": "src/"
+                "php4world\\": "src/"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -37,12 +37,11 @@
         ],
         "authors": [
             {
-                "name": "xiaobo.sun",
-                "email": "xiaobo.sun@qq.com"
+                "name": "php4world",
+                "email": "76422937@qq.com"
             }
         ],
-        "description": "auth package for thinkphp5",
-        "homepage": "https://github.com/5ini99/think-auth"
+        "description": "ThinkPHP5.1 Auth Class."
     },
     {
         "name": "topthink/framework",

@@ -8,7 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'think\\migration\\' => array($vendorDir . '/topthink/think-migration/src'),
     'think\\composer\\' => array($vendorDir . '/topthink/think-installer/src'),
-    'think\\auth\\' => array($vendorDir . '/5ini99/think-auth/src'),
+    'php4world\\' => array($vendorDir . '/php4world/auth/src'),
     'app\\' => array($baseDir . '/application'),
     'Phinx\\' => array($vendorDir . '/topthink/think-migration/phinx/src/Phinx'),
 );
