@@ -12,13 +12,15 @@ class YanZheng  extends Controller
     	// 实例化权限验证类
     	$auth = new \php4world\Auth();
 
+    	$act = $request->action();
+    	$cnt = $request->controller();
+    	$mod = $request->module();
+    	$url = $mod.'/'.$cnt.'/'.$act;
+
 		
-		if( $auth->check('student', '1') ){// 第一个参数是规则名称,第二个参数是用户UID
-		    dump('验证通过');
-		}else{
+		if( !$auth->check($url, '1') ){// 第一个参数是规则名称,第二个参数是用户UID
 		    dump('验证不通过');
 		}
-
 
 
     	return $next($request);

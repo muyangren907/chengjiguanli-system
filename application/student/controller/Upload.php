@@ -15,6 +15,7 @@ class Upload extends Base
     public function index()
     {
         //
+
     }
 
     /**

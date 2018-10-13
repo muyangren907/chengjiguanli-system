@@ -26,7 +26,6 @@ class Index extends Base
             $sysbasemod->title = '学生成绩统计系统';
             $sysbasemod->save();
         }
-
     }
 
 

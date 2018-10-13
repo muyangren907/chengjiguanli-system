@@ -9,4 +9,5 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-
+//系统设置路由
+Route::resource('stuup','student/upload');
