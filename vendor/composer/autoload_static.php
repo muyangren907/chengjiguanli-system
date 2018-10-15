@@ -26,6 +26,10 @@ class ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053
         array (
             'app\\' => 4,
         ),
+        'W' => 
+        array (
+            'WhiteHat101\\Crypt\\' => 18,
+        ),
         'P' => 
         array (
             'Phinx\\' => 6,
@@ -52,6 +56,10 @@ class ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053
         'app\\' => 
         array (
             0 => __DIR__ . '/../..' . '/application',
+        ),
+        'WhiteHat101\\Crypt\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/whitehat101/apr1-md5/src',
         ),
         'Phinx\\' => 
         array (

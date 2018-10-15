@@ -8,11 +8,11 @@ use app\common\controller\Base;
 class Index extends Base
 {
 
-    // /**
-    //  * 操作成功跳转
-    //  *
-    //  * @return \think\Response
-    //  */
+    /**
+     * 操作成功跳转
+     *
+     * @return \think\Response
+     */
     public function mysuccess($msg = '操作成功~')
     {
         // 模版赋值   

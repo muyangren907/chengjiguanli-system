@@ -45,7 +45,7 @@
 		if( window.top == window.self ){
            // location.href = "/";
            $('#hrel').html("您可以：&lt;<a href='javascript:;' onclick='topurl()' class='ml-20 c-primary'> 去首页</a>\
-           			<span class='ml-10 mr-10'>|</span><a href='javascript:;' onclick='lasturl()'\ class='c-primary mr-20'>返回上一页</a>\
+           			<span class='ml-10 mr-10'>|</span><a href='javascript:;' onclick='loginurl()'\ class='c-primary mr-20'>登录页面</a>\
            	&gt;");
 	    }else{
 	        // removeIframe();
@@ -57,14 +57,14 @@
 	// 跳转到首页
 	function topurl()
 	{
-           location.href = "/";
+        location.href = "/";
      }
 
 
      // 跳转到上一页
-     function lasturl()
+     function loginurl()
      {
-     	location.href = "history.go(-1)";
+     	location.href = '/login';
      }
 
      // 关闭页面

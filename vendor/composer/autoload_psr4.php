@@ -11,5 +11,6 @@ return array(
     'think\\captcha\\' => array($vendorDir . '/topthink/think-captcha/src'),
     'php4world\\' => array($vendorDir . '/php4world/auth/src'),
     'app\\' => array($baseDir . '/application'),
+    'WhiteHat101\\Crypt\\' => array($vendorDir . '/whitehat101/apr1-md5/src'),
     'Phinx\\' => array($vendorDir . '/topthink/think-migration/phinx/src/Phinx'),
 );

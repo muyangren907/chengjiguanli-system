@@ -14,7 +14,7 @@ class Yanzheng extends Validate
      */	
 	protected $rule = [
         'username'  =>  'require',
-        'password'  =>  'require|number'
+        'password'  =>  'require'
     ];
 
     protected $message = [

@@ -36,8 +36,9 @@ class Member extends Migrator
             ->addColumn('xingming','string',['limit'=>15,'null'=>false,'comment'=>'用户姓名'])
             ->addColumn('xingbie','boolean',['limit'=>1,'default'=>'2','null'=>false,'comment'=>'0=女，1=男，2=未知'])
             ->addColumn('shengri','integer',['limit'=>11,'null'=>true,'comment'=>'出生日期'])
-            ->addColumn('username','string',['limit'=>18,'null'=>false,'comment'=>'用户帐号'])
-            ->addColumn('password','string',['limit'=>128,'null'=>false,'comment'=>'登录密码'])
+            ->addColumn('username','string',['limit'=>12,'null'=>false,'comment'=>'用户帐号'])
+            ->addColumn('password','string',['limit'=>37,'null'=>false,'comment'=>'登录密码'])
+            ->addColumn('miyao','string',['limit'=>8,'null'=>false,'comment'=>'密钥'])
             ->addColumn('denglucishu','integer',['limit'=>5,'default'=>0,'null'=>false,'comment'=>'登录次数'])
             ->addColumn('ip','string',['limit'=>55,'default'=>'127.0.0.1','null'=>false,'comment'=>'登录IP'])
             ->addColumn('lasttime','integer',['limit'=>11,'null'=>false,'comment'=>'最后登录时间'])
@@ -45,6 +46,7 @@ class Member extends Migrator
             ->addColumn('create_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'更新时间'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
+            ->addIndex(array('username'), array('unique' => true))
             ->create();
     }
 }
