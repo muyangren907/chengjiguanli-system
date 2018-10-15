@@ -11,5 +11,5 @@
 
 // 错误页面
 // 找不到操作提示
-Route::rule('login','login/index/index','GET');
-Route::rule('login','login/index/yanzheng','POST');
+Route::get('login','login/index/index');
+Route::post('login','login/index/yanzheng');

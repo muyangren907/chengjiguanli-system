@@ -2,20 +2,11 @@
 
 namespace app\index\controller;
 
-// 引用控制器类
-use think\Controller;
+// 引用空控制器基类
+use app\common\controller\BaseError;
 
-class Error extends Controller
+class Error extends BaseError
 {
-    /**
-     * 显示资源列表
-     *
-     * @return \think\Response
-     */
-    public function index()
-    {
-        // 跳转页面
-        $this->redirect(url('/notfound'));
-    }
+
     
 }

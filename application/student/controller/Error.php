@@ -2,9 +2,10 @@
 
 namespace app\student\controller;
 
-use think\Controller;
+// 引用空控制器基类
+use app\common\controller\BaseError;
 
-class Error extends Controller
+class Error extends BaseError
 {
     public function index()
     {

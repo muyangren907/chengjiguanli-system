@@ -26,12 +26,16 @@ class Index extends Controller
 
         $validate = new \app\login\validate\Yanzheng;
 
-        $data = request()->post('username');
+        $data = request()->post();
 
-        if (!$validate->check($data)) {
-            dump($validate->getError());
+        $result = $validate->check($data);
+        $msg = $validate->getError();
+
+
+
+        if(!$result){
+            $this->redirect('/notfound',[], 302, ['msg' => $msg]);
         }
-
 
         // return true;
     }

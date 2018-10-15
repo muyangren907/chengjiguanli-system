@@ -11,4 +11,5 @@
 
 // 错误页面
 // 找不到操作提示
-Route::rule('notfound','error/index/index');
+Route::rule('success','home/index/mysuccess');
+Route::rule('notfound','home/index/notfound');
