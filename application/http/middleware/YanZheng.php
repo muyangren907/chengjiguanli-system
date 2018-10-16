@@ -12,9 +12,6 @@ class YanZheng  extends Controller
 {
     public function handle($request, \Closure $next)
     {
-    	// 密码
-        dump(session('username'));
-        dump(cookie('username'));
         // 验证用户在否登录
         if(!session('?userid') && cookie('name') == null )
         {

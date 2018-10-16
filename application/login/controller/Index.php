@@ -38,7 +38,7 @@ class Index extends Controller
         $result = $validate->check($data);
         $msg = $validate->getError();
         if(!$result){
-            $this->redirect('/notfound',[], 302, ['msg' => $msg]);
+            $this->redirect('/notfound',['msg' => $msg]);
         }
 
         // 重新计算密码
@@ -61,8 +61,8 @@ class Index extends Controller
             if( request()->post('online') == true )
             {
                 // 设置
-                cookie('username', $userinfo->username);
-                cookie('password', $userinfo->password);
+                cookie('username', $userinfo->username ,259200);
+                cookie('password', $userinfo->password ,259200);
             }
 
             // 将本次信息上传到服务器上

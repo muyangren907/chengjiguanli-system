@@ -10,4 +10,5 @@
 // +----------------------------------------------------------------------
 
 Route::rule('/','index/index/index');		//主页
-Route::rule('welcome','index/welcome');			//欢迎页
+Route::rule('welcome','index/index/welcome');			//欢迎页
+Route::rule('exit','index/index/exit');			// 退出

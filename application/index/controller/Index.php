@@ -77,7 +77,7 @@ class Index extends Base
     public function exit()
     {
         // 清除cookie
-        cookie(null, 'chengji_');
+        cookie(null, 'think_');
         // 清除session（当前作用域）
         session(null);
 
