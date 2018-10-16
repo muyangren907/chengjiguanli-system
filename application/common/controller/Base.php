@@ -17,7 +17,7 @@ class Base extends Controller
     		'except'=>[
     			'notfound',
     			'mysuccess',
-    			'ajaxData'
+    			'ajaxData',
     		],
     	],
     ];

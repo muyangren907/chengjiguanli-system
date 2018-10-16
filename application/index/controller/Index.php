@@ -74,5 +74,17 @@ class Index extends Base
         return $this->fetch();
     }
 
+    public function exit()
+    {
+        // 清除cookie
+        cookie(null, 'chengji_');
+        // 清除session（当前作用域）
+        session(null);
+
+        // 跳转页面
+        $this->redirect('/login');
+
+    }
+
 
 }

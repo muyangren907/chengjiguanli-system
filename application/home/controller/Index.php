@@ -28,14 +28,12 @@ class Index extends Base
      *
      * @return \think\Response
      */
-    public function notfound()
+    public function notfound ($msg = '不好意思，您访问的页面不存在~' )
     {
         if (session('?msg'))
         {
             $msg = session('msg');
             session('msg', null);
-        }else{
-            $msg = '不好意思，您访问的页面不存在~';
         }
 
 

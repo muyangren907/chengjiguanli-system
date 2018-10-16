@@ -9,7 +9,6 @@ class Error extends BaseError
 {
     public function index()
     {
-    	// 跳转页面
-        $this->redirect(url('/notfound'));
+
     }
 }

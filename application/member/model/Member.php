@@ -14,7 +14,7 @@ class Member extends Model
     	$list = $this
     		->where('username',$data['username'])
     		->where('password',$data['password'])
-    		->count();dump($list);
+    		->value('id');dump($list);
 
     	return $list;
     }
