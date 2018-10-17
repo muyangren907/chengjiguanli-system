@@ -16,6 +16,7 @@ class Base extends Controller
     	'YanZheng'=>[
     		'except'=>[
     			'ajaxData',
+                'exit',
     		],
     	],
     ];

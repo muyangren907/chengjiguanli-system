@@ -29,7 +29,7 @@ class Member extends Migrator
     public function change()
     {
         // 定义数据表名称
-        $table = $this->table('member');
+        $table = $this->table('admin');
 
         // 添加当前表字段
         $table

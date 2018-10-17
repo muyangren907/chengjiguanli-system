@@ -23,8 +23,7 @@ class Index extends Base
 
         if( $list == null )
         {
-            $sysbasemod->title = '学生成绩统计系统';
-            $sysbasemod->save();
+            $this->error('在地址栏中输入 域名或IP + /firstlogin 并回车，进行初始化');
         }
     }
 

@@ -154,6 +154,7 @@ return [
         'auth_group_access' => 'cj_auth_group_access', // 用户-用户组关系不带前缀表
         'auth_rule'         => 'cj_auth_rule', // 权限规则不带前缀表
         'auth_user'         => 'cj_member', // 用户信息不带前缀表
+        'administrator'     =>  [1],   // 超级管理员列表
     ],
 
 ];

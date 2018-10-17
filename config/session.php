@@ -24,5 +24,5 @@ return [
     // 是否自动开启 SESSION
     'auto_start'     => true,
     // 过期时间
-    'expire'		=> 600,
+    'expire'		=> 1200,
 ];

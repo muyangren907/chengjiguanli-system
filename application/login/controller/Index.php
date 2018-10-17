@@ -4,9 +4,9 @@ namespace app\login\controller;
 // 引用控制器类
 use think\Controller;
 // 引用用户数据模型
-use app\member\model\Member as membermod;
-// 引用请求类
-use think\facade\Request;
+use app\admin\model\Admin as admin;
+// 引用与此控制器同名的数据模型
+use app\system\model\SystemBase as  sysbasemod;
 // 引用加密类
 use WhiteHat101\Crypt\APR1_MD5;
 
@@ -25,7 +25,7 @@ class Index extends Controller
     public function yanzheng()
     {
         // 实例化模型
-        $membermod = new membermod();
+        $admin = new admin();
         // 实例化验证模型
         $validate = new \app\login\validate\Yanzheng;
         // 实例化加密类
@@ -42,7 +42,7 @@ class Index extends Controller
         }
 
         // 重新计算密码
-        $miyao = $membermod->miyao('admin');
+        $miyao = $admin->miyao('admin');
         $data['password'] = $md5->hash($miyao,$data['password']);
 
         // 验证用户名和密码
@@ -60,7 +60,7 @@ class Index extends Controller
             }
 
             // 将本次信息上传到服务器上
-            $userinfo = $membermod->get($userid);
+            $userinfo = $admin->get($userid);
             $userinfo->lastip = $userinfo->ip;
             $userinfo->ip = request()->host();
             $userinfo->denglucishu = ['inc', 1];
@@ -83,10 +83,10 @@ class Index extends Controller
     public function check($username,$password)
     {
         //实例化类
-        $membermod = new membermod();
+        $admin = new admin();
 
         //验证密码
-        $yz = $membermod->check($username,$password);
+        $yz = $admin->check($username,$password);
 
         if($yz)
         {
@@ -109,33 +109,53 @@ class Index extends Controller
     public function first()
     {
         // 实例化模型
-        $membermod = new membermod();
+        $admin = new admin();
         // 实例化加密类
         $md5 = new APR1_MD5();
+        // 实例化系统参数类
+        $sysbasemod = new sysbasemod();
 
-        $userinfo = $membermod->get(1);
+        $userinfo = $admin->get(1);
 
         $msg = array();
 
+        $sysbase = $sysbasemod->get(1);
+
+        if( $sysbase == null )
+        {
+            $sysbasemod->title = '学生成绩统计系统';
+            $sysbasemod->save();
+            $msg[] = '、系统参数初始化完成;';
+        }else{
+            $msg[] = '、系统参数已经初始化不再重复操作;';
+        }
+
+        $userinfo = $admin->get(1);
+
         if( $userinfo == null )
         {
-            $msg[] = '1、检查到不存在超级管理员，准备添加超级管理员；';
-            $membermod->id =1;
-            $membermod->xingming ='管理员';
-            $membermod->username    = 'admin';
-            $membermod->miyao       = $md5->salt();
-            $membermod->password    = $md5->hash($membermod->miyao,'123');
-            $data = $membermod->save();
-            $data ? $msg[] = '2、超级管理员添加成功。用户名:admin、密码:123;' : $msg[] = '2、超级管理员添加失败，请联系系统维护人员。';
-
+            $admin->id =1;
+            $admin->xingming ='管理员';
+            $admin->username    = 'admin';
+            $admin->miyao       = $md5->salt();
+            $admin->password    = $md5->hash($admin->miyao,'123');
+            $data = $admin->save();
+            $msg[] = '、超级管理员信息初始化完成;';
         }else{
-            $msg[] = '1、已经存在超级管理员终止操作；';
+            $msg[] = '、超级管理员已经初始化不再重复操作;';
         }
+
+        
+
+
+
 
         foreach ($msg as $key => $value) {
-            echo $value;
+            echo $key+1 .$value;
             echo '<br>';
         }
+        echo '</br>';
+        echo '现在可以重新登录页系统';
 
         return '';
     }

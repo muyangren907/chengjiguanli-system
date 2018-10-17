@@ -1,10 +1,10 @@
 <?php
 
-namespace app\member\model;
+namespace app\admin\model;
 
 use think\Model;
 
-class Member extends Model
+class Admin extends Model
 {
     // 密码验证
     public function check( $username ,$password )
