@@ -15,8 +15,6 @@ class Base extends Controller
     protected $middleware = [
     	'YanZheng'=>[
     		'except'=>[
-    			'notfound',
-    			'mysuccess',
     			'ajaxData',
     		],
     	],
@@ -24,7 +22,7 @@ class Base extends Controller
 
     public function _empty()
     {
-        $this->redirect(url('/notfound'));
+        $this->error('不好意思，您访问的页面不存在~');
     }
 
 }

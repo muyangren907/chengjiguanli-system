@@ -24,11 +24,9 @@
 	<p class="error-title"><i class="Hui-iconfont va-m" style="font-size:80px">&#xe688;</i>
 		<span class="va-m"> 系统提示</span>
 	</p>
-	<p class="error-description">{$msg}</p>
+	<p class="error-description"><?php echo(strip_tags($msg));?></p>
 	<!-- <p class="error-info">您可以： -->
-		
-		<div id= "hrel">
-		</div>
+		<div id= "hrel"></div>
 	</p>
 </section>
 {js href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/jquery/1.9.1/jquery.min.js"}

@@ -7,14 +7,13 @@ use think\Model;
 class Member extends Model
 {
     // 密码验证
-    // $data = ['username'=>'aa,'password'=>'bb']
-    public function check( $data = [] )
+    public function check( $username ,$password )
     {
     	// 验证用户名与密码是否匹配
     	$list = $this
-    		->where('username',$data['username'])
-    		->where('password',$data['password'])
-    		->value('id');dump($list);
+    		->where('username',$username)
+    		->where('password',$password)
+    		->value('id');
 
     	return $list;
     }

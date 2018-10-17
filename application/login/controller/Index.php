@@ -38,7 +38,7 @@ class Index extends Controller
         $result = $validate->check($data);
         $msg = $validate->getError();
         if(!$result){
-            $this->redirect('/notfound',['msg' => $msg]);
+            $this->error($msg);
         }
 
         // 重新计算密码
@@ -46,18 +46,12 @@ class Index extends Controller
         $data['password'] = $md5->hash($miyao,$data['password']);
 
         // 验证用户名和密码
-        $userid = $membermod->check($data);
+        $userid = $this->check($data['username'],$data['password']);
 
         if($userid)
         {
-            // 获取用户信息
-            $userinfo = $membermod->get($userid);
 
-            // Session存值
-            session('username', $userinfo->username);
-            session('password', $userinfo->password);
-            session('userid', $userinfo->id);
-
+            // 设置cookie值
             if( request()->post('online') == true )
             {
                 // 设置
@@ -66,6 +60,7 @@ class Index extends Controller
             }
 
             // 将本次信息上传到服务器上
+            $userinfo = $membermod->get($userid);
             $userinfo->lastip = $userinfo->ip;
             $userinfo->ip = request()->host();
             $userinfo->denglucishu = ['inc', 1];
@@ -75,16 +70,37 @@ class Index extends Controller
 
             // 跳转到首页
             $this->redirect(url('/'));
-            return '验证完成';
-
-            //模版
         }else{
-            // 跳转到首页
-            $this->redirect(url('/notfound',['msg' => '用户名或密码错误']));
-            return '验证失败';
+            // 提示错误信息
+            $this->error('用户名或密码错误');
         }
 
         return '';
+    }
+
+
+    // 已知密码进行验证
+    public function check($username,$password)
+    {
+        //实例化类
+        $membermod = new membermod();
+
+        //验证密码
+        $yz = $membermod->check($username,$password);
+
+        if($yz)
+        {
+            // Session存值
+            session('username', $username);
+            session('password', $password);
+            session('userid', $yz);
+        }else{
+             // 清除cookie
+            cookie(null, 'think_');
+            // 清除session（当前作用域）
+            session(null);
+        }
+        return $yz;        
     }
 
 
