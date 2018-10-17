@@ -27,7 +27,7 @@ class YanZheng  extends Controller
             $username = cookie('username');
             $password = cookie('password');
         }else{
-            $this->error('登录超时啦，请登录登录');
+            $this->redirect('/login',302);
         }
 
         // 检验用户名或密码是否正确

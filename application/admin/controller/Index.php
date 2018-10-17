@@ -16,9 +16,7 @@ class Index extends Base
         $admin = new Admin();
 
         // 获取管理员信息
-        $list = $admin
-            ->where('id','>',1)
-            ->all();
+        $list['title'] = '管理员列表';
         
         // 模板赋值
         $this->assign('list',$list);
@@ -26,6 +24,28 @@ class Index extends Base
         // 渲染模板
         return $this->fetch();
 
+    }
+
+
+    // 获取数据管理员数据
+    public function ajaxData()
+    {
+        //实例化管理员数据模型类
+        $admin = new Admin();
+
+        $data = $admin
+            ->field('id,username')
+            ->all();
+  //       $data =[
+  // "data"=> [
+  //   [
+  //     "Tiger Nixon",
+  //     "System Architect",
+  //         ],]];
+        // $data = $data->toArray();
+        $data = ['data'=>$data];
+
+        return $data;
     }
 
     /**
