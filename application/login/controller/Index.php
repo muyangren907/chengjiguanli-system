@@ -28,8 +28,7 @@ class Index extends Controller
         $admin = new admin();
         // 实例化验证模型
         $validate = new \app\login\validate\Yanzheng;
-        // 实例化加密类
-        $md5 = new APR1_MD5();
+
 
         // 获取表单数据
         $data = request()->only(['username','password']);
@@ -41,14 +40,15 @@ class Index extends Controller
             $this->error($msg);
         }
 
-        // 重新计算密码
-        $miyao = $admin->miyao('admin');
-        $data['password'] = $md5->hash($miyao,$data['password']);
+        // 
+        // $password = $admin->password($data['username']);
+        // $check = $md5->check($data['password'],$password);
+
 
         // 验证用户名和密码
-        $userid = $this->check($data['username'],$data['password']);
+        $check = $this->check($data['username'],$data['password']);
 
-        if($userid)
+        if($check)
         {
 
             // 设置cookie值
@@ -60,7 +60,7 @@ class Index extends Controller
             }
 
             // 将本次信息上传到服务器上
-            $userinfo = $admin->get($userid);
+            $userinfo = $admin->getByUsername($data['username']);
             $userinfo->lastip = $userinfo->ip;
             $userinfo->ip = request()->host();
             $userinfo->denglucishu = ['inc', 1];
@@ -82,25 +82,28 @@ class Index extends Controller
     // 已知密码进行验证
     public function check($username,$password)
     {
-        //实例化类
+        // 实例化管理员数据模型类
         $admin = new admin();
+        // 实例化加密类
+        $md5 = new APR1_MD5();
 
+        // 获取服务器密码
+        $serpw = $admin->password($username);
         //验证密码
-        $yz = $admin->check($username,$password);
+        $check = $md5->check($password,$serpw);
 
-        if($yz)
+        if($check)
         {
             // Session存值
             session('username', $username);
             session('password', $password);
-            session('userid', $yz);
         }else{
              // 清除cookie
             cookie(null, 'think_');
             // 清除session（当前作用域）
             session(null);
         }
-        return $yz;        
+        return $check;        
     }
 
 
@@ -137,8 +140,7 @@ class Index extends Controller
             $admin->id =1;
             $admin->xingming ='管理员';
             $admin->username    = 'admin';
-            $admin->miyao       = $md5->salt();
-            $admin->password    = $md5->hash($admin->miyao,'123');
+            $admin->password    = $md5->hash('123');
             $data = $admin->save();
             $msg[] = '、超级管理员信息初始化完成;';
         }else{

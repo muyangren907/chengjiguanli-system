@@ -67,7 +67,11 @@ $(function(){
             {
             dataType: "json",
             success: function(data){
+            	layer.alert(data.msg);
  
+            },
+            error: function(data){
+            	layer.alert('保存信息失败');
             }
         }
 				);

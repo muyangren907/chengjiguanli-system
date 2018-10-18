@@ -6,6 +6,8 @@ namespace app\admin\controller;
 use app\common\controller\Base;
 // 引用用户数据模型
 use app\admin\model\Admin;
+// 引用加密类
+use WhiteHat101\Crypt\APR1_MD5;
 
 class Index extends Base
 {
@@ -55,7 +57,8 @@ class Index extends Base
 
         //查询数据
         $data = $admin
-            ->field('id,xingming,xingbie,username,phone,denglucishu,status,create_time')
+            ->field('id,xingming,sex,username,phone,denglucishu,status,create_time')
+            ->where('id','>','1')
             ->order([$order_field=>$order])
             ->limit($limit_start,$limit_length)
             ->all();
@@ -65,7 +68,8 @@ class Index extends Base
         // 如果需要查询
         if($search){
             $data = $admin
-                ->field('id,xingming,xingbie,username,phone,denglucishu,status,create_time')
+                ->field('id,xingming,sex,username,phone,denglucishu,status,create_time')
+                 ->where('id','>','1')
                 ->order([$order_field=>$order])
                 ->limit($limit_start,$limit_length)
                 ->where('username|xingming','like','%'.$search.'%')
@@ -105,27 +109,64 @@ class Index extends Base
     // 保存管理员
     public function save()
     {
-        $list = request()->post();
-        dump($list);
+        
+        // 实例化管理员数据模型类
+        $admin = new Admin();
+        // 实例化加密类
+        $md5 = new APR1_MD5();
+
+        // 获取表单数据
+        $list = request()->only(['xingming','username','sex','shengri','phone','beizhu'],'post');
+
+        // 设置密码，默认为123456
+        $list['password'] = $md5->hash('123456');
+
+
+        $data = $admin->save($list);
+
+        $msg = array();
+
+        if($data == 1)
+        {
+            $data =['msg'=>'添加成功'];
+        }else{
+            $data =['msg'=>'数据处理错误'];
+        }
+        
+
+        return json($data);
     }
 
-    /**
-     * 显示指定的资源
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
+
+    public function test()
+    {
+
+
+        $md5 = new APR1_MD5();
+
+        $pas = $md5->hash('bz.023058213','aa');
+
+        dump($pas);
+
+        $a = $md5->check('bz.023058213','$apr1$aa$T14IK9Aq/AUby29F34kwb.');
+
+        halt($a);
+
+    }
+
+   
+
+
+    //
     public function read($id)
     {
         //
     }
 
-    /**
-     * 显示编辑资源表单页.
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
+    
+
+
+    //
     public function edit($id)
     {
         //

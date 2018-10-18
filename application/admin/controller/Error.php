@@ -7,5 +7,5 @@ use app\common\controller\BaseError;
 
 class Error extends BaseError
 {
-    //
+
 }

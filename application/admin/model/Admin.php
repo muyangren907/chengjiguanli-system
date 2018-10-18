@@ -6,27 +6,21 @@ use think\Model;
 
 class Admin extends Model
 {
-    // 密码验证
-    public function check( $username ,$password )
-    {
-    	// 验证用户名与密码是否匹配
-    	$list = $this
-    		->where('username',$username)
-    		->where('password',$password)
-    		->value('id');
-
-    	return $list;
-    }
-
-    // 获取密钥
-    public function miyao($username)
+    // 获取密码
+    public function password($username)
     {
     	// 查询数据 
-    	$miyao = $this
+    	$pasW = $this
     		->where('username',$username)
-    		->value('miyao');
+    		->value('password');
 
     	// 返回数据
-    	return $miyao;
+    	return $pasW;
+    }
+
+    // 生日修改器
+    public function setShenriAttr($value)
+    {
+        return strtotime($value);
     }
 }

@@ -17,7 +17,7 @@ class YanZheng  extends Controller
         $password = 0;
 
         // 如果用户没有登录直接跳转到登录页面
-        if( session('?userid') )
+        if( session('?username') )
         {
             $username = session('username');
             $password = session('password');
@@ -33,7 +33,7 @@ class YanZheng  extends Controller
         // 检验用户名或密码是否正确
         $yz = action('login/index/check',['username'=>$username,'password'=>$password]);
         if($yz == null){
-            $this->error('请使用新密码登录');
+            $this->error('请重新登录');
         }
         
 
