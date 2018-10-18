@@ -39,6 +39,7 @@ class Member extends Migrator
             ->addColumn('username','string',['limit'=>12,'null'=>false,'comment'=>'用户帐号'])
             ->addColumn('password','string',['limit'=>37,'null'=>false,'comment'=>'登录密码'])
             ->addColumn('miyao','string',['limit'=>8,'null'=>false,'comment'=>'密钥'])
+            ->addColumn('phone','string',['limit'=>11,'null'=>true,'comment'=>'联系方式'])
             ->addColumn('denglucishu','integer',['limit'=>5,'default'=>0,'null'=>false,'comment'=>'登录次数'])
             ->addColumn('lastip','string',['limit'=>55,'default'=>'127.0.0.1','null'=>false,'comment'=>'最后一次登录IP'])
             ->addColumn('ip','string',['limit'=>55,'default'=>'127.0.0.1','null'=>false,'comment'=>'登录IP'])

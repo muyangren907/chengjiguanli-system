@@ -55,7 +55,7 @@ class Index extends Base
 
         //查询数据
         $data = $admin
-            ->field('id,xingming,xingbie,username,denglucishu,status,create_time')
+            ->field('id,xingming,xingbie,username,phone,denglucishu,status,create_time')
             ->order([$order_field=>$order])
             ->limit($limit_start,$limit_length)
             ->all();
@@ -65,7 +65,7 @@ class Index extends Base
         // 如果需要查询
         if($search){
             $data = $admin
-                ->field('id,xingming,xingbie,username,denglucishu,status,create_time')
+                ->field('id,xingming,xingbie,username,phone,denglucishu,status,create_time')
                 ->order([$order_field=>$order])
                 ->limit($limit_start,$limit_length)
                 ->where('username|xingming','like','%'.$search.'%')
