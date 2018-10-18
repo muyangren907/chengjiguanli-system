@@ -18,6 +18,7 @@ class Admin extends Model
     	return $list;
     }
 
+    // 获取密钥
     public function miyao($username)
     {
     	// 查询数据 

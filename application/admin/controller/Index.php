@@ -15,9 +15,13 @@ class Index extends Base
         //实例化管理员数据模型类
         $admin = new Admin();
 
-        // 获取管理员信息
+        // 获取记录总数
+        $count = $admin->count();
+
+        // 设置要给模板赋值的信息
         $list['title'] = '管理员列表';
-        
+        $list['count'] = $count;
+
         // 模板赋值
         $this->assign('list',$list);
 
@@ -33,19 +37,53 @@ class Index extends Base
         //实例化管理员数据模型类
         $admin = new Admin();
 
-        $data = $admin
-            ->field('id,username')
-            ->all();
-  //       $data =[
-  // "data"=> [
-  //   [
-  //     "Tiger Nixon",
-  //     "System Architect",
-  //         ],]];
-        // $data = $data->toArray();
-        $data = ['data'=>$data];
+        // 获取DT的传值
+        $getdt = request()->param();
 
-        return $data;
+        //得到排序的方式
+        $order = $getdt['order'][0]['dir'];
+        //得到排序字段的下标
+        $order_column = $getdt['order'][0]['column'];
+        //根据排序字段的下标得到排序字段
+        $order_field = $getdt['columns'][$order_column]['data'];
+        //得到limit参数
+        $limit_start = $getdt['start'];
+        $limit_length = $getdt['length'];
+        //得到搜索的关键词
+        $search = $getdt['search']['value'];
+
+
+        //查询数据
+        $data = $admin
+            ->field('id,xingming,xingbie,username,denglucishu,status,create_time')
+            ->order([$order_field=>$order])
+            ->limit($limit_start,$limit_length)
+            ->all();
+            $cnt = $data->count();
+            $datacnt = $cnt;
+
+        // 如果需要查询
+        if($search){
+            $data = $admin
+                ->field('id,xingming,xingbie,username,denglucishu,status,create_time')
+                ->order([$order_field=>$order])
+                ->limit($limit_start,$limit_length)
+                ->where('username|xingming','like','%'.$search.'%')
+                ->all();
+            $datacnt = $data->count();
+        }
+        
+        
+
+
+        $data = [
+            'draw'=> $getdt["draw"] , // ajax请求次数，作为标识符
+            'recordsTotal'=>$cnt,  // 获取到的结果数(每页显示数量)
+            'recordsFiltered'=>$datacnt,       // 符合条件的总数据量
+            'data'=>$data, //获取到的数据结果
+        ];
+
+        return json($data);
     }
 
     /**

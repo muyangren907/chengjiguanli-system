@@ -55,8 +55,8 @@ class Index extends Controller
             if( request()->post('online') == true )
             {
                 // 设置
-                cookie('username', $userinfo->username ,259200);
-                cookie('password', $userinfo->password ,259200);
+                cookie('username', $data['username'] ,259200);
+                cookie('password', $data['password'] ,259200);
             }
 
             // 将本次信息上传到服务器上
