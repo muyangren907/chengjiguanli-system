@@ -34,7 +34,7 @@ class Member extends Migrator
         // 添加当前表字段
         $table
             ->addColumn('xingming','string',['limit'=>15,'null'=>false,'comment'=>'用户姓名'])
-            ->addColumn('xingbie','boolean',['limit'=>1,'default'=>'2','null'=>false,'comment'=>'0=女，1=男，2=未知'])
+            ->addColumn('sex','boolean',['limit'=>1,'default'=>'2','null'=>false,'comment'=>'0=女，1=男，2=未知'])
             ->addColumn('shengri','integer',['limit'=>11,'null'=>true,'comment'=>'出生日期'])
             ->addColumn('username','string',['limit'=>12,'null'=>false,'comment'=>'用户帐号'])
             ->addColumn('password','string',['limit'=>37,'null'=>false,'comment'=>'登录密码'])

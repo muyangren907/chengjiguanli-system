@@ -86,25 +86,27 @@ class Index extends Base
         return json($data);
     }
 
-    /**
-     * 显示创建资源表单页.
-     *
-     * @return \think\Response
-     */
+    
+    // 创建用户信息
     public function create()
     {
-        //
+
+        // 设置页面标题
+        $list['title'] = '添加管理员';
+
+        // 模板赋值
+        $this->assign('list',$list);
+
+        // 渲染
+        return $this->fetch();
     }
 
-    /**
-     * 保存新建的资源
-     *
-     * @param  \think\Request  $request
-     * @return \think\Response
-     */
-    public function save(Request $request)
+    
+    // 保存管理员
+    public function save()
     {
-        //
+        $list = request()->post();
+        dump($list);
     }
 
     /**

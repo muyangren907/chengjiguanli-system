@@ -1,9 +1,35 @@
 {extend name="common@list" /}
 {block name="topnav"}
-	<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 管理员管理 <span class="c-gray en">&gt;</span> 管理员列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+	<nav class="breadcrumb">
+		<i class="Hui-iconfont">&#xe67f;</i> 首页
+		<span class="c-gray en">&gt;</span> 管理员管理
+		<span class="c-gray en">&gt;</span> 管理员列表
+		<a class="btn btn-success radius r"
+			style="line-height:1.6em;margin-top:3px"
+			href="javascript:location.replace(location.href);"
+			title="刷新" >
+			<i class="Hui-iconfont">&#xe68f;</i>
+	</a>
+	</nav>
 {/block}
 {block name="bouttons"}
-	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" onclick="admin_add('添加管理员','admin-add.html','800','500')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加管理员</a></span> <span class="r">共有数据：<strong>{$list.count}</strong> 条</span> </div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+			<!-- 删除按钮 -->
+			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
+				<i class="Hui-iconfont">&#xe6e2;</i>
+			批量删除
+			</a>
+			<!-- 添加按钮 -->
+			<a href="javascript:;" onclick="addfull('添加管理员','create','800','500')" class="btn btn-primary radius">
+				<i class="Hui-iconfont">&#xe600;</i>
+				添加管理员
+			</a>
+		</span>
+		<span class="r">
+			共有数据：<strong>{$list.count}</strong> 条
+		</span>
+	</div>
 {/block}
 {block name="tables"}
 	<table id="table1" class="display" cellspacing="0" width="100%">
