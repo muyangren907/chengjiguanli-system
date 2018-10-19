@@ -7,6 +7,7 @@ use app\common\controller\Base;
 use app\system\model\SystemBase as  sysbasemod;
 
 
+
 class Index extends Base
 {
 
@@ -34,10 +35,16 @@ class Index extends Base
         //实例化数据模型
         $sysbasemod = new sysbasemod();
 
-        // 查询最新记录
+        // 查询系统信息
         $list = $sysbasemod
             ->order(['id'=>'desc'])
             ->field('title,keywords,description')
+            ->find();
+
+        // 获取管理员信息
+        $userinfo = db('admin')
+            ->where('username',session('username'))
+            ->field('username,id')
             ->find();
 
         // 获取版本号
@@ -45,6 +52,7 @@ class Index extends Base
 
         // 模版赋值
         $this->assign('list',$list);
+        $this->assign('userinfo',$userinfo);
 
 
         // 渲染输出

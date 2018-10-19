@@ -18,7 +18,7 @@ class Index extends Base
         $admin = new Admin();
 
         // 获取记录总数
-        $count = $admin->count();
+        $count = $admin->where('id','<>',1)->count();
 
         // 设置要给模板赋值的信息
         $list['title'] = '管理员列表';
@@ -55,6 +55,8 @@ class Index extends Base
         $search = $getdt['search']['value'];
 
 
+        // 获取记录集总数
+        $cnt = $admin->where('id','<>',1)->count();
         //查询数据
         $data = $admin
             ->field('id,xingming,sex,username,phone,shengri,denglucishu,status,create_time')
@@ -62,8 +64,7 @@ class Index extends Base
             ->order([$order_field=>$order])
             ->limit($limit_start,$limit_length)
             ->all();
-            $cnt = $data->count();
-            $datacnt = $cnt;
+        
 
         // 如果需要查询
         if($search){
@@ -74,16 +75,17 @@ class Index extends Base
                 ->limit($limit_start,$limit_length)
                 ->where('username|xingming','like','%'.$search.'%')
                 ->all();
-            $datacnt = $data->count();
         }
+
+        $datacnt = $data->count();
         
         
 
 
         $data = [
             'draw'=> $getdt["draw"] , // ajax请求次数，作为标识符
-            'recordsTotal'=>$cnt,  // 获取到的结果数(每页显示数量)
-            'recordsFiltered'=>$datacnt,       // 符合条件的总数据量
+            'recordsTotal'=>$datacnt,  // 获取到的结果数(每页显示数量)
+            'recordsFiltered'=>$cnt,       // 符合条件的总数据量
             'data'=>$data, //获取到的数据结果
         ];
 
@@ -132,35 +134,26 @@ class Index extends Base
         }else{
             $data =['msg'=>'数据处理错误','val'=>0];
         }
-        
 
         return json($data);
     }
+  
 
 
-    public function test()
-    {
-
-
-        $md5 = new APR1_MD5();
-
-        $pas = $md5->hash('bz.023058213','aa');
-
-        dump($pas);
-
-        $a = $md5->check('bz.023058213','$apr1$aa$T14IK9Aq/AUby29F34kwb.');
-
-        halt($a);
-
-    }
-
-   
-
-
-    //
+    // 读取用户信息
     public function read($id)
     {
-        //
+        // 实例化管理员数据模型类
+        $admin = new Admin();
+
+        // 获取管理员信息
+        $list = $admin->get($id);
+
+        // 模板赋值
+        $this->assign('list',$list);
+
+        // 渲染模板
+        return $this->fetch();
     }
 
     
@@ -169,19 +162,39 @@ class Index extends Base
     //
     public function edit($id)
     {
-        //
+        //实例化管理员数据模型
+        $admin = new Admin();
+
+        // 获取用户信息
+        $list = $admin
+            ->field('id,username,xingming,sex,shengri,phone,beizhu')
+            ->get($id);
+
+        $this->assign('list',$list);
+
+        return $this->fetch();
+
     }
 
-    /**
-     * 保存更新的资源
-     *
-     * @param  \think\Request  $request
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function update(Request $request, $id)
+    // 更新管理员信息
+    public function update($id)
     {
-        //
+        // 实例化管理员数据模型类
+        $admin = new Admin();
+
+        // 获取表单数据
+        $list = request()->put();
+
+        $data = $admin->save($list,['id'=>$id]);
+
+        if($data == 1)
+        {
+            $data =['msg'=>'更新成功','val'=>1];
+        }else{
+            $data =['msg'=>'数据处理错误','val'=>0];
+        }
+
+        return json($data);
     }
 
     /**
