@@ -57,7 +57,7 @@ class Index extends Base
 
         //查询数据
         $data = $admin
-            ->field('id,xingming,sex,username,phone,denglucishu,status,create_time')
+            ->field('id,xingming,sex,username,phone,shengri,denglucishu,status,create_time')
             ->where('id','>','1')
             ->order([$order_field=>$order])
             ->limit($limit_start,$limit_length)
@@ -68,7 +68,7 @@ class Index extends Base
         // 如果需要查询
         if($search){
             $data = $admin
-                ->field('id,xingming,sex,username,phone,denglucishu,status,create_time')
+                ->field('id,xingming,sex,username,phone,shengri,denglucishu,status,create_time')
                  ->where('id','>','1')
                 ->order([$order_field=>$order])
                 ->limit($limit_start,$limit_length)
@@ -128,9 +128,9 @@ class Index extends Base
 
         if($data == 1)
         {
-            $data =['msg'=>'添加成功'];
+            $data =['msg'=>'添加成功','val'=>1];
         }else{
-            $data =['msg'=>'数据处理错误'];
+            $data =['msg'=>'数据处理错误','val'=>0];
         }
         
 
@@ -193,5 +193,32 @@ class Index extends Base
     public function delete($id)
     {
         //
+    }
+
+
+    // 修改管理员状态
+    public function setStatus()
+    {
+        // 实例化管理员数据模型类
+        $admin = new Admin();
+
+        //  获取id变量
+        $id = request()->post('id');
+        $value = request()->post('value');
+
+        // 获取管理员信息
+        $list = $admin->get($id);
+
+        // 修改状态值
+        $list->status = $value;
+
+        // 更新数据
+        $data = $list->save();
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'操作成功'] : $data=['msg'=>'数据处理错误'];
+
+        //  返回信息
+        return json($data);
     }
 }

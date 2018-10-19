@@ -1,6 +1,6 @@
 {extend name="common@create" /}
 {block name="formaa"}
-	<form action="/admin" method="post" class="form form-horizontal" id="form-member-add">
+	<form action="{:url('admin/index/save')}" method="post" class="form form-horizontal" id="form-member-add">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户姓名：</label>
 			<div class="formControls col-xs-8 col-sm-9">
@@ -46,7 +46,7 @@
 			<label class="form-label col-xs-4 col-sm-3">备注：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<textarea name="beizhu" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符，最多80个字符" onKeyUp="$.Huitextarealength(this,100)"></textarea>
-				<p class="textarea-numberbar"><em class="textarea-length">10</em>/80</p>
+				<p class="textarea-numberbar"><em class="textarea-length">0</em>/80</p>
 			</div>
 		</div>
 		<div class="row cl">
@@ -81,7 +81,7 @@
 			username:{
 				required:true,
 				ustr:true,
-				rangelength:[5,12]
+				rangelength:[5,20]
 			},
 			sex:{
 				required:true,
@@ -91,9 +91,6 @@
 			},
 			phone:{
 				isMobile:true,
-			},
-			beizhu:{
-				rangelength:[10,80]
 			},
 		};
 </script>

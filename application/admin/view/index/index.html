@@ -21,7 +21,7 @@
 			批量删除
 			</a>
 			<!-- 添加按钮 -->
-			<a href="javascript:;" onclick="addfull('添加管理员','/admin/create','800','500')" class="btn btn-primary radius">
+			<a href="javascript:;" onclick=addfull('添加管理员',"{:url('admin/index/create')}",'800','500') class="btn btn-primary radius">
 				<i class="Hui-iconfont">&#xe600;</i>
 				添加管理员
 			</a>
@@ -37,7 +37,8 @@
 			<tr>
 				<th>Name</th>
 				<th>姓名</th>
-				<th>姓别</th>
+				<th>性别</th>
+				<th>出生日期</th>
 				<th>帐号</th>
 				<th>手机号码</th>
 				<th>登录次数</th>
@@ -57,9 +58,9 @@
 
 	// 定义DTajax参数
 	var myajax = {
-		"url": "{:url('ajaxdata')}",
-		"type": "post",
-		"data": {
+		url: "{:url('ajaxdata')}",
+		type: "post",
+		data: {
 			'username':'usernames',
 			'pas':'pas'
 			},
@@ -70,6 +71,7 @@
         { "data": "id" },
         { "data": "xingming" },
         { "data": "sex" },
+        { "data": "shengri" },
         { "data": "username" },
         { "data": "phone" },
         { "data": "denglucishu" },
@@ -82,19 +84,47 @@
 	var mycolumnDefs =[
 		// 对象格式
 		{
-			"targets": 0,
+			"targets": 0,			
 			"render": function(data, type, row, meta) {
 				return '<input type="checkbox" name="test" value="' + row.id + '" />'
 			}
 		},
 		{
 			"targets": -1,
+			"className":'.td-manage',			
 			"render": function(data, type, row, meta) {
-                    return '<a title="详细信息" data-href="{:url("jiaoshi/read"),"?id='+ row.id +'"}" data-title="' + row.xingming + ' 信息" onClick="Hui_admin_tab(this)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe665;</i></a>\
-                    <a title="编辑" href="javascript:void(0);" onclick=add("编辑","edit?id='+row.id+'","500","300") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>\
-                    <a title="单位变动" href="javascript:void(0);" onclick=add("单位变动","jiaoshi_jingli/create?id='+row.id+'","500","300") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe637;</i></a>\
-                    <a title="删除" href="javascript:void(0);" onclick=del(this,"delete?id='+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
+					// 停用按钮
+					stopbut = '<a style="text-decoration:none" onClick="stop(this,'+ row.id +')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>';
+					// 启用按钮
+					startbut = '<a style="text-decoration:none" onClick="start(this,'+ row.id +')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>';
+					// 详细信息按钮
+					readbut = '<a title="详细信息" data-href="{:url("jiaoshi/read"),"?id='+ row.id +'"}" data-title="' + row.xingming + ' 信息" onClick="Hui_admin_tab(this)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe665;</i></a>';
+					// 编辑按钮
+					editbut = '<a title="编辑" href="javascript:void(0);" onclick=add("编辑","edit?id='+row.id+'","500","300") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
+					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"delete?id='+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
+					if(row.status == '已停用')
+					{
+						buts = startbut + readbut + editbut + delbut;
+					}else{
+						buts = stopbut + readbut + editbut + delbut;
+					} 
+
+					return buts;
                 }
+        },
+        {
+			"targets": -2,
+			"className":'.td-status',
+			"render": function(data, type, row, meta) {
+                    if(row.status == '已停用')
+                    {
+                    	d = "<span class='label label-error radius'>" + row.status + "</span>";
+                    }else{
+                    	d = "<span class='label label-success radius'>" + row.status + "</span>";
+                    }
+
+                    return d;
+                  },
         },
         {
         	"orderable": false,

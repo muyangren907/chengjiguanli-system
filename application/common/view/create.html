@@ -62,22 +62,16 @@ $(function(){
 		success:"valid",
 
 		submitHandler:function(form){
-			$(form).ajaxSubmit(
-				
-            {
-            dataType: "json",
-            success: function(data){
-            	layer.alert(data.msg);
- 
-            },
-            error: function(data){
-            	layer.alert('保存信息失败');
-            }
-        }
-				);
-			var index = parent.layer.getFrameIndex(window.name);
-			//parent.$('.btn-refresh').click();
-			// parent.layer.close(index);
+			$(form).ajaxSubmit({
+				dataType: "json",
+				success: function(data){
+					layer.alert(data.msg);
+					window.parent.location.reload();
+				},
+				error: function(data){
+					layer.alert('保存信息失败');
+				}
+			});
 		}
 	});
 });
