@@ -205,7 +205,19 @@ class Index extends Base
      */
     public function delete($id)
     {
-        //
+        //实例化管理员数据模型类
+        $admin = new Admin();
+
+        if($id == 'm')
+        {
+            $id = request()->delete('ids/a');
+        }
+
+        $data = $admin->destroy($id);
+
+        $data = ['msg'=>'删除成功','val'=>1];
+
+        return json($data);
     }
 
 

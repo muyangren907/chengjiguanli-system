@@ -3,8 +3,10 @@
 namespace app\admin\model;
 
 use think\Model;
+// 引用用户数据模型
+use app\common\model\Base;
 
-class Admin extends Model
+class Admin extends Base
 {
     // 获取密码
     public function password($username)

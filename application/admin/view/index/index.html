@@ -16,7 +16,7 @@
 	<div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l">
 			<!-- 删除按钮 -->
-			<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
+			<a href="javascript:;" onclick="dels()" class="btn btn-danger radius">
 				<i class="Hui-iconfont">&#xe6e2;</i>
 			批量删除
 			</a>
@@ -98,7 +98,7 @@
 					readbut = '<a title="详细信息" data-href="admin/'+ row.id +'" data-title="' + row.xingming + ' 信息" onClick="Hui_admin_tab(this)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe665;</i></a>';
 					// 编辑按钮
 					editbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/admin/'+row.id+'/edit","500","300") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
-					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"delete?id='+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
+					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
 					if(row.status == '已停用')
 					{
 						buts = startbut + readbut + editbut + delbut;

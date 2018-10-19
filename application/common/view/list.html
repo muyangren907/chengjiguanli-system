@@ -186,8 +186,8 @@ function change_password(title,url,id,w,h){
 function del(obj,id){
 	layer.confirm('确认要删除吗？',function(index){
 		$.ajax({
-			type: 'POST',
-			url: '',
+			type: 'DELETE',
+			url: "/admin/" + id,
 			dataType: 'json',
 			success: function(data){
 				$(obj).parents("tr").remove();
@@ -197,6 +197,51 @@ function del(obj,id){
 				console.log(data.msg);
 			},
 		});		
+	});
+}
+/*批量删除*/
+function dels(){
+	//声明数组
+	var chk_value =[]; 
+	//获取所有被选中的值
+	$('input[name="test"]:checked').each(function(){  
+		chk_value.push($(this).val()); 
+	}); 
+	//将选中的值进行排序
+	//chk_value.sort();
+	
+
+	//如果有选中值则退出并提示
+	if(chk_value.length==0){
+		layer.msg('没有选择任何信息');
+		return false;
+	}
+	//将数组转换成字符串
+	// chk_value=chk_value.toString();
+	layer.confirm('确认要删除选中的内容吗？',function(index){
+		$.ajax({
+			type: 'DELETE',
+			url:'/admin/m',
+			dataType: 'json',
+			data: {
+				ids:chk_value,
+			}, 
+
+			success: function(data){
+				if(data.val == 1){
+					layer.alert('删除成功');
+					$('input[name="test"]:checked').each(function(){  
+						$(this).parents("tr").remove(); 
+					}); 
+
+				}else{
+					layer.alert('数据处理失败');
+				}
+			},
+			error:function(data) {
+				layer.msg('删除失败');
+			},
+		});
 	});
 }
 </script> 
