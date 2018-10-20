@@ -266,7 +266,7 @@ function resetpw(obj,id){
 			url: "/resetpassword/" + id,
 			dataType: 'json',
 			success: function(data){
-				layer.alert(data.msg,{icon:1,time:1000});
+				layer.alert(data.msg,{icon:1,time:3000});
 			},
 			error:function(data) {
 				layer.alert('操作失败');

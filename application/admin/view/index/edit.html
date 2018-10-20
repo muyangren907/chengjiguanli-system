@@ -17,15 +17,15 @@
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>性别：</label>
 			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
 				<div class="radio-box">
-					<input name="sex" type="radio" id="sex-1" value="1" checked>
+					<input name="sex" type="radio" id="sex-1" value="1" {eq name="$list.sex" value="男" }checked{/eq}>
 					<label for="sex-1">男</label>
 				</div>
 				<div class="radio-box">
-					<input type="radio" id="sex-2" value="0" name="sex">
+					<input type="radio" id="sex-2" value="0" name="sex" {eq name="$list.sex" value="女" }checked{/eq}>
 					<label for="sex-2">女</label>
 				</div>
 				<div class="radio-box">
-					<input type="radio" id="sex-3" value="2" name="sex">
+					<input type="radio" id="sex-3" value="2" name="sex" {eq name="$list.sex" value="保密" }checked{/eq}>
 					<label for="sex-3">保密</label>
 				</div>
 			</div>

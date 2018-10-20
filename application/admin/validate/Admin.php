@@ -13,12 +13,12 @@ class Admin extends Validate
      * @var array
      */	
 	protected $rule = [
-        'xingming'  =>  'require|chs|length:2,6',
-        'username'  =>  ['require','ustr'=>'/^[\u4e00-\u9fa5]*$/']
-        'shengri'   =>  'date',
-        'xingbie'   =>  'in:0,1,2',
-        'phone'     =>  'mobile',
-        'beizhu'    =>  'max:80',
+        'xingming|用户姓名'  =>  'require|chs|length:2,6',
+        'username|帐号'  =>  ['require','uset'=>'/^[a-z][a-z0-9-_]*$/'],
+        'shengri|出生日期'   =>  'date',
+        'xingbie|性别'   =>  'in:0,1,2',
+        'phone|手机'     =>  'mobile',
+        'beizhu|备注'    =>  'max:80',
     ];
     
     /**

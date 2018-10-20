@@ -17,7 +17,6 @@ class Index extends Base
         //实例化管理员数据模型类
         $admin = new Admin();
 
-        // 获取记录总数
         $count = $admin->where('id','<>',1)->count();
 
         // 设置要给模板赋值的信息
@@ -30,6 +29,7 @@ class Index extends Base
         // 渲染模板
         return $this->fetch();
 
+        // 获取记录总数
     }
 
 
@@ -116,6 +116,9 @@ class Index extends Base
         $admin = new Admin();
         // 实例化加密类
         $md5 = new APR1_MD5();
+        // 实例化验证模型
+        $validate = new \app\admin\validate\Admin;
+
 
         // 获取表单数据
         $list = request()->only(['xingming','username','sex','shengri','phone','beizhu'],'post');
@@ -124,6 +127,17 @@ class Index extends Base
         $list['password'] = $md5->hash('123456');
 
 
+        // 验证表单数据
+        $result = $validate->check($list);
+        $msg = $validate->getError();
+
+
+        // 如果验证不通过则停止保存
+        if(!$result){
+            return json(['msg'=>$msg,'val'=>0]);;
+        }
+
+        // 保存数据 
         $data = $admin->save($list);
 
         $msg = array();
@@ -133,8 +147,10 @@ class Index extends Base
 
         // 返回信息
         return json($data);
+      
     }
-  
+
+ 
 
 
     // 读取用户信息
@@ -167,6 +183,7 @@ class Index extends Base
             ->field('id,username,xingming,sex,shengri,phone,beizhu')
             ->get($id);
 
+
         $this->assign('list',$list);
 
         return $this->fetch();
@@ -178,9 +195,21 @@ class Index extends Base
     {
         // 实例化管理员数据模型类
         $admin = new Admin();
+        // 实例化验证模型
+        $validate = new \app\admin\validate\Admin;
 
         // 获取表单数据
         $list = request()->put();
+
+        // 验证表单数据
+        $result = $validate->check($list);
+        $msg = $validate->getError();
+
+        // 如果验证不通过则停止保存
+        if(!$result){
+            return json(['msg'=>$msg,'val'=>0]);;
+        }
+
 
         $data = $admin->save($list,['id'=>$id]);
 
@@ -266,7 +295,7 @@ class Index extends Base
         $data = $list->save(); 
 
         // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'密码重置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data ? $data=['msg'=>'密码已经重置为:<br>123456','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);
