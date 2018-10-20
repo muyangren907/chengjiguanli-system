@@ -128,13 +128,10 @@ class Index extends Base
 
         $msg = array();
 
-        if($data == 1)
-        {
-            $data =['msg'=>'添加成功','val'=>1];
-        }else{
-            $data =['msg'=>'数据处理错误','val'=>0];
-        }
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
+        // 返回信息
         return json($data);
     }
   
@@ -187,13 +184,10 @@ class Index extends Base
 
         $data = $admin->save($list,['id'=>$id]);
 
-        if($data == 1)
-        {
-            $data =['msg'=>'更新成功','val'=>1];
-        }else{
-            $data =['msg'=>'数据处理错误','val'=>0];
-        }
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
+        // 返回信息
         return json($data);
     }
 
@@ -215,8 +209,10 @@ class Index extends Base
 
         $data = $admin->destroy($id);
 
-        $data = ['msg'=>'删除成功','val'=>1];
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
+        // 返回信息
         return json($data);
     }
 
@@ -241,9 +237,40 @@ class Index extends Base
         $data = $list->save();
 
         // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'操作成功'] : $data=['msg'=>'数据处理错误'];
+        $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
-        //  返回信息
+        // 返回信息
         return json($data);
+    }
+
+
+    // 重置密码
+    public function resetpassword($id)
+    {
+
+        // 实例化管理员数据模型类
+        $admin = new Admin();
+        // 实例化加密类
+        $md5 = new APR1_MD5();
+
+        // 生成密码
+        $password = $md5->hash('123456');
+
+        // 查询用户信息
+        $list = $admin->get($id);
+
+        // 设置管理员新信息
+        $list->password = $password;
+
+        // 更新密码
+        $data = $list->save(); 
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'密码重置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
+
+
     }
 }

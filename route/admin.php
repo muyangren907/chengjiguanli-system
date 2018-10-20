@@ -11,3 +11,4 @@
 
 //系统设置路由
 Route::resource('admin','admin/index');
+Route::get('resetpassword/:id','admin/index/resetpassword');

@@ -141,12 +141,18 @@ function stop(obj,id){
 				value: 0,
 			},
 			success: function(data){
-				$(obj).html('<a style="text-decoration:none" onClick="start(this,id)" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>');
-				$(obj).parents("tr").find("span").parents("td").html('<span class="label label-error radius">已停用</span>');
-				layer.msg('已停用!',{icon: 5,time:1000});
+				if(data.val == 1 || data.val == 0)
+				{
+					$(obj).parents("tr").find("span").parents("td").html('<span class="label label-error radius">已停用</span>');
+					$(obj).replaceWith('<a style="text-decoration:none" onClick="start(this,'+id+')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>')
+					
+					layer.msg('已停用!',{icon: 5,time:1000});
+				}else{
+					layer.msg(data.msg);
+				}
 			},
 			error:function(data) {
-				console.log(data.msg);
+				layer.msg('操作失败');
 			},
 		});		
 	});
@@ -164,12 +170,18 @@ function start(obj,id){
 				value: 1,
 			},
 			success: function(data){
-				$(obj).html('<a style="text-decoration:none" onClick="start(this,id)" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe6e1;</i></a>');
-				$(obj).parents("tr").find("span").parents("td").html('<span class="label label-success radius">已启用</span>');
-				layer.msg('已启用!',{icon: 6,time:1000});
+				if(data.val == 1 || data.val == 0)
+				{
+					$(obj).parents("tr").find("span").parents("td").html('<span class="label label-success radius">已启用</span>');
+					$(obj).replaceWith('<a style="text-decoration:none" onClick="stop(this,'+id+')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe6e1;</i></a>');
+					layer.msg('已启用!',{icon: 6,time:1000});
+				}else{
+					layer.msg(data.msg);
+				}
+				
 			},
 			error:function(data) {
-				console.log(data.msg);
+				layer.msg('操作失败');
 			},
 		});
 	});
@@ -183,24 +195,29 @@ function change_password(title,url,id,w,h){
 	layer_show(title,url,w,h);	
 }
 /*用户-删除*/
-function del(obj,id){
+function del(obj,url){
 	layer.confirm('确认要删除吗？',function(index){
 		$.ajax({
 			type: 'DELETE',
-			url: "/admin/" + id,
+			url: url,
 			dataType: 'json',
 			success: function(data){
-				$(obj).parents("tr").remove();
-				layer.msg('已删除!',{icon:1,time:1000});
+				if(data.val == 1)
+				{
+					$(obj).parents("tr").remove();
+					// layer.alert(data.msg,{icon:1,time:1000});
+				}
+				layer.alert(data.msg);
+				
 			},
 			error:function(data) {
-				console.log(data.msg);
+				layer.alert('删除失败');
 			},
 		});		
 	});
 }
 /*批量删除*/
-function dels(){
+function dels(url){
 	//声明数组
 	var chk_value =[]; 
 	//获取所有被选中的值
@@ -221,7 +238,7 @@ function dels(){
 	layer.confirm('确认要删除选中的内容吗？',function(index){
 		$.ajax({
 			type: 'DELETE',
-			url:'/admin/m',
+			url:url,
 			dataType: 'json',
 			data: {
 				ids:chk_value,
@@ -229,19 +246,32 @@ function dels(){
 
 			success: function(data){
 				if(data.val == 1){
-					layer.alert('删除成功');
 					$('input[name="test"]:checked').each(function(){  
 						$(this).parents("tr").remove(); 
 					}); 
-
-				}else{
-					layer.alert('数据处理失败');
 				}
+				layer.alert(data.msg);
 			},
 			error:function(data) {
-				layer.msg('删除失败');
+				layer.msg('操作失败');
 			},
 		});
+	});
+}
+/*用户-密码重置*/
+function resetpw(obj,id){
+	layer.confirm('确认要重置密码吗？',function(index){
+		$.ajax({
+			type: 'GET',
+			url: "/resetpassword/" + id,
+			dataType: 'json',
+			success: function(data){
+				layer.alert(data.msg,{icon:1,time:1000});
+			},
+			error:function(data) {
+				layer.alert('操作失败');
+			},
+		});		
 	});
 }
 </script> 
