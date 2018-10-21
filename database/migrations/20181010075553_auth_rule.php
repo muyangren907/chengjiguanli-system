@@ -40,7 +40,8 @@ class AuthRule extends Migrator
             ->addColumn('condition','string',['limit'=>100,'default'=>'','null'=>true,'comment'=>'规则表达式'])
             ->addColumn('paixu','integer',['limit'=>11,'default'=>999,'null'=>false,'comment'=>'排序'])
             ->addColumn('ismenu','boolean',['limit'=>1,'default'=>false,'null'=>false,'comment'=>'是否是菜单'])
-            ->addColumn('pid','integer',['limit'=>3,'default'=>1,'null'=>true,'comment'=>'父ID'])
+            ->addColumn('font','string',['limit'=>40,'default'=>'','null'=>true,'comment'=>'菜单字体'])
+            ->addColumn('pid','integer',['limit'=>3,'default'=>0,'null'=>true,'comment'=>'父ID'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
             ->addIndex(array('name'), array('unique' => true))
             ->create();

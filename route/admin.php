@@ -10,5 +10,7 @@
 // +----------------------------------------------------------------------
 
 //系统设置路由
-Route::resource('admin','admin/index');
-Route::get('resetpassword/:id','admin/index/resetpassword');
+Route::resource('admin','admin/Index');
+Route::resource('authgroup','admin/AuthGroup');
+Route::resource('authrule','admin/AuthRule');
+Route::get('resetpassword/:id','admin/Index/resetpassword');

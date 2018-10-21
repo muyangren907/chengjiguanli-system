@@ -40,10 +40,6 @@ class Index extends Controller
             $this->error($msg);
         }
 
-        // 
-        // $password = $admin->password($data['username']);
-        // $check = $md5->check($data['password'],$password);
-
 
         // 验证用户名和密码
         $check = $this->check($data['username'],$data['password']);
@@ -88,10 +84,11 @@ class Index extends Controller
         $md5 = new APR1_MD5();
 
         // 获取服务器密码
-        $serpw = $admin->password($username);
+        $serpw = $admin->password('admin');
+        $serpw == null ? $serpw ='$apr1$tzQxnliW$f' : $serpw ;  #serpw为随意字符
         //验证密码
         $check = $md5->check($password,$serpw);
-
+        
         if($check)
         {
             // Session存值

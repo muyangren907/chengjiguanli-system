@@ -1,0 +1,101 @@
+{extend name="common@create" /}
+{block name="formaa"}
+	<form action="/authrule" method="POST" class="form form-horizontal" id="form-member-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>权限名称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="显示的名称" id="title" name="title">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>权限规则：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="后台需要验证的规则" id="name" name="name">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">父级权限：</label>
+			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:180px;">
+				{php} $authrulemod = model('AuthRule'); $pid = $authrulemod->topRule();{/php}
+				<select class="select" name="pid" size="1">
+					<option value="">--请选择父级权限--</option>
+					{volist name="pid" id="vo"}
+						<option value="{$vo.id}">{$vo.title}</option>
+					{/volist}
+				</select>
+				</span> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">规则表达式：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="规则的附加表达式" id="condition" name="condition">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">排序：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="默认为999" id="paixu" name="paixu">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否是菜单：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+				<div class="radio-box">
+					<input name="ismenu" type="radio" id="ismenu-1" value="1">
+					<label for="ismenu-1">是</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" id="ismenu-2" value="0" name="ismenu" checked>
+					<label for="ismenu-2">否</label>
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">菜单字体：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="只对菜单有效" id="font" name="font">
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+{/block}
+{block name="yanzheng"}
+<script type="text/javascript">
+	// 匹配用户名
+	$.validator.addMethod("zh",function(value,element){
+		var tel = /^[\u4e00-\u9fa5]*$/;
+		return this.optional(element) || tel.test(value);
+	}, "请输入中文");
+
+	// 匹配帐号
+	$.validator.addMethod("ustr",function(value,element){
+		var tel = /^[a-z\/]*$/;
+		return this.optional(element) || tel.test(value);
+	}, "由小写字母和 / 组成");
+
+	// 设置表单验证规则
+	var myrules = {
+			title:{
+				required:true,
+				zh:true,
+				rangelength:[2,6]
+			},
+			name:{
+				required:true,
+				ustr:true,
+				rangelength:[1,80]
+			},
+			paixu:{
+				digits:true,
+				max:999
+			},
+		};
+
+	// 设置表单提交方式
+	var mytype = 'POST';
+</script>
+{/block}
