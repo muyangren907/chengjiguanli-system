@@ -14,7 +14,7 @@
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">网站角色：</label>
+			<label class="form-label col-xs-4 col-sm-3">分配权限：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				{php}
 					$rule = model('authRule');
@@ -32,7 +32,6 @@
 						$clist = $rule->getRule($p['id']);
 					{/php}
 					<dd>
-						
 						{volist name = "clist" id = "c" key = "k"}
 						<dl class="cl permission-list2">
 							<dt>
@@ -53,7 +52,6 @@
 							</dd>
 						</dl>
 						{/volist}
-						
 					</dd>
 				</dl>
 				{/volist}

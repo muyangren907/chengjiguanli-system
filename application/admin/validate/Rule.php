@@ -14,7 +14,7 @@ class Rule extends Validate
      */	
 	protected $rule = [
         'title|规则名' =>  'require|chs|length:2,6',
-        'name|规则'   =>  ['require','length:1,80','uset'=>'/^[a-z\/]*$/'],
+        'name|规则'   =>  ['require','length:1,80','uset'=>'/^[a-zA-Z\/]*$/'],
         'paixu|排序'          =>      'number|max:999',
     ];
     

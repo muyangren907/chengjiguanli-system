@@ -24,7 +24,7 @@
 						<option value="{$vo.id}">{$vo.title}</option>
 						{php} $child = $authrulemod->getRule($vo['id']);{/php}
 						{volist name="child" id="va"}
-							<option value="{$va.id}">┠┄┄{$va.title}</option>
+							<option value="{$va.id}">├ -{$va.title}</option>
 						{/volist}
 					{/volist}
 				</select>
@@ -79,9 +79,9 @@
 
 	// 匹配帐号
 	$.validator.addMethod("ustr",function(value,element){
-		var tel = /^[a-z\/]*$/;
+		var tel = /^[a-zA-Z\/]*$/;
 		return this.optional(element) || tel.test(value);
-	}, "由小写字母和 / 组成");
+	}, "由字母和 / 组成");
 
 	// 设置表单验证规则
 	var myrules = {

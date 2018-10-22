@@ -114,7 +114,7 @@ class AuthRule extends Base
 
 
         // 获取表单数据
-        $list = request()->only(['title','name','pid','condition','paixue','ismenu','font','beizhu'],'post');
+        $list = request()->only(['title','name','pid','condition','paixu','ismenu','font','beizhu'],'post');
 
 
         // 验证表单数据
@@ -199,12 +199,11 @@ class AuthRule extends Base
         return json($data);
     }
 
-    /**
-     * 删除指定资源
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
+    
+
+
+
+    // 删除权限
     public function delete($id)
     {
         //实例化权限数据模型类

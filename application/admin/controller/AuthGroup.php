@@ -93,7 +93,7 @@ class AuthGroup extends Base
     public function create()
     {
         // 设置页面标题
-        $list['title'] = '添加权限';
+        $list['title'] = '添加角色';
 
         // 模板赋值
         $this->assign('list',$list);
@@ -107,7 +107,7 @@ class AuthGroup extends Base
     // 保存角色信息
     public function save()
     {
-        // 实例化权限数据模型类
+        // 实例化角色数据模型类
         $agmod = new agmod();
 
         // 实例化验证模型
@@ -152,37 +152,110 @@ class AuthGroup extends Base
         //
     }
 
-    /**
-     * 显示编辑资源表单页.
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
+    
+
+
+    // 修改角色信息
     public function edit($id)
     {
-        //
+        //实例化角色数据模型
+        $agmod = new agmod();
+
+        // 获取角色信息
+        $list = $agmod
+            ->field('id,title,miaoshu,rules')
+            ->get($id);
+        $list->rules = explode(',',$list->rules);
+
+
+        $this->assign('list',$list);
+
+        return $this->fetch();
     }
 
-    /**
-     * 保存更新的资源
-     *
-     * @param  \think\Request  $request
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function update(Request $request, $id)
+
+
+
+
+    // 更新角色信息
+    public function update($id)
     {
-        //
+        // 实例化角色数据模型类
+        $agmod = new agmod();
+        // 实例化验证模型
+        $validate = new \app\admin\validate\RuleGroup;
+
+        // 获取表单数据
+        $list = request()->only(['title','rules','miaoshu'],'put');
+        $list['rules'] = implode(",",$list['rules']);
+
+        // 验证表单数据
+        $result = $validate->check($list);
+        $msg = $validate->getError();
+
+        // 如果验证不通过则停止保存
+        if(!$result){
+            return json(['msg'=>$msg,'val'=>0]);;
+        }
+
+
+        $data = $agmod->save($list,['id'=>$id]);
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
     }
 
-    /**
-     * 删除指定资源
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
+    
+
+
+    // 删除角色
     public function delete($id)
     {
-        //
+        //实例化角色数据模型类
+        $agmod = new agmod();
+
+        if($id == 'm')
+        {
+            $id = request()->delete('ids/a');// 获取delete请求方式传送过来的数据并转换成数据
+        }
+
+        $data = $agmod->destroy($id);
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
+
+    // 设置角色状态
+    public function setStatus()
+    {
+        // 实例化角色数据模型类
+        $agmod = new agmod();
+
+        //  获取id变量
+        $id = request()->post('id');
+        $value = request()->post('value');
+
+        // 获取角色信息
+        $list = $agmod->get($id);
+
+        // 修改状态值
+        $list->status = $value;
+
+        // 更新数据
+        $data = $list->save();
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
     }
 }

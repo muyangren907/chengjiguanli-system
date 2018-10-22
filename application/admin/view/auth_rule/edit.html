@@ -21,10 +21,10 @@
 				<select class="select" id="pidt" name="pid" size="1">
 					<option value="">--请选择父级权限--</option>
 					{volist name="pid" id="vo"}
-						<option value="{$vo.id}">{$vo.title}</option>
+						<option value="{$vo.id}" {eq name="$list.pid" value="$vo.title" }selected{/eq}>{$vo.title}</option>
 						{php} $child = $authrulemod->getRule($vo['id']);{/php}
 						{volist name="child" id="va"}
-							<option value="{$va.id}">┠┄┄{$va.title}</option>
+							<option value="{$va.id}" {eq name="$list.pid" value="$va.title" }selected{/eq}>├--{$va.title}</option>
 						{/volist}
 					{/volist}
 				</select>
@@ -47,7 +47,7 @@
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否是菜单：</label>
 			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
 				<div class="radio-box">
-					<input name="ismenu" type="radio" id="ismenu-1" value="1"  {eq name="$list.ismenu" value="是" }checked{/eq}>
+					<input name="ismenu" type="radio" id="ismenu-1" value="1" {eq name="$list.ismenu" value="是" }checked{/eq}>
 					<label for="ismenu-1">是</label>
 				</div>
 				<div class="radio-box">
@@ -79,9 +79,9 @@
 
 	// 匹配帐号
 	$.validator.addMethod("ustr",function(value,element){
-		var tel = /^[a-z\/]*$/;
+		var tel = /^[a-zA-Z\/]*$/;
 		return this.optional(element) || tel.test(value);
-	}, "由小写字母和 / 组成");
+	}, "由字母和 / 组成");
 
 	// 设置表单验证规则
 	var myrules = {
