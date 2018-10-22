@@ -7,19 +7,14 @@ use app\common\model\Base;
 
 class AuthRule extends Base
 {
-    // 状态获取器
-    public function getStatusAttr($value)
-    {
-        $status =array('1'=>'已启用','0'=>'已停用');
-        return $status[$value];
-    }
 
     // 顶级权限列表
-    public function topRule()
+    public function getRule($pid = 0)
     {
     	return $this
-    			->where('pid',0)
+    			->where('pid',$pid)
     			->field('id,title')
+                ->order(['paixu'])
     			->select();
     }
 
@@ -39,4 +34,6 @@ class AuthRule extends Base
 
         return $this->where('id',$value)->value('title');
     }
+
+
 }

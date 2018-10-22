@@ -67,7 +67,7 @@ class AuthRule extends Base
                 ->field('id,title,name,condition,paixu,ismenu,font,status,pid')
                 ->order([$order_field=>$order])
                 ->limit($limit_start,$limit_length)
-                ->where('title','like','%'.$search.'%')
+                ->where('title|name|pid','like','%'.$search.'%')
                 ->all();
         }
 

@@ -7,5 +7,5 @@ use app\common\model\Base;
 
 class AuthGroup extends Base
 {
-    //
+    // 状态获取器
 }

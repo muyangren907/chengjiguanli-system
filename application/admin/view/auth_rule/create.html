@@ -14,16 +14,22 @@
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">父级权限：</label>
-			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:180px;">
-				{php} $authrulemod = model('AuthRule'); $pid = $authrulemod->topRule();{/php}
-				<select class="select" name="pid" size="1">
+			<label class="form-label col-xs-4 col-sm-3">所属权限：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:180px;">
+				{php} $authrulemod = model('AuthRule'); $pid = $authrulemod->getRule();{/php}
+				<select class="select" id="pidt" name="pid" size="1">
 					<option value="">--请选择父级权限--</option>
 					{volist name="pid" id="vo"}
 						<option value="{$vo.id}">{$vo.title}</option>
+						{php} $child = $authrulemod->getRule($vo['id']);{/php}
+						{volist name="child" id="va"}
+							<option value="{$va.id}">┠┄┄{$va.title}</option>
+						{/volist}
 					{/volist}
 				</select>
-				</span> </div>
+				</span>
+			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">规则表达式：</label>

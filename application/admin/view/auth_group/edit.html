@@ -1,52 +1,59 @@
 {extend name="common@create" /}
 {block name="formaa"}
-	<form action="/admin/{$list.id}" method="PUT" class="form form-horizontal" id="form-member-add">
+	<form action="/authrule/{$list.id}" method="PUT" class="form form-horizontal" id="form-member-add">
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户姓名：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>权限名称：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="{$list.xingming}" placeholder="" id="xingming" name="xingming">
+				<input type="text" class="input-text" value="{$list.title}" placeholder="显示的名称" id="title" name="title">
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户帐号：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>权限规则：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="{$list.username}" placeholder="" id="username" name="username">
+				<input type="text" class="input-text" value="{$list.name}" placeholder="后台需要验证的规则" id="name" name="name">
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>性别：</label>
+			<label class="form-label col-xs-4 col-sm-3">父级权限：</label>
+			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:180px;">
+				{php} $authrulemod = model('AuthRule'); $pid = $authrulemod->topRule();{/php}
+				<select class="select" name="pid" size="1">
+					<option value="0" {eq name="$list.pid" value="" }selected{/eq}>--顶级权限--</option>
+					{volist name="pid" id="vo"}
+						<option value="{$vo.id}"  {eq name="$list.pid" value="$vo.title" }selected{/eq}>{$vo.title}</option>
+					{/volist}
+				</select>
+				</span> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">规则表达式：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$list.condition}" placeholder="规则的附加表达式" id="condition" name="condition">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">排序：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$list.paixu}" placeholder="默认为999" id="paixu" name="paixu">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否是菜单：</label>
 			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
 				<div class="radio-box">
-					<input name="sex" type="radio" id="sex-1" value="1" {eq name="$list.sex" value="男" }checked{/eq}>
-					<label for="sex-1">男</label>
+					<input name="ismenu" type="radio" id="ismenu-1" value="1"  {eq name="$list.ismenu" value="是" }checked{/eq}>
+					<label for="ismenu-1">是</label>
 				</div>
 				<div class="radio-box">
-					<input type="radio" id="sex-2" value="0" name="sex" {eq name="$list.sex" value="女" }checked{/eq}>
-					<label for="sex-2">女</label>
-				</div>
-				<div class="radio-box">
-					<input type="radio" id="sex-3" value="2" name="sex" {eq name="$list.sex" value="保密" }checked{/eq}>
-					<label for="sex-3">保密</label>
+					<input type="radio" id="ismenu-2" value="0" name="ismenu"  {eq name="$list.ismenu" value="否" }checked{/eq}>
+					<label for="ismenu-2">否</label>
 				</div>
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">出生日期：</label>
+			<label class="form-label col-xs-4 col-sm-3">菜单字体：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text Wdate" value="{$list.shengri}" placeholder="" id="shengri" name="shengri" onclick="WdatePicker({isShowClear:false,readOnly:true})">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">手机：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="{$list.phone}" placeholder="" id="phone" name="phone">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">备注：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<textarea name="beizhu" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符，最多80个字符" onKeyUp="$.Huitextarealength(this,100)">{$list.beizhu}</textarea>
-				<p class="textarea-numberbar"><em class="textarea-length">0</em>/80</p>
+				<input type="text" class="input-text" value="{$list.font}" placeholder="只对菜单有效" id="font" name="font">
 			</div>
 		</div>
 		<div class="row cl">
@@ -58,7 +65,6 @@
 {/block}
 {block name="yanzheng"}
 <script type="text/javascript">
-
 	// 匹配用户名
 	$.validator.addMethod("zh",function(value,element){
 		var tel = /^[\u4e00-\u9fa5]*$/;
@@ -67,30 +73,25 @@
 
 	// 匹配帐号
 	$.validator.addMethod("ustr",function(value,element){
-		var tel = /^[a-z][a-z0-9-_]*$/;
+		var tel = /^[a-z\/]*$/;
 		return this.optional(element) || tel.test(value);
-	}, "用户名由小写字母和 _ - 组成，首字符为字母");
+	}, "由小写字母和 / 组成");
 
 	// 设置表单验证规则
 	var myrules = {
-			xingming:{
+			title:{
 				required:true,
 				zh:true,
 				rangelength:[2,6]
 			},
-			username:{
+			name:{
 				required:true,
 				ustr:true,
-				rangelength:[5,20]
+				rangelength:[1,80]
 			},
-			sex:{
-				required:true,
-			},
-			shengri:{
-				dateISO:true
-			},
-			phone:{
-				isMobile:true,
+			paixu:{
+				digits:true,
+				max:999
 			},
 		};
 
