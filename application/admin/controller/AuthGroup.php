@@ -151,8 +151,6 @@ class AuthGroup extends Base
     // 修改角色信息
     public function edit($id)
     {
-        //实例化角色数据模型
-        $agmod = new agmod();
 
         // 获取角色信息
         $list = AG::field('id,title,miaoshu,rules')
@@ -190,7 +188,7 @@ class AuthGroup extends Base
         }
 
 
-        $data = $agmod->where('id',$id)->update($list);
+        $data = AG::where('id',$id)->update($list);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];

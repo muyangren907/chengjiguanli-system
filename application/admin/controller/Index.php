@@ -214,7 +214,7 @@ class Index extends Base
         $data = AGA::where('uid',$id)->update(['group_id'=>$group_id]);
 
         // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data >= 0 ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);
