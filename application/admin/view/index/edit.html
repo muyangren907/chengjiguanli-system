@@ -14,6 +14,20 @@
 			</div>
 		</div>
 		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>分配角色：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+				{php}
+				$group = db('auth_group')->where('status',true)->field('id,title')->all();
+				{/php}
+				{volist name="group" id="vo"}
+					<div class="radio-box">
+						<input name="group_id" type="radio" id="group{$vo.id}" value="{$vo.id}" {eq name="$list['group_id']" value="$vo['id']" }checked{/eq}>
+						<label for="group{$vo.id}">{$vo.title}</label>
+					</div>
+				{/volist}
+			</div>
+		</div>
+		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>性别：</label>
 			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
 				<div class="radio-box">

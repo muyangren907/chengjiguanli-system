@@ -5,18 +5,17 @@ namespace app\admin\controller;
 // 引用控制器基类
 use app\common\controller\Base;
 // 引用角色数据模型类
-use app\admin\model\AuthGroup as agmod;
+use app\admin\model\AuthGroup as AG;
+
 
 class AuthGroup extends Base
 {
     // 角色列表
     public function index()
     {
-        // 实例化角色数据模型类
-        $agmod = new agmod();
 
         // 设置数据总数
-        $list['count'] = $agmod->count();
+        $list['count'] = AG::count();
         // 设置页面标题
         $list['title'] = '角色列表';
 
@@ -33,8 +32,6 @@ class AuthGroup extends Base
     // 获取角色列表
     public function ajaxData()
     {
-        // 实例化角色数据模型类
-        $agmod = new agmod();
 
         // 获取DT的传值
         $getdt = request()->param();
@@ -53,10 +50,9 @@ class AuthGroup extends Base
 
 
         // 获取记录集总数
-        $cnt = $agmod->count();
+        $cnt = AG::count();
         //查询数据
-        $data = $agmod
-            ->field('id,title,miaoshu,status')
+        $data = AG::field('id,title,miaoshu,status')
             ->order([$order_field=>$order])
             ->limit($limit_start,$limit_length)
             ->all();
@@ -64,8 +60,7 @@ class AuthGroup extends Base
 
         // 如果需要查询
         if($search){
-            $data = $agmod
-                ->field('id,title,miaoshu,status')
+            $data = AG::field('id,title,miaoshu,status')
                 ->order([$order_field=>$order])
                 ->limit($limit_start,$limit_length)
                 ->where('title|miaoshu','like','%'.$search.'%')
@@ -107,8 +102,6 @@ class AuthGroup extends Base
     // 保存角色信息
     public function save()
     {
-        // 实例化角色数据模型类
-        $agmod = new agmod();
 
         // 实例化验证模型
         $validate = new \app\admin\validate\RuleGroup;
@@ -130,7 +123,7 @@ class AuthGroup extends Base
         }
 
         // 保存数据 
-        $data = $agmod->save($list);
+        $data = AG::create($list);
 
         $msg = array();
 
@@ -162,8 +155,7 @@ class AuthGroup extends Base
         $agmod = new agmod();
 
         // 获取角色信息
-        $list = $agmod
-            ->field('id,title,miaoshu,rules')
+        $list = AG::field('id,title,miaoshu,rules')
             ->get($id);
         $list->rules = explode(',',$list->rules);
 
@@ -180,8 +172,7 @@ class AuthGroup extends Base
     // 更新角色信息
     public function update($id)
     {
-        // 实例化角色数据模型类
-        $agmod = new agmod();
+
         // 实例化验证模型
         $validate = new \app\admin\validate\RuleGroup;
 
@@ -199,7 +190,7 @@ class AuthGroup extends Base
         }
 
 
-        $data = $agmod->save($list,['id'=>$id]);
+        $data = $agmod->where('id',$id)->update($list);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -214,15 +205,13 @@ class AuthGroup extends Base
     // 删除角色
     public function delete($id)
     {
-        //实例化角色数据模型类
-        $agmod = new agmod();
 
         if($id == 'm')
         {
             $id = request()->delete('ids/a');// 获取delete请求方式传送过来的数据并转换成数据
         }
 
-        $data = $agmod->destroy($id);
+        $data = AG::destroy($id);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -236,21 +225,13 @@ class AuthGroup extends Base
     // 设置角色状态
     public function setStatus()
     {
-        // 实例化角色数据模型类
-        $agmod = new agmod();
 
         //  获取id变量
         $id = request()->post('id');
         $value = request()->post('value');
 
-        // 获取角色信息
-        $list = $agmod->get($id);
-
-        // 修改状态值
-        $list->status = $value;
-
         // 更新数据
-        $data = $list->save();
+        $data= AG::where('id',$id)->update(['status'=>$value]);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];

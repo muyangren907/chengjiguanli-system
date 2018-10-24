@@ -38,6 +38,7 @@ class AuthGroup extends Migrator
             ->addColumn('miaoshu','string',['limit'=>200,'default'=>'','null'=>false,'comment'=>'用户组功能描述'])
             ->addColumn('status','boolean',['default'=>true,'null'=>false,'comment'=>'用户组状态'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
+            ->addIndex(array('title'), array('unique' => true))
             ->create();
     }
 }

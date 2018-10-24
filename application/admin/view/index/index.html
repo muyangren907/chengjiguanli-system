@@ -21,7 +21,7 @@
 			批量删除
 			</a>
 			<!-- 添加按钮 -->
-			<a href="javascript:;" onclick=addfull('添加管理员',"/admin/create",'800','500') class="btn btn-primary radius">
+			<a href="javascript:;" onclick=addfull('添加管理员',"/admin/create") class="btn btn-primary radius">
 				<i class="Hui-iconfont">&#xe600;</i>
 				添加管理员
 			</a>
@@ -91,21 +91,22 @@
 			"className":'.td-manage',			
 			"render": function(data, type, row, meta) {
 					// 初始化密码
-					resetpwbut = '<a style="text-decoration:none" onClick="resetpw(this,'+ row.id +')" href="javascript:;" title="重置密码"><i class="Hui-iconfont">&#xe63f;</i></a>';
+					resetpwbut = '<a class="ml-5" style="text-decoration:none" onClick="resetpw(this,'+ row.id +')" href="javascript:;" title="重置密码"><i class="Hui-iconfont">&#xe63f;</i></a>';
 					// 停用按钮
-					stopbut = '<a style="text-decoration:none" onClick="stop(this,'+ row.id +')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>';
+					stopbut = '<a class="ml-5" style="text-decoration:none" onClick="stop(this,'+ row.id +')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>';
 					// 启用按钮
-					startbut = '<a style="text-decoration:none" onClick="start(this,'+ row.id +')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>';
+					startbut = '<a class="ml-5" style="text-decoration:none" onClick="start(this,'+ row.id +')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>';
 					// 详细信息按钮
 					readbut = '<a title="详细信息" data-href="admin/'+ row.id +'" data-title="' + row.xingming + ' 信息" onClick="Hui_admin_tab(this)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe665;</i></a>';
 					// 编辑按钮
 					editbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/admin/'+row.id+'/edit","500","300") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
 					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/admin/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
+					buts =  startbut + readbut + editbut + delbut;
 					if(row.status == '已停用')
 					{
-						buts = resetpwbut + startbut + readbut + editbut + delbut;
+						buts = resetpwbut + buts;
 					}else{
-						buts = resetpwbut + stopbut + readbut + editbut + delbut;
+						buts = resetpwbut + buts;
 					} 
 
 					return buts;

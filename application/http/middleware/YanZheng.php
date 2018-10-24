@@ -39,11 +39,12 @@ class YanZheng  extends Controller
 
         // 实例化权限验证类
     	$auth = new Auth();
+
         // 获取当前地址
         $mod = $request->module();
         $con = $request->controller();
         $act = $request->action();
-    	$url = $request->module().'/'.$request->controller().'/'.$request->action();
+    	$url = $mod.'/'.$con.'/'.$act;
 
         // 排除模块
         $uneed_m = array('home');
@@ -63,7 +64,7 @@ class YanZheng  extends Controller
         }
 
         // 验证方法
-        if( !$auth->check($url, $yz ) && $except == false ){// 第一个参数是规则名称,第二个参数是用户UID
+        if( !$auth->check($url, session('userid')) && $except == false ){// 第一个参数是规则名称,第二个参数是用户UID
             $this->error('哎哟~  权限不足');
         }  
 

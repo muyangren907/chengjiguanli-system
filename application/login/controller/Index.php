@@ -4,9 +4,11 @@ namespace app\login\controller;
 // 引用控制器类
 use think\Controller;
 // 引用用户数据模型
-use app\admin\model\Admin as admin;
-// 引用与此控制器同名的数据模型
-use app\system\model\SystemBase as  sysbasemod;
+use app\admin\model\Admin as AD;
+// 引用权限类
+use app\admin\model\AuthRule as AR;
+
+
 // 引用加密类
 use WhiteHat101\Crypt\APR1_MD5;
 
@@ -24,8 +26,7 @@ class Index extends Controller
     // 登录验证
     public function yanzheng()
     {
-        // 实例化模型
-        $admin = new admin();
+
         // 实例化验证模型
         $validate = new \app\login\validate\Yanzheng;
 
@@ -51,12 +52,13 @@ class Index extends Controller
             if( request()->post('online') == true )
             {
                 // 设置
+                cookie('userid', session('userid') ,259200);
                 cookie('username', $data['username'] ,259200);
                 cookie('password', $data['password'] ,259200);
             }
 
             // 将本次信息上传到服务器上
-            $userinfo = $admin->getByUsername($data['username']);
+            $userinfo = AD::getByUsername($data['username']);
             $userinfo->lastip = $userinfo->ip;
             $userinfo->ip = request()->host();
             $userinfo->denglucishu = ['inc', 1];
@@ -78,20 +80,29 @@ class Index extends Controller
     // 已知密码进行验证
     public function check($username,$password)
     {
-        // 实例化管理员数据模型类
-        $admin = new admin();
         // 实例化加密类
         $md5 = new APR1_MD5();
 
         // 获取服务器密码
-        $serpw = $admin->password('admin');
-        $serpw == null ? $serpw ='$apr1$tzQxnliW$f' : $serpw ;  #serpw为随意字符
+        $userinfo = AD::where('username',$username)->find();
+
+        if($userinfo == null)
+        {
+            // 提示错误信息
+            $this->error('帐号不存在');
+        }
+
+
+        //  实例化权限类
+        $ar = new AR();
+
         //验证密码
-        $check = $md5->check($password,$serpw);
+        $check = $md5->check($password,$userinfo->password);
         
         if($check)
         {
             // Session存值
+            session('userid', $userinfo->id);
             session('username', $username);
             session('password', $password);
         }else{
@@ -102,60 +113,5 @@ class Index extends Controller
         }
         return $check;        
     }
-
-
-
-    // 首次登录添加admin
-    public function first()
-    {
-        // 实例化模型
-        $admin = new admin();
-        // 实例化加密类
-        $md5 = new APR1_MD5();
-        // 实例化系统参数类
-        $sysbasemod = new sysbasemod();
-
-        $userinfo = $admin->get(1);
-
-        $msg = array();
-
-        $sysbase = $sysbasemod->get(1);
-
-        if( $sysbase == null )
-        {
-            $sysbasemod->title = '学生成绩统计系统';
-            $sysbasemod->save();
-            $msg[] = '、系统参数初始化完成;';
-        }else{
-            $msg[] = '、系统参数已经初始化不再重复操作;';
-        }
-
-        $userinfo = $admin->get(1);
-
-        if( $userinfo == null )
-        {
-            $admin->id =1;
-            $admin->xingming ='管理员';
-            $admin->username    = 'admin';
-            $admin->password    = $md5->hash('123');
-            $data = $admin->save();
-            $msg[] = '、超级管理员信息初始化完成;';
-        }else{
-            $msg[] = '、超级管理员已经初始化不再重复操作;';
-        }
-
-        
-
-
-
-
-        foreach ($msg as $key => $value) {
-            echo $key+1 .$value;
-            echo '<br>';
-        }
-        echo '</br>';
-        echo '现在可以重新登录页系统';
-
-        return '';
-    }
+    
 }

@@ -5,18 +5,16 @@ namespace app\admin\controller;
 // 引用控制器基类
 use app\common\controller\Base;
 // 引用权限数据模型类
-use app\admin\model\AuthRule as authrulemod;
+use app\admin\model\AuthRule as AR;
 
 class AuthRule extends Base
 {
     // 显示权限列表
     public function index()
     {
-        // 实例化权限数据模型类
-        $authrulemod = new authrulemod();
 
         // 设置数据总数
-        $list['count'] = $authrulemod->count();
+        $list['count'] = AR::count();
         // 设置页面标题
         $list['title'] = '权限列表';
 
@@ -32,8 +30,6 @@ class AuthRule extends Base
     // 获取权限信息列表
     public function ajaxData()
     {
-        // 实例化权限数据模型类
-        $authrulemod = new authrulemod();
 
         // 获取DT的传值
         $getdt = request()->param();
@@ -52,10 +48,9 @@ class AuthRule extends Base
 
 
         // 获取记录集总数
-        $cnt = $authrulemod->count();
+        $cnt = AR::count();
         //查询数据
-        $data = $authrulemod
-            ->field('id,title,name,condition,paixu,ismenu,font,status,pid')
+        $data =AR::field('id,title,name,condition,paixu,ismenu,font,status,pid')
             ->order([$order_field=>$order])
             ->limit($limit_start,$limit_length)
             ->all();
@@ -64,9 +59,6 @@ class AuthRule extends Base
         // 如果需要查询
         if($search){
             $data = $authrulemod
-                ->field('id,title,name,condition,paixu,ismenu,font,status,pid')
-                ->order([$order_field=>$order])
-                ->limit($limit_start,$limit_length)
                 ->where('title|name|pid','like','%'.$search.'%')
                 ->all();
         }
@@ -106,9 +98,6 @@ class AuthRule extends Base
     // 保存信息
     public function save()
     {
-        // 实例化权限数据模型类
-        $authrulemod = new authrulemod();
-
         // 实例化验证模型
         $validate = new \app\admin\validate\Rule;
 
@@ -128,7 +117,7 @@ class AuthRule extends Base
         }
 
         // 保存数据 
-        $data = $authrulemod->save($list);
+        $data = AR::create($list);
 
         $msg = array();
 
@@ -151,12 +140,9 @@ class AuthRule extends Base
     // 修改权限信息
     public function edit($id)
     {
-        //实例化权限数据模型
-        $authrulemod = new authrulemod();
 
         // 获取权限信息
-        $list = $authrulemod
-            ->field('id,title,name,condition,pid,paixu,ismenu,font')
+        $list = AR::field('id,title,name,condition,pid,paixu,ismenu,font')
             ->get($id);
 
 
@@ -172,9 +158,6 @@ class AuthRule extends Base
     // 更新权限信息
     public function update($id)
     {
-        // 实例化权限数据模型类
-        $authrulemod = new authrulemod();
-        // 实例化验证模型
         $validate = new \app\admin\validate\Rule;
 
         // 获取表单数据
@@ -190,7 +173,7 @@ class AuthRule extends Base
         }
 
 
-        $data = $authrulemod->save($list,['id'=>$id]);
+        $data = AR::where('id',$id)->update($list);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -206,15 +189,13 @@ class AuthRule extends Base
     // 删除权限
     public function delete($id)
     {
-        //实例化权限数据模型类
-        $authrulemod = new authrulemod();
 
         if($id == 'm')
         {
             $id = request()->delete('ids/a');// 获取delete请求方式传送过来的数据并转换成数据
         }
 
-        $data = $authrulemod->destroy($id);
+        $data = AR::destroy($id);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -228,21 +209,13 @@ class AuthRule extends Base
     // 设置权限状态
     public function setStatus()
     {
-        // 实例化权限数据模型类
-        $authrulemod = new authrulemod();
 
         //  获取id变量
         $id = request()->post('id');
         $value = request()->post('value');
 
         // 获取权限信息
-        $list = $authrulemod->get($id);
-
-        // 修改状态值
-        $list->status = $value;
-
-        // 更新数据
-        $data = $list->save();
+        $data = AR::where('id',$id)->update(['status'=>$value]);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];

@@ -5,7 +5,9 @@ namespace app\admin\controller;
 // 引用控制器基类
 use app\common\controller\Base;
 // 引用用户数据模型
-use app\admin\model\Admin;
+use app\admin\model\Admin as AD;
+// 引用用户与组关联数据表模型
+use app\admin\model\AuthGroupAccess as AGA;
 // 引用加密类
 use WhiteHat101\Crypt\APR1_MD5;
 
@@ -14,10 +16,8 @@ class Index extends Base
     // 管理员列表
     public function index()
     {
-        //实例化管理员数据模型类
-        $admin = new Admin();
 
-        $count = $admin->where('id','<>',1)->count();
+        $count = AD::where('id','>',1)->count();
 
         // 设置要给模板赋值的信息
         $list['title'] = '管理员列表';
@@ -36,8 +36,7 @@ class Index extends Base
     // 获取数据管理员数据
     public function ajaxData()
     {
-        //实例化管理员数据模型类
-        $admin = new Admin();
+
 
         // 获取DT的传值
         $getdt = request()->param();
@@ -56,10 +55,9 @@ class Index extends Base
 
 
         // 获取记录集总数
-        $cnt = $admin->where('id','<>',1)->count();
+        $cnt = AD::where('id','>',1)->count();
         //查询数据
-        $data = $admin
-            ->field('id,xingming,sex,username,phone,shengri,denglucishu,status,create_time')
+        $data = AD::field('id,xingming,sex,username,phone,shengri,denglucishu,status,create_time')
             ->where('id','>','1')
             ->order([$order_field=>$order])
             ->limit($limit_start,$limit_length)
@@ -68,8 +66,7 @@ class Index extends Base
 
         // 如果需要查询
         if($search){
-            $data = $admin
-                ->field('id,xingming,sex,username,phone,shengri,denglucishu,status,create_time')
+            $data = AD::field('id,xingming,sex,username,phone,shengri,denglucishu,status,create_time')
                  ->where('id','>','1')
                 ->order([$order_field=>$order])
                 ->limit($limit_start,$limit_length)
@@ -111,9 +108,7 @@ class Index extends Base
     // 保存管理员
     public function save()
     {
-        
-        // 实例化管理员数据模型类
-        $admin = new Admin();
+
         // 实例化加密类
         $md5 = new APR1_MD5();
         // 实例化验证模型
@@ -138,7 +133,13 @@ class Index extends Base
         }
 
         // 保存数据 
-        $data = $admin->save($list);
+        $data = AD::create($list);
+
+        $group_id = request()->post('group_id');
+
+        $data = AGA::create(['uid'=>$data->id,'group_id'=>$group_id]);
+
+
 
         $msg = array();
 
@@ -156,11 +157,9 @@ class Index extends Base
     // 读取用户信息
     public function read($id)
     {
-        // 实例化管理员数据模型类
-        $admin = new Admin();
 
         // 获取管理员信息
-        $list = $admin->get($id);
+        $list = AD::get($id);
 
         // 模板赋值
         $this->assign('list',$list);
@@ -175,13 +174,11 @@ class Index extends Base
     //
     public function edit($id)
     {
-        //实例化管理员数据模型
-        $admin = new Admin();
 
         // 获取用户信息
-        $list = $admin
-            ->field('id,username,xingming,sex,shengri,phone,beizhu')
+        $list = AD::field('id,username,xingming,sex,shengri,phone,beizhu')
             ->get($id);
+        $list->group_id = AGA::where('uid',$id)->value('group_id');
 
 
         $this->assign('list',$list);
@@ -193,13 +190,12 @@ class Index extends Base
     // 更新管理员信息
     public function update($id)
     {
-        // 实例化管理员数据模型类
-        $admin = new Admin();
+
         // 实例化验证模型
         $validate = new \app\admin\validate\Admin;
 
         // 获取表单数据
-        $list = request()->put();
+        $list = request()->only(['xingming','username','sex','shengri','phone','beizhu'],'put');
 
         // 验证表单数据
         $result = $validate->check($list);
@@ -210,8 +206,12 @@ class Index extends Base
             return json(['msg'=>$msg,'val'=>0]);;
         }
 
+        // 更新管理员信息
+        $data = AD::where('id',$id)->update($list);
 
-        $data = $admin->save($list,['id'=>$id]);
+        // 更新管理员角色
+        $group_id = request()->put('group_id');
+        $data = AGA::where('uid',$id)->update(['group_id'=>$group_id]);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -228,15 +228,13 @@ class Index extends Base
      */
     public function delete($id)
     {
-        //实例化管理员数据模型类
-        $admin = new Admin();
 
         if($id == 'm')
         {
             $id = request()->delete('ids/a');
         }
 
-        $data = $admin->destroy($id);
+        $data = AD::destroy($id);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -249,21 +247,13 @@ class Index extends Base
     // 修改管理员状态
     public function setStatus()
     {
-        // 实例化管理员数据模型类
-        $admin = new Admin();
 
         //  获取id变量
         $id = request()->post('id');
         $value = request()->post('value');
 
-        // 获取管理员信息
-        $list = $admin->get($id);
-
-        // 修改状态值
-        $list->status = $value;
-
-        // 更新数据
-        $data = $list->save();
+        // 更新管理员信息
+        $data = AD::where('id',$id)->update(['status'=>$value]);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -277,8 +267,6 @@ class Index extends Base
     public function resetpassword($id)
     {
 
-        // 实例化管理员数据模型类
-        $admin = new Admin();
         // 实例化加密类
         $md5 = new APR1_MD5();
 
@@ -286,13 +274,7 @@ class Index extends Base
         $password = $md5->hash('123456');
 
         // 查询用户信息
-        $list = $admin->get($id);
-
-        // 设置管理员新信息
-        $list->password = $password;
-
-        // 更新密码
-        $data = $list->save(); 
+        $data = AD::where('id',$id)->update(['password'=>$password]);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'密码已经重置为:<br>123456','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -302,4 +284,5 @@ class Index extends Base
 
 
     }
+
 }

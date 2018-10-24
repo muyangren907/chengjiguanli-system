@@ -48,7 +48,7 @@ class Auth
         'auth_rule'         =>  'auth_rule',         // 权限规则表
         'auth_user'         =>  'user',            // 用户信息表
         'auth_user_id_field'=>  'id', // 用户表ID字段名
-        'administrator'     =>  [],   // 超级管理员列表
+        'administrator'     =>  [1],   // 超级管理员列表
         ];
 
     public function __construct()
