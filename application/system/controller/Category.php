@@ -155,8 +155,6 @@ class Category extends Base
         // 获取权限信息
         $list = CG::field('id,title,pid,paixu')
             ->get($id);
-        $list = $list->getData();
-
 
         $this->assign('list',$list);
 
