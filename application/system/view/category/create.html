@@ -1,6 +1,7 @@
 {extend name="common@create" /}
 {block name="formaa"}
-	<form action="/authrule" method="POST" class="form form-horizontal" id="form-member-add">
+
+	<form action="/category" method="POST" class="form form-horizontal" id="form-member-add">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>权限名称：</label>
 			<div class="formControls col-xs-8 col-sm-9">
@@ -8,21 +9,15 @@
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>权限规则：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="后台需要验证的规则" id="name" name="name">
-			</div>
-		</div>
-		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">所属权限：</label>
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:180px;">
-				{php} $authrulemod = new app\admin\model\AuthRule; $pid = $authrulemod->getRule();{/php}
+				{php} $cgmod = new app\system\model\Category;$pid = $cgmod->getCategory();{/php}
 				<select class="select" id="pidt" name="pid" size="1">
 					<option value="">--请选择父级权限--</option>
 					{volist name="pid" id="vo"}
 						<option value="{$vo.id}">{$vo.title}</option>
-						{php} $child = $authrulemod->getRule($vo['id']);{/php}
+						{php} $child = $cgmod->getCategory($vo['id']);{/php}
 						{volist name="child" id="va"}
 							<option value="{$va.id}">├ -{$va.title}</option>
 						{/volist}
@@ -32,34 +27,9 @@
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">规则表达式：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="规则的附加表达式" id="condition" name="condition">
-			</div>
-		</div>
-		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">排序：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" value="" placeholder="默认为999" id="paixu" name="paixu">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否是菜单：</label>
-			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
-				<div class="radio-box">
-					<input name="ismenu" type="radio" id="ismenu-1" value="1">
-					<label for="ismenu-1">是</label>
-				</div>
-				<div class="radio-box">
-					<input type="radio" id="ismenu-2" value="0" name="ismenu" checked>
-					<label for="ismenu-2">否</label>
-				</div>
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">菜单字体：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="只对菜单有效" id="font" name="font">
 			</div>
 		</div>
 		<div class="row cl">

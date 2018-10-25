@@ -23,6 +23,7 @@ class SystemBase extends Seeder
             'description'   =>  '这是我们自己开发的系统',
             'copyright'     =>  '2018-2018',
             'thinks'        =>  'H-ui前端框架、ThinkPhp框架',
+            'danwei'        =>  '大连长兴岛经济区教科培中心',
         ];
         // 保存数据
         $this->table('system_base')->insert($rows)->save();

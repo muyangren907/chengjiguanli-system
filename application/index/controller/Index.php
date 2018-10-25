@@ -67,7 +67,7 @@ class Index extends Base
         // 查询最新记录
         $list = $sysbasemod
             ->order(['id'=>'desc'])
-            ->field('title,copyright,thinks')
+            ->field('title,copyright,thinks,danwei')
             ->find();
 
         // 获取版本号

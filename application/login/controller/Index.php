@@ -5,8 +5,6 @@ namespace app\login\controller;
 use think\Controller;
 // 引用用户数据模型
 use app\admin\model\Admin as AD;
-// 引用权限类
-use app\admin\model\AuthRule as AR;
 
 
 // 引用加密类
@@ -92,9 +90,6 @@ class Index extends Controller
             $this->error('帐号不存在');
         }
 
-
-        //  实例化权限类
-        $ar = new AR();
 
         //验证密码
         $check = $md5->check($password,$userinfo->password);

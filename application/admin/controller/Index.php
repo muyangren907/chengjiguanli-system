@@ -28,8 +28,6 @@ class Index extends Base
 
         // 渲染模板
         return $this->fetch();
-
-        // 获取记录总数
     }
 
 
@@ -139,9 +137,6 @@ class Index extends Base
 
         $data = AGA::create(['uid'=>$data->id,'group_id'=>$group_id]);
 
-
-
-        $msg = array();
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];

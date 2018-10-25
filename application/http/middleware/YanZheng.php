@@ -66,7 +66,7 @@ class YanZheng  extends Controller
         // 验证方法
         if( !$auth->check($url, session('userid')) && $except == false ){// 第一个参数是规则名称,第二个参数是用户UID
             $this->error('哎哟~  权限不足');
-        }  
+        } 
 
     	return $next($request);
     }

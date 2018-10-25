@@ -13,6 +13,7 @@ class AuthRule extends Base
     {
     	return $this
     			->where('pid',$pid)
+                ->where('status',1)
     			->field('id,title')
                 ->order(['paixu'])
     			->select();
@@ -35,5 +36,6 @@ class AuthRule extends Base
         return $this->where('id',$value)->value('title');
     }
 
+    
 
 }

@@ -125,7 +125,6 @@ class AuthGroup extends Base
         // 保存数据 
         $data = AG::create($list);
 
-        $msg = array();
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -191,7 +190,7 @@ class AuthGroup extends Base
         $data = AG::where('id',$id)->update($list);
 
         // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data>=0 ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);

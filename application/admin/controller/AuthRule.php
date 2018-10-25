@@ -58,7 +58,9 @@ class AuthRule extends Base
 
         // 如果需要查询
         if($search){
-            $data = $authrulemod
+            $data = AR::field('id,title,name,condition,paixu,ismenu,font,status,pid')
+                ->order([$order_field=>$order])
+                ->limit($limit_start,$limit_length)
                 ->where('title|name|pid','like','%'.$search.'%')
                 ->all();
         }
@@ -119,8 +121,6 @@ class AuthRule extends Base
         // 保存数据 
         $data = AR::create($list);
 
-        $msg = array();
-
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
@@ -161,7 +161,7 @@ class AuthRule extends Base
         $validate = new \app\admin\validate\Rule;
 
         // 获取表单数据
-        $list = request()->put();
+        $list = request()->only(['title','name','pid','condition','paixu','ismenu','font','beizhu'],'post');
 
         // 验证表单数据
         $result = $validate->check($list);
@@ -176,7 +176,7 @@ class AuthRule extends Base
         $data = AR::where('id',$id)->update($list);
 
         // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data>=0 ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);
