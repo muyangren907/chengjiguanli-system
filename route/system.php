@@ -12,6 +12,5 @@
 //系统设置路由
 Route::get('sysbase','system/SystemBase/index');
 Route::get('sysbase/:id/edit','system/SystemBase/edit');
-Route::put('sysbase/:id','system/SystemBase/update');
 Route::resource('category','system/Category');
-Route::resource('school','system/Category');
+Route::resource('school','system/School');
