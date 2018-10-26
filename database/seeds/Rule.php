@@ -17,15 +17,34 @@ class Rule extends Seeder
         // 初始化超级管理员
         $rows= [
             // 一级菜单 1
-            ['id'=>1,'title'=>'系统管理','name' =>'system','paixu' =>5,'ismenu'=>true,'font' =>'ui-iconfont-system'],
-            ['id'=>2,'title' =>'管理员管理','name'=>'admin','paixu' =>4,'ismenu' =>true,'font'=>'.Hui-iconfont-root'],
+            ['id'=>1,'title'=>'系统管理','name' =>'system','paixu' =>5,'ismenu'=>true,'font' =>'Hui-iconfont-system'],
+            ['id'=>2,'title' =>'管理员管理','name'=>'admin','paixu' =>4,'ismenu' =>true,'font'=>'Hui-iconfont-root'],
                 // 二级菜单
                 // 系统设置
-                ['id'=>11,'title'=>'系统设置','name'=>'system/SystemBase/index','paixu'=>1,'ismenu' =>true,'pid' =>1,'url'=>'/sysbase',],
+                ['id'=>11,'title'=>'类别管理','name'=>'system/Category/index','paixu'=>1,'ismenu' =>true,'pid' =>1,'url'=>'/category',],
+                ['id'=>12,'title'=>'单位管理','name'=>'system/School/index','paixu'=>2,'ismenu' =>true,'pid' =>1,'url'=>'/school',],
+                ['id'=>13,'title'=>'系统设置','name'=>'system/SystemBase/index','paixu'=>3,'ismenu' =>true,'pid' =>1,'url'=>'/sysbase',],
                 // 管理员管理
                 ['id'=>21,'title'=>'管理员列表','name'=>'admin/Index/index','paixu'=>1,'ismenu' =>true,'pid' =>2,'url'=>'/admin',],
                 ['id'=>22,'title'=>'权限列表','name'=>'admin/AuthRule/index','paixu'=>2,'ismenu' =>true,'pid' =>2,'url'=>'/authrule',],
                 ['id'=>23,'title'=>'角色列表','name'=>'admin/AuthGroup/index','paixu'=>3,'ismenu' =>true,'pid' =>2,'url'=>'/authgroup',],
+                    
+                    // 系统设置
+                    // 类别管理权限
+                    ['title'=>'添加','name'=>'system/Category/create','paixu' =>1,'pid'=>11],
+                    ['title'=>'删除','name'=>'system/Category/delete','paixu'=>2,'pid'=>11],
+                    ['title'=>'编辑','name'=>'system/Category/edit','paixu'=>3,'pid'=>11,],
+                    ['title'=>'查看','name'=>'system/Category/read','paixu'=>4,'pid'=>11,],
+                    ['title'=>'状态','name'=>'system/Category/status','paixu'=>5,'pid'=>11],
+                    // 类别管理权限
+                    ['title'=>'添加','name'=>'system/School/create','paixu' =>1,'pid'=>12],
+                    ['title'=>'删除','name'=>'system/School/delete','paixu'=>2,'pid'=>12],
+                    ['title'=>'编辑','name'=>'system/School/edit','paixu'=>3,'pid'=>12,],
+                    ['title'=>'查看','name'=>'system/School/read','paixu'=>4,'pid'=>12,],
+                    ['title'=>'状态','name'=>'system/School/status','paixu'=>5,'pid'=>12],
+                    
+
+                    //管理员管理
                     // 管理员列表权限
                     ['title'=>'添加','name'=>'admin/Index/create','paixu' =>1,'pid'=>21],
                     ['title'=>'删除','name'=>'admin/Index/delete','paixu'=>2,'pid'=>21],

@@ -36,7 +36,7 @@ class Category extends Migrator
             ->addColumn('title','string',['limit'=>15,'null'=>false,'comment'=>'类型标题'])
             ->addColumn('pid','integer',['limit'=>4,'default'=>'0','null'=>false,'comment'=>'父级ID'])
             ->addColumn('status','boolean',['limit'=>1,'default'=>'1','null'=>false,'comment'=>'0=禁用，1=正常'])
-            ->addColumn('paixu','integer',['limit'=>4,'default'=>'99','null'=>false,'comment'=>'排序'])
+            ->addColumn('paixu','integer',['limit'=>4,'default'=>'999','null'=>false,'comment'=>'排序'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
             ->addColumn('beizhu','string',['limit'=>80,'null'=>true,'comment'=>'备注'])
             ->addIndex(array('title'), array('unique' => true))

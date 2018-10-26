@@ -1,10 +1,10 @@
 <?php
 
-namespace app\system\validate;
+namespace app\common\validate;
 
 use think\Validate;
 
-class Category extends Validate
+class School extends Validate
 {
     /**
      * 定义验证规则
@@ -12,10 +12,7 @@ class Category extends Validate
      *
      * @var array
      */	
-	protected $rule = [
-        'title|规则名' =>  'require|chs|length:2,8',
-        'paixu|排序'  =>  'number|max:999',
-    ];
+	protected $rule = [];
     
     /**
      * 定义错误信息

@@ -36,6 +36,19 @@ class AuthRule extends Base
         return $this->where('id',$value)->value('title');
     }
 
-    
+
+    // 获取二级菜单
+    public function getMymenuAttr($value)
+    {
+        return $this
+            ->where('pid',$this->getAttr('id'))
+            ->where('status&ismenu',1)
+            ->field('title,url')
+            ->order(['paixu'])
+            ->select();
+    }
+
+
+  
 
 }
