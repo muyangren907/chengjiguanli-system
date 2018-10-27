@@ -114,7 +114,7 @@ class Index extends Base
 
 
         // 获取表单数据
-        $list = request()->only(['xingming','username','sex','shengri','phone','beizhu'],'post');
+        $list = request()->only(['xingming','username','sex','shengri','phone','beizhu','group_id'],'post');
 
         // 设置密码，默认为123456
         $list['password'] = $md5->hash('123456');
@@ -123,6 +123,9 @@ class Index extends Base
         // 验证表单数据
         $result = $validate->check($list);
         $msg = $validate->getError();
+
+        unset($list['group_id']);
+
 
 
         // 如果验证不通过则停止保存

@@ -100,7 +100,7 @@ class Category extends Base
 
     
 
-    //
+    // 保存信息
     public function save()
     {
 
@@ -133,26 +133,12 @@ class Category extends Base
         return json($data);
     }
 
-    /**
-     * 显示指定的资源
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function read($id)
-    {
-        //
-    }
 
-    /**
-     * 显示编辑资源表单页.
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
+
+    // 编辑类别
     public function edit($id)
     {
-        // 获取权限信息
+        // 获取类别信息
         $list = CG::field('id,title,pid,paixu')
             ->get($id);
 
@@ -161,19 +147,13 @@ class Category extends Base
         return $this->fetch();
     }
 
-    /**
-     * 保存更新的资源
-     *
-     * @param  \think\Request  $request
-     * @param  int  $id
-     * @return \think\Response
-     */
+    // 更新类别信息
     public function update($id)
     {
         $validate = new \app\system\validate\Category;
 
         // 获取表单数据
-        $list = request()->only(['title','pid','paixu'],'put');;
+        $list = request()->only(['title','pid','paixu'],'put');
 
         // 验证表单数据
         $result = $validate->check($list);
@@ -194,12 +174,8 @@ class Category extends Base
         return json($data);
     }
 
-    /**
-     * 删除指定资源
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
+    
+    // 删除类别
     public function delete($id)
     {
         if($id == 'm')
@@ -216,7 +192,7 @@ class Category extends Base
         return json($data);
     }
 
-    // 设置权限状态
+    // 设置类别状态
     public function setStatus()
     {
 
@@ -224,7 +200,7 @@ class Category extends Base
         $id = request()->post('id');
         $value = request()->post('value');
 
-        // 获取权限信息
+        // 获取类别信息
         $data = CG::where('id',$id)->update(['status'=>$value]);
 
         // 根据更新结果设置返回提示信息

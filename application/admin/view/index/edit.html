@@ -19,9 +19,9 @@
 				{php}
 				$group = db('auth_group')->where('status',true)->field('id,title')->all();
 				{/php}
-				{volist name="group" id="vo"}
+				{volist name="group" id="vo" key="k"}{$list['group_id']}{$vo.id}
 					<div class="radio-box">
-						<input name="group_id" type="radio" id="group{$vo.id}" value="{$vo.id}" {eq name="$list['group_id']" value="$vo['id']" }checked{/eq}>
+						<input name="group_id" type="radio" {eq name="$vo.id" value="$list['group_id']" }checked{/eq} id="group{$vo.id}" value="{$vo.id}" {eq name="$k" value="1" }required="true"{/eq}>
 						<label for="group{$vo.id}">{$vo.title}</label>
 					</div>
 				{/volist}
@@ -31,7 +31,7 @@
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>性别：</label>
 			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
 				<div class="radio-box">
-					<input name="sex" type="radio" id="sex-1" value="1" {eq name="$list.sex" value="男" }checked{/eq}>
+					<input name="sex" type="radio" id="sex-1" value="1" required="true" {eq name="$list.sex" value="男" }checked{/eq}>
 					<label for="sex-1">男</label>
 				</div>
 				<div class="radio-box">

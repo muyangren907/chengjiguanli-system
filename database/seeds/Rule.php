@@ -36,12 +36,14 @@ class Rule extends Seeder
                     ['title'=>'编辑','name'=>'system/Category/edit','paixu'=>3,'pid'=>11,],
                     ['title'=>'查看','name'=>'system/Category/read','paixu'=>4,'pid'=>11,],
                     ['title'=>'状态','name'=>'system/Category/status','paixu'=>5,'pid'=>11],
-                    // 类别管理权限
+                    // 单位管理权限
                     ['title'=>'添加','name'=>'system/School/create','paixu' =>1,'pid'=>12],
                     ['title'=>'删除','name'=>'system/School/delete','paixu'=>2,'pid'=>12],
                     ['title'=>'编辑','name'=>'system/School/edit','paixu'=>3,'pid'=>12,],
                     ['title'=>'查看','name'=>'system/School/read','paixu'=>4,'pid'=>12,],
                     ['title'=>'状态','name'=>'system/School/status','paixu'=>5,'pid'=>12],
+                    // 系统设置权限
+                    ['title'=>'编辑','name'=>'system/SystemBase/edit','paixu'=>1,'pid'=>13,],
                     
 
                     //管理员管理

@@ -39,7 +39,6 @@ class Category extends Migrator
             ->addColumn('paixu','integer',['limit'=>4,'default'=>'999','null'=>false,'comment'=>'排序'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
             ->addColumn('beizhu','string',['limit'=>80,'null'=>true,'comment'=>'备注'])
-            ->addIndex(array('title'), array('unique' => true))
             ->create();
     }
 }

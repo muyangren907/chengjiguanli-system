@@ -1,0 +1,108 @@
+{extend name="common@create" /}
+{block name="formaa"}
+
+	<form action="/school/{$list.id}" method="PUT" class="form form-horizontal" id="form-member-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>单位名称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$list.title}" placeholder="单位完整名称" id="title" name="title">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>单位简称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$list.jiancheng}" placeholder="单位简称" id="jiancheng" name="jiancheng">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>单位标识：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$list.biaoshi}" placeholder="单位标识" id="biaoshi" name="biaoshi">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>单位性质：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:180px;">
+				{php} $cgmod = new app\system\model\Category;$category = $cgmod->getCategory(1);{/php}
+				<select class="select" id="xingzhi" name="xingzhi" size="1" required>
+					<option value="" required="true">--请选择单位性质--</option>
+					{volist name="category" id="vo"}
+						<option value="{$vo.id}" {eq name="$list.xingzhi" value="$vo.title" }selected{/eq}>{$vo.title}</option>
+					{/volist}
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>单位级别：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:180px;">
+				{php} $cgmod = new app\system\model\Category;$category = $cgmod->getCategory(2);{/php}
+				<select class="select" id="jibie" name="jibie" size="1" required>
+					<option value="" required="true">--请选择单位级别--</option>
+					{volist name="category" id="vo"}
+						<option value="{$vo.id}" {eq name="$list.jibie" value="$vo.title" }selected{/eq}>{$vo.title}</option>
+					{/volist}
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>学段：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:180px;">
+				{php} $cgmod = new app\system\model\Category;$catetory = $cgmod->getCategory(3);{/php}
+				<select class="select" id="xueduan" name="xueduan" size="1" required>
+					<option value="" required="true">--请选择学段--</option>
+					{volist name="catetory" id="vo"}
+						<option value="{$vo.id}"  {eq name="$list.xueduan" value="$vo.title" }selected{/eq}>{$vo.title}</option>
+					{/volist}
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">排序：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$list.paixu}" placeholder="默认为999" id="paixu" name="paixu">
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+{/block}
+{block name="yanzheng"}
+<script type="text/javascript">
+	// 匹配用户名
+	$.validator.addMethod("zh",function(value,element){
+		var tel = /^[\u4e00-\u9fa5]*$/;
+		return this.optional(element) || tel.test(value);
+	}, "请输入中文");
+
+
+	// 设置表单验证规则
+	var myrules = {
+			title:{
+				required:true,
+				zh:true,
+				rangelength:[2,25]
+			},
+			jiancheng:{
+				required:true,
+				zh:true,
+				rangelength:[2,6]
+			},
+			biaoshi:{
+				digits:true,
+				rangelength:[1,11]
+			},
+		};
+
+	// 设置表单提交方式
+	var mytype = 'PUT';
+</script>
+{/block}
