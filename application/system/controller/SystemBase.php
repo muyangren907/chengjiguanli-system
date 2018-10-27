@@ -13,11 +13,9 @@ class SystemBase extends Base
     // 系统设置
     public function index()
     {
-        $count = 1;
 
         // 设置要给模板赋值的信息
         $list['title'] = '系统设置';
-        $list['count'] = $count;
 
         // 模板赋值
         $this->assign('list',$list);
@@ -72,13 +70,41 @@ class SystemBase extends Base
     // 编辑系统设置
     public function edit($id)
     {
-        return 'aa';
+        // 获取用户信息
+        $list = sysbasemod::field('id,title,keywords,description,copyright,thinks,danwei')
+            ->get($id);
+
+
+        $this->assign('list',$list);
+
+        return $this->fetch();
     }
 
     // 更新资源
-    public function update(Request $request, $id)
+    public function update($id)
     {
-        //
+        $validate = new \app\system\validate\SystemBase;
+
+        // 获取表单数据
+        $list = request()->only(['title','keywords','description','copyright','thinks','danwei'],'put');;
+
+        // 验证表单数据
+        $result = $validate->check($list);
+        $msg = $validate->getError();
+
+        // 如果验证不通过则停止保存
+        if(!$result){
+            return json(['msg'=>$msg,'val'=>0]);;
+        }
+
+
+        $data = sysbasemod::where('id',$id)->update($list);
+
+        // 根据更新结果设置返回提示信息
+        $data>=0 ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
     }
 
     

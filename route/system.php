@@ -10,7 +10,6 @@
 // +----------------------------------------------------------------------
 
 //系统设置路由
-Route::get('sysbase','system/SystemBase/index');
-Route::get('sysbase/:id/edit','system/SystemBase/edit');
+Route::resource('sysbase','system/SystemBase');
 Route::resource('category','system/Category');
 Route::resource('school','system/School');

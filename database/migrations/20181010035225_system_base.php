@@ -36,11 +36,11 @@ class SystemBase extends Migrator
             ->addColumn('create_time','integer',['limit'=>11,'null'=>false,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'null'=>false,'comment'=>'更新时间'])
             ->addColumn('title','string',['limit'=>50,'null'=>false,'comment'=>'网站名称'])
-            ->addColumn('keywords','string',['limit'=>100,'null'=>false,'comment'=>'关键词'])
+            ->addColumn('keywords','string',['limit'=>60,'null'=>false,'comment'=>'关键词'])
             ->addColumn('description','string',['limit'=>100,'null'=>false,'comment'=>'网站说明'])
             ->addColumn('copyright','string',['limit'=>15,'null'=>false,'comment'=>'版权'])
-            ->addColumn('thinks','string',['limit'=>200,'null'=>false,'comment'=>'网站感谢'])
-            ->addColumn('danwei','string',['limit'=>80,'null'=>false,'comment'=>'使用单位'])
+            ->addColumn('thinks','string',['limit'=>80,'null'=>false,'comment'=>'网站感谢'])
+            ->addColumn('danwei','string',['limit'=>20,'null'=>false,'comment'=>'使用单位'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
             ->create();
     }
