@@ -1,40 +1,35 @@
 <?php
 
-namespace app\admin\controller;
+namespace app\teach\controller;
 
 // 引用控制器基类
 use app\common\controller\Base;
-// 引用用户数据模型
-use app\admin\model\Admin as AD;
-// 引用用户与组关联数据表模型
-use app\admin\model\AuthGroupAccess as AGA;
-// 引用加密类
-use WhiteHat101\Crypt\APR1_MD5;
+// 引用教师数据模型类
+use app\teach\model\Teacher;
 
 class Index extends Base
 {
-    // 管理员列表
+// 显示教师列表
     public function index()
     {
 
-        $count = AD::where('id','>',1)->count();
+        // 设置数据总数
+        $list['count'] = Teacher::count();
+        // 设置页面标题
+        $list['title'] = '教师列表';
 
-        // 设置要给模板赋值的信息
-        $list['title'] = '管理员列表';
-        $list['count'] = $count;
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->assign('list', $list);
 
         // 渲染模板
         return $this->fetch();
     }
 
 
-    // 获取数据管理员数据
+    // 获取教师信息列表
     public function ajaxData()
     {
-
 
         // 获取DT的传值
         $getdt = request()->param();
@@ -53,10 +48,9 @@ class Index extends Base
 
 
         // 获取记录集总数
-        $cnt = AD::where('id','>',1)->count();
+        $cnt = Teacher::count();
         //查询数据
-        $data = AD::field('id,xingming,sex,username,phone,shengri,denglucishu,status,create_time')
-            ->where('id','>','1')
+        $data =Teacher::field('id,xingming,sex,shengri,xueli,biye,worktime,zhuanye,danwei,status')
             ->order([$order_field=>$order])
             ->limit($limit_start,$limit_length)
             ->all();
@@ -64,11 +58,10 @@ class Index extends Base
 
         // 如果需要查询
         if($search){
-            $data = AD::field('id,xingming,sex,username,phone,shengri,denglucishu,status,create_time')
-                 ->where('id','>','1')
+            $data = Teacher::field('id,xingming,sex,shengri,xueli,biye,worktime,zhuanye,danwei,status')
                 ->order([$order_field=>$order])
                 ->limit($limit_start,$limit_length)
-                ->where('username|xingming','like','%'.$search.'%')
+                ->where('xingming|biye|zhuanye','like','%'.$search.'%')
                 ->all();
         }
 
@@ -87,13 +80,13 @@ class Index extends Base
         return json($data);
     }
 
-    
-    // 创建用户信息
+
+
+    // 创建教师
     public function create()
     {
-
         // 设置页面标题
-        $list['title'] = '添加管理员';
+        $list['title'] = '添加教师';
 
         // 模板赋值
         $this->assign('list',$list);
@@ -103,29 +96,21 @@ class Index extends Base
     }
 
     
-    // 保存管理员
+
+    // 保存信息
     public function save()
     {
-
-        // 实例化加密类
-        $md5 = new APR1_MD5();
         // 实例化验证模型
-        $validate = new \app\admin\validate\Admin;
+        $validate = new \app\teach\validate\Teacher;
 
 
         // 获取表单数据
-        $list = request()->only(['xingming','username','sex','shengri','phone','beizhu','group_id'],'post');
-
-        // 设置密码，默认为123456
-        $list['password'] = $md5->hash('123456');
+        $list = request()->only(['xingming','sex','quanpin','shoupin','shengri','zhiwu','zhicheng','xueli','biye','worktime','zhuanye','danwei'],'post');
 
 
         // 验证表单数据
         $result = $validate->check($list);
         $msg = $validate->getError();
-
-        unset($list['group_id']);
-
 
 
         // 如果验证不通过则停止保存
@@ -134,107 +119,86 @@ class Index extends Base
         }
 
         // 保存数据 
-        $data = AD::create($list);
-
-        $group_id = request()->post('group_id');
-
-        $data = AGA::create(['uid'=>$data->id,'group_id'=>$group_id]);
-
+        $data = Teacher::create($list);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);
-      
     }
-
- 
-
-
-    // 读取用户信息
-    public function read($id)
-    {
-
-        // 获取管理员信息
-        $list = AD::get($id);
-
-        // 模板赋值
-        $this->assign('list',$list);
-
-        // 渲染模板
-        return $this->fetch();
-    }
-
-    
-
 
     //
+    public function read($id)
+    {
+        //
+    }
+
+
+
+
+    // 修改教师信息
     public function edit($id)
     {
 
-        // 获取用户信息
-        $list = AD::field('id,username,xingming,sex,shengri,phone,beizhu')
+        // 获取教师信息
+        $list = Teacher::field('id,xingming,sex,quanpin,shoupin,shengri,zhiwu,zhicheng,xueli,biye,worktime,zhuanye,danwei')
             ->get($id);
-        $list->group_id = AGA::where('uid',$id)->value('group_id');
 
 
         $this->assign('list',$list);
 
         return $this->fetch();
-
     }
 
-    // 更新管理员信息
+
+
+
+
+    // 更新教师信息
     public function update($id)
     {
-
-        // 实例化验证模型
-        $validate = new \app\admin\validate\Admin;
+        $validate = new \app\teach\validate\Teacher;
 
         // 获取表单数据
-        $list = request()->only(['xingming','username','sex','shengri','phone','beizhu','group_id'],'put');
+        $list = request()->only(['xingming','sex','quanpin','shoupin','shengri','zhiwu','zhicheng','xueli','biye','worktime','zhuanye','danwei'],'put');
 
         // 验证表单数据
         $result = $validate->check($list);
         $msg = $validate->getError();
-        unset($list['group_id']);
 
         // 如果验证不通过则停止保存
         if(!$result){
             return json(['msg'=>$msg,'val'=>0]);;
         }
 
-        // 更新管理员信息
-        $admin = new AD();
-        $data = $admin->save($list,['id'=>$id]);
 
-        // 更新管理员角色
-        $group_id = request()->put('group_id');
-        $data = AGA::where('uid',$id)->update(['group_id'=>$group_id]);
+        // 更新数据
+        $teacher = new Teacher();
+        $data = $teacher->save($list,['id'=>$id]);
+        // $data = Teacher::where('id',$id)->update($list);
 
         // 根据更新结果设置返回提示信息
-        $data >= 0 ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data>=0 ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);
     }
 
-    /**
-     * 删除指定资源
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
+    
+
+
+
+    // 删除教师
     public function delete($id)
     {
 
         if($id == 'm')
         {
-            $id = request()->delete('ids/a');
+            $id = request()->delete('ids/a');// 获取delete请求方式传送过来的数据并转换成数据
         }
 
-        $data = AD::destroy($id);
+        $data = Teacher::destroy($id);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -244,7 +208,8 @@ class Index extends Base
     }
 
 
-    // 修改管理员状态
+
+    // 设置教师状态
     public function setStatus()
     {
 
@@ -252,8 +217,8 @@ class Index extends Base
         $id = request()->post('id');
         $value = request()->post('value');
 
-        // 更新管理员信息
-        $data = AD::where('id',$id)->update(['status'=>$value]);
+        // 获取教师信息
+        $data = Teacher::where('id',$id)->update(['status'=>$value]);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -261,28 +226,4 @@ class Index extends Base
         // 返回信息
         return json($data);
     }
-
-
-    // 重置密码
-    public function resetpassword($id)
-    {
-
-        // 实例化加密类
-        $md5 = new APR1_MD5();
-
-        // 生成密码
-        $password = $md5->hash('123456');
-
-        // 查询用户信息
-        $data = AD::where('id',$id)->update(['password'=>$password]);
-
-        // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'密码已经重置为:<br>123456','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
-
-        // 返回信息
-        return json($data);
-
-
-    }
-
 }

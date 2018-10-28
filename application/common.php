@@ -11,3 +11,28 @@
 
 // 应用公共文件
 
+// 获取类别列表
+function getCategory($id = 0)
+{
+	// 根据父级id查询类别列表
+	$list = db('category')
+		->where('pid',$id)
+		->where('status',1)
+		->field('id,title')
+		->select();
+
+	// 返回类别列表
+	return $list;
+}
+
+
+// 获取类别名称
+function getCategoryTitle($id)
+{
+	// 根据id查询类别名
+	$value = db('category')
+		->where('id',$id)
+		->vlaue('title');
+	// 返回类别名
+	return $value;
+}

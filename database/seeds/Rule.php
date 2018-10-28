@@ -19,6 +19,7 @@ class Rule extends Seeder
             // 一级菜单 1
             ['id'=>1,'title'=>'系统管理','name' =>'system','paixu' =>5,'ismenu'=>true,'font' =>'Hui-iconfont-system'],
             ['id'=>2,'title' =>'管理员管理','name'=>'admin','paixu' =>4,'ismenu' =>true,'font'=>'Hui-iconfont-root'],
+            ['id'=>3,'title' =>'教务管理','name'=>'teach','paixu' =>3,'ismenu' =>true,'font'=>'Hui-iconfont-yuyin2'],
                 // 二级菜单
                 // 系统设置
                 ['id'=>11,'title'=>'类别管理','name'=>'system/Category/index','paixu'=>1,'ismenu' =>true,'pid' =>1,'url'=>'/category',],
@@ -28,7 +29,40 @@ class Rule extends Seeder
                 ['id'=>21,'title'=>'管理员列表','name'=>'admin/Index/index','paixu'=>1,'ismenu' =>true,'pid' =>2,'url'=>'/admin',],
                 ['id'=>22,'title'=>'权限列表','name'=>'admin/AuthRule/index','paixu'=>2,'ismenu' =>true,'pid' =>2,'url'=>'/authrule',],
                 ['id'=>23,'title'=>'角色列表','name'=>'admin/AuthGroup/index','paixu'=>3,'ismenu' =>true,'pid' =>2,'url'=>'/authgroup',],
+                // 教务管理
+                ['id'=>31,'title'=>'考试列表','name'=>'teach/Kaoshi/index','paixu'=>1,'ismenu' =>true,'pid' =>3,'url'=>'/kaoshi',],
+                ['id'=>32,'title'=>'教师列表','name'=>'teach/Index/index','paixu'=>2,'ismenu' =>true,'pid' =>3,'url'=>'/teacher',],
+                ['id'=>33,'title'=>'学生列表','name'=>'teach/Studen/index','paixu'=>3,'ismenu' =>true,'pid' =>3,'url'=>'/teacher',],
+                ['id'=>34,'title'=>'学期列表','name'=>'teach/Xueqi/index','paixu'=>4,'ismenu' =>true,'pid' =>3,'url'=>'/xueqi',],
+                
                     
+                    // 教务管理
+                    // 考试管理权限
+                    ['title'=>'添加','name'=>'teach/Kaoshi/create','paixu' =>1,'pid'=>31],
+                    ['title'=>'删除','name'=>'teach/Kaoshi/delete','paixu'=>2,'pid'=>31],
+                    ['title'=>'编辑','name'=>'teach/Kaoshi/edit','paixu'=>3,'pid'=>31,],
+                    ['title'=>'查看','name'=>'teach/Kaoshi/read','paixu'=>4,'pid'=>31,],
+                    ['title'=>'状态','name'=>'teach/Kaoshi/status','paixu'=>5,'pid'=>31],
+                    // 教师管理权限
+                    ['title'=>'添加','name'=>'teach/Index/create','paixu' =>1,'pid'=>32],
+                    ['title'=>'删除','name'=>'teach/Index/delete','paixu'=>2,'pid'=>32],
+                    ['title'=>'编辑','name'=>'teach/Index/edit','paixu'=>3,'pid'=>32,],
+                    ['title'=>'查看','name'=>'teach/Index/read','paixu'=>4,'pid'=>32,],
+                    ['title'=>'状态','name'=>'teach/Index/status','paixu'=>5,'pid'=>32],
+                    // 学生管理权限
+                    ['title'=>'添加','name'=>'teach/Student/create','paixu' =>1,'pid'=>33],
+                    ['title'=>'删除','name'=>'teach/Student/delete','paixu'=>2,'pid'=>33],
+                    ['title'=>'编辑','name'=>'teach/Student/edit','paixu'=>3,'pid'=>33,],
+                    ['title'=>'查看','name'=>'teach/Student/read','paixu'=>4,'pid'=>33,],
+                    ['title'=>'状态','name'=>'teach/Student/status','paixu'=>5,'pid'=>33],
+                    // 学期管理权限
+                    ['title'=>'添加','name'=>'teach/Xueqi/create','paixu' =>1,'pid'=>34],
+                    ['title'=>'删除','name'=>'teach/Xueqi/delete','paixu'=>2,'pid'=>34],
+                    ['title'=>'编辑','name'=>'teach/Xueqi/edit','paixu'=>3,'pid'=>34,],
+                    ['title'=>'查看','name'=>'teach/Xueqi/read','paixu'=>4,'pid'=>34,],
+                    ['title'=>'状态','name'=>'teach/Xueqi/status','paixu'=>5,'pid'=>34],
+
+
                     // 系统设置
                     // 类别管理权限
                     ['title'=>'添加','name'=>'system/Category/create','paixu' =>1,'pid'=>11],

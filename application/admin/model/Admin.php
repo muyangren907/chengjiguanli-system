@@ -20,7 +20,7 @@ class Admin extends Base
     }
 
     // 生日修改器
-    public function setShenriAttr($value)
+    public function setShengriAttr($value)
     {
         return strtotime($value);
     }

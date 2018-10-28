@@ -24,12 +24,13 @@ class School extends Base
     	return $this->getcategory($value);
     }
 
-
-    // category查询
+    // 获取类别名
     public function getcategory($id)
     {
-    	return db('category')
-    			->where('id',$id)
-    			->value('title');
+        return db('category')
+            ->where('id',$id)
+            ->value('title');
     }
+
+
 }

@@ -1,0 +1,192 @@
+{extend name="common@create" /}
+{block name="formaa"}
+	<form action="/teacher/{$list.id}" method="PUT" class="form form-horizontal" id="form-member-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>教师姓名：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$list.xingming}" placeholder="教师姓名" id="xingming" name="xingming">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>姓名拼音：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" style="max-width: 250px" value="{$list.quanpin}" placeholder="教师姓名全拼" id="quanpin" name="quanpin">
+				<input type="text" class="input-text ml-20" style="max-width: 150px" value="{$list.shoupin}" placeholder="教师姓名首拼" id="shoupin" name="shoupin">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>性别：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+				<div class="radio-box">
+					<input name="sex" type="radio" id="sex-1" value="1" required="true" {eq name="$list.sex" value="男" }checked{/eq}>
+					<label for="sex-1">男</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" id="sex-2" value="0" name="sex" {eq name="$list.sex" value="女" }checked{/eq}>
+					<label for="sex-2">女</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" id="sex-3" value="2" name="sex"  {eq name="$list.sex" value="保密" }checked{/eq}>
+					<label for="sex-3">保密</label>
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">出生日期：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text Wdate" value="{$list.shengri}" placeholder="" id="shengri" name="shengri" onclick="WdatePicker({isShowClear:false,readOnly:true})">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>现工作单位：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:180px;">
+				{php} $school = new app\system\model\School; $category = $school->where('jibie','>',1)->field('id,title,jiancheng')->all();{/php}
+				<select class="select" id="danwei" name="danwei" size="1">
+					<option value="">--请选择现工作单位--</option>
+					{volist name="category" id="vo"}
+						<option value="{$vo.id}" {eq name="$list.danwei" value="$vo.jiancheng" }selected{/eq}>{$vo.title}</option>
+					{/volist}
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">职务：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:180px;">
+				{php}$category = getCategory(7);{/php}
+				<select class="select" id="zhiwu" name="zhiwu" size="1">
+					<option value="">--请选择职务--</option>
+					{volist name="category" id="vo"}
+						<option value="{$vo.id}" {eq name="$list.zhiwu" value="$vo.title" }selected{/eq}>{$vo.title}</option>
+					{/volist}
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">职称：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:180px;">
+				{php}$category = getCategory(6);{/php}
+				<select class="select" id="zhicheng" name="zhicheng" size="1">
+					<option value="">--请选择职称--</option>
+					{volist name="category" id="vo"}
+						<option value="{$vo.id}" {eq name="$list.zhicheng" value="$vo.title" }selected{/eq}>{$vo.title}</option>
+					{/volist}
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">学历：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:180px;">
+				{php}$category = getCategory(5);{/php}
+				<select class="select" id="xueli" name="xueli" size="1">
+					<option value="">--请选择学历--</option>
+					{volist name="category" id="vo"}
+						<option value="{$vo.id}" {eq name="$list.xueli" value="$vo.title" }selected{/eq}>{$vo.title}</option>
+					{/volist}
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">毕业院校：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$list.biye}" placeholder="毕业院校" id="biye" name="biye">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">专业：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$list.zhuanye}" placeholder="专业" id="zhuanye" name="zhuanye">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">参加工作时间：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text Wdate" value="{$list.worktime}" placeholder="" id="worktime" name="worktime" onclick="WdatePicker({isShowClear:false,readOnly:true})">
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+{/block}
+{block name="yanzheng"}
+<script type="text/javascript">
+	// 匹配用户名
+	$.validator.addMethod("zh",function(value,element){
+		var tel = /^[\u4e00-\u9fa5]*$/;
+		return this.optional(element) || tel.test(value);
+	}, "请输入中文");
+
+	// 匹配帐号
+	$.validator.addMethod("ustr",function(value,element){
+		var tel = /^[a-zA-Z\/]*$/;
+		return this.optional(element) || tel.test(value);
+	}, "由字母和 / 组成");
+
+	// 匹配全拼
+	$.validator.addMethod("qp",function(value,element){
+		var tel = /^[a-zA-Z]*$/;
+		return this.optional(element) || tel.test(value);
+	}, "由大写和小写字母组成");
+
+
+	// 设置表单验证规则
+	var myrules = {
+			xingming:{
+				required:true,
+				zh:true,
+				rangelength:[2,8]
+			},
+			sex:{
+				required:true,
+			},
+			danwei:{
+				required:true,
+				digits:true
+			},
+			quanpin:{
+				required:true,
+				rangelength:[1,30],
+				qp:true,
+			},
+			shoupin:{
+				required:true,
+				rangelength:[1,5],
+				qp:true,
+			},
+			shengri:{
+				dateISO:true
+			},
+			zhiwu:{
+				digits:true
+			},
+			zhicheng:{
+				digits:true
+			},
+			xueli:{
+				digits:true
+			},
+			biye:{
+				rangelength:[1,50]
+			},
+			zhuaye:{
+				rangelength:[1,20]
+			},
+			worktime:{
+				dateISO:true
+			},
+		};
+
+	// 设置表单提交方式
+	var mytype = 'PUT';
+</script>
+{/block}

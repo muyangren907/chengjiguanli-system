@@ -161,7 +161,7 @@ class AuthRule extends Base
         $validate = new \app\admin\validate\Rule;
 
         // 获取表单数据
-        $list = request()->only(['title','name','pid','condition','paixu','ismenu','font','beizhu'],'post');
+        $list = request()->only(['title','name','pid','condition','paixu','ismenu','font','beizhu'],'put');
 
         // 验证表单数据
         $result = $validate->check($list);

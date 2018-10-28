@@ -15,7 +15,7 @@
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>单位标识：</label>
+			<label class="form-label col-xs-4 col-sm-3">单位标识：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" value="" placeholder="单位标识" id="biaoshi" name="biaoshi">
 			</div>
@@ -24,7 +24,7 @@
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>单位性质：</label>
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:180px;">
-				{php} $cgmod = new app\system\model\Category;$category = $cgmod->getCategory(1);{/php}
+				{php}$category = getCategory(1);{/php}
 				<select class="select" id="xingzhi" name="xingzhi" size="1" required>
 					<option value="" required="true">--请选择单位性质--</option>
 					{volist name="category" id="vo"}
@@ -38,7 +38,7 @@
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>单位级别：</label>
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:180px;">
-				{php} $cgmod = new app\system\model\Category;$category = $cgmod->getCategory(2);{/php}
+				{php}$category = getCategory(2);{/php}
 				<select class="select" id="jibie" name="jibie" size="1" required>
 					<option value="" required="true">--请选择单位级别--</option>
 					{volist name="category" id="vo"}
@@ -52,7 +52,7 @@
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>学段：</label>
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:180px;">
-				{php} $cgmod = new app\system\model\Category;$catetory = $cgmod->getCategory(3);{/php}
+				{php} $catetory = getCategory(3);{/php}
 				<select class="select" id="xueduan" name="xueduan" size="1" required>
 					<option value="" required="true">--请选择学段--</option>
 					{volist name="catetory" id="vo"}
