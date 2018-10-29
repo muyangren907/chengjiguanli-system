@@ -111,7 +111,7 @@ class Xueqi extends Base
 
 
         // 获取表单数据
-        $list = request()->only(['xingming','sex','quanpin','shoupin','shengri','zhiwu','zhicheng','xueli','biye','worktime','zhuanye','danwei'],'post');
+        $list = request()->only(['title','xuenian','category','bfdate','enddate'],'post');
 
 
         // 验证表单数据
@@ -148,7 +148,7 @@ class Xueqi extends Base
     {
 
         // 获取学期信息
-        $list = XQ::field('id,xingming,sex,quanpin,shoupin,shengri,zhiwu,zhicheng,xueli,biye,worktime,zhuanye,danwei')
+        $list = XQ::field('id,title,xuenian,category,bfdate,enddate')
             ->get($id);
 
 
@@ -167,7 +167,7 @@ class Xueqi extends Base
         $validate = new \app\teach\validate\Teacher;
 
         // 获取表单数据
-        $list = request()->only(['xingming','sex','quanpin','shoupin','shengri','zhiwu','zhicheng','xueli','biye','worktime','zhuanye','danwei'],'put');
+        $list = request()->only(['title','xuenian','category','bfdate','enddate'],'put');
 
         // 验证表单数据
         $result = $validate->check($list);
