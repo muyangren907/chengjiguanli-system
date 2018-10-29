@@ -30,4 +30,12 @@ class Xueqi extends Base
     {
         return date('Y-m-d',$value);
     }
+
+    // 分类获取器
+    public function getcategoryAttr($value)
+    {
+        return db('category')
+                ->where('id',$value)
+                ->value('title');
+    }
 }

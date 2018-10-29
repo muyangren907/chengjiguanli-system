@@ -18,7 +18,7 @@
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:180px;">
 				{php}$list = getCategory(8);{/php}
-				<select class="select" id="zhiwu" name="zhiwu" size="1">
+				<select class="select" id="category" name="category" size="1">
 					<option value="">--请选择学期分类--</option>
 					{volist name="list" id="vo"}
 						<option value="{$vo.id}">{$vo.title}</option>
@@ -30,9 +30,9 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>起始时间：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text Wdate" style="max-width:100px" value="" placeholder="" id="bfdate" name="bfdate" onclick="WdatePicker({isShowClear:false,readOnly:true})">
+				<input type="text" class="input-text Wdate" style="max-width:120px" value="" placeholder="" id="bfdate" name="bfdate" onclick="WdatePicker({isShowClear:false,readOnly:true})">
 				<span class="ml-10">~</span>
-				<input type="text" class="input-text Wdate ml-10" style="max-width:100px" value="" placeholder="" id="enddate" name="enddate" onclick="WdatePicker({isShowClear:false,readOnly:true})">
+				<input type="text" class="input-text Wdate ml-10" style="max-width:120px" value="" placeholder="" id="enddate" name="enddate" onclick="WdatePicker({isShowClear:false,readOnly:true})">
 			</div>
 		</div>
 		<div class="row cl">

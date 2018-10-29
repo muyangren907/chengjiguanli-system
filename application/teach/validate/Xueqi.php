@@ -13,11 +13,11 @@ class Xueqi extends Validate
      * @var array
      */	
 	protected $rule = [
-        'title|标题'     =>  'required|length:2,25',
-        'xuenian|学年'     =>  'required|length:1,15',
-        'category|分类'     =>  'required|number',
-        'bfdate|时间'     =>  'required|date',
-        'enddate|时间'     =>  'required|date',
+        'title|标题'     =>  'require|length:2,25',
+        'xuenian|学年'     =>  'require|length:1,15',
+        'category|分类'     =>  'require|number',
+        'bfdate|时间'     =>  'require|date',
+        'enddate|时间'     =>  'require|date',
     ];
     
     /**

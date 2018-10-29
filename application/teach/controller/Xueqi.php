@@ -107,7 +107,7 @@ class Xueqi extends Base
     public function save()
     {
         // 实例化验证模型
-        $validate = new \app\teach\validate\Teacher;
+        $validate = new \app\teach\validate\Xueqi;
 
 
         // 获取表单数据
@@ -121,7 +121,7 @@ class Xueqi extends Base
 
         // 如果验证不通过则停止保存
         if(!$result){
-            return json(['msg'=>$msg,'val'=>0]);;
+            return json(['msg'=>$msg,'val'=>0]);
         }
 
         // 保存数据 
@@ -164,7 +164,7 @@ class Xueqi extends Base
     // 更新学期信息
     public function update($id)
     {
-        $validate = new \app\teach\validate\Teacher;
+        $validate = new \app\teach\validate\Xueqi;
 
         // 获取表单数据
         $list = request()->only(['title','xuenian','category','bfdate','enddate'],'put');
@@ -180,8 +180,8 @@ class Xueqi extends Base
 
 
         // 更新数据
-        $teacher = new Teacher();
-        $data = $teacher->save($list,['id'=>$id]);
+        $xq = new XQ();
+        $data = $xq->save($list,['id'=>$id]);
         // $data = XQ::where('id',$id)->update($list);
 
         // 根据更新结果设置返回提示信息
