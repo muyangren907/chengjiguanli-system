@@ -12,7 +12,13 @@ class Xueqi extends Validate
      *
      * @var array
      */	
-	protected $rule = [];
+	protected $rule = [
+        'title|标题'     =>  'required|length:2,25',
+        'xuenian|学年'     =>  'required|length:1,15',
+        'category|分类'     =>  'required|number',
+        'bfdate|时间'     =>  'required|date',
+        'enddate|时间'     =>  'required|date',
+    ];
     
     /**
      * 定义错误信息

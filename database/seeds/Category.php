@@ -24,6 +24,7 @@ class Category extends Seeder
             ['id'=>5,'title'=>'学历','pid'=>0,'paixu'=>5],
             ['id'=>6,'title'=>'职称','pid'=>0,'paixu'=>6],
             ['id'=>7,'title'=>'职务','pid'=>0,'paixu'=>7],
+            ['id'=>8,'title'=>'学期','pid'=>0,'paixu'=>8],
 
                 // 二级类别
                 // 单位性质
@@ -76,6 +77,9 @@ class Category extends Seeder
                 ['title'=>'教研组长','pid'=>7,'paixu'=>4],
                 ['title'=>'教师','pid'=>7,'paixu'=>5],
                 ['title'=>'其他','pid'=>7,'paixu'=>6],
+                //  学期
+                ['title'=>'第一学期','pid'=>8,'paixu'=>1],
+                ['title'=>'第二学期','pid'=>8,'paixu'=>2],
         ];
         // 保存数据
         $this->table('category')->insert($rows)->save();
