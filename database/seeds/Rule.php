@@ -34,6 +34,7 @@ class Rule extends Seeder
                 ['id'=>32,'title'=>'教师列表','name'=>'teach/Index/index','paixu'=>2,'ismenu' =>true,'pid' =>3,'url'=>'/teacher',],
                 ['id'=>33,'title'=>'学生列表','name'=>'teach/Studen/index','paixu'=>3,'ismenu' =>true,'pid' =>3,'url'=>'/teacher',],
                 ['id'=>34,'title'=>'学期列表','name'=>'teach/Xueqi/index','paixu'=>4,'ismenu' =>true,'pid' =>3,'url'=>'/xueqi',],
+                ['id'=>35,'title'=>'学科列表','name'=>'teach/Subject/index','paixu'=>5,'ismenu' =>true,'pid' =>3,'url'=>'/subject',],
                 
                     
                     // 教务管理
@@ -61,6 +62,12 @@ class Rule extends Seeder
                     ['title'=>'编辑','name'=>'teach/Xueqi/edit','paixu'=>3,'pid'=>34,],
                     ['title'=>'查看','name'=>'teach/Xueqi/read','paixu'=>4,'pid'=>34,],
                     ['title'=>'状态','name'=>'teach/Xueqi/status','paixu'=>5,'pid'=>34],
+                    // 学科列表权限
+                    ['title'=>'添加','name'=>'admin/Subject/create','paixu' =>1,'pid'=>35],
+                    ['title'=>'删除','name'=>'admin/Subject/delete','paixu'=>2,'pid'=>35],
+                    ['title'=>'编辑','name'=>'admin/Subject/edit','paixu'=>3,'pid'=>35,],
+                    ['title'=>'查看','name'=>'admin/Subject/read','paixu'=>4,'pid'=>35,],
+                    ['title'=>'状态','name'=>'admin/Subject/status','paixu'=>5,'pid'=>35],
 
 
                     // 系统设置
@@ -100,6 +107,7 @@ class Rule extends Seeder
                     ['title'=>'编辑','name'=>'admin/AuthGroup/edit','paixu'=>3,'pid'=>23,],
                     ['title'=>'查看','name'=>'admin/AuthGroup/read','paixu'=>4,'pid'=>23,],
                     ['title'=>'状态','name'=>'admin/AuthGroup/status','paixu'=>5,'pid'=>23],
+
                
             
         ];

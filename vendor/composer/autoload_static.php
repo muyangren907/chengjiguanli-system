@@ -8,6 +8,7 @@ class ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053
 {
     public static $files = array (
         '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
+        '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
         'ddc3cd2a04224f9638c5d0de6a69c7e3' => __DIR__ . '/..' . '/topthink/think-migration/src/config.php',
     );
 
@@ -15,6 +16,7 @@ class ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053
         't' => 
         array (
             'think\\migration\\' => 16,
+            'think\\helper\\' => 13,
             'think\\composer\\' => 15,
             'think\\captcha\\' => 14,
         ),
@@ -40,6 +42,10 @@ class ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053
         'think\\migration\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/think-migration/src',
+        ),
+        'think\\helper\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/topthink/think-helper/src',
         ),
         'think\\composer\\' => 
         array (

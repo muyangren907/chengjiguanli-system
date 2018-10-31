@@ -13,3 +13,4 @@
 Route::resource('teacher','teach/Index');
 Route::resource('xueqi','teach/Xueqi');
 Route::resource('kaoshi','teach/Kaoshi');
+Route::resource('subject','teach/Subject');

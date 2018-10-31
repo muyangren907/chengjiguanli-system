@@ -34,9 +34,9 @@ class Teacher extends Migrator
         // 添加当前表字段
         $table
             ->addColumn('xingming','string',['limit'=>8,'null'=>false,'comment'=>'姓名'])
-            ->addColumn('sex','boolean',['limit'=>1,'default'=>2,'null'=>false,'comment'=>'性别'])
-            ->addColumn('shengri','string',['limit'=>11,'null'=>true,'comment'=>'生日'])
-            ->addColumn('worktime','string',['limit'=>11,'null'=>true,'comment'=>'工作时间'])
+            ->addColumn('sex','boolean',['limit'=>1,'default'=>1,'null'=>false,'comment'=>'性别'])
+            ->addColumn('shengri','integer',['limit'=>11,'null'=>true,'comment'=>'生日'])
+            ->addColumn('worktime','integer',['limit'=>11,'null'=>true,'comment'=>'工作时间'])
             ->addColumn('zhiwu','string',['limit'=>11,'null'=>true,'comment'=>'职务'])
             ->addColumn('zhicheng','string',['limit'=>11,'null'=>true,'comment'=>'职称'])
             ->addColumn('danwei','string',['limit'=>11,'null'=>false,'comment'=>'现工作单位'])

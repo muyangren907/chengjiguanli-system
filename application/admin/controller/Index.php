@@ -6,8 +6,6 @@ namespace app\admin\controller;
 use app\common\controller\Base;
 // 引用用户数据模型
 use app\admin\model\Admin as AD;
-// 引用用户与组关联数据表模型
-use app\admin\model\AuthGroupAccess as AGA;
 // 引用加密类
 use WhiteHat101\Crypt\APR1_MD5;
 
@@ -65,7 +63,7 @@ class Index extends Base
         // 如果需要查询
         if($search){
             $data = AD::field('id,xingming,sex,username,phone,shengri,denglucishu,status,create_time')
-                 ->where('id','>','1')
+                ->where('id','>','1')
                 ->order([$order_field=>$order])
                 ->limit($limit_start,$limit_length)
                 ->where('username|xingming','like','%'.$search.'%')
@@ -73,6 +71,9 @@ class Index extends Base
         }
 
         $datacnt = $data->count();
+
+        // 追加角色名
+        $data = $data->append(['groupnames']);
         
         
 
@@ -116,6 +117,7 @@ class Index extends Base
         // 获取表单数据
         $list = request()->only(['xingming','username','sex','shengri','phone','beizhu','group_id'],'post');
 
+
         // 设置密码，默认为123456
         $list['password'] = $md5->hash('123456');
 
@@ -124,25 +126,23 @@ class Index extends Base
         $result = $validate->check($list);
         $msg = $validate->getError();
 
-        unset($list['group_id']);
-
-
 
         // 如果验证不通过则停止保存
         if(!$result){
             return json(['msg'=>$msg,'val'=>0]);;
         }
 
-        // 保存数据 
-        $data = AD::create($list);
-
-        $group_id = request()->post('group_id');
-
-        $data = AGA::create(['uid'=>$data->id,'group_id'=>$group_id]);
-
+        // 实例化管理员数据模型类 
+        $admin = new AD();
+        $admindata = $admin->create($list);
+        // 重组用户角色列表
+        foreach ($list['group_id'] as $key => $value) {
+            $groupids[]=['group_id'=>$value];
+        }
+        $authgroupdata = $admindata->authgroup()->saveAll($groupids);
 
         // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $authgroupdata ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);
@@ -176,7 +176,8 @@ class Index extends Base
         // 获取用户信息
         $list = AD::field('id,username,xingming,sex,shengri,phone,beizhu')
             ->get($id);
-        $list->group_id = AGA::where('uid',$id)->value('group_id');
+        // 追加用户id字符串
+        $list = $list->append(['groupids']);
 
 
         $this->assign('list',$list);
@@ -198,7 +199,6 @@ class Index extends Base
         // 验证表单数据
         $result = $validate->check($list);
         $msg = $validate->getError();
-        unset($list['group_id']);
 
         // 如果验证不通过则停止保存
         if(!$result){
@@ -206,15 +206,20 @@ class Index extends Base
         }
 
         // 更新管理员信息
-        $admin = new AD();
-        $data = $admin->save($list,['id'=>$id]);
+        $list['id'] = $id;
+        $admindata = AD::update($list);
+       
+        // 删除原来角色
+        $aa = $admindata->authgroup()->delete();dump($aa);
 
-        // 更新管理员角色
-        $group_id = request()->put('group_id');
-        $data = AGA::where('uid',$id)->update(['group_id'=>$group_id]);
+        // 重组用户角色列表
+        foreach ($list['group_id'] as $key => $value) {
+            $groupids[]=['group_id'=>$value];
+        }
+        $groupdata = $admindata->authgroup()->create($groupids);
 
         // 根据更新结果设置返回提示信息
-        $data >= 0 ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $admindata&&$groupdata ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);

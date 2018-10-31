@@ -12,11 +12,11 @@
 // 应用公共文件
 
 // 获取类别列表
-function getCategory($id = 0)
+function getCategory($id = '0')
 {
 	// 根据父级id查询类别列表
 	$list = db('category')
-		->where('pid',$id)
+		->where('pid','in',$id)
 		->where('status',1)
 		->field('id,title')
 		->select();

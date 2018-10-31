@@ -2,7 +2,7 @@
 {block name="topnav"}
 	<nav class="breadcrumb">
 		<i class="Hui-iconfont">&#xe67f;</i> 首页
-		<span class="c-gray en">&gt;</span> 管理员管理
+		<span class="c-gray en">&gt;</span> 教务管理
 		<span class="c-gray en">&gt;</span> 考试列表
 		<a class="btn btn-success radius r"
 			style="line-height:1.6em;margin-top:3px"
@@ -16,12 +16,12 @@
 	<div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l">
 			<!-- 删除按钮 -->
-			<a href="javascript:;" onclick="dels('/authrule/m')" class="btn btn-danger radius">
+			<a href="javascript:;" onclick="dels('/kaoshi/m')" class="btn btn-danger radius">
 				<i class="Hui-iconfont">&#xe6e2;</i>
 			批量删除
 			</a>
 			<!-- 添加按钮 -->
-			<a href="javascript:;" onclick=addfull('添加考试',"/authrule/create") class="btn btn-primary radius">
+			<a href="javascript:;" onclick=addfull('添加考试',"/kaoshi/create") class="btn btn-primary radius">
 				<i class="Hui-iconfont">&#xe600;</i>
 				添加考试
 			</a>
@@ -36,13 +36,13 @@
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="" value=""></th>
-				<th>名称</th>
-				<th>规则</th>
-				<th>表达式</th>
-				<th>父级规则</th>
-				<th>排序</th>
-				<th>是否是菜单 </th>
-				<th>菜单字体</th>
+				<th>标题</th>
+				<th>学期</th>
+				<th>分类</th>
+				<th>参考年级</th>
+				<th>参考学科</th>
+				<th>开始时间</th>
+				<th>结束时间</th>
 				<th>状态</th>
 				<th>操作</th>
 			</tr>
@@ -67,12 +67,12 @@
 	var mycolumns = [
         { "data": "id" },
         { "data": "title" },
-        { "data": "name" },
-        { "data": "condition" },
-        { "data": "pid" },
-        { "data": "paixu" },
-        { "data": "ismenu" },
-        { "data": "font" },
+        { "data": "xueqi" },
+        { "data": "category"},
+        { "data": "nianjinames"},
+        { "data": "subjectnames"},
+        { "data": "bfdate" },
+        { "data": "enddate" },
         { "data": "status" },
         { "data": "id" },
 	];
@@ -95,8 +95,8 @@
 					// 启用按钮
 					startbut = '<a style="text-decoration:none" onClick="start(this,'+ row.id +')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>';
 					// 编辑按钮
-					editbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/authrule/'+row.id+'/edit") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
-					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/authrule/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
+					editbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/kaoshi/'+row.id+'/edit") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
+					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/kaoshi/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
 					if(row.status == '已停用')
 					{
 						buts = startbut + editbut + delbut;

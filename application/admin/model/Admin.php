@@ -45,5 +45,50 @@ class Admin extends Base
     }
 
 
+    // 权限关联
+    public function authgroup()
+    {
+        return $this->hasMany('AuthGroupAccess','uid','id')->field('id,uid,group_id');
+    }
+
+
+    // 获取角色id表
+    public function getGroupidsAttr()
+    {
+        // 获取当前当前管理员信息
+        $admin = $this->get($this->getAttr('id'));
+        // 获取角色id
+        $list = $admin->authgroup()->column('group_id');
+
+        // 将角色id转换成数组
+        foreach ($list as $key => $value) {
+            $key == 0 ? $str =$value : $str = $str.','.$value;
+        }
+
+        // 返回值
+        return $str;
+    }
+
+    // 获取角色名称
+    public function getGroupnamesAttr()
+    {
+        // 获取角色id
+        $group = $this->get($this->getAttr('id'))->append(['groupids']);
+
+        // 查询角色名称
+        $grouplist= db('AuthGroup')->where('id','in',$group->groupids)->column('title');
+        // 重组角色名
+        foreach ($grouplist as $key => $value) {
+            if($key == 0){
+                $str = $value;
+            }else{
+                $str = $str.'、'.$value;
+            }
+        }
+        // 返回角色名
+        return $str;
+    }
+
+
 
 }

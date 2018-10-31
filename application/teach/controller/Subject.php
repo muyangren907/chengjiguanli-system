@@ -5,18 +5,19 @@ namespace app\teach\controller;
 // 引用控制器基类
 use app\common\controller\Base;
 // 引用学期数据模型类
-use app\teach\model\Kaoshi as KS;
+use app\teach\model\Subject as SJ;
 
-class Kaoshi extends Base
+class Subject extends Base
 {
     // 显示学期列表
     public function index()
     {
 
         // 设置数据总数
-        $list['count'] = KS::count();
+        $list['count'] = SJ::count();
         // 设置页面标题
-        $list['title'] = '考试列表';
+        $list['title'] = '学科列表';
+
 
         // 模板赋值
         $this->assign('list', $list);
@@ -47,9 +48,9 @@ class Kaoshi extends Base
 
 
         // 获取记录集总数
-        $cnt = KS::count();
+        $cnt = SJ::count();
         //查询数据
-        $data =KS::field('id,title,xueqi,category,bfdate,enddate,status')
+        $data =SJ::field('id,title,jiancheng,category,paixu,status')
             ->order([$order_field=>$order])
             ->limit($limit_start,$limit_length)
             ->all();
@@ -57,7 +58,7 @@ class Kaoshi extends Base
 
         // 如果需要查询
         if($search){
-            $data = KS::field('id,title,xueqi,category,bfdate,enddate,status')
+            $data = SJ::field('id,title,jiancheng,category,paixu,status')
                 ->order([$order_field=>$order])
                 ->limit($limit_start,$limit_length)
                 ->where('title','like','%'.$search.'%')
@@ -69,8 +70,6 @@ class Kaoshi extends Base
                 })
                 ->all();
         }
-
-        $data = $data->append(['nianjinames','subjectnames']);
 
         $datacnt = $data->count();
         
@@ -92,7 +91,7 @@ class Kaoshi extends Base
     public function create()
     {
         // 设置页面标题
-        $list['title'] = '添加学期';
+        $list['title'] = '添加学科';
 
         // 模板赋值
         $this->assign('list',$list);
@@ -107,11 +106,11 @@ class Kaoshi extends Base
     public function save()
     {
         // 实例化验证模型
-        $validate = new \app\teach\validate\Kaoshi;
+        $validate = new \app\teach\validate\Subject;
 
 
         // 获取表单数据
-        $list = request()->only(['title','xueqi','category','bfdate','enddate','nianji','subject'],'post');
+        $list = request()->only(['title','jiancheng','category','paixu'],'post');
 
 
         // 验证表单数据
@@ -124,35 +123,11 @@ class Kaoshi extends Base
             return json(['msg'=>$msg,'val'=>0]);
         }
 
-
         // 保存数据 
-        $ks = new KS();
-
-        $ksdata = $ks->create($list);
-
-       
-
-        // 获取年级列表
-        $njname = nianjilist();
-        // 重组参加考试年级信息
-        foreach ($list['nianji'] as $key => $value) {
-            $nianjiarr[]=['nianji'=>$value,'nianjiname'=>$njname[$value]];
-        }
-
-        // 添加考试年级信息
-        $njdata = $ksdata->kaoshinianji()->saveAll($nianjiarr);
-
-
-
-        // 重组参加考试学科信息
-        foreach ($list['subject'] as $key => $value) {
-            $subjectarr[]=['subjectid'=>$value];
-        }
-        // 添加考试学科信息
-        $xkdata = $ksdata->kaoshisubject()->saveAll($subjectarr);
+        $data = SJ::create($list);
 
         // 根据更新结果设置返回提示信息
-        $ksdata&&$njdata&&$xkdata ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);
@@ -172,19 +147,13 @@ class Kaoshi extends Base
     {
 
         // 获取学期信息
-        $list = KS::where('id',$id)
-            ->field('id,title,xueqi,category,bfdate,enddate')
-            // ->with('kaoshinianji,kaoshisubject')
-            ->find();
+        $list = SJ::field('id,title,jiancheng,category,paixu,status')
+            ->get($id);
 
-        $list = $list->append(['nianjiids','subjectids']);
 
-        // 模板赋值
         $this->assign('list',$list);
 
-        //渲染模板
         return $this->fetch();
-
     }
 
 
@@ -194,58 +163,26 @@ class Kaoshi extends Base
     // 更新学期信息
     public function update($id)
     {
-        $validate = new \app\teach\validate\Kaoshi;
+        $validate = new \app\teach\validate\Subject;
 
         // 获取表单数据
-        $list = request()->only(['title','xueqi','category','bfdate','enddate','nianji','subject'],'post');
+        $list = request()->only(['title','jiancheng','category','paixu'],'put');
 
         // 验证表单数据
         $result = $validate->check($list);
         $msg = $validate->getError();
-
-        
 
         // 如果验证不通过则停止保存
         if(!$result){
             return json(['msg'=>$msg,'val'=>0]);;
         }
 
-        $list['id'] = $id;
+
         // 更新数据
-        $ks = new KS();
-        $ksdata = $ks::update($list);
-
-
-        // 删除参加考试的年级和学科
-        $ksdata->kaoshinianji()->delete();
-        $ksdata->kaoshisubject()->delete();
-
-
-        // 添加考试年级和学科
-        // 获取年级列表
-        $njname = nianjilist();
-        // 重组参加考试年级信息
-        foreach ($list['nianji'] as $key => $value) {
-            $nianjiarr[]=['nianji'=>$value,'nianjiname'=>$njname[$value]];
-        }
-
-        // 添加考试年级信息
-        $njdata = $ksdata->kaoshinianji()->saveAll($nianjiarr);
-
-
-
-        
-        // 重组参加考试学科信息
-        foreach ($list['subject'] as $key => $value) {
-            $subjectarr[]=['subjectid'=>$value];
-        }
-        // 添加考试学科信息
-        $xkdata = $ksdata->kaoshisubject()->saveAll($subjectarr);
-
-
+        $data = SJ::where('id',$id)->update($list);
 
         // 根据更新结果设置返回提示信息
-        $ksdata&&$njdata&&$xkdata ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data>=0 ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);
@@ -264,7 +201,7 @@ class Kaoshi extends Base
             $id = request()->delete('ids/a');// 获取delete请求方式传送过来的数据并转换成数据
         }
 
-        $data = KS::destroy($id);
+        $data = SJ::destroy($id);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -284,7 +221,7 @@ class Kaoshi extends Base
         $value = request()->post('value');
 
         // 获取学期信息
-        $data = KS::where('id',$id)->update(['status'=>$value]);
+        $data = SJ::where('id',$id)->update(['status'=>$value]);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -292,4 +229,5 @@ class Kaoshi extends Base
         // 返回信息
         return json($data);
     }
+
 }

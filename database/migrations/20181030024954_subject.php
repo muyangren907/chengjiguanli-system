@@ -3,7 +3,7 @@
 use think\migration\Migrator;
 use think\migration\db\Column;
 
-class Kaoshi extends Migrator
+class Subject extends Migrator
 {
     /**
      * Change Method.
@@ -29,15 +29,14 @@ class Kaoshi extends Migrator
     public function change()
     {
         // 定义数据表名称
-        $table = $this->table('kaoshi');
+        $table = $this->table('subject');
 
         // 添加当前表字段
         $table
-            ->addColumn('title','string',['limit'=>25,'null'=>false,'comment'=>'考试名称'])
-            ->addColumn('xueqi','string',['limit'=>11,'null'=>false,'comment'=>'学期'])
-            ->addColumn('category','string',['limit'=>11,'null'=>false,'comment'=>'类别'])
-            ->addColumn('bfdate','integer',['limit'=>11,'null'=>false,'comment'=>'开始日期'])
-            ->addColumn('enddate','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'结束日期'])
+            ->addColumn('title','string',['limit'=>25,'null'=>false,'comment'=>'学科名称'])
+            ->addColumn('jiancheng','string',['limit'=>6,'null'=>false,'comment'=>'简称'])
+            ->addColumn('category','string',['limit'=>11,'null'=>false,'comment'=>'大学科类别'])
+            ->addColumn('paixu','integer',['limit'=>4,'default'=>'999','null'=>false,'comment'=>'排序'])
             ->addColumn('status','boolean',['limit'=>1,'default'=>'1','null'=>false,'comment'=>'0=禁用，1=正常'])
             ->addColumn('create_time','integer',['limit'=>11,'null'=>true,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'null'=>true,'comment'=>'更新时间'])

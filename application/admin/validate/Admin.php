@@ -15,7 +15,7 @@ class Admin extends Validate
 	protected $rule = [
         'xingming|用户姓名'  =>  'require|chs|length:2,6',
         'username|帐号'  =>  ['require','uset'=>'/^[a-z][a-z0-9-_]*$/'],
-        'group_id|角色'   =>  'require|number',
+        'group_id|角色'   =>  'require|array',
         'shengri|出生日期'   =>  'date',
         'xingbie|性别'   =>  'in:0,1,2',
         'phone|手机'     =>  'mobile',

@@ -12,7 +12,15 @@ class Kaoshi extends Validate
      *
      * @var array
      */	
-	protected $rule = [];
+	protected $rule = [
+        'title|标题'      =>  'require|length:1,25',
+        'xueqi|学期'      =>  'require|number',
+        'category|分类'      =>  'require|number',
+        'bfdate|考试时间'      =>  'require|date',
+        'enddate|考试时间'      =>  'require|date',
+        'nianji|参考年级'      =>  'require|array',
+        'subject|参考学科'      =>  'require|array',
+    ];
     
     /**
      * 定义错误信息

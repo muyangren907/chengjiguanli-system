@@ -18,7 +18,6 @@ class Index extends Base
         // 设置页面标题
         $list['title'] = '教师列表';
 
-
         // 模板赋值
         $this->assign('list', $list);
 
