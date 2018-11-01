@@ -7,8 +7,5 @@ use app\common\controller\BaseError;
 
 class Error extends BaseError
 {
-	public function index()
-	{
-		return 'aa';
-	}
+
 }

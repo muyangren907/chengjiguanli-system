@@ -13,4 +13,3 @@
 // 找不到操作提示
 Route::get('login','login/index/index');
 Route::post('login','login/index/yanzheng');
-Route::get('firstlogin','login/index/first');
