@@ -22,7 +22,8 @@
         "php4world/auth": "^1.0",
         "topthink/think-captcha": "^2.0",
         "whitehat101/apr1-md5": "^1.0",
-        "topthink/think-helper": "^1.0"
+        "topthink/think-helper": "^1.0",
+        "phpoffice/phpspreadsheet": "^1.5"
     },
     "autoload": {
         "psr-4": {

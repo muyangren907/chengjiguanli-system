@@ -13,5 +13,8 @@ return array(
     'php4world\\' => array($vendorDir . '/php4world/auth/src'),
     'app\\' => array($baseDir . '/application'),
     'WhiteHat101\\Crypt\\' => array($vendorDir . '/whitehat101/apr1-md5/src'),
+    'Psr\\SimpleCache\\' => array($vendorDir . '/psr/simple-cache/src'),
+    'PhpOffice\\PhpSpreadsheet\\' => array($vendorDir . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet'),
     'Phinx\\' => array($vendorDir . '/topthink/think-migration/phinx/src/Phinx'),
+    'Complex\\' => array($vendorDir . '/markbaker/complex/classes/src'),
 );

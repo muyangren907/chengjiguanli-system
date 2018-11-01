@@ -210,13 +210,13 @@ class Index extends Base
         $admindata = AD::update($list);
        
         // 删除原来角色
-        $aa = $admindata->authgroup()->delete();dump($aa);
+        $aa = $admindata->authgroup()->delete();
 
         // 重组用户角色列表
         foreach ($list['group_id'] as $key => $value) {
             $groupids[]=['group_id'=>$value];
         }
-        $groupdata = $admindata->authgroup()->create($groupids);
+        $groupdata = $admindata->authgroup()->saveAll($groupids);
 
         // 根据更新结果设置返回提示信息
         $admindata&&$groupdata ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
