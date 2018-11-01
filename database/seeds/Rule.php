@@ -20,7 +20,7 @@ class Rule extends Seeder
             ['id'=>1,'title'=>'系统管理','name' =>'system','paixu' =>5,'ismenu'=>true,'font' =>'Hui-iconfont-system'],
             ['id'=>2,'title' =>'管理员管理','name'=>'admin','paixu' =>4,'ismenu' =>true,'font'=>'Hui-iconfont-root'],
             ['id'=>3,'title' =>'教务管理','name'=>'teach','paixu' =>3,'ismenu' =>true,'font'=>'Hui-iconfont-yuyin2'],
-             ['id'=>4,'title' =>'人事管理','name'=>'renshi','paixu' =>2,'ismenu' =>true,'font'=>'Hui-iconfont-yuyin2'],
+             ['id'=>4,'title' =>'人事管理','name'=>'renshi','paixu' =>2,'ismenu' =>true,'font'=>'Hui-iconfont-user-group'],
                 // 二级菜单
                 // 系统设置
                 ['id'=>11,'title'=>'类别管理','name'=>'system/Category/index','paixu'=>1,'ismenu' =>true,'pid' =>1,'url'=>'/category',],
