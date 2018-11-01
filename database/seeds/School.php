@@ -14,6 +14,16 @@ class School extends Seeder
      */
     public function run()
     {
-
+        // 设置数据
+        $rows= [
+            [
+                'title'=>'大连市教育局',
+                'jiancheng'=>'市教育局',
+                'biaoshi'=>'',
+                'jibie'=>'2',
+            ],
+        ];
+        // 保存数据
+        $this->table('school')->insert($rows)->save();
     }
 }

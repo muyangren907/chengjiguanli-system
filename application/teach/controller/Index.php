@@ -6,6 +6,10 @@ namespace app\teach\controller;
 use app\common\controller\Base;
 // 引用教师数据模型类
 use app\teach\model\Teacher;
+// 引用文件信息存储数据模型类
+use app\system\model\Fields;
+// 引用phpspreadsheet类
+use app\teach\controller\Myexcel;
 
 class Index extends Base
 {
@@ -225,4 +229,59 @@ class Index extends Base
         // 返回信息
         return json($data);
     }
+
+    // 批量添加
+    public function createAll()
+    {
+        return $this->fetch();
+    }
+
+    // 批量保存
+    public function saveAll()
+    {
+        // 获取表单数据
+        $list = request()->only(['danwei','url'],'post');
+
+        // 实例化操作表格类
+        $excel = new Myexcel();
+
+        // 读取表格数据
+        $teacherinfo = $excel->readExcel($list['url']);
+        
+
+        
+        return json($data);
+    }
+
+    public function upload()
+    {
+        // 获取文件信息
+        $list['text'] = '教师名单';
+        $list['oldname']=input('post.name');
+        $list['bianjitime'] = input('post.lastModifiedDate');
+        $list['fieldsize'] = input('post.size');
+        // 获取表单上传文件 例如上传了001.jpg
+        $file = request()->file('file');
+        // 移动到框架应用根目录/uploads/ 目录下
+        $info = $file->move( '..\uploads\teacher');
+        if($info){
+            // 成功上传后 获取上传信息
+            $list['category'] = $info->getExtension();
+            $list['url'] = $info->getSaveName();
+            $list['newname'] = $info->getFilename(); 
+
+            //将文件信息保存
+            $data = Fields::create($list);
+
+            $data ? $data = array('msg'=>'上传成功','val'=>true,'url'=>'..\uploads\teacher\\'.$list['url']) : $data = array('msg'=>'保存文件信息失败','val'=>false,'url'=>null);
+        }else{
+            // 上传失败获取错误信息
+            $data = array('msg'=>$file->getError(),'val'=>false,'url'=>null);
+        }
+
+        // 返回信息
+        return json($data);
+    }
+
+
 }
