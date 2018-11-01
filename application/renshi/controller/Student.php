@@ -1,11 +1,11 @@
 <?php
 
-namespace app\student\controller;
+namespace app\renshi\controller;
 
-// 引用控制器基类
-use app\common\controller\Base;
+use think\Controller;
+use think\Request;
 
-class Upload extends Base
+class Student extends Controller
 {
     /**
      * 显示资源列表
@@ -15,7 +15,6 @@ class Upload extends Base
     public function index()
     {
         //
-
     }
 
     /**

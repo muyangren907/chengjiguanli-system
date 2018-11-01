@@ -1,6 +1,6 @@
 <?php
 
-namespace app\teach\controller;
+namespace app\renshi\controller;
 
 // 引用PhpSpreadsheet类
 use PhpOffice\PhpSpreadsheet\Spreadsheet;

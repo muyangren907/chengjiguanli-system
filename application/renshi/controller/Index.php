@@ -1,15 +1,15 @@
 <?php
 
-namespace app\teach\controller;
+namespace app\renshi\controller;
 
 // 引用控制器基类
 use app\common\controller\Base;
 // 引用教师数据模型类
-use app\teach\model\Teacher;
+use app\renshi\model\Teacher;
 // 引用文件信息存储数据模型类
 use app\system\model\Fields;
 // 引用phpspreadsheet类
-use app\teach\controller\Myexcel;
+use app\renshi\controller\Myexcel;
 
 class Index extends Base
 {
@@ -104,7 +104,7 @@ class Index extends Base
     public function save()
     {
         // 实例化验证模型
-        $validate = new \app\teach\validate\Teacher;
+        $validate = new \app\renshi\validate\Teacher;
 
 
         // 获取表单数据
@@ -161,7 +161,7 @@ class Index extends Base
     // 更新教师信息
     public function update($id)
     {
-        $validate = new \app\teach\validate\Teacher;
+        $validate = new \app\renshi\validate\Teacher;
 
         // 获取表单数据
         $list = request()->only(['xingming','sex','quanpin','shoupin','shengri','zhiwu','zhicheng','xueli','biye','worktime','zhuanye','danwei'],'put');
@@ -239,6 +239,8 @@ class Index extends Base
     // 批量保存
     public function saveAll()
     {
+        // 未完成
+
         // 获取表单数据
         $list = request()->only(['danwei','url'],'post');
 
@@ -253,6 +255,9 @@ class Index extends Base
         return json($data);
     }
 
+    
+
+    // 上传文件
     public function upload()
     {
         // 获取文件信息

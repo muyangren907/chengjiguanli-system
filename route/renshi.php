@@ -10,4 +10,7 @@
 // +----------------------------------------------------------------------
 
 //系统设置路由
+Route::resource('teacher','renshi/Index');
+Route::get('teacher/createall','renshi/Index/createAll'); // 定义GET请求路由规则
+Route::post('teacher/createall','renshi/Index/saveAll'); // 定义POST请求路由规则
 Route::resource('stuup','student/upload');

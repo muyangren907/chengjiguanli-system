@@ -1,6 +1,6 @@
 <?php
 
-namespace app\teach\validate;
+namespace app\renshi\validate;
 
 use think\Validate;
 
