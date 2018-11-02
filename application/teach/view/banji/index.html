@@ -138,17 +138,19 @@
 				},
 				dataType: 'json',
 				success: function(data){
-					if(data.val == true && caozuo == -1)
-					{
-						yd = $(obj).parents("tr").html();
-						$(obj).parents("tr").prev().before('<tr>' + yd + '</tr>');
-						$(obj).parents("tr").remove();
-					}else{
-						yd = $(obj).parents("tr").html();
-						$(obj).parents("tr").next().after('<tr>' + yd + '</tr>');
-						$(obj).parents("tr").remove();
-					}
 					
+					if(data.val == false){
+						layer.alert(data.msg);
+					}
+					var yd = $(obj).parents("tr").html();
+					if( caozuo === 1)
+					{
+						$(obj).parents("tr").prev().bofore('<tr>' + yd + '</tr>');
+						
+					} else {
+						$(obj).parents("tr").next().after('<tr>' + yd + '</tr>');
+					}
+					$(obj).parents("tr").remove();
 					layer.alert(data.msg);
 				},
 				error:function(data) {

@@ -51,7 +51,7 @@ class Banji extends Base
         $cnt = BJ::count();
         //查询数据
         $data =BJ::field('id,school,ruxuenian,paixu,status')
-            ->order([$order_field=>$order,'ruxuenian','paixu'])
+            ->order([$order_field=>$order])
             ->limit($limit_start,$limit_length)
             ->all();
         
@@ -296,7 +296,7 @@ class Banji extends Base
             $data = $bj->saveAll($bjinfo);
             $data ? $data = ['msg'=>'移动成功','val'=>true] : $data = ['msg'=>'数据处理错误','val'=>false];
         }else{
-            $data = ['msg'=>'已经到头啦~','val'=>true];
+            $data = ['msg'=>'已经到头啦~','val'=>false];
         }
 
         // 返回处理结果
