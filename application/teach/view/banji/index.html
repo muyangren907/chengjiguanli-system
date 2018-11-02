@@ -36,6 +36,7 @@
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="" value=""></th>
+				<th>ID</th>
 				<th>班级名称</th>
 				<th>学校</th>
 				<th>入学年</th>
@@ -63,6 +64,7 @@
 
 	// 定义列参数
 	var mycolumns = [
+        { "data": "id" },
         { "data": "id" },
         { "data": "title" },
         { "data": "school" },
@@ -97,9 +99,9 @@
 					endbut = '<a title="后移" href="javascript:void(0);" onclick=yidong(this,"/banji/'+row.id+'/yidong",1) class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6d7;</i></a>';
 					if(row.status == '已停用')
 					{
-						buts = startbut + editbut + bfbut + endbut;
+						buts = startbut + bfbut + endbut;
 					}else{
-						buts = stopbut + editbut + bfbut + endbut;
+						buts = stopbut + bfbut + endbut;
 					} 
 
 					return buts;
@@ -136,6 +138,17 @@
 				},
 				dataType: 'json',
 				success: function(data){
+					if(data.val == true && caozuo == -1)
+					{
+						yd = $(obj).parents("tr").html();
+						$(obj).parents("tr").prev().before('<tr>' + yd + '</tr>');
+						$(obj).parents("tr").remove();
+					}else{
+						yd = $(obj).parents("tr").html();
+						$(obj).parents("tr").next().after('<tr>' + yd + '</tr>');
+						$(obj).parents("tr").remove();
+					}
+					
 					layer.alert(data.msg);
 				},
 				error:function(data) {

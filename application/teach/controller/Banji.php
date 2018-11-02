@@ -51,7 +51,7 @@ class Banji extends Base
         $cnt = BJ::count();
         //查询数据
         $data =BJ::field('id,school,ruxuenian,paixu,status')
-            ->order([$order_field=>$order])
+            ->order([$order_field=>$order,'ruxuenian','paixu'])
             ->limit($limit_start,$limit_length)
             ->all();
         

@@ -76,10 +76,12 @@ class Rule extends Seeder
                     ['title'=>'状态','name'=>'teach/Index/status','paixu'=>5,'pid'=>41],
                     // 学生管理权限
                     ['title'=>'添加','name'=>'teach/Student/create','paixu' =>1,'pid'=>42],
-                    ['title'=>'删除','name'=>'teach/Student/delete','paixu'=>2,'pid'=>42],
-                    ['title'=>'编辑','name'=>'teach/Student/edit','paixu'=>3,'pid'=>42,],
-                    ['title'=>'查看','name'=>'teach/Student/read','paixu'=>4,'pid'=>42,],
-                    ['title'=>'状态','name'=>'teach/Student/status','paixu'=>5,'pid'=>42],
+                    ['title'=>'状态','name'=>'teach/Student/status','paixu'=>2,'pid'=>42],
+                    ['title'=>'移动','name'=>'teach/Student/yidong','paixu'=>3,'pid'=>42],
+                    // ['title'=>'删除','name'=>'teach/Student/delete','paixu'=>2,'pid'=>42],
+                    // ['title'=>'编辑','name'=>'teach/Student/edit','paixu'=>3,'pid'=>42,],
+                    // ['title'=>'查看','name'=>'teach/Student/read','paixu'=>4,'pid'=>42,],
+                    // ['title'=>'状态','name'=>'teach/Student/status','paixu'=>5,'pid'=>42],
 
 
                     // 系统设置
