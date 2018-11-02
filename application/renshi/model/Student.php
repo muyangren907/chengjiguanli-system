@@ -2,9 +2,9 @@
 
 namespace app\renshi\model;
 
-use think\Model;
+use app\common\model\Base;
 
-class Student extends Model
+class Student extends Base
 {
     //
 }

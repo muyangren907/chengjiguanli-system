@@ -3,7 +3,7 @@
 	<nav class="breadcrumb">
 		<i class="Hui-iconfont">&#xe67f;</i> 首页
 		<span class="c-gray en">&gt;</span> 师生管理
-		<span class="c-gray en">&gt;</span> 教师列表
+		<span class="c-gray en">&gt;</span> 学生列表
 		<a class="btn btn-success radius r"
 			style="line-height:1.6em;margin-top:3px"
 			href="javascript:location.replace(location.href);"
@@ -16,18 +16,18 @@
 	<div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l">
 			<!-- 删除按钮 -->
-			<a href="javascript:;" onclick="dels('/teacher/m')" class="btn btn-danger radius">
+			<a href="javascript:;" onclick="dels('/student/m')" class="btn btn-danger radius">
 				<i class="Hui-iconfont">&#xe6e2;</i>
 			批量删除
 			</a>
 			<!-- 添加按钮 -->
-			<!-- <a href="javascript:;" onclick=addfull('批量上传',"/teacher/createall") class="btn btn-primary radius">
+			<a href="javascript:;" onclick=addfull('批量上传',"/student/createall") class="btn btn-primary radius">
 				<i class="Hui-iconfont">&#xe642;</i>
 				批量上传
-			</a> -->
-			<a href="javascript:;" onclick=addfull('添加教师',"/teacher/create") class="btn btn-primary radius">
+			</a>
+			<a href="javascript:;" onclick=addfull('添加学生',"/student/create") class="btn btn-primary radius">
 				<i class="Hui-iconfont">&#xe600;</i>
-				添加教师
+				添加学生
 			</a>
 		</span>
 		<span class="r">
@@ -43,11 +43,8 @@
 				<th>姓名</th>
 				<th>性别</th>
 				<th>年龄</th>
-				<th>学历</th>
-				<th>毕业院校</th>
-				<th>工作时间</th>
-				<th>专业</th>
-				<th>工作单位</th>
+				<th>学校</th>
+				<th>班级</th>
 				<th>状态</th>
 				<th>操作</th>
 			</tr>
@@ -74,11 +71,8 @@
         { "data": "xingming" },
         { "data": "sex" },
         { "data": "age" ,"defaultContent": ""},
-        { "data": "xueli" },
-        { "data": "biye" },
-        { "data": "gongling","defaultContent": ""},	//工龄
-        { "data": "zhuanye" },
-        { "data": "danwei" },
+        { "data": "school" },
+        { "data": "banji" },
         { "data": "status" },
         { "data": "id" },
 	];
@@ -101,8 +95,8 @@
 					// 启用按钮
 					startbut = '<a style="text-decoration:none" onClick="start(this,'+ row.id +')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>';
 					// 编辑按钮
-					editbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/teacher/'+row.id+'/edit") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
-					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/teacher/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
+					editbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/student/'+row.id+'/edit") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
+					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/student/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
 					if(row.status == '已停用')
 					{
 						buts = startbut + editbut + delbut;
