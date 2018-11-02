@@ -61,8 +61,8 @@ class Xueqi extends Base
             $data = XQ::field('id,title,xuenian,category,bfdate,enddate,status')
                 ->order([$order_field=>$order])
                 ->limit($limit_start,$limit_length)
-                ->where('title|xuenian','like','%'.$search.'%')
-                ->where('category','in',function($query) use($search)
+                ->whereOr('title|xuenian','like','%'.$search.'%')
+                ->whereOr('category','in',function($query) use($search)
                 {
                     $query->table('catagory')
                         ->where('title','like','%'.$search.'%')

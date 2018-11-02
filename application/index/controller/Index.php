@@ -14,18 +14,7 @@ class Index extends Base
     // 初始化
     protected function initialize()
     {
-        //实例化数据模型
-        $sysbasemod = new sysbasemod();
 
-        // 查询数据
-        $list = $sysbasemod
-            ->where('id','>',0)
-            ->find();
-
-        if( $list == null )
-        {
-            $this->error('在地址栏中输入 域名或IP + /firstlogin 并回车，进行初始化');
-        }
     }
 
 

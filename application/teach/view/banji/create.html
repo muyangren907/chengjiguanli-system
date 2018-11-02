@@ -1,0 +1,71 @@
+{extend name="common@create" /}
+{block name="formaa"}
+	<form action="/banji" method="POST" class="form form-horizontal" id="form-member-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>学校：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:180px;">
+				{php}
+					$school = new app\system\model\School;
+					$school = $school->where('status',1)->field('id,title')->all();
+				{/php}
+				<select class="select" id="school" name="school" size="1">
+					<option value="">--请选择学校--</option>
+					{volist name="school" id="vo"}
+						<option value="{$vo.id}">{$vo.title}</option>
+					{/volist}
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>年级：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:180px;">
+				{php}
+					$njlist = nianjiList();
+				{/php}
+				<select class="select" id="ruxuenian" name="ruxuenian" size="1">
+					<option value="">--请选择年级--</option>
+					{foreach $njlist as $key=>$vo}
+						<option value="{$key}">{$vo}</option>
+					{/foreach}
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>班级数：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="要添加几个班级" id="bjsum" name="bjsum">
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+{/block}
+{block name="yanzheng"}
+<script type="text/javascript">
+	// 设置表单验证规则
+	var myrules = {
+			school:{
+				required:true,
+				digits:true
+			},
+			ruxuenian:{
+				required:true,
+				digits:true
+			},
+			bjsum:{
+				required:true,
+				digits:true
+			},
+		};
+
+	// 设置表单提交方式
+	var mytype = 'POST';
+</script>
+{/block}

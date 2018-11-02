@@ -34,6 +34,7 @@ class Rule extends Seeder
                 ['id'=>31,'title'=>'考试列表','name'=>'teach/Kaoshi/index','paixu'=>1,'ismenu' =>true,'pid' =>3,'url'=>'/kaoshi',],
                 ['id'=>32,'title'=>'学期列表','name'=>'teach/Xueqi/index','paixu'=>2,'ismenu' =>true,'pid' =>3,'url'=>'/xueqi',],
                 ['id'=>33,'title'=>'学科列表','name'=>'teach/Subject/index','paixu'=>3,'ismenu' =>true,'pid' =>3,'url'=>'/subject',],
+                ['id'=>34,'title'=>'班级列表','name'=>'teach/Banji/index','paixu'=>4,'ismenu' =>true,'pid' =>3,'url'=>'/banji',],
                 // 人事管理
                 ['id'=>41,'title'=>'教师列表','name'=>'teach/Index/index','paixu'=>1,'ismenu' =>true,'pid' =>4,'url'=>'/teacher',],
                 ['id'=>42,'title'=>'学生列表','name'=>'teach/Studen/index','paixu'=>2,'ismenu' =>true,'pid' =>4,'url'=>'/teacher',],
@@ -58,6 +59,12 @@ class Rule extends Seeder
                     ['title'=>'编辑','name'=>'admin/Subject/edit','paixu'=>3,'pid'=>33,],
                     ['title'=>'查看','name'=>'admin/Subject/read','paixu'=>4,'pid'=>33,],
                     ['title'=>'状态','name'=>'admin/Subject/status','paixu'=>5,'pid'=>33],
+                    // 班级列表权限
+                    ['title'=>'添加','name'=>'admin/Banji/create','paixu' =>1,'pid'=>34],
+                    ['title'=>'删除','name'=>'admin/Banji/delete','paixu'=>2,'pid'=>34],
+                    ['title'=>'编辑','name'=>'admin/Banji/edit','paixu'=>3,'pid'=>34,],
+                    ['title'=>'查看','name'=>'admin/Banji/read','paixu'=>4,'pid'=>34,],
+                    ['title'=>'状态','name'=>'admin/Banji/status','paixu'=>5,'pid'=>34],
 
 
                     // 人事管理

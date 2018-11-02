@@ -13,4 +13,6 @@
 Route::resource('xueqi','teach/Xueqi');
 Route::resource('kaoshi','teach/Kaoshi');
 Route::resource('subject','teach/Subject');
+Route::resource('banji','teach/Banji');
+Route::post('banji/:id/yidong','teach/Banji/yidong'); // 定义GET请求路由规则
 

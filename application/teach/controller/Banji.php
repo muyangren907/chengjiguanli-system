@@ -4,19 +4,20 @@ namespace app\teach\controller;
 
 // 引用控制器基类
 use app\common\controller\Base;
-// 引用学期数据模型类
-use app\teach\model\Kaoshi as KS;
+// 引用班级数据模型类
+use app\teach\model\Banji as BJ;
 
-class Kaoshi extends Base
+class Banji extends Base
 {
-    // 显示学期列表
+    // 显示班级列表
     public function index()
     {
 
         // 设置数据总数
-        $list['count'] = KS::count();
+        $list['count'] = BJ::count();
         // 设置页面标题
-        $list['title'] = '考试列表';
+        $list['title'] = '班级列表';
+
 
         // 模板赋值
         $this->assign('list', $list);
@@ -26,7 +27,7 @@ class Kaoshi extends Base
     }
 
 
-    // 获取学期信息列表
+    // 获取班级信息列表
     public function ajaxData()
     {
 
@@ -47,9 +48,9 @@ class Kaoshi extends Base
 
 
         // 获取记录集总数
-        $cnt = KS::count();
+        $cnt = BJ::count();
         //查询数据
-        $data =KS::field('id,title,xueqi,category,bfdate,enddate,status')
+        $data =BJ::field('id,school,ruxuenian,paixu,status')
             ->order([$order_field=>$order])
             ->limit($limit_start,$limit_length)
             ->all();
@@ -57,42 +58,43 @@ class Kaoshi extends Base
 
         // 如果需要查询
         if($search){
-            $data = KS::field('id,title,xueqi,category,bfdate,enddate,status')
+            $data = BJ::field('id,school,ruxuenian,paixu,status')
                 ->order([$order_field=>$order])
                 ->limit($limit_start,$limit_length)
                 ->whereOr('title','like','%'.$search.'%')
-                ->whereOr('category','in',function($query) use($search)
+                ->whereOr('school','in',function($query) use($search)
                 {
-                    $query->table('catagory')
+                    $query->table('school')
                         ->where('title','like','%'.$search.'%')
                         ->field('id');
                 })
                 ->all();
         }
 
-        $data = $data->append(['nianjinames','subjectnames']);
-
         $datacnt = $data->count();
+        //追加班级名称
+        $data = $data->append(['title','stusum']);
         
+        
+
 
         $data = [
             'draw'=> $getdt["draw"] , // ajax请求次数，作为标识符
             'recordsTotal'=>$datacnt,  // 获取到的结果数(每页显示数量)
             'recordsFiltered'=>$cnt,       // 符合条件的总数据量
-            'data'=>$data, // 获取到的数据结果
+            'data'=>$data, //获取到的数据结果
         ];
-
 
         return json($data);
     }
 
 
 
-    // 创建学期
+    // 创建班级
     public function create()
     {
         // 设置页面标题
-        $list['title'] = '添加学期';
+        $list['title'] = '添加班级';
 
         // 模板赋值
         $this->assign('list',$list);
@@ -107,11 +109,11 @@ class Kaoshi extends Base
     public function save()
     {
         // 实例化验证模型
-        $validate = new \app\teach\validate\Kaoshi;
+        $validate = new \app\teach\validate\Banji;
 
 
         // 获取表单数据
-        $list = request()->only(['title','xueqi','category','bfdate','enddate','nianji','subject'],'post');
+        $list = request()->only(['school','ruxuenian','bjsum'],'post');
 
 
         // 验证表单数据
@@ -124,35 +126,29 @@ class Kaoshi extends Base
             return json(['msg'=>$msg,'val'=>0]);
         }
 
+        $paixumax = BJ::where('school',$list['school'])
+                ->where('ruxuenian',$list['ruxuenian'])
+                ->max('paixu');
+
+        $i = 1;
+        while($i<=$list['bjsum'])
+        {
+            $bjarr[] = array(
+                'school'=>$list['school'],
+                'ruxuenian'=>$list['ruxuenian'],
+                'paixu'=>$paixumax+$i
+            );
+            $i++;
+        }
+
+        // 实例化班级数据模型类
+        $bj = new BJ();
 
         // 保存数据 
-        $ks = new KS();
-
-        $ksdata = $ks->create($list);
-
-       
-
-        // 获取年级列表
-        $njname = nianjilist();
-        // 重组参加考试年级信息
-        foreach ($list['nianji'] as $key => $value) {
-            $nianjiarr[]=['nianji'=>$value,'nianjiname'=>$njname[$value]];
-        }
-
-        // 添加考试年级信息
-        $njdata = $ksdata->kaoshinianji()->saveAll($nianjiarr);
-
-
-
-        // 重组参加考试学科信息
-        foreach ($list['subject'] as $key => $value) {
-            $subjectarr[]=['subjectid'=>$value];
-        }
-        // 添加考试学科信息
-        $xkdata = $ksdata->kaoshisubject()->saveAll($subjectarr);
+        $data = $bj->saveAll($bjarr);
 
         // 根据更新结果设置返回提示信息
-        $ksdata&&$njdata&&$xkdata ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);
@@ -167,85 +163,49 @@ class Kaoshi extends Base
 
 
 
-    // 修改学期信息
+    // 修改班级信息
     public function edit($id)
     {
 
-        // 获取学期信息
-        $list = KS::where('id',$id)
-            ->field('id,title,xueqi,category,bfdate,enddate')
-            // ->with('kaoshinianji,kaoshisubject')
-            ->find();
+        // 获取班级信息
+        $list = BJ::field('id,school,ruxuenian,paixu')
+            ->get($id);
 
-        $list = $list->append(['nianjiids','subjectids']);
 
-        // 模板赋值
         $this->assign('list',$list);
 
-        //渲染模板
         return $this->fetch();
-
     }
 
 
 
 
 
-    // 更新学期信息
+    // 更新班级信息
     public function update($id)
     {
-        $validate = new \app\teach\validate\Kaoshi;
+        $validate = new \app\teach\validate\Xueqi;
 
         // 获取表单数据
-        $list = request()->only(['title','xueqi','category','bfdate','enddate','nianji','subject'],'post');
+        $list = request()->only(['title','xuenian','category','bfdate','enddate'],'put');
 
         // 验证表单数据
         $result = $validate->check($list);
         $msg = $validate->getError();
-
-        
 
         // 如果验证不通过则停止保存
         if(!$result){
             return json(['msg'=>$msg,'val'=>0]);;
         }
 
-        $list['id'] = $id;
+
         // 更新数据
-        $ks = new KS();
-        $ksdata = $ks::update($list);
-
-
-        // 删除参加考试的年级和学科
-        $ksdata->kaoshinianji()->delete();
-        $ksdata->kaoshisubject()->delete();
-
-
-        // 添加考试年级和学科
-        // 获取年级列表
-        $njname = nianjilist();
-        // 重组参加考试年级信息
-        foreach ($list['nianji'] as $key => $value) {
-            $nianjiarr[]=['nianji'=>$value,'nianjiname'=>$njname[$value]];
-        }
-
-        // 添加考试年级信息
-        $njdata = $ksdata->kaoshinianji()->saveAll($nianjiarr);
-
-
-
-        
-        // 重组参加考试学科信息
-        foreach ($list['subject'] as $key => $value) {
-            $subjectarr[]=['subjectid'=>$value];
-        }
-        // 添加考试学科信息
-        $xkdata = $ksdata->kaoshisubject()->saveAll($subjectarr);
-
-
+        $xq = new XQ();
+        $data = $xq->save($list,['id'=>$id]);
+        // $data = BJ::where('id',$id)->update($list);
 
         // 根据更新结果设置返回提示信息
-        $ksdata&&$njdata&&$xkdata ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data>=0 ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);
@@ -255,7 +215,7 @@ class Kaoshi extends Base
 
 
 
-    // 删除学期
+    // 删除班级
     public function delete($id)
     {
 
@@ -264,7 +224,7 @@ class Kaoshi extends Base
             $id = request()->delete('ids/a');// 获取delete请求方式传送过来的数据并转换成数据
         }
 
-        $data = KS::destroy($id);
+        $data = BJ::destroy($id);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -275,7 +235,7 @@ class Kaoshi extends Base
 
 
 
-    // 设置学期状态
+    // 设置班级状态
     public function setStatus()
     {
 
@@ -283,8 +243,8 @@ class Kaoshi extends Base
         $id = request()->post('id');
         $value = request()->post('value');
 
-        // 获取学期信息
-        $data = KS::where('id',$id)->update(['status'=>$value]);
+        // 获取班级信息
+        $data = BJ::where('id',$id)->update(['status'=>$value]);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -292,4 +252,58 @@ class Kaoshi extends Base
         // 返回信息
         return json($data);
     }
+
+
+    public function yidong($id)
+    {
+        // 获取操作参数
+        $caozuo = input('post.cz');
+
+        // 获取当前班级信息
+        $thisbj = BJ::get($id);
+
+        // 获取别一个班级信息
+        if( $caozuo > 0 )
+        {
+            $bjinfo = BJ::where('school',$thisbj->getData('school'))
+                    ->where('ruxuenian',$thisbj->ruxuenian)
+                    ->where('paixu','>=',$thisbj->paixu)
+                    ->order(['paixu'])
+                    ->limit('2')
+                    ->field('id,paixu')
+                    ->select();
+        }else{
+            $bjinfo = BJ::where('school',$thisbj->getData('school'))
+                    ->where('ruxuenian',$thisbj->ruxuenian)
+                    ->where('paixu','<=',$thisbj->paixu)
+                    ->order(['paixu'=>'desc'])
+                    ->limit('2')
+                    ->field('id,paixu')
+                    ->select();
+        }
+        if($bjinfo->count() == 2)
+        {
+            // 更改班级位置
+            foreach ($bjinfo as $key => $value) {
+                $value->paixu = $value->paixu + $caozuo;
+                $caozuo = $caozuo * -1;
+            }
+            $bjinfo = $bjinfo->toArray();
+
+            // 实例化班级数据模型
+            $bj = new BJ();
+            // 更新数据
+            $data = $bj->saveAll($bjinfo);
+            $data ? $data = ['msg'=>'移动成功','val'=>true] : $data = ['msg'=>'数据处理错误','val'=>false];
+        }else{
+            $data = ['msg'=>'已经到头啦~','val'=>true];
+        }
+
+        // 返回处理结果
+        return json($data);
+        
+    }
+
+
+
 }

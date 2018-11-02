@@ -61,8 +61,8 @@ class Subject extends Base
             $data = SJ::field('id,title,jiancheng,category,paixu,status')
                 ->order([$order_field=>$order])
                 ->limit($limit_start,$limit_length)
-                ->where('title','like','%'.$search.'%')
-                ->where('category','in',function($query) use($search)
+                ->whereOr('title','like','%'.$search.'%')
+                ->whereOr('category','in',function($query) use($search)
                 {
                     $query->table('catagory')
                         ->where('title','like','%'.$search.'%')
