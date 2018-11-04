@@ -141,6 +141,7 @@
 					
 					if(data.val == false){
 						layer.alert(data.msg);
+						return true;
 					}
 					var yd = $(obj).parents("tr").html();
 					if( caozuo === 1)
@@ -152,6 +153,7 @@
 					}
 					$(obj).parents("tr").remove();
 					layer.alert(data.msg);
+					return true;
 				},
 				error:function(data) {
 					layer.alert('移动失败');

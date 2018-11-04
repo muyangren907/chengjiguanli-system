@@ -20,7 +20,7 @@ class Rule extends Seeder
             ['id'=>1,'title'=>'系统管理','name' =>'system','paixu' =>5,'ismenu'=>true,'font' =>'Hui-iconfont-system'],
             ['id'=>2,'title' =>'管理员管理','name'=>'admin','paixu' =>4,'ismenu' =>true,'font'=>'Hui-iconfont-root'],
             ['id'=>3,'title' =>'教务管理','name'=>'teach','paixu' =>3,'ismenu' =>true,'font'=>'Hui-iconfont-yuyin2'],
-             ['id'=>4,'title' =>'师生管理','name'=>'renshi','paixu' =>2,'ismenu' =>true,'font'=>'Hui-iconfont-user-group'],
+             ['id'=>4,'title' =>'师生名单','name'=>'renshi','paixu' =>2,'ismenu' =>true,'font'=>'Hui-iconfont-user-group'],
                 // 二级菜单
                 // 系统设置
                 ['id'=>11,'title'=>'类别管理','name'=>'system/Category/index','paixu'=>1,'ismenu' =>true,'pid' =>1,'url'=>'/category',],
@@ -36,8 +36,8 @@ class Rule extends Seeder
                 ['id'=>33,'title'=>'学科列表','name'=>'teach/Subject/index','paixu'=>3,'ismenu' =>true,'pid' =>3,'url'=>'/subject',],
                 ['id'=>34,'title'=>'班级列表','name'=>'teach/Banji/index','paixu'=>4,'ismenu' =>true,'pid' =>3,'url'=>'/banji',],
                 // 人事管理
-                ['id'=>41,'title'=>'教师列表','name'=>'teach/Index/index','paixu'=>1,'ismenu' =>true,'pid' =>4,'url'=>'/teacher',],
-                ['id'=>42,'title'=>'学生列表','name'=>'teach/Studen/index','paixu'=>2,'ismenu' =>true,'pid' =>4,'url'=>'/student',],
+                ['id'=>41,'title'=>'教师列表','name'=>'renshi/Index/index','paixu'=>1,'ismenu' =>true,'pid' =>4,'url'=>'/teacher',],
+                ['id'=>42,'title'=>'学生列表','name'=>'renshi/Student/index','paixu'=>2,'ismenu' =>true,'pid' =>4,'url'=>'/student',],
                 
                     
                     // 教务管理
@@ -61,27 +61,30 @@ class Rule extends Seeder
                     ['title'=>'状态','name'=>'admin/Subject/status','paixu'=>5,'pid'=>33],
                     // 班级列表权限
                     ['title'=>'添加','name'=>'admin/Banji/create','paixu' =>1,'pid'=>34],
-                    ['title'=>'删除','name'=>'admin/Banji/delete','paixu'=>2,'pid'=>34],
-                    ['title'=>'编辑','name'=>'admin/Banji/edit','paixu'=>3,'pid'=>34,],
-                    ['title'=>'查看','name'=>'admin/Banji/read','paixu'=>4,'pid'=>34,],
-                    ['title'=>'状态','name'=>'admin/Banji/status','paixu'=>5,'pid'=>34],
+                    ['title'=>'移动','name'=>'admin/Banji/yidong','paixu'=>2,'pid'=>34],
+                    ['title'=>'状态','name'=>'admin/Banji/status','paixu'=>3,'pid'=>34],
+                    // ['title'=>'删除','name'=>'admin/Banji/delete','paixu'=>2,'pid'=>34],
+                    // ['title'=>'编辑','name'=>'admin/Banji/edit','paixu'=>3,'pid'=>34,],
+                    // ['title'=>'查看','name'=>'admin/Banji/read','paixu'=>4,'pid'=>34,],
+                    // ['title'=>'状态','name'=>'admin/Banji/status','paixu'=>5,'pid'=>34],
 
 
                     // 人事管理
                     // 教师管理权限
-                    ['title'=>'添加','name'=>'teach/Index/create','paixu' =>1,'pid'=>41],
-                    ['title'=>'删除','name'=>'teach/Index/delete','paixu'=>2,'pid'=>41],
-                    ['title'=>'编辑','name'=>'teach/Index/edit','paixu'=>3,'pid'=>41,],
-                    ['title'=>'查看','name'=>'teach/Index/read','paixu'=>4,'pid'=>41,],
-                    ['title'=>'状态','name'=>'teach/Index/status','paixu'=>5,'pid'=>41],
+                    ['title'=>'添加','name'=>'renshi/Index/create','paixu' =>1,'pid'=>41],
+                    ['title'=>'删除','name'=>'renshi/Index/delete','paixu'=>2,'pid'=>41],
+                    ['title'=>'编辑','name'=>'renshi/Index/edit','paixu'=>3,'pid'=>41,],
+                    ['title'=>'查看','name'=>'renshi/Index/read','paixu'=>4,'pid'=>41,],
+                    ['title'=>'状态','name'=>'renshi/Index/status','paixu'=>5,'pid'=>41],
+                    ['title'=>'批传','name'=>'renshi/Index/createAll','paixu'=>6,'pid'=>41],
+
                     // 学生管理权限
-                    ['title'=>'添加','name'=>'teach/Student/create','paixu' =>1,'pid'=>42],
-                    ['title'=>'状态','name'=>'teach/Student/status','paixu'=>2,'pid'=>42],
-                    ['title'=>'移动','name'=>'teach/Student/yidong','paixu'=>3,'pid'=>42],
-                    // ['title'=>'删除','name'=>'teach/Student/delete','paixu'=>2,'pid'=>42],
-                    // ['title'=>'编辑','name'=>'teach/Student/edit','paixu'=>3,'pid'=>42,],
-                    // ['title'=>'查看','name'=>'teach/Student/read','paixu'=>4,'pid'=>42,],
-                    // ['title'=>'状态','name'=>'teach/Student/status','paixu'=>5,'pid'=>42],
+                    ['title'=>'添加','name'=>'renshi/Student/create','paixu' =>1,'pid'=>42],
+                    ['title'=>'删除','name'=>'renshi/Student/delete','paixu'=>2,'pid'=>42],
+                    ['title'=>'编辑','name'=>'renshi/Student/edit','paixu'=>3,'pid'=>42,],
+                    ['title'=>'查看','name'=>'renshi/Student/read','paixu'=>4,'pid'=>42,],
+                    ['title'=>'状态','name'=>'renshi/Student/status','paixu'=>5,'pid'=>42],
+                    ['title'=>'批传','name'=>'renshi/Student/createAll','paixu'=>,'pid'=>42],
 
 
                     // 系统设置

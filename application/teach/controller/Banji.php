@@ -305,5 +305,28 @@ class Banji extends Base
     }
 
 
+    // 根据单位年级获取班级列表
+    public function mybanji()
+    {
+        $school = input('post.school');
+        $nianji = input('post.nianji');
+        // 获取班级id列表
+        $list = BJ::where('school',$school)
+                ->where('ruxuenian',$nianji)
+                // ->field('id')
+                ->select();
+        // 追加班级名
+        $list = $list->append(['title']);
+
+        // 声明班级空数组
+        $banji = array();
+        // 重组数据
+        foreach ($list as $key => $value) {
+            $banji[] = ['id'=>$value['id'],'title'=>$value['title']];
+        }
+        return json($banji);
+    }
+
+
 
 }
