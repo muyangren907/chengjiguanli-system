@@ -250,7 +250,9 @@ class Student extends Base
         $excel = new Myexcel();
 
         // 读取表格数据
-        $teacherinfo = $excel->readExcel($list['url']);
+        $stuinfo = $excel->readExcel($list['url']);
+
+        dump($stuinfo)
         
 
         
@@ -288,5 +290,11 @@ class Student extends Base
 
         // 返回信息
         return json($data);
+    }
+
+    public function download()
+    {
+        $download =  new \think\response\Download('student_template.xlsx');
+        return $download->name('student_template.xlsx');
     }
 }
