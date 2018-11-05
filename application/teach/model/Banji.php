@@ -35,9 +35,9 @@ class Banji extends Base
 
 
     // 班级学生数
-    public function getStusumAttr($value)
+    public function getStusumAttr()
     {
         // 返回学校名称
-        return 25;
+        return db('student')->where('banji',$this->getData('id'))->count();
     }
 }

@@ -10,11 +10,9 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class Myexcel
 {
-    // 读取电子表格
-    public function readExcel($filename = '/public/upload/Book1.xls')
-    {
+    /**读取数据**/
+    public function readXls($filename){
         $path = $filename;
-        dump($path);
         setlocale(LC_ALL, 'zh_CN');  //csv中文乱码
         $inputFileType = IOFactory::identify($path);
         $excelReader = IOFactory::createReader($inputFileType);
@@ -27,6 +25,7 @@ class Myexcel
         $sheet = $activeSheet->toArray();
         return $sheet;
     }
+
 
 
     // 生成电子表格

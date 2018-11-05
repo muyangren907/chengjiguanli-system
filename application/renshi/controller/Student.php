@@ -250,9 +250,9 @@ class Student extends Base
         $excel = new Myexcel();
 
         // 读取表格数据
-        $stuinfo = $excel->readExcel($list['url']);
+        $stuinfo = $excel->readXls($list['url']);
 
-        dump($stuinfo)
+        dump($stuinfo);
         
 
         
@@ -272,7 +272,7 @@ class Student extends Base
         // 获取表单上传文件 例如上传了001.jpg
         $file = request()->file('file');
         // 移动到框架应用根目录/uploads/ 目录下
-        $info = $file->move( '..\uploads\teacher');
+        $info = $file->move( '..\uploads\student');
         if($info){
             // 成功上传后 获取上传信息
             $list['category'] = $info->getExtension();
@@ -282,7 +282,7 @@ class Student extends Base
             //将文件信息保存
             $data = Fields::create($list);
 
-            $data ? $data = array('msg'=>'上传成功','val'=>true,'url'=>'..\uploads\teacher\\'.$list['url']) : $data = array('msg'=>'保存文件信息失败','val'=>false,'url'=>null);
+            $data ? $data = array('msg'=>'上传成功','val'=>true,'url'=>'..\uploads\student\\'.$list['url']) : $data = array('msg'=>'保存文件信息失败','val'=>false,'url'=>null);
         }else{
             // 上传失败获取错误信息
             $data = array('msg'=>$file->getError(),'val'=>false,'url'=>null);
