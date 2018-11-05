@@ -84,7 +84,7 @@ class Rule extends Seeder
                     ['title'=>'编辑','name'=>'renshi/Student/edit','paixu'=>3,'pid'=>42,],
                     ['title'=>'查看','name'=>'renshi/Student/read','paixu'=>4,'pid'=>42,],
                     ['title'=>'状态','name'=>'renshi/Student/status','paixu'=>5,'pid'=>42],
-                    ['title'=>'批传','name'=>'renshi/Student/createAll','paixu'=>,'pid'=>42],
+                    ['title'=>'批传','name'=>'renshi/Student/createAll','paixu'=>'6','pid'=>42],
 
 
                     // 系统设置

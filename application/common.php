@@ -93,3 +93,33 @@ function banjinamelist()
 
 	return $bjarr;
 }
+
+
+/**
+* $date是时间戳
+* $type为1的时候是虚岁,2的时候是周岁
+*/
+function getAgeByBirth($date,$type = 1){
+   $nowYear = date("Y",time());
+   $nowMonth = date("m",time());
+   $nowDay = date("d",time());
+   $birthYear = date("Y",$date);
+   $birthMonth = date("m",$date);
+   $birthDay = date("d",$date);
+   if($type == 1){
+    $age = $nowYear - ($birthYear - 1);
+   }elseif($type == 2){
+    if($nowMonth<$birthMonth){
+     $age = $nowYear - $birthYear - 1;
+    }elseif($nowMonth==$birthMonth){
+     if($nowDay<$birthDay){
+      $age = $nowYear - $birthYear - 1;
+     }else{
+      $age = $nowYear - $birthYear;
+     }
+    }else{
+     $age = $nowYear - $birthYear;
+    }
+   }
+   return $age;
+}

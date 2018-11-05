@@ -1,6 +1,6 @@
 {extend name="common@create" /}
 {block name="formaa"}
-	<form action="/Student" method="POST" class="form form-horizontal" id="form-member-add">
+	<form action="/student" method="POST" class="form form-horizontal" id="form-member-add">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>学生姓名：</label>
 			<div class="formControls col-xs-8 col-sm-9">
@@ -10,22 +10,22 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>身份证号码：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="只做识别学生用，不会对外显示" id="shenfenzhenghao" name="shenfenzhenghao" onblur="shenfenzheng()">
+				<input type="text" class="input-text" value="" placeholder="只做识别学生用，不会对外显示" id="shenfenzhenghao" name="shenfenzhenghao" onchange="shenfenzheng()">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>性别：</label>
 			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
 				<div class="radio-box">
-					<input name="sex" type="radio" id="sex-1" value="1" required="true">
+					<input name="sex" type="radio" id="sex-1" value="男" required="true">
 					<label for="sex-1">男</label>
 				</div>
 				<div class="radio-box">
-					<input type="radio" id="sex-2" value="0" name="sex">
+					<input type="radio" id="sex-2" value="女" name="sex">
 					<label for="sex-2">女</label>
 				</div>
 				<div class="radio-box">
-					<input type="radio" id="sex-3" value="2" name="sex">
+					<input type="radio" id="sex-3" value="保密" name="sex">
 					<label for="sex-3">保密</label>
 				</div>
 			</div>
@@ -39,9 +39,9 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>学校：</label>
 			<div class="formControls col-xs-8 col-sm-9 f-l">
-				<span class="select-box f-l" style="width:180px;">
+				<span class="select-box f-l" style="width:250px;">
 				{php} $school = new app\system\model\School; $school = $school->where('jibie','>',1)->field('id,title')->all();{/php}
-				<select class="select" id="danwei" name="danwei" size="1">
+				<select class="select" id="school" name="school" size="1">
 					<option value="">--请选择现工作单位--</option>
 					{volist name="school" id="vo"}
 						<option value="{$vo.id}">{$vo.title}</option>
@@ -86,50 +86,39 @@
 {block name="yanzheng"}
 <script type="text/javascript">
 
+	// 匹配用户名
+	$.validator.addMethod("zh",function(value,element){
+		var tel = /^[\u4e00-\u9fa5]*$/;
+		return this.optional(element) || tel.test(value);
+	}, "请输入中文");
+
 	// 设置表单验证规则
 	var myrules = {
 			xingming:{
 				required:true,
 				zh:true,
-				rangelength:[2,8]
+				rangelength:[2,5],
 			},
-			sex:{
+			shenfenzhenghao:{
 				required:true,
-			},
-			danwei:{
-				required:true,
+				rangelength:[18,18],
 				digits:true
-			},
-			quanpin:{
-				required:true,
-				rangelength:[1,30],
-				qp:true,
-			},
-			shoupin:{
-				required:true,
-				rangelength:[1,5],
-				qp:true,
 			},
 			shengri:{
+				required:true,
 				dateISO:true
 			},
-			zhiwu:{
+			school:{
+				required:true,
 				digits:true
 			},
-			zhicheng:{
+			ruxuenian:{
+				required:true,
+				digits:true,
+			},
+			banji:{
+				required:true,
 				digits:true
-			},
-			xueli:{
-				digits:true
-			},
-			biye:{
-				rangelength:[1,50]
-			},
-			zhuaye:{
-				rangelength:[1,20]
-			},
-			worktime:{
-				dateISO:true
 			},
 		};
 
@@ -140,9 +129,9 @@
 	function getbanji()
 	{
 		// 获取单位id
-		var danwei = $('#danwei').val();
+		var danwei = $('#school').val();
 		if(danwei== null || danwei==''){
-			$('#danwei').focus();
+			$('#school').focus();
 			layer.alert('请先选择学校');
 			return true;
 		}
@@ -160,7 +149,6 @@
 				for (var index in data){
 					var se = '<option value="' + data[index]['id'] + '">' + data[index]['title'] + '</option>';
 					str = str + se;
-
 				}
 				$('#banji').append(str);
 			},
@@ -175,49 +163,32 @@
 	{
 		// 获取身份证号
 		var str = $('#shenfenzhenghao').val();
-		if(str.length = 18)
+		if(str.length === 18)
 		{
 			// 获取并设置性别
 			var xb = str.substring(16,17)%2;
 			$(".radio-box").find('div').removeClass('checked');
 			if(xb ===1)
 			{
-				
 				$(".radio-box:eq(0)").find('div').addClass('checked');
+				$('#sex-1').attr('checked', true);
+
 			}else{
 				$(".radio-box:eq(1)").find('div').addClass('checked');
+				$('#sex-2').attr('checked', true);
 			}
-		}
-
-
-
-
-
-
-
-
-
-			// aa = $("input[type=radio][value=1]").val();
-		// 	aa = $("#sex-2").val();
-			// layer.alert(aa);
-				
-			
-			// 获取并设置出生日期
-			// 获取年
-			var y = str.substring(6,10);
-			// 获取月
-			var m = str.substring(10,12);
-			// 获取日
-			var d = str.substring(12,14);
-
-			var shengri = y + '-' + m + '-' + d;
-
+			// 拼接出生日期
+			var shengri = str.substring(6,10) + '-' + str.substring(10,12) + '-' + str.substring(12,14);
 			$('#shengri').val(shengri);
-		// 	// layer.alert(shengri);
+			// 单位获得焦点
+			$('#school').focus();
 
-		// 	// layer.alert($('#shenri').val());
-		// }
-		$('#danwei').focus();
+		}else{
+			$(".radio-box").find('div').removeClass('checked');
+			$('#shengri').val('');
+			// 单位获得焦点
+			$('#shenfenzhenghao').focus();
+		}
 	}
 </script>
 {/block}

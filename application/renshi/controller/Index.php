@@ -69,6 +69,7 @@ class Index extends Base
         }
 
         $datacnt = $data->count();
+        $data = $data->append(['age']);
         
         
 

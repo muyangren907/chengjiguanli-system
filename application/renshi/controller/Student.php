@@ -53,7 +53,7 @@ class Student extends Base
         // 获取记录集总数
         $cnt = STU::count();
         //查询数据
-        $data =STU::field('id,xingming,sex,shengri,status')
+        $data =STU::field('id,xingming,sex,shengri,banji,school,status')
             ->order([$order_field=>$order])
             ->limit($limit_start,$limit_length)
             ->all();
@@ -61,14 +61,18 @@ class Student extends Base
 
         // 如果需要查询
         if($search){
-            $data = STU::field('id,xingming,sex,shengri,status')
+            $data = STU::field('id,xingming,sex,shengri,banji,school,status')
                 ->order([$order_field=>$order])
                 ->limit($limit_start,$limit_length)
-                ->where('xingming','like','%'.$search.'%')
+                ->whereOr('xingming','like','%'.$search.'%')
+                ->whereOr('school','in',function($query) use($search){
+                    $query->name('school')->where('title','like','%'.$search.'%')->field('id');
+                })
                 ->all();
         }
 
         $datacnt = $data->count();
+        $data = $data->append(['banjititle','age']);
         
         
 
@@ -108,8 +112,7 @@ class Student extends Base
 
 
         // 获取表单数据
-        $list = request()->only(['xingming','sex','quanpin','shoupin','shengri','zhiwu','zhicheng','xueli','biye','worktime','zhuanye','danwei'],'post');
-
+        $list = request()->only(['xingming','sex','shenfenzhenghao','shengri','school','ruxuenian','banji'],'post');
 
         // 验证表单数据
         $result = $validate->check($list);
@@ -145,7 +148,7 @@ class Student extends Base
     {
 
         // 获取学生信息
-        $list = STU::field('id,xingming,sex,quanpin,shoupin,shengri,zhiwu,zhicheng,xueli,biye,worktime,zhuanye,danwei')
+        $list = STU::field('id,xingming,sex,shenfenzhenghao,shengri,banji,school,status')
             ->get($id);
 
 
@@ -164,7 +167,7 @@ class Student extends Base
         $validate = new \app\renshi\validate\Student;
 
         // 获取表单数据
-        $list = request()->only(['xingming','sex','quanpin','shoupin','shengri','zhiwu','zhicheng','xueli','biye','worktime','zhuanye','danwei'],'put');
+        $list = request()->only(['xingming','sex','shengri','school','shenfenzhenghao','ruxuenian','banji'],'put');
 
         // 验证表单数据
         $result = $validate->check($list);
@@ -177,9 +180,8 @@ class Student extends Base
 
 
         // 更新数据
-        $teacher = new Teacher();
-        $data = $teacher->save($list,['id'=>$id]);
-        // $data = STU::where('id',$id)->update($list);
+        $stu = new STU();
+        $data = $stu->save($list,['id'=>$id]);
 
         // 根据更新结果设置返回提示信息
         $data>=0 ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];

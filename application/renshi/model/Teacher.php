@@ -74,5 +74,11 @@ class Teacher extends Base
         return $this->getcategory($value);
     }
 
+    // 年龄获取器
+    public function getAgeAttr()
+    {
+        return getAgeByBirth($this->getdata('shengri'),2);
+    }
+
 
 }
