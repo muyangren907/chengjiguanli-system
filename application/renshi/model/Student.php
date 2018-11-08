@@ -46,13 +46,5 @@ class Student extends Base
         return $sex[$value];
     }
 
-    // 性别获取器
-    public function setSexAttr($value)
-    {
-        $sex = array('0'=>'女','1'=>'男','2'=>'保密');
-        $val = array_search($value,$sex);
-        return $val;
-    }
-
-
+    
 }

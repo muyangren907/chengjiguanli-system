@@ -241,18 +241,72 @@ class Student extends Base
     // 批量保存
     public function saveAll()
     {
-        // 未完成
-
         // 获取表单数据
-        $list = request()->only(['danwei','url'],'post');
+        $list = request()->only(['school','url'],'post');
 
         // 实例化操作表格类
         $excel = new Myexcel();
 
         // 读取表格数据
         $stuinfo = $excel->readXls($list['url']);
+        // 删除标题行
+        array_splice($stuinfo,0,3);
+        // $upcnt = count($stuinfo);
 
-        dump($stuinfo);
+        // 实例化班级数据模型
+        $banji = new \app\teach\model\Banji;
+        $njlist = nianjilist();
+        $bjlist = banjinamelist();
+
+
+        $i = 0;
+        $bfbanji = '';
+        $bj = '';
+        $students = array();
+        // 重新计算组合数据，如果存在数据则更新数据
+        foreach ($stuinfo as $key => $value) {
+            // 判断本行班级与上行班级数据是否相等，如果不相等则从数据库查询班级ID
+            if($bfbanji != $value[3])
+            {
+                // 获取入学年与排序
+                $paixu = array_search(substr($value[3],9),$bjlist);
+                $ruxuenian = array_search(substr($value[3],0,9),$njlist);
+                // 查询班级ID
+                $bj = $banji::where('school',$list['school'])
+                    ->where('ruxuenian',$ruxuenian)
+                    ->where('paixu',$paixu)
+                    ->value('id');
+            }
+            $bfbanji = $value[3];
+            // 如果班级ID为空，删除数据并跳出当前循环
+            if($bj == null || $bj =='' )
+            {
+                continue;
+            }
+            
+
+            $students[$i]['banji'] = $bj;
+            $students[$i]['xingming'] = $value[1];
+            $students[$i]['shenfenzhenghao'] = $value[2];
+            substr($value[2],16,17)%2 == 1 ? $students[$i]['sex']=1 :$students[$i]['sex']=0;
+            $students[$i]['shengri'] = substr($value[2],6,4).'-'.substr($value[2],10,2).'-'.substr($value[2],12,2);
+            
+            $students[$i]['school'] = $list['school'];
+            $stuid = STU::where('shenfenzhenghao',$value[2])->value('id');
+            $stuid > 1 ? $students[$i]['id'] = $stuid : true;
+            // 销毁无用变量
+            $i++;
+        }
+        
+        
+        // 实例化学生信息数据模型
+        $student = new STU();
+
+        // 保存或更新信息
+        $data = $student->saveAll($students);
+        // $cnt = $data->count();
+
+        $data ? $data = ['msg'=>'数据同步成功','val'=>true] : ['msg'=>'数据同步失败','val'=>false];
         
 
         

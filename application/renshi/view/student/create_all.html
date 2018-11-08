@@ -5,6 +5,12 @@
 {block name="formaa"}
 	<div class="form form-horizontal">
 		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">注意：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				批传是以本地数据为准同步服务器数据：如果服务器不存在本地数据会创建新数据，如果服务器存在本地数据，则会更新服务器数据，不支持删除。
+			</div>
+		</div>
+		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">模板：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<a href="{:url('download')}"class="btn btn-primary radius">下载模板</a>
@@ -29,7 +35,7 @@
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>工作单位：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>学校：</label>
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:300px;">
 				{php}
@@ -39,7 +45,7 @@
 						->field('id,title')
 						->all();
 				{/php}
-				<select class="select" id="danwei" name="danwei" size="1">
+				<select class="select" id="school" name="school" size="1">
 					<option value="">--请选择现工作单位--</option>
 					{volist name="danwei" id="vo" key="k"}
 						<option value="{$vo.id}">{$vo.title}</option>

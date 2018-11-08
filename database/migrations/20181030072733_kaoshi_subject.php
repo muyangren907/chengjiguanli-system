@@ -35,6 +35,9 @@ class KaoshiSubject extends Migrator
         $table
             ->addColumn('kaoshiid','integer',['limit'=>11,'null'=>false,'comment'=>'考试id'])
             ->addColumn('subjectid','integer',['limit'=>170,'null'=>false,'comment'=>'年级'])
+            ->addColumn('manfen','integer',['limit'=>3,'null'=>false,'comment'=>'满分'])
+            ->addColumn('youxiu','integer',['limit'=>3,'null'=>false,'comment'=>'优秀'])
+            ->addColumn('jige','integer',['limit'=>3,'null'=>false,'comment'=>'及格'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
             ->create();
     }

@@ -14,7 +14,7 @@ class Student extends Validate
      */	
 	protected $rule = [
         'xingming|姓名'     =>  'require|chs|length:2,8',
-        'sex|性别'            =>      'require|chs|max:2',
+        'sex|性别'            =>      'require|number',
         'shengri|出生日期'        =>      'date',
         'shenfenzhenghao|身份证号' =>      "require|idCard",
         'school|学校'        =>      'require|number',
