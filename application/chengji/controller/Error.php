@@ -1,6 +1,6 @@
 <?php
 
-namespace app\renshi\controller;
+namespace app\chengji\controller;
 
 // 引用空控制器基类
 use app\common\controller\BaseError;
