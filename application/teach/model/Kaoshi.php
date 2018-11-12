@@ -38,10 +38,10 @@ class Kaoshi extends Base
         return $this->hasMany('KaoshiNianji','kaoshiid','id')->field('id,kaoshiid,nianji,nianjiname');
     } 
 
-    // 参考学年关联表
+    // 参考学科关联表
     public function kaoshisubject()
     {
-        return $this->hasMany('KaoshiSubject','kaoshiid','id')->field('kaoshiid,subjectid');
+        return $this->hasMany('KaoshiSubject','kaoshiid','id')->field('kaoshiid,subjectid,manfen');
     }
 
     // 类别获取器
@@ -54,6 +54,12 @@ class Kaoshi extends Base
     public function getXueqiAttr($value)
     {
         return db('xueqi')->where('id',$value)->value('title');
+    }
+
+    // 组织考试单位获取器
+    public function getZuzhiAttr($value)
+    {
+        return db('school')->where('id',$value)->value('title');
     }
 
     // 获取参考年级列表并返回nianji字段值
@@ -106,5 +112,20 @@ class Kaoshi extends Base
             }
         }
         return $str;
+    }
+
+    // 满分编辑数据
+    public function getManfeneditAttr()
+    {
+        // 获取各学科满分信息
+        $subject = $this->with('kaoshisubject')->get($this->getAttr('id'));
+
+        $manfenlist = array();
+        // 重新组成数组
+        foreach ($subject->kaoshisubject as $key => $value) {
+             $manfenlist[$value->subjectid] = $value->manfen;
+        }
+        // 返回数组
+        return $manfenlist;
     }
 }

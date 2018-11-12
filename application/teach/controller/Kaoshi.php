@@ -111,7 +111,7 @@ class Kaoshi extends Base
 
 
         // 获取表单数据
-        $list = request()->only(['title','xueqi','category','bfdate','enddate','nianji','subject','manfen'],'post');
+        $list = request()->only(['title','xueqi','category','bfdate','enddate','nianji','subject','manfen','zuzhi'],'post');
 
 
         // 验证表单数据
@@ -144,23 +144,17 @@ class Kaoshi extends Base
 
 
 
-        // 过滤掉空值
-        $delarr = array();
-        foreach ($list['manfen'] as $key => $value) {
-            if($value == '')
-            {
-                unset($list['manfen'][$value]);
-            }
-        }
+        // 过滤分数掉空值
+        $list['manfen'] = array_values(array_filter($list['manfen']));
 
-        $i = 0;
+
+
         // 重组参加考试学科信息
         foreach ($list['subject'] as $key => $value) {
-            $subjectarr[$i]=[
+            $subjectarr[]=[
                 'subjectid'=>$value,
-                'manfen'=>$list['manfen'][$i]
+                'manfen'=>$list['manfen'][$key]
             ];
-            $i++;
         }
 
         // 添加考试学科信息
@@ -188,11 +182,11 @@ class Kaoshi extends Base
 
         // 获取学期信息
         $list = KS::where('id',$id)
-            ->field('id,title,xueqi,category,bfdate,enddate')
-            // ->with('kaoshinianji,kaoshisubject')
+            ->field('id,title,xueqi,category,bfdate,enddate,zuzhi')
+            // ->with('kaoshisubject')
             ->find();
 
-        $list = $list->append(['nianjiids','subjectids']);
+        $list = $list->append(['nianjiids','manfenedit']);
 
         // 模板赋值
         $this->assign('list',$list);
@@ -212,7 +206,7 @@ class Kaoshi extends Base
         $validate = new \app\teach\validate\Kaoshi;
 
         // 获取表单数据
-        $list = request()->only(['title','xueqi','category','bfdate','enddate','nianji','subject'],'post');
+        $list = request()->only(['title','xueqi','category','bfdate','enddate','nianji','subject','zuzhi','manfen'],'post');
 
         // 验证表单数据
         $result = $validate->check($list);
@@ -250,9 +244,17 @@ class Kaoshi extends Base
 
 
         
+        // 过滤分数掉空值
+        $list['manfen'] = array_values(array_filter($list['manfen']));
+
+
+
         // 重组参加考试学科信息
         foreach ($list['subject'] as $key => $value) {
-            $subjectarr[]=['subjectid'=>$value];
+            $subjectarr[]=[
+                'subjectid'=>$value,
+                'manfen'=>$list['manfen'][$key]
+            ];
         }
         // 添加考试学科信息
         $xkdata = $ksdata->kaoshisubject()->saveAll($subjectarr);

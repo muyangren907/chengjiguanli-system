@@ -14,6 +14,7 @@ class Kaoshi extends Validate
      */	
 	protected $rule = [
         'title|标题'      =>  'require|length:1,25',
+        'zuzhi|组织单位'      =>  'require|number',
         'xueqi|学期'      =>  'require|number',
         'category|分类'      =>  'require|number',
         'bfdate|考试时间'      =>  'require|date',

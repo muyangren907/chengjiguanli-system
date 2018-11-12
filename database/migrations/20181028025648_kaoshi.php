@@ -34,8 +34,9 @@ class Kaoshi extends Migrator
         // 添加当前表字段
         $table
             ->addColumn('title','string',['limit'=>25,'null'=>false,'comment'=>'考试名称'])
-            ->addColumn('xueqi','string',['limit'=>11,'null'=>false,'comment'=>'学期'])
-            ->addColumn('category','string',['limit'=>11,'null'=>false,'comment'=>'类别'])
+            ->addColumn('zuzhi','integer',['limit'=>11,'null'=>false,'comment'=>'组织考试单位'])
+            ->addColumn('xueqi','integer',['limit'=>11,'null'=>false,'comment'=>'学期'])
+            ->addColumn('category','integer',['limit'=>11,'null'=>false,'comment'=>'类别'])
             ->addColumn('bfdate','integer',['limit'=>11,'null'=>false,'comment'=>'开始日期'])
             ->addColumn('enddate','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'结束日期'])
             ->addColumn('status','boolean',['limit'=>1,'default'=>'1','null'=>false,'comment'=>'0=禁用，1=正常'])

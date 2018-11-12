@@ -2,6 +2,23 @@
 {block name="formaa"}
 	<form action="/kaoshi/{$list.id}" method="PUT" class="form form-horizontal" id="form-member-add">
 		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>组织单位：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:180px;">
+				{php}
+					$school = new app\system\model\School;
+					$school = $school->where('status',1)->field('id,title')->all();
+				{/php}
+				<select class="select" id="zuzhi" name="zuzhi" size="1">
+					<option value="">--请选择组织单位--</option>
+					{volist name="school" id="vo"}
+						<option value="{$vo.id}" {eq name="$list.zuzhi" value="$vo.title" }selected{/eq}>{$vo.title}</option>
+					{/volist}
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>标题：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" value="{$list.title}" placeholder="显示的考试名称" id="title" name="title">
@@ -65,10 +82,26 @@
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>参考学科：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 					<dt>{foreach $sjlist as $key=>$vo } 
-						<label class="ml-10">
-							<input type="checkbox" value="{$vo.id}" name="subject[]" id="subject{$vo.id}"  {in name="vo.id" value="$list.subjectids"}checked{/in}>
-							{$vo.title}
-						</label>{/foreach}
+							{present name="$list['manfenedit'][$vo.id]"}
+							<dd>
+							<label class="ml-10">
+								<input class=" mt-10" type="checkbox" value="{$vo.id}" name="subject[]" id="subject{$vo.id}" onclick="xueke(this)" checked="true">
+								{$vo.title}
+							</label>
+							<input type="text" name="manfen[]" value="{$list['manfenedit'][$vo.id]}" id="manfen[]" class="input-text ml-15 mt-5" placeholder="满分默认100" style="max-width: 250px" onchange="manfenbut(this)" value="98">
+							</dd>
+							{else /}
+							<dd>
+							<label class="ml-10">
+								<input class=" mt-10" type="checkbox" value="{$vo.id}" name="subject[]" id="subject{$vo.id}" onclick="xueke(this)">
+								{$vo.title}
+							</label>
+							<input type="text" name="manfen[]" value="" id="manfen[]" class="input-text ml-15 mt-5" placeholder="满分默认100" style="max-width: 250px" onchange="manfenbut(this)">
+							</dd>
+							{/present}
+
+						
+					{/foreach}
 					</dt>
 			</div>
 		</div>
@@ -114,5 +147,29 @@
 
 	// 设置表单提交方式
 	var mytype = 'PUT';
+
+	// 选择学科添加满分文本框
+	function xueke(obj)
+	{
+		// 当选中复选框，则添加满分，否则删除满分
+		if($(obj).prop('checked') == true)
+		{
+			$(obj).parents('dd').find('input[type=text]').val(100);
+		}else{
+			$(obj).parents('dd').find('input[type=text]').val('');
+		}
+	}
+
+	// 添满分后自动选复选框
+	function manfenbut(obj)
+	{
+		// 当文本框输入数字时，则选中复选框，否则不选中
+		if( $(obj).val() > 0 )
+		{
+			$(obj).parents('dd').find('input[type=checkbox]').attr('checked',true);
+		}else{
+			$(obj).parents('dd').find('input[type=checkbox]').attr('checked',false);
+		}
+	}
 </script>
 {/block}
