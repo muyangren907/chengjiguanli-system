@@ -65,11 +65,16 @@
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>参考学科：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 					<dt>{foreach $sjlist as $key=>$vo } 
+						<dd>
 						<label class="ml-10">
-							<input type="checkbox" value="{$vo.id}" name="subject[]" id="subject{$vo.id}">
+							<input class=" mt-10" type="checkbox" value="{$vo.id}" name="subject[]" id="subject{$vo.id}" onclick="xueke(this)">
 							{$vo.title}
-						</label>{/foreach}
+
+						</label><input type="text" name="manfen[]" value="" id="manfen[]" class="input-text ml-15 mt-5" placeholder="满分默认100" style="max-width: 250px" onchange="manfenbut(this)">
+					</dd>
+					{/foreach}
 					</dt>
+					
 			</div>
 		</div>
 		<div class="row cl">
@@ -114,5 +119,30 @@
 
 	// 设置表单提交方式
 	var mytype = 'POST';
+
+
+	// 选择学科添加满分文本框
+	function xueke(obj)
+	{
+		// 当选中复选框，则添加满分，否则删除满分
+		if($(obj).prop('checked') == true)
+		{
+			$(obj).parents('dd').find('input[type=text]').val(100);
+		}else{
+			$(obj).parents('dd').find('input[type=text]').val('');
+		}
+	}
+
+	// 添满分后自动选复选框
+	function manfenbut(obj)
+	{
+		// 当文本框输入数字时，则选中复选框，否则不选中
+		if( $(obj).val() > 0 )
+		{
+			$(obj).parents('dd').find('input[type=checkbox]').attr('checked',true);
+		}else{
+			$(obj).parents('dd').find('input[type=checkbox]').attr('checked',false);
+		}
+	}
 </script>
 {/block}

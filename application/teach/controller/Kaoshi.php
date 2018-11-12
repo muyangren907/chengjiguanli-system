@@ -111,7 +111,7 @@ class Kaoshi extends Base
 
 
         // 获取表单数据
-        $list = request()->only(['title','xueqi','category','bfdate','enddate','nianji','subject'],'post');
+        $list = request()->only(['title','xueqi','category','bfdate','enddate','nianji','subject','manfen'],'post');
 
 
         // 验证表单数据
@@ -144,10 +144,25 @@ class Kaoshi extends Base
 
 
 
+        // 过滤掉空值
+        $delarr = array();
+        foreach ($list['manfen'] as $key => $value) {
+            if($value == '')
+            {
+                unset($list['manfen'][$value]);
+            }
+        }
+
+        $i = 0;
         // 重组参加考试学科信息
         foreach ($list['subject'] as $key => $value) {
-            $subjectarr[]=['subjectid'=>$value];
+            $subjectarr[$i]=[
+                'subjectid'=>$value,
+                'manfen'=>$list['manfen'][$i]
+            ];
+            $i++;
         }
+
         // 添加考试学科信息
         $xkdata = $ksdata->kaoshisubject()->saveAll($subjectarr);
 

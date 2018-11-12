@@ -34,7 +34,7 @@ class KaoshiSubject extends Migrator
         // 添加当前表字段
         $table
             ->addColumn('kaoshiid','integer',['limit'=>11,'null'=>false,'comment'=>'考试id'])
-            ->addColumn('subjectid','integer',['limit'=>170,'null'=>false,'comment'=>'年级'])
+            ->addColumn('subjectid','integer',['limit'=>11,'null'=>false,'comment'=>'学科id'])
             ->addColumn('manfen','integer',['limit'=>3,'null'=>false,'comment'=>'满分'])
             ->addColumn('youxiu','integer',['limit'=>3,'null'=>false,'comment'=>'优秀'])
             ->addColumn('jige','integer',['limit'=>3,'null'=>false,'comment'=>'及格'])
