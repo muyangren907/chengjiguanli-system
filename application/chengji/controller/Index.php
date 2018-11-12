@@ -6,5 +6,9 @@ use app\common\controller\Base;
 
 class Index extends Base
 {
-    
+    // 导出参加考试学生二维码
+    public function erweima()
+    {
+    	return $this->fetch();
+    }
 }

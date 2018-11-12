@@ -2,6 +2,23 @@
 {block name="formaa"}
 	<form action="/kaoshi" method="POST" class="form form-horizontal" id="form-member-add">
 		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>组织单位：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:180px;">
+				{php}
+					$school = new app\system\model\School;
+					$school = $school->where('status',1)->field('id,title')->all();
+				{/php}
+				<select class="select" id="zuzhi" name="zuzhi" size="1">
+					<option value="">--请选择组织单位--</option>
+					{volist name="school" id="vo"}
+						<option value="{$vo.id}">{$vo.title}</option>
+					{/volist}
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>标题：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" value="" placeholder="显示的考试名称" id="title" name="title">

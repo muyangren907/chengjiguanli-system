@@ -2,6 +2,7 @@
 
 namespace app\teach\model;
 
+// 引用数据模型基类
 use app\common\model\Base;
 
 

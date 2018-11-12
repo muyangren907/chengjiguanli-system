@@ -20,7 +20,8 @@ class Rule extends Seeder
             ['id'=>1,'title'=>'系统管理','name' =>'system','paixu' =>5,'ismenu'=>true,'font' =>'Hui-iconfont-system'],
             ['id'=>2,'title' =>'管理员管理','name'=>'admin','paixu' =>4,'ismenu' =>true,'font'=>'Hui-iconfont-root'],
             ['id'=>3,'title' =>'教务管理','name'=>'teach','paixu' =>3,'ismenu' =>true,'font'=>'Hui-iconfont-yuyin2'],
-             ['id'=>4,'title' =>'师生名单','name'=>'renshi','paixu' =>2,'ismenu' =>true,'font'=>'Hui-iconfont-user-group'],
+            ['id'=>4,'title' =>'师生名单','name'=>'renshi','paixu' =>2,'ismenu' =>true,'font'=>'Hui-iconfont-user-group'],
+            ['id'=>5,'title' =>'成绩采集','name'=>'chengji','paixu' =>1,'ismenu' =>true,'font'=>'Hui-iconfont-yuedu'],
                 // 二级菜单
                 // 系统设置
                 ['id'=>11,'title'=>'类别管理','name'=>'system/Category/index','paixu'=>1,'ismenu' =>true,'pid' =>1,'url'=>'/category',],
@@ -38,6 +39,10 @@ class Rule extends Seeder
                 // 人事管理
                 ['id'=>41,'title'=>'教师列表','name'=>'renshi/Index/index','paixu'=>1,'ismenu' =>true,'pid' =>4,'url'=>'/teacher',],
                 ['id'=>42,'title'=>'学生列表','name'=>'renshi/Student/index','paixu'=>2,'ismenu' =>true,'pid' =>4,'url'=>'/student',],
+                // 成绩采集
+                ['id'=>51,'title'=>'扫码录入','name'=>'chengji/Index/malu','paixu'=>1,'ismenu' =>true,'pid' =>5,'url'=>'/chengji',],
+                ['id'=>52,'title'=>'表格录入','name'=>'chengji/Student/biaolu','paixu'=>2,'ismenu' =>true,'pid' =>5,'url'=>'/chengji',],
+                ['id'=>53,'title'=>'生成二维码','name'=>'chengji/Student/erweima','paixu'=>3,'ismenu' =>true,'pid' =>5,'url'=>'/chengji',],
                 
                     
                     // 教务管理

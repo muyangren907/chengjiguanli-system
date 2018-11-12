@@ -2,7 +2,9 @@
 
 namespace app\renshi\model;
 
+// 引用数据模型基类
 use app\common\model\Base;
+// 引用班级数据模型类
 use app\teach\model\Banji;
 
 class Student extends Base

@@ -346,9 +346,23 @@ class Student extends Base
         return json($data);
     }
 
+    // 下载表格模板
     public function download()
     {
         $download =  new \think\response\Download('student_template.xlsx');
         return $download->name('student_template.xlsx');
     }
+
+    // 查询参加考试学生名单
+    public function ckStudents()
+    {
+
+    }
+
+    // 导出数据
+    public function outCankao($data)
+    {
+        
+    }
+
 }

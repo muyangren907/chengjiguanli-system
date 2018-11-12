@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 
 //系统设置路由
-Route::resource('chengji','chengji/Index');
+Route::get('chengji/erweima','chengji/Index/erweima');
 
 
 
