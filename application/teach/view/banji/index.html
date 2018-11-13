@@ -21,7 +21,7 @@
 			批量删除
 			</a>
 			<!-- 添加按钮 -->
-			<a href="javascript:;" onclick=add('添加班级',"/banji/create",600,330) class="btn btn-primary radius">
+			<a href="javascript:;" onclick=add('添加班级',"/banji/create",600,280) class="btn btn-primary radius">
 				<i class="Hui-iconfont">&#xe600;</i>
 				添加班级
 			</a>
@@ -93,7 +93,7 @@
 					// 启用按钮
 					startbut = '<a style="text-decoration:none" onClick="start(this,'+ row.id +')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>';
 					// 编辑按钮
-					editbut = '<a title="编辑" href="javascript:void(0);" onclick=add("编辑","/banji/'+row.id+'/edit",600,330) class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
+					editbut = '<a title="编辑" href="javascript:void(0);" onclick=add("编辑","/banji/'+row.id+'/edit",600,280) class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
 					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/banji/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
 					bfbut = '<a title="前移" href="javascript:void(0);" onclick=yidong(this,"/banji/'+row.id+'/yidong",-1) class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6d4;</i></a>';
 					endbut = '<a title="后移" href="javascript:void(0);" onclick=yidong(this,"/banji/'+row.id+'/yidong",1) class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6d7;</i></a>';

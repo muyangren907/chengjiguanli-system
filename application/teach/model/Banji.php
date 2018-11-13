@@ -41,4 +41,14 @@ class Banji extends Base
         // 返回学校名称
         return db('student')->where('banji',$this->getData('id'))->count();
     }
+
+
+    // 根据学校和年级获取班级id
+    public function getBanjiidsAttr()
+    {
+        return $this
+            ->where('school',$this->getData('school'))
+            ->where('ruxuenian',$this->getData('ruxuenian'))
+            ->column('id,paixu');
+    }
 }

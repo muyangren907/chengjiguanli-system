@@ -313,7 +313,6 @@ class Banji extends Base
         // 获取班级id列表
         $list = BJ::where('school',$school)
                 ->where('ruxuenian',$nianji)
-                // ->field('id')
                 ->select();
         // 追加班级名
         $list = $list->append(['title']);
@@ -325,6 +324,44 @@ class Banji extends Base
             $banji[] = ['id'=>$value['id'],'title'=>$value['title']];
         }
         return json($banji);
+    }
+
+
+    // 获取该学校各年级的班级名和id
+    public function banjilist()
+    {
+        // 获取学校
+        $school = input('post.school');
+        // 获取年级名对应的入学年
+        $njanmelist = nianjiList();
+        $bjnamelist = banjinamelist();
+        $njlist = array_keys($njanmelist);
+
+
+
+        // 查询年级数据
+        $list = BJ:: where('school',$school)
+                ->where('ruxuenian','in',$njlist)
+                ->group('ruxuenian')
+                ->field('school,ruxuenian')
+                ->select();
+        // 追加年级对应的班级数
+        $list = $list->append(['banjiids']);
+        
+        // 重新组合数据
+        $bjarr = array();
+
+        foreach ($list as $key => $value) {
+            $bjarr[$value->ruxuenian]['title'] = $njanmelist[$value->ruxuenian];   #赋值年级名
+            $bj = array();
+            foreach ($value['banjiids'] as $key => $val) {
+                $bjarr[$value->ruxuenian]['banji'][$key] = $bjnamelist[$val];  #赋值班级名
+            }
+        }
+
+        // 返回数据
+        return json($bjarr);
+
     }
 
 

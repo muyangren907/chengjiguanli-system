@@ -9,7 +9,7 @@
 					$school = new app\system\model\School;
 					$school = $school->where('status',1)->field('id,title')->all();
 				{/php}
-				<select class="select" id="school" name="school" size="1">
+				<select class="select" id="school" name="school" size="1" onchange="getbanji()">
 					<option value="">--请选择学校--</option>
 					{volist name="school" id="vo"}
 						<option value="{$vo.id}">{$vo.title}</option>
@@ -19,7 +19,7 @@
 			</div>
 		</div>
 		{php}
-			$njlist = $njlist = nianjiList();
+			$njlist = nianjiList();
 		{/php}
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">网站角色：</label>
@@ -28,26 +28,12 @@
 				<dl class="permission-list">
 					<dt>
 						<label>
-							<input type="checkbox" value="" name="user-Character-0" id="user-Character-0">
+							<input type="checkbox" value="" name="user-Character-0" onclick="selectall(this)">
 							{$vo}
 						</label>
 					</dt>
-					<dd>
-						<label class="">
-							<input type="checkbox" value="" name="user-Character-0-0-0" id="user-Character-0-0-0">
-							一班</label>
-						<label class="">
-							<input type="checkbox" value="" name="user-Character-0-0-0" id="user-Character-0-0-1">
-							二班</label>
-						<label class="">
-							<input type="checkbox" value="" name="user-Character-0-0-0" id="user-Character-0-0-2">
-							三班</label>
-						<label class="">
-							<input type="checkbox" value="" name="user-Character-0-0-0" id="user-Character-0-0-3">
-							四班</label>
-						<label class="">
-							<input type="checkbox" value="" name="user-Character-0-0-0" id="user-Character-0-0-4">
-							五班</label>
+					<dd id="{$key}">
+
 					</dd>
 				</dl>
 				{/foreach}
@@ -88,5 +74,59 @@
 
 	// 设置表单提交方式
 	var mytype = 'POST';
+
+	function getbanji()
+	{
+		$.ajax({
+			type: 'POST',
+			url: "/banji/banjilist",
+			data:{
+				school:$('#school').val(),
+			},
+			dataType: 'json',
+			success: function(data){
+				myJson = {"name": "phpernote", "password": "1111"};
+				for (var val in data) {
+					for(var bj in data[val]['banji'])
+					{
+						$('#' + val).append('<label><input type="checkbox" class="ml-15 mr-5" value="'+bj+'" name="banjiids[]" onclick="selecttop(this)" id='+bj+'>'+data[val]['banji'][bj])+'</label>';
+
+					}
+				}
+				
+			},
+			error:function(data) {
+				layer.alert('获取班级失败');
+			},
+		});	
+	}
+
+	function selectall(obj)
+	{
+		// 定位复选框位置
+		var topobj = $(obj).parents('dt').next('dd');
+		var inputs = topobj.find('input');
+
+		if($(obj).prop('checked'))
+		{
+			inputs.prop('checked',true);
+		}else{
+			inputs.prop('checked',false);
+		}
+	}
+
+	function selecttop(obj)
+	{
+		// 定位复选框位置
+		var topobj = $(obj).parents('dd').prev('dt');
+		var thatinput = topobj.find('input');
+		if($(obj).prop('checked'))
+		{
+			thatinput.prop('checked',true);
+		}
+
+	}
+
+	
 </script>
 {/block}

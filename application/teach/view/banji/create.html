@@ -4,7 +4,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>学校：</label>
 			<div class="formControls col-xs-8 col-sm-9 f-l">
-				<span class="select-box f-l" style="width:180px;">
+				<span class="select-box f-l" style="width:250px;">
 				{php}
 					$school = new app\system\model\School;
 					$school = $school->where('status',1)->field('id,title')->all();

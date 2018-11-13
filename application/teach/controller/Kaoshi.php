@@ -142,12 +142,8 @@ class Kaoshi extends Base
         // 添加考试年级信息
         $njdata = $ksdata->kaoshinianji()->saveAll($nianjiarr);
 
-
-
         // 过滤分数掉空值
         $list['manfen'] = array_values(array_filter($list['manfen']));
-
-
 
         // 重组参加考试学科信息
         foreach ($list['subject'] as $key => $value) {
@@ -241,14 +237,9 @@ class Kaoshi extends Base
         // 添加考试年级信息
         $njdata = $ksdata->kaoshinianji()->saveAll($nianjiarr);
 
-
-
         
         // 过滤分数掉空值
         $list['manfen'] = array_values(array_filter($list['manfen']));
-
-
-
         // 重组参加考试学科信息
         foreach ($list['subject'] as $key => $value) {
             $subjectarr[]=[
@@ -258,8 +249,6 @@ class Kaoshi extends Base
         }
         // 添加考试学科信息
         $xkdata = $ksdata->kaoshisubject()->saveAll($subjectarr);
-
-
 
         // 根据更新结果设置返回提示信息
         $ksdata&&$njdata&&$xkdata ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
