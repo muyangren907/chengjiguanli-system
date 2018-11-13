@@ -11,4 +11,10 @@ class Index extends Base
     {
     	return $this->fetch();
     }
+
+    // 生成考号
+    public function kaohao()
+    {
+    	return $this->fetch();
+    }
 }

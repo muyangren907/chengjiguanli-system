@@ -1,0 +1,92 @@
+{extend name="common@create" /}
+{block name="formaa"}
+	<form action="/xueqi" method="POST" class="form form-horizontal" id="form-member-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>学校：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l">
+				{php}
+					$school = new app\system\model\School;
+					$school = $school->where('status',1)->field('id,title')->all();
+				{/php}
+				<select class="select" id="school" name="school" size="1">
+					<option value="">--请选择学校--</option>
+					{volist name="school" id="vo"}
+						<option value="{$vo.id}">{$vo.title}</option>
+					{/volist}
+				</select>
+				</span>
+			</div>
+		</div>
+		{php}
+			$njlist = $njlist = nianjiList();
+		{/php}
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">网站角色：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				{foreach $njlist as $key=>$vo}
+				<dl class="permission-list">
+					<dt>
+						<label>
+							<input type="checkbox" value="" name="user-Character-0" id="user-Character-0">
+							{$vo}
+						</label>
+					</dt>
+					<dd>
+						<label class="">
+							<input type="checkbox" value="" name="user-Character-0-0-0" id="user-Character-0-0-0">
+							一班</label>
+						<label class="">
+							<input type="checkbox" value="" name="user-Character-0-0-0" id="user-Character-0-0-1">
+							二班</label>
+						<label class="">
+							<input type="checkbox" value="" name="user-Character-0-0-0" id="user-Character-0-0-2">
+							三班</label>
+						<label class="">
+							<input type="checkbox" value="" name="user-Character-0-0-0" id="user-Character-0-0-3">
+							四班</label>
+						<label class="">
+							<input type="checkbox" value="" name="user-Character-0-0-0" id="user-Character-0-0-4">
+							五班</label>
+					</dd>
+				</dl>
+				{/foreach}
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+{/block}
+{block name="yanzheng"}
+<script type="text/javascript">
+	// 设置表单验证规则
+	var myrules = {
+			title:{
+				required:true,
+				rangelength:[2,25]
+			},
+			xuenian:{
+				required:true,
+				rangelength:[1,15]
+			},
+			category:{
+				required:true,
+				digits:true
+			},
+			bfdate:{
+				required:true,
+				dateISO:true
+			},
+			enddate:{
+				required:true,
+				dateISO:true
+			},
+		};
+
+	// 设置表单提交方式
+	var mytype = 'POST';
+</script>
+{/block}
