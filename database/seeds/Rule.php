@@ -42,7 +42,7 @@ class Rule extends Seeder
                 // 成绩采集
                 ['id'=>51,'title'=>'扫码录入','name'=>'chengji/Index/malu','paixu'=>1,'ismenu' =>true,'pid' =>5,'url'=>'/chengji',],
                 ['id'=>52,'title'=>'表格录入','name'=>'chengji/Student/biaolu','paixu'=>2,'ismenu' =>true,'pid' =>5,'url'=>'/chengji',],
-                ['id'=>53,'title'=>'生成二维码','name'=>'chengji/Student/erweima','paixu'=>3,'ismenu' =>true,'pid' =>5,'url'=>'/chengji/erweima',],
+                ['id'=>53,'title'=>'生成考号','name'=>'chengji/Index/kaohao','paixu'=>3,'ismenu' =>true,'pid' =>5,'url'=>'/chengji/kaohao',],
                 
                     
                     // 教务管理

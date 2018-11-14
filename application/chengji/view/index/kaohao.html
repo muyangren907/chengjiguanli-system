@@ -1,6 +1,27 @@
 {extend name="common@create" /}
 {block name="formaa"}
-	<form action="/xueqi" method="POST" class="form form-horizontal" id="form-member-add">
+	<form action="/chengji/kaohao" method="POST" class="form form-horizontal" id="form-member-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>考试：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l">
+				{php}
+					$kaoshi = new app\teach\model\Kaoshi;
+					$kaoshi = $kaoshi
+						->where('status',1)
+						->where('bfdate','>',time())
+						->field('id,title')
+						->all();
+				{/php}
+				<select class="select" id="kaoshi" name="kaoshi" size="1">
+					<option value="">--请选择考试--</option>
+					{volist name="kaoshi" id="vo"}
+						<option value="{$vo.id}">{$vo.title}</option>
+					{/volist}
+				</select>
+				</span>
+			</div>
+		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>学校：</label>
 			<div class="formControls col-xs-8 col-sm-9 f-l">
@@ -28,12 +49,11 @@
 				<dl class="permission-list">
 					<dt>
 						<label>
-							<input type="checkbox" value="" name="user-Character-0" onclick="selectall(this)">
+							<input type="checkbox"onclick="selectall(this)">
 							{$vo}
 						</label>
 					</dt>
 					<dd id="{$key}">
-
 					</dd>
 				</dl>
 				{/foreach}
@@ -85,12 +105,10 @@
 			},
 			dataType: 'json',
 			success: function(data){
-				myJson = {"name": "phpernote", "password": "1111"};
 				for (var val in data) {
 					for(var bj in data[val]['banji'])
 					{
 						$('#' + val).append('<label><input type="checkbox" class="ml-15 mr-5" value="'+bj+'" name="banjiids[]" onclick="selecttop(this)" id='+bj+'>'+data[val]['banji'][bj])+'</label>';
-
 					}
 				}
 				

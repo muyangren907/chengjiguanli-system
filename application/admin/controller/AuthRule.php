@@ -105,7 +105,7 @@ class AuthRule extends Base
 
 
         // 获取表单数据
-        $list = request()->only(['title','name','pid','condition','paixu','ismenu','font','beizhu'],'post');
+        $list = request()->only(['title','name','pid','condition','paixu','ismenu','font','beizhu','url'],'post');
 
 
         // 验证表单数据
@@ -142,7 +142,7 @@ class AuthRule extends Base
     {
 
         // 获取权限信息
-        $list = AR::field('id,title,name,condition,pid,paixu,ismenu,font')
+        $list = AR::field('id,title,name,condition,pid,paixu,ismenu,font,url')
             ->get($id);
 
 
@@ -161,7 +161,7 @@ class AuthRule extends Base
         $validate = new \app\admin\validate\Rule;
 
         // 获取表单数据
-        $list = request()->only(['title','name','pid','condition','paixu','ismenu','font','beizhu'],'put');
+        $list = request()->only(['title','name','pid','condition','paixu','ismenu','font','beizhu','url'],'put');
 
         // 验证表单数据
         $result = $validate->check($list);

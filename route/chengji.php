@@ -12,6 +12,7 @@
 //系统设置路由
 Route::get('chengji/erweima','chengji/Index/erweima');
 Route::get('chengji/kaohao','chengji/Index/kaohao');
+Route::post('chengji/kaohao','chengji/Index/kaohaosave');
 
 
 

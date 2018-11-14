@@ -15,7 +15,7 @@ class Student extends Base
     	return getAgeByBirth($this->getdata('shengri'),2);
     }
 
-    // 班级获取器
+    // 年级、班级名称获取器
     public function getBanjititleAttr()
     {
     	$bj = Banji::get($this->banji);
@@ -46,6 +46,12 @@ class Student extends Base
     {
         $sex = array('0'=>'女','1'=>'男','2'=>'保密');
         return $sex[$value];
+    }
+
+    // 获取入学年
+    public function getNianjiAttr()
+    {
+        return db('banji')->where('id',$this->getData('banji'))->value('ruxuenian');
     }
 
     
