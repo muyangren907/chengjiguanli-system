@@ -2,27 +2,6 @@
 {block name="formaa"}
 	<form action="/kaoshi/kaohao" method="POST" class="form form-horizontal" id="form-member-add">
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>考试：</label>
-			<div class="formControls col-xs-8 col-sm-9 f-l">
-				<span class="select-box f-l">
-				{php}
-					$kaoshi = new app\teach\model\Kaoshi;
-					$kaoshi = $kaoshi
-						->where('status',1)
-						->where('bfdate','>',time())
-						->field('id,title')
-						->all();
-				{/php}
-				<select class="select" id="kaoshi" name="kaoshi" size="1">
-					<option value="">--请选择考试--</option>
-					{volist name="kaoshi" id="vo"}
-						<option value="{$vo.id}">{$vo.title}</option>
-					{/volist}
-				</select>
-				</span>
-			</div>
-		</div>
-		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>学校：</label>
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l">
@@ -43,7 +22,7 @@
 			$njlist = nianjiList();
 		{/php}
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">网站角色：</label>
+			<label class="form-label col-xs-4 col-sm-3">班级：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				{foreach $njlist as $key=>$vo}
 				<dl class="permission-list">
@@ -59,6 +38,7 @@
 				{/foreach}
 			</div>
 		</div>
+		<input type="hidden" value="{$id}" name="kaoshi">
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
 				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">

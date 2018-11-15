@@ -97,15 +97,20 @@
 					// 编辑按钮
 					editbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/kaoshi/'+row.id+'/edit") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
 					// 生成考号
-					kaohaobut = '<a title="考号" href="javascript:void(0);" onclick=addfull("生成考号","/kaoshi/kaohao") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe705;</i></a>';
+					kaohaobut = '<a title="考号" href="javascript:void(0);" onclick=addfull("生成考号","/kaoshi/'+row.id+'/kaohao") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe705;</i></a>';
 					// 删除按钮
 					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/kaoshi/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
 					if(row.status == '已停用')
 					{
-						buts = startbut + editbut + kaohaobut + delbut;
+						buts = startbut + editbut;
 					}else{
-						buts = stopbut + editbut + kaohaobut + delbut;
-					} 
+						buts = stopbut + editbut;
+					}
+					if( row.jieshu == 0 )
+					{
+						buts = buts + kaohaobut;
+					}
+					buts = buts + delbut; 
 
 					return buts;
                 }

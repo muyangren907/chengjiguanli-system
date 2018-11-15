@@ -67,14 +67,14 @@ class Kaoshi extends Base
                 ->whereOr('title','like','%'.$search.'%')
                 ->whereOr('category','in',function($query) use($search)
                 {
-                    $query->table('catagory')
+                    $query->name('category')
                         ->where('title','like','%'.$search.'%')
                         ->field('id');
                 })
                 ->all();
         }
 
-        $data = $data->append(['nianjinames','subjectnames']);
+        $data = $data->append(['nianjinames','subjectnames','jieshu']);
 
         $datacnt = $data->count();
         
@@ -304,8 +304,11 @@ class Kaoshi extends Base
     }
 
     // 生成考号
-    public function kaohao()
+    public function kaohao($id)
     {
+        // 考试ID赋值
+        $this->assign('id',$id);
+
         return $this->fetch();
     }
 
@@ -324,16 +327,29 @@ class Kaoshi extends Base
                         ->append(['nianji'])
                         ->select();
 
+        // 获取已有考号名单
+        $kaohao = Chengji::where('kaoshi',$list['kaoshi'])
+                        ->field('student')
+                        ->select();
+
+
+        $cj = $stulist->diff($kaohao);
+
         // 组合参加考试学生信息
         $stus = array();
         foreach ($stulist as $key => $value) {
-            $stus[] = [
+            $src = Chengji::where('kaoshi',$list['kaoshi'])
+                    ->where('student',$value->id)
+                    ->select();
+            if($src->isEmpty()){
+                $stus[] = [
                 'kaoshi' => $list['kaoshi'],
                 'school' => $value->school,
                 'ruxuenian' => $value->nianji,
                 'banji' => $value->banji,
                 'student' => $value->id
             ];
+            }
         }
 
         // 声明成绩数据模型类

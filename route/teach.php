@@ -17,7 +17,7 @@ Route::resource('banji','teach/Banji');
 Route::post('banji/:id/yidong','teach/Banji/yidong'); // 定义班级移动post规则
 Route::post('banji/mybanji','teach/Banji/mybanji'); // 定义GET请求路由规则
 Route::post('banji/banjilist','teach/Banji/banjilist'); // 定义GET请求路由规则
-Route::get('kaoshi/kaohao','teach/Kaoshi/kaohao');
+Route::get('kaoshi/:id/kaohao','teach/Kaoshi/kaohao');
 Route::post('kaoshi/kaohao','teach/Kaoshi/kaohaosave');
 
 

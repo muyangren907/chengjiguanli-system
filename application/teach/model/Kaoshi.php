@@ -128,4 +128,11 @@ class Kaoshi extends Base
         // 返回数组
         return $manfenlist;
     }
+
+    // 考试结束获取器
+    public function getJieshuAttr()
+    {
+        time()>$this->getData('enddate') ? $str = 1 : $str = 0;
+        return $str;
+    }
 }
