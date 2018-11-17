@@ -35,6 +35,7 @@ class Subject extends Migrator
         $table
             ->addColumn('title','string',['limit'=>25,'null'=>false,'comment'=>'学科名称'])
             ->addColumn('jiancheng','string',['limit'=>6,'null'=>false,'comment'=>'简称'])
+            ->addColumn('leiming','string',['limit'=>46,'null'=>false,'comment'=>'列名'])
             ->addColumn('category','string',['limit'=>11,'null'=>false,'comment'=>'大学科类别'])
             ->addColumn('paixu','integer',['limit'=>4,'default'=>'999','null'=>false,'comment'=>'排序'])
             ->addColumn('status','boolean',['limit'=>1,'default'=>'1','null'=>false,'comment'=>'0=禁用，1=正常'])

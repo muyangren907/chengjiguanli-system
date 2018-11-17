@@ -19,6 +19,8 @@ Route::post('banji/mybanji','teach/Banji/mybanji'); // 定义GET请求路由规�
 Route::post('banji/banjilist','teach/Banji/banjilist'); // 定义GET请求路由规则
 Route::get('kaoshi/:id/kaohao','teach/Kaoshi/kaohao');
 Route::post('kaoshi/kaohao','teach/Kaoshi/kaohaosave');
+Route::get('kaoshi/:id/malu','teach/Kaoshi/malubiao');
+Route::get('kaoshi/:id/biaolu','teach/Kaoshi/biaolubiao');
 
 
 

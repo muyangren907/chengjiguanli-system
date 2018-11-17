@@ -26,14 +26,12 @@ class Rule extends Seeder
             ['id'=>7,'title'=>'系统管理','name' =>'system','paixu' =>7,'ismenu'=>true,'font' =>'Hui-iconfont-system'],
                 // 二级菜单
                 // 成绩采集
-                ['id'=>101,'title'=>'扫码录入','name'=>'chengji/Index/malu','paixu'=>1,'ismenu' =>true,'pid' =>1,'url'=>'/chengji',],
+                ['id'=>101,'title'=>'扫码录入','name'=>'chengji/Index/malu','paixu'=>1,'ismenu' =>true,'pid' =>1,'url'=>'/chengji/malu',],
                 ['id'=>102,'title'=>'表格录入','name'=>'chengji/Index/biaolu','paixu'=>2,'ismenu' =>true,'pid' =>1,'url'=>'/chengji',],
-                ['id'=>103,'title'=>'下载','name'=>'chengji/Index/xiazai','paixu'=>3,'ismenu' =>true,'pid' =>1,'url'=>'/chengji',],
                 // 成绩统计
                 ['id'=>201,'title'=>'班级成绩','name'=>'tongji/Index/banji','paixu'=>1,'ismenu' =>true,'pid' =>2,'url'=>'/tongji',],
                 // 考试管理
                 ['id'=>301,'title'=>'考试列表','name'=>'teach/Kaoshi/index','paixu'=>1,'ismenu' =>true,'pid' =>3,'url'=>'/kaoshi',],
-                ['id'=>302,'title'=>'下载信息','name'=>'teach/Kaoshi/mainfo','paixu'=>2,'ismenu' =>true,'pid' =>3,'url'=>'/kaoshi',],
 
                 // 师生名单
                 ['id'=>401,'title'=>'教师列表','name'=>'renshi/Index/index','paixu'=>1,'ismenu' =>true,'pid' =>4,'url'=>'/teacher',],

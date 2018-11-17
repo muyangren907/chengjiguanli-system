@@ -251,7 +251,6 @@ class Student extends Base
         $stuinfo = $excel->readXls($list['url']);
         // 删除标题行
         array_splice($stuinfo,0,3);
-        // $upcnt = count($stuinfo);
 
         // 实例化班级数据模型
         $banji = new \app\teach\model\Banji;
@@ -283,17 +282,16 @@ class Student extends Base
             {
                 continue;
             }
-            
 
+            // 各变量赋值
             $students[$i]['banji'] = $bj;
             $students[$i]['xingming'] = $value[1];
             $students[$i]['shenfenzhenghao'] = $value[2];
             substr($value[2],16,17)%2 == 1 ? $students[$i]['sex']=1 :$students[$i]['sex']=0;
             $students[$i]['shengri'] = substr($value[2],6,4).'-'.substr($value[2],10,2).'-'.substr($value[2],12,2);
-            
             $students[$i]['school'] = $list['school'];
             $stuid = STU::where('shenfenzhenghao',$value[2])->value('id');
-            $stuid > 1 ? $students[$i]['id'] = $stuid : true;
+            $stuid > 0 ? $students[$i]['id'] = $stuid : true;
             // 销毁无用变量
             $i++;
         }
@@ -326,7 +324,7 @@ class Student extends Base
         // 获取表单上传文件 例如上传了001.jpg
         $file = request()->file('file');
         // 移动到框架应用根目录/uploads/ 目录下
-        $info = $file->move( '..\uploads\student');
+        $info = $file->move( '..\public\uploads\student');
         if($info){
             // 成功上传后 获取上传信息
             $list['category'] = $info->getExtension();
@@ -336,7 +334,7 @@ class Student extends Base
             //将文件信息保存
             $data = Fields::create($list);
 
-            $data ? $data = array('msg'=>'上传成功','val'=>true,'url'=>'..\uploads\student\\'.$list['url']) : $data = array('msg'=>'保存文件信息失败','val'=>false,'url'=>null);
+            $data ? $data = array('msg'=>'上传成功','val'=>true,'url'=>'..\public\uploads\student\\'.$list['url']) : $data = array('msg'=>'保存文件信息失败','val'=>false,'url'=>null);
         }else{
             // 上传失败获取错误信息
             $data = array('msg'=>$file->getError(),'val'=>false,'url'=>null);

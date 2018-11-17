@@ -40,7 +40,7 @@ class Chengji extends Migrator
             ->addColumn('student','integer',['limit'=>11,'null'=>false,'comment'=>'学生'])
             ->addColumn('yuwen','integer',['limit'=>3,'null'=>false,'comment'=>'语文'])
             ->addColumn('shuxue','integer',['limit'=>3,'null'=>false,'comment'=>'数学'])
-            ->addColumn('yingyu','integer',['limit'=>3,'null'=>false,'comment'=>'英语'])
+            ->addColumn('waiyu','integer',['limit'=>3,'null'=>false,'comment'=>'外语'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
             ->addColumn('status','boolean',['limit'=>1,'default'=>'1','null'=>false,'comment'=>'0=禁用，1=正常'])
             ->addIndex(array('kaoshi','student'), array('unique' => true))

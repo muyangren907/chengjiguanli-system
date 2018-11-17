@@ -135,4 +135,10 @@ class Kaoshi extends Base
         time()>$this->getData('enddate') ? $str = 1 : $str = 0;
         return $str;
     }
+    // 考试结束获取器
+    public function getKaishiAttr()
+    {
+        time()>$this->getData('bfdate') ? $str = 1 : $str = 0;
+        return $str;
+    }
 }

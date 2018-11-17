@@ -16,9 +16,9 @@ class Subject extends Seeder
     {
         // 设置数据
         $rows= [
-            ['title'=>'语文','jiancheng'=>'语','category'=>'2011','paixu'=>1],
-            ['title'=>'数学','jiancheng'=>'数','category'=>'2012','paixu'=>2],
-            ['title'=>'外语','jiancheng'=>'外','category'=>'2013','paixu'=>3],
+            ['title'=>'语文','jiancheng'=>'语','category'=>'2011','leiming'=>'yuwen','paixu'=>1],
+            ['title'=>'数学','jiancheng'=>'数','category'=>'2012','leiming'=>'shuxue','paixu'=>2],
+            ['title'=>'外语','jiancheng'=>'外','category'=>'2013','leiming'=>'waiyu','paixu'=>3],
             ['title'=>'物理','jiancheng'=>'物','category'=>'2016','paixu'=>4],
             ['title'=>'化学','jiancheng'=>'化','category'=>'2016','paixu'=>5],
             ['title'=>'体育与健康','jiancheng'=>'体','category'=>'2017','paixu'=>6],

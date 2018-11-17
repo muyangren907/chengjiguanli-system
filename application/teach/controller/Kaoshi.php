@@ -10,6 +10,10 @@ use app\teach\model\Kaoshi as KS;
 use app\renshi\model\Student;
 // 引用成绩类
 use app\chengji\model\Chengji;
+// 引用PhpSpreadsheet类
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+// use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+// use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class Kaoshi extends Base
 {
@@ -74,7 +78,7 @@ class Kaoshi extends Base
                 ->all();
         }
 
-        $data = $data->append(['nianjinames','subjectnames','jieshu']);
+        $data = $data->append(['nianjinames','subjectnames','jieshu','kaishi']);
 
         $datacnt = $data->count();
         
@@ -327,14 +331,6 @@ class Kaoshi extends Base
                         ->append(['nianji'])
                         ->select();
 
-        // 获取已有考号名单
-        $kaohao = Chengji::where('kaoshi',$list['kaoshi'])
-                        ->field('student')
-                        ->select();
-
-
-        $cj = $stulist->diff($kaohao);
-
         // 组合参加考试学生信息
         $stus = array();
         foreach ($stulist as $key => $value) {
@@ -344,7 +340,7 @@ class Kaoshi extends Base
             if($src->isEmpty()){
                 $stus[] = [
                 'kaoshi' => $list['kaoshi'],
-                'school' => $value->school,
+                'school' => $value->getData('school'),
                 'ruxuenian' => $value->nianji,
                 'banji' => $value->banji,
                 'student' => $value->id
@@ -363,4 +359,53 @@ class Kaoshi extends Base
         // 返回信息
         return json($data);
     }
+
+
+ 
+
+
+    // 生成码录表
+    public function malubiao($id)
+    {
+        // $id = input('get.id');
+        ini_set("memory_limit", "-1");
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', '考试号');
+        $sheet->setCellValue('B1', '学科 ');
+        $i = 1;
+        $datas = Chengji::where('kaoshi',$id)
+                ->field('id')
+                ->select();
+        $xks = KS::get($id);
+        $xks = $xks->Subjectids;
+        $xks = db('subject')->where('id','in',$xks)->column('id,leiming');
+        foreach ($datas as $data)
+        {
+            foreach ($xks as $key => $value) {
+                $i++;
+                $sheet->setCellValue('A' . $i, $data['id']);
+                $sheet->setCellValue('B' . $i, $value);
+            }
+        }
+        // 保存文件
+        // $writer = new Xlsx($spreadsheet);
+        // $writer->save(ROOT_PATH . "vcf/hello world.xlsx");
+        // 下载文件
+        $filename = '试卷标签.xlsx';
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+    }
+
+
+    // 生成表格录入成绩表
+    public function biaolubiao()
+    {
+        return '表录表';
+    }
+
+
 }
