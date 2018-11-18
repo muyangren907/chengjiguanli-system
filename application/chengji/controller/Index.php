@@ -7,7 +7,8 @@ use app\common\controller\Base;
 use app\renshi\model\Student;
 // 引用成绩数据模型
 use app\chengji\model\Chengji;
-// 引用考试数据模型
+// 引用学科数据模型
+use app\teach\model\subject;
 
 class Index extends Base
 {
@@ -22,12 +23,14 @@ class Index extends Base
     {
         // 获取表单数据
         $list = request()->only(['id','ziduan','defen'],'post');
-        $zd = $list['ziduan'];
+        // 声明学科数组
+        $subject = array('1'=>'yuwen','2'=>'shuxue','3'=>'waiyu');
+        $zd = $subject[$list['ziduan']];
 
         // 更新成绩
         $cj = Chengji::update(['id'=>$list['id'], $zd=>$list['defen']]);
 
-        empty($cj) ? $data = ['val' => 0] : $data = ['val' => 1];
+        empty($cj) ? $data = ['val' => 0] : $data = ['val' => 1,'defen'=>$cj->$zd];
 
         return json($data);
 
@@ -39,13 +42,21 @@ class Index extends Base
     // 根据考号获取学生信息
     public function read()
     {
+        // 获取表单数据 
         $list = request()->only(['id','ziduan'],'post');
-        $zd = $list['ziduan'];
+        // 声明学科数组
+        $subject = array('1'=>array('yuwen','语文'),'2'=>array('shuxue','数学'),'3'=>array('waiyu','外语'));
+
+
+        $zd = $subject[$list['ziduan']][0];
+        $zdname = $subject[$list['ziduan']][1];
         $stuinfo = Chengji::where('id',$list['id'])
                     ->field('id,school,student,banji,'.$zd)
                     ->append(['studentname','schooljian','banjiname'])
                     ->find();
-        return json($stuinfo->visible(['studentname','schooljian','banjiname','banji',$zd]));
+        $stuinfo['zdname'] = $zdname;
+        $stuinfo['zdstr'] = $zd;
+        return json($stuinfo->visible(['studentname','schooljian','banjiname','banji',$zd,'zdstr','zdname']));
     }
 
 

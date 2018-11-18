@@ -2,7 +2,7 @@
 {block name="formaa"}
 	<div class="row cl">
 		<div class="formControls col-xs-8 col-sm-9">
-			<input type="text" class="input-text radius size-XL" value="" placeholder="请扫码" id="info" name="info" onkeydown="saoma(event)">
+			<input type="text" class="input-text radius size-XL" value="" placeholder="请扫码" id="info" name="info" onkeydown="saoma(event)" onclick="maselect()">
 		</div>
 	</div>
 	<div class="row cl mt-20">
@@ -51,6 +51,7 @@
 	// 声明变量
 	var myinfo = [];
 	var cnt = 1;
+	var myDate = new Date();//获取系统当前时间
 
 
 
@@ -78,17 +79,28 @@
 			success: function(data){
 				data['id'] = myinfo[0];
 				data['ziduan'] = myinfo[1];
+				df = data['zdstr'];
+				df = data[df];
 				myinfo = data;
-				$('#info').val(myinfo['schooljian'] + '   ' + myinfo['banjiname'] + '   ' + myinfo['studentname']);
+				$('#info').val(myinfo['schooljian'] + '   ' + myinfo['banjiname'] + '   ' + myinfo['studentname'] + '   ' + myinfo['zdname']);
 				var zd = data['ziduan'];
-				myinfo[zd]>0 ? $('#defen').val(myinfo[zd]) : $('#defen').val('');
+				df>0 ? $('#defen').val(df) : $('#defen').val('');
 				$('#defen').focus();
 			},
 			error:function(data) {
 				$('#info').val('');
+				$('#defen').val('');
 				$('#info').focus();
 			},
 		});	
+	}
+
+
+	function maselect()
+	{
+		$('#info').val('');
+		$('#defen').val('');
+		myinfo = [];
 	}
 
 
@@ -101,11 +113,28 @@
 	// 得分文本框绑定回车键事件
 	function defen(obj){ 
 
+		// 不是回车退出 
 		if (obj.keyCode != 13)
 		{
 			return false;
 		}
+		// 获取得分
 		var df = $('#defen').val();
+		// 不是数字退出
+		if(isNaN(df))
+		{
+			return false;
+		}
+		// 得分不是0~100退出 
+		if(df<0 || df>100)
+		{
+			return false;
+		}
+		// 不能被0.5整除退出
+		if(df%0.5)
+		{
+			return false;
+		}
 
 		// 查询并显示学生信息
 		$.ajax({
@@ -120,8 +149,12 @@
 			success: function(data){
 				if(data['val'] == 1)
 				{
-					var str = '<tr><td>'+cnt+'</td><td>' + myinfo['schooljian'] +'</td><td>' + myinfo['banjiname'] + '</td><td>'+myinfo['studentname']+'</td><td>'+myinfo['ziduan']+'</td><td>'+df+'</td><td></td></tr>';
-
+					var date = new Date();
+					var hour = date.getHours();
+					var minute = date.getMinutes();
+					var second = date.getSeconds();
+					var addtime = hour + ':' + minute + ':' + second;
+					var str = '<tr><td>'+cnt+'</td><td>' + myinfo['schooljian'] +'</td><td>' + myinfo['banjiname'] + '</td><td>'+myinfo['studentname']+'</td><td>'+myinfo['zdname']+'</td><td>'+data['defen']+'</td><td>'+addtime+'</td></tr>';
 					cnt++;
 					$('#addjg').prepend(str);
 				}
