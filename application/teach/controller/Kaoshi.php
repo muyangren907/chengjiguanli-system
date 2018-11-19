@@ -361,6 +361,11 @@ class Kaoshi extends Base
     }
 
 
+
+    // 生成二维码基础信息
+    
+
+
  
 
 
@@ -371,21 +376,19 @@ class Kaoshi extends Base
         ini_set("memory_limit", "-1");
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setCellValue('A1', '考试号');
-        $sheet->setCellValue('B1', '学科 ');
+        $sheet->setCellValue('A1', '二维码信息');
         $i = 1;
         $datas = Chengji::where('kaoshi',$id)
                 ->field('id')
                 ->select();
         $xks = KS::get($id);
         $xks = $xks->Subjectids;
-        $xks = db('subject')->where('id','in',$xks)->column('id,leiming');
+        $xks = explode(',', $xks);
         foreach ($datas as $data)
         {
             foreach ($xks as $key => $value) {
                 $i++;
-                $sheet->setCellValue('A' . $i, $data['id']);
-                $sheet->setCellValue('B' . $i, $value);
+                $sheet->setCellValue('A' . $i, $data['id'].','.$value);
             }
         }
         // 保存文件
@@ -402,9 +405,9 @@ class Kaoshi extends Base
 
 
     // 生成表格录入成绩表
-    public function biaolubiao()
+    public function biaolu()
     {
-        return '表录表';
+        return $this->fetch();
     }
 
 

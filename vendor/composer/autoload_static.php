@@ -70,6 +70,10 @@ class ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053
         array (
             'app\\' => 4,
         ),
+        'Z' => 
+        array (
+            'Zend\\Escaper\\' => 13,
+        ),
         'W' => 
         array (
             'WhiteHat101\\Crypt\\' => 18,
@@ -77,7 +81,9 @@ class ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053
         'P' => 
         array (
             'Psr\\SimpleCache\\' => 16,
+            'PhpOffice\\PhpWord\\' => 18,
             'PhpOffice\\PhpSpreadsheet\\' => 25,
+            'PhpOffice\\Common\\' => 17,
             'Phinx\\' => 6,
         ),
         'C' => 
@@ -111,6 +117,10 @@ class ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053
         array (
             0 => __DIR__ . '/../..' . '/application',
         ),
+        'Zend\\Escaper\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/zendframework/zend-escaper/src',
+        ),
         'WhiteHat101\\Crypt\\' => 
         array (
             0 => __DIR__ . '/..' . '/whitehat101/apr1-md5/src',
@@ -119,9 +129,17 @@ class ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053
         array (
             0 => __DIR__ . '/..' . '/psr/simple-cache/src',
         ),
+        'PhpOffice\\PhpWord\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpoffice/phpword/src/PhpWord',
+        ),
         'PhpOffice\\PhpSpreadsheet\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet',
+        ),
+        'PhpOffice\\Common\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpoffice/common/src/Common',
         ),
         'Phinx\\' => 
         array (
@@ -133,11 +151,16 @@ class ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053
         ),
     );
 
+    public static $classMap = array (
+        'PclZip' => __DIR__ . '/..' . '/pclzip/pclzip/pclzip.lib.php',
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053::$classMap;
 
         }, null, ClassLoader::class);
     }
