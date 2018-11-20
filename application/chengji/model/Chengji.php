@@ -30,4 +30,13 @@ class Chengji extends Base
 		// 返回班级名称 
 		return $bj->title;
 	}
+
+	// 班级名称(数字)获取器
+	public function getBanjiNumnameAttr()
+	{
+		$bj = Banji::get($this->banji);
+
+		// 返回班级名称 
+		return $bj->numTitle;
+	}
 }

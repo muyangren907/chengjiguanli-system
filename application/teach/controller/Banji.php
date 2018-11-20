@@ -27,6 +27,7 @@ class Banji extends Base
     }
 
 
+
     // 获取班级信息列表
     public function ajaxData()
     {

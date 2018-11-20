@@ -8,12 +8,29 @@ use app\common\model\Base;
 class Banji extends Base
 {
     // 班级名获取器
-    public function getTitleAttr()
+    public function getNumTitleAttr()
     {
     	$njname = nianjilist();
-    	$bjname = banjinamelist();
+    	// $bjname = banjinamelist();
     	$nj = $this->getAttr('ruxuenian');
     	$bj = $this->getAttr('paixu');
+
+        $numnj = array_flip(array_keys($njname));
+
+        $numname = ($numnj[$nj] + 1).'.'.$bj;
+
+    	return $numname;
+    }
+
+
+
+    // 班级名获取器
+    public function getTitleAttr()
+    {
+        $njname = nianjilist();
+        $bjname = banjinamelist();
+        $nj = $this->getAttr('ruxuenian');
+        $bj = $this->getAttr('paixu');
 
         $njkeys = array_keys($njname);
         $bjkeys = array_keys($bjname);
@@ -21,8 +38,13 @@ class Banji extends Base
         in_array($nj,$njkeys) ? $title = $njname[$nj] : $title = $nj.'届';
         in_array($bj,$bjkeys) ? $title = $title.$bjname[$bj] : $title = $title.$bj.'班';
 
-    	return $title;
+        return $title;
     }
+
+
+
+
+
 
     // 学校获取器
     public function getSchoolAttr($value)
