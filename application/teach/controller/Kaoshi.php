@@ -15,6 +15,8 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 // use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 // use PhpOffice\PhpSpreadsheet\IOFactory;
 
+use Endroid\QrCode\QrCode;
+
 class Kaoshi extends Base
 {
     // 显示学期列表
@@ -363,6 +365,132 @@ class Kaoshi extends Base
 
 
     // 生成二维码基础信息
+    public function ma($users_id=1)
+    {
+        $this->create_qrcode();
+
+
+        $qrCode = new QrCode('Life is too short to be generating QR codes');
+
+            header('Content-Type: '.$qrCode->getContentType());
+
+
+        // 保存文件
+        $filename = '试卷标签.docx';
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+        $objWriter->save('php://output');
+
+    }
+
+
+    /**
+     * 生成指定网址的二维码
+     * @param string $url 二维码中所代表的网址
+     */
+    public function create_qrcode($url='')
+    {
+        $url = $url ? $url : input('param.url');
+        $qrCode =  new QrCode;;//创建生成二维码对象
+        $qrCode->setText($url)
+        ->setSize(150)
+        ->setPadding(10)
+        ->setErrorCorrection('high')
+        ->setForegroundColor(array('r' => 0, 'g' => 0, 'b' => 0, 'a' => 0))
+        ->setBackgroundColor(array('r' => 255, 'g' => 255, 'b' => 255, 'a' => 0))
+        ->setImageType(\Endroid\QrCode\QrCode::IMAGE_TYPE_PNG);
+         
+        //>>>>>>>直接输出到浏览器>>>>>>>>>>
+        header("Content-type: image/png");
+        $qrCode->render(); //输入到浏览器
+        //>>>>>>>直接输出到浏览器>>>>>>>>>>
+         
+        //>>>>>>>>>保存文件>>>>>>>>>>>
+        //$qrCode->save('ziyuanniao.png'); //保存文件
+        //>>>>>>>>>保存文件>>>>>>>>>>>
+    }
+
+
+
+
+    // 生成试卷标签二维码
+    public function biaoqian()
+    {
+
+        $id = 1;
+        // 获取数据库信息
+        $chengjiinfo = Chengji::where('kaoshi',$id)
+                        ->append(['studentname','schooljian','banjiname'])
+                        ->select();
+
+        // 获取学科信息
+        $xks = KS::get($id);
+        $xks = $xks->Subjectids;
+
+        $subject = new \app\teach\model\Subject();
+        $xks = $subject->where('id','in',$xks)->column('id,leiming,title');
+
+        // Word处理
+        // 实例化类
+        $phpWord = new \PhpOffice\PhpWord\PhpWord(); 
+
+
+        // 设置页面格式
+        $sectionStyle = array(
+            'pageSizeW'=>2*567,
+            'pageSizeH'=>3*567,
+            'orientation'=>'landscape',
+            'marginLeft'=>100,
+            'marginRight'=>100,
+            'marginTop'=>200,
+            'marginBottom'=>100
+        );
+        $section = $phpWord->createSection($sectionStyle);
+
+
+        // 设置图片格式
+        $imageStyle = array('width'=>40,'height'=>40,'align'=>'left');
+
+        // 学生信息样式
+        $myStyle = 'myStyle';
+        $phpWord->addFontStyle(
+            $myStyle,
+            [
+                'name' => 'Verdana',
+                'size' => 6.5,
+                'color' => '000000',
+                'bold' => true,
+            ]
+        );
+
+        // 循环写出信息
+        foreach ($chengjiinfo as $key => $value) {
+            foreach ($xks as $key => $val) {
+                // 创建表格
+                $table = $section->addTable($key);
+                $table->addRow(1500);
+                $table->addCell(700)->addImage('aaaa.jpg',$imageStyle);
+                // $table->addCell(700)->addImage('aaaa.jpg',$imageStyle);
+                $info = $table->addCell(700);
+                $info->addText($value['schooljian'],$myStyle);
+                $info->addText($value['banjiname'],$myStyle);
+                $info->addText($value['studentname'],$myStyle);
+                $info->addText($val['title'],$myStyle);
+            }
+        }
+
+
+
+        // 保存文件
+        $filename = '试卷标签.docx';
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+        $objWriter->save('php://output');
+    }
     
 
 

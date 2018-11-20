@@ -24,7 +24,8 @@
         "whitehat101/apr1-md5": "^1.0",
         "topthink/think-helper": "^1.0",
         "phpoffice/phpspreadsheet": "^1.5",
-        "phpoffice/phpword": "^0.15.0"
+        "phpoffice/phpword": "^0.15.0",
+        "endroid/qrcode": "^3.4"
     },
     "autoload": {
         "psr-4": {

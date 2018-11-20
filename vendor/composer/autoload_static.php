@@ -7,6 +7,8 @@ namespace Composer\Autoload;
 class ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053
 {
     public static $files = array (
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+        'a9ed0d27b5a698798a89181429f162c5' => __DIR__ . '/..' . '/khanamiryan/qrcode-detector-decoder/lib/Common/customFunctions.php',
         'abede361264e2ae69ec1eee813a101af' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/abs.php',
         '21a5860fbef5be28db5ddfbc3cca67c4' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/acos.php',
         '1546e3f9d127f2a9bb2d1b6c31c26ef1' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/acosh.php',
@@ -72,11 +74,19 @@ class ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053
         ),
         'Z' => 
         array (
+            'Zxing\\' => 6,
             'Zend\\Escaper\\' => 13,
         ),
         'W' => 
         array (
             'WhiteHat101\\Crypt\\' => 18,
+        ),
+        'S' => 
+        array (
+            'Symfony\\Polyfill\\Ctype\\' => 23,
+            'Symfony\\Component\\PropertyAccess\\' => 33,
+            'Symfony\\Component\\OptionsResolver\\' => 34,
+            'Symfony\\Component\\Inflector\\' => 28,
         ),
         'P' => 
         array (
@@ -85,6 +95,15 @@ class ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053
             'PhpOffice\\PhpSpreadsheet\\' => 25,
             'PhpOffice\\Common\\' => 17,
             'Phinx\\' => 6,
+        ),
+        'M' => 
+        array (
+            'MyCLabs\\Enum\\' => 13,
+        ),
+        'E' => 
+        array (
+            'Endroid\\QrCode\\' => 15,
+            'Endroid\\Installer\\' => 18,
         ),
         'C' => 
         array (
@@ -117,6 +136,10 @@ class ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053
         array (
             0 => __DIR__ . '/../..' . '/application',
         ),
+        'Zxing\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/khanamiryan/qrcode-detector-decoder/lib',
+        ),
         'Zend\\Escaper\\' => 
         array (
             0 => __DIR__ . '/..' . '/zendframework/zend-escaper/src',
@@ -124,6 +147,22 @@ class ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053
         'WhiteHat101\\Crypt\\' => 
         array (
             0 => __DIR__ . '/..' . '/whitehat101/apr1-md5/src',
+        ),
+        'Symfony\\Polyfill\\Ctype\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
+        'Symfony\\Component\\PropertyAccess\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/property-access',
+        ),
+        'Symfony\\Component\\OptionsResolver\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/options-resolver',
+        ),
+        'Symfony\\Component\\Inflector\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/inflector',
         ),
         'Psr\\SimpleCache\\' => 
         array (
@@ -145,9 +184,31 @@ class ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053
         array (
             0 => __DIR__ . '/..' . '/topthink/think-migration/phinx/src/Phinx',
         ),
+        'MyCLabs\\Enum\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/myclabs/php-enum/src',
+        ),
+        'Endroid\\QrCode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/endroid/qrcode/src',
+        ),
+        'Endroid\\Installer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/endroid/installer/src',
+        ),
         'Complex\\' => 
         array (
             0 => __DIR__ . '/..' . '/markbaker/complex/classes/src',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'B' => 
+        array (
+            'BaconQrCode' => 
+            array (
+                0 => __DIR__ . '/..' . '/bacon/bacon-qr-code/src',
+            ),
         ),
     );
 
@@ -160,6 +221,7 @@ class ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053::$prefixesPsr0;
             $loader->classMap = ComposerStaticInitbe7733f58d7b733cc58f1391b7bd5053::$classMap;
 
         }, null, ClassLoader::class);
