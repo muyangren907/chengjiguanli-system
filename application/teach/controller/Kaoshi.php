@@ -456,39 +456,82 @@ class Kaoshi extends Base
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
         $objWriter->save('php://output');
     }
+
+
+
+
+    // 下载考试成绩采集表
+    public function caiji($id)
+    {
+        // 模板赋值
+        $this->assign('id',$id);
+        // 渲染模板
+        return $this->fetch();
+    }
     
 
 
  
 
 
-    // 生成码录表
-    public function malubiao($id)
+    // 获取参考名单 
+    public function cankaomingdan()
     {
-        // $id = input('get.id');
-        ini_set("memory_limit", "-1");
+
+        // 获取表单数据
+        $list = request()->only(['id','banjis','subjects'],'post');
+        $list = ['id'=>2,'banjis'=>'1,2,3,4,5,6,13','subjects'=>'1,2,3'];
+
+        // 获取考试标题
+        $kstitle = KS::where('id',$list['id'])->value('title');
+
+        // 获取参加考试学科信息
+        $subject = new \app\teach\model\Subject();
+        $xks = $subject->where('id','in',$list['subjects'])->column('id,title,lieming');
+        
+        // 循环组成第三行表头信息
+        $biaotou = ['序号','参考号','班级','姓名'];
+        foreach ($xks as $key => $value) {
+            $biaotou[] = $value['title'];
+        }
+
+        // 获取电子表格列名
+        $lieming = excelLieming();
+
+        // 查询参加考试学生信息
+        $datas = Chengji::where('kaoshi',$list['id'])
+                ->where('banji','in',$list['banjis'])
+                ->append(['studentname','banjiNumname'])
+                ->select();
+
+
+        // 创建表格
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setCellValue('A1', '二维码信息');
-        $i = 1;
-        $datas = Chengji::where('kaoshi',$id)
-                ->field('id')
-                ->select();
-        $xks = KS::get($id);
-        $xks = $xks->Subjectids;
-        $xks = explode(',', $xks);
+
+        // 设置表格标题与表头信息
+        $sheet->setCellValue('A1',$kstitle.'成绩采集表');
+        foreach ($xks as $key => $value) {
+            $sheet->setCellValue($lieming[$key + 3].'2', $value['lieming']);
+        }
+        foreach ($biaotou as $key => $value) {
+            $sheet->setCellValue($lieming[$key].'3', $value);
+        }
+
+
+        // 将学生信息循环写入表中
+        $i = 4;
         foreach ($datas as $data)
         {
-            foreach ($xks as $key => $value) {
-                $i++;
-                $sheet->setCellValue('A' . $i, $data['id'].','.$value);
-            }
+            $sheet->setCellValue('A'.$i, $i-3);
+            $sheet->setCellValue('B'.$i, $data['id']);
+            $sheet->setCellValue('C'.$i, $data['banjiNumname']);
+            $sheet->setCellValue('D'.$i, $data['studentname']);
+            $i++;
         }
+
         // 保存文件
-        // $writer = new Xlsx($spreadsheet);
-        // $writer->save(ROOT_PATH . "vcf/hello world.xlsx");
-        // 下载文件
-        $filename = '试卷标签.xlsx';
+        $filename = $kstitle.'成绩采集表'.date('ymdHis').'.xlsx';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');

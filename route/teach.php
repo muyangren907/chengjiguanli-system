@@ -20,7 +20,8 @@ Route::post('banji/banjilist','teach/Banji/banjilist'); // 定义GET请求路由
 Route::get('kaoshi/:id/kaohao','teach/Kaoshi/kaohao');
 Route::post('kaoshi/kaohao','teach/Kaoshi/kaohaosave');
 Route::get('kaoshi/:id/biaoqian','teach/Kaoshi/biaoqian');
-Route::get('kaoshi/:id/biaolu','teach/Kaoshi/biaolubiao');
+Route::get('kaoshi/:id/caiji','teach/Kaoshi/caiji');
+Route::post('kaoshi/caiji','teach/Kaoshi/cankaomingdan');
 
 
 

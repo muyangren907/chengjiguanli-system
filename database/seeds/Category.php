@@ -48,7 +48,7 @@ class Category extends Seeder
                 ['id'=>1011103,'title'=>'考试成绩','pid'=>111,'paixu'=>3],
 
                 // 单位性质
-                ['id'=>10000000,'title'=>'幼儿园','pid'=>101,'paixu'=>1],
+                ['id'=>20000000,'title'=>'幼儿园','pid'=>101,'paixu'=>1],
                 ['title'=>'小学','pid'=>101,'paixu'=>2],
                 ['title'=>'九年一贯','pid'=>101,'paixu'=>3],
                 ['title'=>'初中','pid'=>101,'paixu'=>4],
