@@ -60,6 +60,54 @@ class Index extends Base
     }
 
 
+    // 表格录入成绩上传页面
+    public function biaolu()
+    {
+        return $this->fetch();
+    }
+
+    
+
+    // 保存表格批量上传的成绩 
+    public function saveAll()
+    {
+
+    }
+
+
+    // 上传成绩采集表格
+    public function upload()
+    {
+        // 获取文件信息
+        $list['text'] = '成绩采集';
+        $list['oldname']=input('post.name');
+        $list['bianjitime'] = input('post.lastModifiedDate');
+        $list['fieldsize'] = input('post.size');
+
+        // 获取表单上传文件 例如上传了001.jpg
+        $file = request()->file('file');
+        // 移动到框架应用根目录/uploads/ 目录下
+        $info = $file->move( '..\public\uploads\chengji');
+        if($info){
+            // 成功上传后 获取上传信息
+            $list['category'] = $info->getExtension();
+            $list['url'] = $info->getSaveName();
+            $list['newname'] = $info->getFilename(); 
+
+            //将文件信息保存
+            $data = Fields::create($list);
+
+            $data ? $data = array('msg'=>'上传成功','val'=>true,'url'=>'..\public\uploads\chengji\\'.$list['url']) : $data = array('msg'=>'保存文件信息失败','val'=>false,'url'=>null);
+        }else{
+            // 上传失败获取错误信息
+            $data = array('msg'=>$file->getError(),'val'=>false,'url'=>null);
+        }
+
+        // 返回信息
+        return json($data);
+    }
+
+
     
 
     

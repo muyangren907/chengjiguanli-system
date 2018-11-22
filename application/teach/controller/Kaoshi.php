@@ -321,9 +321,23 @@ class Kaoshi extends Base
     // 保存考号
     public function kaohaosave()
     {
+        // 实例化验证模型
+        $validate = new \app\teach\validate\Kaohao;
+
         // 获取表单数据
         $list = request()->only(['kaoshi','banjiids'],'post');
-        // 获取参加考试班级
+        
+
+        // 验证表单数据
+        $result = $validate->check($list);
+        $msg = $validate->getError();
+
+        // 如果验证不通过则停止保存
+        if(!$result){
+            return ['msg'=>$msg,'val'=>0];
+        }
+
+        // 将班级转换成数组
         $list['banjiids'] = implode(',',$list['banjiids']);
 
         // 获取参加考试学生名单
@@ -478,11 +492,10 @@ class Kaoshi extends Base
     {
 
         // 实例化验证模型
-        $validate = new \app\teach\validate\Kaoshi;
+        $validate = new \app\teach\validate\Cankaomingdan;
 
         // 获取表单数据
         $list = request()->only(['id','banjiids','subject'],'post');
-        $list = array();
 
         // 验证表单数据
         $result = $validate->check($list);
@@ -490,7 +503,7 @@ class Kaoshi extends Base
 
         // 如果验证不通过则停止保存
         if(!$result){
-            return json(['msg'=>$msg,'val'=>0]);
+            $this->error($msg);
         }
 
         // 获取考试标题

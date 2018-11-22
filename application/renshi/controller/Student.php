@@ -321,6 +321,7 @@ class Student extends Base
         $list['oldname']=input('post.name');
         $list['bianjitime'] = input('post.lastModifiedDate');
         $list['fieldsize'] = input('post.size');
+
         // 获取表单上传文件 例如上传了001.jpg
         $file = request()->file('file');
         // 移动到框架应用根目录/uploads/ 目录下

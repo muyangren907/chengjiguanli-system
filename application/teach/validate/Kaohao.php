@@ -4,7 +4,7 @@ namespace app\teach\validate;
 
 use think\Validate;
 
-class Cankaomingdan extends Validate
+class Kaohao extends Validate
 {
     /**
      * 定义验证规则
@@ -13,9 +13,8 @@ class Cankaomingdan extends Validate
      * @var array
      */	
 	protected $rule = [
-        'id|考试号'      =>  'require|number',
+        'kaoshi|考试号'      =>  'require|number',
         'banjiids|参考班级'      =>  'require|array',
-        'subject|参考学科'      =>  'require|array',
     ];
     
     /**

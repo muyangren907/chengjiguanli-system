@@ -13,6 +13,8 @@
 Route::get('chengji/malu','chengji/Index/malu');
 Route::post('chengji/malu','chengji/Index/malusave');
 Route::post('chengji/read','chengji/Index/read');
+Route::get('chengji/biaolu','chengji/Index/biaolu');
+Route::post('chengji/biaolu','chengji/Index/saveAll');
 
 
 
