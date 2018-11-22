@@ -9,6 +9,10 @@ use app\renshi\model\Student;
 use app\chengji\model\Chengji;
 // 引用学科数据模型
 use app\teach\model\subject;
+// 引用文件信息存储数据模型类
+use app\system\model\Fields;
+// 引用phpspreadsheet类
+use app\renshi\controller\Myexcel;
 
 class Index extends Base
 {
@@ -71,7 +75,39 @@ class Index extends Base
     // 保存表格批量上传的成绩 
     public function saveAll()
     {
+        // 获以电子表格存储位置
+        $url = input('post.url');
 
+        // 实例化操作表格类
+        $excel = new Myexcel();
+
+        // 读取表格数据
+        $cjinfo = $excel->readXls($url);
+
+        // 获取成绩采集学科信息
+        $xk = $cjinfo[1];
+        array_splice($xk,0,4);
+       
+        // 删除成绩采集表标题行
+        array_splice($cjinfo,0,3);
+        dump($cjinfo);
+
+
+
+        // 获取满分
+        $kaoshi = Chengji::where('id',$cjinfo[0][1])->value('kaoshi');
+        $manfen = 
+        
+        $cj = array();
+        // 重新组合成绩信息
+        foreach ($cjinfo as $key => $value) {
+            $cj[] = [
+                'id'=>$value[2],
+                'yuwen'=>1
+            ];
+        }
+
+        return 'aa';
     }
 
 
