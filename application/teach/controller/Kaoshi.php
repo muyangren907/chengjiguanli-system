@@ -378,10 +378,9 @@ class Kaoshi extends Base
 
 
     // 生成试卷标签二维码
-    public function biaoqian()
+    public function biaoqian($id)
     {
 
-        $id = 2;
         // 获取数据库信息
         $chengjiinfo = Chengji::where('kaoshi',$id)
                         ->append(['studentname','schooljian','banjiNumname'])
@@ -478,16 +477,29 @@ class Kaoshi extends Base
     public function cankaomingdan()
     {
 
+        // 实例化验证模型
+        $validate = new \app\teach\validate\Kaoshi;
+
         // 获取表单数据
-        $list = request()->only(['id','banjis','subjects'],'post');
-        $list = ['id'=>2,'banjis'=>'1,2,3,4,5,6,13','subjects'=>'1,2,3'];
+        $list = request()->only(['id','banjiids','subject'],'post');
+        $list = array();
+
+        // 验证表单数据
+        $result = $validate->check($list);
+        $msg = $validate->getError();
+
+        // 如果验证不通过则停止保存
+        if(!$result){
+            return json(['msg'=>$msg,'val'=>0]);
+        }
 
         // 获取考试标题
         $kstitle = KS::where('id',$list['id'])->value('title');
 
         // 获取参加考试学科信息
         $subject = new \app\teach\model\Subject();
-        $xks = $subject->where('id','in',$list['subjects'])->column('id,title,lieming');
+        $xks = $subject->field('id,title,lieming')->all($list['subject']);
+
         
         // 循环组成第三行表头信息
         $biaotou = ['序号','参考号','班级','姓名'];
@@ -500,7 +512,7 @@ class Kaoshi extends Base
 
         // 查询参加考试学生信息
         $datas = Chengji::where('kaoshi',$list['id'])
-                ->where('banji','in',$list['banjis'])
+                ->where('banji','in',$list['banjiids'])
                 ->append(['studentname','banjiNumname'])
                 ->select();
 
@@ -512,8 +524,10 @@ class Kaoshi extends Base
         // 设置表格标题与表头信息
         $sheet->setCellValue('A1',$kstitle.'成绩采集表');
         foreach ($xks as $key => $value) {
-            $sheet->setCellValue($lieming[$key + 3].'2', $value['lieming']);
+            $sheet->setCellValue($lieming[$key + 4].'2', $value['lieming']);
         }
+        $sheet->getRowDimension('2')->setRowHeight(0);
+        $sheet->getColumnDimension('B')->setWidth(0);
         foreach ($biaotou as $key => $value) {
             $sheet->setCellValue($lieming[$key].'3', $value);
         }
