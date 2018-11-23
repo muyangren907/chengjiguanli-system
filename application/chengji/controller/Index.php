@@ -90,24 +90,21 @@ class Index extends Base
        
         // 删除成绩采集表标题行
         array_splice($cjinfo,0,3);
-        dump($cjinfo);
+        dump($xk);
 
-
-
-        // 获取满分
-        $kaoshi = Chengji::where('id',$cjinfo[0][1])->value('kaoshi');
-        $manfen = 
         
         $cj = array();
+        $i = 0;
         // 重新组合成绩信息
         foreach ($cjinfo as $key => $value) {
-            $cj[] = [
-                'id'=>$value[2],
-                'yuwen'=>1
-            ];
+            $cj[$i]['id'] = $value[1];
+            foreach ($xk as $k => $val) {
+                $cj[$i][$xk[$k]] = $value[4+$k];
+            }
+            $i++;
         }
 
-        return 'aa';
+        return $cj;
     }
 
 
