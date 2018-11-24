@@ -27,20 +27,21 @@ class Rule extends Seeder
                 // 二级菜单
                 // 成绩采集
                 ['id'=>101,'title'=>'扫码录入','name'=>'chengji/Index/malu','paixu'=>1,'ismenu' =>true,'pid' =>1,'url'=>'/chengji/malu',],
-                ['id'=>102,'title'=>'表格录入','name'=>'chengji/Index/biaolu','paixu'=>2,'ismenu' =>true,'pid' =>1,'url'=>'/chengji',],
+                ['id'=>102,'title'=>'表格录入','name'=>'chengji/Index/biaolu','paixu'=>2,'ismenu' =>true,'pid' =>1,'url'=>'/chengji/biaolu',],
                 // 成绩统计
                 ['id'=>201,'title'=>'班级成绩','name'=>'tongji/Index/banji','paixu'=>1,'ismenu' =>true,'pid' =>2,'url'=>'/tongji',],
                 // 考试管理
                 ['id'=>301,'title'=>'考试列表','name'=>'teach/Kaoshi/index','paixu'=>1,'ismenu' =>true,'pid' =>3,'url'=>'/kaoshi',],
 
                 // 师生名单
-                ['id'=>401,'title'=>'教师列表','name'=>'renshi/Index/index','paixu'=>1,'ismenu' =>true,'pid' =>4,'url'=>'/teacher',],
-                ['id'=>402,'title'=>'学生列表','name'=>'renshi/Student/index','paixu'=>2,'ismenu' =>true,'pid' =>4,'url'=>'/student',],
+                ['id'=>401,'title'=>'学生列表','name'=>'renshi/Student/index','paixu'=>1,'ismenu' =>true,'pid' =>4,'url'=>'/student',],
+                ['id'=>402,'title'=>'教师列表','name'=>'renshi/Index/index','paixu'=>2,'ismenu' =>true,'pid' =>4,'url'=>'/teacher',],
 
                 // 教务管理
                 ['id'=>501,'title'=>'学期列表','name'=>'teach/Xueqi/index','paixu'=>1,'ismenu' =>true,'pid' =>5,'url'=>'/xueqi',],
-                ['id'=>502,'title'=>'学科列表','name'=>'teach/Subject/index','paixu'=>2,'ismenu' =>true,'pid' =>5,'url'=>'/subject',],
-                ['id'=>503,'title'=>'班级列表','name'=>'teach/Banji/index','paixu'=>3,'ismenu' =>true,'pid' =>5,'url'=>'/banji',],
+                ['id'=>502,'title'=>'班级列表','name'=>'teach/Banji/index','paixu'=>2,'ismenu' =>true,'pid' =>5,'url'=>'/banji',],
+                ['id'=>503,'title'=>'学科列表','name'=>'teach/Subject/index','paixu'=>3,'ismenu' =>true,'pid' =>5,'url'=>'/subject',],
+                
 
                 // 管理员管理
                 ['id'=>601,'title'=>'管理员列表','name'=>'admin/Index/index','paixu'=>1,'ismenu' =>true,'pid' =>6,'url'=>'/admin',],
@@ -67,20 +68,21 @@ class Rule extends Seeder
                     ['title'=>'生成考号','name'=>'teach/Kaoshi/kaohao','paixu'=>6,'pid'=>301],
 
                     // 师生管理
-                    // 教师管理权限
-                    ['title'=>'添加','name'=>'renshi/Index/create','paixu' =>1,'pid'=>401],
-                    ['title'=>'删除','name'=>'renshi/Index/delete','paixu'=>2,'pid'=>401],
-                    ['title'=>'编辑','name'=>'renshi/Index/edit','paixu'=>3,'pid'=>401,],
-                    ['title'=>'查看','name'=>'renshi/Index/read','paixu'=>4,'pid'=>401,],
-                    ['title'=>'状态','name'=>'renshi/Index/status','paixu'=>5,'pid'=>401],
-                    ['title'=>'批传','name'=>'renshi/Index/createAll','paixu'=>6,'pid'=>401],
                     // 学生管理权限
-                    ['title'=>'添加','name'=>'renshi/Student/create','paixu' =>1,'pid'=>402],
-                    ['title'=>'删除','name'=>'renshi/Student/delete','paixu'=>2,'pid'=>402],
-                    ['title'=>'编辑','name'=>'renshi/Student/edit','paixu'=>3,'pid'=>402,],
-                    ['title'=>'查看','name'=>'renshi/Student/read','paixu'=>4,'pid'=>402,],
-                    ['title'=>'状态','name'=>'renshi/Student/status','paixu'=>5,'pid'=>402],
-                    ['title'=>'批传','name'=>'renshi/Student/createAll','paixu'=>'6','pid'=>402],
+                    ['title'=>'添加','name'=>'renshi/Student/create','paixu' =>1,'pid'=>401],
+                    ['title'=>'删除','name'=>'renshi/Student/delete','paixu'=>2,'pid'=>401],
+                    ['title'=>'编辑','name'=>'renshi/Student/edit','paixu'=>3,'pid'=>401,],
+                    ['title'=>'查看','name'=>'renshi/Student/read','paixu'=>4,'pid'=>401,],
+                    ['title'=>'状态','name'=>'renshi/Student/status','paixu'=>5,'pid'=>401],
+                    ['title'=>'批传','name'=>'renshi/Student/createAll','paixu'=>'6','pid'=>401],
+                    // 教师管理权限
+                    ['title'=>'添加','name'=>'renshi/Index/create','paixu' =>1,'pid'=>402],
+                    ['title'=>'删除','name'=>'renshi/Index/delete','paixu'=>2,'pid'=>402],
+                    ['title'=>'编辑','name'=>'renshi/Index/edit','paixu'=>3,'pid'=>402,],
+                    ['title'=>'查看','name'=>'renshi/Index/read','paixu'=>4,'pid'=>402,],
+                    ['title'=>'状态','name'=>'renshi/Index/status','paixu'=>5,'pid'=>402],
+                    ['title'=>'批传','name'=>'renshi/Index/createAll','paixu'=>6,'pid'=>402],
+                    
 
                     // 教务管理
                     // 学期管理权限
@@ -89,16 +91,17 @@ class Rule extends Seeder
                     ['title'=>'编辑','name'=>'teach/Xueqi/edit','paixu'=>3,'pid'=>501,],
                     ['title'=>'查看','name'=>'teach/Xueqi/read','paixu'=>4,'pid'=>501,],
                     ['title'=>'状态','name'=>'teach/Xueqi/status','paixu'=>5,'pid'=>501],
+                                        // 班级列表权限
+                    ['title'=>'添加','name'=>'admin/Banji/create','paixu' =>1,'pid'=>502],
+                    ['title'=>'移动','name'=>'admin/Banji/yidong','paixu'=>2,'pid'=>502],
+                    ['title'=>'状态','name'=>'admin/Banji/status','paixu'=>3,'pid'=>502],
                     // 学科列表权限
-                    ['title'=>'添加','name'=>'admin/Subject/create','paixu' =>1,'pid'=>502],
-                    ['title'=>'删除','name'=>'admin/Subject/delete','paixu'=>2,'pid'=>502],
-                    ['title'=>'编辑','name'=>'admin/Subject/edit','paixu'=>3,'pid'=>502,],
-                    ['title'=>'查看','name'=>'admin/Subject/read','paixu'=>4,'pid'=>502,],
-                    ['title'=>'状态','name'=>'admin/Subject/status','paixu'=>5,'pid'=>502],
-                    // 班级列表权限
-                    ['title'=>'添加','name'=>'admin/Banji/create','paixu' =>1,'pid'=>503],
-                    ['title'=>'移动','name'=>'admin/Banji/yidong','paixu'=>2,'pid'=>503],
-                    ['title'=>'状态','name'=>'admin/Banji/status','paixu'=>3,'pid'=>503],
+                    ['title'=>'添加','name'=>'admin/Subject/create','paixu' =>1,'pid'=>503],
+                    ['title'=>'删除','name'=>'admin/Subject/delete','paixu'=>2,'pid'=>503],
+                    ['title'=>'编辑','name'=>'admin/Subject/edit','paixu'=>3,'pid'=>503,],
+                    ['title'=>'查看','name'=>'admin/Subject/read','paixu'=>4,'pid'=>503,],
+                    ['title'=>'状态','name'=>'admin/Subject/status','paixu'=>5,'pid'=>503],
+
 
                     //管理员管理
                     // 管理员列表权限

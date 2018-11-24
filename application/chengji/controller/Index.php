@@ -8,7 +8,7 @@ use app\renshi\model\Student;
 // 引用成绩数据模型
 use app\chengji\model\Chengji;
 // 引用学科数据模型
-use app\teach\model\subject;
+use app\teach\model\Subject;
 // 引用文件信息存储数据模型类
 use app\system\model\Fields;
 // 引用phpspreadsheet类
@@ -87,24 +87,40 @@ class Index extends Base
         // 获取成绩采集学科信息
         $xk = $cjinfo[1];
         array_splice($xk,0,4);
+        $xklie = Subject::where('id','in',$xk)->column('id,lieming');
        
         // 删除成绩采集表标题行
         array_splice($cjinfo,0,3);
-        dump($xk);
+
+        // 获取学科满分
+        $manfen = getmanfen($cjinfo[0][0],$xk);
 
         
         $cj = array();
         $i = 0;
         // 重新组合成绩信息
         foreach ($cjinfo as $key => $value) {
-            $cj[$i]['id'] = $value[1];
-            foreach ($xk as $k => $val) {
-                $cj[$i][$xk[$k]] = $value[4+$k];
+            $x = 1;
+            foreach ($xklie as $k => $val) {
+                if(!empty($value[3+$x]) && manfenvalidate($value[3+$x],$manfen[$k])){
+                    $cj[$i][$xklie[$k]] = $value[3+$x];
+                    $cj[$i]['id'] = $value[1];
+                }
+                $x++;
             }
             $i++;
         }
 
-        return $cj;
+        // 实例成绩模块
+        $cjmod = new Chengji();
+        // 保存成绩
+        $data = $cjmod->saveAll($cj);
+
+        // 判断成绩更新结果
+        empty($cj) ? $data = ['msg'=>'上传失败','val' => 0] : $data = ['msg'=>'上传成功','val' => 1,];
+
+        // 返回成绩结果
+        return json($data);
     }
 
 

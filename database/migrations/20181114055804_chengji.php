@@ -36,6 +36,7 @@ class Chengji extends Migrator
             ->addColumn('kaoshi','integer',['limit'=>11,'null'=>false,'comment'=>'考试'])
             ->addColumn('school','integer',['limit'=>11,'null'=>false,'comment'=>'学校'])
             ->addColumn('ruxuenian','integer',['limit'=>4,'null'=>false,'comment'=>'入学年'])
+            ->addColumn('nianji','string',['limit'=>4,'null'=>false,'comment'=>'年级'])
             ->addColumn('banji','integer',['limit'=>11,'null'=>false,'comment'=>'班级'])
             ->addColumn('student','integer',['limit'=>11,'null'=>false,'comment'=>'学生'])
             ->addColumn('yuwen','integer',['limit'=>3,'null'=>false,'comment'=>'语文'])

@@ -346,6 +346,7 @@ class Kaoshi extends Base
                         ->field('id,school,banji')
                         ->append(['nianji'])
                         ->select();
+        $njlist = nianjilist();
 
         // 组合参加考试学生信息
         $stus = array();
@@ -358,6 +359,7 @@ class Kaoshi extends Base
                 'kaoshi' => $list['kaoshi'],
                 'school' => $value->getData('school'),
                 'ruxuenian' => $value->nianji,
+                'nianji' => $njlist[$value->nianji],
                 'banji' => $value->banji,
                 'student' => $value->id
             ];
@@ -511,7 +513,7 @@ class Kaoshi extends Base
 
         // 获取参加考试学科信息
         $subject = new \app\teach\model\Subject();
-        $xks = $subject->field('id,title,lieming')->all($list['subject']);
+        $xks = $subject->field('id,title')->all($list['subject']);
 
         
         // 循环组成第三行表头信息
@@ -537,7 +539,7 @@ class Kaoshi extends Base
         // 设置表格标题与表头信息
         $sheet->setCellValue('A1',$kstitle.'成绩采集表');
         foreach ($xks as $key => $value) {
-            $sheet->setCellValue($lieming[$key + 4].'2', $value['lieming']);
+            $sheet->setCellValue($lieming[$key + 4].'2', $value['id']);
         }
         $sheet->getRowDimension('2')->setRowHeight(0);
         $sheet->getColumnDimension('B')->setWidth(0);
