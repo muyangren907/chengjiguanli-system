@@ -99,7 +99,7 @@
 					// 删除按钮
 					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/kaoshi/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
 					// 生成考号
-					morebut = '<a title="更多操作" href="javascript:void(0);" onclick=addfull("生成考号","/kaoshi/'+row.id+'/more") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe715;</i></a>';
+					morebut = '<a title="更多操作" data-href="kaoshi/'+ row.id +'/more" data-title="' + row.title + '·操作" onClick="Hui_admin_tab(this)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe68b;</i></a>';
 
 					if(row.status == '已停用')
 					{

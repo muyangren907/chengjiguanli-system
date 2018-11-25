@@ -11,11 +11,12 @@
 
 //系统设置路由
 Route::resource('kaoshi','kaoshi/Index');
-Route::get('kaoshi/:id/kaohao','kaoshi/Index/kaohao');
-Route::post('kaoshi/kaohao','kaoshi/Index/kaohaosave');
-Route::get('kaoshi/:id/biaoqian','kaoshi/Index/biaoqian');
-Route::get('kaoshi/:id/caiji','kaoshi/Index/caiji');
-Route::post('kaoshi/caiji','kaoshi/Index/cankaomingdan');
+Route::get('kaoshi/:id/more','kaoshi/MoreAction/index');
+Route::get('kaoshi/:id/kaohao','kaoshi/MoreAction/kaohao');
+Route::post('kaoshi/kaohao','kaoshi/MoreAction/kaohaosave');
+Route::get('kaoshi/:id/biaoqian','kaoshi/MoreAction/biaoqian');
+Route::get('kaoshi/:id/caiji','kaoshi/MoreAction/caiji');
+Route::post('kaoshi/caiji','kaoshi/MoreAction/cankaomingdan');
 
 
 
