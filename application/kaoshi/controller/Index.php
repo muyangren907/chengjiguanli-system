@@ -1,11 +1,11 @@
 <?php
 
-namespace app\teach\controller;
+namespace app\kaoshi\controller;
 
 // 引用控制器基类
 use app\common\controller\Base;
 // 引用学期数据模型类
-use app\teach\model\Kaoshi as KS;
+use app\kaoshi\model\Kaoshi as KS;
 // 引用学生类
 use app\renshi\model\Student;
 // 引用成绩类
@@ -17,7 +17,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 use \Endroid\QrCode\QrCode;
 
-class Kaoshi extends Base
+class Index extends Base
 {
     // 显示学期列表
     public function index()

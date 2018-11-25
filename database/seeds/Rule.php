@@ -31,7 +31,7 @@ class Rule extends Seeder
                 // 成绩统计
                 ['id'=>201,'title'=>'班级成绩','name'=>'tongji/Index/banji','paixu'=>1,'ismenu' =>true,'pid' =>2,'url'=>'/tongji',],
                 // 考试管理
-                ['id'=>301,'title'=>'考试列表','name'=>'teach/Kaoshi/index','paixu'=>1,'ismenu' =>true,'pid' =>3,'url'=>'/kaoshi',],
+                ['id'=>301,'title'=>'考试列表','name'=>'kaoshi/Index/index','paixu'=>1,'ismenu' =>true,'pid' =>3,'url'=>'/kaoshi',],
 
                 // 师生名单
                 ['id'=>401,'title'=>'学生列表','name'=>'renshi/Student/index','paixu'=>1,'ismenu' =>true,'pid' =>4,'url'=>'/student',],

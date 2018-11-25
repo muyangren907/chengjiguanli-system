@@ -1,6 +1,6 @@
 <?php
 
-namespace app\teach\model;
+namespace app\kaoshi\model;
 
 use app\common\model\Base;
 

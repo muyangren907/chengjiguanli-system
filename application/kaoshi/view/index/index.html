@@ -96,30 +96,18 @@
 					startbut = '<a style="text-decoration:none" onClick="start(this,'+ row.id +')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>';
 					// 编辑按钮
 					editbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/kaoshi/'+row.id+'/edit") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
-					// 生成考号
-					kaohaobut = '<a title="考号" href="javascript:void(0);" onclick=addfull("生成考号","/kaoshi/'+row.id+'/kaohao") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe705;</i></a>';
 					// 删除按钮
 					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/kaoshi/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
-					// 生成码录表按钮
-					malubut = '<a title="试卷标签" href="javascript:void(0);" onclick=add("试卷标签","/kaoshi/'+row.id+'/biaoqian",300,200) class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe682;</i></a>';
-					// 生成表格录入表
-					biaolubut = '<a title="成绩采集表" href="javascript:void(0);" onclick=addfull("成绩采集表","/kaoshi/'+row.id+'/caiji",300,200) class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6bf;</i></a>';
+					// 生成考号
+					morebut = '<a title="更多操作" href="javascript:void(0);" onclick=addfull("生成考号","/kaoshi/'+row.id+'/more") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe715;</i></a>';
 
 					if(row.status == '已停用')
 					{
-						buts = startbut + editbut;
+						buts = startbut;
 					}else{
-						buts = stopbut + editbut;
+						buts = stopbut;
 					}
-					if( row.kaishi == 0 )
-					{
-						buts = buts + kaohaobut;
-					}
-					if( row.jieshu == 0 )
-					{
-						buts = buts + malubut + biaolubut;
-					}
-					buts = buts + delbut; 
+					buts = buts + editbut + delbut + morebut; 
 
 					return buts;
                 }
