@@ -157,6 +157,31 @@ class Index extends Base
     }
 
 
+    // 成绩列表
+    public function Chengjilist($id)
+    {
+        // 设置数据总数
+        $list['count'] = Chengji::where('kaoshi',$id)->count();
+        // 设置页面标题
+        $list['title'] = '成绩列表';
+        $list['kaoshi'] = $id;
+
+        // 模板赋值
+        $this->assign('list', $list);
+
+        // 渲染模板
+        return $this->fetch();
+    }
+
+
+    // 获取考试信息
+    public function ajaxData()
+    {
+        $list = request()->post();
+        dump($list);
+    }
+
+
     
 
     

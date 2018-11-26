@@ -3,7 +3,7 @@
 	<nav class="breadcrumb">
 		<i class="Hui-iconfont">&#xe67f;</i> 首页
 		<span class="c-gray en">&gt;</span> 考试管理
-		<span class="c-gray en">&gt;</span> 考试列表
+		<span class="c-gray en">&gt;</span> 考试操作
 		<a class="btn btn-success radius r"
 			style="line-height:1.6em;margin-top:3px"
 			href="javascript:location.replace(location.href);"
@@ -16,6 +16,50 @@
 	
 {/block}
 {block name="tables"}
+<div class="text-c mt-50">
+	<ul class="icon_lists clearfix">
+		<li class="f-l ml-50 bk-gray" bk-gray style="min-width: 250px;">
+			<h1>
+				<a href="javascript:;" onclick=addfull("生成考号","/kaoshi/{$list['kaoshiid']}/kaohao") style="text-decoration:none">
+					<i class="Hui-iconfont Hui-iconfont-tags"></i>
+				</a>
+			</h1>
+			<span>生成考号</span>
+		</li>
+	</ul>
+</div>
+<div class=" text-c mt-50">
+	<ul class="icon_lists clearfix">
+		<li class="f-l ml-50 bk-gray" style="min-width: 250px">
+			<h1>
+				<a href="javascript:;" onclick=addfull('下载试卷标签',"/kaoshi/{$list['kaoshiid']}/biaoqian") style="text-decoration:none">
+					<i class="Hui-iconfont Hui-iconfont-2code"></i>
+				</a>
+			</h1>
+		<span>下载试卷标签</span>
+		</li>
+		<li class="f-l ml-20 bk-gray" style="min-width: 250px">
+			<h1>
+				<a href="javascript:;" onclick=addfull('下载成绩采集表',"/kaoshi/{$list['kaoshiid']}/caiji") style="text-decoration:none">
+					<i class="Hui-iconfont Hui-iconfont-menu"></i>
+				</a>
+			</h1>
+			<span>下载成绩采集表</span>
+		</li>
+	</ul>
+</div>
+<div class="text-c mt-50">
+	<ul class="icon_lists clearfix">
+		<li class="f-l ml-50 bk-gray" bk-gray style="min-width: 250px">
+			<h1>
+				<a href="javascript:;" onclick=addfull("查看成绩","/chengji/{$list['kaoshiid']}/chengjilist") style="text-decoration:none">
+					<i class="Hui-iconfont Hui-iconfont-moban-2"></i>
+				</a>
+			</h1>
+			<span>查看成绩</span>
+		</li>
+	</ul>
+</div>
 	
 
 
@@ -37,5 +81,22 @@
 	var mycolumnDefs =[
 
 	];
+
+	$('h1').mouseenter(function(){
+		$(this).animate({
+			fontSize:'50px',
+		});
+	});
+
+	$('h1').mouseleave(function(){
+		$(this).animate({
+			fontSize:'36px',
+		});
+	});
+
+
+
+
+	
 </script>
 {/block}

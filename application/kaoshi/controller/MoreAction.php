@@ -25,6 +25,9 @@ class MoreAction extends Base
         // 设置模板赋值数据
         $list['kaoshiid']= $id;
         $list['title']='考试操作';
+
+        $list['kstitle'] = KS::where('id',$id)->value('title');
+
         // 模板赋值
         $this->assign('list',$list);
 

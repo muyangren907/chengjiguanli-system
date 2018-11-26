@@ -1,0 +1,147 @@
+{extend name="common@list" /}
+{block name="topnav"}
+	<nav class="breadcrumb">
+		<i class="Hui-iconfont">&#xe67f;</i> 首页
+		<span class="c-gray en">&gt;</span> 成绩管理
+		<span class="c-gray en">&gt;</span> 成绩列表
+		<a class="btn btn-success radius r"
+			style="line-height:1.6em;margin-top:3px"
+			href="javascript:location.replace(location.href);"
+			title="刷新" >
+			<i class="Hui-iconfont">&#xe68f;</i>
+	</a>
+	</nav>
+{/block}
+{block name="bouttons"}
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+			<!-- 删除按钮 -->
+			<a href="javascript:;" class="btn btn-danger radius">
+				<i class="Hui-iconfont">&#xe6e2;</i>
+			批量删除
+			</a>
+		</span>
+		<span class="r">
+			共有数据：<strong>{$list.count}</strong> 条
+		</span>
+	</div>
+
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:180px;">
+				{php}
+					$njlist = nianjiList();
+				{/php}
+				<select class="select" id="ruxuenian" name="ruxuenian" size="1">
+					<option value="">--请选择年级--</option>
+					{foreach $njlist as $key=>$vo}
+						<option value="{$key}">{$vo}</option>
+					{/foreach}
+				</select>
+				</span>
+			</div>
+{/block}
+{block name="tables"}
+	<table id="table1" class="display" cellspacing="0" width="100%">
+		<thead>
+			<tr>
+				<th><input type="checkbox" name="" value=""></th>
+				<th>学校</th>
+				<th>年级</th>
+				<th>学生</th>
+				<th>语文</th>
+				<th>数学</th>
+				<th>英语</th>
+				<th>平均</th>
+				<th>总分</th>
+				<th>状态</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+
+
+{/block}
+{block name="myjs"}
+<script type="text/javascript">
+
+	// 定义DTajax参数
+	var myajax = {
+		url: "{:url('ajaxdata')}",
+		type: "post",
+		data: {
+			kaoshi:"{$list.kaoshi}",
+		},
+	};
+
+	// 定义列参数
+	var mycolumns = [
+        { "data": "id" },
+        { "data": "id" },
+        { "data": "id" },
+        { "data": "id"},
+        { "data": "id"},
+        { "data": "id"},
+        { "data": "id" },
+        { "data": "id" },
+        { "data": "status" },
+        { "data": "id" },
+	];
+
+	// 定义修改列参数
+	var mycolumnDefs =[
+		// 对象格式
+		{
+			"targets": 0,			
+			"render": function(data, type, row, meta) {
+				return '<input type="checkbox" name="test" value="' + row.id + '" />'
+			}
+		},
+		{
+			"targets": -1,
+			"className":'.td-manage',			
+			"render": function(data, type, row, meta) {
+					// 停用按钮
+					stopbut = '<a style="text-decoration:none" onClick="stop(this,'+ row.id +')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>';
+					// 启用按钮
+					startbut = '<a style="text-decoration:none" onClick="start(this,'+ row.id +')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>';
+					// 编辑按钮
+					editbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/kaoshi/'+row.id+'/edit") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
+					// 删除按钮
+					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/kaoshi/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
+					// 生成考号
+					morebut = '<a title="更多操作" data-href="kaoshi/'+ row.id +'/more" data-title="' + row.title + '·操作" onClick="Hui_admin_tab(this)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe68b;</i></a>';
+
+					if(row.status == '已停用')
+					{
+						buts = startbut;
+					}else{
+						buts = stopbut;
+					}
+					buts = buts + editbut + delbut + morebut; 
+
+					return buts;
+                }
+        },
+        {
+			"targets": -2,
+			"className":'.td-status',
+			"render": function(data, type, row, meta) {
+                    if(row.status == '已停用')
+                    {
+                    	d = "<span class='label label-error radius'>" + row.status + "</span>";
+                    }else{
+                    	d = "<span class='label label-success radius'>" + row.status + "</span>";
+                    }
+
+                    return d;
+                  },
+        },
+        {
+        	"orderable": false,
+        	"targets": [0,-1]
+        }, 
+	];
+</script>
+{/block}
