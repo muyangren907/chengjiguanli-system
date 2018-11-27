@@ -103,7 +103,7 @@ class Index extends Base
             $x = 1;
             foreach ($xklie as $k => $val) {
                 if(!empty($value[3+$x]) && manfenvalidate($value[3+$x],$manfen[$k])){
-                    $cj[$i][$xklie[$k]] = $value[3+$x];
+                    $cj[$i][$xklie[$k]] = number_format($value[3+$x],1);
                     $cj[$i]['id'] = $value[1];
                 }
                 $x++;
@@ -177,8 +177,59 @@ class Index extends Base
     // 获取考试信息
     public function ajaxData()
     {
-        $list = request()->post();
-        dump($list);
+        
+         // $val = (number_format(1.01,1)*100)%5;
+         $val = number_format(1.01,1);
+         dump($val);
+         return true;
+        // 获取DT的传值
+        $getdt = request()->param();
+
+        //得到排序的方式
+        $order = $getdt['order'][0]['dir'];
+        //得到排序字段的下标
+        $order_column = $getdt['order'][0]['column'];
+        //根据排序字段的下标得到排序字段
+        $order_field = $getdt['columns'][$order_column]['data'];
+        //得到limit参数
+        $limit_start = $getdt['start'];
+        $limit_length = $getdt['length'];
+        //得到搜索的关键词
+        $search = $getdt['search']['value'];
+
+
+        // 获取记录集总数
+        $cnt = Chengji::count();
+        //查询数据
+        $data =Chengji::field('id,kaoshi,school,nianji')
+            ->order([$order_field=>$order])
+            ->limit($limit_start,$limit_length)
+            ->all();
+        
+
+        // // 如果需要查询
+        // if($search){
+        //     $data = Chengji::field('id,xingming,sex,shengri,xueli,biye,worktime,zhuanye,danwei,status')
+        //         ->order([$order_field=>$order])
+        //         ->limit($limit_start,$limit_length)
+        //         ->where('xingming|biye|zhuanye','like','%'.$search.'%')
+        //         ->all();
+        // }
+
+        $datacnt = $data->count();
+        $data = $data->append(['age']);
+        
+        
+
+
+        $data = [
+            'draw'=> $getdt["draw"] , // ajax请求次数，作为标识符
+            'recordsTotal'=>$datacnt,  // 获取到的结果数(每页显示数量)
+            'recordsFiltered'=>$cnt,       // 符合条件的总数据量
+            'data'=>$data, //获取到的数据结果
+        ];
+
+        return json($data);
     }
 
 
