@@ -25,16 +25,16 @@ class Chengji extends Base
 	// 班级名称获取器
 	public function getBanjiAttr($value)
 	{
-		$bj = Banji::get($value);
+		$bj = Banji::find($value);
 
 		// 返回班级名称 
 		return $bj->title;
 	}
 
 	// 班级名称(数字)获取器
-	public function getBanjiNumnameAttr()
+	public function getBanjiNumnameAttr($value)
 	{
-		$bj = Banji::get($this->banji);
+		$bj = Banji::find($value);
 
 		// 返回班级名称 
 		return $bj->numTitle;

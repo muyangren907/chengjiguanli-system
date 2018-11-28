@@ -129,7 +129,7 @@ class MoreAction extends Base
 
         // 获取数据库信息
         $chengjiinfo = Chengji::where('kaoshi',$id)
-                        ->append(['studentname','schooljian','banjiNumname'])
+                        ->append(['banjiNumname'])
                         ->select();
 
         // 获取学科信息
@@ -184,9 +184,9 @@ class MoreAction extends Base
 
                 // $table->addCell(700)->addImage('aaaa.jpg',$imageStyle);
                 $info = $table->addCell(650);
-                $info->addText($value['schooljian'],$myStyle);
+                $info->addText($value['school'],$myStyle);
                 $info->addText($value['banjiNumname'],$myStyle);
-                $info->addText($value['studentname'],$myStyle);
+                $info->addText($value['student'],$myStyle);
                 $info->addText($val,$myStyle);
             }
         }
