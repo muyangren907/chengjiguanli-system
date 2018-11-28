@@ -177,11 +177,6 @@ class Index extends Base
     // 获取考试信息
     public function ajaxData()
     {
-        
-         // $val = (number_format(1.01,1)*100)%5;
-         $val = number_format(1.01,1);
-         dump($val);
-         return true;
         // 获取DT的传值
         $getdt = request()->param();
 
@@ -201,23 +196,25 @@ class Index extends Base
         // 获取记录集总数
         $cnt = Chengji::count();
         //查询数据
-        $data =Chengji::field('id,kaoshi,school,nianji')
+        $data =Chengji::field('id,kaoshi,school,banji,student,nianji,yuwen,shuxue,waiyu,status')
             ->order([$order_field=>$order])
             ->limit($limit_start,$limit_length)
             ->all();
+
+        // dump($data);
         
 
-        // // 如果需要查询
-        // if($search){
-        //     $data = Chengji::field('id,xingming,sex,shengri,xueli,biye,worktime,zhuanye,danwei,status')
-        //         ->order([$order_field=>$order])
-        //         ->limit($limit_start,$limit_length)
-        //         ->where('xingming|biye|zhuanye','like','%'.$search.'%')
-        //         ->all();
-        // }
+        // // // 如果需要查询
+        // // if($search){
+        // //     $data = Chengji::field('id,xingming,sex,shengri,xueli,biye,worktime,zhuanye,danwei,status')
+        // //         ->order([$order_field=>$order])
+        // //         ->limit($limit_start,$limit_length)
+        // //         ->where('xingming|biye|zhuanye','like','%'.$search.'%')
+        // //         ->all();
+        // // }
 
         $datacnt = $data->count();
-        $data = $data->append(['age']);
+        $data = $data->append(['schooljian','banjiname','studentname','stuAvg','stuSum']);
         
         
 

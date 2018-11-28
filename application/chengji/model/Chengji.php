@@ -39,4 +39,56 @@ class Chengji extends Base
 		// 返回班级名称 
 		return $bj->numTitle;
 	}
+
+	// 学生总分
+	public function getStuSumAttr()
+	{
+		$sum = $this->getData('yuwen') + $this->getData('shuxue') +$this->getData('waiyu');
+		$sum == 0 ? $sum='' : $sum;
+		return $sum;
+	}
+	// 学生总分
+	public function getStuAvgAttr()
+	{
+		// 将三科成绩以数组形式储存
+		$num[] = $this->getAttr('yuwen');
+		$num[] = $this->getAttr('shuxue');
+		$num[] = $this->getAttr('waiyu');
+
+		// 删除空数据
+		$i = 0;
+		foreach ($num as $key => $value) {
+			if($value == null)
+			{
+				unset($num[$key]);
+			}
+		}
+
+		// 获取数组长度
+		count($num) == null ? $sum='' : $sum = array_sum($num)/count($num);
+
+		return $sum;
+	}
+
+	// 格式化成绩
+	public function getYuwenAttr($val)
+	{
+		return $this->myval($val);
+	}
+	public function getShuxueAttr($val)
+	{
+		return $this->myval($val);
+	}
+	public function getWaiyuAttr($val)
+	{
+		return $this->myval($val);
+	}
+
+
+	// 格式化成绩
+	public function myval($val)
+	{
+		$val == 0 ? $val='' : $val = $val*1;
+		return $val;
+	}
 }

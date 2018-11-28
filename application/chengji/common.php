@@ -17,7 +17,7 @@ function getmanfen($kaoshiid,$subjectid)
 // 分数验证
 function manfenvalidate($defen,$manfen)
 {
-	if(is_numeric($defen) && $defen>=0 && $defen<=$manfen && ($defen*10%5)==0)
+	if(is_numeric($defen) && $defen>=0 && $defen<=$manfen && ($defen*10)%5==0)
 	{
 		return true;
 	}
