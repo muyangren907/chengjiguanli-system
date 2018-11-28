@@ -82,7 +82,7 @@
 				df = data['zdstr'];
 				df = data[df];
 				myinfo = data;
-				$('#info').val(myinfo['schooljian'] + '   ' + myinfo['banjiname'] + '   ' + myinfo['studentname'] + '   ' + myinfo['zdname']);
+				$('#info').val(myinfo['school'] + '   ' + myinfo['banji'] + '   ' + myinfo['student'] + '   ' + myinfo['zdname']);
 				var zd = data['ziduan'];
 				df>0 ? $('#defen').val(df) : $('#defen').val('');
 				$('#defen').focus();
@@ -154,7 +154,7 @@
 					var minute = date.getMinutes();
 					var second = date.getSeconds();
 					var addtime = hour + ':' + minute + ':' + second;
-					var str = '<tr><td>'+cnt+'</td><td>' + myinfo['schooljian'] +'</td><td>' + myinfo['banjiname'] + '</td><td>'+myinfo['studentname']+'</td><td>'+myinfo['zdname']+'</td><td>'+data['defen']+'</td><td>'+addtime+'</td></tr>';
+					var str = '<tr><td>'+cnt+'</td><td>' + myinfo['school'] +'</td><td>' + myinfo['banji'] + '</td><td>'+myinfo['student']+'</td><td>'+myinfo['zdname']+'</td><td>'+data['defen']+'</td><td>'+addtime+'</td></tr>';
 					cnt++;
 					$('#addjg').prepend(str);
 				}

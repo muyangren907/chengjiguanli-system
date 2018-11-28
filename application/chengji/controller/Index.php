@@ -56,11 +56,11 @@ class Index extends Base
         $zdname = $subject[$list['ziduan']][1];
         $stuinfo = Chengji::where('id',$list['id'])
                     ->field('id,school,student,banji,'.$zd)
-                    ->append(['studentname','schooljian','banjiname'])
+                    // ->append(['banjiname'])
                     ->find();
         $stuinfo['zdname'] = $zdname;
         $stuinfo['zdstr'] = $zd;
-        return json($stuinfo->visible(['studentname','schooljian','banjiname','banji',$zd,'zdstr','zdname']));
+        return json($stuinfo->visible(['student','school','banji',$zd,'zdstr','zdname']));
     }
 
 
@@ -214,7 +214,7 @@ class Index extends Base
         // // }
 
         $datacnt = $data->count();
-        $data = $data->append(['schooljian','banjiname','studentname','stuAvg','stuSum']);
+        $data = $data->append(['stuAvg','stuSum']);
         
         
 

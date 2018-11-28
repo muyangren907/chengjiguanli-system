@@ -52,7 +52,7 @@
 	<ul class="icon_lists clearfix">
 		<li class="f-l ml-50 bk-gray" bk-gray style="min-width: 250px">
 			<h1>
-				<a href="javascript:;" onclick=addfull("查看成绩","/chengji/{$list['kaoshiid']}/chengjilist") style="text-decoration:none">
+				<a data-href="/chengji/{$list['kaoshiid']}/chengjilist" data-title="{$list.kstitle}成绩查看|{$list['bfdate']}" onClick="Hui_admin_tab(this)" style="text-decoration:none">
 					<i class="Hui-iconfont Hui-iconfont-moban-2"></i>
 				</a>
 			</h1>

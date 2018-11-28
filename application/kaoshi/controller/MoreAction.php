@@ -26,7 +26,10 @@ class MoreAction extends Base
         $list['kaoshiid']= $id;
         $list['title']='考试操作';
 
-        $list['kstitle'] = KS::where('id',$id)->value('title');
+        $kaoshi = KS::get($id);
+        $list['kstitle'] = $kaoshi->title;
+        $list['bfdate'] = $kaoshi->bfdate;
+
 
         // 模板赋值
         $this->assign('list',$list);

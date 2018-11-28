@@ -11,21 +11,21 @@ use app\teach\model\Banji;
 class Chengji extends Base
 {
    // 学生姓名获取器
-	public function getStudentnameAttr()
+	public function getStudentAttr($value)
 	{
-		return db('student')->where('id',$this->student)->value('xingming');
+		return db('student')->where('id',$value)->value('xingming');
 	}
 
 	// 学校简称获取器
-	public function getSchooljianAttr()
+	public function getSchoolAttr($value)
 	{
-		return db('school')->where('id',$this->school)->value('jiancheng');
+		return db('school')->where('id',$value)->value('jiancheng');
 	}
 
 	// 班级名称获取器
-	public function getBanjinameAttr()
+	public function getBanjiAttr($value)
 	{
-		$bj = Banji::get($this->banji);
+		$bj = Banji::get($value);
 
 		// 返回班级名称 
 		return $bj->title;
@@ -65,7 +65,13 @@ class Chengji extends Base
 		}
 
 		// 获取数组长度
-		count($num) == null ? $sum='' : $sum = array_sum($num)/count($num);
+		if(count($num) == null)
+		{
+			$sum = '';
+		}else{
+			$sum = array_sum($num)/count($num);
+			$sum = round($sum,1);
+		}
 
 		return $sum;
 	}
