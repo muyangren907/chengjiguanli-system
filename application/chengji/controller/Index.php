@@ -230,6 +230,47 @@ class Index extends Base
     }
 
 
+
+
+    // 删除成绩
+    public function delete($id)
+    {
+
+        if($id == 'm')
+        {
+            $id = request()->delete('ids/a');// 获取delete请求方式传送过来的数据并转换成数据
+        }
+
+        $data = Chengji::destroy($id);
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
+
+    // 设置成绩状态
+    public function setStatus()
+    {
+
+        //  获取id变量
+        $id = request()->post('id');
+        $value = request()->post('value');
+
+        // 获取班级信息
+        $data = Chengji::where('id',$id)->update(['status'=>$value]);
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
     
 
     

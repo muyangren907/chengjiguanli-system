@@ -10,6 +10,7 @@
 // +----------------------------------------------------------------------
 
 //系统设置路由
+Route::resource('chengji','Chengji/Index');
 Route::get('chengji/malu','chengji/Index/malu');
 Route::post('chengji/malu','chengji/Index/malusave');
 Route::post('chengji/read','chengji/Index/read');

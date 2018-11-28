@@ -108,11 +108,9 @@
 					// 启用按钮
 					startbut = '<a style="text-decoration:none" onClick="start(this,'+ row.id +')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>';
 					// 编辑按钮
-					editbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/kaoshi/'+row.id+'/edit") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
+					editbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/chengji/'+row.id+'/edit") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
 					// 删除按钮
-					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/kaoshi/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
-					// 生成考号
-					morebut = '<a title="更多操作" data-href="kaoshi/'+ row.id +'/more" data-title="' + row.title + '·操作" onClick="Hui_admin_tab(this)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe68b;</i></a>';
+					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/chengji/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
 
 					if(row.status == '已停用')
 					{
@@ -120,7 +118,7 @@
 					}else{
 						buts = stopbut;
 					}
-					buts = buts + editbut + delbut + morebut; 
+					buts = buts + editbut + delbut; 
 
 					return buts;
                 }
