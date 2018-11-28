@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6a9560a182211dc201c51239e9a46631",
+    "content-hash": "3ac5af7f55f26be7998237dfaf297a3c",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -110,17 +110,17 @@
             "time": "2018-10-13T18:47:03+00:00"
         },
         {
-            "name": "endroid/qrcode",
-            "version": "3.4.6",
+            "name": "endroid/qr-code",
+            "version": "3.4.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/endroid/qr-code.git",
-                "reference": "cca0cd11486c73abc159444c007daa641580faee"
+                "reference": "4752fc7cc7f658c17049919af33872e9b7d5e64d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/endroid/qr-code/zipball/cca0cd11486c73abc159444c007daa641580faee",
-                "reference": "cca0cd11486c73abc159444c007daa641580faee",
+                "url": "https://api.github.com/repos/endroid/qr-code/zipball/4752fc7cc7f658c17049919af33872e9b7d5e64d",
+                "reference": "4752fc7cc7f658c17049919af33872e9b7d5e64d",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -173,8 +173,7 @@
                 "qr",
                 "qrcode"
             ],
-            "abandoned": "endroid/qr-code",
-            "time": "2018-11-14T15:54:49+00:00"
+            "time": "2018-11-26T11:53:30+00:00"
         },
         {
             "name": "khanamiryan/qrcode-detector-decoder",
@@ -793,16 +792,16 @@
         },
         {
             "name": "symfony/inflector",
-            "version": "v4.1.7",
+            "version": "v4.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/inflector.git",
-                "reference": "07810b5c88ec0c2e98972571a40a126b44664e13"
+                "reference": "8da789363973920dd7df6753822810592138e5ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/inflector/zipball/07810b5c88ec0c2e98972571a40a126b44664e13",
-                "reference": "07810b5c88ec0c2e98972571a40a126b44664e13",
+                "url": "https://api.github.com/repos/symfony/inflector/zipball/8da789363973920dd7df6753822810592138e5ba",
+                "reference": "8da789363973920dd7df6753822810592138e5ba",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -853,20 +852,20 @@
                 "symfony",
                 "words"
             ],
-            "time": "2018-07-26T08:55:25+00:00"
+            "time": "2018-11-11T19:51:29+00:00"
         },
         {
             "name": "symfony/options-resolver",
-            "version": "v4.1.7",
+            "version": "v4.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/options-resolver.git",
-                "reference": "40f0e40d37c1c8a762334618dea597d64bbb75ff"
+                "reference": "31e5523373cb06163079ef46d0a2d507d70fe064"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/40f0e40d37c1c8a762334618dea597d64bbb75ff",
-                "reference": "40f0e40d37c1c8a762334618dea597d64bbb75ff",
+                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/31e5523373cb06163079ef46d0a2d507d70fe064",
+                "reference": "31e5523373cb06163079ef46d0a2d507d70fe064",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -913,7 +912,7 @@
                 "configuration",
                 "options"
             ],
-            "time": "2018-09-18T12:45:12+00:00"
+            "time": "2018-11-11T19:51:29+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -981,16 +980,16 @@
         },
         {
             "name": "symfony/property-access",
-            "version": "v4.1.7",
+            "version": "v4.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/property-access.git",
-                "reference": "ae5620fb79729bc8b5dd83b75507cbcae24f83ee"
+                "reference": "10edb6c4b6f496a2ed40a788ebbd280b421985ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/property-access/zipball/ae5620fb79729bc8b5dd83b75507cbcae24f83ee",
-                "reference": "ae5620fb79729bc8b5dd83b75507cbcae24f83ee",
+                "url": "https://api.github.com/repos/symfony/property-access/zipball/10edb6c4b6f496a2ed40a788ebbd280b421985ae",
+                "reference": "10edb6c4b6f496a2ed40a788ebbd280b421985ae",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -1050,7 +1049,7 @@
                 "property path",
                 "reflection"
             ],
-            "time": "2018-10-02T12:40:59+00:00"
+            "time": "2018-11-26T12:16:25+00:00"
         },
         {
             "name": "topthink/framework",

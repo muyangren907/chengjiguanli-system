@@ -25,7 +25,7 @@ return array(
     'PhpOffice\\Common\\' => array($vendorDir . '/phpoffice/common/src/Common'),
     'Phinx\\' => array($vendorDir . '/topthink/think-migration/phinx/src/Phinx'),
     'MyCLabs\\Enum\\' => array($vendorDir . '/myclabs/php-enum/src'),
-    'Endroid\\QrCode\\' => array($vendorDir . '/endroid/qrcode/src'),
+    'Endroid\\QrCode\\' => array($vendorDir . '/endroid/qr-code/src'),
     'Endroid\\Installer\\' => array($vendorDir . '/endroid/installer/src'),
     'Complex\\' => array($vendorDir . '/markbaker/complex/classes/src'),
 );
