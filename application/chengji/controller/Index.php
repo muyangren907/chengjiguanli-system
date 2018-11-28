@@ -196,10 +196,10 @@ class Index extends Base
         // 获取记录集总数
         $cnt = Chengji::count();
         //查询数据
-        $data =Chengji::field('id,kaoshi,school,banji,student,nianji,yuwen,shuxue,waiyu,status')
+        $data =Chengji::field('id,kaoshi,school,banji,student,nianji,yuwen,shuxue,waiyu,stuSum,stuAvg,status')
             ->order([$order_field=>$order])
             ->limit($limit_start,$limit_length)
-            ->all();
+            ->select();
 
         // dump($data);
         
@@ -214,7 +214,7 @@ class Index extends Base
         // // }
 
         $datacnt = $data->count();
-        $data = $data->append(['stuAvg','stuSum']);
+        // $data = $data->append(['stuAvg','stuSum']);
         
         
 

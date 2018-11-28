@@ -10,6 +10,41 @@ use app\teach\model\Banji;
 
 class Chengji extends Base
 {
+   
+
+   // 定义更新成绩后计算平均分和总分
+	protected static function init()
+    {
+        self::afterUpdate(function ($cj) {
+        	$cj = $cj->where('id',$cj->id)->find();
+        	// 重新组合数组
+        	$num[] = $cj->yuwen;
+        	$num[] = $cj->shuxue;
+        	$num[] = $cj->waiyu;
+
+        	// 删除空数据
+			foreach ($num as $key => $value) {
+				if($value == null)
+				{
+					unset($num[$key]);
+				}
+			}
+
+			// 获取数组长度
+			$cnt = count($num);
+
+			// 如果存在数据则计算平均分与总分
+			if($cnt>0)
+			{
+				$cj->stuSum=array_sum($num);
+				$cj->stuAvg=$cj->stuSum/$cnt;
+				$cj->stuAvg = round($cj->stuAvg,1);
+			}
+
+            $cj->save();
+        });
+    }
+
    // 学生姓名获取器
 	public function getStudentAttr($value)
 	{
@@ -40,41 +75,6 @@ class Chengji extends Base
 		return $bj->numTitle;
 	}
 
-	// 学生总分
-	public function getStuSumAttr()
-	{
-		$sum = $this->getData('yuwen') + $this->getData('shuxue') +$this->getData('waiyu');
-		$sum == 0 ? $sum='' : $sum;
-		return $sum;
-	}
-	// 学生总分
-	public function getStuAvgAttr()
-	{
-		// 将三科成绩以数组形式储存
-		$num[] = $this->getAttr('yuwen');
-		$num[] = $this->getAttr('shuxue');
-		$num[] = $this->getAttr('waiyu');
-
-		// 删除空数据
-		$i = 0;
-		foreach ($num as $key => $value) {
-			if($value == null)
-			{
-				unset($num[$key]);
-			}
-		}
-
-		// 获取数组长度
-		if(count($num) == null)
-		{
-			$sum = '';
-		}else{
-			$sum = array_sum($num)/count($num);
-			$sum = round($sum,1);
-		}
-
-		return $sum;
-	}
 
 	// 格式化成绩
 	public function getYuwenAttr($val)
@@ -86,6 +86,14 @@ class Chengji extends Base
 		return $this->myval($val);
 	}
 	public function getWaiyuAttr($val)
+	{
+		return $this->myval($val);
+	}
+	public function getStuSumAttr($val)
+	{
+		return $this->myval($val);
+	}
+	public function getStuAvgAttr($val)
 	{
 		return $this->myval($val);
 	}
