@@ -26,10 +26,6 @@
 			</h1>
 			<span>生成考号</span>
 		</li>
-	</ul>
-</div>
-<div class=" text-c mt-50">
-	<ul class="icon_lists clearfix">
 		<li class="f-l ml-50 bk-gray" style="min-width: 250px">
 			<h1>
 				<a href="javascript:;" onclick=addfull('下载试卷标签',"/kaoshi/{$list['kaoshiid']}/biaoqian") style="text-decoration:none">
@@ -57,6 +53,14 @@
 				</a>
 			</h1>
 			<span>查看成绩</span>
+		</li>
+		<li class="f-l ml-50 bk-gray" bk-gray style="min-width: 250px">
+			<h1>
+				<a data-href="/chengji/{$list['kaoshiid']}/tongji" data-title="{$list.kstitle}成绩统计｜{$list['bfdate']}" onClick="Hui_admin_tab(this)" style="text-decoration:none">
+					<i class="Hui-iconfont Hui-iconfont-moban-2"></i>
+				</a>
+			</h1>
+			<span>成绩统计</span>
 		</li>
 	</ul>
 </div>

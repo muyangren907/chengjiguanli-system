@@ -324,8 +324,5 @@ class Index extends Base
         return json($data);
     }
 
-
-    
-
-    
+      
 }

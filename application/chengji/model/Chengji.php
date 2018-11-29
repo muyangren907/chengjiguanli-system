@@ -117,4 +117,6 @@ class Chengji extends Base
 		$val == 0 ? $val='' : $val = $val*1;
 		return $val;
 	}
+
+	
 }
