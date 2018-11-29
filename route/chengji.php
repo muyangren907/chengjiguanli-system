@@ -11,6 +11,7 @@
 
 //系统设置路由
 Route::resource('chengji','Chengji/Index');
+Route::delete('chengji/:id/cj','chengji/Index/deletecj');  #只删除成绩
 Route::get('chengji/malu','chengji/Index/malu');
 Route::post('chengji/malu','chengji/Index/malusave');
 Route::post('chengji/read','chengji/Index/read');

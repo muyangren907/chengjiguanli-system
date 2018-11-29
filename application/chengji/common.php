@@ -1,11 +1,11 @@
 <?php
 
 // 获取学科满分
-function getmanfen($kaoshiid,$subjectid)
+function getmanfen($cjid,$subjectid)
 {
 	// 获取考试号
 	$cj = new app\chengji\model\Chengji;
-	$kaoshiid = $cj->where('id',$kaoshiid)->value('kaoshi');
+	$kaoshiid = $cj->where('id',$cjid)->value('kaoshi');
 
 	// 根据考试号和学科名获取满分
 	$KSXK = new app\kaoshi\model\KaoshiSubject;
@@ -21,7 +21,6 @@ function manfenvalidate($defen,$manfen)
 	{
 		return true;
 	}
-
 	return false;
 }
 

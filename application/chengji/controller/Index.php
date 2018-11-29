@@ -93,9 +93,13 @@ class Index extends Base
         array_splice($cjinfo,0,3);
 
         // 获取学科满分
-        $manfen = getmanfen($cjinfo[0][0],$xk);
-
-        
+        if($cjinfo[0][1] !=null)
+        {
+            $manfen = getmanfen($cjinfo[0][1],$xk);
+        }else{
+            $data = ['msg'=>'上传失败','val' => 0];
+            return json($data);
+        }
         $cj = array();
         $i = 0;
         // 重新组合成绩信息
@@ -104,7 +108,7 @@ class Index extends Base
             foreach ($xklie as $k => $val) {
                 if(!empty($value[3+$x]) && manfenvalidate($value[3+$x],$manfen[$k])){
                     $cj[$i][$xklie[$k]] = number_format($value[3+$x],1);
-                    $cj[$i]['id'] = $value[1];
+                    $cj[$i]['id'] = $value[1];  
                 }
                 $x++;
             }
@@ -194,24 +198,34 @@ class Index extends Base
 
 
         // 获取记录集总数
-        $cnt = Chengji::count();
+        $cnt = Chengji::where('kaoshi',$getdt['kaoshi'])->count();
         //查询数据
         $data =Chengji::field('id,kaoshi,school,banji,student,nianji,yuwen,shuxue,waiyu,stuSum,stuAvg,status')
+            ->where('kaoshi',$getdt['kaoshi'])
+            ->append(['cj_school.jiancheng','cj_banji.title','cj_student.xingming'])
             ->order([$order_field=>$order])
             ->limit($limit_start,$limit_length)
             ->select();
+      
 
-        // dump($data);
-        
+        // 如果需要查询
+        if($search){
+            $data =Chengji::where('kaoshi',$getdt['kaoshi'])
+            ->where(function ($query) use($search){
+                $query->whereOr('student','in',function ($query) use($search){
+                    $query->name('student')->where('xingming','like','%'.$search.'%')->field('id');
+                })
+                ->whereOr('school','in',function ($query) use($search){
+                $query->name('school')->where('title|jiancheng','like','%'.$search.'%')->field('id');
+            });
+            })
 
-        // // // 如果需要查询
-        // // if($search){
-        // //     $data = Chengji::field('id,xingming,sex,shengri,xueli,biye,worktime,zhuanye,danwei,status')
-        // //         ->order([$order_field=>$order])
-        // //         ->limit($limit_start,$limit_length)
-        // //         ->where('xingming|biye|zhuanye','like','%'.$search.'%')
-        // //         ->all();
-        // // }
+            ->append(['cj_school.jiancheng','cj_banji.title','cj_student.xingming'])
+            ->order([$order_field=>$order])
+            ->limit($limit_start,$limit_length)
+            ->select();
+        }
+        // $data = $data->visible(['cj_school.jiancheng','cj_banji.title']);
 
         $datacnt = $data->count();
         // $data = $data->append(['stuAvg','stuSum']);
@@ -233,6 +247,45 @@ class Index extends Base
 
 
     // 删除成绩
+    public function deletecj($id)
+    {
+
+        // 声明要删除成绩数组
+        $data = array();
+
+        if($id == 'm')
+        {
+            $id = request()->delete('ids/a');// 获取delete请求方式传送过来的数据并转换成数据
+            $i=0;
+            foreach ($id as $key => $value) {
+                $data[$i]['id'] = $value;
+                $data[$i]['yuwen'] = Null;
+                $data[$i]['shuxue'] = Null;
+                $data[$i]['wanyu'] = Null;
+            }
+        }else{
+            $data[0]['id'] = $id; 
+            $data[0]['yuwen'] = Null;
+            $data[0]['shuxue'] = Null;
+            $data[0]['waiyu'] = Null;
+            $data[0]['stuSum'] = Null;
+            $data[0]['stuAvg'] = Null;
+        }
+
+
+        $cj = new Chengji();
+        $data = $cj->saveAll($data);
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'成绩删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
+
+    // 删除成绩
     public function delete($id)
     {
 
@@ -249,6 +302,7 @@ class Index extends Base
         // 返回信息
         return json($data);
     }
+
 
 
 

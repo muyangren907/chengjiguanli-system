@@ -258,7 +258,7 @@ class MoreAction extends Base
         // 查询参加考试学生信息
         $datas = Chengji::where('kaoshi',$list['id'])
                 ->where('banji','in',$list['banjiids'])
-                ->append(['studentname','banjiNumname'])
+                ->append(['banjiNumname'])
                 ->select();
 
 
@@ -285,7 +285,7 @@ class MoreAction extends Base
             $sheet->setCellValue('A'.$i, $i-3);
             $sheet->setCellValue('B'.$i, $data['id']);
             $sheet->setCellValue('C'.$i, $data['banjiNumname']);
-            $sheet->setCellValue('D'.$i, $data['studentname']);
+            $sheet->setCellValue('D'.$i, $data['student']);
             $i++;
         }
 

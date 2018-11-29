@@ -16,7 +16,7 @@
 	<div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l">
 			<!-- 删除按钮 -->
-			<a href="javascript:;" class="btn btn-danger radius">
+			<a href="javascript:;" onclick="dels('/chengji/m')" class="btn btn-danger radius">
 				<i class="Hui-iconfont">&#xe6e2;</i>
 			批量删除
 			</a>
@@ -78,9 +78,9 @@
 	// 定义列参数
 	var mycolumns = [
         { "data": "id" },
-        { "data": "school" },
-        { "data": "banji" },
-        { "data": "student"},
+        { "data": "cj_school.jiancheng" },
+        { "data": "cj_banji.title" },
+        { "data": "cj_student.xingming"},
         { "data": "yuwen"},
         { "data": "shuxue"},
         { "data": "waiyu" },
@@ -111,6 +111,8 @@
 					editbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/chengji/'+row.id+'/edit") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
 					// 删除按钮
 					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/chengji/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
+					// 删除已经录入的成绩
+					delcjbut = '<a title="删除成绩" href="javascript:void(0);" onclick=delcj(this,"/chengji/'+row.id+'/cj") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe72a;</i></a>';
 
 					if(row.status == '已停用')
 					{
@@ -118,7 +120,7 @@
 					}else{
 						buts = stopbut;
 					}
-					buts = buts + editbut + delbut; 
+					buts = buts + editbut + delbut + delcjbut; 
 
 					return buts;
                 }
@@ -142,5 +144,36 @@
         	"targets": [0,-1]
         }, 
 	];
+
+
+	// 删除成绩
+	function delcj(obj,url){
+		layer.confirm('确认要成绩删除吗？',function(index){
+			$.ajax({
+				type: 'DELETE',
+				url: url,
+				dataType: 'json',
+				success: function(data){
+					if(data.val == 1)
+					{
+						var aa = $(obj).parents("td").prevAll();
+						var i=0;
+						aa.each(function(){
+							if(i >0 && i<6 )
+							{
+								$(this).html('');
+							}
+							i++;
+						});
+					}
+					layer.alert(data.msg);
+					
+				},
+				error:function(data) {
+					layer.alert('删除失败');
+				},
+			});		
+		});
+	}
 </script>
 {/block}
