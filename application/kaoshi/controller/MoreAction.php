@@ -129,7 +129,7 @@ class MoreAction extends Base
 
         // 获取数据库信息
         $chengjiinfo = Chengji::where('kaoshi',$id)
-                        ->append(['banjiNumname'])
+                        ->append(['cj_school.jiancheng','cj_Student.xingming','banjiNumname'])
                         ->select();
 
         // 获取学科信息
@@ -184,9 +184,9 @@ class MoreAction extends Base
 
                 // $table->addCell(700)->addImage('aaaa.jpg',$imageStyle);
                 $info = $table->addCell(650);
-                $info->addText($value['school'],$myStyle);
+                $info->addText($value['cj_school']['jiancheng'],$myStyle);
                 $info->addText($value['banjiNumname'],$myStyle);
-                $info->addText($value['student'],$myStyle);
+                $info->addText($value['cj_student']['xingming'],$myStyle);
                 $info->addText($val,$myStyle);
             }
         }
@@ -258,7 +258,7 @@ class MoreAction extends Base
         // 查询参加考试学生信息
         $datas = Chengji::where('kaoshi',$list['id'])
                 ->where('banji','in',$list['banjiids'])
-                ->append(['banjiNumname'])
+                ->append(['cj_Student.xingming','banjiNumname'])
                 ->select();
 
 
@@ -285,7 +285,7 @@ class MoreAction extends Base
             $sheet->setCellValue('A'.$i, $i-3);
             $sheet->setCellValue('B'.$i, $data['id']);
             $sheet->setCellValue('C'.$i, $data['banjiNumname']);
-            $sheet->setCellValue('D'.$i, $data['student']);
+            $sheet->setCellValue('D'.$i, $data['cj_student']['xingming']);
             $i++;
         }
 
