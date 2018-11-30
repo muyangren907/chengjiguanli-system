@@ -181,6 +181,7 @@ class Index extends Base
     }
 
 
+
     // 获取考试信息
     public function ajaxData()
     {

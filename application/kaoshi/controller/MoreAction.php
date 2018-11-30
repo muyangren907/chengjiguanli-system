@@ -158,7 +158,7 @@ class MoreAction extends Base
 
 
         // 设置图片格式
-        $imageStyle = array('width'=>42,'height'=>42,'align'=>'left');
+        $imageStyle = array('width'=>45,'height'=>45,'align'=>'left');
 
         // 学生信息样式
         $myStyle = 'myStyle';

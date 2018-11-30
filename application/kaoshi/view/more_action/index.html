@@ -48,11 +48,11 @@
 	<ul class="icon_lists clearfix">
 		<li class="f-l ml-50 bk-gray" bk-gray style="min-width: 250px">
 			<h1>
-				<a data-href="/chengji/{$list['kaoshiid']}/chengjilist" data-title="{$list.kstitle}成绩查看|{$list['bfdate']}" onClick="Hui_admin_tab(this)" style="text-decoration:none">
+				<a data-href="/chengji/{$list['kaoshiid']}/chengjilist" data-title="{$list.kstitle}成缚列表|{$list['bfdate']}" onClick="Hui_admin_tab(this)" style="text-decoration:none">
 					<i class="Hui-iconfont Hui-iconfont-moban-2"></i>
 				</a>
 			</h1>
-			<span>查看成绩</span>
+			<span>成绩列表</span>
 		</li>
 		<li class="f-l ml-50 bk-gray" bk-gray style="min-width: 250px">
 			<h1>
@@ -60,7 +60,7 @@
 					<i class="Hui-iconfont Hui-iconfont-moban-2"></i>
 				</a>
 			</h1>
-			<span>成绩统计</span>
+			<span>年级成绩统计</span>
 		</li>
 	</ul>
 </div>
@@ -89,6 +89,11 @@
 	$('h1').mouseenter(function(){
 		$(this).animate({
 			fontSize:'50px',
+		});
+	});
+	$('h1').mouseleave(function(){
+		$(this).animate({
+			fontSize:'36px',
 		});
 	});
 	

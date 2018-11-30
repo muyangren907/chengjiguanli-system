@@ -49,7 +49,7 @@ class Chengji extends Base
 
     
     // 学校信息关联表
-    public function cjschool()
+    public function cjSchool()
     {
     	return $this->belongsTo('\app\system\model\School','school','id');
     }
@@ -104,7 +104,8 @@ class Chengji extends Base
 	// 班级名称(数字)获取器
 	public function getBanjiNumnameAttr()
 	{
-		$bj = Banji::find($this->getdata('banji'));
+		$bj = new \app\teach\model\Banji;
+		$bj = $bj->find($this->getdata('banji'));
 
 		// 返回班级名称 
 		return $bj->numTitle;
@@ -127,7 +128,11 @@ class Chengji extends Base
         //得到排序字段的下标
         $order_column = $getdt['order'][0]['column'];
         //根据排序字段的下标得到排序字段
-        $order_field = $getdt['columns'][$order_column]['data'];
+        $order_field = $getdt['columns'][$order_column]['name'];
+        if($order_field=='')
+        {
+        	$order_field = $getdt['columns'][$order_column]['data'];
+        }
         //得到limit参数
         $limit_start = $getdt['start'];
         $limit_length = $getdt['length'];
@@ -139,19 +144,19 @@ class Chengji extends Base
     	if(trim($search)!='' || $school!='' || $nianji!='')
         {
             $data = $this->scope('kaoshi',$kaoshiid)
-            	->where(function ($query) use($search){
+            	->when($school!='',function($query) use($school){
+                	$query->where('school','in',$school);
+                })
+                ->when($nianji!='',function($query) use($nianji){
+                	$query->where('nianji','in',$nianji);
+                })
+                ->where(function ($query) use($search){
             		$query->whereOr('student','in',function ($query) use($search){
             			$query->name('student')->where('xingming','like','%'.$search.'%')->field('id');
             		})
             	->whereOr('school','in',function ($query) use($search){
             		$query->name('school')->where('title|jiancheng','like','%'.$search.'%')->field('id');
             		});
-                })
-                ->when($school!='',function($query) use($school){
-                	$query->where('school','in',$school);
-                })
-                ->when($nianji!='',function($query) use($nianji){
-                	$query->where('nianji','in',$nianji);
                 })
                 ->order([$order_field=>$order])
                 ->limit($limit_start,$limit_length)
