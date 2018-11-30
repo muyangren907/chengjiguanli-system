@@ -25,20 +25,52 @@
 			共有数据：<strong>{$list.count}</strong> 条
 		</span>
 	</div>
+	<div class="panel panel-default mt-10 mb-10">
+		<div class="panel-header" id="shaixuan">筛选成绩</div>
+		<div class="panel-body">
+				<div>
+					{php}
+						$school = new app\system\model\School;
+						$school = $school->searchMany('校级','校级');
+					{/php}<label class="f-l">学校：</label>
+					<dt>
+						<dd class=" mt-10">{foreach $school as $key=>$vo } 
+							<label class="ml-10">
+								<input type="checkbox" value="{$vo.id}" name="school" onclick="dtreload()">
+								{$vo.jiancheng}
+							</label>
+						{/foreach}
+						</dd>
+					</dt>
+				</div>
+				<div>
+					<label class="f-l">年级：</label>
+					<dt>
+						<dd class=" mt-10"> 
+							<label class="ml-10">
+								<input type="checkbox" value="一年级" name="nianji" onclick="dtreload()">&nbsp;一年级
+							</label>
+							<label class="ml-10">
+								<input type="checkbox" value="二年级" name="nianji" onclick="dtreload()">&nbsp;二年级
+							</label>
+							<label class="ml-10">
+								<input type="checkbox" value="三年级" name="nianji" onclick="dtreload()">&nbsp;三年级
+							</label>
+							<label class="ml-10">
+								<input type="checkbox" value="四年级" name="nianji" onclick="dtreload()">&nbsp;四年级
+							</label>
+							<label class="ml-10">
+								<input type="checkbox" value="五年级" name="nianji" onclick="dtreload()">&nbsp;五年级
+							</label>
+							<label class="ml-10">
+								<input type="checkbox" value="六年级" name="nianji" onclick="dtreload()">&nbsp;六年级
+							</label>
+						</dd>
+					</dt>
+				</div>
+		</div>
+	</div>
 
-			<div class="formControls col-xs-8 col-sm-9 f-l">
-				<span class="select-box f-l" style="width:180px;">
-				{php}
-					$njlist = nianjiList();
-				{/php}
-				<select class="select" id="ruxuenian" name="ruxuenian" size="1">
-					<option value="">--请选择年级--</option>
-					{foreach $njlist as $key=>$vo}
-						<option value="{$key}">{$vo}</option>
-					{/foreach}
-				</select>
-				</span>
-			</div>
 {/block}
 {block name="tables"}
 	<table id="table1" class="display" cellspacing="0" width="100%">
@@ -72,6 +104,26 @@
 		type: "post",
 		data: {
 			kaoshi:"{$list.kaoshi}",
+			school:function(){
+				var chk = [];
+				$('input[name="school"]:checked').each(function(){
+					if(typeof($(this).val()) != "undefined")
+					{
+						chk.push($(this).val());
+					}
+				});
+				return chk;
+			},
+			nianji:function(){
+				var chk = [];
+				$('input[name="nianji"]:checked').each(function(){
+					if(typeof($(this).val()) != "undefined")
+					{
+						chk.push($(this).val());
+					}
+				});
+				return chk;
+			},
 		},
 	};
 
@@ -145,7 +197,6 @@
         }, 
 	];
 
-
 	// 删除成绩
 	function delcj(obj,url){
 		layer.confirm('确认要成绩删除吗？',function(index){
@@ -175,5 +226,18 @@
 			});		
 		});
 	}
+
+	// 筛选成绩面板折叠
+	$('#shaixuan').click(function(){
+		$(this).next().toggle();
+	});
+
+	// 重载数据
+	function dtreload()
+	{
+		$('#table1').DataTable().ajax.reload();
+	}
+
+	
 </script>
 {/block}

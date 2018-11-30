@@ -164,8 +164,11 @@ class Index extends Base
     // 成绩列表
     public function Chengjilist($id)
     {
-        // 设置数据总数
-        $list['count'] = Chengji::where('kaoshi',$id)->count();
+        // 实例化成绩数据模型
+        $cj = new Chengji();
+
+        // 查询成绩数量
+        $list['count'] = $cj->searchAll($id)->count();
         // 设置页面标题
         $list['title'] = '成绩列表';
         $list['kaoshi'] = $id;
@@ -184,59 +187,22 @@ class Index extends Base
         // 获取DT的传值
         $getdt = request()->param();
 
-        //得到排序的方式
-        $order = $getdt['order'][0]['dir'];
-        //得到排序字段的下标
-        $order_column = $getdt['order'][0]['column'];
-        //根据排序字段的下标得到排序字段
-        $order_field = $getdt['columns'][$order_column]['data'];
-        //得到limit参数
-        $limit_start = $getdt['start'];
-        $limit_length = $getdt['length'];
-        //得到搜索的关键词
-        $search = $getdt['search']['value'];
+        // 实例化成绩数据模型
+        $cj = new Chengji();
 
+        // 查询成绩数量
+        $cnt = $cj->searchAll($getdt['kaoshi'])->count();
 
-        // 获取记录集总数
-        $cnt = Chengji::where('kaoshi',$getdt['kaoshi'])->count();
-        //查询数据
-        $data =Chengji::field('id,kaoshi,school,banji,student,nianji,yuwen,shuxue,waiyu,stuSum,stuAvg,status')
-            ->where('kaoshi',$getdt['kaoshi'])
-            ->append(['cj_school.jiancheng','cj_banji.title','cj_student.xingming'])
-            ->order([$order_field=>$order])
-            ->limit($limit_start,$limit_length)
-            ->select();
-      
-
-        // 如果需要查询
-        if($search){
-            $data =Chengji::where('kaoshi',$getdt['kaoshi'])
-            ->where(function ($query) use($search){
-                $query->whereOr('student','in',function ($query) use($search){
-                    $query->name('student')->where('xingming','like','%'.$search.'%')->field('id');
-                })
-                ->whereOr('school','in',function ($query) use($search){
-                $query->name('school')->where('title|jiancheng','like','%'.$search.'%')->field('id');
-            });
-            })
-
-            ->append(['cj_school.jiancheng','cj_banji.title','cj_student.xingming'])
-            ->order([$order_field=>$order])
-            ->limit($limit_start,$limit_length)
-            ->select();
-        }
-        // $data = $data->visible(['cj_school.jiancheng','cj_banji.title']);
-
+        // 分页查询成绩
+        $data = $cj->searchAjax($getdt['kaoshi'],$getdt);
+        // 获取分页成绩数量
         $datacnt = $data->count();
-        // $data = $data->append(['stuAvg','stuSum']);
-        
-        
 
-
+        // 重组返回内容
         $data = [
-            'draw'=> $getdt["draw"] , // ajax请求次数，作为标识符
-            'recordsTotal'=>$datacnt,  // 获取到的结果数(每页显示数量)
-            'recordsFiltered'=>$cnt,       // 符合条件的总数据量
+            'draw'=> $getdt["draw"] + 1 , // ajax请求次数，作为标识符
+            'recordsTotal'=>$cnt,  // 获取到的结果数(每页显示数量)
+            'recordsFiltered'=>$datacnt,       // 符合条件的总数据量
             'data'=>$data, //获取到的数据结果
         ];
 

@@ -12,7 +12,10 @@ class School extends Base
     // 单位列表
     public function index()
     {
-        $count = sch::count();
+        // 实例化单位模型
+        $sch = new sch();
+        // 获取记录集总数
+        $count = $sch->searchAll()->count();
 
         // 设置要给模板赋值的信息
         $list['title'] = '单位列表';
@@ -32,43 +35,17 @@ class School extends Base
         // 获取DT的传值
         $getdt = request()->param();
 
-        //得到排序的方式
-        $order = $getdt['order'][0]['dir'];
-        //得到排序字段的下标
-        $order_column = $getdt['order'][0]['column'];
-        //根据排序字段的下标得到排序字段
-        $order_field = $getdt['columns'][$order_column]['data'];
-        //得到limit参数
-        $limit_start = $getdt['start'];
-        $limit_length = $getdt['length'];
-        //得到搜索的关键词
-        $search = $getdt['search']['value'];
-
-
-        // 获取记录集总数
-        $cnt = sch::count();
-        //查询数据
-        $data =sch::field('id,title,jiancheng,biaoshi,xingzhi,jibie,status,xueduan,paixu')
-            ->order([$order_field=>$order])
-            ->limit($limit_start,$limit_length)
-            ->all();
         
-
-        // 如果需要查询
-        if($search){
-            $data =sch::field('id,title,jiancheng,biaoshi,xingzhi,jibie,status,xueduan,paixu')
-                ->whereOr('title','like','%'.$search.'%')
-                ->whereOr('pid','in',function($query) use ($search){
-                    $query->name('category')->where('title','like','%'.$search.'%')->field('id');
-                })
-                ->order([$order_field=>$order])
-                ->limit($limit_start,$limit_length)
-                ->all();
-        }
+        // 实例化单位模型
+        $sch = new sch();
+        // 获取记录集总数
+        $cnt = $sch->searchAll()->count();
+        //查询数据
+        $data =$sch->searchAjax($getdt);
 
         $datacnt = $data->count();
         
-        
+        // 组合返回数据
         $data = [
             'draw'=> $getdt["draw"] , // ajax请求次数，作为标识符
             'recordsTotal'=>$datacnt,  // 获取到的结果数(每页显示数量)
