@@ -66,6 +66,12 @@ class Chengji extends Base
     	return $this->belongsTo('\app\renshi\model\Student','student','id');
     }
 
+    // 满分
+    public function cjManfen()
+    {
+    	return $this->belongsTo('\app\kaoshi\model\KaoshiSubject','kaoshi','kaoshiid');
+    }
+
     
 
 
@@ -183,10 +189,24 @@ class Chengji extends Base
 			->select();
 	}
 
+
+	// 查询年级成绩 
+	public function searchNianji($kaoshiid,$nianji)
+	{
+		return $this->where('kaoshi',$kaoshiid)
+				->where('nianji',$nianji)
+				->field('id,yuwen,shuxue,waiyu')
+				->cache('key',180)
+				->select();
+	}
+
+
 	// 考试项目查询范围
 	public function scopeKaoshi($query,$kaoshiid)
 	{
 		$query->where('kaoshi',$kaoshiid);
 	}
+
+
 	
 }

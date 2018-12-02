@@ -62,13 +62,14 @@ class Banji extends Base
             $data = BJ::field('id,school,ruxuenian,paixu,status')
                 ->order([$order_field=>$order])
                 ->limit($limit_start,$limit_length)
-                ->whereOr('title','like','%'.$search.'%')
+                // ->whereOr('title','like','%'.$search.'%')
                 ->whereOr('school','in',function($query) use($search)
                 {
-                    $query->table('school')
+                    $query->name('school')
                         ->where('title','like','%'.$search.'%')
                         ->field('id');
                 })
+                ->whereOr('ruxuenian',$search)
                 ->all();
         }
 

@@ -9,6 +9,17 @@ use app\teach\model\Banji;
 
 class Student extends Base
 {
+    // 班级关联
+    public function stuNanji()
+    {
+        return $this->belongsTo('\app\teach\model\Banji','banji','id')->bind(['myruxuenian'=>'ruxuenian']);
+    }
+    // 班级关联
+    public function stuBanji()
+    {
+        return $this->belongsTo('\app\teach\model\Banji','banji','id');
+    }
+
     // 年龄获取器
     public function getAgeAttr()
     {
@@ -48,11 +59,11 @@ class Student extends Base
         return $sex[$value];
     }
 
-    // 获取入学年
-    public function getNianjiAttr()
-    {
-        return db('banji')->where('id',$this->getData('banji'))->value('ruxuenian');
-    }
+    // // 获取入学年
+    // public function getNianjiAttr()
+    // {
+    //     return $this->stuBanji()->ruxuenian;
+    // }
 
     
 }

@@ -14,7 +14,7 @@ Route::resource('kaoshi','kaoshi/Index');
 Route::get('kaoshi/:id/more','kaoshi/MoreAction/index');
 Route::get('kaoshi/:id/kaohao','kaoshi/MoreAction/kaohao');
 Route::post('kaoshi/kaohao','kaoshi/MoreAction/kaohaosave');
-Route::get('kaoshi/:id/biaoqian','kaoshi/MoreAction/biaoqian');
+Route::get('kaoshi/:id/biaoqian','kaoshi/MoreAction/biaoqianxls');
 Route::get('kaoshi/:id/caiji','kaoshi/MoreAction/caiji');
 Route::post('kaoshi/caiji','kaoshi/MoreAction/cankaomingdan');
 

@@ -69,37 +69,18 @@ class MoreAction extends Base
 
         // 将班级转换成数组
         $list['banjiids'] = implode(',',$list['banjiids']);
+        $ksid = $list['kaoshi'];
 
         // 获取参加考试学生名单
         $stulist = Student::where('status',1)
                         ->where('banji','in',$list['banjiids'])
                         ->field('id,school,banji')
-                        ->append(['nianji'])
+                        ->with('stuNanji')
                         ->select();
-        $njlist = nianjilist();
 
-        // 组合参加考试学生信息
-        $stus = array();
-        foreach ($stulist as $key => $value) {
-            $src = Chengji::where('kaoshi',$list['kaoshi'])
-                    ->where('student',$value->id)
-                    ->select();
-            if($src->isEmpty()){
-                $stus[] = [
-                'kaoshi' => $list['kaoshi'],
-                'school' => $value->getData('school'),
-                'ruxuenian' => $value->nianji,
-                'nianji' => $njlist[$value->nianji],
-                'banji' => $value->banji,
-                'student' => $value->id
-            ];
-            }
-        }
-
-        // 声明成绩数据模型类
-        $cj = new Chengji();
-        $data = $cj->saveAll($stus);
-
+        // 保存考号
+        $data = $this->khsave($stulist,$ksid);
+        
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -109,10 +90,44 @@ class MoreAction extends Base
     }
 
 
+    // 分批保存数据
+    private function khsave($stulist,$kaoshiid)
+    {
+        $njlist = nianjilist();
+
+        // 组合参加考试学生信息
+        $stus = array();
+        foreach ($stulist as $stuinfo) {
+            $src = Chengji::where('kaoshi',$kaoshiid)
+                    ->where('student',$stuinfo->id)
+                    ->select();
+            // dump($stuinfo);
+            if($src->isEmpty()){
+                $stus[] = [
+                'kaoshi' => $kaoshiid,
+                'school' => $stuinfo->getData('school'),
+                'ruxuenian' => $stuinfo->myruxuenian,
+                'nianji' => $njlist[$stuinfo->myruxuenian],
+                'banji' => $stuinfo->getData('banji'),
+                'student' => $stuinfo->id
+            ];
+            }
+        }
+
+        $cj = new Chengji();
+        // 保存学生信息并生成考号
+        $data = $cj->saveAll($stus);
+
+        $data ? $str = true : $str = false;
+
+        return $data;
+    }
+
+
     /**
      * 生成指定网址的二维码
      * @param string $url 二维码中所代表的网址
-     */
+    */
     public function create_qrcode($url='127.0.0.1')
     {
         $qrCode = new QrCode($url);
@@ -129,6 +144,8 @@ class MoreAction extends Base
 
         // 获取数据库信息
         $chengjiinfo = Chengji::where('kaoshi',$id)
+                        ->where('ruxuenian',2017)
+                        ->limit(15)
                         ->append(['cj_school.jiancheng','cj_Student.xingming','banjiNumname'])
                         ->select();
 
@@ -171,6 +188,7 @@ class MoreAction extends Base
                 'bold' => true,
             ]
         );
+        
 
         // 循环写出信息
         foreach ($chengjiinfo as $key => $value) {
@@ -179,8 +197,10 @@ class MoreAction extends Base
                 $table = $section->addTable($key);
                 $table->addRow(1500);
 
+                
                 $img = $this->create_qrcode($value['id'].','.$xkkey);
                 $table->addCell(850)->addImage($img,$imageStyle);
+                
 
                 // $table->addCell(700)->addImage('aaaa.jpg',$imageStyle);
                 $info = $table->addCell(650);
@@ -188,6 +208,7 @@ class MoreAction extends Base
                 $info->addText($value['banjiNumname'],$myStyle);
                 $info->addText($value['cj_student']['xingming'],$myStyle);
                 $info->addText($val,$myStyle);
+
             }
         }
 
@@ -200,6 +221,58 @@ class MoreAction extends Base
         header('Cache-Control: max-age=0');
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
         $objWriter->save('php://output');
+
+    }
+
+
+
+    //生成标签信息
+    public function biaoqianXls($id)
+    {
+        set_time_limit(0);
+        // 获取数据库信息
+        $chengjiinfo = Chengji::where('kaoshi',$id)
+                        // ->where('ruxuenian',2017)
+                        ->append(['cj_school.jiancheng','cj_student.xingming','banjiNumname'])
+                        ->select();
+
+        // 获取学科id
+        $xks = KS::get($id);
+        $xks = $xks->Subjectids;
+        // 获取学科名称
+        $subject = new \app\teach\model\Subject();
+        $xks = $subject->where('id','in',$xks)->order('id')->column('id,title');
+
+        // 创建表格
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // 循环写出信息
+        $i = 1;
+        foreach ($chengjiinfo as $key => $value) {
+            foreach ($xks as $xkkey => $val) {
+                // 表格赋值
+                $sheet->setCellValue('A'.$i, $i);
+                $sheet->setCellValue('B'.$i, $value->id.','.$xkkey);
+                $sheet->setCellValue('C'.$i, $value['cj_school']['jiancheng']);
+                $sheet->setCellValue('D'.$i, $value->banjiNumname);
+                $sheet->setCellValue('E'.$i, $xks[$xkkey]);
+                $sheet->setCellValue('F'.$i, $value['cj_student']['xingming']);
+                $i++;
+
+            }
+        }
+
+
+        // 保存文件
+        $filename = '试卷标签信息'.date('ymdHis').'.xlsx';
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+        ob_flush();
+        flush();
     }
 
 
@@ -297,4 +370,7 @@ class MoreAction extends Base
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save('php://output');
     }
+
+
+    
 }
