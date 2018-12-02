@@ -127,52 +127,40 @@ class Chengji extends Base
 
 
 	// 查询根据考试ID查询考试成绩
-	public function searchAjax($kaoshiid,$getdt)
+	public function searchAjax($search)
 	{
-		//得到排序的方式
-        $order = $getdt['order'][0]['dir'];
-        //得到排序字段的下标
-        $order_column = $getdt['order'][0]['column'];
-        //根据排序字段的下标得到排序字段
-        $order_field = $getdt['columns'][$order_column]['name'];
-        if($order_field=='')
-        {
-        	$order_field = $getdt['columns'][$order_column]['data'];
-        }
-        //得到limit参数
-        $limit_start = $getdt['start'];
-        $limit_length = $getdt['length'];
-        //得到搜索的关键词
-        $search = $getdt['search']['value'];
-        $school = $getdt['school'];
-        $nianji = $getdt['nianji'];
+		// 获取参数
+		$kaoshiid = $search['kaoshiid'];
+		$schoolid = $search['school'];
+		$nianji = $search['nianji'];
+		$banji = $search['banji'];
+		$order = $search['order'];
+		$order_field = $search['order_field'];
+		$search = $search['search'];
 
-    	if(trim($search)!='' || $school!='' || $nianji!='')
-        {
-            $data = $this->scope('kaoshi',$kaoshiid)
-            	->when($school!='',function($query) use($school){
-                	$query->where('school','in',$school);
+
+
+		$data = $this->scope('kaoshi',$kaoshiid)
+            	->when($schoolid!='',function($query) use($schoolid){
+                	$query->where('school','in',$schoolid);
                 })
                 ->when($nianji!='',function($query) use($nianji){
                 	$query->where('nianji','in',$nianji);
                 })
-                ->where(function ($query) use($search){
-            		$query->whereOr('student','in',function ($query) use($search){
-            			$query->name('student')->where('xingming','like','%'.$search.'%')->field('id');
-            		})
-            	->whereOr('school','in',function ($query) use($search){
-            		$query->name('school')->where('title|jiancheng','like','%'.$search.'%')->field('id');
-            		});
+                ->when($banji!='',function($query) use($banji){
+                	$query->where('banji','in',$banji);
                 })
+                ->when($search!='',function($query) use($search){
+                	$query->where('student','in',function ($q) use($search){
+                		$q->name('student')->where('xingming','like','%'.$search.'%')->field('id');
+                	});
+                })
+              //   ->whereOr('student','in',function ($query) use($search){
+            		// 	$query->name('student')->where('xingming','like','%'.$search.'%')->field('id');
+            		// })
                 ->order([$order_field=>$order])
-                ->limit($limit_start,$limit_length)
                 ->select();
-        }else{
-        	$data = $this->scope('kaoshi',$kaoshiid)
-    			->order([$order_field=>$order])
-            	->limit($limit_start,$limit_length)
-    			->select();
-        }
+        
 
         $data = $data->append(['cj_school.jiancheng','cj_banji.title','cj_student.xingming']);
 

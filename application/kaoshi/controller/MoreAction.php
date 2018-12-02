@@ -142,10 +142,11 @@ class MoreAction extends Base
     public function biaoqian($id)
     {
 
+        set_time_limit(0);
         // 获取数据库信息
         $chengjiinfo = Chengji::where('kaoshi',$id)
                         ->where('ruxuenian',2017)
-                        ->limit(15)
+                        // ->limit(15)
                         ->append(['cj_school.jiancheng','cj_Student.xingming','banjiNumname'])
                         ->select();
 
@@ -221,15 +222,19 @@ class MoreAction extends Base
         header('Cache-Control: max-age=0');
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
         $objWriter->save('php://output');
+        ob_flush();
+        flush();
 
     }
 
 
 
     //生成标签信息
-    public function biaoqianXls($id)
+    public function biaoqianXls()
     {
         set_time_limit(0);
+        $list = input();
+        $id = $list['id'];
         // 获取数据库信息
         $chengjiinfo = Chengji::where('kaoshi',$id)
                         // ->where('ruxuenian',2017)

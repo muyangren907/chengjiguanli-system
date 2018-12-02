@@ -27,7 +27,7 @@
 	</div>
 	<div class="panel panel-default mt-10 mb-10">
 		<div class="panel-header" id="shaixuan">筛选成绩</div>
-		<div class="panel-body">
+		<div class="panel-body" style="min-height: 100px">
 				<div>
 					{php}
 						$school = new app\system\model\School;
@@ -65,6 +65,26 @@
 							<label class="ml-10">
 								<input type="checkbox" value="六年级" name="nianji" onclick="dtreload()">&nbsp;六年级
 							</label>
+						</dd>
+					</dt>
+				</div>
+				<div>
+					{php}
+						$banji = new app\teach\model\Banji;
+						$njlist = nianjiList();
+						$bjnames = banjinamelist();
+						$njnum = array_keys($njlist);
+						$bjlist = $banji->where('ruxuenian','in',$njnum)->max('paixu');
+					{/php}
+					<label class="f-l">班级：</label>
+					<dt>
+						<dd class=" mt-10">
+						{for start="1" end="7" } 
+							<label class="ml-10">
+								<input type="checkbox" value="{$i}" name="banji" onclick="dtreload()">
+								{$bjnames[$i]}
+							</label>
+						{/for}
 						</dd>
 					</dt>
 				</div>
@@ -117,6 +137,16 @@
 			nianji:function(){
 				var chk = [];
 				$('input[name="nianji"]:checked').each(function(){
+					if(typeof($(this).val()) != "undefined")
+					{
+						chk.push($(this).val());
+					}
+				});
+				return chk;
+			},
+			banji:function(){
+				var chk = [];
+				$('input[name="banji"]:checked').each(function(){
 					if(typeof($(this).val()) != "undefined")
 					{
 						chk.push($(this).val());
