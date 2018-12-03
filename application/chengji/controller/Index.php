@@ -37,8 +37,35 @@ class Index extends Base
         empty($cj) ? $data = ['val' => 0] : $data = ['val' => 1,'defen'=>$cj->$zd];
 
         return json($data);
+    }
 
 
+
+    public function edit($id)
+    {
+        // 获取该学生成绩信息
+        $cj = Chengji::where('id',$id)->append(['cj_student.xingming'])->find();
+        // 模板赋值
+        $cj->title = $cj->cjKaoshi->title;
+        $this->assign('list',$cj);
+        // 渲染
+        return $this->fetch();
+    }
+
+
+    public function update($id)
+    {
+        // 获取表单数据
+        $list = request()->param();
+        
+        // 更新成绩
+        $data = Chengji::update($list);
+
+        // 判断返回内容
+        $data ? $data=['msg'=>'录入成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回更新结果
+        return $data;
     }
 
 
@@ -56,11 +83,11 @@ class Index extends Base
         $zdname = $subject[$list['ziduan']][1];
         $stuinfo = Chengji::where('id',$list['id'])
                     ->field('id,school,student,banji,'.$zd)
-                    // ->append(['banjiname'])
+                    ->append(['cj_school.jiancheng','cj_banji.title','cj_student.xingming'])
                     ->find();
         $stuinfo['zdname'] = $zdname;
         $stuinfo['zdstr'] = $zd;
-        return json($stuinfo->visible(['student','school','banji',$zd,'zdstr','zdname']));
+        return json($stuinfo->visible(['cj_student.xingming','cj_school.jiancheng','cj_banji.title',$zd,'zdstr','zdname']));
     }
 
 

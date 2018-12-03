@@ -42,41 +42,59 @@ class Student extends Base
         //得到排序字段的下标
         $order_column = $getdt['order'][0]['column'];
         //根据排序字段的下标得到排序字段
-        $order_field = $getdt['columns'][$order_column]['data'];
+        $order_field = $getdt['columns'][$order_column]['name'];
+        if($order_field=='')
+        {
+            $order_field = $getdt['columns'][$order_column]['data'];
+        }
         //得到limit参数
         $limit_start = $getdt['start'];
         $limit_length = $getdt['length'];
-        //得到搜索的关键词
-        $search = $getdt['search']['value'];
+        $banji = $getdt['banji'];
 
-
-        // 获取记录集总数
-        $cnt = STU::count();
-        //查询数据
-        $data =STU::field('id,xingming,sex,shengri,banji,school,status')
-            ->order([$order_field=>$order])
-            ->limit($limit_start,$limit_length)
-            ->all();
-        
-
-        // 如果需要查询
-        if($search){
-            $data = STU::field('id,xingming,sex,shengri,banji,school,status')
-                ->order([$order_field=>$order])
-                ->limit($limit_start,$limit_length)
-                ->whereOr('xingming','like','%'.$search.'%')
-                ->whereOr('school','in',function($query) use($search){
-                    $query->name('school')->where('title','like','%'.$search.'%')->field('id');
-                })
-                ->all();
+        //处理入学年
+        if(empty($getdt['ruxuenian']))
+        {
+            $njlist = nianjiList();
+            $njnum = array_keys($njlist);
+        }else{
+            $njnum = $getdt['ruxuenian'];
         }
 
+        // 获取班级id
+        
+        $bj = new \app\teach\model\Banji;
+        $bjlist = $bj->where('ruxuenian','in',$njnum)
+            ->when(!empty($banji),function($query) use($banji){
+                    $query->where('paixu','in',$banji);
+                })
+            ->column('id');
+
+
+        //得到搜索的关键词
+        $search = [
+            'school'=>$getdt['school'],
+            'banji'=>$bjlist,
+            'order'=>$order,
+            'order_field'=>$order_field,
+            'search'=>$getdt['search']['value']
+        ];
+
+
+        // 实例化学生数据模型
+        $stu = new STU;
+
+        // 筛选数据
+        $data = $stu->searchMany($search);
+        //获取数据总数
+        $cnt = $data->count();
+        // 获取当前页数据
+        $data = $data->slice($limit_start,$limit_length);
+        // 获取本页数据总数
         $datacnt = $data->count();
-        $data = $data->append(['banjititle','age']);
-        
-        
-
-
+        //追加属性
+        $data = $data->append(['stu_school.title','stu_banji.title','age']);
+        // 组合返回数据
         $data = [
             'draw'=> $getdt["draw"] , // ajax请求次数，作为标识符
             'recordsTotal'=>$datacnt,  // 获取到的结果数(每页显示数量)
@@ -363,5 +381,6 @@ class Student extends Base
     {
         
     }
+
 
 }

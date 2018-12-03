@@ -20,25 +20,18 @@ class Student extends Base
         return $this->belongsTo('\app\teach\model\Banji','banji','id');
     }
 
+    // 学校获取器
+    public function stuSchool()
+    {
+        return $this->belongsTo('\app\system\model\School','school','id');
+    }
+
     // 年龄获取器
     public function getAgeAttr()
     {
     	return getAgeByBirth($this->getdata('shengri'),2);
     }
 
-    // 年级、班级名称获取器
-    public function getBanjititleAttr()
-    {
-    	$bj = Banji::get($this->banji);
-    	$bj = $bj->append(['title']);
-    	return $bj->title;
-    }
-
-    // 学校获取器
-    public function getSchoolAttr($value)
-    {
-        return db('school')->where('id',$value)->value('title');
-    }
 
     // 生日修改器
     public function setShengriAttr($value)
@@ -64,6 +57,44 @@ class Student extends Base
     // {
     //     return $this->stuBanji()->ruxuenian;
     // }
+
+    // 数据筛选
+    public function searchMany($search)
+    {
+        // 设置变量
+        $schoolid = $search['school'];
+        $banji = $search['banji'];
+        $order = $search['order'];
+        $order_field = $search['order_field'];
+        $search = $search['search'];
+
+
+
+        $data = $this->field('id,xingming,sex,shengri,banji,school,status')
+                ->when(!empty($schoolid),function($query) use($schoolid){
+                    $query->where('school','in',$schoolid);
+                })
+                ->when(!empty($banji),function($query) use($banji){
+                    $query->where('banji','in',$banji);
+                })
+                ->when(!empty($search),function($query) use($search){
+                        $query->where('xingming','like','%'.$search.'%')->field('id');
+                })
+                ->order([$order_field=>$order])
+                ->select();
+
+        return $data;
+    }
+
+
+    // 获取全部数据
+    public function searchAll()
+    {
+        return $this->select();
+    }
+
+
+
 
     
 }

@@ -82,7 +82,7 @@
 				df = data['zdstr'];
 				df = data[df];
 				myinfo = data;
-				$('#info').val(myinfo['school'] + '   ' + myinfo['banji'] + '   ' + myinfo['student'] + '   ' + myinfo['zdname']);
+				$('#info').val(myinfo['cj_school']['jiancheng'] + '   ' + myinfo['cj_banji']['title'] + '   ' + myinfo['cj_student']['xingming'] + '   ' + myinfo['zdname']);
 				var zd = data['ziduan'];
 				df>0 ? $('#defen').val(df) : $('#defen').val('');
 				$('#defen').focus();

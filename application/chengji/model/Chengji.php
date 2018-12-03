@@ -69,9 +69,14 @@ class Chengji extends Base
     // 满分
     public function cjManfen()
     {
-    	return $this->belongsTo('\app\kaoshi\model\KaoshiSubject','kaoshi','kaoshiid');
+    	return $this->hasMany('\app\kaoshi\model\KaoshiSubject','kaoshiid','kaoshi');
     }
 
+    // 考试关联
+    public function cjKaoshi()
+    {
+    	return $this->belongsTo('\app\kaoshi\model\Kaoshi','kaoshi','id');
+    }
     
 
 
@@ -141,16 +146,16 @@ class Chengji extends Base
 
 
 		$data = $this->scope('kaoshi',$kaoshiid)
-            	->when($schoolid!='',function($query) use($schoolid){
+            	->when(!empty($schoolid),function($query) use($schoolid){
                 	$query->where('school','in',$schoolid);
                 })
-                ->when($nianji!='',function($query) use($nianji){
+                ->when(!empty($nianji),function($query) use($nianji){
                 	$query->where('nianji','in',$nianji);
                 })
-                ->when($banji!='',function($query) use($banji){
+                ->when(!empty($banji),function($query) use($banji){
                 	$query->where('banji','in',$banji);
                 })
-                ->when($search!='',function($query) use($search){
+                ->when(!empty($searc),function($query) use($search){
                 	$query->where('student','in',function ($q) use($search){
                 		$q->name('student')->where('xingming','like','%'.$search.'%')->field('id');
                 	});

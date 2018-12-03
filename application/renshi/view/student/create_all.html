@@ -102,7 +102,7 @@
 	        },
 
 	        fileNumLimit: 1, // 上传文件数
-	        fileSizeLimit:51200,
+	        fileSizeLimit:2*1024*1024,
 	    });
 	    uploader.on( 'fileQueued', function( file ) {
 	        var $li = $(

@@ -151,7 +151,9 @@ class Index extends Base
         foreach ($list['subject'] as $key => $value) {
             $subjectarr[]=[
                 'subjectid'=>$value,
-                'manfen'=>$list['manfen'][$key]
+                'manfen'=>$list['manfen'][$key],
+                'youxiu'=>$list['manfen'][$key]*0.9,
+                'jige'=>$list['manfen'][$key]*0.6
             ];
         }
 

@@ -34,6 +34,64 @@
 			共有数据：<strong>{$list.count}</strong> 条
 		</span>
 	</div>
+	<div class="panel panel-default mt-10 mb-10">
+		<div class="panel-header" id="shaixuan">筛选成绩</div>
+		<div class="panel-body" style="min-height: 100px">
+				<div>
+					{php}
+						$school = new app\system\model\School;
+						$school = $school->searchMany('校级','校级');
+					{/php}
+					<label class="f-l">学校：</label>
+					<dt>
+						<dd class=" mt-10">
+							{foreach $school as $key=>$vo } 
+							<label class="ml-10">
+								<input type="checkbox" value="{$vo.id}" name="school" onclick="dtreload()">
+								{$vo.jiancheng}
+							</label>
+							{/foreach}
+						</dd>
+					</dt>
+				</div>
+				<div>
+					{php}
+						$njlist = nianjiList();
+					{/php}
+					<label class="f-l">年级：</label>
+					<dt>
+						<dd class=" mt-10"> 
+							{foreach $njlist as $key=>$vo } 
+							<label class="ml-10">
+								<input type="checkbox" value="{$key}" name="nianji" onclick="dtreload()">
+								{$vo}
+							</label>
+							{/foreach}
+						</dd>
+					</dt>
+				</div>
+				<div>
+					{php}
+						$banji = new app\teach\model\Banji;
+						$njlist = nianjiList();
+						$bjnames = banjinamelist();
+						$njnum = array_keys($njlist);
+						$bjlist = $banji->where('ruxuenian','in',$njnum)->max('paixu');
+					{/php}
+					<label class="f-l">班级：</label>
+					<dt>
+						<dd class=" mt-10">
+						{for start="1" end="7" } 
+							<label class="ml-10">
+								<input type="checkbox" value="{$i}" name="banji" onclick="dtreload()">
+								{$bjnames[$i]}
+							</label>
+						{/for}
+						</dd>
+					</dt>
+				</div>
+		</div>
+	</div>
 {/block}
 {block name="tables"}
 	<table id="table1" class="display" cellspacing="0" width="100%">
@@ -61,8 +119,39 @@
 	// 定义DTajax参数
 	var myajax = {
 		url: "{:url('ajaxdata')}",
-		type: "get",
-		data: {},
+		type: "post",
+		data: {
+			school:function(){
+				var chk = [];
+				$('input[name="school"]:checked').each(function(){
+					if(typeof($(this).val()) != "undefined")
+					{
+						chk.push($(this).val());
+					}
+				});
+				return chk;
+			},
+			ruxuenian:function(){
+				var chk = [];
+				$('input[name="nianji"]:checked').each(function(){
+					if(typeof($(this).val()) != "undefined")
+					{
+						chk.push($(this).val());
+					}
+				});
+				return chk;
+			},
+			banji:function(){
+				var chk = [];
+				$('input[name="banji"]:checked').each(function(){
+					if(typeof($(this).val()) != "undefined")
+					{
+						chk.push($(this).val());
+					}
+				});
+				return chk;
+			},
+		},
 	};
 
 	// 定义列参数
@@ -70,9 +159,9 @@
         { "data": "id" },
         { "data": "xingming" },
         { "data": "sex" },
-        { "data": "age" ,"defaultContent": ""},
-        { "data": "school" },
-        { "data": "banjititle" },
+        { "data": "age" ,"defaultContent": "","name":"shengri"},
+        { "data": "stu_school.title","name":"school"},
+        { "data": "stu_banji.title","name":"banji"},
         { "data": "status" },
         { "data": "id" },
 	];
@@ -126,5 +215,16 @@
         	"targets": [0,-1]
         }, 
 	];
+
+	// 筛选成绩面板折叠
+	$('#shaixuan').click(function(){
+		$(this).next().toggle();
+	});
+
+	// 重载数据
+	function dtreload()
+	{
+		$('#table1').DataTable().ajax.reload();
+	}
 </script>
 {/block}

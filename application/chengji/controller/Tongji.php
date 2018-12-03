@@ -16,10 +16,6 @@ class Tongji extends Base
         // 根据考试号和年级获取考试成绩
         $cjlist = $cj->searchNianji(1,'一年级');
 
-        
-
-
-
         $tj = new \app\chengji\model\Tongji();
         $yuwen = $cjlist->column('yuwen');
         dump($yuwen);
