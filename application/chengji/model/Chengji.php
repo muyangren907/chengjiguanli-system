@@ -160,9 +160,6 @@ class Chengji extends Base
                 		$q->name('student')->where('xingming','like','%'.$search.'%')->field('id');
                 	});
                 })
-              //   ->whereOr('student','in',function ($query) use($search){
-            		// 	$query->name('student')->where('xingming','like','%'.$search.'%')->field('id');
-            		// })
                 ->order([$order_field=>$order])
                 ->select();
         
@@ -188,7 +185,7 @@ class Chengji extends Base
 	{
 		return $this->where('kaoshi',$kaoshiid)
 				->where('nianji',$nianji)
-				->field('id,yuwen,shuxue,waiyu')
+				->field('id,kaoshi,yuwen,shuxue,waiyu')
 				->cache('key',180)
 				->select();
 	}

@@ -44,9 +44,8 @@ class Index extends Base
     public function edit($id)
     {
         // 获取该学生成绩信息
-        $cj = Chengji::where('id',$id)->append(['cj_student.xingming'])->find();
+        $cj = Chengji::where('id',$id)->append(['cj_kaoshi.title','cj_student.xingming'])->find();
         // 模板赋值
-        $cj->title = $cj->cjKaoshi->title;
         $this->assign('list',$cj);
         // 渲染
         return $this->fetch();
@@ -102,6 +101,7 @@ class Index extends Base
     // 保存表格批量上传的成绩 
     public function saveAll()
     {
+        set_time_limit(0);
         // 获以电子表格存储位置
         $url = input('post.url');
 
@@ -152,6 +152,9 @@ class Index extends Base
 
         // 返回成绩结果
         return json($data);
+        ob_flush();
+        flush();
+
     }
 
 
