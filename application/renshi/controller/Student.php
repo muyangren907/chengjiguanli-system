@@ -282,6 +282,11 @@ class Student extends Base
         $students = array();
         // 重新计算组合数据，如果存在数据则更新数据
         foreach ($stuinfo as $key => $value) {
+            //  如果姓名、身份证号为空则跳过
+            if(empty($value[1]) || empty($value[2]))
+            {
+                continue;
+            }
             // 判断本行班级与上行班级数据是否相等，如果不相等则从数据库查询班级ID
             if($bfbanji != $value[3])
             {
@@ -296,7 +301,7 @@ class Student extends Base
             }
             $bfbanji = $value[3];
             // 如果班级ID为空，删除数据并跳出当前循环
-            if($bj == null || $bj =='' )
+            if( empty($bj) )
             {
                 continue;
             }

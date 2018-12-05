@@ -188,6 +188,7 @@ class Chengji extends Base
 				->when(!empty($schoolid),function($query) use($schoolid){
                 	$query->where('school',$schoolid);
                 })
+                ->where('status',1)
 				->field('id,kaoshi,banji,yuwen,shuxue,waiyu')
 				// ->cache('key',180)
 				->select();

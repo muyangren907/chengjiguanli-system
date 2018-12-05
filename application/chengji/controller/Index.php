@@ -13,6 +13,8 @@ use app\teach\model\Subject;
 use app\system\model\Fields;
 // 引用phpspreadsheet类
 use app\renshi\controller\Myexcel;
+// 引用考试类
+use app\kaoshi\model\Kaoshi;
 
 class Index extends Base
 {
@@ -27,6 +29,7 @@ class Index extends Base
     {
         // 获取表单数据
         $list = request()->only(['id','ziduan','defen'],'post');
+        
         // 声明学科数组
         $subject = array('1'=>'yuwen','2'=>'shuxue','3'=>'waiyu');
         $zd = $subject[$list['ziduan']];
