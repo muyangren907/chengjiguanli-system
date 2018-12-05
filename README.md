@@ -17,4 +17,4 @@
 >*查看成绩统计结果
 
 ## 更详细信息请查阅官方手册
-' https://bshare.optimix.asia/barCode?site=weixin&url=https%3A%2F%2Fwww.kancloud.cn%2Fllblax%2Fabcd%2Fcontent%2Fchengji%2Fxuyan.md '
+' https://www.kancloud.cn/llblax/abcd/content/chengji/xuyan.md '
