@@ -1,5 +1,6 @@
-.idea
-composer.lock
+/.idea
+/.vscode
 *.log
-uploads
-.gitignore
+.env
+.DS_Store
+/runtime
