@@ -181,12 +181,15 @@ class Chengji extends Base
 
 
 	// 查询年级成绩 
-	public function searchNianji($kaoshiid,$nianji)
+	public function searchNianji($kaoshiid,$schoolid='',$nianji)
 	{
 		return $this->where('kaoshi',$kaoshiid)
-				->where('nianji',$nianji)
-				->field('id,kaoshi,yuwen,shuxue,waiyu')
-				->cache('key',180)
+				->where('ruxuenian',$nianji)
+				->when(!empty($schoolid),function($query) use($schoolid){
+                	$query->where('school',$schoolid);
+                })
+				->field('id,kaoshi,banji,yuwen,shuxue,waiyu')
+				// ->cache('key',180)
 				->select();
 	}
 

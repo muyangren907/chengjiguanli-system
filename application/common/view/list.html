@@ -85,12 +85,13 @@
 
  
     //初始化表格
-    $("#table1").DataTable({
+    var mytable = $("#table1").DataTable({
         language:lang,  //提示信息
         autoWidth: false,  //禁用自动调整列宽
         //stripeClasses: ["odd", "even"],  //为奇偶行加上样式，兼容不支持CSS伪类的场合
         processing: true,  //隐藏加载提示,自行处理
         serverSide: true,  //启用服务器端分页
+        stateSave: true,
         searching: true,  //禁用原生搜索
         orderMulti: false,  //启用多列排序
         //order: [],  //取消默认排序查询,否则复选框一列会出现小箭头
@@ -101,7 +102,7 @@
         ],
         destroy: true,
         //option显示数量
-        aLengthMenu: [[20, 50, 100, 500], [20, 50, 100, 500]],
+        aLengthMenu: [[20, 60, 120], [20, 60, 120,]],
         iDisplayLength: 20,   //默认显示20条
         /*columnDefs: [{
             "targets": 'nosort',  //列的样式名

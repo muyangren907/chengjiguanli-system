@@ -313,6 +313,7 @@ class Student extends Base
             // 销毁无用变量
             $i++;
         }
+        // dump($students);
         
         
         // 实例化学生信息数据模型

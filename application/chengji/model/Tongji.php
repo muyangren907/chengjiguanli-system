@@ -6,24 +6,11 @@ use think\Model;
 
 class Tongji extends Model
 {
-    var $avg = '';
-    var $sum = '';
-    var $youxiulv = '';#优秀率
-    var $jigelv = '';#及格率
-
-
-    //获取统计成绩
+    //统计成绩
     public function tongji($cjlist,$fenshuxian)
     {
     	// 获取成绩总数
         $cnt = $cjlist->count();
-
-        // 如果没有成绩不计算
-        if($cnt == 0)
-        {
-            $data = ['cnt'=>$cnt,'avg'=>$avg,'sum'=>$sum,'youxiu'=>$youxiulv,'jige'=>$jigelv];
-            return $data;
-        }
 
         // 循环计算各科成绩
         foreach ($fenshuxian as $key => $value) {
@@ -54,14 +41,47 @@ class Tongji extends Model
     // 统计学科成绩
     public function tjxueke($xkchengji,$cnt,$youxiu,$jige)
     {
-        $sum = $sum = array_sum($xkchengji);
-        $avg = round($sum/$cnt,2);
-        $youxiulv = round($youxiu/$cnt*100,2);
-        $jigelv = round($jige/$cnt*100,2);
-        $max = max($xkchengji);
-        $min = min($xkchengji);
-        $data = ['cnt'=>$cnt,'sum'=>$sum,'avg'=>$avg,'youxiu'=>$youxiulv,'jige'=>$jigelv,'max'=>$max,'min'=>$min];
+        $sum = array_sum($xkchengji);
+        if($sum != 0)
+        {
+            $avg = round($sum/$cnt,2);
+            $youxiulv = round($youxiu/$cnt*100,2);
+            $jigelv = round($jige/$cnt*100,2);
+            $max = max($xkchengji);
+            $min = min($xkchengji);
+            $data = ['cnt'=>$cnt,'sum'=>$sum,'avg'=>$avg,'youxiu'=>$youxiulv,'jige'=>$jigelv,'max'=>$max,'min'=>$min];
+        }else{
+            $data = ['cnt'=>0,'sum'=>'-','avg'=>'-','youxiu'=>'-','jige'=>'-','max'=>'-','min'=>'-'];
+        }
+        
         return $data;
+    }
+
+
+    // 获取统计成绩需要的参数
+    public function getCanshu($kaoshiid)
+    {
+        // 获取学科信息
+        $xk = new \app\teach\model\Subject;
+        $xk = $xk->where('id','<',4)->select();
+        $xkTitle = $xk->column('title','id');
+        $xkLieming = $xk->column('lieming','id');
+
+        // 获取参加考试学科满分
+        $kssub = new \app\kaoshi\model\KaoshiSubject;
+
+        $fenshuxian = $kssub ->where('kaoshiid',$kaoshiid)->append(['subject.title','subject.lieming'])->select();
+
+        // 循环取出优秀和及格分数线
+        foreach ($fenshuxian as $key => $value) {
+            $fsx[$value['subjectid']]['youxiu']=$value['youxiu'];
+            $fsx[$value['subjectid']]['jige']=$value['jige'];
+            $fsx[$value['subjectid']]['title']=$value['subject']['title'];
+            $fsx[$value['subjectid']]['lieming']=$value['subject']['lieming'];
+        }
+
+        // 返回数据
+        return $fsx;
     }
 
 

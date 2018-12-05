@@ -51,7 +51,7 @@
 	// 声明变量
 	var myinfo = [];
 	var cnt = 1;
-	var myDate = new Date();//获取系统当前时间
+	// var myDate = new Date();//获取系统当前时间
 
 
 
@@ -62,8 +62,7 @@
 		{
 			return false;
 		}
-		// 初始化数组
-		// myinfo = array();
+
 		// 获取扫码值并分割成数据
 		myinfo = $('#info').val().split(',');
 
@@ -131,7 +130,7 @@
 			return false;
 		}
 		// 不能被0.5整除退出
-		if(df%0.5)
+		if((df*10%5))
 		{
 			return false;
 		}
@@ -154,7 +153,7 @@
 					var minute = date.getMinutes();
 					var second = date.getSeconds();
 					var addtime = hour + ':' + minute + ':' + second;
-					var str = '<tr><td>'+cnt+'</td><td>' + myinfo['school'] +'</td><td>' + myinfo['banji'] + '</td><td>'+myinfo['student']+'</td><td>'+myinfo['zdname']+'</td><td>'+data['defen']+'</td><td>'+addtime+'</td></tr>';
+					var str = '<tr><td>'+cnt+'</td><td>' + myinfo['cj_school']['jiancheng'] +'</td><td>' + myinfo['cj_banji']['title'] + '</td><td>'+myinfo['cj_student']['xingming']+'</td><td>'+myinfo['zdname']+'</td><td>'+data['defen']+'</td><td>'+addtime+'</td></tr>';
 					cnt++;
 					$('#addjg').prepend(str);
 				}

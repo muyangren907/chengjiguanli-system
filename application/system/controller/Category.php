@@ -10,8 +10,7 @@ use app\system\model\Category as CG;
 class Category extends Base
 {
     
-    // 开启全局自动时间戳
-    protected $autoWriteTimestamp = false;
+    
 
     // 类别列表
     public function index()

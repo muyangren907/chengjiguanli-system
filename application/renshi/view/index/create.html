@@ -34,13 +34,13 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">出生日期：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text Wdate" value="" placeholder="" id="shengri" name="shengri" onclick="WdatePicker({isShowClear:false,readOnly:true})">
+				<input type="text" class="input-text Wdate" value="" placeholder="" id="shengri" name="shengri" onclick="WdatePicker({isShowClear:false,readOnly:true})" style="width:150px;">
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>现工作单位：</label>
 			<div class="formControls col-xs-8 col-sm-9 f-l">
-				<span class="select-box f-l" style="width:180px;">
+				<span class="select-box f-l" style="width:300px;">
 				{php} $school = new app\system\model\School; $list = $school->where('jibie','>',1)->field('id,title')->all();{/php}
 				<select class="select" id="danwei" name="danwei" size="1">
 					<option value="">--请选择现工作单位--</option>

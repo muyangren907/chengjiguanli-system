@@ -14,8 +14,9 @@
 // 获取类别列表
 function getCategory($id = '0')
 {
+	$category = new \app\system\model\Category;
 	// 根据父级id查询类别列表
-	$list = db('category')
+	$list = $category
 		->where('pid','in',$id)
 		->where('status',1)
 		->field('id,title')
@@ -29,8 +30,9 @@ function getCategory($id = '0')
 // 获取类别名称
 function getCategoryTitle($id)
 {
+	$category = new \app\system\model\Category;
 	// 根据id查询类别名
-	$value = db('category')
+	$value = $category
 		->where('id',$id)
 		->vlaue('title');
 	// 返回类别名
@@ -42,7 +44,7 @@ function nianjiList()
 {
 	// 定义学年时间节点日期为每年的8月10日
 	// $yd = '8-10';
-	$jiedian = strtotime(date('Y').'-8-10');
+	$jiedian = strtotime(date('Y').'-8-1');
 
 	$time = new think\helper\Time();
 
@@ -93,6 +95,8 @@ function banjinamelist()
 
 	return $bjarr;
 }
+
+
 
 
 /**

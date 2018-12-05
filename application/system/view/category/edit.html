@@ -12,10 +12,10 @@
 			<label class="form-label col-xs-4 col-sm-3">所属权限：</label>
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:180px;">
-				{php} $authrulemod = new app\system\model\Category;$pid = $authrulemod->getCategory();{/php}
+				{php} $ctp = getCategory();{/php}
 				<select class="select" id="pidt" name="pid" size="1">
 					<option value="">--请选择父级权限--</option>
-					{volist name="pid" id="vo"}
+					{volist name="$ctp" id="vo"}
 						<option value="{$vo.id}" {eq name="$list.pid" value="$vo.title" }selected{/eq}>{$vo.title}</option>
 					{/volist}
 				</select>
