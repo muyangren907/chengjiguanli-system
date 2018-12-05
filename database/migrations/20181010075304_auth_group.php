@@ -34,7 +34,7 @@ class AuthGroup extends Migrator
         // 添加当前表字段
         $table
             ->addColumn('title','string',['limit'=>100,'default'=>'','null'=>false,'comment'=>'用户组中文名称'])
-            ->addColumn('rules','string',['limit'=>300,'default'=>'','null'=>false,'comment'=>'用户组拥有的规则id'])
+            ->addColumn('rules','string',['limit'=>10000,'default'=>'','null'=>false,'comment'=>'用户组拥有的规则id'])
             ->addColumn('miaoshu','string',['limit'=>200,'default'=>'','null'=>false,'comment'=>'用户组功能描述'])
             ->addColumn('status','boolean',['default'=>true,'null'=>false,'comment'=>'用户组状态'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])

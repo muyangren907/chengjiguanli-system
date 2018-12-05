@@ -315,6 +315,7 @@ class Banji extends Base
         // 获取班级id列表
         $list = BJ::where('school',$school)
                 ->where('ruxuenian',$nianji)
+                ->order('paixu')
                 ->select();
         // 追加班级名
         $list = $list->append(['title']);
