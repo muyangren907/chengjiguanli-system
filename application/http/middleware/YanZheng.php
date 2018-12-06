@@ -51,7 +51,7 @@ class YanZheng  extends Controller
         // 排除控制器
         $uneed_c = array();     # 荣誉器名首字母要大写
         // 排除方法
-        $uneed_a = array('welcome','update','save','index','mybanji','banjilist');
+        $uneed_a = array('welcome','update','save','index','mybanji','banjilist','ajaxnianji');
         // 排除指定模块下的指定方法
         $uneed_u = array('index/Index/index');
 

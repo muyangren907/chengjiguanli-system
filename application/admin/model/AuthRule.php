@@ -43,7 +43,7 @@ class AuthRule extends Base
         return $this
             ->where('pid',$this->getAttr('id'))
             ->where('status&ismenu',1)
-            ->field('title,url')
+            ->field('title,url,name')
             ->order(['paixu'])
             ->select();
     }

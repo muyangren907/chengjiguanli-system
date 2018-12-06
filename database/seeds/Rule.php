@@ -74,12 +74,11 @@ class Rule extends Seeder
                     ['title'=>'更多操作','name'=>'Kaoshi/MoreAction/index','paixu'=>5,'pid'=>301],
                     ['title'=>'分配考号','name'=>'Kaoshi/MoreAction/kaohao','paixu'=>6,'pid'=>301],
                     ['title'=>'考号保存','name'=>'Kaoshi/MoreAction/kaohaosave','paixu'=>7,'pid'=>301],
-                    ['title'=>'保存考号','name'=>'Kaoshi/MoreAction/kaohaosave','paixu'=>8,'pid'=>301],
-                    ['title'=>'下载试卷标签信息','name'=>'Kaoshi/MoreAction/biaoqianXls','paixu'=>9,'pid'=>301],
-                    ['title'=>'生成成绩采集表','name'=>'Kaoshi/MoreAction/caiji','paixu'=>10,'pid'=>301],
+                    ['title'=>'下载试卷标签信息','name'=>'Kaoshi/MoreAction/biaoqianXls','paixu'=>8,'pid'=>301],
+                    ['title'=>'生成成绩采集表','name'=>'Kaoshi/MoreAction/caiji','paixu'=>9,'pid'=>301],
                     ['title'=>'保存成绩采集表','name'=>'Kaoshi/MoreAction/cankaomingdan','paixu'=>11,'pid'=>301],
-                    ['title'=>'成绩列表','name'=>'Chengji/Index/chengjilist','paixu'=>12,'pid'=>301],
-                    ['title'=>'年级成绩统计','name'=>'Chengji/Tongji/nianji','paixu'=>13,'pid'=>301],
+                    ['title'=>'成绩列表','name'=>'Chengji/Index/chengjilist','paixu'=>11,'pid'=>301],
+                    ['title'=>'年级成绩统计','name'=>'Chengji/Tongji/nianji','paixu'=>12,'pid'=>301],
 
                     // 师生管理
                     // 学生管理权限
@@ -88,17 +87,16 @@ class Rule extends Seeder
                     ['title'=>'编辑','name'=>'renshi/Student/edit','paixu'=>3,'pid'=>401,],
                     ['title'=>'查看','name'=>'renshi/Student/read','paixu'=>4,'pid'=>401,],
                     ['title'=>'状态','name'=>'renshi/Student/setStatus','paixu'=>5,'pid'=>401],
-                    ['title'=>'下载模板','name'=>'renshi/Student/download','paixu'=6,'pid'=>401],
+                    ['title'=>'下载模板','name'=>'renshi/Student/download','paixu'=>6,'pid'=>401],
                     ['title'=>'批传','name'=>'renshi/Student/createAll','paixu'=>7,'pid'=>401],
+                    ['title'=>'批传上传','name'=>'renshi/Student/upload','paixu'=>8,'pid'=>401],
+                    ['title'=>'批传保存','name'=>'renshi/Student/saveAll','paixu'=>9,'pid'=>401],
                     // 教师管理权限
                     ['title'=>'添加','name'=>'renshi/Index/create','paixu' =>1,'pid'=>402],
                     ['title'=>'删除','name'=>'renshi/Index/delete','paixu'=>2,'pid'=>402],
                     ['title'=>'编辑','name'=>'renshi/Index/edit','paixu'=>3,'pid'=>402,],
                     ['title'=>'查看','name'=>'renshi/Index/read','paixu'=>4,'pid'=>402,],
                     ['title'=>'状态','name'=>'renshi/Index/setStatus','paixu'=>5,'pid'=>402],
-                    ['title'=>'批传','name'=>'renshi/Index/createAll','paixu'=>6,'pid'=>402],
-                    ['title'=>'上传文件','name'=>'renshi/Index/upload','paixu'=>7,'pid'=>402],
-                    ['title'=>'批传保存','name'=>'renshi/Index/saveAll','paixu'=>8,'pid'=>402],
                     
 
                     // 教务管理

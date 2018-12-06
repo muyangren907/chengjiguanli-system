@@ -9,7 +9,7 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-// 错误页面
-// 找不到操作提示
 Route::get('login','login/index/index');
 Route::post('login','login/index/yanzheng');
+Route::get('verify','login/index/verify');
+Route::get('checkcaptcha/:value','login/index/checkcaptcha');

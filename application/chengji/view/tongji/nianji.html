@@ -52,16 +52,14 @@
 {block name="tables"}
 	<table id="table1" class="display" cellspacing="0" width="100%">
 		<thead>
-<!-- 			<tr>
+			<tr>
 				<th rowspan="2">序号</th>
 				<th rowspan="2">班级</th>
 				<th class="text-c" colspan="4" style="border: 0px;">语文</th>
 				<th class="text-c" colspan="4" style="border: 0px;">数学</th>
 				<th class="text-c" colspan="4" style="border: 0px;">英语</th>
-			</tr> -->
+			</tr>
 			<tr>
-				<th >序号</th>
-				<th >班级</th>
 				<th>人数</th>
 				<th>平均分</th>
 				<th>优秀率</th>
@@ -120,20 +118,20 @@
         { "data": "id" },
         { "data": "title" },
 
-        { "data": "data.yuwen.cnt" },
-        { "data": "data.yuwen.avg" },
-        { "data": "data.yuwen.youxiu" },
-        { "data": "data.yuwen.jige" },
+        { "data": "data.yuwen.cnt","defaultContent": "" },
+        { "data": "data.yuwen.avg","defaultContent": "" },
+        { "data": "data.yuwen.youxiu" ,"defaultContent": ""},
+        { "data": "data.yuwen.jige","defaultContent": "" },
 
-        { "data": "data.shuxue.cnt" },
-        { "data": "data.shuxue.avg" },
-        { "data": "data.shuxue.youxiu" },
-        { "data": "data.shuxue.jige" },
+        { "data": "data.shuxue.cnt" ,"defaultContent": ""},
+        { "data": "data.shuxue.avg","defaultContent": "" },
+        { "data": "data.shuxue.youxiu","defaultContent": "" },
+        { "data": "data.shuxue.jige","defaultContent": "" },
 
-        { "data": "data.waiyu.cnt" },
-        { "data": "data.waiyu.avg" },
-        { "data": "data.waiyu.youxiu" },
-        { "data": "data.waiyu.jige" },
+        { "data": "data.waiyu.cnt","defaultContent": "" },
+        { "data": "data.waiyu.avg","defaultContent": "" },
+        { "data": "data.waiyu.youxiu","defaultContent": "" },
+        { "data": "data.waiyu.jige","defaultContent": "" },
         
 	];
 
@@ -142,7 +140,7 @@
 		// 对象格式
         {
         	"orderable": false,
-        	"targets": [0,-1]
+        	"targets": [0,1,2,3,4,5,6,7,8,9,10,11,12,13]
         }, 
 	];
 

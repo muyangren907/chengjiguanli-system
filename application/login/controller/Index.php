@@ -6,7 +6,6 @@ use think\Controller;
 // 引用用户数据模型
 use app\admin\model\Admin as AD;
 
-
 // 引用加密类
 use WhiteHat101\Crypt\APR1_MD5;
 
@@ -82,7 +81,7 @@ class Index extends Controller
         $md5 = new APR1_MD5();
 
         // 获取服务器密码
-        $userinfo = AD::where('username',$username)->find();
+        $userinfo = AD::where('username',$username)->where('status',1)->find();
 
         if($userinfo == null)
         {
@@ -107,6 +106,26 @@ class Index extends Controller
             session(null);
         }
         return $check;        
+    }
+
+
+    // 生成验证码
+    public function verify()
+    {
+        $captcha = new \think\captcha\Captcha;
+        return $captcha->entry();    
+    }
+
+    public function checkcaptcha($value)
+    {
+        dump($value);
+        $captcha = new \think\captcha\Captcha;
+        if( $captcha->check($value))
+        {
+            return true;
+        }else{
+            return false;
+        }
     }
     
 }

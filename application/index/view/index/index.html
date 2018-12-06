@@ -77,22 +77,40 @@
 {load href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/static/h-ui.admin/css/style.css" /}
 <aside class="Hui-aside">
 	{php}
+		// 获取菜单列表
 		$authrule = new app\admin\model\AuthRule;
 		$menu = $authrule
 				->where('pid',0)
 				->where('status&ismenu',1)
-				->field('id,title,font')
+				->field('id,title,font,name')
 				->append(['mymenu'])
 				->order(['paixu'])
 				->select();
+
+		
+
 	{/php}
 	<div class="menu_dropdown bk_2">
 		{volist name="menu" id="vo"}
+		{php}
+			// 引用权限验证类
+			$auth = new \php4world\Auth;
+			if( !$auth->check($vo['name'], session('userid'))){
+				// 第一个参数是规则名称,第二个参数是用户UID
+            	continue;
+        	} 
+		{/php}
 			<dl id="menu-article">
 					<dt><i class="Hui-iconfont {$vo.font}"></i> {$vo.title}<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 					<dd>
 						<ul>
 							{volist name="vo.mymenu" id="va"}
+							{php}
+								if( !$auth->check($va['name'], session('userid'))){
+									// 第一个参数是规则名称,第二个参数是用户UID
+					            	continue;
+					        	} 
+							{/php}
 							<li><a data-href="{$va.url}" data-title="{$va.title}" href="javascript:void(0)">{$va.title}</a></li>
 							{/volist}
 					</ul>

@@ -13,7 +13,7 @@ use app\renshi\controller\Myexcel;
 
 class Index extends Base
 {
-// 显示教师列表
+    // 显示教师列表
     public function index()
     {
 
