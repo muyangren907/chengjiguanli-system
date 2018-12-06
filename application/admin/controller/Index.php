@@ -288,4 +288,58 @@ class Index extends Base
         return json($data);
     }
 
+
+    // 修改自己的密码
+    public function editPassword($id)
+    {
+        $list['id'] = $id;
+
+        // 模板赋值
+        $this->assign('list',$list);
+
+        // 渲染模板
+        return $this->fetch();
+    }
+
+
+    // 保存新密码
+    public function updatePassword($id)
+    {
+        // 获取表单数据
+        $list = request()->post();
+
+        if($list['newpassword'] != $list['newpassword2'])
+        {
+            $data = ['msg'=>'两次密码输入不一致'];
+            return json($data);
+        }
+
+        // 获取用户名
+        $serpassword = AD::where('id',$id)->value('password');
+
+        // 实例化加密类
+        $md5 = new APR1_MD5();
+        //验证密码
+        $check = $md5->check($list['oldpassword'],$serpassword);
+
+        if(!$check)
+        {
+            $data=['msg'=>'旧密码错误','val'=>0];
+            return json($data);
+        }
+
+
+
+        // 更新密码
+        $password = $md5->hash($list['newpassword']);
+        $data = AD::update(['id'=>$id,'password'=>$password]);
+
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'修改成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
+    }
+
 }

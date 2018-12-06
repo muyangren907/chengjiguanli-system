@@ -15,3 +15,5 @@ Route::resource('authgroup','admin/AuthGroup');
 Route::resource('authrule','admin/AuthRule');
 Route::resource('authgroup','admin/AuthGroup');
 Route::get('resetpassword/:id','admin/Index/resetpassword');
+Route::get('editpassword/:id/edit','admin/Index/editPassword');
+Route::put('editpassword/:id','admin/Index/updatePassword');

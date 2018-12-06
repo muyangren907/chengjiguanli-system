@@ -5,9 +5,10 @@ namespace app\login\controller;
 use think\Controller;
 // 引用用户数据模型
 use app\admin\model\Admin as AD;
-
 // 引用加密类
 use WhiteHat101\Crypt\APR1_MD5;
+// 引用Session类
+use \think\facade\Session;
 
 
 class Index extends Controller
@@ -29,13 +30,19 @@ class Index extends Controller
 
 
         // 获取表单数据
-        $data = request()->only(['username','password']);
+        $data = request()->only(['username','password','captcha']);
 
+        
         // 验证表单数据
         $result = $validate->check($data);
         $msg = $validate->getError();
         if(!$result){
             $this->error($msg);
+        }
+
+        if(!captcha_check($data['captcha']))
+        {
+            $this->error('验证码错误');
         }
 
 
@@ -109,23 +116,6 @@ class Index extends Controller
     }
 
 
-    // 生成验证码
-    public function verify()
-    {
-        $captcha = new \think\captcha\Captcha;
-        return $captcha->entry();    
-    }
-
-    public function checkcaptcha($value)
-    {
-        dump($value);
-        $captcha = new \think\captcha\Captcha;
-        if( $captcha->check($value))
-        {
-            return true;
-        }else{
-            return false;
-        }
-    }
+   
     
 }

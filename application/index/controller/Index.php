@@ -30,8 +30,10 @@ class Index extends Base
             ->field('title,keywords,description')
             ->find();
 
+        // 实例化管理员数据模型
+        $admin = new \app\admin\model\Admin;
         // 获取管理员信息
-        $userinfo = db('admin')
+        $userinfo = $admin
             ->where('username',session('username'))
             ->field('username,id')
             ->find();
@@ -81,6 +83,8 @@ class Index extends Base
         $this->redirect('/login');
 
     }
+
+    
 
 
 }

@@ -44,7 +44,7 @@
       <div class="row cl">
         <div class="formControls col-xs-8 col-xs-offset-3">
           <input id="captcha" name="captcha" class="input-text size-L" type="text" placeholder="验证码"  style="width:150px;">
-          <img src="{:url('login/index/verify')}" width="150px" height="40px" onclick="javascript:this.src=this.src+'?rnd=' + Math.random();" title="看不清楚，换一张！"></div>
+          <img src="{:captcha_src()}" width="150px" height="40px" onclick="javascript:this.src=this.src+'?rnd=' + Math.random();" title="看不清楚，换一张！"></div>
       </div>
       <div class="row cl">
         <div class="formControls col-xs-8 col-xs-offset-3">
@@ -65,31 +65,6 @@
 <div class="footer">Copyright 大连长兴岛经济区教研科研培训中心 by H-ui.admin v3.1</div>
 {js href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/jquery/1.9.1/jquery.min.js"}
 {js href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/static/h-ui/js/H-ui.min.js"}
-<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/lib/jquery.js"></script>
-<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
-<script >
-  $().ready(function() {
-  // 在键盘按下并释放及提交后验证提交表单
-    $("#mylogin").validate({
-      rules: {
-        username:{
-          required:true
-        },
-        password:{
-          required:true
-        },
-        captcha:{
-          required:true,
-          remote:"{:url('login/index/captcha')}",
-        }
-      },
-      messages: {
-        username: "帐号不能为空",
-        password: " 密码不能为空",
-        captcha:"不能为空"
-      }
-  });
-});
-</script>
+
 </body>
 </html>
