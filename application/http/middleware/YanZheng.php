@@ -54,7 +54,7 @@ class YanZheng  extends Controller
         $uneed_a = array(
             'welcome','update','save',
             'index','mybanji','banjilist',
-            'ajaxnianji','setmypassword'
+            'ajaxnianji','editpassword','updatepassword'
         );
         // 排除指定模块下的指定方法
         $uneed_u = array('index/Index/index');

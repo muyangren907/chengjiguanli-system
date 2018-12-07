@@ -308,12 +308,19 @@ class Index extends Base
         // 获取表单数据
         $list = request()->post();
 
-        if($list['newpassword'] != $list['newpassword2'])
-        {
-            $data = ['msg'=>'两次密码输入不一致'];
-            return json($data);
+
+        // 验证表单数据
+         // 实例化验证模型
+        $validate = new \app\admin\validate\SetPassword;
+        $result = $validate->check($list);
+        $msg = $validate->getError();
+
+        // 如果验证不通过则停止保存
+        if(!$result){
+            return json(['msg'=>$msg,'val'=>0]);;
         }
 
+       
         // 获取用户名
         $serpassword = AD::where('id',$id)->value('password');
 
