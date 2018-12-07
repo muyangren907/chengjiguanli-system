@@ -28,6 +28,19 @@
 			</div>
 		</div>
 		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否参加考试：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+				<div class="radio-box">
+					<input name="kaoshi" type="radio" id="kaoshi-1" value="1">
+					<label for="kaoshi-1">参加</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" id="kaoshi-2" value="0" name="kaoshi" checked="checked">
+					<label for="kaoshi-2">不参加</label>
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">排序：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" value="" placeholder="默认为999" id="paixu" name="paixu">
@@ -55,6 +68,9 @@
 			category:{
 				required:true,
 				digits:true
+			},
+			kaoshi:{
+				required:true,
 			},
 		};
 

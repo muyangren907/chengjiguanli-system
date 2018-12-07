@@ -15,12 +15,21 @@ class Admin extends Seeder
     public function run()
     {
         // 初始化超级管理员
-        $rows[] = [
-            'id'        =>  1,
-            'xingming'  =>  '超级管理员',
-            'username'  =>  'admin',
-            'password'  =>  '$apr1$RSUodBwI$zOhVq9RQWfQDOW2sbeCDS1',
-        ];
+        $rows = [
+            [
+                'id'        =>  1,
+                'xingming'  =>  '超级管理员1',
+                'username'  =>  'admin',
+                'password'  =>  '$apr1$RSUodBwI$zOhVq9RQWfQDOW2sbeCDS1',
+            ],
+            [
+                'id'        =>  2,
+                'xingming'  =>  '超级管理员2',
+                'username'  =>  'admin1',
+                'password'  =>  '$apr1$RSUodBwI$zOhVq9RQWfQDOW2sbeCDS1',
+            ],
+
+    ];
         // 保存数据
         $this->table('admin')->insert($rows)->save();
     }

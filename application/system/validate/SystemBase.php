@@ -16,7 +16,6 @@ class SystemBase extends Validate
         'title|标题'      =>  'require|length:2,50',
         'keywords|关键字'      =>  'require|length:2,60',
         'description|描述'      =>  'require|length:1,100',
-        'copyright|版权'      =>  'require|length:1,15',
         'thinks|感谢'      =>  'require|length:1,80',
         'danwei|单位'      =>  'require|length:2,80',
     ];

@@ -50,25 +50,27 @@ class Subject extends Base
         // 获取记录集总数
         $cnt = SJ::count();
         //查询数据
-        $data =SJ::field('id,title,jiancheng,category,paixu,status')
+        $data =SJ::field('id,title,jiancheng,category,paixu,kaoshi,status')
+            ->append(['suj_category.title'])
             ->order([$order_field=>$order])
             ->limit($limit_start,$limit_length)
-            ->all();
+            ->select();
         
 
         // 如果需要查询
         if($search){
-            $data = SJ::field('id,title,jiancheng,category,paixu,status')
+            $data = SJ::field('id,title,jiancheng,category,paixu,kaoshi,status')
+                ->append(['suj_category.title'])
                 ->order([$order_field=>$order])
                 ->limit($limit_start,$limit_length)
                 ->whereOr('title','like','%'.$search.'%')
                 ->whereOr('category','in',function($query) use($search)
                 {
-                    $query->table('catagory')
+                    $query->name('category')
                         ->where('title','like','%'.$search.'%')
                         ->field('id');
                 })
-                ->all();
+                ->select();
         }
 
         $datacnt = $data->count();
@@ -110,7 +112,7 @@ class Subject extends Base
 
 
         // 获取表单数据
-        $list = request()->only(['title','jiancheng','category','paixu'],'post');
+        $list = request()->only(['title','jiancheng','category','kaoshi','paixu'],'post');
 
 
         // 验证表单数据
@@ -147,7 +149,7 @@ class Subject extends Base
     {
 
         // 获取学期信息
-        $list = SJ::field('id,title,jiancheng,category,paixu,status')
+        $list = SJ::field('id,title,jiancheng,category,kaoshi,paixu,status')
             ->get($id);
 
 
@@ -166,7 +168,7 @@ class Subject extends Base
         $validate = new \app\teach\validate\Subject;
 
         // 获取表单数据
-        $list = request()->only(['title','jiancheng','category','paixu'],'put');
+        $list = request()->only(['title','jiancheng','category','kaoshi','paixu'],'put');
 
         // 验证表单数据
         $result = $validate->check($list);

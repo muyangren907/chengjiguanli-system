@@ -48,7 +48,7 @@ class SystemBase extends Base
         // 获取记录集总数
         $cnt = 1;
         //查询数据
-        $data = sysbasemod::field('id,title,keywords,description,copyright,thinks,danwei')
+        $data = sysbasemod::field('id,title,keywords,description,thinks,danwei')
             ->order([$order_field=>$order])
             // ->limit(1,1)
             ->select();
@@ -71,7 +71,7 @@ class SystemBase extends Base
     public function edit($id)
     {
         // 获取用户信息
-        $list = sysbasemod::field('id,title,keywords,description,copyright,thinks,danwei')
+        $list = sysbasemod::field('id,title,keywords,description,thinks,danwei')
             ->get($id);
 
 
@@ -86,7 +86,7 @@ class SystemBase extends Base
         $validate = new \app\system\validate\SystemBase;
 
         // 获取表单数据
-        $list = request()->only(['title','keywords','description','copyright','thinks','danwei'],'put');;
+        $list = request()->only(['title','keywords','description','thinks','danwei'],'put');;
 
         // 验证表单数据
         $result = $validate->check($list);

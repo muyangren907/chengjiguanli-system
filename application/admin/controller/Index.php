@@ -15,7 +15,7 @@ class Index extends Base
     public function index()
     {
 
-        $count = AD::where('id','>',1)->count();
+        $count = AD::where('id','>',2)->count();
 
         // 设置要给模板赋值的信息
         $list['title'] = '管理员列表';
@@ -50,14 +50,15 @@ class Index extends Base
         $search = $getdt['search']['value'];
 
 
-        // 获取记录集总数
-        $cnt = AD::where('id','>',1)->count();
+        
         //查询数据
         $data = AD::field('id,xingming,sex,username,phone,shengri,denglucishu,status,create_time')
-            ->where('id','>','1')
+            ->where('id','>','2')
             ->order([$order_field=>$order])
             ->limit($limit_start,$limit_length)
-            ->all();
+            ->select();
+        // 获取记录集总数
+        $cnt = $data->count();
         
 
         // 如果需要查询
@@ -67,7 +68,7 @@ class Index extends Base
                 ->order([$order_field=>$order])
                 ->limit($limit_start,$limit_length)
                 ->where('username|xingming','like','%'.$search.'%')
-                ->all();
+                ->select();
         }
 
         $datacnt = $data->count();

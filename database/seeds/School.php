@@ -17,10 +17,10 @@ class School extends Seeder
         // 设置数据
         $rows= [
             [
-                'title'=>'大连市教育局',
-                'jiancheng'=>'市教育局',
+                'title'=>'大连长兴岛经济区教研科研培训中心',
+                'jiancheng'=>'教科培中心',
                 'biaoshi'=>'',
-                'jibie'=>'2',
+                'jibie'=>'3',
             ],
         ];
         // 保存数据
