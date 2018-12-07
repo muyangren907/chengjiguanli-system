@@ -49,7 +49,19 @@ class Tongji extends Model
             $jigelv = round($jige/$cnt*100,2);
             $max = max($xkchengji);
             $min = min($xkchengji);
-            $data = ['cnt'=>$cnt,'sum'=>$sum,'avg'=>$avg,'youxiu'=>$youxiulv,'jige'=>$jigelv,'max'=>$max,'min'=>$min];
+            $biaozhuncha = round($this->getVariance($avg,$xkchengji,true),2);
+            $sifenwei = $this->quartile($xkchengji);
+            $data = [
+                'cnt'=>$cnt,
+                'sum'=>$sum,
+                'avg'=>$avg,
+                'youxiu'=>$youxiulv,
+                'jige'=>$jigelv,
+                'max'=>$max,
+                'min'=>$min,
+                'biaozhuncha'=>$biaozhuncha,
+                'sifenwei'=>$sifenwei,
+            ];
         }else{
             $data = ['cnt'=>0,'sum'=>'-','avg'=>'-','youxiu'=>'-','jige'=>'-','max'=>'-','min'=>'-'];
         }
@@ -84,5 +96,57 @@ class Tongji extends Model
         return $fsx;
     }
 
+
+    /**
+     * 得到数组的标准差
+     * @param unknown type $avg
+     * @param Array $list
+     * @param Boolen $isSwatch
+     * @return unknown type
+     */
+    public static  function getVariance($avg, $list, $isSwatch  = FALSE) {
+            $arrayCount = count($list);
+            if($arrayCount == 1 && $isSwatch == TRUE){
+                    return FALSE;
+            }elseif($arrayCount > 0 ){
+                    $total_var = 0;
+                    foreach ($list as $lv)
+                            $total_var += pow(($lv - $avg), 2);
+                    if($arrayCount == 1 && $isSwatch == TRUE)
+                            return FALSE;
+                    return $isSwatch?sqrt($total_var / (count($list) - 1 )):sqrt($total_var / count($list));
+            }
+            else
+                    return FALSE;
+    }
+
+
+    // 四分位
+    public function quartile($items) {
+        // 获取数组长度
+        $length = count($items);
+        if ($items == null || $length == 0) return null;
+        
+        if ($length < 5) return $items;
+        $result = array();
+        
+        sort($items);
+        
+        if ($length % 2 == 0) {//偶数
+            $result[1] =  ($items[$length/2 - 1] + $items[$length/2]) / 2;
+        } else {//奇数
+            $result[1] =  $items[($length + 1)/2 - 1];
+        }
+        
+        if ($length % 4 == 0) {
+            $result[0] =  ($items[$length/4 - 1] + $items[$length/4]) / 2;
+            $result[2] =  ($items[3*$length/4 - 1] + $items[3*$length/4]) / 2;
+        } else {
+            $result[0] =  $items[$length/4];
+            $result[2] =  $items[3*$length/4];
+        }
+        
+        return $result;
+    }
 
 }

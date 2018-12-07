@@ -252,8 +252,16 @@ class MoreAction extends Base
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
+        // 设置表头信息
+        $sheet->setCellValue('A1', '序号');
+        $sheet->setCellValue('B1', '专号');
+        $sheet->setCellValue('C1', '学校');
+        $sheet->setCellValue('D1', '班级');
+        $sheet->setCellValue('E1', '学科');
+        $sheet->setCellValue('F1', '姓名');
+
         // 循环写出信息
-        $i = 1;
+        $i = 2;
         foreach ($chengjiinfo as $key => $value) {
             foreach ($xks as $xkkey => $val) {
                 // 表格赋值
@@ -270,11 +278,11 @@ class MoreAction extends Base
 
 
         // 保存文件
-        $filename = '试卷标签信息'.date('ymdHis').'.xlsx';
+        $filename = '试卷标签信息'.date('ymdHis').'.xls';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
-        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
         $writer->save('php://output');
         ob_flush();
         flush();

@@ -82,9 +82,4 @@ class Tongji extends Base
         return json($data);
     }
 
-
-
-
-
-
 }

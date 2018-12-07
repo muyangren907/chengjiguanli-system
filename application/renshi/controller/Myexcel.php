@@ -25,18 +25,4 @@ class Myexcel
         $sheet = $activeSheet->toArray();
         return $sheet;
     }
-
-
-
-    // 生成电子表格
-    public function outExcel()
-    {
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setCellValue('A1', 'Welcome to Helloweba.');
-
-        $writer = new Xlsx($spreadsheet);
-        $writer->save('hello.xlsx');
-    }
-    
 }
