@@ -9,25 +9,51 @@ class Tongji extends Model
     //统计成绩
     public function tongji($cjlist,$fenshuxian)
     {
-    	// 获取成绩总数
-        $cnt = $cjlist->count();
-
         // 循环计算各科成绩
         foreach ($fenshuxian as $key => $value) {
+            // 获取列名
+            $lieming = $value['lieming'];
             // 获取学科成绩
             $xkchengji = $cjlist->column($value['lieming']);
 
+            // 过滤空元素
+            $xkchengji = array_filter($xkchengji);
+            // 获取成绩个数
+            $cnt = count($xkchengji);
+
             // 获取优秀人数
             $yx = $value['youxiu'];
-            $youxiu = $cjlist->filter(function ($data) use($yx) {
-                return  'think' == $data['yuwen'] >= $yx;
-            })->count();
+            $youxiu = array_filter($xkchengji,function($var) use($yx){
+                if( $var<$yx )
+                {
+                    return false;
+                }else{
+                    return true;
+                };
+            });
+            $youxiu = count($youxiu);
 
             // 获取及格人数
             $jg = $value['jige'];
-            $jige = $cjlist->filter(function ($data) use($jg) {
-                return  'think' == $data['yuwen'] >= $jg;
-            })->count();
+            $jg = array_filter($xkchengji,function($var) use($jg){
+                if( $var<$jg )
+                {
+                    return false;
+                }else{
+                    return true;
+                }
+            });
+            $jige = count($jg);
+            // 获取及格人数
+            // $youxiu = $cjlist->filter(function ($data) use($youxiu,$lieming) {
+            //     return  $data[$lieming] >= $youxiu;
+            // })->count();
+
+            // 获取及格人数
+            // $jg = $value['jige'];
+            // $jige = $cjlist->filter(function ($data) use($jg,$lieming) {
+            //     return  $data[$lieming] >= $jg;
+            // })->count();
 
             // 计算成绩
             $data[$value['lieming']] = $this->tjxueke($xkchengji,$cnt,$youxiu,$jige);
@@ -41,7 +67,9 @@ class Tongji extends Model
     // 统计学科成绩
     public function tjxueke($xkchengji,$cnt,$youxiu,$jige)
     {
+       
         $sum = array_sum($xkchengji);
+
         if($sum != 0)
         {
             $avg = round($sum/$cnt,2);
@@ -107,7 +135,7 @@ class Tongji extends Model
     public static  function getVariance($avg, $list, $isSwatch  = FALSE) {
             $arrayCount = count($list);
             if($arrayCount == 1 && $isSwatch == TRUE){
-                    return FALSE;
+                    return '-';
             }elseif($arrayCount > 0 ){
                     $total_var = 0;
                     foreach ($list as $lv)
@@ -117,7 +145,7 @@ class Tongji extends Model
                     return $isSwatch?sqrt($total_var / (count($list) - 1 )):sqrt($total_var / count($list));
             }
             else
-                    return FALSE;
+                    return '-';
     }
 
 
@@ -125,9 +153,9 @@ class Tongji extends Model
     public function quartile($items) {
         // 获取数组长度
         $length = count($items);
-        if ($items == null || $length == 0) return null;
+        if ($items == null || $length == 0) return $result = [0=>'-',1=>'-',2=>'-'];
         
-        if ($length < 5) return $items;
+        if ($length < 5) return $result = [0=>'-',1=>'-',2=>'-'];
         $result = array();
         
         sort($items);

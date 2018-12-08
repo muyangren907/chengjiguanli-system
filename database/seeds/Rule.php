@@ -64,8 +64,8 @@ class Rule extends Seeder
                     ['title'=>'扫码保存','name'=>'Chengji/Index/malusave','paixu' =>2,'pid'=>101],
                     // 表格录入
                     ['title'=>'表格保存','name'=>'Chengji/Index/saveAll','paixu' =>3,'pid'=>102],
-                    ['title'=>'表格上传','name'=>'Chengji/Index/upload','paixu' =>4,'pid'=>101],
-                    ['title'=>'成绩修改','name'=>'Chengji/Index/edit','paixu' =>5,'pid'=>101],
+                    ['title'=>'表格上传','name'=>'Chengji/Index/upload','paixu' =>4,'pid'=>102],
+                    ['title'=>'成绩修改','name'=>'Chengji/Index/edit','paixu' =>5,'pid'=>102],
 
                     
                     // 考试管理
