@@ -152,11 +152,12 @@ class Index extends Base
 
         // 判断成绩更新结果
         empty($cj) ? $data = ['msg'=>'上传失败','val' => 0] : $data = ['msg'=>'上传成功','val' => 1,];
+        ob_flush();
+        flush();
 
         // 返回成绩结果
         return json($data);
-        ob_flush();
-        flush();
+        
 
     }
 
@@ -358,6 +359,14 @@ class Index extends Base
 
         // 返回信息
         return json($data);
+    }
+
+
+
+    // 下载成绩表格
+    public function download()
+    {
+
     }
 
       

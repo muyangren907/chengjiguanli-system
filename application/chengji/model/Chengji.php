@@ -80,38 +80,6 @@ class Chengji extends Base
     
 
 
-	// 语文成绩获取器
-	public function getYuwenAttr($val)
-	{
-		return $this->myval($val);
-	}
-
-	// 数学成绩获取器
-	public function getShuxueAttr($val)
-	{
-		return $this->myval($val);
-	}
-
-	// 外语成绩获取器
-	public function getWaiyuAttr($val)
-	{
-		return $this->myval($val);
-	}
-
-	// 总分成绩获取器
-	public function getStuSumAttr($val)
-	{
-		return $this->myval($val);
-	}
-
-	// 平均分成绩获取器
-	public function getStuAvgAttr($val)
-	{
-		return $this->myval($val);
-	}
-
-
-
 	// 班级名称(数字)获取器
 	public function getBanjiNumnameAttr()
 	{
@@ -123,12 +91,6 @@ class Chengji extends Base
 	}
 
 
-	// 格式化成绩
-	public function myval($val)
-	{
-		$val == 0 ? $val='' : $val = $val*1;
-		return $val;
-	}
 
 
 	// 查询根据考试ID查询考试成绩

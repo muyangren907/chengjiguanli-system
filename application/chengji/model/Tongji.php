@@ -44,16 +44,6 @@ class Tongji extends Model
                 }
             });
             $jige = count($jg);
-            // 获取及格人数
-            // $youxiu = $cjlist->filter(function ($data) use($youxiu,$lieming) {
-            //     return  $data[$lieming] >= $youxiu;
-            // })->count();
-
-            // 获取及格人数
-            // $jg = $value['jige'];
-            // $jige = $cjlist->filter(function ($data) use($jg,$lieming) {
-            //     return  $data[$lieming] >= $jg;
-            // })->count();
 
             // 计算成绩
             $data[$value['lieming']] = $this->tjxueke($xkchengji,$cnt,$youxiu,$jige);
