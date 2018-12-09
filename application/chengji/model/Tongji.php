@@ -21,6 +21,7 @@ class Tongji extends Model
             // 获取成绩个数
             $cnt = count($xkchengji);
 
+
             // 获取优秀人数
             $yx = $value['youxiu'];
             $youxiu = array_filter($xkchengji,function($var) use($yx){
@@ -57,33 +58,37 @@ class Tongji extends Model
     // 统计学科成绩
     public function tjxueke($xkchengji,$cnt,$youxiu,$jige)
     {
-       
-        $sum = array_sum($xkchengji);
-
-        if($sum != 0)
+      
+        // 如果没有数据则返回空数组
+        if($cnt == 0)
         {
-            $avg = round($sum/$cnt,2);
-            $youxiulv = round($youxiu/$cnt*100,2);
-            $jigelv = round($jige/$cnt*100,2);
-            $max = max($xkchengji);
-            $min = min($xkchengji);
-            $biaozhuncha = round($this->getVariance($avg,$xkchengji,true),2);
-            $sifenwei = $this->quartile($xkchengji);
-            $data = [
-                'cnt'=>$cnt,
-                'sum'=>$sum,
-                'avg'=>$avg,
-                'youxiu'=>$youxiulv,
-                'jige'=>$jigelv,
-                'max'=>$max,
-                'min'=>$min,
-                'biaozhuncha'=>$biaozhuncha,
-                'sifenwei'=>$sifenwei,
-            ];
-        }else{
-            $data = ['cnt'=>0,'sum'=>'-','avg'=>'-','youxiu'=>'-','jige'=>'-','max'=>'-','min'=>'-'];
+            $data = ['cnt'=>0,'sum'=>'-','avg'=>'-','youxiu'=>'-','jige'=>'-','max'=>'-','min'=>'-','biaozhuncha'=>'-','sifenwei'=>array()];
+            return $data;
         }
-        
+
+        // 计算数据
+        $sum = array_sum($xkchengji);
+        $avg = round($sum/$cnt,2);
+        $youxiulv = round($youxiu/$cnt*100,2);
+        $jigelv = round($jige/$cnt*100,2);
+        $max = max($xkchengji);
+        $min = min($xkchengji);
+        $biaozhuncha = round($this->getVariance($avg,$xkchengji,true),2);
+        $sifenwei = $this->quartile($xkchengji);
+        // 数组赋值
+        $data = [
+            'cnt'=>$cnt,
+            'sum'=>$sum,
+            'avg'=>$avg,
+            'youxiu'=>$youxiulv,
+            'jige'=>$jigelv,
+            'max'=>$max,
+            'min'=>$min,
+            'biaozhuncha'=>$biaozhuncha,
+            'sifenwei'=>$sifenwei,
+        ];
+
+        // 返回计算结果
         return $data;
     }
 
