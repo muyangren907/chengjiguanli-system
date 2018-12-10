@@ -310,7 +310,7 @@ class Student extends Base
             $students[$i]['banji'] = $bj;
             $students[$i]['xingming'] = $value[1];
             $students[$i]['shenfenzhenghao'] = $value[2];
-            substr($value[2],16,17)%2 == 1 ? $students[$i]['sex']=1 :$students[$i]['sex']=0;
+            intval(substr($value[2],16,1) )% 2 ? $students[$i]['sex'] = 1 :$students[$i]['sex'] = 0 ;
             $students[$i]['shengri'] = substr($value[2],6,4).'-'.substr($value[2],10,2).'-'.substr($value[2],12,2);
             $students[$i]['school'] = $list['school'];
             $stuid = STU::where('shenfenzhenghao',$value[2])->value('id');
@@ -318,7 +318,6 @@ class Student extends Base
             // 销毁无用变量
             $i++;
         }
-        // dump($students);
         
         
         // 实例化学生信息数据模型
