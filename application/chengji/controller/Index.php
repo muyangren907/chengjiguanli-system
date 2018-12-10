@@ -364,9 +364,13 @@ class Index extends Base
 
 
     // 下载成绩表格
-    public function download()
+    public function download($id)
     {
+        $list = request()->get();
 
+        dump($list);
+
+        dump($id);
     }
 
       

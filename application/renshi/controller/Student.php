@@ -309,7 +309,7 @@ class Student extends Base
             // 各变量赋值
             $students[$i]['banji'] = $bj;
             $students[$i]['xingming'] = $value[1];
-            $students[$i]['shenfenzhenghao'] = $value[2];
+            $students[$i]['shenfenzhenghao'] = strtolower($value[2]);
             intval(substr($value[2],16,1) )% 2 ? $students[$i]['sex'] = 1 :$students[$i]['sex'] = 0 ;
             $students[$i]['shengri'] = substr($value[2],6,4).'-'.substr($value[2],10,2).'-'.substr($value[2],12,2);
             $students[$i]['school'] = $list['school'];
