@@ -139,7 +139,7 @@ class MoreAction extends Base
 
 
     // 生成试卷标签二维码
-    public function biaoqian($id)
+    public function biaoqiandoc($id)
     {
 
         set_time_limit(0);
@@ -229,15 +229,42 @@ class MoreAction extends Base
 
 
 
+    // 标签下载
+    public function biaoqian($id)
+    {
+        // 模板赋值
+        $this->assign('id',$id);
+        // 渲染模板
+        return $this->fetch();
+    }
+
+
+
     //生成标签信息
     public function biaoqianXls()
     {
         set_time_limit(0);
+        // 获取表单数据
         $list = input();
+
+        // 实例化验证模型
+        $validate = new \app\kaoshi\validate\Biaoqian;
+        // 验证表单数据
+        $result = $validate->check($list);
+        $msg = $validate->getError();
+
+        // 如果验证不通过则停止保存
+        if(!$result){
+            $this->error($msg);
+        }
+
+
+
         $id = $list['id'];
         // 获取数据库信息
         $chengjiinfo = Chengji::where('kaoshi',$id)
-                        // ->where('ruxuenian',2017)
+                        ->where('school',$list['school'])
+                        ->where('ruxuenian',$list['ruxuenian'])
                         ->append(['cj_school.jiancheng','cj_student.xingming','banjiNumname'])
                         ->select();
 

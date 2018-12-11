@@ -20,10 +20,12 @@ Route::post('chengji/biaolu','chengji/Index/saveAll');
 Route::get('chengji/:id/chengjilist','chengji/Index/chengjilist');
 Route::get('chengji/:id/download','chengji/Index/download');
 Route::post('chengji/chengjixls','chengji/Index/chengjixls');
+ 
+Route::get('cjtongji/:id/nianji','chengji/Tongji/tjnianji');	# 年级成绩统计列表
+Route::get('cjtongji/:id/downloadnj','chengji/Tongji/downloadnj');	# 年级成绩统计下载页面
+Route::post('cjtongji/:id/downloadnj','chengji/Tongji/downloadxls');	# 年级成绩统计下载页面
 
-Route::get('cjtongji/:id/nianji','chengji/Tongji/nianji');
-Route::post('/chengji/:id/downloadnj','chengji/Tongji/downloadnj');
-
+Route::get('cjtongji/:id/school','chengji/Tongji/tjschool');	# 年级成绩统计列表
 
 
 

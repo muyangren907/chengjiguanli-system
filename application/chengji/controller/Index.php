@@ -377,11 +377,19 @@ class Index extends Base
     //生成学生表格
     public function chengjixls()
     {
+        // 获取表单值
+        $list = request()->post();
         // 实例化验证模型
-        $validate = new \app\teach\validate\Kaoshi;
+        $validate = new \app\chengji\validate\Cjdownload;
         // 验证表单数据
         $result = $validate->check($list);
         $msg = $validate->getError();
+
+        // 如果验证不通过则停止保存
+        if(!$result){
+            $this->error($msg);
+        }
+
 
 
         
@@ -464,11 +472,11 @@ class Index extends Base
 
 
         // 保存文件
-        $filename = $ks.'学生成绩列表'.date('ymdHis').'.xls';
+        $filename = $ks.'学生成绩列表'.date('ymdHis').'.xlsx';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
-        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save('php://output');
         ob_flush();
         flush();

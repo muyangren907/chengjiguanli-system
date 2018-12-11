@@ -24,17 +24,14 @@
 </head>
 <body>
 <article class="page-container">
-	<form action="/kaoshi/caiji" method="POST" class="form form-horizontal" id="form-member-add">
+	<form action="/kaoshi/{$id}/biaoqianXls'" method="POST" class="form form-horizontal" id="form-member-add">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>学校：</label>
 			<div class="formControls col-xs-8 col-sm-9 f-l">
-				<span class="select-box f-l">
-				{php}
-					$school = new app\system\model\School;
-					$school = $school->where('status',1)->field('id,title')->all();
-				{/php}
-				<select class="select" id="school" name="school" size="1" onchange="getbanji()">
-					<option value="">--请选择学校--</option>
+				<span class="select-box f-l" style="width:250px;">
+				{php} $school = new app\system\model\School; $school = $school->where('jibie','>',1)->field('id,title')->all();{/php}
+				<select class="select" id="school" name="school" size="1">
+					<option value="">--请选择现工作单位--</option>
 					{volist name="school" id="vo"}
 						<option value="{$vo.id}">{$vo.title}</option>
 					{/volist}
@@ -42,38 +39,20 @@
 				</span>
 			</div>
 		</div>
-		{php}
-			$njlist = nianjiList();
-		{/php}
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>年级：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				{foreach $njlist as $key=>$vo}
-				<dl class="permission-list">
-					<dt>
-						<label>
-							<input type="checkbox"onclick="selectall(this)">
-							{$vo}
-						</label>
-					</dt>
-					<dd id="n{$key}">
-					</dd>
-				</dl>
-				{/foreach}
-			</div>
-		</div>
-		<div class="row cl">
-			{php}
-				$kaoshi = new app\kaoshi\model\KaoshiSubject;
-				$xks = $kaoshi->where('kaoshiid',$id)->column('subjectid');
-				$subject = new app\teach\model\Subject;
-				$sjlist = $subject->where('status',1)->where('id','in',$xks)->field('id,title')->order(['paixu'])->select();
-			{/php}
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>采集学科：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				{foreach $sjlist as $key=>$vo } 
-					<label class="ml-10 mr-5"><input class=" mt-10" type="checkbox" value="{$vo.id}" name="subject[]" id="subject{$vo.id}">&nbsp;{$vo.title}</label>
-				{/foreach}
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:180px;">
+				{php}
+					$njlist = nianjiList();
+				{/php}
+				<select onchange="getbanji()" class="select" id="ruxuenian" name="ruxuenian" size="1">
+					<option value="">--请选择年级--</option>
+					{foreach $njlist as $key=>$vo}
+						<option value="{$key}" >{$vo}</option>
+					{/foreach}
+				</select>
+				</span>
 			</div>
 		</div>
 		<input type="hidden" value="{$id}" name="id">
@@ -99,7 +78,26 @@
 <script type="text/javascript">
 	// 设置表单验证规则
 	var myrules = {
-			
+			title:{
+				required:true,
+				rangelength:[2,25]
+			},
+			xuenian:{
+				required:true,
+				rangelength:[1,15]
+			},
+			category:{
+				required:true,
+				digits:true
+			},
+			bfdate:{
+				required:true,
+				dateISO:true
+			},
+			enddate:{
+				required:true,
+				dateISO:true
+			},
 		};
 
 
