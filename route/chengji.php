@@ -22,3 +22,9 @@ Route::get('chengji/:id/download','chengji/Index/download');
 Route::post('chengji/chengjixls','chengji/Index/chengjixls');
 
 Route::get('cjtongji/:id/nianji','chengji/Tongji/nianji');
+Route::post('/chengji/:id/downloadnj','chengji/Tongji/downloadnj');
+
+
+
+
+

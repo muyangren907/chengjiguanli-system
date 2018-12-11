@@ -28,13 +28,10 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>学校：</label>
 			<div class="formControls col-xs-8 col-sm-9 f-l">
-				<span class="select-box f-l">
-				{php}
-					$school = new app\system\model\School;
-					$school = $school->where('status',1)->field('id,title')->all();
-				{/php}
-				<select class="select" id="school" name="school" size="1" onchange="getbanji()">
-					<option value="">--请选择学校--</option>
+				<span class="select-box f-l" style="width:250px;">
+				{php} $school = new app\system\model\School; $school = $school->where('jibie','>',1)->field('id,title')->all();{/php}
+				<select class="select" id="school" name="school" size="1">
+					<option value="">--请选择现工作单位--</option>
 					{volist name="school" id="vo"}
 						<option value="{$vo.id}">{$vo.title}</option>
 					{/volist}
@@ -42,25 +39,35 @@
 				</span>
 			</div>
 		</div>
-		{php}
-			$njlist = nianjiList();
-		{/php}
 		<div class="row cl">
-
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>年级：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:180px;">
+				{php}
+					$njlist = nianjiList();
+				{/php}
+				<select onchange="getbanji()" class="select" id="ruxuenian" name="ruxuenian" size="1">
+					<option value="">--请选择年级--</option>
+					{foreach $njlist as $key=>$vo}
+						<option value="{$key}" >{$vo}</option>
+					{/foreach}
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>年级：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				{foreach $njlist as $key=>$vo}
 				<dl class="permission-list">
 					<dt>
 						<label>
-							<input type="checkbox"onclick="selectall(this)">
-							{$vo}
+							<input type="checkbox" id="all" onclick="selectall(this)">
+							全选
 						</label>
 					</dt>
-					<dd id="n{$key}">
+					<dd id="banji">
 					</dd>
 				</dl>
-				{/foreach}
 			</div>
 		</div>
 		<input type="hidden" value="{$id}" name="id">
@@ -109,33 +116,42 @@
 		};
 
 
+	// 获取班级列表
 	function getbanji()
 	{
+		// 获取单位id
+		var danwei = $('#school').val();
+		if(danwei== null || danwei==''){
+			$('#school').focus();
+			layer.alert('请先选择学校');
+			return true;
+		}
 		$.ajax({
 			type: 'POST',
-			url: "/banji/banjilist",
+			url: "/banji/mybanji",
 			data:{
-				school:$('#school').val(),
+				school:danwei,
+				nianji:$('#ruxuenian').val()
 			},
 			dataType: 'json',
 			success: function(data){
-				$('dd').each(function(){
-					$(this).text('');
-				});
+				// 删除原来的班级
+				$('#banji').text('');
+				// 清除选选
+				$('#all').prop('checked',false);
+				// 循环写出新班级
 				for (var val in data) {
-					for(var bj in data[val]['banji'])
-					{
-						$('#n' + val).append('<label><input type="checkbox" class="ml-15 mr-5" value="'+bj+'" name="banjiids[]" onclick="selecttop(this)" id='+bj+'>'+data[val]['banji'][bj])+'</label>';
-					}
+					$('#banji').append('<label><input type="checkbox" class="ml-15 mr-5" value="'+data[val]['id']+'" name="banjiids[]" onclick="selecttop(this)" id='+val+'>'+data[val]['title'])+'</label>';
 				}
+
 			},
 			error:function(data) {
 				layer.alert('获取班级失败');
 			},
-		});	
+		});		
 	}
 
-	function selectall(obj)
+function selectall(obj)
 	{
 		// 定位复选框位置
 		var topobj = $(obj).parents('dt').next('dd');
@@ -160,6 +176,7 @@
 		}
 
 	}
+
 </script>
 </body>
 </html>

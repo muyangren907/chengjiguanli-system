@@ -52,7 +52,7 @@ class Tongji extends Base
 
         // 实例化成绩统计模型
         $tj = new \app\chengji\model\Tongji();
-
+        // 获取统计成绩参数
         $canshu = $tj->getCanshu($getParam['kaoshiid']);
 
         
@@ -80,6 +80,21 @@ class Tongji extends Base
         ];
 
         return json($data);
+    }
+
+
+    // 年级、班级学生成绩统计结果下载
+    public function downloadnj()
+    {
+
+    }
+
+
+
+    // 获取各学校、各年级考试成绩
+    public function schoolNianji()
+    {
+        
     }
 
 }

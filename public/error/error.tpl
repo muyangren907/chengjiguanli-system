@@ -60,10 +60,10 @@
 
 
      // 跳转到上一页
-     function loginurl()
-     {
-     	location.href = '/login';
-     }
+     // function loginurl()
+     // {
+     // 	this.href = 'history.go(-1)';
+     // }
 
      // 关闭页面
      function tebclose()

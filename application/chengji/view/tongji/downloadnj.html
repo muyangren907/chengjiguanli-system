@@ -18,23 +18,51 @@
 {css href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/Hui-iconfont/1.0.8/iconfont.css" /}
 {css href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/static/h-ui.admin/skin/default/skin.css" id="skin" /}
 {css rel="stylesheet" type="text/css" href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/static/h-ui.admin/css/style.css" /}
-{block name="mycss"}{/block}
-
-<!--[if IE 6]>
-<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
-<script>DD_belatedPNG.fix('*');</script>
-<![endif]-->
-<!--/meta 作为公共模版分离出去-->
-
-<title>{$list.title|default='添加信息'}</title>
+<title>{$list.title|default='学生成绩下载'}</title>
 <meta name="keywords" content="{$list.keywords|default='成绩统计,学生'}">
 <meta name="description" content="{$list.description|default='这是我们自己缩写的程序'}">
 </head>
 <body>
 <article class="page-container">
-	{block name="formaa"}{/block}
+	<form action="/chengji/chengjixls" method="POST" class="form form-horizontal" id="form-member-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>学校：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:250px;">
+				{php} $school = new app\system\model\School; $school = $school->where('jibie','>',1)->field('id,title')->all();{/php}
+				<select class="select" id="school" name="school" size="1">
+					<option value="">--请选择现工作单位--</option>
+					{volist name="school" id="vo"}
+						<option value="{$vo.id}">{$vo.title}</option>
+					{/volist}
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>年级：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:180px;">
+				{php}
+					$njlist = nianjiList();
+				{/php}
+				<select onchange="getbanji()" class="select" id="ruxuenian" name="ruxuenian" size="1">
+					<option value="">--请选择年级--</option>
+					{foreach $njlist as $key=>$vo}
+						<option value="{$key}" >{$vo}</option>
+					{/foreach}
+				</select>
+				</span>
+			</div>
+		</div>
+		<input type="hidden" value="{$id}" name="id">
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
 </article>
-
 <!--_footer 作为公共模版分离出去-->
 {js href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/jquery/1.9.1/jquery.js"}
 {js href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/layer/2.4/layer.js"}
@@ -47,39 +75,11 @@
 {js href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/jquery.validation/1.14.0/jquery.validate.js"} 
 {js href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/jquery.validation/1.14.0/validate-methods.js"} 
 {js href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/jquery.validation/1.14.0/messages_zh.js"}
-{block name="yanzheng"}{/block}
 <script type="text/javascript">
-$(function(){
-	$('.skin-minimal input').iCheck({
-		checkboxClass: 'icheckbox-blue',
-		radioClass: 'iradio-blue',
-		increaseArea: '20%'
-	});
-	
-	$("#form-member-add").validate({
-		rules:myrules,
-		onkeyup:false,
-		focusCleanup:true,
-		success:"valid",
+	// 设置表单验证规则
+	var myrules = {
+		};	
 
-		submitHandler:function(form){
-			$('#form-member-add').ajaxSubmit({
-				type: mytype,
-				success: function(data){
-					layer.msg(data.msg,{
-						icon: 6,
-					});
-					sleep(2000);
-					window.parent.location.reload();
-				},
-				error: function(data){
-					layer.alert('保存信息失败');
-				}
-			});
-		}
-	});
-});
-</script> 
-<!--/请在上方写此页面业务相关的脚本-->
+</script>
 </body>
 </html>

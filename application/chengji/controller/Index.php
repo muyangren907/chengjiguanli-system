@@ -151,14 +151,12 @@ class Index extends Base
         $data = $cjmod->saveAll($cj);
 
         // 判断成绩更新结果
-        empty($cj) ? $data = ['msg'=>'上传失败','val' => 0] : $data = ['msg'=>'上传成功','val' => 1,];
-        ob_flush();
-        flush();
+        empty($cj) ? $data=['msg'=>'上传失败','val'=>0] : $data=['msg'=>'上传成功','val'=>1];
 
         // 返回成绩结果
         return json($data);
-        
-
+        ob_flush();
+        flush();
     }
 
 
@@ -379,18 +377,33 @@ class Index extends Base
     //生成学生表格
     public function chengjixls()
     {
+        // 实例化验证模型
+        $validate = new \app\teach\validate\Kaoshi;
+        // 验证表单数据
+        $result = $validate->check($list);
+        $msg = $validate->getError();
+
+
+        
         set_time_limit(0);
         $list = input();
         $id = $list['id'];
         // 获取数据库信息
         $chengjiinfo = Chengji::where('kaoshi',$id)
                         ->where('banji','in',$list['banjiids'])
-                        ->order(['ruxuenian','stuAvg'=>'desc'])
+                        ->order(['stuAvg'=>'desc'])
                         ->append(['cj_student.xingming','cj_banji.title'])
                         ->select();
 
         // 获取考试标题
         $ks = Kaoshi::where('id',$id)->find('title');
+
+        // 实例化成绩统计模型
+        $tj = new \app\chengji\model\Tongji();
+        // 获取统计成绩参数
+        $canshu = $tj->getCanshu($id);
+        $tj = $tj->tongji($chengjiinfo,$canshu);
+
        
 
         // 创建表格
@@ -407,6 +420,16 @@ class Index extends Base
         $sheet->setCellValue('F2', '英语');
         $sheet->setCellValue('G2', '平均分');
         $sheet->setCellValue('H2', '总分');
+        $sheet->setCellValue('J2', '项目');
+        $sheet->setCellValue('K2', '语文');
+        $sheet->setCellValue('L2', '数学');
+        $sheet->setCellValue('M2', '英语');
+        $sheet->setCellValue('J3', '人数');
+        $sheet->setCellValue('J4', '平均分');
+        $sheet->setCellValue('J5', '优秀率');
+        $sheet->setCellValue('J6', '及格率');
+        $sheet->setCellValue('J7', '标准差');
+
 
 
         // 循环写出信息
@@ -425,6 +448,18 @@ class Index extends Base
                 $sheet->setCellValue('H'.$i, $value->stuSum);
                 $i++;
             }
+        }
+
+        // 循环写出统计结果
+        $x = 11;
+        $lieming = array(11=>'K',12=>'L',13=>'M');
+        foreach ($tj as $key => $value) {
+            $sheet->setCellValue($lieming[$x].'3', $value['cnt']);
+            $sheet->setCellValue($lieming[$x].'4', $value['avg']);
+            $sheet->setCellValue($lieming[$x].'5', $value['youxiu']);
+            $sheet->setCellValue($lieming[$x].'6', $value['jige']);
+            $sheet->setCellValue($lieming[$x].'7', $value['biaozhuncha']);
+            $x++;
         }
 
 
