@@ -19,5 +19,6 @@ Route::get('chengji/biaolu','chengji/Index/biaolu');
 Route::post('chengji/biaolu','chengji/Index/saveAll');
 Route::get('chengji/:id/chengjilist','chengji/Index/chengjilist');
 Route::get('chengji/:id/download','chengji/Index/download');
+Route::post('chengji/chengjixls','chengji/Index/chengjixls');
 
 Route::get('cjtongji/:id/nianji','chengji/Tongji/nianji');

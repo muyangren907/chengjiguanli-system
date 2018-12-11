@@ -376,11 +376,11 @@ class MoreAction extends Base
         }
 
         // 保存文件
-        $filename = $kstitle.'成绩采集表'.date('ymdHis').'.xlsx';
+        $filename = $kstitle.'成绩采集表'.date('ymdHis').'.xls';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
-        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
         $writer->save('php://output');
     }
 

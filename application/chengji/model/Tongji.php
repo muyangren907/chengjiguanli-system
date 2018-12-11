@@ -68,12 +68,12 @@ class Tongji extends Model
 
         // 计算数据
         $sum = array_sum($xkchengji);
-        $avg = round($sum/$cnt,2);
-        $youxiulv = round($youxiu/$cnt*100,2);
-        $jigelv = round($jige/$cnt*100,2);
+        $avg = round($sum/$cnt,1);
+        $youxiulv = round($youxiu/$cnt*100,1);
+        $jigelv = round($jige/$cnt*100,1);
         $max = max($xkchengji);
         $min = min($xkchengji);
-        $biaozhuncha = round($this->getVariance($avg,$xkchengji,true),2);
+        $biaozhuncha = round($this->getVariance($avg,$xkchengji,true),1);
         $sifenwei = $this->quartile($xkchengji);
         // 数组赋值
         $data = [

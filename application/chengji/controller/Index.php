@@ -240,7 +240,9 @@ class Index extends Base
         $njlist = nianjiList();
         $njnum = array_keys($njlist);
         $bj = new \app\teach\model\Banji;
-        $bjlist = $bj->where('ruxuenian','in',$njnum)->where('paixu','in',$getdt['banji'])->column('id');
+        $bjlist = $bj->where('ruxuenian','in',$njnum)
+                ->where('paixu','in',$getdt['banji'])
+                ->column('id');
 
 
         //得到搜索的关键词
@@ -366,12 +368,77 @@ class Index extends Base
     // 下载成绩表格
     public function download($id)
     {
-        $list = request()->get();
 
-        dump($list);
-
-        dump($id);
+       // 模板赋值
+        $this->assign('id',$id);
+        // 渲染模板
+        return $this->fetch();
     }
+
+
+    //生成学生表格
+    public function chengjixls()
+    {
+        set_time_limit(0);
+        $list = input();
+        $id = $list['id'];
+        // 获取数据库信息
+        $chengjiinfo = Chengji::where('kaoshi',$id)
+                        ->where('banji','in',$list['banjiids'])
+                        ->order(['ruxuenian','stuAvg'=>'desc'])
+                        ->append(['cj_student.xingming','cj_banji.title'])
+                        ->select();
+
+        // 获取考试标题
+        $ks = Kaoshi::where('id',$id)->find('title');
+       
+
+        // 创建表格
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet;
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // 设置表头信息
+        $sheet->setCellValue('A1', $ks.'学生成绩列表');
+        $sheet->setCellValue('A2', '序号');
+        $sheet->setCellValue('B2', '班级');
+        $sheet->setCellValue('C2', '姓名');
+        $sheet->setCellValue('D2', '语文');
+        $sheet->setCellValue('E2', '数学');
+        $sheet->setCellValue('F2', '英语');
+        $sheet->setCellValue('G2', '平均分');
+        $sheet->setCellValue('H2', '总分');
+
+
+        // 循环写出信息
+        $i = 3;
+        foreach ($chengjiinfo as $key => $value) {
+            if($value->stuSum !== null)
+            {
+                // 表格赋值
+                $sheet->setCellValue('A'.$i, $i-2);
+                $sheet->setCellValue('B'.$i, $value['cj_banji']['title']);
+                $sheet->setCellValue('C'.$i, $value['cj_student']['xingming']);
+                $sheet->setCellValue('D'.$i, $value->yuwen);
+                $sheet->setCellValue('E'.$i, $value->shuxue);
+                $sheet->setCellValue('F'.$i, $value->waiyu);
+                $sheet->setCellValue('G'.$i, $value->stuAvg);
+                $sheet->setCellValue('H'.$i, $value->stuSum);
+                $i++;
+            }
+        }
+
+
+        // 保存文件
+        $filename = $ks.'学生成绩列表'.date('ymdHis').'.xls';
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
+        $writer->save('php://output');
+        ob_flush();
+        flush();
+    }
+
 
       
 }
