@@ -151,6 +151,7 @@ function schlist($low='班级',$high='其它级')
 	// 查询学校
 	$schlist = $sch->where('jibie','between',[$catlist[$low],$catlist[$high]])
 					// ->cache('schoollist',180)
+					->order(['paixu'])
 					->column('id,title,jiancheng');
 
 	return $schlist;

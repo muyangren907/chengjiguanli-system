@@ -54,6 +54,86 @@ class Tongji extends Model
     }
 
 
+    public function tjnianji($kaoshiid,$school,$ruxuenian)
+    {
+        // 实例化成绩数据模型
+        $cj = new \app\chengji\model\Chengji;
+
+        // 根据考试号和年级获取考试成绩
+        $cjlist = $cj->searchNianji($kaoshiid,$school,$ruxuenian);
+
+        // 根据年级获取一个有多少个班级
+        $bj = new \app\teach\model\Banji;
+        $bjids = $bj->where('ruxuenian',$ruxuenian)
+                ->when(!empty($school),function($query) use($school){
+                    $query->where('school','in',$school);
+                })
+                ->append(['title'])
+                ->select(); 
+
+
+        // 获取统计成绩参数
+        $canshu = $this->getCanshu($kaoshiid);
+
+        
+
+        // 循环获取各班级成绩
+        $i = 0;
+        foreach ($bjids as $key => $value) {
+            $data[$i]['id'] = $i+1;
+            $data[$i]['title'] = $value['title'];
+            $bjlist = $cjlist->where('banji',$value['id']);
+            $data[$i]['data'] = $this->tongji($bjlist,$canshu);
+            
+            $i++;
+        }
+
+        $data[$i]['id'] = $i+1;
+        $data[$i]['title'] = '合计';
+        $data[$i]['data'] = $this->tongji($cjlist,$canshu);
+
+
+        return $data;
+        
+    }
+
+
+
+    // 统计全区各学校的年级成绩
+    public function tjschool($kaoshiid,$ruxuenian)
+    {
+        // 实例化成绩数据模型
+        $cj = new \app\chengji\model\Chengji;
+        // 根据考试号和年级获取考试成绩
+        $cjlist = $cj->searchNianji($kaoshiid,'',$ruxuenian);
+
+        // 获取学校列表
+        $sch = schlist($low='校级',$high='校级');
+
+
+        // 获取统计成绩参数
+        $canshu = $this->getCanshu($kaoshiid);
+
+        
+
+        // 循环获取各班级成绩
+        $i = 0;
+        foreach ($sch as $key => $value) {
+            $data[$i]['id'] = $i+1;
+            $data[$i]['title'] = $value['jiancheng'];
+            $bjlist = $cjlist->where('school',$value['id']);
+            $data[$i]['data'] = $this->tongji($bjlist,$canshu);
+            $i++;
+        }
+
+        $data[$i]['id'] = $i+1;
+        $data[$i]['title'] = '合计';
+        $data[$i]['data'] = $this->tongji($cjlist,$canshu);
+
+        return $data;
+    }
+
+
 
     // 统计学科成绩
     public function tjxueke($xkchengji,$cnt,$youxiu,$jige)
@@ -113,6 +193,7 @@ class Tongji extends Model
             $fsx[$value['subjectid']]['jige']=$value['jige'];
             $fsx[$value['subjectid']]['title']=$value['subject']['title'];
             $fsx[$value['subjectid']]['lieming']=$value['subject']['lieming'];
+            $fsx[$value['subjectid']]['manfen']=$value['manfen'];
         }
 
         // 返回数据

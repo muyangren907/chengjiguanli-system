@@ -23,9 +23,11 @@ Route::post('chengji/chengjixls','chengji/Index/chengjixls');
  
 Route::get('cjtongji/:id/nianji','chengji/Tongji/tjnianji');	# 年级成绩统计列表
 Route::get('cjtongji/:id/downloadnj','chengji/Tongji/downloadnj');	# 年级成绩统计下载页面
-Route::post('cjtongji/:id/downloadnj','chengji/Tongji/downloadxls');	# 年级成绩统计下载页面
+Route::post('cjtongji/:id/downloadnj','chengji/Tongji/downloadnjxls');	# 年级成绩统计下载页面
 
 Route::get('cjtongji/:id/school','chengji/Tongji/tjschool');	# 年级成绩统计列表
+Route::get('cjtongji/:id/downloadsch','chengji/Tongji/downloadsch');	# 年级成绩统计下载页面
+Route::post('cjtongji/:id/downloadsch','chengji/Tongji/downloadschxls');	# 年级成绩统计下载页面
 
 
 
