@@ -138,6 +138,8 @@ class Chengji extends Base
 
 
 
+
+
 	// 根据考试ID查询所有考试成绩
 	public function searchAll($kaoshiid)
 	{
@@ -160,6 +162,8 @@ class Chengji extends Base
 				// ->cache('key',180)
 				->select();
 	}
+
+
 
 
 	// 考试项目查询范围

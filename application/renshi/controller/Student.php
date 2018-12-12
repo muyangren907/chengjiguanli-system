@@ -142,6 +142,8 @@ class Student extends Base
             return json(['msg'=>$msg,'val'=>0]);;
         }
 
+        $list['shenfenzhenghao'] = strtolower($list['shenfenzhenghao']);
+
         // 保存数据 
         $data = STU::create($list);
 

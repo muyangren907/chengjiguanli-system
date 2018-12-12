@@ -119,21 +119,22 @@ class Tongji extends Base
     public function ajaxSchool()
     {
         // 获取年级和班级列表名
-        $njnames = nianjiList();
+        // $njnames = nianjiList();
 
         // 获取表单参数
         $getParam = request()->param();
-        $school = $getParam['school'];
+        $nianji = $getParam['nianji'];
 
         // 实例化成绩数据模型
-        $cj = new \app\chengji\model\Chengji;
+        $cj = new \app\system\model\Chengji;
 
         // 根据考试号和年级获取考试成绩
-        $cjlist = $cj->searchNianji($getParam['kaoshiid'],$school,$getParam['ruxuenian']);
+        $cjlist = $cj->searchNianji($kaoshi=$getParam['kaoshiid'],$nianji=$getParam['ruxuenian']);
 
-        // 根据年级获取一个有多少个班级
-        $bj = new \app\teach\model\Banji;
-        $bjids = $bj->where('ruxuenian',$getParam['ruxuenian'])
+        // 获取学校列表
+
+        $sch = new \app\teach\model\School;
+        $schids = $sch->where('ruxuenian',$getParam['ruxuenian'])
                 ->when(!empty($school),function($query) use($school){
                     $query->where('school','in',$school);
                 })
@@ -172,6 +173,14 @@ class Tongji extends Base
         ];
 
         return json($data);
+    }
+
+
+
+    public function test()
+    {
+        $aa = schlist('区级','区级');
+        dump($aa);
     }
 
 }

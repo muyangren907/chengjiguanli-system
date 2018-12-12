@@ -116,6 +116,9 @@ class Index extends Base
         $result = $validate->check($list);
         $msg = $validate->getError();
 
+        $list['quanpin'] = strtolower($list['quanpin']);
+        $list['shoupin'] = strtolower($list['shoupin']);
+
 
         // 如果验证不通过则停止保存
         if(!$result){
@@ -176,7 +179,8 @@ class Index extends Base
             return json(['msg'=>$msg,'val'=>0]);;
         }
 
-
+        $list['quanpin'] = strtolower($list['quanpin']);
+        $list['shoupin'] = strtolower($list['shoupin']);
         // 更新数据
         $teacher = new Teacher();
         $data = $teacher->save($list,['id'=>$id]);

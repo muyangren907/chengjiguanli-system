@@ -78,19 +78,19 @@ class School extends Base
     }
 
     // 查询范围内数据
-    public function searchMany($jibie1,$jibie2)
-    {
-        $jb = new \app\system\model\Category;
-        $jibie1 = $jb->wherePid(102)
-            ->whereTitle($jibie1)
-            ->value('id');
-        $jibie2 = $jb->wherePid(102)
-            ->whereTitle($jibie2)
-            ->value('id');
+    // public function searchMany($jibie1,$jibie2)
+    // {
+    //     $jb = new \app\system\model\Category;
+    //     $jibie1 = $jb->wherePid(102)
+    //         ->whereTitle($jibie1)
+    //         ->value('id');
+    //     $jibie2 = $jb->wherePid(102)
+    //         ->whereTitle($jibie2)
+    //         ->value('id');
 
-        $schlist = $this->where('jibie','between',[$jibie1,$jibie2])->select();
-        return $schlist;
-    }
+    //     $schlist = $this->where('jibie','between',[$jibie1,$jibie2])->select();
+    //     return $schlist;
+    // }
 
 
 

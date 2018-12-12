@@ -18,22 +18,6 @@
 		<div class="panel-body" style="min-height: 60px">
 				<div>
 					{php}
-						$school = new app\system\model\School;
-						$school = $school->searchMany('校级','校级');
-					{/php}<label class="f-l">学校：</label>
-					<dt>
-						<dd class=" mt-10">
-							{foreach $school as $key=>$vo } 
-							<label class="ml-10">
-								<input type="checkbox" value="{$vo.id}" name="school" onclick="dtreload()">
-								{$vo.jiancheng}
-							</label>
-						{/foreach}
-						</dd>
-					</dt>
-				</div>
-				<div>
-					{php}
 						$njlist = nianjiList();
 					{/php}
 					<label class="f-l">年级：</label>
@@ -91,16 +75,6 @@
 		type: "post",
 		data: {
 			kaoshiid:"{$list.kaoshi}",
-			school:function(){
-				var chk = [];
-				$('input[name="school"]:checked').each(function(){
-					if(typeof($(this).val()) != "undefined")
-					{
-						chk.push($(this).val());
-					}
-				});
-				return chk;
-			},
 			ruxuenian:function(){
 				var a = $('input:radio:checked').val();
 				// if(typeof(a) == "undefined")

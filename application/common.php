@@ -135,3 +135,23 @@ function excelLieming()
 	$liemingarr = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
 	return $liemingarr;
 }
+
+
+
+// 单位列表
+function schlist($low='班级',$high='其它级')
+{
+	// 实例化单位模型
+	$sch = new \app\system\model\School;
+	// 实例化类别数据模型
+	$cat = new \app\system\model\Category;
+	// 获取获取级别列表
+	$catlist = $cat->where('pid',102)->column('title,id');
+
+	// 查询学校
+	$schlist = $sch->where('jibie','between',[$catlist[$low],$catlist[$high]])
+					// ->cache('schoollist',180)
+					->column('id,title,jiancheng');
+
+	return $schlist;
+}

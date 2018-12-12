@@ -6,8 +6,7 @@
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l">
 				{php}
-					$school = new app\system\model\School;
-					$school = $school->where('status',1)->field('id,title')->all();
+					$school = schlist('班级','区级');
 				{/php}
 				<select class="select" id="zuzhi" name="zuzhi" size="1">
 					<option value="">--请选择组织单位--</option>

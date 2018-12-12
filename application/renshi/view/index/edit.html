@@ -41,10 +41,10 @@
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>现工作单位：</label>
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:300px;">
-				{php} $school = new app\system\model\School; $category = $school->where('jibie','>',1)->field('id,title,jiancheng')->all();{/php}
+				{php} $school = schlist('校级','区级');{/php}
 				<select class="select" id="danwei" name="danwei" size="1">
 					<option value="">--请选择现工作单位--</option>
-					{volist name="category" id="vo"}
+					{volist name="school" id="vo"}
 						<option value="{$vo.id}" {eq name="$list.danwei" value="$vo.jiancheng" }selected{/eq}>{$vo.title}</option>
 					{/volist}
 				</select>
