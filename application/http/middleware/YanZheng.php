@@ -54,7 +54,15 @@ class YanZheng  extends Controller
         $uneed_a = array(
             'welcome','update','save',
             'index','mybanji','banjilist',
-            'ajaxnianji','editpassword','updatepassword'
+            'editpassword','updatepassword',
+            // 查询班级成绩、查询年级成绩
+            'ajaxbanji','ajaxnianji',
+            // 批量保存
+            'saveall',
+            // 下载成绩表、下载成绩统计表
+            'dwchengjixls','dwBanjixls','dwNianjixls',
+            //保存考号、下载试卷标签、下载成绩采集表
+            'kaohaosave','biaoqianXls','dwcaiji',
         );
         // 排除指定模块下的指定方法
         $uneed_u = array('index/Index/index');

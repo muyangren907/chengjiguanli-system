@@ -194,7 +194,7 @@ class Index extends Base
 
 
     // 成绩列表
-    public function Chengjilist($id)
+    public function stuChengjilist($id)
     {
         // 实例化成绩数据模型
         $cj = new Chengji();
@@ -364,7 +364,7 @@ class Index extends Base
 
 
     // 下载成绩表格
-    public function download($id)
+    public function dwChengji($id)
     {
 
        // 模板赋值
@@ -375,7 +375,7 @@ class Index extends Base
 
 
     //生成学生表格
-    public function chengjixls()
+    public function dwchengjixls()
     {
         // 获取表单值
         $list = request()->post();

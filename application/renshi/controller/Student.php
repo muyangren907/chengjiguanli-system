@@ -316,7 +316,12 @@ class Student extends Base
             $students[$i]['shengri'] = substr($value[2],6,4).'-'.substr($value[2],10,2).'-'.substr($value[2],12,2);
             $students[$i]['school'] = $list['school'];
             $stuid = STU::where('shenfenzhenghao',$value[2])->value('id');
-            $stuid > 0 ? $students[$i]['id'] = $stuid : true;
+            if($stuid > 0)
+            {
+                $students[$i]['id'] = $stuid;
+                $students[$i]['delete_time'] = null;
+                $students[$i]['status'] = true;
+            }
             // 销毁无用变量
             $i++;
         }

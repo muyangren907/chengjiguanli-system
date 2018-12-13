@@ -18,13 +18,27 @@
 {css href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/Hui-iconfont/1.0.8/iconfont.css" /}
 {css href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/static/h-ui.admin/skin/default/skin.css" id="skin" /}
 {css rel="stylesheet" type="text/css" href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/static/h-ui.admin/css/style.css" /}
-<title>{$list.title|default='各学校年级成绩统计'}</title>
+<title>{$list.title|default='学生成绩下载'}</title>
 <meta name="keywords" content="{$list.keywords|default='成绩统计,学生'}">
 <meta name="description" content="{$list.description|default='这是我们自己缩写的程序'}">
 </head>
 <body>
 <article class="page-container">
-	<form action="/cjtongji/{$id}/downloadsch" method="POST" class="form form-horizontal" id="form-member-add">
+	<form action="/cjtongji/{$id}/dwBanji" method="POST" class="form form-horizontal" id="form-member-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>学校：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:250px;">
+				{php} $school = schlist('校级','校级');{/php}
+				<select class="select" id="school" name="school" size="1">
+					<option value="">--请选择学校--</option>
+					{volist name="school" id="vo"}
+						<option value="{$vo.id}">{$vo.title}</option>
+					{/volist}
+				</select>
+				</span>
+			</div>
+		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>年级：</label>
 			<div class="formControls col-xs-8 col-sm-9 f-l">

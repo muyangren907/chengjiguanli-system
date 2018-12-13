@@ -333,7 +333,7 @@ class MoreAction extends Base
 
 
     // 获取参考名单 
-    public function cankaomingdan()
+    public function dwcaiji()
     {
 
         // 实例化验证模型

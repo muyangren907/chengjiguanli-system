@@ -46,33 +46,33 @@
 	<ul class="icon_lists clearfix">
 		<li class="f-l ml-20 bk-gray mt-10" bk-gray style="min-width: 200px">
 			<h1>
-				<a data-href="/chengji/{$list['kaoshiid']}/chengjilist" data-title="{$list.kstitle}成缚列表|{$list['bfdate']}" onClick="Hui_admin_tab(this)" style="text-decoration:none">
+				<a data-href="/chengji/{$list['kaoshiid']}/stuChengjilist" data-title="{$list.kstitle}学生成缚列表|{$list['bfdate']}" onClick="Hui_admin_tab(this)" style="text-decoration:none">
 					<i class="Hui-iconfont Hui-iconfont-moban-2"></i>
 				</a>
 			</h1>
-			<span>成绩列表</span>
+			<span>学生成绩列表</span>
 		</li>
 		<li class="f-l ml-20 bk-gray mt-10" bk-gray style="min-width: 200px">
 			<h1>
-				<a data-href="/cjtongji/{$list['kaoshiid']}/nianji" data-title="{$list.kstitle}-年级(班级)成绩统计" onClick="Hui_admin_tab(this)" style="text-decoration:none">
+				<a data-href="/cjtongji/{$list['kaoshiid']}/banji" data-title="{$list.kstitle}-班级成绩统计表" onClick="Hui_admin_tab(this)" style="text-decoration:none">
 					<i class="Hui-iconfont Hui-iconfont-tongji-bing"></i>
 				</a>
 			</h1>
-			<span>年级(班级)成绩统计</span>
+			<span>班级成绩统计</span>
 		</li>
 		<li class="f-l ml-20 bk-gray mt-10" bk-gray style="min-width: 200px">
 			<h1>
-				<a data-href="/cjtongji/{$list['kaoshiid']}/school" data-title="{$list.kstitle}-学校(年级)成绩统计｜{$list['bfdate']}" onClick="Hui_admin_tab(this)" style="text-decoration:none">
+				<a data-href="/cjtongji/{$list['kaoshiid']}/nianji" data-title="{$list.kstitle}-年级成绩统计表｜{$list['bfdate']}" onClick="Hui_admin_tab(this)" style="text-decoration:none">
 					<i class="Hui-iconfont Hui-iconfont-shujutongji"></i>
 				</a>
 			</h1>
-			<span>学校(年级)成绩统计</span>
+			<span>年级成绩统计表</span>
 		</li>
 	</ul>
 	<ul class="icon_lists clearfix">
 		<li class="f-l ml-20 bk-gray mt-10" style="min-width: 200px">
 			<h1>
-				<a href="javascript:;" onclick=add('下载学生成绩表',"/chengji/{$list['kaoshiid']}/download",600,400) style="text-decoration:none">
+				<a href="javascript:;" onclick=add('下载学生成绩表',"/chengji/{$list['kaoshiid']}/dwChengji",600,400) style="text-decoration:none">
 					<i class="Hui-iconfont Hui-iconfont-down"></i>
 				</a>
 			</h1>
@@ -81,19 +81,19 @@
 
 		<li class="f-l ml-20 bk-gray mt-10" bk-gray style="min-width: 200px">
 			<h1>
-				<a href="javascript:;" onclick=addfull('下载年级(班级)成绩统计表',"/cjtongji/{$list['kaoshiid']}/downloadnj") style="text-decoration:none">
+				<a href="javascript:;" onclick=addfull('下载班级成绩统计表',"/cjtongji/{$list['kaoshiid']}/dwBanji") style="text-decoration:none">
 					<i class="Hui-iconfont Hui-iconfont-down"></i>
 				</a>
 			</h1>
-			<span>下载年级(班级)成绩统计表</span>
+			<span>下载班级成绩统计表</span>
 		</li>
 		<li class="f-l ml-20 bk-gray mt-10" bk-gray style="min-width: 200px">
 			<h1>
-				<a href="javascript:;" onclick=add('下载学校(年级)成绩统计表',"/cjtongji/{$list['kaoshiid']}/downloadsch",500,300) style="text-decoration:none">
+				<a href="javascript:;" onclick=add('下载年级成绩统计表',"/cjtongji/{$list['kaoshiid']}/dwNianji",500,300) style="text-decoration:none">
 					<i class="Hui-iconfont Hui-iconfont-down"></i>
 				</a>
 			</h1>
-			<span>下载学校(年级)成绩统计表</span>
+			<span>下载年级成绩统计表</span>
 		</li>
 	</ul>
 </div>

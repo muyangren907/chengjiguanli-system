@@ -8,11 +8,11 @@ use app\common\controller\Base;
 class Tongji extends Base
 {
     // 年级成绩汇总
-    public function tjnianji($id)
+    public function tjBanji($id)
     {
 
         // 设置页面标题
-        $list['title'] = '年级成绩统计';
+        $list['title'] = '班级成绩统计';
         $list['kaoshi'] = $id;
 
         // 模板赋值
@@ -24,7 +24,7 @@ class Tongji extends Base
 
 
     // 获取年级成绩统计结果
-    public function ajaxNianji()
+    public function ajaxBianji()
     {
         // 获取表单参数
         $getParam = request()->param();
@@ -48,7 +48,7 @@ class Tongji extends Base
 
 
     // 年级、班级学生成绩统计结果下载界面
-    public function downloadnj($id)
+    public function dwBanji($id)
     {
         // 模板赋值
         $this->assign('id',$id);
@@ -59,7 +59,7 @@ class Tongji extends Base
 
 
     // 年级、班级学生成绩统计下载表格
-    public function downloadnjxls($id)
+    public function dwBanjixls($id)
     {
         // 获取表单参数
         $getParam = request()->param();
@@ -146,7 +146,7 @@ class Tongji extends Base
 
 
     // 获取各学校、各年级考试成绩
-    public function tjschool($id)
+    public function tjNianji($id)
     {
         // 设置页面标题
         $list['title'] = '学校成绩统计';
@@ -161,7 +161,7 @@ class Tongji extends Base
 
 
     // 获取年级成绩统计结果
-    public function ajaxSchool()
+    public function ajaxNianji()
     {
         // 获取表单参数
         $getParam = request()->param();
@@ -186,7 +186,7 @@ class Tongji extends Base
 
 
     // 年级、班级学生成绩统计结果下载界面
-    public function downloadsch($id)
+    public function dwNianji($id)
     {
         // 模板赋值
         $this->assign('id',$id);
@@ -197,7 +197,7 @@ class Tongji extends Base
 
 
     // 年级、班级学生成绩统计下载表格
-    public function downloadschxls($id)
+    public function dwNianjixls($id)
     {
 
         // 获取表单参数
