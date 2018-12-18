@@ -41,6 +41,6 @@ class SystemBase extends Migrator
             ->addColumn('thinks','string',['limit'=>80,'null'=>false,'comment'=>'网站感谢'])
             ->addColumn('danwei','string',['limit'=>20,'null'=>false,'comment'=>'使用单位'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
-            ->create();
+            ->update();
     }
 }
