@@ -1,0 +1,221 @@
+{extend name="common@list" /}
+{block name="topnav"}
+	<nav class="breadcrumb">
+		<i class="Hui-iconfont">&#xe67f;</i> 首页
+		<span class="c-gray en">&gt;</span> 荣誉管理
+		<span class="c-gray en">&gt;</span> 单位荣誉
+		<a class="btn btn-success radius r"
+			style="line-height:1.6em;margin-top:3px"
+			href="javascript:location.replace(location.href);"
+			title="刷新" >
+			<i class="Hui-iconfont">&#xe68f;</i>
+	</a>
+	</nav>
+{/block}
+{block name="bouttons"}
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+			<!-- 删除按钮 -->
+			<a href="javascript:;" onclick="dels('/student/m')" class="btn btn-danger radius">
+				<i class="Hui-iconfont">&#xe6e2;</i>
+			批量删除
+			</a>
+			<!-- 添加按钮 -->
+			<a href="javascript:;" onclick=addfull('添加学生',"/student/create") class="btn btn-primary radius">
+				<i class="Hui-iconfont">&#xe600;</i>
+				添加荣誉
+			</a>
+		</span>
+		<span class="r">
+			共有数据：<strong>{$list.count}</strong> 条
+		</span>
+	</div>
+	<div class="panel panel-default mt-10 mb-10">
+		<div class="panel-header" id="shaixuan">筛选荣誉</div>
+		<div class="panel-body" style="min-height: 100px">
+				<div>
+					{php}
+						$school = schlist('校级','校级');
+					{/php}
+					<label class="f-l">获奖单位：</label>
+					<dt>
+						<dd class=" mt-10">
+							{foreach $school as $key=>$vo } 
+							<label class="ml-10">
+								<input type="checkbox" value="{$vo.id}" name="school" onclick="dtreload()">
+								{$vo.jiancheng}
+							</label>
+							{/foreach}
+						</dd>
+					</dt>
+				</div>
+				<div>
+					{php}
+						$school = schlist('区级','部级');
+					{/php}
+					<label class="f-l">发奖单位：</label>
+					<dt>
+						<dd class=" mt-10">
+							{foreach $school as $key=>$vo } 
+							<label class="ml-10">
+								<input type="checkbox" value="{$vo.id}" name="fzschool" onclick="dtreload()">
+								{$vo.jiancheng}
+							</label>
+							{/foreach}
+						</dd>
+					</dt>
+				</div>
+				<div>
+					{php}
+						$school = schlist('区级','部级');
+					{/php}
+					<label class="f-l">荣誉类别：</label>
+					<dt>
+						<dd class=" mt-10">
+							{foreach $school as $key=>$vo } 
+							<label class="ml-10">
+								<input type="checkbox" value="{$vo.id}" name="category" onclick="dtreload()">
+								{$vo.jiancheng}
+							</label>
+							{/foreach}
+						</dd>
+					</dt>
+				</div>
+		</div>
+	</div>
+{/block}
+{block name="tables"}
+	<table id="table1" class="display" cellspacing="0" width="100%">
+		<thead>
+			<tr>
+				<th><input type="checkbox" name="" value=""></th>
+				<th>姓名</th>
+				<th>性别</th>
+				<th>年龄</th>
+				<th>学校</th>
+				<th>班级</th>
+				<th>状态</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+
+
+{/block}
+{block name="myjs"}
+<script type="text/javascript">
+
+	// 定义DTajax参数
+	var myajax = {
+		url: "{:url('ajaxdata')}",
+		type: "post",
+		data: {
+			school:function(){
+				var chk = [];
+				$('input[name="school"]:checked').each(function(){
+					if(typeof($(this).val()) != "undefined")
+					{
+						chk.push($(this).val());
+					}
+				});
+				return chk;
+			},
+			ruxuenian:function(){
+				var chk = [];
+				$('input[name="nianji"]:checked').each(function(){
+					if(typeof($(this).val()) != "undefined")
+					{
+						chk.push($(this).val());
+					}
+				});
+				return chk;
+			},
+			banji:function(){
+				var chk = [];
+				$('input[name="banji"]:checked').each(function(){
+					if(typeof($(this).val()) != "undefined")
+					{
+						chk.push($(this).val());
+					}
+				});
+				return chk;
+			},
+		},
+	};
+
+	// 定义列参数
+	var mycolumns = [
+        { "data": "id" },
+        { "data": "xingming" },
+        { "data": "sex" },
+        { "data": "age" ,"defaultContent": "","name":"shengri"},
+        { "data": "stu_school.title","name":"school"},
+        { "data": "stu_banji.title","name":"banji"},
+        { "data": "status" },
+        { "data": "id" },
+	];
+
+	// 定义修改列参数
+	var mycolumnDefs =[
+		// 对象格式
+		{
+			"targets": 0,			
+			"render": function(data, type, row, meta) {
+				return '<input type="checkbox" name="test" value="' + row.id + '" />'
+			}
+		},
+		{
+			"targets": -1,
+			"className":'.td-manage',			
+			"render": function(data, type, row, meta) {
+					// 停用按钮
+					stopbut = '<a style="text-decoration:none" onClick="stop(this,'+ row.id +')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>';
+					// 启用按钮
+					startbut = '<a style="text-decoration:none" onClick="start(this,'+ row.id +')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>';
+					// 编辑按钮
+					editbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/student/'+row.id+'/edit") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
+					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/student/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
+					if(row.status == '已停用')
+					{
+						buts = startbut + editbut + delbut;
+					}else{
+						buts = stopbut + editbut + delbut;
+					} 
+
+					return buts;
+                }
+        },
+        {
+			"targets": -2,
+			"className":'.td-status',
+			"render": function(data, type, row, meta) {
+                    if(row.status == '已停用')
+                    {
+                    	d = "<span class='label label-error radius'>" + row.status + "</span>";
+                    }else{
+                    	d = "<span class='label label-success radius'>" + row.status + "</span>";
+                    }
+
+                    return d;
+                  },
+        },
+        {
+        	"orderable": false,
+        	"targets": [0,-1]
+        }, 
+	];
+
+	// 筛选成绩面板折叠
+	$('#shaixuan').click(function(){
+		$(this).next().toggle();
+	});
+
+	// 重载数据
+	function dtreload()
+	{
+		$('#table1').DataTable().ajax.reload();
+	}
+</script>
+{/block}

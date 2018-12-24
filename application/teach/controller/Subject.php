@@ -39,7 +39,11 @@ class Subject extends Base
         //得到排序字段的下标
         $order_column = $getdt['order'][0]['column'];
         //根据排序字段的下标得到排序字段
-        $order_field = $getdt['columns'][$order_column]['data'];
+        $order_field = $getdt['columns'][$order_column]['name'];
+        if($order_field=='')
+        {
+            $order_field = $getdt['columns'][$order_column]['data'];
+        }
         //得到limit参数
         $limit_start = $getdt['start'];
         $limit_length = $getdt['length'];

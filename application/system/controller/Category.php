@@ -66,7 +66,7 @@ class Category extends Base
                 })
                 ->order([$order_field=>$order])
                 ->limit($limit_start,$limit_length)
-                ->all();
+                ->select();
         }
 
         $datacnt = $data->count();

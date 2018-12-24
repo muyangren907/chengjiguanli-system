@@ -54,6 +54,13 @@ class Rule extends Seeder
                 ['id'=>701,'title'=>'类别管理','name'=>'system/Category/index','paixu'=>1,'ismenu' =>true,'pid' =>7,'url'=>'/category',],
                 ['id'=>702,'title'=>'单位管理','name'=>'system/School/index','paixu'=>2,'ismenu' =>true,'pid' =>7,'url'=>'/school',],
                 ['id'=>703,'title'=>'系统设置','name'=>'system/SystemBase/index','paixu'=>3,'ismenu' =>true,'pid' =>7,'url'=>'/sysbase',],
+
+
+                // 荣誉管理
+                ['id'=>801,'title'=>'单位荣誉','name'=>'rongyu/DwRongyu/index','paixu'=>1,'ismenu' =>true,'pid' =>8,'url'=>'/jsry',],
+                ['id'=>802,'title'=>'教师荣誉册','name'=>'rongyu/JsRongyu/index','paixu'=>2,'ismenu' =>true,'pid' =>8,'url'=>'/dwry',],
+                ['id'=>802,'title'=>'教师荣誉信息','name'=>'rongyu/JsRongyuInfo/index','paixu'=>3,'ismenu' =>true,'pid' =>8,'url'=>'/dwry',],
+                ['id'=>803,'title'=>'学生荣誉','name'=>'rongyu/JsRongyu/index','paixu'=>7,'ismenu' =>true,'pid' =>8,'url'=>'/xsry',],
                 
                 
                 

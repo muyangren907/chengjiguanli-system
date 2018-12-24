@@ -1,0 +1,174 @@
+{extend name="common@create" /}
+{block name="formaa"}
+	<form action="/student/{$list.id}" method="PUT" class="form form-horizontal" id="form-member-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>学生姓名：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$list.xingming}" placeholder="学生姓名" id="xingming" name="xingming">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>身份证号码：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$list.shenfenzhenghao}" placeholder="只做识别学生用，不会对外显示" id="shenfenzhenghao" name="shenfenzhenghao" readonly="true">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>性别：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+				<div class="radio-box">
+					<input name="sex" type="radio" id="sex-1" value="1" required="true" {eq name="$list.sex" value="男" }checked{/eq}>
+					<label for="sex-1">男</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" id="sex-2" value="0" name="sex" {eq name="$list.sex" value="女" }checked{/eq}>
+					<label for="sex-2">女</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" id="sex-3" value="2" name="sex" {eq name="$list.sex" value="保密" }checked{/eq}>
+					<label for="sex-3">保密</label>
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>出生日期：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text Wdate" value="{$list.shengri}" placeholder="" id="shengri" name="shengri" onclick="WdatePicker({isShowClear:false,readOnly:true})" style="width:180px">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>学校：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:300px;">
+				{php}
+				$school = schlist('校级','校级');
+				{/php}
+				<select class="select" id="school" name="school" size="1">
+					<option value="">--请选择所在学校--</option>
+					{volist name="school" id="vo"}
+						<option value="{$vo.id}" {eq name="$list.school" value="$vo.id" }selected{/eq}>{$vo.title}</option>
+					{/volist}
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>年级：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:180px;">
+				{php}
+					$njlist = nianjiList();
+					$banji = new \app\teach\model\Banji;
+					$bj = $banji::get($list['banji']);
+				{/php}
+				<select onchange="getbanji()" class="select" id="ruxuenian" name="ruxuenian" size="1">
+					<option value="">--请选择年级--</option>
+					{foreach $njlist as $key=>$vo}
+						<option value="{$key}" {eq name="$bj->ruxuenian" value="$key" }selected{/eq}>{$vo}</option>
+					{/foreach}
+				</select>
+				</span>
+			</div>
+		</div>
+		{php}
+			$bjlist = $banji::where('ruxuenian',$bj->ruxuenian)->select();
+			$bjlist = $bjlist->append(['title'])->visible(['id','title']);
+		{/php}
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>班级：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:180px;">
+				<select class="select" id="banji" name="banji" size="1">
+					<option value="">--请选择班级--</option>
+					{volist name="bjlist" id="vo"}
+						<option value="{$vo.id}" {eq name="$list.banji" value="$vo.id" }selected{/eq}>{$vo.title}</option>
+					{/volist}
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+{/block}
+{block name="yanzheng"}
+<script type="text/javascript">
+
+	// 匹配用户名
+	$.validator.addMethod("zh",function(value,element){
+		var tel = /^[\u4e00-\u9fa5]*$/;
+		return this.optional(element) || tel.test(value);
+	}, "请输入中文");
+
+	// 设置表单验证规则
+	var myrules = {
+			xingming:{
+				required:true,
+				zh:true,
+				rangelength:[2,5],
+			},
+			shenfenzhenghao:{
+				required:true,
+				rangelength:[18,18],
+				// digits:true
+			},
+			shengri:{
+				required:true,
+				dateISO:true
+			},
+			school:{
+				required:true,
+				digits:true
+			},
+			ruxuenian:{
+				required:true,
+				digits:true,
+			},
+			banji:{
+				required:true,
+				digits:true
+			},
+		};
+
+	// 设置表单提交方式
+	var mytype = 'PUT';
+
+	// 获取班级列表
+	function getbanji()
+	{
+		// 获取单位id
+		var danwei = $('#school').val();
+		if(danwei== null || danwei==''){
+			$('#school').focus();
+			layer.alert('请先选择学校');
+			return true;
+		}
+		$.ajax({
+			type: 'POST',
+			url: "/banji/mybanji",
+			data:{
+				school:danwei,
+				nianji:$('#ruxuenian').val()
+			},
+			dataType: 'json',
+			success: function(data){
+				$('#banji').children().remove();
+				var str ='<option value="">--请选择班级--</option>';
+				for (var index in data){
+					var se = '<option value="' + data[index]['id'] + '">' + data[index]['title'] + '</option>';
+					str = str + se;
+
+				}
+				$('#banji').append(str);
+			},
+			error:function(data) {
+				layer.alert('获取班级失败');
+			},
+		});		
+	}
+
+</script>
+{/block}

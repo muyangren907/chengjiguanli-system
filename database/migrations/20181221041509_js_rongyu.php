@@ -3,7 +3,7 @@
 use think\migration\Migrator;
 use think\migration\db\Column;
 
-class RongyuInfo extends Migrator
+class JsRongyu extends Migrator
 {
     /**
      * Change Method.
@@ -29,17 +29,14 @@ class RongyuInfo extends Migrator
     public function change()
     {
         // 定义数据表名称
-        $table = $this->table('rongyu_info');
+        $table = $this->table('js_rongyu');
 
         // 添加当前表字段
         $table
-            ->addColumn('title','string',['limit'=>30,'null'=>false,'comment'=>'获奖内容标题'])
-            ->addColumn('rongyuce','integer',['limit'=>11,'null'=>false,'comment'=>'荣誉册'])
-            ->addColumn('bianhao','string',['limit'=>15,'null'=>true,'comment'=>'证书编号'])
-            ->addColumn('danwei','integer',['limit'=>11,'null'=>false,'comment'=>'证书所属单位'])
-            ->addColumn('xueke','integer',['limit'=>11,'null'=>false,'comment'=>'所属学科'])
-            ->addColumn('category','integer',['limit'=>11,'null'=>false,'comment'=>'荣誉类型'])
-            ->addColumn('pic','string',['limit'=>40,'null'=>false,'comment'=>'证书图片'])
+            ->addColumn('title','string',['limit'=>30,'null'=>false,'comment'=>'荣誉册名称'])
+            ->addColumn('fazhengdw','integer',['limit'=>11,'null'=>false,'comment'=>'发证单位'])
+            ->addColumn('fazhengsj','integer',['limit'=>11,'null'=>false,'comment'=>'发证时间'])
+            ->addColumn('leixing','integer',['limit'=>15,'null'=>false,'comment'=>'类型'])
             ->addColumn('create_time','integer',['limit'=>11,'null'=>true,'comment'=>'创建时间'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
             ->addColumn('update_time','integer',['limit'=>11,'null'=>true,'comment'=>'更新时间'])
