@@ -38,6 +38,7 @@ class DwRongyu extends Migrator
             ->addColumn('fzschool','integer',['limit'=>11,'null'=>false,'comment'=>'发证单位'])
             ->addColumn('fzshijian','integer',['limit'=>11,'null'=>false,'comment'=>'发证时间'])
             ->addColumn('category','string',['limit'=>100,'null'=>false,'comment'=>'荣誉图片'])
+            ->addColumn('jiangxiang','integer',['limit'=>11,'null'=>false,'comment'=>'奖项'])
             ->addColumn('pic','integer',['limit'=>15,'null'=>false,'comment'=>'荣誉类型'])
             ->addColumn('create_time','integer',['limit'=>11,'null'=>true,'comment'=>'创建时间'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])

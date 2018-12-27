@@ -66,12 +66,14 @@ class DwRongyu extends Base
         $dwry = new dwry();
 
         // 获取荣誉总数
-        $datacnt = $dwry->select()->count();
+        $cnt = $dwry->select()->count();
 
         // 查询数据
         $data = $dwry->search($search);
+        $datacnt = $data->count();
 
-        $cnt = $data->count();
+        // 获取当前页数据
+        $data = $data->slice($limit_start,$limit_length);
 
         // 重组返回内容
         $data = [
@@ -91,7 +93,14 @@ class DwRongyu extends Base
      */
     public function create()
     {
-        //
+        // 设置页面标题
+        $list['title'] = '添加单位荣誉';
+
+        // 模板赋值
+        $this->assign('list',$list);
+
+        // 渲染
+        return $this->fetch();
     }
 
     /**

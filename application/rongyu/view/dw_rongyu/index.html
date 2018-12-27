@@ -16,12 +16,17 @@
 	<div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l">
 			<!-- 删除按钮 -->
-			<a href="javascript:;" onclick="dels('/student/m')" class="btn btn-danger radius">
+			<a href="javascript:;" onclick="dels('/dwry/m')" class="btn btn-danger radius">
 				<i class="Hui-iconfont">&#xe6e2;</i>
 			批量删除
 			</a>
+			<!-- 批量上传荣誉图片按钮 -->
+			<a href="javascript:;" onclick=addfull('批量上传',"/dwry/createall") class="btn btn-primary radius">
+				<i class="Hui-iconfont">&#xe642;</i>
+				批量上传
+			</a>
 			<!-- 添加按钮 -->
-			<a href="javascript:;" onclick=addfull('添加学生',"/student/create") class="btn btn-primary radius">
+			<a href="javascript:;" onclick=addfull('添加单位荣誉',"/dwry/create") class="btn btn-primary radius">
 				<i class="Hui-iconfont">&#xe600;</i>
 				添加荣誉
 			</a>
@@ -89,11 +94,12 @@
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="" value=""></th>
-				<th>姓名</th>
-				<th>性别</th>
-				<th>年龄</th>
-				<th>学校</th>
-				<th>班级</th>
+				<th>荣誉名称</th>
+				<th>获奖单位</th>
+				<th>荣誉类别</th>
+				<th>奖项</th>
+				<th>发证单位</th>
+				<th>发证时间</th>
 				<th>状态</th>
 				<th>操作</th>
 			</tr>
@@ -148,11 +154,12 @@
 	// 定义列参数
 	var mycolumns = [
         { "data": "id" },
-        { "data": "xingming" },
-        { "data": "sex" },
-        { "data": "age" ,"defaultContent": "","name":"shengri"},
-        { "data": "stu_school.title","name":"school"},
-        { "data": "stu_banji.title","name":"banji"},
+        { "data": "title" },
+        { "data": "hjschool" },
+        { "data": "category"},
+        { "data": "jiangxiang"},
+        { "data": "fzschool" },
+        { "data": "fzshijian" },
         { "data": "status" },
         { "data": "id" },
 	];

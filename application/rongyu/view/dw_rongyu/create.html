@@ -2,47 +2,32 @@
 {block name="formaa"}
 	<form action="/student" method="POST" class="form form-horizontal" id="form-member-add">
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>学生姓名：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>荣誉标题：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="学生姓名" id="xingming" name="xingming">
+				<input type="text" class="input-text" value="" placeholder="荣誉标题" id="title" name="title">
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>身份证号码：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="只做识别学生用，不会对外显示" id="shenfenzhenghao" name="shenfenzhenghao" onchange="shenfenzheng()">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>荣誉类型：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:180px;">
+				{php}$list = getCategory(109);{/php}
+				<select class="select" id="category" name="category" size="1">
+					<option value="">--请选择荣誉类型--</option>
+					{volist name="list" id="vo"}
+						<option value="{$vo.id}">{$vo.title}</option>
+					{/volist}
+				</select>
+				</span>
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>性别：</label>
-			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
-				<div class="radio-box">
-					<input name="sex" type="radio" id="sex-1" value="1" required="true">
-					<label for="sex-1">男</label>
-				</div>
-				<div class="radio-box">
-					<input type="radio" id="sex-2" value="0" name="sex">
-					<label for="sex-2">女</label>
-				</div>
-				<div class="radio-box">
-					<input type="radio" id="sex-3" value="2" name="sex">
-					<label for="sex-3">保密</label>
-				</div>
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>出生日期：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text Wdate" value="" placeholder="" id="shengri" name="shengri" onclick="WdatePicker({isShowClear:false,readOnly:true})" style="width: 180px">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>学校：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>获奖单位：</label>
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:300px;">
-				{php} $school = schlist('校级','校级');{/php}
+				{php} $school = schlist('校级','区级');{/php}
 				<select class="select" id="school" name="school" size="1">
-					<option value="">--请选择所在学校--</option>
+					<option value="">--请选择获奖单位--</option>
 					{volist name="school" id="vo"}
 						<option value="{$vo.id}">{$vo.title}</option>
 					{/volist}
@@ -51,27 +36,35 @@
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>年级：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>获奖时间：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text Wdate" value="" placeholder="" id="shengri" name="shengri" onclick="WdatePicker({isShowClear:false,readOnly:true})" style="width: 180px">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>颁奖单位：</label>
 			<div class="formControls col-xs-8 col-sm-9 f-l">
-				<span class="select-box f-l" style="width:180px;">
-				{php}
-					$njlist = nianjiList();
-				{/php}
-				<select onchange="getbanji()" class="select" id="ruxuenian" name="ruxuenian" size="1">
-					<option value="">--请选择年级--</option>
-					{foreach $njlist as $key=>$vo}
-						<option value="{$key}" >{$vo}</option>
-					{/foreach}
+				<span class="select-box f-l" style="width:300px;">
+				{php} $school = schlist('区级','其它级');{/php}
+				<select class="select" id="school" name="school" size="1">
+					<option value="">--请选择颁奖单位--</option>
+					{volist name="school" id="vo"}
+						<option value="{$vo.id}">{$vo.title}</option>
+					{/volist}
 				</select>
 				</span>
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>班级：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>奖项：</label>
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:180px;">
-				<select class="select" id="banji" name="banji" size="1">
-					<option value="">--请选择班级--</option>
+				{php}$list = getCategory(109);{/php}
+				<select class="select" id="category" name="category" size="1">
+					<option value="">--请选择奖项--</option>
+					{volist name="list" id="vo"}
+						<option value="{$vo.id}">{$vo.title}</option>
+					{/volist}
 				</select>
 				</span>
 			</div>
