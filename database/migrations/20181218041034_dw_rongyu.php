@@ -34,10 +34,11 @@ class DwRongyu extends Migrator
         // 添加当前表字段
         $table
             ->addColumn('title','string',['limit'=>30,'null'=>false,'comment'=>'单位荣誉名称'])
-            ->addColumn('hjzhengdw','integer',['limit'=>11,'null'=>false,'comment'=>'获奖单位'])
-            ->addColumn('fazhengdw','integer',['limit'=>11,'null'=>false,'comment'=>'发证单位'])
-            ->addColumn('fazhengsj','integer',['limit'=>11,'null'=>false,'comment'=>'发证时间'])
-            ->addColumn('leixing','integer',['limit'=>15,'null'=>false,'comment'=>'荣誉类型'])
+            ->addColumn('hjschool','integer',['limit'=>11,'null'=>false,'comment'=>'获奖单位'])
+            ->addColumn('fzschool','integer',['limit'=>11,'null'=>false,'comment'=>'发证单位'])
+            ->addColumn('fzshijian','integer',['limit'=>11,'null'=>false,'comment'=>'发证时间'])
+            ->addColumn('category','string',['limit'=>100,'null'=>false,'comment'=>'荣誉图片'])
+            ->addColumn('pic','integer',['limit'=>15,'null'=>false,'comment'=>'荣誉类型'])
             ->addColumn('create_time','integer',['limit'=>11,'null'=>true,'comment'=>'创建时间'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
             ->addColumn('update_time','integer',['limit'=>11,'null'=>true,'comment'=>'更新时间'])

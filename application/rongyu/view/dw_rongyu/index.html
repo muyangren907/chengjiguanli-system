@@ -42,7 +42,7 @@
 						<dd class=" mt-10">
 							{foreach $school as $key=>$vo } 
 							<label class="ml-10">
-								<input type="checkbox" value="{$vo.id}" name="school" onclick="dtreload()">
+								<input type="checkbox" value="{$vo.id}" name="hjschool" onclick="dtreload()">
 								{$vo.jiancheng}
 							</label>
 							{/foreach}
@@ -112,9 +112,9 @@
 		url: "{:url('ajaxdata')}",
 		type: "post",
 		data: {
-			school:function(){
+			hjschool:function(){
 				var chk = [];
-				$('input[name="school"]:checked').each(function(){
+				$('input[name="hjschool"]:checked').each(function(){
 					if(typeof($(this).val()) != "undefined")
 					{
 						chk.push($(this).val());
@@ -122,9 +122,9 @@
 				});
 				return chk;
 			},
-			ruxuenian:function(){
+			fzschool:function(){
 				var chk = [];
-				$('input[name="nianji"]:checked').each(function(){
+				$('input[name="fzschool"]:checked').each(function(){
 					if(typeof($(this).val()) != "undefined")
 					{
 						chk.push($(this).val());
@@ -132,9 +132,9 @@
 				});
 				return chk;
 			},
-			banji:function(){
+			category:function(){
 				var chk = [];
-				$('input[name="banji"]:checked').each(function(){
+				$('input[name="category"]:checked').each(function(){
 					if(typeof($(this).val()) != "undefined")
 					{
 						chk.push($(this).val());
