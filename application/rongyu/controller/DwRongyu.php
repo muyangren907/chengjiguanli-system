@@ -109,9 +109,82 @@ class DwRongyu extends Base
      * @param  \think\Request  $request
      * @return \think\Response
      */
-    public function save(Request $request)
+    public function save()
     {
-        //
+        // 获取表单数据
+        $list = request()->only(['url','title','hjschool','category','fzshijian','fzschool','jiangxiang'],'post');
+
+        // 实例化验证模型
+        $validate = new \app\rongyu\validate\DwRongyu;
+        // 验证表单数据
+        $result = $validate->check($list);
+        $msg = $validate->getError();
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
+    }
+
+    /**
+     * 批量上传单位荣誉图片
+     *
+     * @param  \think\Request  $request
+     * @return \think\Response
+     */
+    public function createall()
+    {
+        // 设置页面标题
+        $list['title'] = '添加单位荣誉';
+
+        // 模板赋值
+        $this->assign('list',$list);
+
+        // 渲染
+        return $this->fetch();
+    }
+
+     /**
+     * 上传荣誉图片并保存
+     *
+     * @param  \think\Request  $request
+     * @return \think\Response
+     */
+    public function upload()
+    {
+        // 获取文件信息
+        $list['text'] = '单位荣誉';
+        $list['oldname']=input('post.name');
+        $list['fieldsize'] = input('post.size');
+
+
+        // 获取表单上传文件 例如上传了001.jpg
+        $file = request()->file('file');
+        // 移动到框架应用根目录/uploads/ 目录下
+        $info = $file->move( '..\public\uploads\student');
+        
+
+        if($info){
+            // 成功上传后 获取上传信息
+            $list['category'] = $info->getExtension();
+            $list['url'] = $info->getSaveName();
+            $list['newname'] = $info->getFilename(); 
+            $list['url'] = '..\public\uploads\student\\'.$list['url'];
+            $list['bianjitime'] = filemtime($list['url']);
+
+            //将文件信息保存
+            $file = new \app\system\model\Fields;
+            $data = $file::create($list);
+
+            $data ? $data = array('msg'=>'上传成功','val'=>true,'url'=>$list['url']) : $data = array('msg'=>'保存文件信息失败','val'=>false,'url'=>null);
+        }else{
+            // 上传失败获取错误信息
+            $data = array('msg'=>$file->getError(),'val'=>false,'url'=>null);
+        }
+
+        // 返回信息
+        return json($data);
     }
 
     /**

@@ -13,7 +13,7 @@
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:180px;">
 				{php} $ctp = getCategory();{/php}
-				<select class="select" id="pidt" name="pid" size="1">
+				<select class="select" id="pidt" name="pid" size="1" required>
 					<option value="">--请选择父级权限--</option>
 					{volist name="$ctp" id="vo"}
 						<option value="{$vo.id}">{$vo.title}</option>

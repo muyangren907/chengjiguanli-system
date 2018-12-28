@@ -28,6 +28,8 @@ class Category extends Seeder
             ['id'=>109,'title'=>'考试','pid'=>0,'paixu'=>9],
             ['id'=>110,'title'=>'学科','pid'=>0,'paixu'=>10],
             ['id'=>111,'title'=>'文件','pid'=>0,'paixu'=>11],
+            ['id'=>112,'title'=>'单位荣誉','pid'=>0,'paixu'=>12],
+            ['id'=>113,'title'=>'单位荣誉奖项','pid'=>0,'paixu'=>13],
 
             // 二级类别
                 //  大学科
@@ -106,6 +108,16 @@ class Category extends Seeder
                 ['title'=>'期末考试','pid'=>109,'paixu'=>1],
                 ['title'=>'期中考试','pid'=>109,'paixu'=>2],
                 ['title'=>'单项测试','pid'=>109,'paixu'=>3],
+                //  单位荣誉分类
+                ['title'=>'科研','pid'=>112,'paixu'=>1],
+                ['title'=>'特色','pid'=>112,'paixu'=>2],
+                //  单位荣誉奖项
+                ['title'=>'先进单位','pid'=>113,'paixu'=>1],
+                ['title'=>'一等奖','pid'=>113,'paixu'=>2],
+                ['title'=>'二等奖','pid'=>113,'paixu'=>3],
+                ['title'=>'三等奖','pid'=>113,'paixu'=>3],
+                ['title'=>'优秀奖','pid'=>113,'paixu'=>3],
+
                 
         ];
         // 保存数据

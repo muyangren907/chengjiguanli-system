@@ -57,12 +57,10 @@ class Rule extends Seeder
 
 
                 // 荣誉管理
-                ['id'=>801,'title'=>'单位荣誉','name'=>'rongyu/DwRongyu/index','paixu'=>1,'ismenu' =>true,'pid' =>8,'url'=>'/jsry',],
-                ['id'=>802,'title'=>'教师荣誉册','name'=>'rongyu/JsRongyu/index','paixu'=>2,'ismenu' =>true,'pid' =>8,'url'=>'/dwry',],
-                ['id'=>802,'title'=>'教师荣誉信息','name'=>'rongyu/JsRongyuInfo/index','paixu'=>3,'ismenu' =>true,'pid' =>8,'url'=>'/dwry',],
-                ['id'=>803,'title'=>'学生荣誉','name'=>'rongyu/JsRongyu/index','paixu'=>7,'ismenu' =>true,'pid' =>8,'url'=>'/xsry',],
-                
-                
+                ['id'=>801,'title'=>'单位荣誉','name'=>'rongyu/DwRongyu/index','paixu'=>1,'ismenu' =>true,'pid' =>8,'url'=>'/dwry',],
+                ['id'=>802,'title'=>'教师荣誉册','name'=>'rongyu/JsRongyu/index','paixu'=>2,'ismenu' =>true,'pid' =>8,'url'=>'/jsry',],
+                ['id'=>803,'title'=>'教师荣誉信息','name'=>'rongyu/JsRongyuInfo/index','paixu'=>3,'ismenu' =>true,'pid' =>8,'url'=>'/jsryinfo',],
+                ['id'=>804,'title'=>'学生荣誉','name'=>'rongyu/StuRongyu/index','paixu'=>7,'ismenu' =>true,'pid' =>8,'url'=>'/xsry',],
                 
                 
                     
@@ -94,12 +92,6 @@ class Rule extends Seeder
                     ['title'=>'下载学生成绩','name'=>'Chengji/Tongji/dwChengji','paixu'=>9,'pid'=>302],
                     ['title'=>'下载班级成绩统计表','name'=>'Chengji/Tongji/dwBanji','paixu'=>10,'pid'=>302],
                     ['title'=>'下载年级成绩统计表','name'=>'Chengji/Tongji/dwNianji','paixu'=>11,'pid'=>302],
-                    
-
-
-
-
-
 
 
 
@@ -111,9 +103,7 @@ class Rule extends Seeder
                     ['title'=>'查看','name'=>'renshi/Student/read','paixu'=>4,'pid'=>401,],
                     ['title'=>'状态','name'=>'renshi/Student/setStatus','paixu'=>5,'pid'=>401],
                     ['title'=>'下载模板','name'=>'renshi/Student/download','paixu'=>6,'pid'=>401],
-                    ['title'=>'批传','name'=>'renshi/Student/createAll','paixu'=>7,'pid'=>401],
-                    ['title'=>'批传上传','name'=>'renshi/Student/upload','paixu'=>8,'pid'=>401],
-                    ['title'=>'批传保存','name'=>'renshi/Student/saveAll','paixu'=>9,'pid'=>401],
+                    ['title'=>'批量上传','name'=>'renshi/Student/createAll','paixu'=>7,'pid'=>401],
                     // 教师管理权限
                     ['title'=>'添加','name'=>'renshi/Index/create','paixu' =>1,'pid'=>402],
                     ['title'=>'删除','name'=>'renshi/Index/delete','paixu'=>2,'pid'=>402],
@@ -177,6 +167,16 @@ class Rule extends Seeder
                     ['title'=>'状态','name'=>'system/School/setStatus','paixu'=>5,'pid'=>702],
                     // 系统设置权限
                     ['title'=>'编辑','name'=>'system/SystemBase/edit','paixu'=>1,'pid'=>703,],
+
+                    // 荣誉管理
+                    // 单位荣誉管理
+                    ['title'=>'添加','name'=>'rongyu/DwRongyu/create','paixu' =>1,'pid'=>801],
+                    ['title'=>'删除','name'=>'rongyu/DwRongyu/delete','paixu'=>2,'pid'=>801],
+                    ['title'=>'编辑','name'=>'rongyu/DwRongyu/edit','paixu'=>3,'pid'=>801,],
+                    ['title'=>'查看','name'=>'rongyu/DwRongyu/read','paixu'=>4,'pid'=>801,],
+                    ['title'=>'状态','name'=>'rongyu/DwRongyu/setStatus','paixu'=>5,'pid'=>801],
+                    ['title'=>'批量上传','name'=>'rongyu/DwRongyu/createAll','paixu'=>6,'pid'=>801],
+
             
         ];
         // 保存数据

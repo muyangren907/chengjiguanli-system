@@ -156,3 +156,5 @@ function schlist($low='班级',$high='其它级')
 
 	return $schlist;
 }
+
+

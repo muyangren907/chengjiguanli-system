@@ -8,7 +8,7 @@
 				{php}
 					$school = schlist('班级','区级');
 				{/php}
-				<select class="select" id="zuzhi" name="zuzhi" size="1">
+				<select class="select" id="zuzhi" name="zuzhi" size="1" required>
 					<option value="">--请选择组织单位--</option>
 					{volist name="school" id="vo"}
 						<option value="{$vo.id}">{$vo.title}</option>
@@ -31,7 +31,7 @@
 					$xq = new app\teach\model\Xueqi;
 					$xueqi = $xq->where('status',1)->order(['id'=>'desc'])->limit(5)->field('id,title')->select();
 				{/php}
-				<select class="select" id="xueqi" name="xueqi" size="1">
+				<select class="select" id="xueqi" name="xueqi" size="1" required>
 					<option value="">--请选择学期--</option>
 					{volist name="xueqi" id="vo"}
 						<option value="{$vo.id}">{$vo.title}</option>
@@ -45,7 +45,7 @@
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:180px;">
 				{php}$list = getCategory(109);{/php}
-				<select class="select" id="category" name="category" size="1">
+				<select class="select" id="category" name="category" size="1" required>
 					<option value="">--请选择考试分类--</option>
 					{volist name="list" id="vo"}
 						<option value="{$vo.id}">{$vo.title}</option>
@@ -67,7 +67,7 @@
 			<div class="formControls col-xs-8 col-sm-9">
 					<dt>{foreach $njlist=nianjilist() as $key=>$vo } 
 						<label class="ml-10">
-							<input type="checkbox" value="{$key}" name="nianji[]" id="nianji{$key}">
+							<input type="checkbox" value="{$key}" name="nianji[]" id="nianji{$key}" required>
 							{$vo}
 						</label>{/foreach}
 					</dt>
@@ -83,7 +83,7 @@
 					<dt>{foreach $sjlist as $key=>$vo } 
 						<dd>
 						<label class="ml-10">
-							<input class=" mt-10" type="checkbox" value="{$vo.id}" name="subject[]" id="subject{$vo.id}" onclick="xueke(this)">
+							<input class=" mt-10" type="checkbox" value="{$vo.id}" name="subject[]" id="subject{$vo.id}" onclick="xueke(this)" required>
 							{$vo.title}
 
 						</label><input type="text" name="manfen[]" value="" id="manfen[]" class="input-text ml-15 mt-5" placeholder="满分默认100" style="max-width: 250px" onchange="manfenbut(this)">
@@ -108,18 +108,6 @@
 				required:true,
 				rangelength:[2,25]
 			},
-			zuzhi:{
-				required:true,
-				digits:true
-			},
-			xueqi:{
-				required:true,
-				digits:true
-			},
-			category:{
-				required:true,
-				digits:true
-			},
 			bfdate:{
 				required:true,
 				dateISO:true
@@ -127,12 +115,6 @@
 			enddate:{
 				required:true,
 				dateISO:true
-			},
-			nianji:{
-				required:true,
-			},
-			subject:{
-				required:true,
 			},
 		};
 

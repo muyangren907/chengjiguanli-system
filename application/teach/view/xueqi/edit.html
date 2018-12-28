@@ -18,7 +18,7 @@
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:180px;">
 				{php}$category = getCategory(108);{/php}
-				<select class="select" id="category" name="category" size="1">
+				<select class="select" id="category" name="category" size="1" required>
 					<option value="">--请选择学期分类--</option>
 					{volist name="category" id="vo"}
 						<option value="{$vo.id}" {eq name="$list.category" value="$vo.title" }selected{/eq}>{$vo.title}</option>
@@ -53,10 +53,6 @@
 			xuenian:{
 				required:true,
 				rangelength:[1,15]
-			},
-			category:{
-				required:true,
-				digits:true
 			},
 			bfdate:{
 				required:true,

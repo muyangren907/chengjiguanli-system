@@ -52,7 +52,7 @@ class YanZheng  extends Controller
         $uneed_c = array();     # 荣誉器名首字母要大写
         // 排除方法
         $uneed_a = array(
-            'welcome','update','save',
+            'welcome','update','save','upload',
             'index','mybanji','banjilist',
             'editpassword','updatepassword',
             // 查询班级成绩、查询年级成绩

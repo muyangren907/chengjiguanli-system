@@ -18,7 +18,7 @@
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>性别：</label>
 			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
 				<div class="radio-box">
-					<input name="sex" type="radio" id="sex-1" value="1" required="true">
+					<input name="sex" type="radio" id="sex-1" value="1" required>
 					<label for="sex-1">男</label>
 				</div>
 				<div class="radio-box">
@@ -42,7 +42,7 @@
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:300px;">
 				{php} $school = schlist('校级','区级');{/php}
-				<select class="select" id="danwei" name="danwei" size="1">
+				<select class="select" id="danwei" name="danwei" size="1" required>
 					<option value="">--请选择现工作单位--</option>
 					{volist name="school" id="vo"}
 						<option value="{$vo.id}">{$vo.title}</option>
@@ -56,7 +56,7 @@
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:180px;">
 				{php}$list = getCategory(107);{/php}
-				<select class="select" id="zhiwu" name="zhiwu" size="1">
+				<select class="select" id="zhiwu" name="zhiwu" size="1" required>
 					<option value="">--请选择职务--</option>
 					{volist name="list" id="vo"}
 						<option value="{$vo.id}">{$vo.title}</option>
@@ -70,7 +70,7 @@
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:180px;">
 				{php}$list = getCategory(106);{/php}
-				<select class="select" id="zhicheng" name="zhicheng" size="1">
+				<select class="select" id="zhicheng" name="zhicheng" size="1" required>
 					<option value="">--请选择职称--</option>
 					{volist name="list" id="vo"}
 						<option value="{$vo.id}">{$vo.title}</option>
@@ -84,7 +84,7 @@
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:180px;">
 				{php}$list = getCategory(105);{/php}
-				<select class="select" id="xueli" name="xueli" size="1">
+				<select class="select" id="xueli" name="xueli" size="1" required>
 					<option value="">--请选择学历--</option>
 					{volist name="list" id="vo"}
 						<option value="{$vo.id}">{$vo.title}</option>
@@ -148,13 +148,6 @@
 				zh:true,
 				rangelength:[2,8]
 			},
-			sex:{
-				required:true,
-			},
-			danwei:{
-				required:true,
-				digits:true
-			},
 			quanpin:{
 				required:true,
 				rangelength:[1,30],
@@ -167,15 +160,6 @@
 			},
 			shengri:{
 				dateISO:true
-			},
-			zhiwu:{
-				digits:true
-			},
-			zhicheng:{
-				digits:true
-			},
-			xueli:{
-				digits:true
 			},
 			biye:{
 				rangelength:[1,50]

@@ -8,7 +8,7 @@
 				{php}
 					$school = schlist('校级','校级');
 				{/php}
-				<select class="select" id="school" name="school" size="1">
+				<select class="select" id="school" name="school" size="1" required>
 					<option value="">--请选择学校--</option>
 					{volist name="school" id="vo"}
 						<option value="{$vo.id}">{$vo.title}</option>
@@ -24,7 +24,7 @@
 				{php}
 					$njlist = nianjiList();
 				{/php}
-				<select class="select" id="ruxuenian" name="ruxuenian" size="1">
+				<select class="select" id="ruxuenian" name="ruxuenian" size="1" required>
 					<option value="">--请选择年级--</option>
 					{foreach $njlist as $key=>$vo}
 						<option value="{$key}">{$vo}</option>
@@ -50,14 +50,6 @@
 <script type="text/javascript">
 	// 设置表单验证规则
 	var myrules = {
-			school:{
-				required:true,
-				digits:true
-			},
-			ruxuenian:{
-				required:true,
-				digits:true
-			},
 			bjsum:{
 				required:true,
 				digits:true

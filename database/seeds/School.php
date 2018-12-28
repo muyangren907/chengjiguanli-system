@@ -17,6 +17,7 @@ class School extends Seeder
         // 设置数据
         $rows= [
             [
+                'id'=>1,
                 'title'=>'大连长兴岛经济区教研科研培训中心',
                 'jiancheng'=>'教科培中心',
                 'biaoshi'=>'',

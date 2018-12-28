@@ -18,7 +18,7 @@
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:180px;">
 				{php}$category = getCategory(110);{/php}
-				<select class="select" id="category" name="category" size="1">
+				<select class="select" id="category" name="category" size="1" required>
 					<option value="">--请选择学科分类--</option>
 					{volist name="category" id="vo"}
 						<option value="{$vo.id}" {eq name="$list.category" value="$vo.id" }selected{/eq}>{$vo.title}</option>
@@ -31,7 +31,7 @@
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>是否参加考试：</label>
 			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
 				<div class="radio-box">
-					<input name="kaoshi" type="radio" id="kaoshi-1" value="1" {eq name="$list.kaoshi" value="是" }checked="checked"{/eq}>
+					<input name="kaoshi" type="radio" id="kaoshi-1" value="1" {eq name="$list.kaoshi" value="是" }checked="checked"{/eq} required>
 					<label for="kaoshi-1">参加</label>
 				</div>
 				<div class="radio-box">

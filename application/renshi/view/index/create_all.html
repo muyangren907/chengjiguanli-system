@@ -32,16 +32,10 @@
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>工作单位：</label>
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:300px;">
-				{php}
-					$school = new app\system\model\School;
-					$danwei = $school
-						->where('jibie','>',1)
-						->field('id,title')
-						->all();
-				{/php}
-				<select class="select" id="danwei" name="danwei" size="1">
+				{php} $school = schlist('校级','区级');{/php}
+				<select class="select" id="danwei" name="danwei" size="1" required>
 					<option value="">--请选择现工作单位--</option>
-					{volist name="danwei" id="vo" key="k"}
+					{volist name="school" id="vo" key="k"}
 						<option value="{$vo.id}">{$vo.title}</option>
 					{/volist}
 				</select>
