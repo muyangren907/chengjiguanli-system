@@ -34,6 +34,51 @@ class DwRongyu extends Base
                 })
     		->select();
 
+
     	return $data;
+    }
+
+
+    // 获奖单位获取器
+    public function hjSchool()
+    {
+         return $this->belongsTo('\app\system\model\School','hjschool','id');
+    }
+
+    // 颁奖单位获取器
+    public function fzSchool()
+    {
+         return $this->belongsTo('\app\system\model\School','fzschool','id');
+    }
+
+    // 荣誉类型
+    public function lxCategory()
+    {
+         return $this->belongsTo('\app\system\model\Category','category','id');
+    }
+
+    // 奖项
+    public function jxCategory()
+    {
+         return $this->belongsTo('\app\system\model\Category','category','id');
+    }
+
+    // 荣誉级别
+    public function getJibieAttr()
+    {
+         return $this->fzSchool->jibie;
+    }
+
+
+    // 发证时间修改器
+    public function setFzshijianAttr($value)
+    {
+        return strtotime($value);
+    }
+
+    // 发证时间获取器
+    public function getFzshijianAttr($value)
+    {
+        return date('Y-m-d',$value);
     }
 }

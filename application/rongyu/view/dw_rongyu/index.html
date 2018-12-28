@@ -71,16 +71,14 @@
 					</dt>
 				</div>
 				<div>
-					{php}
-						$school = schlist('区级','部级');
-					{/php}
+					{php}$category = getCategory(112);{/php}
 					<label class="f-l">荣誉类别：</label>
 					<dt>
 						<dd class=" mt-10">
-							{foreach $school as $key=>$vo } 
+							{foreach $category as $key=>$vo } 
 							<label class="ml-10">
 								<input type="checkbox" value="{$vo.id}" name="category" onclick="dtreload()">
-								{$vo.jiancheng}
+								{$vo.title}
 							</label>
 							{/foreach}
 						</dd>
@@ -156,10 +154,10 @@
 	var mycolumns = [
         { "data": "id" },
         { "data": "title" },
-        { "data": "hjschool" },
-        { "data": "category"},
-        { "data": "jiangxiang"},
-        { "data": "fzschool" },
+        { "data": "hjSchool.jiancheng","name":"hjschool" },
+        { "data": "lxCategory.title","name":"category"},
+        { "data": "jxCategory.title","name":"jiangxiang"},
+        { "data": "fzSchool.jiancheng" ,"name":"fzschool"},
         { "data": "jibie","name":"fzschool"},
         { "data": "fzshijian" },
         { "data": "status" },
@@ -184,8 +182,8 @@
 					// 启用按钮
 					startbut = '<a style="text-decoration:none" onClick="start(this,'+ row.id +')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>';
 					// 编辑按钮
-					editbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/student/'+row.id+'/edit") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
-					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/student/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
+					editbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/dwry/'+row.id+'/edit") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
+					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/dwry/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
 					if(row.status == '已停用')
 					{
 						buts = startbut + editbut + delbut;

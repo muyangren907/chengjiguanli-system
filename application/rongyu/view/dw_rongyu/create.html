@@ -32,10 +32,10 @@
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>荣誉类型：</label>
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:180px;">
-				{php}$list = getCategory(112);{/php}
+				{php}$category = getCategory(112);{/php}
 				<select class="select" id="category" name="category" size="1" required>
 					<option value="">--请选择荣誉类型--</option>
-					{volist name="list" id="vo"}
+					{volist name="category" id="vo"}
 						<option value="{$vo.id}">{$vo.title}</option>
 					{/volist}
 				</select>
@@ -80,10 +80,10 @@
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>奖项：</label>
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:180px;">
-				{php}$list = getCategory(113);{/php}
+				{php}$jiangxiang = getCategory(113);{/php}
 				<select class="select" id="jiangxiang" name="jiangxiang" size="1" required>
 					<option value="">--请选择奖项--</option>
-					{volist name="list" id="vo"}
+					{volist name="jiangxiang" id="vo"}
 						<option value="{$vo.id}">{$vo.title}</option>
 					{/volist}
 				</select>

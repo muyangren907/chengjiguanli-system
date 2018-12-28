@@ -74,6 +74,8 @@ class DwRongyu extends Base
 
         // 获取当前页数据
         $data = $data->slice($limit_start,$limit_length);
+        $data = $data->append(['hjSchool.jiancheng','fzSchool.jiancheng','lxCategory.title','jxCategory.title','jibie']);
+
 
         // 重组返回内容
         $data = [
@@ -119,6 +121,13 @@ class DwRongyu extends Base
         // 验证表单数据
         $result = $validate->check($list);
         $msg = $validate->getError();
+        // 如果验证不通过则停止保存
+        if(!$result){
+            return json(['msg'=>$msg,'val'=>0]);;
+        }
+
+        // 保存数据 
+        $data = dwry::create($list);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -162,7 +171,7 @@ class DwRongyu extends Base
         // 获取表单上传文件 例如上传了001.jpg
         $file = request()->file('file');
         // 移动到框架应用根目录/uploads/ 目录下
-        $info = $file->move( '..\public\uploads\student');
+        $info = $file->move( '..\public\uploads\danweirongyu');
         
 
         if($info){
@@ -170,7 +179,7 @@ class DwRongyu extends Base
             $list['category'] = $info->getExtension();
             $list['url'] = $info->getSaveName();
             $list['newname'] = $info->getFilename(); 
-            $list['url'] = '..\public\uploads\student\\'.$list['url'];
+            $list['url'] = '..\public\uploads\danweirongyu\\'.$list['url'];
             $list['bianjitime'] = filemtime($list['url']);
 
             //将文件信息保存
@@ -206,7 +215,15 @@ class DwRongyu extends Base
      */
     public function edit($id)
     {
-        //
+        // 获取学生信息
+        $list = dwry::where('id',$id)
+                ->field('id,title,category,hjschool,fzshijian,fzschool,jiangxiang,url')
+                ->find();
+
+
+        $this->assign('list',$list);
+
+        return $this->fetch();
     }
 
     /**
@@ -216,9 +233,32 @@ class DwRongyu extends Base
      * @param  int  $id
      * @return \think\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
-        //
+        // 获取表单数据
+        $list = request()->only(['title','category','hjschool','fzshijian','fzschool','jiangxiang'],'put');
+
+        // 实例化验证类
+        $validate = new \app\rongyu\validate\DwRongyu;
+        // 验证表单数据
+        $result = $validate->check($list);
+        $msg = $validate->getError();
+
+        // 如果验证不通过则停止保存
+        if(!$result){
+            return json(['msg'=>$msg,'val'=>0]);;
+        }
+
+
+        // 更新数据
+        $dwry = new dwry();
+        $data = $dwry->save($list,['id'=>$id]);
+
+        // 根据更新结果设置返回提示信息
+        $data>=0 ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
     }
 
     /**
@@ -229,6 +269,38 @@ class DwRongyu extends Base
      */
     public function delete($id)
     {
-        //
+
+        if($id == 'm')
+        {
+            $id = request()->delete('ids/a');// 获取delete请求方式传送过来的数据并转换成数据
+        }
+
+        $data = dwry::destroy($id);
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
+
+    // 设置荣誉状态
+    public function setStatus()
+    {
+
+        //  获取id变量
+        $id = request()->post('id');
+        $value = request()->post('value');
+
+        // 获取学生信息
+        $data = dwry::where('id',$id)->update(['status'=>$value]);
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
     }
 }
