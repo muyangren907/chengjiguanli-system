@@ -4,7 +4,7 @@ namespace app\rongyu\validate;
 
 use think\Validate;
 
-class DwRongyu extends Validate
+class JsRongyu extends Validate
 {
     /**
      * 定义验证规则
@@ -13,17 +13,11 @@ class DwRongyu extends Validate
      * @var array
      */	
 	protected $rule = [
-        'url|请先上传荣誉图片'     =>  'require',
-        'id|请先上传荣誉图片'     =>  'require',
-        'title|荣誉标题'     =>  'length:1,40',
+        'title|荣誉册标题'     =>  'require|length:1,30',
         'category|荣誉类型'     =>  'require|number',
-        'hjschool|获奖单位'     =>  'require|number',
         'fzshijian|发证时间'     =>  'require|date',
-        'fzschool|发证单位'     =>  'require|number',
-        'jiangxiang|奖项'     =>  'require|number',
+        'fzschool|颁奖单位'     =>  'require|number',
     ];
-
-    id,title,category,hjschool,fzshijian,fzschool,jiangxiang,url
     
     /**
      * 定义错误信息

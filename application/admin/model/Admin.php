@@ -60,6 +60,7 @@ class Admin extends Base
         // 获取角色id
         $list = $admin->authgroup()->column('group_id');
 
+        $str = '';
         // 将角色id转换成数组
         foreach ($list as $key => $value) {
             $key == 0 ? $str =$value : $str = $str.','.$value;
@@ -75,6 +76,7 @@ class Admin extends Base
         // 获取角色id
         $group = $this->get($this->getAttr('id'))->append(['groupids']);
 
+        $str = '';
         // 查询角色名称
         $grouplist= db('AuthGroup')->where('id','in',$group->groupids)->column('title');
         // 重组角色名

@@ -3,7 +3,7 @@
 	<nav class="breadcrumb">
 		<i class="Hui-iconfont">&#xe67f;</i> 首页
 		<span class="c-gray en">&gt;</span> 荣誉管理
-		<span class="c-gray en">&gt;</span> 单位荣誉
+		<span class="c-gray en">&gt;</span> 教师荣誉册
 		<a class="btn btn-success radius r"
 			style="line-height:1.6em;margin-top:3px"
 			href="javascript:location.replace(location.href);"
@@ -16,19 +16,14 @@
 	<div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l">
 			<!-- 删除按钮 -->
-			<a href="javascript:;" onclick="dels('/dwry/m')" class="btn btn-danger radius">
+			<a href="javascript:;" onclick="dels('/jsry/m')" class="btn btn-danger radius">
 				<i class="Hui-iconfont">&#xe6e2;</i>
 			批量删除
 			</a>
-			<!-- 批量上传荣誉图片按钮 -->
-			<a href="javascript:;" onclick=addfull('批量上传',"/dwry/createall") class="btn btn-primary radius">
-				<i class="Hui-iconfont">&#xe642;</i>
-				批量上传
-			</a>
 			<!-- 添加按钮 -->
-			<a href="javascript:;" onclick=addfull('添加单位荣誉',"/dwry/create") class="btn btn-primary radius">
+			<a href="javascript:;" onclick=addfull('添加单位荣誉',"/jsry/create") class="btn btn-primary radius">
 				<i class="Hui-iconfont">&#xe600;</i>
-				添加荣誉
+				添加荣誉册
 			</a>
 		</span>
 		<span class="r">
@@ -36,24 +31,8 @@
 		</span>
 	</div>
 	<div class="panel panel-default mt-10 mb-10">
-		<div class="panel-header" id="shaixuan">筛选荣誉</div>
-		<div class="panel-body" style="min-height: 100px">
-				<div>
-					{php}
-						$school = schlist('校级','校级');
-					{/php}
-					<label class="f-l">获奖单位：</label>
-					<dt>
-						<dd class=" mt-10">
-							{foreach $school as $key=>$vo } 
-							<label class="ml-10">
-								<input type="checkbox" value="{$vo.id}" name="hjschool" onclick="dtreload()">
-								{$vo.jiancheng}
-							</label>
-							{/foreach}
-						</dd>
-					</dt>
-				</div>
+		<div class="panel-header" id="shaixuan">筛选荣誉册</div>
+		<div class="panel-body" style="min-height: 60px">
 				<div>
 					{php}
 						$school = schlist('区级','部级');
@@ -92,13 +71,11 @@
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="" value=""></th>
-				<th>荣誉名称</th>
-				<th>获奖单位</th>
+				<th>荣誉册名称</th>
+				<th>颁奖单位</th>
 				<th>荣誉类别</th>
-				<th>奖项</th>
-				<th>发证单位</th>
-				<th>级别</th>
-				<th>发证时间</th>
+				<th>荣誉数量</th>
+				<th>颁奖时间</th>
 				<th>状态</th>
 				<th>操作</th>
 			</tr>
@@ -117,16 +94,6 @@
 		url: "{:url('ajaxdata')}",
 		type: "post",
 		data: {
-			hjschool:function(){
-				var chk = [];
-				$('input[name="hjschool"]:checked').each(function(){
-					if(typeof($(this).val()) != "undefined")
-					{
-						chk.push($(this).val());
-					}
-				});
-				return chk;
-			},
 			fzschool:function(){
 				var chk = [];
 				$('input[name="fzschool"]:checked').each(function(){
@@ -154,11 +121,9 @@
 	var mycolumns = [
         { "data": "id" },
         { "data": "title","defaultContent": "" },
-        { "data": "hj_school.jiancheng","name":"hjschool" ,"defaultContent": ""},
-        { "data": "lx_category.title","name":"category","defaultContent": ""},
-        { "data": "jx_category.title","name":"jiangxiang","defaultContent": ""},
         { "data": "fz_school.jiancheng" ,"name":"fzschool","defaultContent": ""},
-        { "data": "jibie","name":"fzschool","defaultContent": ""},
+        { "data": "lx_category.title","name":"category","defaultContent": ""},
+        { "data": "cnt","name":"id","defaultContent": ""},
         { "data": "fzshijian" ,"defaultContent": ""},
         { "data": "status" },
         { "data": "id" },
@@ -181,17 +146,19 @@
 					stopbut = '<a style="text-decoration:none" onClick="stop(this,'+ row.id +')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>';
 					// 启用按钮
 					startbut = '<a style="text-decoration:none" onClick="start(this,'+ row.id +')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>';
+					// 上图图片按钮
+					picbut = '<a style="text-decoration:none" class="ml-5" onClick="addfull("编辑","/jsry/'+row.id+'/createall")" href="javascript:;" title="上传荣誉图片"><i class="Hui-iconfont">&#xe613;</i></a>';
 					// 编辑按钮
-					editbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/dwry/'+row.id+'/edit") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
+					editbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/jsry/'+row.id+'/edit") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
 					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/dwry/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
 					if(row.status == '已停用')
 					{
-						buts = startbut + editbut + delbut;
+						buts = startbut;
 					}else{
-						buts = stopbut + editbut + delbut;
+						buts = stopbut;
 					} 
 
-					return buts;
+					return buts + picbut + editbut + delbut;
                 }
         },
         {

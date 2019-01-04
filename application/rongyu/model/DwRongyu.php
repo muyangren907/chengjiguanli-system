@@ -32,6 +32,23 @@ class DwRongyu extends Base
     		->when(!empty($search),function($query) use($search){
                 	$query->where('title','like',$search);
                 })
+            ->with(
+                [
+                    'hjSchool'=>function($query){
+                        $query->field('id,jiancheng');
+                    },
+                    'fzSchool'=>function($query){
+                        $query->field('id,jiancheng');
+                    },
+                    'lxCategory'=>function($query){
+                        $query->field('id,title');
+                    },
+                    'jxCategory'=>function($query){
+                        $query->field('id,title');
+                    }
+                ]
+            )
+            ->append(['jibie'])
     		->select();
 
 
@@ -39,13 +56,13 @@ class DwRongyu extends Base
     }
 
 
-    // 获奖单位获取器
+    // 获奖单位关联
     public function hjSchool()
     {
          return $this->belongsTo('\app\system\model\School','hjschool','id');
     }
 
-    // 颁奖单位获取器
+    // 颁奖单位关联
     public function fzSchool()
     {
          return $this->belongsTo('\app\system\model\School','fzschool','id');
@@ -66,7 +83,13 @@ class DwRongyu extends Base
     // 荣誉级别
     public function getJibieAttr()
     {
-         return $this->fzSchool->jibie;
+        $jibie = '';
+
+        if($this->fzschool){
+            $jibie = $this->fzSchool->jibie;
+        }
+        
+         return $jibie;   
     }
 
 
@@ -81,4 +104,5 @@ class DwRongyu extends Base
     {
         return date('Y-m-d',$value);
     }
+
 }

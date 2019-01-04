@@ -74,7 +74,6 @@ class DwRongyu extends Base
 
         // 获取当前页数据
         $data = $data->slice($limit_start,$limit_length);
-        $data = $data->append(['hjSchool.jiancheng','fzSchool.jiancheng','lxCategory.title','jxCategory.title','jibie']);
 
 
         // 重组返回内容
@@ -114,7 +113,7 @@ class DwRongyu extends Base
     public function save()
     {
         // 获取表单数据
-        $list = request()->only(['url','title','hjschool','category','fzshijian','fzschool','jiangxiang'],'post');
+        $list = request()->only(['id','url','title','hjschool','category','fzshijian','fzschool','jiangxiang'],'post');
 
         // 实例化验证模型
         $validate = new \app\rongyu\validate\DwRongyu;
@@ -127,7 +126,7 @@ class DwRongyu extends Base
         }
 
         // 保存数据 
-        $data = dwry::create($list);
+        $data = dwry::update($list);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -152,6 +151,7 @@ class DwRongyu extends Base
 
         // 渲染
         return $this->fetch();
+       
     }
 
      /**
@@ -160,10 +160,10 @@ class DwRongyu extends Base
      * @param  \think\Request  $request
      * @return \think\Response
      */
-    public function upload()
+     public function upload()
     {
         // 获取文件信息
-        $list['text'] = '单位荣誉';
+        $list['text'] = '单位荣誉批量上传';
         $list['oldname']=input('post.name');
         $list['fieldsize'] = input('post.size');
 
@@ -171,7 +171,20 @@ class DwRongyu extends Base
         // 获取表单上传文件 例如上传了001.jpg
         $file = request()->file('file');
         // 移动到框架应用根目录/uploads/ 目录下
-        $info = $file->move( '..\public\uploads\danweirongyu');
+        $info = $file->validate(['size'=>2*1024*1024,'ext'=>'jpg,png,gif,jpeg'])->move('uploads\danweirongyu');
+
+        // use Qsnh\think\Upload\Upload;
+
+        $upload = new Qsnh\think\Upload\Upload(config('upload'));
+
+        $result = $upload->upload();
+
+        if (!$result) {
+            $this->error($upload->getErrors());
+        }
+
+        halt($result);
+        return 'aa';
         
 
         if($info){
@@ -179,14 +192,22 @@ class DwRongyu extends Base
             $list['category'] = $info->getExtension();
             $list['url'] = $info->getSaveName();
             $list['newname'] = $info->getFilename(); 
-            $list['url'] = '..\public\uploads\danweirongyu\\'.$list['url'];
-            $list['bianjitime'] = filemtime($list['url']);
+            // $myfileurl = '\uploads\\'.$list['url'];
+            $list['bianjitime'] = filemtime('uploads\danweirongyu\\'.$list['url']);
+            $list['url'] = str_replace('\\','/',$list['url']);
 
             //将文件信息保存
             $file = new \app\system\model\Fields;
             $data = $file::create($list);
 
-            $data ? $data = array('msg'=>'上传成功','val'=>true,'url'=>$list['url']) : $data = array('msg'=>'保存文件信息失败','val'=>false,'url'=>null);
+            // 如果图片上传成功，则添加荣誉记录
+            if($data)
+            {
+                $rydata = dwry::create(['url'=>$list['url']]);
+                $ryid = $rydata->id;
+            }
+
+            $ryid ? $data = array('msg'=>'上传成功','val'=>true,'url'=>$list['url'],'ryid'=>$ryid) : $data = array('msg'=>'保存文件信息失败','val'=>false,'url'=>null);
         }else{
             // 上传失败获取错误信息
             $data = array('msg'=>$file->getError(),'val'=>false,'url'=>null);
@@ -237,6 +258,7 @@ class DwRongyu extends Base
     {
         // 获取表单数据
         $list = request()->only(['title','category','hjschool','fzshijian','fzschool','jiangxiang'],'put');
+        
 
         // 实例化验证类
         $validate = new \app\rongyu\validate\DwRongyu;
@@ -303,4 +325,5 @@ class DwRongyu extends Base
         // 返回信息
         return json($data);
     }
+
 }
