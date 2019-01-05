@@ -162,52 +162,24 @@ class DwRongyu extends Base
      */
      public function upload()
     {
-        // 获取文件信息
-        $list['text'] = '单位荣誉批量上传';
-        $list['oldname']=input('post.name');
-        $list['fieldsize'] = input('post.size');
-
 
         // 获取表单上传文件 例如上传了001.jpg
         $file = request()->file('file');
         // 移动到框架应用根目录/uploads/ 目录下
         $info = $file->validate(['size'=>2*1024*1024,'ext'=>'jpg,png,gif,jpeg'])->move('uploads\danweirongyu');
 
-        // use Qsnh\think\Upload\Upload;
-
-        $upload = new Qsnh\think\Upload\Upload(config('upload'));
-
-        $result = $upload->upload();
-
-        if (!$result) {
-            $this->error($upload->getErrors());
-        }
-
-        halt($result);
-        return 'aa';
-        
 
         if($info){
             // 成功上传后 获取上传信息
-            $list['category'] = $info->getExtension();
             $list['url'] = $info->getSaveName();
-            $list['newname'] = $info->getFilename(); 
-            // $myfileurl = '\uploads\\'.$list['url'];
-            $list['bianjitime'] = filemtime('uploads\danweirongyu\\'.$list['url']);
             $list['url'] = str_replace('\\','/',$list['url']);
 
-            //将文件信息保存
-            $file = new \app\system\model\Fields;
-            $data = $file::create($list);
 
             // 如果图片上传成功，则添加荣誉记录
-            if($data)
-            {
-                $rydata = dwry::create(['url'=>$list['url']]);
-                $ryid = $rydata->id;
-            }
+            $data = dwry::create(['url'=>$list['url']]);
+            $id = $data->id;
 
-            $ryid ? $data = array('msg'=>'上传成功','val'=>true,'url'=>$list['url'],'ryid'=>$ryid) : $data = array('msg'=>'保存文件信息失败','val'=>false,'url'=>null);
+            $id ? $data = array('msg'=>'上传成功','val'=>true,'url'=>$list['url'],'id'=>$id) : $data = array('msg'=>'保存文件信息失败','val'=>false,'url'=>null,'id'=>null);
         }else{
             // 上传失败获取错误信息
             $data = array('msg'=>$file->getError(),'val'=>false,'url'=>null);
@@ -258,6 +230,7 @@ class DwRongyu extends Base
     {
         // 获取表单数据
         $list = request()->only(['title','category','hjschool','fzshijian','fzschool','jiangxiang'],'put');
+        $list['id'] = $id;
         
 
         // 实例化验证类

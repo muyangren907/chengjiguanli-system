@@ -13,7 +13,7 @@ class DwRongyu extends Validate
      * @var array
      */	
 	protected $rule = [
-        'url|请先上传荣誉图片'     =>  'require',
+        // 'url|请先上传荣誉图片'     =>  'require',
         'id|请先上传荣誉图片'     =>  'require',
         'title|荣誉标题'     =>  'length:1,40',
         'category|荣誉类型'     =>  'require|number',
@@ -23,7 +23,6 @@ class DwRongyu extends Validate
         'jiangxiang|奖项'     =>  'require|number',
     ];
 
-    id,title,category,hjschool,fzshijian,fzschool,jiangxiang,url
     
     /**
      * 定义错误信息

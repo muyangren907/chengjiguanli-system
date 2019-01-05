@@ -6,6 +6,8 @@ namespace app\rongyu\controller;
 use app\common\controller\Base;
 // 引用教师数据模型类
 use app\rongyu\model\JsRongyu as jsry;
+// 引用教师数据模型类
+use app\rongyu\model\JsRongyuInfo as jsryinfo;
 
 class JsRongyu extends Base
 {
@@ -140,10 +142,11 @@ class JsRongyu extends Base
      * @param  \think\Request  $request
      * @return \think\Response
      */
-    public function createall()
+    public function createall($id)
     {
         // 设置页面标题
         $list['title'] = '添加教师荣誉册';
+        $list['id'] = $id;
 
         // 模板赋值
         $this->assign('list',$list);
@@ -162,51 +165,32 @@ class JsRongyu extends Base
      public function upload()
     {
         // 获取文件信息
-        $list['text'] = '教师荣誉批量上传';
-        $list['oldname']=input('post.name');
-        $list['fieldsize'] = input('post.size');
+        $rongyuce=input('post.rongyuce');
 
 
         // 获取表单上传文件 例如上传了001.jpg
         $file = request()->file('file');
         // 移动到框架应用根目录/uploads/ 目录下
-        $info = $file->validate(['size'=>2*1024*1024,'ext'=>'jpg,png,gif,jpeg'])->move('uploads\danweirongyu');
+        $info = $file->validate(['size'=>2*1024*1024,'ext'=>'jpg,png,gif,jpeg'])->move('uploads\jiaoshirongyu');
 
-        // use Qsnh\think\Upload\Upload;
-
-        $upload = new Qsnh\think\Upload\Upload(config('upload'));
-
-        $result = $upload->upload();
-
-        if (!$result) {
-            $this->error($upload->getErrors());
-        }
-
-        halt($result);
-        return 'aa';
-        
+     
 
         if($info){
             // 成功上传后 获取上传信息
-            $list['category'] = $info->getExtension();
             $list['url'] = $info->getSaveName();
-            $list['newname'] = $info->getFilename(); 
+            // $list['category'] = $info->getExtension();
+            // $list['newname'] = $info->getFilename(); 
             // $myfileurl = '\uploads\\'.$list['url'];
-            $list['bianjitime'] = filemtime('uploads\danweirongyu\\'.$list['url']);
+            // $list['bianjitime'] = filemtime('uploads\danweirongyu\\'.$list['url']);
             $list['url'] = str_replace('\\','/',$list['url']);
 
-            //将文件信息保存
-            $file = new \app\system\model\Fields;
-            $data = $file::create($list);
+
 
             // 如果图片上传成功，则添加荣誉记录
-            if($data)
-            {
-                $rydata = jsry::create(['url'=>$list['url']]);
-                $ryid = $rydata->id;
-            }
+            $data = jsryinfo::create(['url'=>$list['url'],'rongyuce'=>$rongyuce]);
+            $id = $data->id;
 
-            $ryid ? $data = array('msg'=>'上传成功','val'=>true,'url'=>$list['url'],'ryid'=>$ryid) : $data = array('msg'=>'保存文件信息失败','val'=>false,'url'=>null);
+            $id ? $data = array('msg'=>'上传成功','val'=>true,'url'=>$list['url'],'ryid'=>$id) : $data = array('msg'=>'保存文件信息失败','val'=>false,'url'=>null);
         }else{
             // 上传失败获取错误信息
             $data = array('msg'=>$file->getError(),'val'=>false,'url'=>null);
@@ -237,7 +221,7 @@ class JsRongyu extends Base
     {
         // 获取学生信息
         $list = jsry::where('id',$id)
-                ->field('id,title,category,hjschool,fzshijian,fzschool,jiangxiang,url')
+                ->field('id,title,category,fzshijian,fzschool')
                 ->find();
 
 
@@ -256,11 +240,12 @@ class JsRongyu extends Base
     public function update($id)
     {
         // 获取表单数据
-        $list = request()->only(['title','category','hjschool','fzshijian','fzschool','jiangxiang'],'put');
+        $list = request()->only(['title','category','fzshijian','fzschool'],'put');
+        $list['id'] = $id;
         
 
         // 实例化验证类
-        $validate = new \app\rongyu\validate\DwRongyu;
+        $validate = new \app\rongyu\validate\JsRongyu;
         // 验证表单数据
         $result = $validate->check($list);
         $msg = $validate->getError();
@@ -272,11 +257,10 @@ class JsRongyu extends Base
 
 
         // 更新数据
-        $jsry = new jsry();
-        $data = $jsry->save($list,['id'=>$id]);
+        $data = jsry::update($list);
 
         // 根据更新结果设置返回提示信息
-        $data>=0 ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);
