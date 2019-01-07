@@ -36,10 +36,11 @@
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="" value=""></th>
+				<th>单位</th>
 				<th>姓名</th>
+				<th>帐号</th>
 				<th>性别</th>
 				<th>出生日期</th>
-				<th>帐号</th>
 				<th>手机号码</th>
 				<th>角色</th>
 				<th>登录次数</th>
@@ -67,10 +68,11 @@
 	// 定义列参数
 	var mycolumns = [
         { "data": "id" },
+        { "data": "ad_school.jiancheng","name":"school","defaultContent": "" },
         { "data": "xingming" },
+        { "data": "username" },
         { "data": "sex" },
         { "data": "shengri" },
-        { "data": "username" },
         { "data": "phone" },
          { "data": "groupnames" },
         { "data": "denglucishu" },
@@ -131,7 +133,7 @@
         },
         {
         	"orderable": false,
-        	"targets": [0,-1]
+        	"targets": [0,7,-1]
         }, 
 	];
 </script>

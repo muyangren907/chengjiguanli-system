@@ -14,6 +14,20 @@
 			</div>
 		</div>
 		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>所在单位：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:300px;">
+				{php} $school = schlist('校级','区级');{/php}
+				<select class="select" id="school" name="school" size="1" required>
+					<option value="">--请选择所在单位--</option>
+					{volist name="school" id="vo"}
+						<option value="{$vo.id}">{$vo.title}</option>
+					{/volist}
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>分配角色：</label>
 			{php}
 				$group = db('auth_group')->where('status',true)->field('id,title')->all();

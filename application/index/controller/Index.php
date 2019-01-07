@@ -64,7 +64,17 @@ class Index extends Base
         // 查询用户登录次数
         $admin = new \app\admin\model\Admin;
         $userid = session('userid');
-        $list['denglucishu'] = $admin->where('id',$userid)->value('denglucishu');
+        $list['denglu'] = $admin->where('id',$userid)
+                        ->field('denglucishu,lastip,lasttime')
+                        ->find();
+        $list['yuyan'] = request()->langset();
+        $list['server'] = request()->server();
+        $list['env'] = request()->env();
+        
+
+
+        // $list['req'] = request();
+        // dump($list);
 
         // 获取版本号
         $list->version = config('app.chengji.version');

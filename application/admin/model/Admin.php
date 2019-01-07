@@ -45,6 +45,13 @@ class Admin extends Base
     }
 
 
+    // 最后登录获取器
+    public function getLasttimeAttr($value)
+    {
+        return date('Y年m月d日 h:i:s',$value);
+    }
+
+
     // 权限关联
     public function authgroup()
     {
@@ -89,6 +96,12 @@ class Admin extends Base
         }
         // 返回角色名
         return $str;
+    }
+
+    // 单位关联模型
+    public function adSchool()
+    {
+        return $this->belongsTo('\app\system\model\School','school','id');
     }
 
 

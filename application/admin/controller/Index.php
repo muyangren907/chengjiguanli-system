@@ -42,7 +42,11 @@ class Index extends Base
         //得到排序字段的下标
         $order_column = $getdt['order'][0]['column'];
         //根据排序字段的下标得到排序字段
-        $order_field = $getdt['columns'][$order_column]['data'];
+        $order_field = $getdt['columns'][$order_column]['name'];
+        if($order_field=='')
+        {
+            $order_field = $getdt['columns'][$order_column]['data'];
+        }
         //得到limit参数
         $limit_start = $getdt['start'];
         $limit_length = $getdt['length'];
@@ -52,8 +56,11 @@ class Index extends Base
 
         
         //查询数据
-        $data = AD::field('id,xingming,sex,username,phone,shengri,denglucishu,status,create_time')
+        $data = AD::field('id,school,xingming,sex,username,phone,shengri,denglucishu,status,create_time')
             ->where('id','>','2')
+            ->with(['adSchool'=>function($query){
+                    $query->field('id,jiancheng');
+                }])
             ->order([$order_field=>$order])
             ->limit($limit_start,$limit_length)
             ->select();
@@ -63,8 +70,11 @@ class Index extends Base
 
         // 如果需要查询
         if($search){
-            $data = AD::field('id,xingming,sex,username,phone,shengri,denglucishu,status,create_time')
+            $data = AD::field('id,school,xingming,sex,username,phone,shengri,denglucishu,status,create_time')
                 ->where('id','>','1')
+                ->with(['adSchool'=>function($query){
+                    $query->field('jiancheng');
+                }])
                 ->order([$order_field=>$order])
                 ->limit($limit_start,$limit_length)
                 ->where('username|xingming','like','%'.$search.'%')
@@ -116,7 +126,7 @@ class Index extends Base
 
 
         // 获取表单数据
-        $list = request()->only(['xingming','username','sex','shengri','phone','beizhu','group_id'],'post');
+        $list = request()->only(['xingming','school','username','sex','shengri','phone','beizhu','group_id'],'post');
 
 
         // 设置密码，默认为123456
@@ -158,7 +168,7 @@ class Index extends Base
     {
 
         // 获取管理员信息
-        $list = AD::get($id);
+        $list = AD::where('id',$id)->find();
 
         // 模板赋值
         $this->assign('list',$list);
@@ -175,8 +185,9 @@ class Index extends Base
     {
 
         // 获取用户信息
-        $list = AD::field('id,username,xingming,sex,shengri,phone,beizhu')
-            ->get($id);
+        $list = AD::where('id',$id)
+            ->field('id,school,username,xingming,sex,shengri,phone,beizhu')
+            ->find();
         // 追加用户id字符串
         $list = $list->append(['groupids']);
 
@@ -195,7 +206,7 @@ class Index extends Base
         $validate = new \app\admin\validate\Admin;
 
         // 获取表单数据
-        $list = request()->only(['xingming','username','sex','shengri','phone','beizhu','group_id'],'put');
+        $list = request()->only(['xingming','school','username','sex','shengri','phone','beizhu','group_id'],'put');
 
         // 验证表单数据
         $result = $validate->check($list);
