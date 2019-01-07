@@ -61,6 +61,11 @@ class Index extends Base
             ->field('title,thinks,danwei')
             ->find();
 
+        // 查询用户登录次数
+        $admin = new \app\admin\model\Admin;
+        $userid = session('userid');
+        $list['denglucishu'] = $admin->where('id',$userid)->value('denglucishu');
+
         // 获取版本号
         $list->version = config('app.chengji.version');
 
