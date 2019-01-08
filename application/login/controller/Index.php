@@ -64,7 +64,7 @@ class Index extends Controller
             // 将本次信息上传到服务器上
             $userinfo = AD::getByUsername($data['username']);
             $userinfo->lastip = $userinfo->ip;
-            $userinfo->ip = request()->host();
+            $userinfo->ip = request()->ip();
             $userinfo->denglucishu = ['inc', 1];
             $userinfo->lasttime = $userinfo->thistime;
             $userinfo->thistime = time();
@@ -114,8 +114,5 @@ class Index extends Controller
         }
         return $check;        
     }
-
-
-   
     
 }
