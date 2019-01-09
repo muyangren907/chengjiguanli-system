@@ -57,6 +57,17 @@ class Banji extends Base
 
 
 
+    // 学校简称获取器
+    public function getSchooljianAttr($value)
+    {
+        // 查询学校名称
+        $schoolname = db('school')->where('id',$this->getData('school'))->value('jiancheng');
+        // 返回学校名称
+        return $schoolname;
+    }
+
+
+
     // 班级学生数
     public function getStusumAttr()
     {

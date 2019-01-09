@@ -87,7 +87,7 @@
 
 	// 定义DTajax参数
 	var myajax = {
-		url: "{:url('ajaxNianji')}",
+		url: "{:url('ajaxBianji')}",
 		type: "post",
 		data: {
 			kaoshiid:"{$list.kaoshi}",
@@ -103,11 +103,11 @@
 			},
 			ruxuenian:function(){
 				var a = $('input:radio:checked').val();
-				// if(typeof(a) == "undefined")
-				// {
-				// 	var date=new Date;
-				// 	a = date.getFullYear()-1; 
-				// }
+				if(typeof(a) == "undefined")
+				{
+					var date=new Date;
+					a = date.getFullYear()-1; 
+				}
 				return a;
 			},			
 		},
