@@ -1,0 +1,216 @@
+{extend name="common@list" /}
+{block name="topnav"}
+	<nav class="breadcrumb">
+		<i class="Hui-iconfont">&#xe67f;</i> 首页
+		<span class="c-gray en">&gt;</span> 荣誉管理
+		<span class="c-gray en">&gt;</span> 教师荣誉册
+		<a class="btn btn-success radius r"
+			style="line-height:1.6em;margin-top:3px"
+			href="javascript:location.replace(location.href);"
+			title="刷新" >
+			<i class="Hui-iconfont">&#xe68f;</i>
+	</a>
+	</nav>
+{/block}
+{block name="bouttons"}
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+			<!-- 删除按钮 -->
+			<a href="javascript:;" onclick="dels('/jsryinfo/m')" class="btn btn-danger radius">
+				<i class="Hui-iconfont">&#xe6e2;</i>
+			批量删除
+			</a>
+			<!-- 添加按钮 -->
+			<a href="javascript:;" onclick=addfull('添加单位荣誉',"/jsryinfo/create") class="btn btn-primary radius">
+				<i class="Hui-iconfont">&#xe600;</i>
+				添加荣誉
+			</a>
+		</span>
+		<span class="r">
+			共有数据：<strong>{$list.count}</strong> 条
+		</span>
+	</div>
+	<div class="panel panel-default mt-10 mb-10">
+		<div class="panel-header" id="shaixuan">筛选荣誉册</div>
+		<div class="panel-body" style="min-height: 60px">
+				<div>
+					{php}
+						$school = schlist('校级','区级');
+					{/php}
+					<label class="f-l">荣誉所属单位：</label>
+					<dt>
+						<dd class=" mt-10">
+							{foreach $school as $key=>$vo } 
+							<label class="ml-10">
+								<input type="checkbox" value="{$vo.id}" name="hjschool" onclick="dtreload()">
+								{$vo.jiancheng}
+							</label>
+							{/foreach}
+						</dd>
+					</dt>
+				</div>
+				<div>
+					{php}
+						$school = schlist('区级','部级');
+					{/php}
+					<label class="f-l">颁奖单位：</label>
+					<dt>
+						<dd class=" mt-10">
+							{foreach $school as $key=>$vo } 
+							<label class="ml-10">
+								<input type="checkbox" value="{$vo.id}" name="fzschool" onclick="dtreload()">
+								{$vo.jiancheng}
+							</label>
+							{/foreach}
+						</dd>
+					</dt>
+				</div>
+				<div>
+					{php}$category = getCategory(112);{/php}
+					<label class="f-l">荣誉类别：</label>
+					<dt>
+						<dd class=" mt-10">
+							{foreach $category as $key=>$vo } 
+							<label class="ml-10">
+								<input type="checkbox" value="{$vo.id}" name="category" onclick="dtreload()">
+								{$vo.title}
+							</label>
+							{/foreach}
+						</dd>
+					</dt>
+				</div>
+		</div>
+	</div>
+{/block}
+{block name="tables"}
+	<table id="table1" class="display" cellspacing="0" width="100%">
+		<thead>
+			<tr>
+				<th><input type="checkbox" name="" value=""></th>
+				<th>获奖人</th>
+				<th>获奖人单位</th>
+				<th>荣誉名称</th>
+				<th>荣誉册</th>
+				<th>学科</th>
+				<th>奖项</th>
+				<th>获奖时间</th>
+				<th>状态</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+
+
+{/block}
+{block name="myjs"}
+<script type="text/javascript">
+
+	// 定义DTajax参数
+	var myajax = {
+		url: "{:url('ajaxdata')}",
+		type: "post",
+		data: {
+			fzschool:function(){
+				var chk = [];
+				$('input[name="fzschool"]:checked').each(function(){
+					if(typeof($(this).val()) != "undefined")
+					{
+						chk.push($(this).val());
+					}
+				});
+				return chk;
+			},
+			category:function(){
+				var chk = [];
+				$('input[name="category"]:checked').each(function(){
+					if(typeof($(this).val()) != "undefined")
+					{
+						chk.push($(this).val());
+					}
+				});
+				return chk;
+			},
+		},
+	};
+
+	// 定义列参数
+	var mycolumns = [
+        { "data": "id" },
+        { "data": "teacherid" ,"name":"teacherid","defaultContent": ""},
+        { "data": "hjschool" ,"name":"hjschool","defaultContent": ""},
+        { "data": "title","defaultContent": "" },
+        { "data": "rongyuce" ,"name":"rongyuce","defaultContent": ""},
+        { "data": "subject","name":"subject","defaultContent": ""},
+        { "data": "jiangxiang","name":"jiangxiang","defaultContent": ""},
+        { "data": "fzshijian" ,"defaultContent": ""},
+        { "data": "status" },
+        { "data": "id" },
+	];
+
+	// 定义修改列参数
+	var mycolumnDefs =[
+		// 对象格式
+		{
+			"targets": 0,			
+			"render": function(data, type, row, meta) {
+				return '<input type="checkbox" name="test" value="' + row.id + '" />'
+			}
+		},
+		{
+			"targets": -1,
+			"className":'.td-manage',			
+			"render": function(data, type, row, meta) {
+					// 停用按钮
+					stopbut = '<a style="text-decoration:none" onClick="stop(this,'+ row.id +')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>';
+					// 启用按钮
+					startbut = '<a style="text-decoration:none" onClick="start(this,'+ row.id +')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>';
+
+					// 上图图片按钮
+					picbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/jsryinfo/'+row.id+'/createall") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe613;</i></a>';
+					// 编辑按钮
+					editbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/jsryinfo/'+row.id+'/edit") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
+					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/dwry/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
+					if(row.status == '已停用')
+					{
+						buts = startbut;
+					}else{
+						buts = stopbut;
+					} 
+
+					return buts + picbut + editbut + delbut;
+                }
+        },
+        {
+			"targets": -2,
+			"className":'.td-status',
+			"render": function(data, type, row, meta) {
+                    if(row.status == '已停用')
+                    {
+                    	d = "<span class='label label-error radius'>" + row.status + "</span>";
+                    }else{
+                    	d = "<span class='label label-success radius'>" + row.status + "</span>";
+                    }
+
+                    return d;
+                  },
+        },
+        {
+        	"orderable": false,
+        	"targets": [0,-1]
+        }, 
+	];
+
+	// 筛选成绩面板折叠
+	$('#shaixuan').click(function(){
+		$(this).next().toggle();
+	});
+
+	// 重载数据
+	function dtreload()
+	{
+		$('#table1').DataTable().ajax.reload();
+	}
+</script>
+{/block}

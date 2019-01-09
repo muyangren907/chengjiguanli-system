@@ -58,7 +58,7 @@ class Tongji extends Base
     }
 
 
-    // 班级学生成绩统计下载表格,带年级汇总
+    // 年级、班级学生成绩统计下载表格
     public function dwBanjixls($id)
     {
         // 获取表单参数
@@ -160,7 +160,7 @@ class Tongji extends Base
     }
 
 
-    // 获取年级成绩统计结果，带区级成绩汇总结果
+    // 获取年级成绩统计结果
     public function ajaxNianji()
     {
         // 获取表单参数

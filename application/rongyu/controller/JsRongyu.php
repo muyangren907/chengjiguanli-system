@@ -156,49 +156,7 @@ class JsRongyu extends Base
        
     }
 
-     /**
-     * 上传荣誉图片并保存
-     *
-     * @param  \think\Request  $request
-     * @return \think\Response
-     */
-     public function upload()
-    {
-        // 获取文件信息
-        $rongyuce=input('post.rongyuce');
 
-
-        // 获取表单上传文件 例如上传了001.jpg
-        $file = request()->file('file');
-        // 移动到框架应用根目录/uploads/ 目录下
-        $info = $file->validate(['size'=>2*1024*1024,'ext'=>'jpg,png,gif,jpeg'])->move('uploads\jiaoshirongyu');
-
-     
-
-        if($info){
-            // 成功上传后 获取上传信息
-            $list['url'] = $info->getSaveName();
-            // $list['category'] = $info->getExtension();
-            // $list['newname'] = $info->getFilename(); 
-            // $myfileurl = '\uploads\\'.$list['url'];
-            // $list['bianjitime'] = filemtime('uploads\danweirongyu\\'.$list['url']);
-            $list['url'] = str_replace('\\','/',$list['url']);
-
-
-
-            // 如果图片上传成功，则添加荣誉记录
-            $data = jsryinfo::create(['url'=>$list['url'],'rongyuce'=>$rongyuce]);
-            $id = $data->id;
-
-            $id ? $data = array('msg'=>'上传成功','val'=>true,'url'=>$list['url'],'ryid'=>$id) : $data = array('msg'=>'保存文件信息失败','val'=>false,'url'=>null);
-        }else{
-            // 上传失败获取错误信息
-            $data = array('msg'=>$file->getError(),'val'=>false,'url'=>null);
-        }
-
-        // 返回信息
-        return json($data);
-    }
 
     /**
      * 显示指定的资源

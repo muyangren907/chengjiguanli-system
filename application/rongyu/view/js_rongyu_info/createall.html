@@ -190,7 +190,7 @@ function article_save(){
             chunked: false,
             chunkSize: 512 * 1024,
             compress:false, //是否压缩图片
-            server: '{:url("JsRongyuInfo/upload")}',
+            server: '{:url("upload")}',
             formData:{
                 rongyuce:"{$list.id}"
             },

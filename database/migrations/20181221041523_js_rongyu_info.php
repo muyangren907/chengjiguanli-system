@@ -37,7 +37,7 @@ class JsRongyuInfo extends Migrator
             ->addColumn('rongyuce','integer',['limit'=>11,'null'=>false,'comment'=>'荣誉册'])
             ->addColumn('bianhao','string',['limit'=>15,'null'=>true,'comment'=>'证书编号'])
             ->addColumn('hjschool','integer',['limit'=>11,'null'=>false,'comment'=>'证书所属单位'])
-            ->addColumn('xueke','integer',['limit'=>11,'null'=>false,'comment'=>'所属学科'])
+            ->addColumn('subject','integer',['limit'=>11,'null'=>false,'comment'=>'所属学科'])
             ->addColumn('jiangxiang','integer',['limit'=>11,'null'=>false,'comment'=>'荣誉奖项'])
             ->addColumn('pic','string',['limit'=>40,'null'=>false,'comment'=>'证书图片'])
             ->addColumn('create_time','integer',['limit'=>11,'null'=>true,'comment'=>'创建时间'])

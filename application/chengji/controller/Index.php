@@ -57,13 +57,11 @@ class Index extends Base
 
     public function update($id)
     {
-
         // 获取表单数据
         $list = request()->param();
         
         // 更新成绩
         $data = Chengji::update($list);
-
 
         // 判断返回内容
         $data ? $data=['msg'=>'录入成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];

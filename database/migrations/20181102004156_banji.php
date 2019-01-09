@@ -34,7 +34,7 @@ class Banji extends Migrator
         // 添加当前表字段
         $table
             ->addColumn('school','integer',['limit'=>11,'null'=>false,'comment'=>'学校'])
-            ->addColumn('ruxuenian','integer',['limit'=>4,'null'=>true,'comment'=>'入学年'])
+            ->addColumn('ruxuenian','integer',['limit'=>4,'null'=>true,'comment'=>'学段'])
             ->addColumn('paixu','integer',['limit'=>3,'null'=>true,'comment'=>'排序'])
             ->addColumn('create_time','integer',['limit'=>11,'null'=>true,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'null'=>true,'comment'=>'更新时间'])
