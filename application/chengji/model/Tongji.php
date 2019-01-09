@@ -68,7 +68,7 @@ class Tongji extends Model
                 ->when(!empty($school),function($query) use($school){
                     $query->where('school','in',$school);
                 })
-                ->append(['title','schooljian'])
+                ->append(['numTitle','schooljian'])
                 ->select(); 
 
 
@@ -81,7 +81,7 @@ class Tongji extends Model
         $i = 0;
         foreach ($bjids as $key => $value) {
             $data[$i]['id'] = $i+1;
-            $data[$i]['title'] = $value['schooljian'].$value['title'];
+            $data[$i]['title'] = $value['schooljian'].$value['numTitle'];
             $bjlist = $cjlist->where('banji',$value['id']);
             $data[$i]['data'] = $this->tongji($bjlist,$canshu);
             
