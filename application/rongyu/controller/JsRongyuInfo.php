@@ -91,10 +91,11 @@ class JsRongyuInfo extends Base
      *
      * @return \think\Response
      */
-    public function create()
+    public function create($id = 0)
     {
         // 设置页面标题
         $list['title'] = '添加教师荣誉册';
+        $list['id'] = $id;
 
         // 模板赋值
         $this->assign('list',$list);

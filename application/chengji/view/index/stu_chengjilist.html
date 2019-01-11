@@ -79,12 +79,12 @@
 						$njlist = nianjiList();
 						$bjnames = banjinamelist();
 						$njnum = array_keys($njlist);
-						$bjlist = $banji->where('ruxuenian','in',$njnum)->max('paixu');
+						$bjlist = $banji->where('ruxuenian','in',$njnum)->max('paixu') + 1;
 					{/php}
 					<label class="f-l">班级：</label>
 					<dt>
 						<dd class=" mt-10">
-						{for start="1" end="7" } 
+						{for start="1" end=$bjlist} 
 							<label class="ml-10">
 								<input type="checkbox" value="{$i}" name="banji" onclick="dtreload()">
 								{$bjnames[$i]}

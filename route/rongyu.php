@@ -15,3 +15,4 @@ Route::resource('jsry','rongyu/JsRongyu');
 Route::resource('jsryinfo','rongyu/JsRongyuInfo');
 Route::get('dwry/createall','rongyu/DwRongyu/createall');
 Route::get('jsry/:id/createall','rongyu/JsRongyu/createall');
+Route::get('jsryinfo/:id/create','rongyu/JsRongyuInfo/create');
