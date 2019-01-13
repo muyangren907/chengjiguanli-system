@@ -24,7 +24,7 @@ class Rule extends Seeder
             ['id'=>5,'title' =>'教务管理','name'=>'teach','paixu' =>5,'ismenu' =>true,'font'=>'Hui-iconfont-yuyin2'],
             ['id'=>6,'title' =>'管理员管理','name'=>'admin','paixu' =>7,'ismenu' =>true,'font'=>'Hui-iconfont-root'],
             ['id'=>7,'title'=>'系统管理','name' =>'system','paixu' =>8,'ismenu'=>true,'font' =>'Hui-iconfont-system'],
-            ['id'=>8,'title'=>'荣誉管理','name' =>'rongyu','paixu' =>6,'ismenu'=>true,'font' =>'Hui-iconfont-system','status'=>false],
+            ['id'=>8,'title'=>'荣誉管理','name' =>'rongyu','paixu' =>6,'ismenu'=>true,'font' =>'Hui-iconfont-huangguan','status'=>false],
                 // 二级菜单
                 // 成绩采集
                 ['id'=>101,'title'=>'扫码录入','name'=>'chengji/Index/malu','paixu'=>1,'ismenu' =>true,'pid' =>1,'url'=>'/chengji/malu',],

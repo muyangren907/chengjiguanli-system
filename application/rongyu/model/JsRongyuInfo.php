@@ -11,24 +11,24 @@ class JsRongyuInfo extends Base
     public function search($search)
     {
     	// 获取参数
-    	// $hjschool = $search['hjschool'];
-    	$fzschool = $search['fzschool'];
-    	$category = $search['category'];
+    	$hjschool = $search['hjschool'];
+    	// $fzschool = $search['fzschool'];
+    	// $category = $search['category'];
     	$order_field = $search['order_field'];
     	$order = $search['order'];
     	$category = $search['category'];
     	$search = $search['search'];
 
     	$data = $this->order([$order_field =>$order])
-    		// ->when(!empty($hjschool),function($query) use($hjschool){
-      //           	$query->where('hjschool','in',$hjschool);
+    		->when(!empty($hjschool),function($query) use($hjschool){
+                	$query->where('hjschool','in',$hjschool);
+                })
+    		// ->when(!empty($fzschool),function($query) use($fzschool){
+      //           	$query->where('fzschool','in',$fzschool);
       //           })
-    		->when(!empty($fzschool),function($query) use($fzschool){
-                	$query->where('fzschool','in',$fzschool);
-                })
-    		->when(!empty($category),function($query) use($category){
-                	$query->where('category','in',$category);
-                })
+    		// ->when(!empty($category),function($query) use($category){
+      //           	$query->where('category','in',$category);
+      //           })
     		->when(!empty($search),function($query) use($search){
                 	$query->where('title','like',$search);
                 })
@@ -37,12 +37,12 @@ class JsRongyuInfo extends Base
                     'hjSchool'=>function($query){
                         $query->field('id,jiancheng');
                     },
-                    'fzSchool'=>function($query){
-                        $query->field('id,jiancheng');
-                    },
-                    'lxCategory'=>function($query){
-                        $query->field('id,title');
-                    },
+                    // 'fzSchool'=>function($query){
+                    //     $query->field('id,jiancheng');
+                    // },
+                    // 'lxCategory'=>function($query){
+                    //     $query->field('id,title');
+                    // },
                     'jxCategory'=>function($query){
                         $query->field('id,title');
                     }
