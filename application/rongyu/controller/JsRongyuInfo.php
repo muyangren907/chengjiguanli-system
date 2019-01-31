@@ -54,6 +54,7 @@ class JsRongyuInfo extends Base
 
         //得到搜索的关键词
         $search = [
+            'hjschool'=>$getdt['hjschool'],
             'fzschool'=>$getdt['fzschool'],
             'category'=>$getdt['category'],
             'search'=>$getdt['search']['value'],

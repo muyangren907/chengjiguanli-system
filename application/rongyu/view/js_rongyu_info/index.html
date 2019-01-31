@@ -112,6 +112,16 @@
 		url: "{:url('ajaxdata')}",
 		type: "post",
 		data: {
+			hjschool:function(){
+				var chk = [];
+				$('input[name="hjschool"]:checked').each(function(){
+					if(typeof($(this).val()) != "undefined")
+					{
+						chk.push($(this).val());
+					}
+				});
+				return chk;
+			},
 			fzschool:function(){
 				var chk = [];
 				$('input[name="fzschool"]:checked').each(function(){
