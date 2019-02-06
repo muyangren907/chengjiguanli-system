@@ -48,15 +48,15 @@ Route::group('index', function () {
 
 // 考号管理
 Route::group('kaohao', function () {
-	    Route::rule('','Kaohao/index','get');						# 信息列表
-	    Route::rule('data','Kaohao/ajaxdata','post');				# 获取数据
-	    Route::rule('create','Kaohao/create','get');				# 添加信息
+	    Route::rule('<kaoshi>','Kaohao/index','get');						# 信息列表
+	    // Route::rule('data','Kaohao/ajaxdata','post');				# 获取数据
+	    Route::rule('create/<kaoshi>','Kaohao/create','get');				# 添加信息
 	    Route::rule('save','Kaohao/save','post');					# 保存信息
 	    // Route::rule('read/<id>','Kaohao/read','get');				# 读取信息
-	    Route::rule('edit/<id>','Kaohao/edit','get');				# 修改信息
-	    Route::rule('update/<id>','Kaohao/update','put');			# 更新信息
-	    Route::rule('delete/<id>','Kaohao/delete','delete');		# 删除信息
-	    Route::rule('status','Kaohao/setStatus','post');		# 删除信息
+	    // Route::rule('edit/<id>','Kaohao/edit','get');				# 修改信息
+	    // Route::rule('update/<id>','Kaohao/update','put');			# 更新信息
+	    // Route::rule('delete/<id>','Kaohao/delete','delete');		# 删除信息
+	    // Route::rule('status','Kaohao/setStatus','post');		# 删除信息
 	});
 
 

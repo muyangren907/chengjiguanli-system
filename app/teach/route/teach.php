@@ -51,6 +51,7 @@ Route::group('banji', function () {
 	    Route::rule('status','banji/setStatus','post');		# 删除信息
 	    Route::rule('yidong/<id>','banji/yidong','post');		# 删除信息
 	    Route::rule('mybanji','banji/mybanji','post');		# 删除信息
+	    Route::rule('mybanjis','banji/mybanji','post');		# 删除信息
 	});
 
 

@@ -44,8 +44,8 @@ function getCategory($id = '0')
 
 function nianjiList($riqi=0)
 {
-	// 定义学年时间节点日期为每年的8月10日
-	// $yd = '8-10';
+	// 定义学年时间节点日期为每年的8月1日
+	// $yd = '8-1';
 	if($riqi == 0)
 	{
 		$jiedian = strtotime(date('Y').'-8-1');

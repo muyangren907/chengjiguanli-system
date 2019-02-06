@@ -30,6 +30,7 @@ class Kaohao extends BaseController
                     'ksNianji'
                 ])
                 ->find();
+
         if(count($kaoshilist->ks_nianji)>0)
         {
             foreach ($kaoshilist->ks_nianji as $key => $value) {
@@ -53,9 +54,9 @@ class Kaohao extends BaseController
 
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
     // 保存考号
@@ -302,9 +303,9 @@ class Kaohao extends BaseController
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -446,9 +447,9 @@ class Kaohao extends BaseController
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('biaoqian');
+        return $this->view->fetch('biaoqian');
     }
     
 

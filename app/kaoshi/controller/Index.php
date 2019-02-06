@@ -199,7 +199,6 @@ class Index extends BaseController
     // 设置考试信息
     public function kaoshiSet($id)
     {
-
         // 获取考试信息
         $data = KS::where('id',$id)
                     ->with([
@@ -232,6 +231,7 @@ class Index extends BaseController
             $nianji[] = $value['nianji'];
         }
 
+
         $list['data']['ks_subjectid'] = implode(',' , $subjectid);
         $list['data']['ks_nianjiid'] = implode(',' , $nianji);
         $list['data']['ks_subject'] = $subject;
@@ -245,6 +245,7 @@ class Index extends BaseController
             'url'=>'/kaoshi/index/updateset/'.$id,
             'kaoshi'=>$id,
         );
+
 
 
         // 模板赋值
