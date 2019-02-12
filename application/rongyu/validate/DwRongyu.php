@@ -21,6 +21,7 @@ class DwRongyu extends Validate
         'fzshijian|发证时间'     =>  'require|date',
         'fzschool|发证单位'     =>  'require|number',
         'jiangxiang|奖项'     =>  'require|number',
+        'teachers|参与人'      =>'array',
     ];
 
     

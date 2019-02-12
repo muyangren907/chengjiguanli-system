@@ -80,6 +80,12 @@ class DwRongyu extends Base
          return $this->belongsTo('\app\system\model\Category','category','id');
     }
 
+    // 参与人
+    public function cyDwry()
+    {
+        return $this->hasMany('\app\rongyu\model\DwRongyuCanyu','rongyuid','id');
+    }
+
     // 荣誉级别
     public function getJibieAttr()
     {

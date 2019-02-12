@@ -113,7 +113,7 @@ class DwRongyu extends Base
     public function save()
     {
         // 获取表单数据
-        $list = request()->only(['id','url','title','hjschool','category','fzshijian','fzschool','jiangxiang'],'post');
+        $list = request()->only(['id','url','title','teachers','hjschool','category','fzshijian','fzschool','jiangxiang'],'post');
 
         // 实例化验证模型
         $validate = new \app\rongyu\validate\DwRongyu;
@@ -122,11 +122,30 @@ class DwRongyu extends Base
         $msg = $validate->getError();
         // 如果验证不通过则停止保存
         if(!$result){
-            return json(['msg'=>$msg,'val'=>0]);;
+            dwry::destroy($list['id'],true);
+            return json(['msg'=>$msg,'val'=>0]);
         }
 
         // 保存数据 
         $data = dwry::update($list);
+
+        if(!empty($list['teachers']))
+        {
+            // 单位荣誉参与数据模型
+            // $dwrycy = new \app\rongyu\model\DwRongyuCanyu;
+
+            // 声明参与教师数组
+            $canyulist = [];
+            // 循环组成参与信息
+            foreach ($list['teachers'] as $key => $value) {
+                $canyulist[] = [
+                    'teacherid' => $value,
+                    'rongyuid' => $list['id'],
+                ];
+            }
+
+            $data->cyDwry()->saveAll($canyulist);
+        }
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -211,8 +230,15 @@ class DwRongyu extends Base
         // 获取学生信息
         $list = dwry::where('id',$id)
                 ->field('id,title,category,hjschool,fzshijian,fzschool,jiangxiang,url')
+                ->with([
+                    'cyDwry'=>function($query){
+                        $query->field('rongyuid,teacherid')
+                        ->with(['teacher'=>function($query){
+                            $query->field('id,xingming');
+                        }]);
+                    },
+                ])
                 ->find();
-
 
         $this->assign('list',$list);
 
@@ -229,7 +255,7 @@ class DwRongyu extends Base
     public function update($id)
     {
         // 获取表单数据
-        $list = request()->only(['title','category','hjschool','fzshijian','fzschool','jiangxiang'],'put');
+        $list = request()->only(['title','category','hjschool','fzshijian','fzschool','jiangxiang','teachers'],'put');
         $list['id'] = $id;
         
 
@@ -246,11 +272,29 @@ class DwRongyu extends Base
 
 
         // 更新数据
-        $dwry = new dwry();
-        $data = $dwry->save($list,['id'=>$id]);
+        // $dwry = new dwry();
+        $data = dwry::update($list);
+
+        if(!empty($list['teachers']))
+        {
+
+            $data->cyDwry()->delete(true);
+
+            // 声明参与教师数组
+            $canyulist = [];
+            // 循环组成参与信息
+            foreach ($list['teachers'] as $key => $value) {
+                $canyulist[] = [
+                    'teacherid' => $value,
+                    'rongyuid' => $list['id'],
+                ];
+            }
+
+            $data->cyDwry()->saveAll($canyulist);
+        }
 
         // 根据更新结果设置返回提示信息
-        $data>=0 ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);

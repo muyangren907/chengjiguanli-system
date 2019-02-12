@@ -294,4 +294,31 @@ class Index extends Base
     }
 
 
+
+    // 根据教师姓名、首拼、全拼搜索教师信息
+    public function srcTeacher($str="")
+    {
+        // 声明结果数组
+        $data = array();
+
+
+        // 判断是否存在数据，如果没有数据则返回。
+        if(strlen($str) <= 0)
+        {
+            return json($data);
+        }
+
+
+        // 如果有数据则查询教师信息
+        $list = Teacher::field('id,xingming,danwei,shengri,sex')
+                    ->whereOr('xingming|quanpin','like',$str.'%')
+                    ->whereOr('quanpin','like',$str.'%')
+                    ->whereOr('shoupin','like',$str.'%')
+                    ->append(['age'])
+                    ->all();
+        return json($list);
+    }
+
+
+
 }

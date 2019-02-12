@@ -55,6 +55,8 @@ class YanZheng  extends Controller
             'welcome','update','save','upload',
             'index','mybanji','banjilist',
             'editpassword','updatepassword',
+            // 教师信息查询
+            'srcTeacher',
             // 查询班级成绩、查询年级成绩
             'ajaxbanji','ajaxnianji',
             // 批量保存
