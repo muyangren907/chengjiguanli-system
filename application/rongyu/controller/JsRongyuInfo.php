@@ -111,10 +111,10 @@ class JsRongyuInfo extends Base
      * @param  \think\Request  $request
      * @return \think\Response
      */
-    public function save()
+    public function save1()
     {
         // 获取表单数据
-        $list = request()->only(['title','category','fzshijian','fzschool'],'post');
+        $list = request()->only(['id','title','category','hjschool','subject','fzshijian','jiangxiang'],'post');
 
         // 实例化验证模型
         $validate = new \app\rongyu\validate\JsRongyu;
@@ -221,7 +221,7 @@ class JsRongyuInfo extends Base
     {
         // 获取学生信息
         $list = ryinfo::where('id',$id)
-                ->field('id,title,category,fzshijian,fzschool')
+                ->field('id,title,rongyuce,bianhao,hjschool,subject,jiangxiang,hjshijian,pic')
                 ->find();
 
 
@@ -240,19 +240,22 @@ class JsRongyuInfo extends Base
     public function update($id)
     {
         // 获取表单数据
-        $list = request()->only(['title','category','fzshijian','fzschool'],'put');
+        $list = request()->only(['title','category','hjschool','subject','hjshijian','jiangxiang'],'put');
         $list['id'] = $id;
         
 
         // 实例化验证类
-        $validate = new \app\rongyu\validate\JsRongyu;
+        $validate = new \app\rongyu\validate\JsRongyuInfo;
         // 验证表单数据
         $result = $validate->check($list);
         $msg = $validate->getError();
 
         // 如果验证不通过则停止保存
         if(!$result){
-            return json(['msg'=>$msg,'val'=>0]);;
+            if($list['id']>0){
+                ryinfo::destroy($list['id'],true);
+            }
+            return json(['msg'=>$msg,'val'=>0]);
         }
 
 

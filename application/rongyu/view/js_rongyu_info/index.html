@@ -42,7 +42,7 @@
 						<dd class=" mt-10">
 							{foreach $school as $key=>$vo } 
 							<label class="ml-10">
-								<input type="checkbox" value="{$vo.id}" name="hjschool" onclick="dtreload()">
+								<input type="checkbox" value="{$vo.id}" id="hjschool" name="hjschool" onclick="dtreload()">
 								{$vo.jiancheng}
 							</label>
 							{/foreach}
@@ -149,12 +149,12 @@
 	var mycolumns = [
         { "data": "id" },
         { "data": "teacherid" ,"name":"teacherid","defaultContent": ""},
-        { "data": "hjschool" ,"name":"hjschool","defaultContent": ""},
+        { "data": "hj_school.jiancheng" ,"name":"hjschool","defaultContent": ""},
         { "data": "title","defaultContent": "" },
-        { "data": "rongyuce" ,"name":"rongyuce","defaultContent": ""},
-        { "data": "subject","name":"subject","defaultContent": ""},
-        { "data": "jiangxiang","name":"jiangxiang","defaultContent": ""},
-        { "data": "fzshijian" ,"defaultContent": ""},
+        { "data": "ry_tuce.title" ,"name":"rongyuce","defaultContent": ""},
+        { "data": "ry_subject.title","name":"subject","defaultContent": ""},
+        { "data": "jx_category.title","name":"jiangxiang","defaultContent": ""},
+        { "data": "hjshijian" ,"defaultContent": ""},
         { "data": "status" },
         { "data": "id" },
 	];

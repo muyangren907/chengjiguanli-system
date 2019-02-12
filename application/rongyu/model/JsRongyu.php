@@ -10,7 +10,7 @@ class JsRongyu extends Base
 	//搜索单位获奖荣誉
     public function search($search)
     {
-        // 获取参数
+    	// 获取参数
     	$fzschool = $search['fzschool'];
     	$category = $search['category'];
     	$order_field = $search['order_field'];
@@ -81,6 +81,10 @@ class JsRongyu extends Base
     // 发证时间获取器
     public function getFzshijianAttr($value)
     {
-        return date('Y-m-d',$value);
+        if ($value>0)
+        {
+            $value = date('Y-m-d',$value);
+        }
+        return $value;
     }
 }

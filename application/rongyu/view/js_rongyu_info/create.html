@@ -15,7 +15,7 @@
 			</div>
 		</div>
 	</div>
-	<form action="" method="PUT" class="form form-horizontal" id="form-member-add">
+	<form action="/jsryinfo/" method="PUT" class="form form-horizontal" id="form-member-add">
 		<input type="hidden" class="input-text" value="" placeholder="荣誉图片地址" id="pic" name="pic" readonly="true">
 		<input type="hidden" class="input-text" value="" placeholder="荣誉存储编号" id="id" name="id" readonly="true">
 		<input type="hidden" class="input-text" value="{$list['id']}" placeholder="荣誉册" id="rongyuce" name="rongyuce" readonly="true">
@@ -29,6 +29,18 @@
 			<label class="form-label col-xs-4 col-sm-3">荣誉编号：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" value="" placeholder="荣誉编号" id="bianhao" name="bianhao">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">获奖人：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="姓名、首拼、全拼" id="huojia" name="huojia">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">参与人：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="姓名、首拼、全拼" id="canyu" name="canyu">
 			</div>
 		</div>
 		<div class="row cl">
@@ -68,7 +80,7 @@
 					$sjlist = $subject->where('status',1)->field('id,title')->order(['paixu'])->select();
 				{/php}
 				<select class="select" id="subject" name="subject" size="1" required>
-					<option value="">--请选择荣誉的属学科--</option>
+					<option value="">--请选择荣誉所属学科--</option>
 					{volist name="sjlist" id="vo"}
 						<option value="{$vo.id}">{$vo.title}</option>
 					{/volist}
@@ -79,7 +91,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>获奖时间：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text Wdate" value="" placeholder="" id="fzshijian" name="fzshijian" onclick="WdatePicker({isShowClear:false,readOnly:true})" style="width: 180px">
+				<input type="text" class="input-text Wdate" value="" placeholder="" id="hjshijian" name="hjshijian" onclick="WdatePicker({isShowClear:false,readOnly:true})" style="width: 180px">
 			</div>
 		</div>
 		</div>
@@ -193,6 +205,7 @@
 	    uploader.on( 'uploadAccept', function( file, response ) {
 	        $('#pic').val(response.url);
 	        $('#id').val(response.ryid);
+	        $('#form-member-add').attr('action','/jsryinfo/'+response.ryid);
 	    });
 
 	    // 文件上传失败，显示上传出错。
@@ -238,16 +251,10 @@
 
 	// 设置表单验证规则
 	var myrules = {
-			url:{
-				required:true,
-			},
-			id:{
-				required:true,
-			},
 			title:{
 				maxlength:40,
 			},
-			fzshijian:{
+			hjshijian:{
 				required:true,
 				dateISO:true
 			},
