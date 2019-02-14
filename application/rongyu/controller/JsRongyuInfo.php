@@ -105,36 +105,36 @@ class JsRongyuInfo extends Base
         return $this->fetch();
     }
 
-    /**
+    /**留备用
      * 保存新建的资源
      *
      * @param  \think\Request  $request
      * @return \think\Response
      */
-    public function save1()
-    {
-        // 获取表单数据
-        $list = request()->only(['id','title','category','hjschool','subject','fzshijian','jiangxiang'],'post');
+    // public function save1()
+    // {
+    //     // 获取表单数据
+    //     $list = request()->only(['id','title','category','hjschool','subject','fzshijian','jiangxiang'],'post');
 
-        // 实例化验证模型
-        $validate = new \app\rongyu\validate\JsRongyu;
-        // 验证表单数据
-        $result = $validate->check($list);
-        $msg = $validate->getError();
-        // 如果验证不通过则停止保存
-        if(!$result){
-            return json(['msg'=>$msg,'val'=>0]);;
-        }
+    //     // 实例化验证模型
+    //     $validate = new \app\rongyu\validate\JsRongyu;
+    //     // 验证表单数据
+    //     $result = $validate->check($list);
+    //     $msg = $validate->getError();
+    //     // 如果验证不通过则停止保存
+    //     if(!$result){
+    //         return json(['msg'=>$msg,'val'=>0]);;
+    //     }
 
-        // 保存数据 
-        $data = ryinfo::create($list);
+    //     // 保存数据 
+    //     $data = ryinfo::create($list);
 
-        // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+    //     // 根据更新结果设置返回提示信息
+    //     $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
-        // 返回信息
-        return json($data);
-    }
+    //     // 返回信息
+    //     return json($data);
+    // }
 
     /**
      * 批量上传教师荣誉册图片
@@ -222,7 +222,23 @@ class JsRongyuInfo extends Base
         // 获取学生信息
         $list = ryinfo::where('id',$id)
                 ->field('id,title,rongyuce,bianhao,hjschool,subject,jiangxiang,hjshijian,pic')
+                ->with([
+                    'hjJsry'=>function($query){
+                        $query->field('rongyuid,teacherid')
+                        ->with(['teacher'=>function($query){
+                            $query->field('id,xingming');
+                        }]);
+                    },
+                    'cyJsry'=>function($query){
+                        $query->field('rongyuid,teacherid')
+                        ->with(['teacher'=>function($query){
+                            $query->field('id,xingming');
+                        }]);
+                    },
+                ])
                 ->find();
+
+        dump($list);
 
 
         $this->assign('list',$list);
@@ -240,9 +256,9 @@ class JsRongyuInfo extends Base
     public function update($id)
     {
         // 获取表单数据
-        $list = request()->only(['title','category','hjschool','subject','hjshijian','jiangxiang'],'put');
+        $list = request()->only(['title','category','hjschool','subject','hjshijian','jiangxiang','hjteachers','cyteachers','pic'],'put');
         $list['id'] = $id;
-        
+
 
         // 实例化验证类
         $validate = new \app\rongyu\validate\JsRongyuInfo;
@@ -262,11 +278,35 @@ class JsRongyuInfo extends Base
         // 更新数据
         $data = ryinfo::update($list);
 
+        // 删除原来的获奖人与参与人信息
+        $data->allJsry()->delete(true);
+        // 声明教师数组
+            $teacherlist = [];
+            // 循环组成获奖教师信息
+            foreach ($list['hjteachers'] as $key => $value) {
+                $canyulist[] = [
+                    'teacherid' => $value,
+                    'rongyuid' => $list['id'],
+                    'category' => 1,
+                ];
+            }
+            // 循环组成参与教师信息
+            foreach ($list['cyteachers'] as $key => $value) {
+                $canyulist[] = [
+                    'teacherid' => $value,
+                    'rongyuid' => $list['id'],
+                    'category' => 2,
+                ];
+            }
+
+        // 添加新的获奖人与参与人信息
+        $data->allJsry()->saveAll($canyulist);
+
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
-        return json($data);
+        return json($data&1);
     }
 
     /**

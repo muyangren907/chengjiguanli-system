@@ -84,10 +84,30 @@ class JsRongyuInfo extends Base
          return $this->belongsTo('\app\teach\model\Subject','subject','id');
     }
 
-    // 奖项
+    // 奖项关联
     public function jxCategory()
     {
          return $this->belongsTo('\app\system\model\Category','jiangxiang','id');
+    }
+
+    // 获奖人关联
+    public function hjJsry()
+    {
+        return $this->hasMany('\app\rongyu\model\JsRongyuCanyu','rongyuid','id')->where('category',1);
+    }
+
+
+    // 获奖人与参与教师关联
+    public function allJsry()
+    {
+        return $this->hasMany('\app\rongyu\model\JsRongyuCanyu','rongyuid','id');
+    }
+
+
+    // 获奖人关联
+    public function cyJsry()
+    {
+        return $this->hasMany('\app\rongyu\model\JsRongyuCanyu','rongyuid','id')->where('category',2);
     }
 
 

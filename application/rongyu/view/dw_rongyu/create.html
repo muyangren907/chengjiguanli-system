@@ -241,6 +241,7 @@
 				"str":str,
 			},
 			function(data,status){
+				$('#cySelect').empty();
 				if($.isEmptyObject(data))
 				{
 					return true;
@@ -260,7 +261,7 @@
 	function addCy(obj,teacherId)
 	{
 		$('#canyu').val('');
-		$(obj).attr('class','btn btn-primary radius mr-5 size-MINI');
+		$(obj).attr('class','btn btn-warning radius mr-5 size-MINI');
 		$(obj).attr('onclick','delCy(this)');
 		var myhtml = "";
 		myhtml = "<span><input type='hidden' name='teachers[]' value ="+teacherId+"></span>";

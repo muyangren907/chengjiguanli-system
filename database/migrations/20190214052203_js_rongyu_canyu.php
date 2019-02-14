@@ -3,7 +3,7 @@
 use think\migration\Migrator;
 use think\migration\db\Column;
 
-class DwRongyuCanyu extends Migrator
+class JsRongyuCanyu extends Migrator
 {
     /**
      * Change Method.
@@ -29,13 +29,13 @@ class DwRongyuCanyu extends Migrator
     public function change()
     {
         // 定义数据表名称
-        $table = $this->table('dw_rongyu_canyu');
+        $table = $this->table('js_rongyu_canyu');
 
         // 添加当前表字段
         $table
+            ->addColumn('category','integer',['limit'=>1,'null'=>false,'default'=>0,'comment'=>'获奖人或参与人,1=>获奖人,2=>参与人'])
             ->addColumn('rongyuid','integer',['limit'=>11,'null'=>false,'comment'=>'荣誉id'])
             ->addColumn('teacherid','integer',['limit'=>11,'null'=>false,'comment'=>'获奖单位'])
             ->create();
-
     }
 }

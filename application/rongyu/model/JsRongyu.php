@@ -52,7 +52,7 @@ class JsRongyu extends Base
          return $this->belongsTo('\app\system\model\School','fzschool','id');
     }
 
-    // 荣誉类型
+    // 荣誉类型关联
     public function lxCategory()
     {
          return $this->belongsTo('\app\system\model\Category','category','id');
@@ -64,6 +64,7 @@ class JsRongyu extends Base
     {
     	return $this->hasMany('JsRongyuInfo','rongyuce','id');
     }
+
 
     // 荣誉级别
     public function getCntAttr()

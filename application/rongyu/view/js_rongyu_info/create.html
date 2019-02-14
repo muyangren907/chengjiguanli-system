@@ -34,27 +34,17 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">获奖人：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="姓名、首拼、全拼" id="huojia" name="huojia">
+				<input type="text" class="input-text mb-10" value="" placeholder="参与人(姓名、首拼、全拼" id="hjteacher" name="hjteacher" style="max-width: 200px;min-width: 80px" onkeyup="hjSelect(this)">
+				<div id="addHj"></div>
+				<div id="hjSelect"></div>
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">参与人：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="姓名、首拼、全拼" id="canyu" name="canyu">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>荣誉类型：</label>
-			<div class="formControls col-xs-8 col-sm-9 f-l">
-				<span class="select-box f-l" style="width:180px;">
-				{php}$category = getCategory(112);{/php}
-				<select class="select" id="category" name="category" size="1" required>
-					<option value="">--请选择荣誉类型--</option>
-					{volist name="category" id="vo"}
-						<option value="{$vo.id}">{$vo.title}</option>
-					{/volist}
-				</select>
-				</span>
+				<input type="text" class="input-text mb-10" value="" placeholder="参与人(姓名、首拼、全拼" id="cyteacher" name="cyteacher" style="max-width: 200px;min-width: 80px" onkeyup="cySelect()">
+				<div id="addCy"></div>
+				<div id="cySelect"></div>
 			</div>
 		</div>
 		<div class="row cl">
@@ -242,6 +232,107 @@
 	    });
 
 	});
+
+
+	// 获取获奖教师列表
+	function hjSelect(obj)
+	{
+		$('#hjSelect').empty();
+		$('#cySelect').empty();
+		var str = "";
+		str = $('#hjteacher').val();
+		if(str.length<=0)
+		{
+			return "";
+		}
+		$.post(
+			"{:Url::build('renshi/index/srcTeacher')}",
+			{
+				"str":str,
+			},
+			function(data,status){
+				$('#hjSelect').empty();
+				$('#cySelect').empty();
+				if($.isEmptyObject(data))
+				{
+					return true;
+				}
+				for (var i = data.length - 1; i >= 0; i--) {
+					var myhtml = "";
+					myhtml = "<input class='btn btn-secondary radius mr-5 size-MINI' type='button' value='" + data[i]['xingming'] + "' onclick=addHj(this,"+data[i]['id']+") title="+data[i]['danwei']+'　'+data[i]['sex']+'　'+data[i]['age']+" >";
+					$('#hjSelect').append(myhtml);
+				}
+				
+			}
+		);
+	}
+
+	// 添加参与人
+	function addHj(obj,teacherId)
+	{
+		$('#hjteacher').val('');
+		$('#cyteacher').val('');
+		$(obj).attr('class','btn btn-warning radius mr-5 size-MINI');
+		$(obj).attr('onclick','delCy(this)');
+		var myhtml = "";
+		myhtml = "<span><input type='hidden' name='hjteachers[]' value ="+teacherId+"></span>";
+		$('#addHj').append(myhtml);
+		$('#addHj').children("span").last().append(obj);
+	}
+
+
+	// 获取参与教师列表
+	function cySelect(obj)
+	{
+		$('#hjSelect').empty();
+		$('#cySelect').empty();
+		var str = "";
+		str = $('#cyteacher').val();
+		if(str.length<=0)
+		{
+			return "";
+		}
+		$.post(
+			"{:Url::build('renshi/index/srcTeacher')}",
+			{
+				"str":str,
+			},
+			function(data,status){
+				$('#hjSelect').empty();
+				$('#cySelect').empty();
+				if($.isEmptyObject(data))
+				{
+					return true;
+				}
+				for (var i = data.length - 1; i >= 0; i--) {
+					var myhtml = "";
+					myhtml = "<input class='btn btn-secondary radius mr-5 size-MINI' type='button' value='" + data[i]['xingming'] + "' onclick=addCy(this,"+data[i]['id']+") title="+data[i]['danwei']+'　'+data[i]['sex']+'　'+data[i]['age']+" >";
+					$('#cySelect').append(myhtml);
+				}
+				
+			}
+		);
+	}
+
+
+	// 添加参与人
+	function addCy(obj,teacherId)
+	{
+		$('#hjteacher').val('');
+		$('#cyteacher').val('');
+		$(obj).attr('class','btn btn-warning radius mr-5 size-MINI');
+		$(obj).attr('onclick','delCy(this)');
+		var myhtml = "";
+		myhtml = "<span><input type='hidden' name='cyteachers[]' value ="+teacherId+"></span>";
+		$('#addCy').append(myhtml);
+		$('#addCy').children("span").last().append(obj);
+	}
+
+	// 删除参与人
+	function delCy(obj)
+	{
+		$(obj).parent().remove();
+	}
 
 	// 匹配用户名
 	$.validator.addMethod("zh",function(value,element){
