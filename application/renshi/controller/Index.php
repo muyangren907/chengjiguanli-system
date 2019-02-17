@@ -261,16 +261,55 @@ class Index extends Base
         }
 
         // 删除标题行
-        array_splice($stuinfo,0,3);
+        array_splice($teacherinfo,0,4 );
 
         // 整理数据
         $i = 0;
-        $teacher = array();
+        $teacherlist = array();
 
-        
+        foreach ($teacherinfo as $key => $value) {
+            //  如果姓名、性别、出生日期、全拼、首拼为空则跳过
+            if(empty($value[1]) || empty($value[2]) || empty($value[3]) || empty($value[11]) || empty($value[12]))
+            {
+                continue;
+            }
 
-        
-        return json($data);
+            // 整理数据
+            $teacherlist[$i]['xingming'] = $value[1];
+            if($value[2] == '男')
+            {
+                $teacherlist[$i]['sex'] = 1;
+            }else if($value[2] == '女'){
+                $teacherlist[$i]['sex'] = 0;
+            }else{
+                $teacherlist[$i]['sex'] = 2;
+            }
+            $teacherlist[$i]['shengri'] = $value[3];
+            $teacherlist[$i]['worktime'] = $value[4];
+            $teacherlist[$i]['zhiwu'] = $value[5];
+            $teacherlist[$i]['danwei'] = $list['school'];
+            $teacherlist[$i]['biey'] = $value[8];
+            $teacherlist[$i]['zhuanye'] = $value[9];
+            $teacherlist[$i]['xueli'] = $value[10];
+            $teacherlist[$i]['quanpin'] = $value[11];
+            $teacherlist[$i]['shoupin'] = $value[12];
+
+            $i++;
+        }
+
+
+        // 实例化学生信息数据模型
+        $teacher = new Teacher();
+
+        // dump($teacherlist);
+
+        // 保存或更新信息
+        $data = $teacher->saveAll($teacherlist);
+
+        // 返回添加结果
+        $data ? $data = ['msg'=>'数据上传成功','val'=>true] : ['msg'=>'数据上传失败','val'=>false];
+       
+        return json($data1);
     }
 
     
