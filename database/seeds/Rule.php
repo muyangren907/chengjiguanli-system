@@ -177,18 +177,18 @@ class Rule extends Seeder
                     ['title'=>'状态','name'=>'rongyu/DwRongyu/setStatus','paixu'=>5,'pid'=>801],
                     ['title'=>'批量上传','name'=>'rongyu/DwRongyu/createAll','paixu'=>6,'pid'=>801],
                     // 教师荣誉册管理
-                    ['title'=>'添加','name'=>'rongyu/JsRongyu/create','paixu' =>1,'pid'=>801],
-                    ['title'=>'删除','name'=>'rongyu/JsRongyu/delete','paixu'=>2,'pid'=>801],
-                    ['title'=>'编辑','name'=>'rongyu/JsRongyu/edit','paixu'=>3,'pid'=>801,],
-                    ['title'=>'查看','name'=>'rongyu/JsRongyu/read','paixu'=>4,'pid'=>801,],
-                    ['title'=>'状态','name'=>'rongyu/JsRongyu/setStatus','paixu'=>5,'pid'=>801],
+                    ['title'=>'添加','name'=>'rongyu/JsRongyu/create','paixu' =>1,'pid'=>802],
+                    ['title'=>'删除','name'=>'rongyu/JsRongyu/delete','paixu'=>2,'pid'=>802],
+                    ['title'=>'编辑','name'=>'rongyu/JsRongyu/edit','paixu'=>3,'pid'=>802,],
+                    ['title'=>'查看','name'=>'rongyu/JsRongyu/read','paixu'=>4,'pid'=>802,],
+                    ['title'=>'状态','name'=>'rongyu/JsRongyu/setStatus','paixu'=>5,'pid'=>802],
                     // 教师荣誉信息管理
-                    ['title'=>'添加','name'=>'rongyu/JsRongyuInfo/create','paixu' =>1,'pid'=>801],
-                    ['title'=>'删除','name'=>'rongyu/JsRongyuInfo/delete','paixu'=>2,'pid'=>801],
-                    ['title'=>'编辑','name'=>'rongyu/JsRongyuInfo/edit','paixu'=>3,'pid'=>801,],
-                    ['title'=>'查看','name'=>'rongyu/JsRongyuInfo/read','paixu'=>4,'pid'=>801,],
-                    ['title'=>'状态','name'=>'rongyu/JsRongyuInfo/setStatus','paixu'=>5,'pid'=>801],
-                    ['title'=>'批量上传','name'=>'rongyu/JsRongyuInfo/createAll','paixu'=>6,'pid'=>801],
+                    ['title'=>'添加','name'=>'rongyu/JsRongyuInfo/create','paixu' =>1,'pid'=>803],
+                    ['title'=>'删除','name'=>'rongyu/JsRongyuInfo/delete','paixu'=>2,'pid'=>803],
+                    ['title'=>'编辑','name'=>'rongyu/JsRongyuInfo/edit','paixu'=>3,'pid'=>803,],
+                    ['title'=>'查看','name'=>'rongyu/JsRongyuInfo/read','paixu'=>4,'pid'=>803,],
+                    ['title'=>'状态','name'=>'rongyu/JsRongyuInfo/setStatus','paixu'=>5,'pid'=>803],
+                    ['title'=>'批量上传','name'=>'rongyu/JsRongyuInfo/createAll','paixu'=>6,'pid'=>803],
 
 
             

@@ -22,7 +22,7 @@ class Teacher extends Base
     // 参加工作时间获取器
     public function getWorktimeAttr($value)
     {
-    	return date('Y-m-d',$value);
+    	return date('Y-m',$value);
     }
 
     // 参加工作时间修改器
