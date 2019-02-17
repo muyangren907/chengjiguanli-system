@@ -269,6 +269,14 @@ class Student extends Base
 
         // 读取表格数据
         $stuinfo = $excel->readXls($list['url']);
+
+        // 判断表格是否正确
+        if($stuinfo[0][0] != "学生信息上传模板" )
+        {
+            $data = array('msg'=>'请使用模板上传','val'=>false,'url'=>null);
+            return json($data);
+        }
+        
         // 删除标题行
         array_splice($stuinfo,0,3);
 

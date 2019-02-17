@@ -244,16 +244,29 @@ class Index extends Base
     // 批量保存
     public function saveAll()
     {
-        // 未完成
-
         // 获取表单数据
-        $list = request()->only(['danwei','url'],'post');
+        $list = request()->only(['school','url'],'post');
 
         // 实例化操作表格类
-        $excel = new Myexcel();
+        $excel = new \app\renshi\controller\Myexcel;;
 
         // 读取表格数据
-        $teacherinfo = $excel->readExcel($list['url']);
+        $teacherinfo = $excel->readXls($list['url']);
+
+        // 判断表格是否正确
+        if($teacherinfo[0][1] != "教师基本情况表" )
+        {
+            $data = array('msg'=>'请使用模板上传','val'=>false,'url'=>null);
+            return json($data);
+        }
+
+        // 删除标题行
+        array_splice($stuinfo,0,3);
+
+        // 整理数据
+        $i = 0;
+        $teacher = array();
+
         
 
         
@@ -317,6 +330,14 @@ class Index extends Base
                     ->append(['age'])
                     ->all();
         return json($list);
+    }
+
+
+    // 下载表格模板
+    public function download()
+    {
+        $download =  new \think\response\Download('TeacherInfo.xlsx');
+        return $download->name('TeacherInfo.xlsx');
     }
 
 

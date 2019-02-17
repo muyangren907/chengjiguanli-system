@@ -5,6 +5,12 @@
 {block name="formaa"}
 	<div class="form form-horizontal">
 		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">注意：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				友情提示：批传前请先确定上传名单与服务器是否重复，如果重复请删除重复数据。不同学校数据不可以放在同一个文件内。确定学校无误后再提交表单。
+			</div>
+		</div>
+		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">模板：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<a href="{:url('download')}"class="btn btn-primary radius">下载模板</a>
@@ -29,11 +35,11 @@
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>工作单位：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>学校：</label>
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:300px;">
-				{php} $school = schlist('校级','区级');{/php}
-				<select class="select" id="danwei" name="danwei" size="1" required>
+				{php} $school = schlist('校级','校级');{/php}
+				<select class="select" id="school" name="school" size="1" required>
 					<option value="">--请选择现工作单位--</option>
 					{volist name="school" id="vo" key="k"}
 						<option value="{$vo.id}">{$vo.title}</option>
@@ -90,7 +96,7 @@
 	        },
 
 	        fileNumLimit: 1, // 上传文件数
-	        fileSizeLimit:51200,
+	        fileSizeLimit:2*1024*1024,
 	    });
 	    uploader.on( 'fileQueued', function( file ) {
 	        var $li = $(
