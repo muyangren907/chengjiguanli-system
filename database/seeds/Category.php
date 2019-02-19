@@ -30,6 +30,8 @@ class Category extends Seeder
             ['id'=>111,'title'=>'文件','pid'=>0,'paixu'=>11],
             ['id'=>112,'title'=>'单位荣誉','pid'=>0,'paixu'=>12],
             ['id'=>113,'title'=>'单位荣誉奖项','pid'=>0,'paixu'=>13],
+            ['id'=>114,'title'=>'教师荣誉','pid'=>0,'paixu'=>14],
+            ['id'=>115,'title'=>'教师荣誉奖项','pid'=>0,'paixu'=>15],
 
             // 二级类别
                 //  大学科
@@ -113,11 +115,16 @@ class Category extends Seeder
                 ['title'=>'科研','pid'=>112,'paixu'=>1],
                 ['title'=>'特色','pid'=>112,'paixu'=>2],
                 //  单位荣誉奖项
-                ['title'=>'先进单位','pid'=>113,'paixu'=>1],
+                ['title'=>'先进(个人/单位)','pid'=>113,'paixu'=>1],
                 ['title'=>'一等奖','pid'=>113,'paixu'=>2],
                 ['title'=>'二等奖','pid'=>113,'paixu'=>3],
-                ['title'=>'三等奖','pid'=>113,'paixu'=>3],
-                ['title'=>'优秀奖','pid'=>113,'paixu'=>3],
+                ['title'=>'三等奖','pid'=>113,'paixu'=>4],
+                ['title'=>'优秀奖','pid'=>113,'paixu'=>5],
+                //  教师荣誉分类
+                ['title'=>'优质课','pid'=>114,'paixu'=>1],
+                ['title'=>'技能大赛','pid'=>114,'paixu'=>2],
+                ['title'=>'论文','pid'=>114,'paixu'=>3],
+                ['title'=>'教科研','pid'=>114,'paixu'=>4],
 
                 
         ];

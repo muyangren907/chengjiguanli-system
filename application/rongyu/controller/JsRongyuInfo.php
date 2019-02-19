@@ -275,7 +275,7 @@ class JsRongyuInfo extends Base
         $data = ryinfo::update($list);
 
         // 删除原来的获奖人与参与人信息
-        $data->allJsry()->delete(true);
+        $data->allJsry()->where('rongyuid',$list['id'])->delete(true);
         // 声明教师数组
             $teacherlist = [];
             // 循环组成获奖教师信息
@@ -286,14 +286,17 @@ class JsRongyuInfo extends Base
                     'category' => 1,
                 ];
             }
-            // 循环组成参与教师信息
-            foreach ($list['cyteachers'] as $key => $value) {
-                $canyulist[] = [
-                    'teacherid' => $value,
-                    'rongyuid' => $list['id'],
-                    'category' => 2,
-                ];
+            if(!empty($list['cyteachers'])){
+                // 循环组成参与教师信息
+                foreach ($list['cyteachers'] as $key => $value) {
+                    $canyulist[] = [
+                        'teacherid' => $value,
+                        'rongyuid' => $list['id'],
+                        'category' => 2,
+                    ];
+                }
             }
+            
 
         // 添加新的获奖人与参与人信息
         $data->allJsry()->saveAll($canyulist);
@@ -302,7 +305,7 @@ class JsRongyuInfo extends Base
         $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
-        return json($data&1);
+        return json($data);
     }
 
     /**

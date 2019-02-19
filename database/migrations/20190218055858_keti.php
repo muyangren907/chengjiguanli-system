@@ -46,6 +46,10 @@ class Keti extends Migrator
             ->addColumn('jtshijian','integer',['limit'=>11,'null'=>false,'comment'=>'结题时间'])
             ->addColumn('jddengji','integer',['limit'=>11,'null'=>false,'comment'=>'鉴定等级'])
             ->addColumn('jtpic','string',['limit'=>100,'null'=>false,'comment'=>'结题证书图片'])
+            ->addColumn('create_time','integer',['limit'=>11,'null'=>true,'comment'=>'创建时间'])
+            ->addColumn('update_time','integer',['limit'=>11,'null'=>true,'comment'=>'更新时间'])
+            ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
+            ->addColumn('beizhu','string',['limit'=>80,'null'=>true,'comment'=>'备注'])
             ->create();
     }
 }
