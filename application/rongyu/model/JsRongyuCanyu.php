@@ -2,12 +2,11 @@
 
 namespace app\rongyu\model;
 
+// 引用数据模型类
 use think\Model;
 
 class JsRongyuCanyu extends Model
 {
-    // 关闭全局自动时间戳
-    protected $autoWriteTimestamp = false;
 
     // 荣誉册关联
     public function rongyu()

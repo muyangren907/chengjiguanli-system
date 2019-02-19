@@ -185,9 +185,8 @@ class JsRongyuInfo extends Base
             $list['url'] = str_replace('\\','/',$list['url']);
 
 
-
             // 如果图片上传成功，则添加荣誉记录
-            $data = ryinfo::create(['url'=>$list['url'],'rongyuce'=>$rongyuce]);
+            $data = ryinfo::create(['pic'=>$list['url'],'rongyuce'=>$rongyuce]);
             $id = $data->id;
 
             $id ? $data = array('msg'=>'上传成功','val'=>true,'url'=>$list['url'],'ryid'=>$id) : $data = array('msg'=>'保存文件信息失败','val'=>false,'url'=>null);
@@ -237,9 +236,6 @@ class JsRongyuInfo extends Base
                     },
                 ])
                 ->find();
-
-        dump($list);
-
 
         $this->assign('list',$list);
 

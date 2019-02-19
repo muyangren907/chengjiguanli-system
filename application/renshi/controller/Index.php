@@ -309,7 +309,7 @@ class Index extends Base
         // 返回添加结果
         $data ? $data = ['msg'=>'数据上传成功','val'=>true] : ['msg'=>'数据上传失败','val'=>false];
        
-        return json($data1);
+        return json($data);
     }
 
     

@@ -22,9 +22,10 @@ class Rule extends Seeder
             ['id'=>3,'title' =>'考试管理','name'=>'kaoshi','paixu' =>3,'ismenu' =>true,'font'=>'Hui-iconfont-canshu'],
             ['id'=>4,'title' =>'师生名单','name'=>'renshi','paixu' =>4,'ismenu' =>true,'font'=>'Hui-iconfont-user-group'],
             ['id'=>5,'title' =>'教务管理','name'=>'teach','paixu' =>5,'ismenu' =>true,'font'=>'Hui-iconfont-yuyin2'],
-            ['id'=>6,'title' =>'管理员管理','name'=>'admin','paixu' =>7,'ismenu' =>true,'font'=>'Hui-iconfont-root'],
-            ['id'=>7,'title'=>'系统管理','name' =>'system','paixu' =>8,'ismenu'=>true,'font' =>'Hui-iconfont-system'],
+            ['id'=>6,'title' =>'管理员管理','name'=>'admin','paixu' =>8,'ismenu' =>true,'font'=>'Hui-iconfont-root'],
+            ['id'=>7,'title'=>'系统管理','name' =>'system','paixu' =>9,'ismenu'=>true,'font' =>'Hui-iconfont-system'],
             ['id'=>8,'title'=>'荣誉管理','name' =>'rongyu','paixu' =>6,'ismenu'=>true,'font' =>'Hui-iconfont-huangguan','status'=>false],
+            ['id'=>9,'title'=>'课题管理','name' =>'keti','paixu' =>7,'ismenu'=>true,'font' =>'Hui-iconfont-huangguan','status'=>false],
                 // 二级菜单
                 // 成绩采集
                 ['id'=>101,'title'=>'扫码录入','name'=>'chengji/Index/malu','paixu'=>1,'ismenu' =>true,'pid' =>1,'url'=>'/chengji/malu',],
@@ -61,6 +62,10 @@ class Rule extends Seeder
                 ['id'=>802,'title'=>'教师荣誉册','name'=>'rongyu/JsRongyu/index','paixu'=>2,'ismenu' =>true,'pid' =>8,'url'=>'/jsry',],
                 ['id'=>803,'title'=>'教师荣誉信息','name'=>'rongyu/JsRongyuInfo/index','paixu'=>3,'ismenu' =>true,'pid' =>8,'url'=>'/jsryinfo',],
                 ['id'=>804,'title'=>'学生荣誉','name'=>'rongyu/StuRongyu/index','paixu'=>7,'ismenu' =>true,'pid' =>8,'url'=>'/xsry','status'=>0],
+
+                // 荣誉管理
+                ['id'=>901,'title'=>'课题管理','name'=>'keti/Index/index','paixu'=>1,'ismenu' =>true,'pid' =>9,'url'=>'/kt',],
+                
                 
                 
                     
@@ -189,6 +194,15 @@ class Rule extends Seeder
                     ['title'=>'查看','name'=>'rongyu/JsRongyuInfo/read','paixu'=>4,'pid'=>803,],
                     ['title'=>'状态','name'=>'rongyu/JsRongyuInfo/setStatus','paixu'=>5,'pid'=>803],
                     ['title'=>'批量上传','name'=>'rongyu/JsRongyuInfo/createAll','paixu'=>6,'pid'=>803],
+
+
+                    // 课题管理
+                    ['title'=>'添加','name'=>'keti/index/create','paixu' =>1,'pid'=>901],
+                    ['title'=>'删除','name'=>'keti/index/delete','paixu'=>2,'pid'=>901],
+                    ['title'=>'编辑','name'=>'keti/index/edit','paixu'=>3,'pid'=>901,],
+                    ['title'=>'查看','name'=>'keti/index/read','paixu'=>4,'pid'=>901,],
+                    ['title'=>'状态','name'=>'keti/index/setStatus','paixu'=>5,'pid'=>901],
+                    ['title'=>'批量上传','name'=>'keti/index/createAll','paixu'=>6,'pid'=>901],
 
 
             

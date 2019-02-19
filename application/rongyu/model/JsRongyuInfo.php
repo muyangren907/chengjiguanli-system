@@ -48,10 +48,16 @@ class JsRongyuInfo extends Base
                     },
                     'ryTuce'=>function($query){
                         $query->field('id,title');
-                    }
+                    },
+                    'hjJsry'=>function($query){
+                        $query->field('rongyuid,teacherid')
+                        ->with(['teacher'=>function($query){
+                            $query->field('id,xingming');
+                        }]);
+                    },
                 ]
             )
-            // ->append(['jibie'])
+            ->append(['hjJsName'])
     		->select();
 
 
@@ -136,7 +142,30 @@ class JsRongyuInfo extends Base
         if ($value>0)
         {
             $value = date('Y-m-d',$value);
+        }else{
+            $value = "";
         }
         return $value;
+    }
+
+    // 获奖教师名整理
+    public function getHjJsNameAttr($value)
+    {
+        $teacherList = $this->getAttr('hjJsry');
+        $teachNames = "";
+        $i = 0;
+        foreach ($teacherList as $key => $value) {
+            # code...
+            if($i == 0)
+            {
+                $teachNames = $value['teacher']['xingming'];
+            }else{
+                $teachNames = $teachNames . '、' .$value['teacher']['xingming'];
+            }
+            $i++;
+        }
+
+        return $teachNames;
+
     }
 }

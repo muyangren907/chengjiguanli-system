@@ -148,7 +148,7 @@
 	// 定义列参数
 	var mycolumns = [
         { "data": "id" },
-        { "data": "teacherid" ,"name":"teacherid","defaultContent": ""},
+        { "data": "hjJsName" ,"name":"teacherid","defaultContent": ""},
         { "data": "hj_school.jiancheng" ,"name":"hjschool","defaultContent": ""},
         { "data": "title","defaultContent": "" },
         { "data": "ry_tuce.title" ,"name":"rongyuce","defaultContent": ""},
@@ -176,9 +176,6 @@
 					stopbut = '<a style="text-decoration:none" onClick="stop(this,'+ row.id +')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>';
 					// 启用按钮
 					startbut = '<a style="text-decoration:none" onClick="start(this,'+ row.id +')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>';
-
-					// 上图图片按钮
-					picbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/jsryinfo/'+row.id+'/createall") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe613;</i></a>';
 					// 编辑按钮
 					editbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/jsryinfo/'+row.id+'/edit") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
 					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/dwry/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
@@ -189,7 +186,7 @@
 						buts = stopbut;
 					} 
 
-					return buts + picbut + editbut + delbut;
+					return buts + editbut + delbut;
                 }
         },
         {

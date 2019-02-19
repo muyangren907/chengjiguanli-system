@@ -2,6 +2,7 @@
 
 namespace app\rongyu\model;
 
+// 引用数据模型基类
 use think\Model;
 
 class DwRongyuCanyu extends Model

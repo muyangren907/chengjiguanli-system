@@ -85,7 +85,12 @@ class JsRongyu extends Base
         if ($value>0)
         {
             $value = date('Y-m-d',$value);
+        }else{
+            $value = "";
         }
         return $value;
     }
+
+
+
 }

@@ -108,7 +108,16 @@ class DwRongyu extends Base
     // 发证时间获取器
     public function getFzshijianAttr($value)
     {
-        return date('Y-m-d',$value);
+        // 判断发证时间是否为空
+        if ($value>0)
+        {
+            $value = date('Y-m-d',$value);
+        }else{
+            $value = "";
+        }
+
+        // 返回发证时间
+        return $value;
     }
 
 }

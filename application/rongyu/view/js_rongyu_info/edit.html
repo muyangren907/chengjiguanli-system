@@ -23,7 +23,14 @@
 			<label class="form-label col-xs-4 col-sm-3">获奖人：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text mb-10" value="" placeholder="参与人(姓名、首拼、全拼" id="hjteacher" name="hjteacher" style="max-width: 200px;min-width: 80px" onkeyup="hjSelect(this)">
-				<div id="addHj"></div>
+				<div id="addHj">
+					{volist name="list.hj_jsry" id="vo"}
+					<span>
+						<input type="hidden" value="{$vo.teacherid}" name="hjteachers[]">
+						<input class="btn btn-success radius mr-5 size-MINI" type="button" value="{$vo.teacher.xingming}" onclick="delCy(this)">
+					</span>
+					{/volist}
+				</div>
 				<div id="hjSelect"></div>
 			</div>
 		</div>
@@ -31,7 +38,14 @@
 			<label class="form-label col-xs-4 col-sm-3">参与人：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text mb-10" value="" placeholder="参与人(姓名、首拼、全拼" id="cyteacher" name="cyteacher" style="max-width: 200px;min-width: 80px" onkeyup="cySelect()">
-				<div id="addCy"></div>
+				<div id="addCy">
+					{volist name="list.cy_jsry" id="vo"}
+					<span>
+						<input type="hidden" value="{$vo.teacherid}" name="cyteachers[]">
+						<input class="btn btn-success radius mr-5 size-MINI" type="button" value="{$vo.teacher.xingming}" onclick="delCy(this)">
+					</span>
+					{/volist}
+				</div>
 				<div id="cySelect"></div>
 			</div>
 		</div>
