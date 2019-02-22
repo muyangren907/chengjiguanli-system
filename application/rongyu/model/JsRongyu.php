@@ -7,7 +7,7 @@ use app\common\model\Base;
 
 class JsRongyu extends Base
 {
-	//搜索单位获奖荣誉
+	//搜索教师获奖荣誉
     public function search($search)
     {
     	// 获取参数

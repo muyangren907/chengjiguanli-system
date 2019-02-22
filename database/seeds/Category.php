@@ -28,10 +28,11 @@ class Category extends Seeder
             ['id'=>109,'title'=>'考试','pid'=>0,'paixu'=>9],
             ['id'=>110,'title'=>'学科','pid'=>0,'paixu'=>10],
             ['id'=>111,'title'=>'文件','pid'=>0,'paixu'=>11],
-            ['id'=>112,'title'=>'单位荣誉','pid'=>0,'paixu'=>12],
+            ['id'=>112,'title'=>'单位荣誉类型','pid'=>0,'paixu'=>12],
             ['id'=>113,'title'=>'单位荣誉奖项','pid'=>0,'paixu'=>13],
-            ['id'=>114,'title'=>'教师荣誉','pid'=>0,'paixu'=>14],
-            ['id'=>115,'title'=>'教师荣誉奖项','pid'=>0,'paixu'=>15],
+            ['id'=>114,'title'=>'教师荣誉类型','pid'=>0,'paixu'=>14],
+            ['id'=>115,'title'=>'课题类型','pid'=>0,'paixu'=>15],
+
 
             // 二级类别
                 //  大学科
@@ -120,13 +121,18 @@ class Category extends Seeder
                 ['title'=>'二等奖','pid'=>113,'paixu'=>3],
                 ['title'=>'三等奖','pid'=>113,'paixu'=>4],
                 ['title'=>'优秀奖','pid'=>113,'paixu'=>5],
+                ['title'=>'百十佳','pid'=>113,'paixu'=>6],
                 //  教师荣誉分类
                 ['title'=>'优质课','pid'=>114,'paixu'=>1],
                 ['title'=>'技能大赛','pid'=>114,'paixu'=>2],
                 ['title'=>'论文','pid'=>114,'paixu'=>3],
                 ['title'=>'教科研','pid'=>114,'paixu'=>4],
-
-                
+                ['title'=>'荣誉称号','pid'=>114,'paixu'=>4],
+                //  课题类型
+                ['title'=>'一般课题','pid'=>115,'paixu'=>1],
+                ['title'=>'专项课题','pid'=>115,'paixu'=>2],
+                ['title'=>'重大或重点课题','pid'=>115,'paixu'=>3],
+               
         ];
         // 保存数据
         $this->table('category')->insert($rows)->save();

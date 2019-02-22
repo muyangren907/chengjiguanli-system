@@ -177,7 +177,7 @@ class JsRongyu extends Base
      */
     public function edit($id)
     {
-        // 获取学生信息
+        // 获取荣誉册信息
         $list = jsry::where('id',$id)
                 ->field('id,title,category,fzshijian,fzschool')
                 ->find();

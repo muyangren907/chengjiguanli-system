@@ -3,7 +3,7 @@
 	<nav class="breadcrumb">
 		<i class="Hui-iconfont">&#xe67f;</i> 首页
 		<span class="c-gray en">&gt;</span> 课题管理
-		<span class="c-gray en">&gt;</span> 课题册
+		<span class="c-gray en">&gt;</span> 课题信息
 		<a class="btn btn-success radius r"
 			style="line-height:1.6em;margin-top:3px"
 			href="javascript:location.replace(location.href);"
@@ -21,11 +21,11 @@
 			批量删除
 			</a>
 			<!-- 添加按钮 -->
-			<a href="javascript:;" onclick=add('添加课题册',"/kt/create",600,330) class="btn btn-primary radius">
+<!-- 			<a href="javascript:;" onclick=add('添加课题册',"/kt/create",600,330) class="btn btn-primary radius">
 				<i class="Hui-iconfont">&#xe600;</i>
 				添加课题册
 			</a>
-		</span>
+ -->		</span>
 		<span class="r">
 			共有数据：<strong>{$list.count}</strong> 条
 		</span>
@@ -58,6 +58,22 @@
 							<label class="ml-10">
 								<input type="checkbox" value="{$vo.id}" name="category" onclick="dtreload()">
 								{$vo.title}
+							</label>
+							{/foreach}
+						</dd>
+					</dt>
+				</div>
+				<div>
+					{php}
+						$school = schlist('校级','区级');
+					{/php}
+					<label class="f-l">负责单位：</label>
+					<dt>
+						<dd class=" mt-10">
+							{foreach $school as $key=>$vo } 
+							<label class="ml-10">
+								<input type="checkbox" value="{$vo.id}" name="fzschool" onclick="dtreload()">
+								{$vo.jiancheng}
 							</label>
 							{/foreach}
 						</dd>
@@ -115,6 +131,16 @@
 				});
 				return chk;
 			},
+			fzschool:function(){
+				var chk = [];
+				$('input[name="fzschool"]:checked').each(function(){
+					if(typeof($(this).val()) != "undefined")
+					{
+						chk.push($(this).val());
+					}
+				});
+				return chk;
+			},
 		},
 	};
 
@@ -141,12 +167,6 @@
 			}
 		},
 		{
-			"targets": 1,			
-			"render": function(data, type, row, meta) {
-				return '<a title="查看课题" data-href="ktinfo/'+ row.id +'/ketice" data-title="'+row.title+'" onClick="Hui_admin_tab(this)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">'+row.title+'册</i></a>'
-			}
-		},
-		{
 			"targets": -1,
 			"className":'.td-manage',			
 			"render": function(data, type, row, meta) {
@@ -156,7 +176,7 @@
 					startbut = '<a style="text-decoration:none" onClick="start(this,'+ row.id +')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>';
 
 					// 上图图片按钮
-					picbut = '<a title="批传" href="javascript:void(0);" onclick=addfull("批传立项通知书","/ktinfoall/'+row.id+'/createall") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe613;</i></a>';
+					picbut = '<a title="批传" href="javascript:void(0);" onclick=addfull("批传立项通知书","/ktinfo/'+row.id+'/createall") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe613;</i></a>';
 					// 添加荣誉
 					addbut = '<a title="添加课题" href="javascript:void(0);" onclick=addfull("添加课题","/ktinfo/'+row.id+'/create") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe604;</i></a>';
 					// 编辑按钮

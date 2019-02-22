@@ -33,23 +33,15 @@ class Keti extends Migrator
 
         // 添加当前表字段
         $table
-            ->addColumn('title','integer',['limit'=>1,'null'=>false,'default'=>0,'comment'=>'课题名称'])
-            ->addColumn('bianhao','string',['limit'=>11,'null'=>false,'comment'=>'课题编号'])
-            ->addColumn('lxpic','string',['limit'=>100,'null'=>false,'comment'=>'立项证书图片'])
+            ->addColumn('title','string',['limit'=>60,'null'=>false,'default'=>0,'comment'=>'课题册名称'])
             ->addColumn('lxshijian','integer',['limit'=>11,'null'=>false,'comment'=>'立项时间'])
-            ->addColumn('subject','integer',['limit'=>11,'null'=>false,'comment'=>'学科分类'])
-            ->addColumn('fzdanweiid','integer',['limit'=>11,'null'=>false,'comment'=>'负责单位id'])
             ->addColumn('lxdanweiid','integer',['limit'=>11,'null'=>false,'comment'=>'立项单位id'])
             ->addColumn('category','integer',['limit'=>11,'null'=>false,'comment'=>'课题类型'])
-            ->addColumn('fangxiang','integer',['limit'=>11,'null'=>false,'comment'=>'研究方向'])
-            ->addColumn('jhjtshijian','integer',['limit'=>11,'null'=>false,'comment'=>'计划结题时间'])
-            ->addColumn('jtshijian','integer',['limit'=>11,'null'=>false,'comment'=>'结题时间'])
-            ->addColumn('jddengji','integer',['limit'=>11,'null'=>false,'comment'=>'鉴定等级'])
-            ->addColumn('jtpic','string',['limit'=>100,'null'=>false,'comment'=>'结题证书图片'])
             ->addColumn('create_time','integer',['limit'=>11,'null'=>true,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'null'=>true,'comment'=>'更新时间'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
             ->addColumn('beizhu','string',['limit'=>80,'null'=>true,'comment'=>'备注'])
+            ->addColumn('status','boolean',['limit'=>1,'default'=>'1','null'=>false,'comment'=>'0=禁用，1=正常'])
             ->create();
     }
 }

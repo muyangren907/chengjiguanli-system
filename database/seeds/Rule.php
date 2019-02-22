@@ -64,7 +64,8 @@ class Rule extends Seeder
                 ['id'=>804,'title'=>'学生荣誉','name'=>'rongyu/StuRongyu/index','paixu'=>7,'ismenu' =>true,'pid' =>8,'url'=>'/xsry','status'=>0],
 
                 // 荣誉管理
-                ['id'=>901,'title'=>'课题管理','name'=>'keti/Index/index','paixu'=>1,'ismenu' =>true,'pid' =>9,'url'=>'/kt',],
+                ['id'=>901,'title'=>'课题册','name'=>'keti/Index/index','paixu'=>1,'ismenu' =>true,'pid' =>9,'url'=>'/kt',],
+                ['id'=>902,'title'=>'课题列表','name'=>'ketiinfo/Index/index','paixu'=>2,'ismenu' =>true,'pid' =>9,'url'=>'/ktinfo',],
                 
                 
                 
@@ -197,12 +198,20 @@ class Rule extends Seeder
 
 
                     // 课题管理
+                    // 课题册
                     ['title'=>'添加','name'=>'keti/index/create','paixu' =>1,'pid'=>901],
                     ['title'=>'删除','name'=>'keti/index/delete','paixu'=>2,'pid'=>901],
                     ['title'=>'编辑','name'=>'keti/index/edit','paixu'=>3,'pid'=>901,],
-                    ['title'=>'查看','name'=>'keti/index/read','paixu'=>4,'pid'=>901,],
-                    ['title'=>'状态','name'=>'keti/index/setStatus','paixu'=>5,'pid'=>901],
-                    ['title'=>'批量上传','name'=>'keti/index/createAll','paixu'=>6,'pid'=>901],
+                    ['title'=>'课题信息','name'=>'keti/ketiinfo/KetiCe','paixu'=>4,'pid'=>901,],
+                    ['title'=>'查看','name'=>'keti/index/read','paixu'=>5,'pid'=>901,],
+                    ['title'=>'状态','name'=>'keti/index/setStatus','paixu'=>6,'pid'=>901],
+                    // 课题信息
+                    ['title'=>'添加','name'=>'ketiinfo/index/create','paixu' =>1,'pid'=>902],
+                    ['title'=>'删除','name'=>'ketiinfo/index/delete','paixu'=>2,'pid'=>902],
+                    ['title'=>'编辑','name'=>'ketiinfo/index/edit','paixu'=>3,'pid'=>902,],
+                    ['title'=>'查看','name'=>'ketiinfo/index/read','paixu'=>4,'pid'=>902,],
+                    ['title'=>'状态','name'=>'ketiinfo/index/setStatus','paixu'=>5,'pid'=>902],
+                    ['title'=>'批量上传','name'=>'ketiinfo/index/createAll','paixu'=>6,'pid'=>902],
 
 
             

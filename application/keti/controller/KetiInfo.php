@@ -4,11 +4,11 @@ namespace app\keti\controller;
 
 // 引用控制器基类
 use app\common\controller\Base;
+// 引用课题信息数据模型类
+use app\keti\model\KetiInfo as ktinfo;
 
-// 引用课题数据模型
-use app\keti\model\Keti as keti;
 
-class Index extends Base
+class KetiInfo extends Base
 {
     /**
      * 显示资源列表
@@ -18,9 +18,9 @@ class Index extends Base
     public function index()
     {
         // 设置数据总数
-        $list['count'] = keti::count();
+        $list['count'] = ktinfo::count();
         // 设置页面标题
-        $list['title'] = '课题列表';
+        $list['title'] = '课题信息列表';
 
         // 模板赋值
         $this->assign('list', $list);
@@ -32,7 +32,7 @@ class Index extends Base
 
 
     /**
-     * 显示课题册列表
+     * 显示课题信息列表
      *
      * @return \think\Response
      */
@@ -59,13 +59,14 @@ class Index extends Base
         $search = [
             'lxdanweiid'=>$getdt['lxdanweiid'],
             'category'=>$getdt['category'],
+            'fzschool'=>$getdt['fzschool'],
             'search'=>$getdt['search']['value'],
             'order'=>$order,
             'order_field'=>$order_field
         ];
 
         // 实例化
-        $keti = new keti;
+        $keti = new ktinfo;
 
         // 获取荣誉总数
         $cnt = $keti->select()->count();
@@ -91,15 +92,17 @@ class Index extends Base
 
 
 
+
     /**
      * 显示创建资源表单页.
      *
      * @return \think\Response
      */
-    public function create()
+    public function create($id=0)
     {
         // 设置页面标题
-        $list['title'] = '添加课题册';
+        $list['title'] = '添加课题信息';
+        $list['ketice'] = $id;
 
         // 模板赋值
         $this->assign('list',$list);
@@ -114,30 +117,17 @@ class Index extends Base
      * @param  \think\Request  $request
      * @return \think\Response
      */
-    public function save()
+    public function save(Request $request)
     {
-        // 获取表单数据
-        $list = request()->only(['title','category','lxshijian','lxdanweiid'],'post');
-
-        // 实例化验证模型
-        $validate = new \app\keti\validate\Keti;
-        // 验证表单数据
-        $result = $validate->check($list);
-        $msg = $validate->getError();
-        // 如果验证不通过则停止保存
-        if(!$result){
-            return json(['msg'=>$msg,'val'=>0]);;
-        }
-
-        // 保存数据 
-        $data = keti::create($list);
-
-        // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
-
-        // 返回信息
-        return json($data);
+        //
     }
+
+
+    // 批量上传立项通知书
+    public function createall($id){
+        dump($id);
+    }
+
 
     /**
      * 显示指定的资源
@@ -158,15 +148,7 @@ class Index extends Base
      */
     public function edit($id)
     {
-        // 获取荣誉册信息
-        $list = keti::where('id',$id)
-                ->field('id,title,category,lxshijian,lxdanweiid')
-                ->find();
-
-
-        $this->assign('list',$list);
-
-        return $this->fetch();
+        //
     }
 
     /**
@@ -176,33 +158,9 @@ class Index extends Base
      * @param  int  $id
      * @return \think\Response
      */
-    public function update($id)
+    public function update(Request $request, $id)
     {
-        // 获取表单数据
-        $list = request()->only(['title','category','lxshijian','lxdanweiid'],'put');
-        $list['id'] = $id;
-        
-
-        // 实例化验证类
-        $validate = new \app\keti\validate\Keti;
-        // 验证表单数据
-        $result = $validate->check($list);
-        $msg = $validate->getError();
-
-        // 如果验证不通过则停止保存
-        if(!$result){
-            return json(['msg'=>$msg,'val'=>0]);;
-        }
-
-
-        // 更新数据
-        $data = keti::update($list);
-
-        // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
-
-        // 返回信息
-        return json($data);
+        //
     }
 
     /**
@@ -213,39 +171,14 @@ class Index extends Base
      */
     public function delete($id)
     {
-        if($id == 'm')
-        {
-            $id = request()->delete('ids/a');// 获取delete请求方式传送过来的数据并转换成数据
-        }
-
-        $data = keti::destroy($id);
-
-        // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
-
-        // 返回信息
-        return json($data);
+        //
     }
 
 
 
-        // 设置荣誉状态
-    public function setStatus()
+    // 课题册
+    public function KetiCe($id)
     {
-
-        //  获取id变量
-        $id = request()->post('id');
-        $value = request()->post('value');
-
-        // 获取学生信息
-        $data = keti::where('id',$id)->update(['status'=>$value]);
-
-        // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
-
-        // 返回信息
-        return json($data);
+        dump($id);
     }
-
-    
 }
