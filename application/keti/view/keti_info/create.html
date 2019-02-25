@@ -2,45 +2,40 @@
 {block name="mycss"}
 {/block}
 {block name="formaa"}
-	<form action="/kt" method="POST" class="form form-horizontal" id="form-member-add">
+	<form action="/ktinfo/" method="POST" class="form form-horizontal" id="form-member-add">
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">课题册标题：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>课题名称：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="text" class="input-text" value="" placeholder="课题册标题" id="title" name="title">
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>课题类型：</label>
-			<div class="formControls col-xs-8 col-sm-9 f-l">
-				<span class="select-box f-l" style="width:180px;">
-				{php}$category = getCategory(115);{/php}
-				<select class="select" id="category" name="category" size="1" required>
-					<option value="">--请选择课题类型--</option>
-					{volist name="category" id="vo"}
-						<option value="{$vo.id}">{$vo.title}</option>
-					{/volist}
-				</select>
-				</span>
+			<label class="form-label col-xs-4 col-sm-3">主持人：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text mb-10" value="" placeholder="主持人(姓名、首拼、全拼" id="hjteacher" name="hjteacher" style="max-width: 200px;min-width: 80px" onkeyup="hjSelect(this)">
+				<div id="addHj"></div>
+				<div id="hjSelect"></div>
+			</div>
+		</div>
+		<input type="hidden" value="{$list.ketice}">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>课题编号：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="课题编号" id="title" name="title">
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>立项单位：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>负责单位：</label>
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:300px;">
-				{php} $school = schlist('区级','其它级');{/php}
+				{php} $school = schlist('校级','区级');{/php}
 				<select class="select" id="lxdanweiid" name="lxdanweiid" size="1" required>
-					<option value="">--请选择立项单位--</option>
+					<option value="">--请选课题负责单位--</option>
 					{volist name="school" id="vo"}
 						<option value="{$vo.id}">{$vo.title}</option>
 					{/volist}
 				</select>
 				</span>
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>立项时间：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text Wdate" value="" placeholder="" id="lxshijian" name="lxshijian" onclick="WdatePicker({isShowClear:false,readOnly:true})" style="width: 180px">
 			</div>
 		</div>
 		<div class="row cl">
@@ -71,6 +66,49 @@
 
 	// 设置表单提交方式
 	var mytype = 'POST';
+
+	// 获取获奖教师列表
+	function hjSelect(obj)
+	{
+		$('#hjSelect').empty();
+		var str = "";
+		str = $('#hjteacher').val();
+		if(str.length<=0)
+		{
+			return "";
+		}
+		$.post(
+			"{:Url::build('renshi/index/srcTeacher')}",
+			{
+				"str":str,
+			},
+			function(data,status){
+				$('#hjSelect').empty();
+				if($.isEmptyObject(data))
+				{
+					return true;
+				}
+				for (var i = data.length - 1; i >= 0; i--) {
+					var myhtml = "";
+					myhtml = "<input class='btn btn-secondary radius mr-5 size-MINI' type='button' value='" + data[i]['xingming'] + "' onclick=addHj(this,"+data[i]['id']+") title="+data[i]['danwei']+'　'+data[i]['sex']+'　'+data[i]['age']+" >";
+					$('#hjSelect').append(myhtml);
+				}
+				
+			}
+		);
+	}
+
+	// 添加参与人
+	function addHj(obj,teacherId)
+	{
+		$('#hjteacher').val('');
+		$(obj).attr('class','btn btn-warning radius mr-5 size-MINI');
+		$(obj).attr('onclick','delCy(this)');
+		var myhtml = "";
+		myhtml = "<span><input type='hidden' name='hjteachers[]' value ="+teacherId+"></span>";
+		$('#addHj').append(myhtml);
+		$('#addHj').children("span").last().append(obj);
+	}
 
 	
 </script>

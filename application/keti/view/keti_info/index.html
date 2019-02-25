@@ -16,7 +16,7 @@
 	<div class="cl pd-5 bg-1 bk-gray mt-20">
 		<span class="l">
 			<!-- 删除按钮 -->
-			<a href="javascript:;" onclick="dels('/kt/m')" class="btn btn-danger radius">
+			<a href="javascript:;" onclick="dels('/ktinfo/m')" class="btn btn-danger radius">
 				<i class="Hui-iconfont">&#xe6e2;</i>
 			批量删除
 			</a>
@@ -31,7 +31,7 @@
 		</span>
 	</div>
 	<div class="panel panel-default mt-10 mb-10">
-		<div class="panel-header" id="shaixuan">筛选课题册</div>
+		<div class="panel-header" id="shaixuan">筛选课题册信息</div>
 		<div class="panel-body" style="min-height: 60px">
 				<div>
 					{php}
@@ -87,10 +87,12 @@
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="" value=""></th>
-				<th>课题册名称</th>
+				<th>主持人</th>
+				<th>课题名称</th>
 				<th>立项单位</th>
-				<th>课题类别</th>
-				<th>课题数量</th>
+				<th>课题类型</th>
+				<th>研究方向</th>
+				<th>学科</th>
 				<th>结题数量</th>
 				<th>立项时间</th>
 				<th>状态</th>
@@ -147,10 +149,12 @@
 	// 定义列参数
 	var mycolumns = [
         { "data": "id" },
+        { "data": "id" },
         { "data": "title","defaultContent": "" },
         { "data": "kt_lxdanwei.title" ,"name":"lxdanweiid","defaultContent": ""},
         { "data": "kt_category.title","name":"category","defaultContent": ""},
         { "data": "ktcnt","name":"id","defaultContent": ""},
+        { "data": "jtcnt","name":"id","defaultContent": ""},
         { "data": "jtcnt","name":"id","defaultContent": ""},
         { "data": "lxshijian","name":"lxshijian","defaultContent": ""},
         { "data": "status" },
