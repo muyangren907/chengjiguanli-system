@@ -14,6 +14,7 @@ class JsRongyuInfo extends Base
     	$hjschool = $search['hjschool'];
     	$fzschool = $search['fzschool'];
     	$category = $search['category'];
+        $rongyuce = $search['rongyuce'];
     	$order_field = $search['order_field'];
     	$order = $search['order'];
     	$category = $search['category'];
@@ -35,8 +36,11 @@ class JsRongyuInfo extends Base
                         $q->name('JsRongyu')->where('category','in',$category)->field('id');
                     });
                 })
-    		->when(!empty($search),function($query) use($search){
-                	$query->where('title','like',$search);
+    		->when(!empty($rongyuce),function($query) use($rongyuce){
+                	$query->where('rongyuce',$rongyuce);
+                })
+            ->when(!empty($search),function($query) use($search){
+                    $query->where('title','like',$search);
                 })
             ->with(
                 [

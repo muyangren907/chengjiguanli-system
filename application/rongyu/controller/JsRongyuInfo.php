@@ -57,10 +57,12 @@ class JsRongyuInfo extends Base
             'hjschool'=>$getdt['hjschool'],
             'fzschool'=>$getdt['fzschool'],
             'category'=>$getdt['category'],
+            'rongyuce'=>$getdt['rongyuce'],
             'search'=>$getdt['search']['value'],
             'order'=>$order,
             'order_field'=>$order_field
         ];
+
 
         // 实例化
         $ryinfo = new ryinfo;
