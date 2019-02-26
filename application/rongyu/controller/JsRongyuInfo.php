@@ -111,30 +111,57 @@ class JsRongyuInfo extends Base
      * @param  \think\Request  $request
      * @return \think\Response
      */
-    // public function save1()
-    // {
-    //     // 获取表单数据
-    //     $list = request()->only(['id','title','category','hjschool','subject','fzshijian','jiangxiang'],'post');
+    public function save()
+    {
+        
+        // 获取表单数据
+        $list = request()->only(['rongyuce','title','bianhao','category','hjschool','subject','hjshijian','jiangxiang','hjteachers','cyteachers','pic'],'put');
 
-    //     // 实例化验证模型
-    //     $validate = new \app\rongyu\validate\JsRongyu;
-    //     // 验证表单数据
-    //     $result = $validate->check($list);
-    //     $msg = $validate->getError();
-    //     // 如果验证不通过则停止保存
-    //     if(!$result){
-    //         return json(['msg'=>$msg,'val'=>0]);;
-    //     }
 
-    //     // 保存数据 
-    //     $data = ryinfo::create($list);
+        // 实例化验证类
+        $validate = new \app\rongyu\validate\JsRongyuInfo;
+        // 验证表单数据
+        $result = $validate->scene('save')->check($list);
+        $msg = $validate->getError();
 
-    //     // 根据更新结果设置返回提示信息
-    //     $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        // 如果验证不通过则停止保存
+        if(!$result){
+            return json(['msg'=>$msg,'val'=>0]);
+        }
 
-    //     // 返回信息
-    //     return json($data);
-    // }
+
+        // 更新数据
+        $data = ryinfo::create($list);
+
+        // 声明教师数组
+            $teacherlist = [];
+            // 循环组成获奖教师信息
+            foreach ($list['hjteachers'] as $key => $value) {
+                $canyulist[] = [
+                    'teacherid' => $value,
+                    'category' => 1,
+                ];
+            }
+            if(!empty($list['cyteachers'])){
+                // 循环组成参与教师信息
+                foreach ($list['cyteachers'] as $key => $value) {
+                    $canyulist[] = [
+                        'teacherid' => $value,
+                        'category' => 2,
+                    ];
+                }
+            }
+            
+
+        // 添加新的获奖人与参与人信息
+        $data->allJsry()->saveAll($canyulist);
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
+    }
 
     /**
      * 批量上传教师荣誉册图片
@@ -200,14 +227,14 @@ class JsRongyuInfo extends Base
     }
 
     /**
-     * 显示指定的资源
+     * 荣誉册中荣誉信息列表
      *
      * @param  int  $id
      * @return \think\Response
      */
     public function read($id)
     {
-        //
+
     }
 
     /**
@@ -252,7 +279,7 @@ class JsRongyuInfo extends Base
     public function update($id)
     {
         // 获取表单数据
-        $list = request()->only(['title','category','hjschool','subject','hjshijian','jiangxiang','hjteachers','cyteachers','pic'],'put');
+        $list = request()->only(['rongyuce','bianhao','title','category','hjschool','subject','hjshijian','jiangxiang','hjteachers','cyteachers','pic'],'put');
         $list['id'] = $id;
 
 

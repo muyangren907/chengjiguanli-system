@@ -31,7 +31,9 @@ class Category extends Seeder
             ['id'=>112,'title'=>'单位荣誉类型','pid'=>0,'paixu'=>12],
             ['id'=>113,'title'=>'单位荣誉奖项','pid'=>0,'paixu'=>13],
             ['id'=>114,'title'=>'教师荣誉类型','pid'=>0,'paixu'=>14],
-            ['id'=>115,'title'=>'课题类型','pid'=>0,'paixu'=>15],
+            ['id'=>115,'title'=>'课题立项类型','pid'=>0,'paixu'=>15],
+            ['id'=>116,'title'=>'课题研究所属学科分类','pid'=>0,'paixu'=>16,],
+            ['id'=>117,'title'=>'研究类型','pid'=>0,'paixu'=>17,],
 
 
             // 二级类别
@@ -131,10 +133,19 @@ class Category extends Seeder
                 ['title'=>'论文','pid'=>114,'paixu'=>3],
                 ['title'=>'教科研','pid'=>114,'paixu'=>4],
                 ['title'=>'荣誉称号','pid'=>114,'paixu'=>4],
-                //  课题类型
+                //  课题立项类型
                 ['title'=>'一般课题','pid'=>115,'paixu'=>1],
                 ['title'=>'专项课题','pid'=>115,'paixu'=>2],
                 ['title'=>'重大或重点课题','pid'=>115,'paixu'=>3],
+                //  课题研究所属学科分类
+                ['title'=>'A. 教育政策研究(含教育发展战略)','pid'=>116,'paixu'=>1],
+                ['title'=>'B. 基础教育','pid'=>116,'paixu'=>2],
+                ['title'=>'C. 职业教育与成人教育(含终身教育、社会教育)','pid'=>116,'paixu'=>3],
+                ['title'=>'D.其他','pid'=>116,'paixu'=>3],
+                //  研究类型
+                ['title'=>'A.基础研究','pid'=>117,'paixu'=>1],
+                ['title'=>'B.应用研究','pid'=>117,'paixu'=>2],
+                ['title'=>'C.综合研究','pid'=>117,'paixu'=>3],
 
                
         ];

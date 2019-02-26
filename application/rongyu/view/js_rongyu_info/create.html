@@ -15,7 +15,7 @@
 			</div>
 		</div>
 	</div>
-	<form action="/jsryinfo/" method="PUT" class="form form-horizontal" id="form-member-add">
+	<form action="/jsryinfo" method="POST" class="form form-horizontal" id="form-member-add">
 		<input type="hidden" class="input-text" value="" placeholder="荣誉图片地址" id="pic" name="pic" readonly="true">
 		<input type="hidden" class="input-text" value="" placeholder="荣誉存储编号" id="id" name="id" readonly="true">
 		<input type="hidden" class="input-text" value="{$list['id']}" placeholder="荣誉册" id="rongyuce" name="rongyuce" readonly="true">
@@ -110,6 +110,21 @@
 {js href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/webuploader/0.1.5/webuploader.js"}
 <script type="text/javascript">
 
+	// 设置表单验证规则
+	var myrules = {
+			title:{
+				maxlength:40,
+			},
+			hjshijian:{
+				required:true,
+				dateISO:true
+			},
+		};
+
+	// 设置表单提交方式
+	var mytype = 'POST';
+
+
 	// 上传文件
 	$(function(){
 	    $('.skin-minimal input').iCheck({
@@ -196,6 +211,8 @@
 	        $('#pic').val(response.url);
 	        $('#id').val(response.ryid);
 	        $('#form-member-add').attr('action','/jsryinfo/'+response.ryid);
+	        $('#form-member-add').attr('method','PUT');
+	        mytype = 'PUT';
 	    });
 
 	    // 文件上传失败，显示上传出错。
@@ -340,19 +357,7 @@
 		return this.optional(element) || tel.test(value);
 	}, "请输入中文");
 
-	// 设置表单验证规则
-	var myrules = {
-			title:{
-				maxlength:40,
-			},
-			hjshijian:{
-				required:true,
-				dateISO:true
-			},
-		};
-
-	// 设置表单提交方式
-	var mytype = 'PUT';
+	
 
 	
 </script>

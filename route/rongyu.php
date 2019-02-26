@@ -15,5 +15,5 @@ Route::resource('jsry','rongyu/JsRongyu');
 Route::resource('jsryinfo','rongyu/JsRongyuInfo');
 Route::get('dwry/createall','rongyu/DwRongyu/createall');
 // Route::get('jsry/:id/createall','rongyu/JsRongyu/createall');
-Route::get('jsryinfo/:id/create','rongyu/JsRongyuInfo/create');
-Route::get('jsryinfoall/:id/createall','rongyu/JsRongyuInfo/createall');
+Route::get('jsryinfoadd/:id/create','rongyu/JsRongyuInfo/create');
+Route::get('jsryinfoadd/:id/createall','rongyu/JsRongyuInfo/createall');

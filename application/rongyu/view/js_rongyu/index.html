@@ -139,6 +139,12 @@
 			}
 		},
 		{
+			"targets": 1,			
+			"render": function(data, type, row, meta) {
+				return '<a title="查看荣誉信息" data-href="jsry/'+ row.id +'" data-title="'+row.title+'" onClick="Hui_admin_tab(this)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">'+row.title+'</i></a>'
+			}
+		},
+		{
 			"targets": -1,
 			"className":'.td-manage',			
 			"render": function(data, type, row, meta) {
@@ -148,9 +154,9 @@
 					startbut = '<a style="text-decoration:none" onClick="start(this,'+ row.id +')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>';
 
 					// 上图图片按钮
-					picbut = '<a title="批传" href="javascript:void(0);" onclick=addfull("批传荣誉图片","/jsryinfoall/'+row.id+'/createall") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe613;</i></a>';
+					picbut = '<a title="批传" href="javascript:void(0);" onclick=addfull("批传荣誉图片","/jsryinfoadd/'+row.id+'/createall") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe613;</i></a>';
 					// 添加荣誉
-					addbut = '<a title="添加荣誉" href="javascript:void(0);" onclick=addfull("添加荣誉","/jsryinfo/'+row.id+'/create") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe604;</i></a>';
+					addbut = '<a title="添加荣誉" href="javascript:void(0);" onclick=addfull("添加荣誉","/jsryinfoadd/'+row.id+'/createone") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe604;</i></a>';
 					// 编辑按钮
 					editbut = '<a title="编辑" href="javascript:void(0);" onclick=add("编辑","/jsry/'+row.id+'/edit",600,350) class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
 					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/dwry/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';

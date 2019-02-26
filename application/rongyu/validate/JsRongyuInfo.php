@@ -14,6 +14,7 @@ class JsRongyuInfo extends Validate
      */	
 	protected $rule = [
         'id|请先上传图片'      =>    'require',
+        'rongyuce|荣誉册ID丢失'      =>    'require',
         'title|荣册标题'     =>  'require|length:1,30',
         'hjteachers|获奖人'     =>  'require|array',
         'hjschool|荣誉所在单位'     =>  'require|number',
@@ -30,4 +31,9 @@ class JsRongyuInfo extends Validate
      * @var array
      */	
     protected $message = [];
+
+    // 验证场景
+    protected $scene = [
+        'save'  =>  ['rongyuce','title','hjteachers','hjschool','subject','hjshijian','jiangxiang','cyteachers'],
+    ];
 }

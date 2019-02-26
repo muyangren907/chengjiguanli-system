@@ -123,7 +123,7 @@ class JsRongyu extends Base
         $msg = $validate->getError();
         // 如果验证不通过则停止保存
         if(!$result){
-            return json(['msg'=>$msg,'val'=>0]);;
+            return json(['msg'=>$msg,'val'=>0]);
         }
 
         // 保存数据 
@@ -166,7 +166,18 @@ class JsRongyu extends Base
      */
     public function read($id)
     {
-        //
+        // 获取变量
+        $list['id'] = $id;
+        // 设置页面标题
+        $list['title'] = '教师荣誉信息';
+        // 设置数据总数
+        $jsryinfo = new jsryinfo();
+        $list['count'] = $jsryinfo->where('rongyuce',$id)->count();
+
+        // 模板赋值
+        $this->assign('list',$list);
+
+        return $this->fetch('js_rongyu_info/read');
     }
 
     /**

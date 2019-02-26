@@ -283,6 +283,7 @@ class Index extends Base
             $teacherlist[$i]['zhicheng'] = srcZc($value[6]);
             $teacherlist[$i]['danwei'] = $list['school'];
             $teacherlist[$i]['biye'] = $value[8];
+            $teacherlist[$i]['subject'] = srcSubject($value[7]);
             $teacherlist[$i]['zhuanye'] = $value[9];
             $teacherlist[$i]['xueli'] = srcXl($value[10]);
             $teacherlist[$i]['quanpin'] = $value[11];

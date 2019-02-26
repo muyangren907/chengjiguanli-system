@@ -39,7 +39,7 @@ class KetiInfo extends Migrator
             ->addColumn('lxpic','string',['limit'=>100,'null'=>false,'comment'=>'立项证书图片'])
             ->addColumn('subject','integer',['limit'=>11,'null'=>false,'comment'=>'学科分类'])
             ->addColumn('fzdanweiid','integer',['limit'=>11,'null'=>false,'comment'=>'负责单位id'])
-            ->addColumn('fangxiang','integer',['limit'=>11,'null'=>false,'comment'=>'研究方向'])
+            ->addColumn('category','integer',['limit'=>11,'null'=>false,'comment'=>'研究类型'])
             ->addColumn('jhjtshijian','integer',['limit'=>11,'null'=>false,'comment'=>'计划结题时间'])
             ->addColumn('jtshijian','integer',['limit'=>11,'null'=>false,'comment'=>'结题时间'])
             ->addColumn('jddengji','integer',['limit'=>1,'null'=>false,'default'=>0,'comment'=>'鉴定等级:0=>未结题，1=>合格,2=>优秀,3=>流失'])
