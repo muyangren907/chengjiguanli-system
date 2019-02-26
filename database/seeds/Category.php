@@ -45,9 +45,10 @@ class Category extends Seeder
                 ['id'=>1011007,'title'=>'体育与健康','pid'=>110,'paixu'=>8],
                 ['id'=>1011008,'title'=>'艺术','pid'=>110,'paixu'=>9],
                 ['id'=>1011009,'title'=>'综合实践活动','pid'=>110,'paixu'=>10],
-                ['id'=>1011010,'title'=>'地方校本课程','pid'=>110,'paixu'=>11],
-                ['id'=>1011011,'title'=>'其它','pid'=>110,'paixu'=>12],
-                ['id'=>1011012,'title'=>'幼儿园全科','pid'=>110,'paixu'=>1],
+                ['id'=>1011010,'title'=>'地方/校本课程','pid'=>110,'paixu'=>11],
+                ['id'=>1011011,'title'=>'幼儿园全科','pid'=>110,'paixu'=>12],
+                ['id'=>1011012,'title'=>'其它','pid'=>110,'paixu'=>13],
+                
                 //  文件
                 ['id'=>1011101,'title'=>'教师名单','pid'=>111,'paixu'=>1],
                 ['id'=>1011102,'title'=>'学生名单','pid'=>111,'paixu'=>2],
@@ -99,7 +100,9 @@ class Category extends Seeder
                 ['title'=>'三级','pid'=>106,'paixu'=>5],
                 ['title'=>'其他','pid'=>106,'paixu'=>6],
                 // 职务
+                ['title'=>'书记','pid'=>107,'paixu'=>1],
                 ['title'=>'校长','pid'=>107,'paixu'=>1],
+                ['title'=>'副书记','pid'=>107,'paixu'=>2],
                 ['title'=>'副校长','pid'=>107,'paixu'=>2],
                 ['title'=>'主任','pid'=>107,'paixu'=>3],
                 ['title'=>'教研组长','pid'=>107,'paixu'=>4],
@@ -132,6 +135,7 @@ class Category extends Seeder
                 ['title'=>'一般课题','pid'=>115,'paixu'=>1],
                 ['title'=>'专项课题','pid'=>115,'paixu'=>2],
                 ['title'=>'重大或重点课题','pid'=>115,'paixu'=>3],
+
                
         ];
         // 保存数据

@@ -69,7 +69,7 @@ class Index extends Base
         }
 
         $datacnt = $data->count();
-        $data = $data->append(['age']);
+        $data = $data->append(['age','gongling']);
         
         
 
@@ -276,32 +276,25 @@ class Index extends Base
 
             // 整理数据
             $teacherlist[$i]['xingming'] = $value[1];
-            if($value[2] == '男')
-            {
-                $teacherlist[$i]['sex'] = 1;
-            }else if($value[2] == '女'){
-                $teacherlist[$i]['sex'] = 0;
-            }else{
-                $teacherlist[$i]['sex'] = 2;
-            }
+            $teacherlist[$i]['sex'] = srcSex($value[2]);
             $teacherlist[$i]['shengri'] = $value[3];
             $teacherlist[$i]['worktime'] = $value[4];
-            $teacherlist[$i]['zhiwu'] = $value[5];
+            $teacherlist[$i]['zhiwu'] = srcZw($value[5]);
+            $teacherlist[$i]['zhicheng'] = srcZc($value[6]);
             $teacherlist[$i]['danwei'] = $list['school'];
-            $teacherlist[$i]['biey'] = $value[8];
+            $teacherlist[$i]['biye'] = $value[8];
             $teacherlist[$i]['zhuanye'] = $value[9];
-            $teacherlist[$i]['xueli'] = $value[10];
+            $teacherlist[$i]['xueli'] = srcXl($value[10]);
             $teacherlist[$i]['quanpin'] = $value[11];
             $teacherlist[$i]['shoupin'] = $value[12];
 
             $i++;
         }
 
-
         // 实例化学生信息数据模型
         $teacher = new Teacher();
 
-        // dump($teacherlist);
+        // dump($teacherinfo[0]);
 
         // 保存或更新信息
         $data = $teacher->saveAll($teacherlist);

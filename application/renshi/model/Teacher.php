@@ -22,7 +22,7 @@ class Teacher extends Base
     // 参加工作时间获取器
     public function getWorktimeAttr($value)
     {
-    	return date('Y-m',$value);
+    	return date('Y-m-d',$value);
     }
 
     // 参加工作时间修改器
@@ -78,6 +78,13 @@ class Teacher extends Base
     public function getAgeAttr()
     {
         return getAgeByBirth($this->getdata('shengri'),2);
+    }
+
+
+    // 工龄获取器
+    public function getGonglingAttr()
+    {
+        return getAgeByBirth($this->getdata('worktime'),2);
     }
 
 
