@@ -147,7 +147,19 @@ class Index extends Base
      */
     public function read($id)
     {
-        //
+        
+        // 获取变量
+        $list['id'] = $id;
+        // 设置页面标题
+        $list['title'] = '课题信息';
+        // 设置数据总数
+        $ktinfo = new \app\keti\model\KetiInfo;
+        $list['count'] = $ktinfo->where('ketice',$id)->count();
+
+        // 模板赋值
+        $this->assign('list',$list);
+
+        return $this->fetch('keti_info/read');
     }
 
     /**

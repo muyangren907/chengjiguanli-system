@@ -123,11 +123,14 @@ class JsRongyuInfo extends Base
         // 实例化验证类
         $validate = new \app\rongyu\validate\JsRongyuInfo;
         // 验证表单数据
-        $result = $validate->scene('save')->check($list);
+        $result = $validate->scene('add')->check($list);
         $msg = $validate->getError();
 
         // 如果验证不通过则停止保存
         if(!$result){
+            if($list['id']>0){
+                ryinfo::destroy($list['id'],true);
+            }
             return json(['msg'=>$msg,'val'=>0]);
         }
 
@@ -175,7 +178,7 @@ class JsRongyuInfo extends Base
     {
         // 设置页面标题
         $list['title'] = '添加教师荣誉册';
-        $list['id'] = $id;
+        $list['rongyuce'] = $id;
 
         // 模板赋值
         $this->assign('list',$list);
@@ -281,21 +284,18 @@ class JsRongyuInfo extends Base
     public function update($id)
     {
         // 获取表单数据
-        $list = request()->only(['rongyuce','bianhao','title','category','hjschool','subject','hjshijian','jiangxiang','hjteachers','cyteachers','pic'],'put');
+        $list = request()->only(['bianhao','title','category','hjschool','subject','hjshijian','jiangxiang','hjteachers','cyteachers','pic'],'put');
         $list['id'] = $id;
 
 
         // 实例化验证类
         $validate = new \app\rongyu\validate\JsRongyuInfo;
         // 验证表单数据
-        $result = $validate->check($list);
+        $result = $validate->scene('edit')->check($list);
         $msg = $validate->getError();
 
         // 如果验证不通过则停止保存
         if(!$result){
-            if($list['id']>0){
-                ryinfo::destroy($list['id'],true);
-            }
             return json(['msg'=>$msg,'val'=>0]);
         }
 

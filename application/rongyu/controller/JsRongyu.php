@@ -142,19 +142,19 @@ class JsRongyu extends Base
      * @param  \think\Request  $request
      * @return \think\Response
      */
-    public function createall($id)
-    {
-        // 设置页面标题
-        $list['title'] = '添加教师荣誉册';
-        $list['id'] = $id;
+    // public function createall($id)
+    // {
+    //     // 设置页面标题
+    //     $list['title'] = '添加教师荣誉册';
+    //     $list['id'] = $id;
 
-        // 模板赋值
-        $this->assign('list',$list);
+    //     // 模板赋值
+    //     $this->assign('list',$list);
 
-        // 渲染
-        return $this->fetch();
+    //     // 渲染
+    //     return $this->fetch();
        
-    }
+    // }
 
 
 

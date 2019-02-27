@@ -30,57 +30,6 @@
 			共有数据：<strong>{$list.count}</strong> 条
 		</span>
 	</div>
-	<div class="panel panel-default mt-10 mb-10">
-		<div class="panel-header" id="shaixuan">筛选荣誉册</div>
-		<div class="panel-body" style="min-height: 60px">
-				<div>
-					{php}
-						$school = schlist('校级','区级');
-					{/php}
-					<label class="f-l">荣誉所属单位：</label>
-					<dt>
-						<dd class=" mt-10">
-							{foreach $school as $key=>$vo } 
-							<label class="ml-10">
-								<input type="checkbox" value="{$vo.id}" id="hjschool" name="hjschool" onclick="dtreload()">
-								{$vo.jiancheng}
-							</label>
-							{/foreach}
-						</dd>
-					</dt>
-				</div>
-				<div>
-					{php}
-						$school = schlist('区级','部级');
-					{/php}
-					<label class="f-l">颁奖单位：</label>
-					<dt>
-						<dd class=" mt-10">
-							{foreach $school as $key=>$vo } 
-							<label class="ml-10">
-								<input type="checkbox" value="{$vo.id}" name="fzschool" onclick="dtreload()">
-								{$vo.jiancheng}
-							</label>
-							{/foreach}
-						</dd>
-					</dt>
-				</div>
-				<div>
-					{php}$category = getCategory(114);{/php}
-					<label class="f-l">荣誉类别：</label>
-					<dt>
-						<dd class=" mt-10">
-							{foreach $category as $key=>$vo } 
-							<label class="ml-10">
-								<input type="checkbox" value="{$vo.id}" name="category" onclick="dtreload()">
-								{$vo.title}
-							</label>
-							{/foreach}
-						</dd>
-					</dt>
-				</div>
-		</div>
-	</div>
 {/block}
 {block name="tables"}
 	<table id="table1" class="display" cellspacing="0" width="100%">
@@ -112,36 +61,9 @@
 		url: "{:url('JsRongyuInfo/ajaxdata')}",
 		type: "post",
 		data: {
-			hjschool:function(){
-				var chk = [];
-				$('input[name="hjschool"]:checked').each(function(){
-					if(typeof($(this).val()) != "undefined")
-					{
-						chk.push($(this).val());
-					}
-				});
-				return chk;
-			},
-			fzschool:function(){
-				var chk = [];
-				$('input[name="fzschool"]:checked').each(function(){
-					if(typeof($(this).val()) != "undefined")
-					{
-						chk.push($(this).val());
-					}
-				});
-				return chk;
-			},
-			category:function(){
-				var chk = [];
-				$('input[name="category"]:checked').each(function(){
-					if(typeof($(this).val()) != "undefined")
-					{
-						chk.push($(this).val());
-					}
-				});
-				return chk;
-			},
+			hjschool:'',
+			fzschool:'',
+			category:'',
 			rongyuce:"{$list.id}",
 		},
 	};
@@ -149,7 +71,7 @@
 	// 定义列参数
 	var mycolumns = [
         { "data": "id" },
-        { "data": "hjJsName" ,"name":"teacherid","defaultContent": ""},
+        { "data": "hjJsName" ,"name":"id","defaultContent": ""},
         { "data": "hj_school.jiancheng" ,"name":"hjschool","defaultContent": ""},
         { "data": "title","defaultContent": "" },
         { "data": "ry_tuce.title" ,"name":"rongyuce","defaultContent": ""},
@@ -210,15 +132,6 @@
         }, 
 	];
 
-	// 筛选成绩面板折叠
-	$('#shaixuan').click(function(){
-		$(this).next().toggle();
-	});
 
-	// 重载数据
-	function dtreload()
-	{
-		$('#table1').DataTable().ajax.reload();
-	}
 </script>
 {/block}
