@@ -101,10 +101,14 @@
 	// 设置表单验证规则
 	var myrules = {
 			title:{
-				maxlength:40,
-			},
-			hjshijian:{
 				required:true,
+				maxlength:60,
+			},
+			bianhao:{
+				required:true,
+				rangelength:[1,10]
+			},
+			jhjtshijian:{
 				dateISO:true
 			},
 		};
@@ -141,7 +145,7 @@
 	        resize: false,
 	        //上传时提交自身需要的字段并传递到后台。
 	        formData: {
-	        	rongyuce : "{$list.ketice}",
+	        	ketice : "{$list.ketice}",
 	        }, 
 	        // 只允许选择图片文件。
 	        accept: {
@@ -197,8 +201,8 @@
 	    
 	    uploader.on( 'uploadAccept', function( file, response ) {
 	        $('#lxpic').val(response.url);
-	        $('#id').val(response.ryid);
-	        $('#form-member-add').attr('action','/ktinfo/'+response.ryid);
+	        $('#id').val(response.ktid);
+	        $('#form-member-add').attr('action','/ktinfo/'+response.ktid);
 	        $('#form-member-add').attr('method','PUT');
 	        mytype = 'PUT';
 	    });
@@ -239,7 +243,7 @@
 	});
 
 
-	// 获取获奖教师列表
+	// 获取课题主持教师列表
 	function hjSelect(obj)
 	{
 		$('#hjSelect').empty();
@@ -280,6 +284,12 @@
 		myhtml = "<span><input type='hidden' name='hjteachers[]' value ="+teacherId+"></span>";
 		$('#addHj').append(myhtml);
 		$('#addHj').children("span").last().append(obj);
+	}
+
+	// 删除参与人
+	function delCy(obj)
+	{
+		$(obj).parent().remove();
 	}
 	
 

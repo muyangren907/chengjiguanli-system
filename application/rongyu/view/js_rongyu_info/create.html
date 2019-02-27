@@ -16,8 +16,8 @@
 		</div>
 	</div>
 	<form action="/jsryinfo" method="POST" class="form form-horizontal" id="form-member-add">
-		<input type="hidden" class="input-text" value="" placeholder="荣誉图片地址" id="pic" name="pic" readonly="true">
-		<input type="hidden" class="input-text" value="" placeholder="荣誉存储编号" id="id" name="id" readonly="true">
+		<input type="hidden" class="input-text" value="" id="pic" name="pic" readonly="true">
+		<input type="hidden" class="input-text" value="" id="id" name="id" readonly="true">
 		<input type="hidden" class="input-text" value="{$list['id']}" placeholder="荣誉册" id="rongyuce" name="rongyuce" readonly="true">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3">荣誉标题：</label>
@@ -117,6 +117,9 @@
 			hjshijian:{
 				required:true,
 				dateISO:true
+			},
+			bianhao:{
+				maxlength:15,
 			},
 		};
 

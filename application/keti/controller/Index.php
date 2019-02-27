@@ -159,7 +159,7 @@ class Index extends Base
         // 模板赋值
         $this->assign('list',$list);
 
-        return $this->fetch('keti_info/read');
+        return $this->fetch('read');
     }
 
     /**

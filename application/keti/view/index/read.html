@@ -21,93 +21,14 @@
 			批量删除
 			</a>
 			<!-- 添加按钮 -->
-<!-- 			<a href="javascript:;" onclick=add('添加课题册',"/kt/create",600,330) class="btn btn-primary radius">
+			<a href="javascript:;" onclick=addfull('添加课题信息',"/ktinfoadd/{$list.id}") class="btn btn-primary radius">
 				<i class="Hui-iconfont">&#xe600;</i>
-				添加课题册
+				添加课题信息
 			</a>
- -->		</span>
+		</span>
 		<span class="r">
 			共有数据：<strong>{$list.count}</strong> 条
 		</span>
-	</div>
-	<div class="panel panel-default mt-10 mb-10">
-		<div class="panel-header" id="shaixuan">筛选课题册信息</div>
-		<div class="panel-body" style="min-height: 60px">
-				<div>
-					{php}
-						$school = schlist('区级','部级');
-					{/php}
-					<label class="f-l">立项单位：</label>
-					<dt>
-						<dd class=" mt-10">
-							{foreach $school as $key=>$vo } 
-							<label class="ml-10">
-								<input type="checkbox" value="{$vo.id}" name="lxdanweiid" onclick="dtreload()">
-								{$vo.jiancheng}
-							</label>
-							{/foreach}
-						</dd>
-					</dt>
-				</div>
-				<div>
-					{php}$category = getCategory(115);{/php}
-					<label class="f-l">立项类别：</label>
-					<dt>
-						<dd class=" mt-10">
-							{foreach $category as $key=>$vo } 
-							<label class="ml-10">
-								<input type="checkbox" value="{$vo.id}" name="lxcategory" onclick="dtreload()">
-								{$vo.title}
-							</label>
-							{/foreach}
-						</dd>
-					</dt>
-				</div>
-				<div>
-					{php}
-						$school = schlist('校级','区级');
-					{/php}
-					<label class="f-l">负责单位：</label>
-					<dt>
-						<dd class=" mt-10">
-							{foreach $school as $key=>$vo } 
-							<label class="ml-10">
-								<input type="checkbox" value="{$vo.id}" name="fzdanweiid" onclick="dtreload()">
-								{$vo.jiancheng}
-							</label>
-							{/foreach}
-						</dd>
-					</dt>
-				</div>
-				<div>
-					{php}$category = getCategory(116);{/php}
-					<label class="f-l">所属学科：</label>
-					<dt>
-						<dd class=" mt-10">
-							{foreach $category as $key=>$vo } 
-							<label class="ml-10">
-								<input type="checkbox" value="{$vo.id}" name="subject" onclick="dtreload()">
-								{$vo.title}
-							</label>
-							{/foreach}
-						</dd>
-					</dt>
-				</div>
-				<div>
-					{php}$category = getCategory(117);{/php}
-					<label class="f-l">研究类别：</label>
-					<dt>
-						<dd class=" mt-10">
-							{foreach $category as $key=>$vo } 
-							<label class="ml-10">
-								<input type="checkbox" value="{$vo.id}" name="category" onclick="dtreload()">
-								{$vo.title}
-							</label>
-							{/foreach}
-						</dd>
-					</dt>
-				</div>
-		</div>
 	</div>
 {/block}
 {block name="tables"}
@@ -118,11 +39,12 @@
 				<th>主持人</th>
 				<th>课题名称</th>
 				<th>课题编号</th>
-				<th>立项单位</th>
 				<th>负责单位</th>
-				<th>立项类型</th>
+				<th>研究类型</th>
+				<th>所属学科</th>
 				<th>研究状态</th>
-				<th>立项时间</th>
+				<th>计划结题时间</th>
+				<th>结题时间</th>
 				<th>状态</th>
 				<th>操作</th>
 			</tr>
@@ -138,60 +60,15 @@
 
 	// 定义DTajax参数
 	var myajax = {
-		url: "{:url('ajaxdata')}",
+		url: "{:url('KetiInfo/ajaxdata')}",
 		type: "post",
 		data: {
-			lxdanweiid:function(){
-				var chk = [];
-				$('input[name="lxdanweiid"]:checked').each(function(){
-					if(typeof($(this).val()) != "undefined")
-					{
-						chk.push($(this).val());
-					}
-				});
-				return chk;
-			},
-			lxcategory:function(){
-				var chk = [];
-				$('input[name="lxcategory"]:checked').each(function(){
-					if(typeof($(this).val()) != "undefined")
-					{
-						chk.push($(this).val());
-					}
-				});
-				return chk;
-			},
-			fzdanweiid:function(){
-				var chk = [];
-				$('input[name="fzdanweiid"]:checked').each(function(){
-					if(typeof($(this).val()) != "undefined")
-					{
-						chk.push($(this).val());
-					}
-				});
-				return chk;
-			},
-			subject:function(){
-				var chk = [];
-				$('input[name="subject"]:checked').each(function(){
-					if(typeof($(this).val()) != "undefined")
-					{
-						chk.push($(this).val());
-					}
-				});
-				return chk;
-			},
-			category:function(){
-				var chk = [];
-				$('input[name="category"]:checked').each(function(){
-					if(typeof($(this).val()) != "undefined")
-					{
-						chk.push($(this).val());
-					}
-				});
-				return chk;
-			},
-			ketice:"",
+			lxdanweiid:"",
+			lxcategory:"",
+			fzdanweiid:"",
+			subject:"",
+			category:"",
+			ketice:"{$list.id}",
 			
 		},
 	};
@@ -202,11 +79,12 @@
         { "data": "zcrName","name":"id","defaultContent": ""},
         { "data": "title","defaultContent": "" },
         { "data": "bianhao","defaultContent": "" },
-        { "data": "kt_ce.kt_lxdanwei.jiancheng" ,"name":"id","defaultContent": ""},
         { "data": "fz_school.jiancheng" ,"name":"fzdanweiid","defaultContent": ""},
-        { "data": "kt_ce.kt_category.title","name":"id","defaultContent": ""},
+        { "data": "kt_category.title" ,"name":"category","defaultContent": ""},
+        { "data": "kt_subject.title" ,"name":"subject","defaultContent": ""},
         { "data": "jddengji","defaultContent": ""},
-        { "data": "kt_ce.lxshijian","name":"id","defaultContent": ""},
+        { "data": "jhjtshijian","defaultContent": ""},
+        { "data": "jtshijian","defaultContent": ""},
         { "data": "status" },
         { "data": "id" },
 	];

@@ -16,6 +16,7 @@ class KetiInfo extends Base
     	$fzdanweiid = $search['fzdanweiid'];
         $subject = $search['subject'];
         $category = $search['category'];
+        $ketice = $search['ketice'];
     	$order_field = $search['order_field'];
     	$order = $search['order'];
     	$search = $search['search'];
@@ -40,19 +41,36 @@ class KetiInfo extends Base
             ->when(!empty($category),function($query) use($category){
                     $query->where('category','in',$category);
                 })
+            ->when(!empty($ketice),function($query) use($ketice){
+                    $query->where('ketice','in',$ketice);
+                })
     		->when(!empty($search),function($query) use($search){
                 	$query->where('title','like',$search);
                 })
-            // ->with(
-            //     [
-            //         'ktCategory'=>function($query){
-            //             $query->field('id,title');
-            //         },
-            //         'ktLxdanwei'=>function($query){
-            //             $query->field('id,title');
-            //         },
-            //     ]
-            // )
+            ->with(
+                [
+                    'fzSchool'=>function($query){
+                        $query->field('id,jiancheng');
+                    },
+                    'KtCe'=>function($query){
+                        $query->field('id,lxdanweiid,category,lxshijian')
+                            ->with([
+                                'ktCategory' => function($q){
+                                    $q->field('id,title');
+                                },
+                                'ktLxdanwei' => function($q){
+                                    $q->field('id,jiancheng');
+                                }
+                            ]);
+                    },
+                    'ktCategory'=>function($query){
+                        $query->field('id,title');
+                    },
+                    'ktSubject'=>function($query){
+                        $query->field('id,title');
+                    },
+                ]
+            )
             ->append(['zcrName'])
     		->select();
 
@@ -66,6 +84,49 @@ class KetiInfo extends Base
     {
         return $this->hasMany('\app\keti\model\KetiCanyu','ketiinfoid','id')->where('category',1);
     }
+
+    // 立项单位关联
+    public function fzSchool()
+    {
+         return $this->belongsTo('\app\system\model\School','fzdanweiid','id');
+    }
+
+
+    // 研究类型关联
+    public function ktCategory()
+    {
+         return $this->belongsTo('\app\system\model\Category','category','id');
+    }
+
+
+    // 所属学科关联
+    public function ktSubject()
+    {
+         return $this->belongsTo('\app\system\model\Category','subject','id');
+    }
+
+
+    // 课题册关联
+    public function ktCe()
+    {
+         return $this->belongsTo('\app\keti\model\Keti','ketice','id');
+    } 
+
+
+
+    // 结题等级获取器
+    public function getJddengjiAttr($value)
+    {
+        // 结题数组
+        $jtdj = array('0'=>'研究中','1'=>'合格','2'=>'优秀','3'=>'流失');
+        // 获取结题鉴定等级
+        $str =  $jtdj[$value];
+        // 返回结题等级
+        return $str;
+    }
+
+
+    // 立项
 
 
     // 课题主持人名单整理
@@ -88,6 +149,44 @@ class KetiInfo extends Base
         return $teachNames;
 
     }
+
+
+    // 计划结题时间修改器
+    public function setJhjtshijianAttr($value)
+    {
+        return strtotime($value);
+    }
+
+    // 计划结题时间获取器
+    public function getJhjtshijianAttr($value)
+    {
+        if ($value>0)
+        {
+            $value = date('Y-m-d',$value);
+        }else{
+            $value = "";
+        }
+        return $value;
+    }
+
+    // 结题时间修改器
+    public function setJtshijianAttr($value)
+    {
+        return strtotime($value);
+    }
+
+    // 结题时间获取器
+    public function getJtshijianAttr($value)
+    {
+        if ($value>0)
+        {
+            $value = date('Y-m-d',$value);
+        }else{
+            $value = "";
+        }
+        return $value;
+    }
+
 
 
 

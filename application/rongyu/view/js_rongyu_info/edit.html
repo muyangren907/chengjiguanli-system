@@ -3,7 +3,7 @@
 {css href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/webuploader/0.1.5/webuploader.css" /}
 {/block}
 {block name="formaa"}
-	<div class="form form-horizontal">
+	<div class="form form-horizontal text-c">
 		<img id='rypic' width="400px" src="__UPLOAD__/jiaoshirongyu/{$list.pic}">
 	</div>
 	<form action="/jsryinfo/{$list.id}" method="PUT" class="form form-horizontal" id="form-member-add">
@@ -350,6 +350,9 @@
 			hjshijian:{
 				required:true,
 				dateISO:true
+			},
+			bianhao:{
+				maxlength:15,
 			},
 		};
 

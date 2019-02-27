@@ -62,6 +62,7 @@ class KetiInfo extends Base
             'fzdanweiid'=>$getdt['fzdanweiid'],
             'subject'=>$getdt['subject'],
             'category'=>$getdt['category'],
+            'ketice'=>$getdt['ketice'],
             'search'=>$getdt['search']['value'],
             'order'=>$order,
             'order_field'=>$order_field
@@ -193,7 +194,7 @@ class KetiInfo extends Base
         // 获取表单上传文件 例如上传了001.jpg
         $file = request()->file('file');
         // 移动到框架应用根目录/uploads/ 目录下
-        $info = $file->validate(['size'=>2*1024*1024,'ext'=>'jpg,png,gif,jpeg'])->move('uploads\ketilixiang');
+        $info = $file->validate(['size'=>2*1024*1024,'ext'=>'jpg,png,gif,jpeg'])->move('uploads\keti\lixiang');
 
      
 
@@ -207,7 +208,7 @@ class KetiInfo extends Base
             $data = ktinfo::create(['lxpic'=>$list['url'],'ketice'=>$ketice]);
             $id = $data->id;
 
-            $id ? $data = array('msg'=>'上传成功','val'=>true,'url'=>$list['url'],'ryid'=>$id) : $data = array('msg'=>'保存文件信息失败','val'=>false,'url'=>null);
+            $id ? $data = array('msg'=>'上传成功','val'=>true,'url'=>$list['url'],'ktid'=>$id) : $data = array('msg'=>'保存文件信息失败','val'=>false,'url'=>null);
         }else{
             // 上传失败获取错误信息
             $data = array('msg'=>$file->getError(),'val'=>false,'url'=>null);
@@ -239,7 +240,7 @@ class KetiInfo extends Base
     {
         // 获取课题信息
         $list = ktinfo::where('id',$id)
-                ->field('title','bianhao','fzdanweiid','subject','category','jhjtshijian')
+                ->field('id,title,fzdanweiid,bianhao,subject,category,jhjtshijian,lxpic')
                 ->with([
                     'ktZcr'=>function($query){
                         $query->field('ketiinfoid,teacherid')
@@ -249,10 +250,12 @@ class KetiInfo extends Base
                     },
                 ])
                 ->find();
+        
 
-
+        // 模板赋值
         $this->assign('list',$list);
 
+        // 渲染模板
         return $this->fetch();
     }
 
@@ -263,9 +266,53 @@ class KetiInfo extends Base
      * @param  int  $id
      * @return \think\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
-        //
+        // 获取表单数据
+        $list = request()->only(['ketice','title','bianhao','fzdanweiid','subject','category','jhjtshijian','hjteachers','lxpic'],'PUT');
+        $list['id'] = $id;
+
+
+        // 实例化验证类
+        $validate = new \app\keti\validate\KetiInfo;
+        // 验证表单数据
+        $result = $validate->scene('edit')->check($list);
+        $msg = $validate->getError();
+
+        // 如果验证不通过则停止保存
+        if(!$result){
+            return json(['msg'=>$msg,'val'=>0]);
+        }
+
+
+        // 更新数据
+        $data = ktinfo::update($list);
+
+        // 删除原来的获奖人与参与人信息
+        $data->ktZcr()
+            ->where('ketiinfoid',$list['id'])
+            ->where('category',1)
+            ->delete(true);
+        // 声明教师数组
+            $teacherlist = [];
+            // 循环组成获奖教师信息
+            foreach ($list['hjteachers'] as $key => $value) {
+                $canyulist[] = [
+                    'teacherid' => $value,
+                    'rongyuid' => $list['id'],
+                    'category' => 1,
+                ];
+            }
+            
+
+        // 添加新的获奖人与参与人信息
+        $data->ktZcr()->saveAll($canyulist);
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
     }
 
     /**
