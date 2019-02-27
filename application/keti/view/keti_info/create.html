@@ -1,5 +1,6 @@
 {extend name="common@create" /}
 {block name="mycss"}
+{css href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/webuploader/0.1.5/webuploader.css" /}
 {/block}
 {block name="formaa"}
 	<div class="form form-horizontal">
@@ -14,7 +15,7 @@
 			</div>
 		</div>
 	</div>
-	<form action="/ktinfo/" method="POST" class="form form-horizontal" id="form-member-add">
+	<form action="/ktinfo" method="POST" class="form form-horizontal" id="form-member-add">
 		<input type="hidden" value="" id="lxpic" name="lxpic" readonly="true">
 		<input type="hidden" value="" id="id" name="id" readonly="true">
 		<input type="hidden" value="{$list['ketice']}" id="ketice" name="ketice" readonly="true">
@@ -32,11 +33,10 @@
 				<div id="hjSelect"></div>
 			</div>
 		</div>
-		<input type="hidden" value="{$list.ketice}">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>课题编号：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="课题编号" id="title" name="title">
+				<input type="text" class="input-text" value="" placeholder="课题编号" id="bianhao" name="bianhao">
 			</div>
 		</div>
 		<div class="row cl">
@@ -44,7 +44,7 @@
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:300px;">
 				{php} $school = schlist('校级','区级');{/php}
-				<select class="select" id="lxdanweiid" name="lxdanweiid" size="1" required>
+				<select class="select" id="fzdanweiid" name="fzdanweiid" size="1" required>
 					<option value="">--请选课题负责单位--</option>
 					{volist name="school" id="vo"}
 						<option value="{$vo.id}">{$vo.title}</option>
@@ -58,7 +58,7 @@
 			<div class="formControls col-xs-8 col-sm-9 f-l">
 				<span class="select-box f-l" style="width:180px;">
 				{php}$category = getCategory(116);{/php}
-				<select class="select" id="category" name="category" style="width: 350px" size="1" required>
+				<select class="select" id="subject" name="subject" style="width: 350px" size="1" required>
 					<option value="">--请选择课题研究所属学科分类--</option>
 					{volist name="category" id="vo"}
 						<option value="{$vo.id}">{$vo.title}</option>
@@ -84,7 +84,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>计划结题时间：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text Wdate" value="" placeholder="" id="shengri" name="shengri" onclick="WdatePicker({isShowClear:false,readOnly:true})" style="width:150px;">
+				<input type="text" class="input-text Wdate" value="" placeholder="" id="jhjtshijian" name="jhjtshijian" onclick="WdatePicker({isShowClear:false,readOnly:true})" style="width:150px;">
 			</div>
 		</div>
 		<div class="row cl">
@@ -95,19 +95,15 @@
 	</form>
 {/block}
 {block name="yanzheng"}
+{js href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/webuploader/0.1.5/webuploader.js"}
 <script type="text/javascript">
-	// 匹配用户名
-	$.validator.addMethod("zh",function(value,element){
-		var tel = /^[\u4e00-\u9fa5]*$/;
-		return this.optional(element) || tel.test(value);
-	}, "请输入中文");
 
 	// 设置表单验证规则
 	var myrules = {
 			title:{
-				maxlength:30,
+				maxlength:40,
 			},
-			lxshijian:{
+			hjshijian:{
 				required:true,
 				dateISO:true
 			},
@@ -115,6 +111,133 @@
 
 	// 设置表单提交方式
 	var mytype = 'POST';
+
+
+	// 上传文件
+	$(function(){
+	    $('.skin-minimal input').iCheck({
+	        checkboxClass: 'icheckbox-blue',
+	        radioClass: 'iradio-blue',
+	        increaseArea: '20%'
+	    });
+	    
+	    $list = $("#fileList"),
+	    $btn = $("#btn-star"),
+	    state = "pending",
+	    uploader;
+
+	    var uploader = WebUploader.create({
+	        auto: false,
+	        swf: '/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/webuploader/0.1.5/Uploader.swf',
+	    
+	        // 文件接收服务端。
+	        server: '{:url("upload")}',
+	     
+	        // 选择文件的按钮。可选。
+	        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+	        pick: '#filePicker',
+	    
+	        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+	        resize: false,
+	        //上传时提交自身需要的字段并传递到后台。
+	        formData: {
+	        	rongyuce : "{$list.ketice}",
+	        }, 
+	        // 只允许选择图片文件。
+	        accept: {
+	            title: 'Images',
+	            extensions: 'gif,jpg,jpeg,bmp,png',
+	            // mimeTypes: 'application/excel,application/vnd.ms-excel,application/x-excel,application/x-msexcel'
+	            mimeTypes: 'image/*'
+	        },
+
+	        fileNumLimit: 1, // 上传文件数
+	        fileSizeLimit:2*1024*1024,
+	    });
+	    uploader.on( 'fileQueued', function( file ) {
+	        var $li = $(
+	            '<div id="' + file.id + '" class="item">' +
+	                '<div class="pic-box"><img></div>'+
+	                '<div class="info">' + file.name + '</div>' +
+	                '<p class="state">等待上传...</p>'+
+	            '</div>'
+	        ),
+	        $img = $li.find('img');
+	        $list.append( $li );
+	    
+	        // 创建缩略图
+	        // 如果为非图片文件，可以不用调用此方法。
+	        // thumbnailWidth x thumbnailHeight 为 100 x 100
+	        uploader.makeThumb( file, function( error, src ) {
+	            if ( error ) {
+	                $img.replaceWith('<span>不能预览</span>');
+	                return;
+	            }
+	    
+	            $img.attr( 'src', src );
+	        }, thumbnailWidth, thumbnailHeight );
+	    });
+	    // 文件上传过程中创建进度条实时显示。
+	    uploader.on( 'uploadProgress', function( file, percentage ) {
+	        var $li = $( '#'+file.id ),
+	        $percent = $li.find('.progress-box .sr-only');
+	    
+	        // 避免重复创建
+	        if ( !$percent.length ) {
+	            $percent = $('<div class="progress-box"><span class="progress-bar radius"><span class="sr-only" style="width:0%"></span></span></div>').appendTo( $li ).find('.sr-only');
+	        }
+	        $li.find(".state").text("上传中");
+	        $percent.css( 'width', percentage * 100 + '%' );
+	    });
+	    
+	    // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+	    uploader.on( 'uploadSuccess', function( file ) {
+	        $( '#'+file.id ).addClass('upload-state-success').find(".state").text("已上传");
+	    });
+	    
+	    uploader.on( 'uploadAccept', function( file, response ) {
+	        $('#lxpic').val(response.url);
+	        $('#id').val(response.ryid);
+	        $('#form-member-add').attr('action','/ktinfo/'+response.ryid);
+	        $('#form-member-add').attr('method','PUT');
+	        mytype = 'PUT';
+	    });
+
+	    // 文件上传失败，显示上传出错。
+	    uploader.on( 'uploadError', function( file ) {
+	        $( '#'+file.id ).addClass('upload-state-error').find(".state").text("上传出错");
+	    });
+	    
+	    // 完成上传完了，成功或者失败，先删除进度条。
+	    uploader.on( 'uploadComplete', function( file ) {
+	        $( '#'+file.id ).find('.progress-box').fadeOut();
+	    });
+	    uploader.on('all', function (type) {
+	        if (type === 'startUpload') {
+	            state = 'uploading';
+	        } else if (type === 'stopUpload') {
+	            state = 'paused';
+	        } else if (type === 'uploadFinished') {
+	            state = 'done';
+	        }
+
+	        if (state === 'uploading') {
+	            $btn.text('暂停上传');
+	        } else {
+	            $btn.text('开始上传');
+	        }
+	    });
+
+	    $btn.on('click', function () {
+	        if (state === 'uploading') {
+	            uploader.stop();
+	        } else {
+	            uploader.upload();
+	        }
+	    });
+
+	});
+
 
 	// 获取获奖教师列表
 	function hjSelect(obj)
@@ -158,6 +281,15 @@
 		$('#addHj').append(myhtml);
 		$('#addHj').children("span").last().append(obj);
 	}
+	
+
+	// 匹配用户名
+	$.validator.addMethod("zh",function(value,element){
+		var tel = /^[\u4e00-\u9fa5]*$/;
+		return this.optional(element) || tel.test(value);
+	}, "请输入中文");
+
+	
 
 	
 </script>

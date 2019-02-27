@@ -51,12 +51,12 @@
 				</div>
 				<div>
 					{php}$category = getCategory(115);{/php}
-					<label class="f-l">课题类别：</label>
+					<label class="f-l">立项类别：</label>
 					<dt>
 						<dd class=" mt-10">
 							{foreach $category as $key=>$vo } 
 							<label class="ml-10">
-								<input type="checkbox" value="{$vo.id}" name="category" onclick="dtreload()">
+								<input type="checkbox" value="{$vo.id}" name="lxcategory" onclick="dtreload()">
 								{$vo.title}
 							</label>
 							{/foreach}
@@ -72,8 +72,36 @@
 						<dd class=" mt-10">
 							{foreach $school as $key=>$vo } 
 							<label class="ml-10">
-								<input type="checkbox" value="{$vo.id}" name="fzschool" onclick="dtreload()">
+								<input type="checkbox" value="{$vo.id}" name="fzdanweiid" onclick="dtreload()">
 								{$vo.jiancheng}
+							</label>
+							{/foreach}
+						</dd>
+					</dt>
+				</div>
+				<div>
+					{php}$category = getCategory(116);{/php}
+					<label class="f-l">所属学科：</label>
+					<dt>
+						<dd class=" mt-10">
+							{foreach $category as $key=>$vo } 
+							<label class="ml-10">
+								<input type="checkbox" value="{$vo.id}" name="subject" onclick="dtreload()">
+								{$vo.title}
+							</label>
+							{/foreach}
+						</dd>
+					</dt>
+				</div>
+				<div>
+					{php}$category = getCategory(117);{/php}
+					<label class="f-l">研究类别：</label>
+					<dt>
+						<dd class=" mt-10">
+							{foreach $category as $key=>$vo } 
+							<label class="ml-10">
+								<input type="checkbox" value="{$vo.id}" name="category" onclick="dtreload()">
+								{$vo.title}
 							</label>
 							{/foreach}
 						</dd>
@@ -90,6 +118,7 @@
 				<th>主持人</th>
 				<th>课题名称</th>
 				<th>立项单位</th>
+				<th>负责单位</th>
 				<th>课题类型</th>
 				<th>研究方向</th>
 				<th>学科</th>
@@ -123,6 +152,36 @@
 				});
 				return chk;
 			},
+			lxcategory:function(){
+				var chk = [];
+				$('input[name="lxcategory"]:checked').each(function(){
+					if(typeof($(this).val()) != "undefined")
+					{
+						chk.push($(this).val());
+					}
+				});
+				return chk;
+			},
+			fzdanweiid:function(){
+				var chk = [];
+				$('input[name="fzdanweiid"]:checked').each(function(){
+					if(typeof($(this).val()) != "undefined")
+					{
+						chk.push($(this).val());
+					}
+				});
+				return chk;
+			},
+			subject:function(){
+				var chk = [];
+				$('input[name="subject"]:checked').each(function(){
+					if(typeof($(this).val()) != "undefined")
+					{
+						chk.push($(this).val());
+					}
+				});
+				return chk;
+			},
 			category:function(){
 				var chk = [];
 				$('input[name="category"]:checked').each(function(){
@@ -133,24 +192,16 @@
 				});
 				return chk;
 			},
-			fzschool:function(){
-				var chk = [];
-				$('input[name="fzschool"]:checked').each(function(){
-					if(typeof($(this).val()) != "undefined")
-					{
-						chk.push($(this).val());
-					}
-				});
-				return chk;
-			},
+			
 		},
 	};
 
 	// 定义列参数
 	var mycolumns = [
         { "data": "id" },
-        { "data": "id" },
+        { "data": "zcrName","name":"id","defaultContent": ""},
         { "data": "title","defaultContent": "" },
+        { "data": "kt_lxdanwei.title" ,"name":"lxdanweiid","defaultContent": ""},
         { "data": "kt_lxdanwei.title" ,"name":"lxdanweiid","defaultContent": ""},
         { "data": "kt_category.title","name":"category","defaultContent": ""},
         { "data": "ktcnt","name":"id","defaultContent": ""},
@@ -180,9 +231,9 @@
 					startbut = '<a style="text-decoration:none" onClick="start(this,'+ row.id +')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>';
 
 					// 上图图片按钮
-					picbut = '<a title="批传" href="javascript:void(0);" onclick=addfull("批传立项通知书","/ktinfo/'+row.id+'/createall") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe613;</i></a>';
+					picbut = '<a title="批传" href="javascript:void(0);" onclick=addfull("批传立项通知书","/ktinfoaddall/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe613;</i></a>';
 					// 添加荣誉
-					addbut = '<a title="添加课题" href="javascript:void(0);" onclick=addfull("添加课题","/ktinfo/'+row.id+'/create") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe604;</i></a>';
+					addbut = '<a title="添加课题" href="javascript:void(0);" onclick=addfull("添加课题","/ktinfoadd/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe604;</i></a>';
 					// 编辑按钮
 					editbut = '<a title="编辑" href="javascript:void(0);" onclick=add("编辑","/kt/'+row.id+'/edit",600,350) class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
 					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/kt/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';

@@ -33,7 +33,7 @@ class KetiCanyu extends Migrator
 
         // 添加当前表字段
         $table
-            ->addColumn('category','integer',['limit'=>1,'null'=>false,'default'=>0,'comment'=>'主持人或参与人,1=>主持人,2=>参与人'])
+            ->addColumn('category','integer',['limit'=>1,'null'=>false,'default'=>0,'comment'=>'1=>课题主持人,2=>课题参与人'])
             ->addColumn('ketiinfoid','integer',['limit'=>11,'null'=>false,'comment'=>'课题信息id'])
             ->addColumn('teacherid','integer',['limit'=>11,'null'=>false,'comment'=>'教师id'])
             ->create();

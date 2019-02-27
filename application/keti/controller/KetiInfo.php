@@ -58,8 +58,10 @@ class KetiInfo extends Base
         //得到搜索的关键词
         $search = [
             'lxdanweiid'=>$getdt['lxdanweiid'],
+            'lxcategory'=>$getdt['lxcategory'],
+            'fzdanweiid'=>$getdt['fzdanweiid'],
+            'subject'=>$getdt['subject'],
             'category'=>$getdt['category'],
-            'fzschool'=>$getdt['fzschool'],
             'search'=>$getdt['search']['value'],
             'order'=>$order,
             'order_field'=>$order_field
@@ -117,15 +119,102 @@ class KetiInfo extends Base
      * @param  \think\Request  $request
      * @return \think\Response
      */
-    public function save(Request $request)
+    public function save()
     {
-        //
+        // 获取表单数据
+        $list = request()->only(['ketice','title','bianhao','fzdanweiid','subject','category','jhjtshijian','hjteachers'],'POST');
+
+
+
+        // 实例化验证类
+        $validate = new \app\keti\validate\KetiInfo;
+        // 验证表单数据
+        $result = $validate->scene('add')->check($list);
+        $msg = $validate->getError();
+
+        // 如果验证不通过则停止保存
+        if(!$result){
+            return json(['msg'=>$msg,'val'=>0]);
+        }
+
+
+        // 更新数据
+        $data = ktinfo::create($list);
+
+        // 声明教师数组
+            $teacherlist = [];
+            // 循环组成获奖教师信息
+            foreach ($list['hjteachers'] as $key => $value) {
+                $canyulist[] = [
+                    'teacherid' => $value,
+                    'category' => 1,
+                ];
+            }
+            
+
+        // 添加新的获奖人与参与人信息
+        $data->ktZcr()->saveAll($canyulist);
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
     }
 
 
     // 批量上传立项通知书
-    public function createall($id){
-        dump($id);
+    public function createall($id)
+    {
+        // 设置页面标题
+        $list['title'] = '批量添加课题信息';
+        $list['ketice'] = $id;
+
+        // 模板赋值
+        $this->assign('list',$list);
+
+        // 渲染
+        return $this->fetch();
+    }
+
+
+    /**
+     * 上传荣誉图片并保存
+     *
+     * @param  \think\Request  $request
+     * @return \think\Response
+     */
+    public function upload()
+    {
+        // 获取文件信息
+        $ketice=input('post.ketice');
+
+
+        // 获取表单上传文件 例如上传了001.jpg
+        $file = request()->file('file');
+        // 移动到框架应用根目录/uploads/ 目录下
+        $info = $file->validate(['size'=>2*1024*1024,'ext'=>'jpg,png,gif,jpeg'])->move('uploads\ketilixiang');
+
+     
+
+        if($info){
+            // 成功上传后 获取上传信息
+            $list['url'] = $info->getSaveName();
+            $list['url'] = str_replace('\\','/',$list['url']);
+
+
+            // 如果图片上传成功，则添加荣誉记录
+            $data = ktinfo::create(['lxpic'=>$list['url'],'ketice'=>$ketice]);
+            $id = $data->id;
+
+            $id ? $data = array('msg'=>'上传成功','val'=>true,'url'=>$list['url'],'ryid'=>$id) : $data = array('msg'=>'保存文件信息失败','val'=>false,'url'=>null);
+        }else{
+            // 上传失败获取错误信息
+            $data = array('msg'=>$file->getError(),'val'=>false,'url'=>null);
+        }
+
+        // 返回信息
+        return json($data);
     }
 
 
@@ -148,7 +237,23 @@ class KetiInfo extends Base
      */
     public function edit($id)
     {
-        //
+        // 获取课题信息
+        $list = ktinfo::where('id',$id)
+                ->field('title','bianhao','fzdanweiid','subject','category','jhjtshijian')
+                ->with([
+                    'ktZcr'=>function($query){
+                        $query->field('ketiinfoid,teacherid')
+                        ->with(['teacher'=>function($query){
+                            $query->field('id,xingming');
+                        }]);
+                    },
+                ])
+                ->find();
+
+
+        $this->assign('list',$list);
+
+        return $this->fetch();
     }
 
     /**
@@ -176,9 +281,4 @@ class KetiInfo extends Base
 
 
 
-    // 课题册
-    public function KetiCe($id)
-    {
-        dump($id);
-    }
 }

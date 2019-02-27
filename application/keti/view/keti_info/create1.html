@@ -1,0 +1,164 @@
+{extend name="common@create" /}
+{block name="mycss"}
+{/block}
+{block name="formaa"}
+	<div class="form form-horizontal">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>上传文件：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<div class="uploader-thum-container">
+					<div id="fileList" class="uploader-list"></div>
+					<div id="filePicker">选择文件</div>
+					<button id="btn-star" class="btn btn-default btn-uploadstar radius ml-10">开始上传</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<form action="/ktinfo/" method="POST" class="form form-horizontal" id="form-member-add">
+		<input type="hidden" value="" id="lxpic" name="lxpic" readonly="true">
+		<input type="hidden" value="" id="id" name="id" readonly="true">
+		<input type="hidden" value="{$list['ketice']}" id="ketice" name="ketice" readonly="true">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>课题名称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="课题册标题" id="title" name="title">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>主持人：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text mb-10" value="" placeholder="主持人(姓名、首拼、全拼" id="hjteacher" name="hjteacher" style="max-width: 200px;min-width: 80px" onkeyup="hjSelect(this)">
+				<div id="addHj"></div>
+				<div id="hjSelect"></div>
+			</div>
+		</div>
+		<input type="hidden" value="{$list.ketice}">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>课题编号：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="课题编号" id="title" name="title">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>负责单位：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:300px;">
+				{php} $school = schlist('校级','区级');{/php}
+				<select class="select" id="lxdanweiid" name="lxdanweiid" size="1" required>
+					<option value="">--请选课题负责单位--</option>
+					{volist name="school" id="vo"}
+						<option value="{$vo.id}">{$vo.title}</option>
+					{/volist}
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>学科分类：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:180px;">
+				{php}$category = getCategory(116);{/php}
+				<select class="select" id="category" name="category" style="width: 350px" size="1" required>
+					<option value="">--请选择课题研究所属学科分类--</option>
+					{volist name="category" id="vo"}
+						<option value="{$vo.id}">{$vo.title}</option>
+					{/volist}
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>研究类型：</label>
+			<div class="formControls col-xs-8 col-sm-9 f-l">
+				<span class="select-box f-l" style="width:200px;">
+				{php}$category = getCategory(117);{/php}
+				<select class="select" id="category" name="category" size="1" required>
+					<option value="">--请选择课题研究类型--</option>
+					{volist name="category" id="vo"}
+						<option value="{$vo.id}">{$vo.title}</option>
+					{/volist}
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>计划结题时间：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text Wdate" value="" placeholder="" id="shengri" name="shengri" onclick="WdatePicker({isShowClear:false,readOnly:true})" style="width:150px;">
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+{/block}
+{block name="yanzheng"}
+<script type="text/javascript">
+	// 匹配用户名
+	$.validator.addMethod("zh",function(value,element){
+		var tel = /^[\u4e00-\u9fa5]*$/;
+		return this.optional(element) || tel.test(value);
+	}, "请输入中文");
+
+	// 设置表单验证规则
+	var myrules = {
+			title:{
+				maxlength:30,
+			},
+			lxshijian:{
+				required:true,
+				dateISO:true
+			},
+		};
+
+	// 设置表单提交方式
+	var mytype = 'POST';
+
+	// 获取获奖教师列表
+	function hjSelect(obj)
+	{
+		$('#hjSelect').empty();
+		var str = "";
+		str = $('#hjteacher').val();
+		if(str.length<=0)
+		{
+			return "";
+		}
+		$.post(
+			"{:Url::build('renshi/index/srcTeacher')}",
+			{
+				"str":str,
+			},
+			function(data,status){
+				$('#hjSelect').empty();
+				if($.isEmptyObject(data))
+				{
+					return true;
+				}
+				for (var i = data.length - 1; i >= 0; i--) {
+					var myhtml = "";
+					myhtml = "<input class='btn btn-secondary radius mr-5 size-MINI' type='button' value='" + data[i]['xingming'] + "' onclick=addHj(this,"+data[i]['id']+") title="+data[i]['danwei']+'　'+data[i]['sex']+'　'+data[i]['age']+" >";
+					$('#hjSelect').append(myhtml);
+				}
+				
+			}
+		);
+	}
+
+	// 添加参与人
+	function addHj(obj,teacherId)
+	{
+		$('#hjteacher').val('');
+		$(obj).attr('class','btn btn-warning radius mr-5 size-MINI');
+		$(obj).attr('onclick','delCy(this)');
+		var myhtml = "";
+		myhtml = "<span><input type='hidden' name='hjteachers[]' value ="+teacherId+"></span>";
+		$('#addHj').append(myhtml);
+		$('#addHj').children("span").last().append(obj);
+	}
+
+	
+</script>
+{/block}

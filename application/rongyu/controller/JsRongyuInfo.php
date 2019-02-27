@@ -128,9 +128,6 @@ class JsRongyuInfo extends Base
 
         // 如果验证不通过则停止保存
         if(!$result){
-            if($list['id']>0){
-                ryinfo::destroy($list['id'],true);
-            }
             return json(['msg'=>$msg,'val'=>0]);
         }
 
@@ -250,7 +247,7 @@ class JsRongyuInfo extends Base
      */
     public function edit($id)
     {
-        // 获取学生信息
+        // 获取荣誉信息
         $list = ryinfo::where('id',$id)
                 ->field('id,title,rongyuce,bianhao,hjschool,subject,jiangxiang,hjshijian,pic')
                 ->with([

@@ -14,9 +14,9 @@ Route::resource('kt','keti/Index');
 Route::resource('ktinfo','keti/KetiInfo');
 
 // 添加立项信息
-Route::get('ktinfoadd/:id/create','keti/KetiInfo/create');
+Route::get('ktinfoadd/:id','keti/KetiInfo/create');
 // 批量添加立项图片
-Route::get('ktinfoadd/:id/createall','keti/KetiInfo/createall');
+Route::get('ktinfoaddall/:id','keti/KetiInfo/createall');
 
 
 

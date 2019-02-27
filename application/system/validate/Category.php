@@ -13,7 +13,7 @@ class Category extends Validate
      * @var array
      */	
 	protected $rule = [
-        'title|规则名' =>  'require|chs|length:2,8',
+        'title|规则名' =>  'require|chs|length:2,50',
         'paixu|排序'  =>  'number|max:999',
     ];
     
