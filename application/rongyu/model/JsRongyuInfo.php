@@ -22,24 +22,24 @@ class JsRongyuInfo extends Base
 
 
     	$data = $this->order([$order_field =>$order])
-    		->when(!empty($hjschool),function($query) use($hjschool){
+    		->when(strlen($hjschool)>0,function($query) use($hjschool){
                 	$query->where('hjschool','in',$hjschool);
                 })
-    		->when(!empty($fzschool),function($query) use($fzschool){
+    		->when(strlen($fzschool)>0,function($query) use($fzschool){
                     $query->where('rongyuce','in',function($q) use($fzschool){
                         $q->name('JsRongyu')->where('fzschool','in',$fzschool)->field('id');
                     });
                 	
                 })
-    		->when(!empty($category),function($query) use($category){
+    		->when(strlen($category)>0,function($query) use($category){
                 	$query->where('rongyuce','in',function($q) use($category){
                         $q->name('JsRongyu')->where('category','in',$category)->field('id');
                     });
                 })
-    		->when(!empty($rongyuce),function($query) use($rongyuce){
+    		->when(strlen($rongyuce)>0,function($query) use($rongyuce){
                 	$query->where('rongyuce',$rongyuce);
                 })
-            ->when(!empty($search),function($query) use($search){
+            ->when(strlen($search)>0,function($query) use($search){
                     $query->where('title','like',$search);
                 })
             ->with(

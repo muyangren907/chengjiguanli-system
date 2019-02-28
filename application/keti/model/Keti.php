@@ -20,13 +20,13 @@ class Keti extends Base
     	$search = $search['search'];
 
     	$data = $this->order([$order_field =>$order])
-    		->when(!empty($lxdanweiid),function($query) use($lxdanweiid){
+    		->when(strlen($lxdanweiid)>0,function($query) use($lxdanweiid){
                 	$query->where('lxdanweiid','in',$lxdanweiid);
                 })
-    		->when(!empty($category),function($query) use($category){
+    		->when(strlen($category)>0,function($query) use($category){
                 	$query->where('category','in',$category);
                 })
-    		->when(!empty($search),function($query) use($search){
+    		->when(strlen($search)>0,function($query) use($search){
                 	$query->where('title','like',$search);
                 })
             ->with(

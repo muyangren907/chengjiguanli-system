@@ -107,6 +107,30 @@
 						</dd>
 					</dt>
 				</div>
+				<div>
+					{php}$category = getCategory(117);{/php}
+					<label class="f-l">鉴定结果：</label>
+					<dt>
+						<dd class=" mt-10">
+							<label class="ml-10">
+								<input type="checkbox" value="0" name="jddengji" onclick="dtreload()">
+								研究中
+							</label>
+							<label class="ml-10">
+								<input type="checkbox" value="1" name="jddengji" onclick="dtreload()">
+								合格
+							</label>
+							<label class="ml-10">
+								<input type="checkbox" value="2" name="jddengji" onclick="dtreload()">
+								优秀
+							</label>
+							<label class="ml-10">
+								<input type="checkbox" value="3" name="jddengji" onclick="dtreload()">
+								流失
+							</label>
+						</dd>
+					</dt>
+				</div>
 		</div>
 	</div>
 {/block}
@@ -121,7 +145,7 @@
 				<th>立项单位</th>
 				<th>负责单位</th>
 				<th>立项类型</th>
-				<th>研究状态</th>
+				<th>鉴定结果</th>
 				<th>立项时间</th>
 				<th>状态</th>
 				<th>操作</th>
@@ -191,6 +215,16 @@
 				});
 				return chk;
 			},
+			jddengji:function(){
+				var chk = [];
+				$('input[name="jddengji"]:checked').each(function(){
+					if(typeof($(this).val()) != "undefined")
+					{
+						chk.push($(this).val());
+					}
+				});
+				return chk;
+			},
 			ketice:"",
 			
 		},
@@ -232,7 +266,7 @@
 					// 编辑按钮
 					editbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/ktinfo/'+row.id+'/edit") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
 					// 编辑按钮
-					jtbut = '<a title="结题" href="javascript:void(0);" onclick=addfull("结题编辑　' + row.title + '","/ktinfo/'+row.id+'/edit") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe720;</i></a>';
+					jtbut = '<a title="结题" href="javascript:void(0);" onclick=addfull("结题编辑　' + row.title + '","/ktjt/'+row.id+'/edit") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe720;</i></a>';
 					// 删除
 					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/ktinfo/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
 					if(row.status == '已停用')

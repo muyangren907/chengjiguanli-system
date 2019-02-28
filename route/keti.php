@@ -13,8 +13,11 @@
 Route::resource('kt','keti/Index');
 Route::resource('ktinfo','keti/KetiInfo');
 
-// 荣誉册中课题列表
+// 课题册中课题列表
 Route::get('ktlist/:id','keti/KetiInfo/ketilist');
+// 结题编辑
+Route::get('ktjt/:id/edit','keti/KetiInfo/jieTi');
+Route::put('ktjt/:id','keti/KetiInfo/jtUpdate');
 // 添加立项信息
 Route::get('ktinfoadd/:id','keti/KetiInfo/create');
 // 批量添加立项图片

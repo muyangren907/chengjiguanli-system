@@ -16,35 +16,39 @@ class KetiInfo extends Base
     	$fzdanweiid = $search['fzdanweiid'];
         $subject = $search['subject'];
         $category = $search['category'];
+        $jddengji = $search['jddengji'];
         $ketice = $search['ketice'];
     	$order_field = $search['order_field'];
     	$order = $search['order'];
     	$search = $search['search'];
 
     	$data = $this->order([$order_field =>$order])
-    		->when(!empty($lxdanweiid),function($query) use($lxdanweiid){
+    		->when(strlen($lxdanweiid)>0,function($query) use($lxdanweiid){
                 	$query->where('ketice','in',function ($q) use($lxdanweiid){
                         $q->name('keti')->where('lxdanweiid','in',$lxdanweiid)->field('id');
                     });
                 })
-    		->when(!empty($lxcategory),function($query) use($lxcategory){
+    		->when(strlen($lxcategory)>0,function($query) use($lxcategory){
                 	$query->where('ketice','in',function($q) use($lxcategory){
                         $q->name('keti')->where('category','in',$lxcategory)->field('id');
                     });
                 })
-    		->when(!empty($fzdanweiid),function($query) use($fzdanweiid){
+    		->when(strlen($fzdanweiid)>0,function($query) use($fzdanweiid){
                 	$query->where('fzdanweiid','in',$fzdanweiid);
                 })
-            ->when(!empty($subject),function($query) use($subject){
+            ->when(strlen($subject)>0,function($query) use($subject){
                     $query->where('subject','in',$subject);
                 })
-            ->when(!empty($category),function($query) use($category){
+            ->when(strlen($category)>0,function($query) use($category){
                     $query->where('category','in',$category);
                 })
-            ->when(!empty($ketice),function($query) use($ketice){
+            ->when(strlen($ketice)>0,function($query) use($ketice){
                     $query->where('ketice','in',$ketice);
                 })
-    		->when(!empty($search),function($query) use($search){
+            ->when(strlen($jddengji)>0,function($query) use($jddengji){
+                    $query->where('jddengji','in',$jddengji);
+                })
+    		->when(strlen($search)>0,function($query) use($search){
                 	$query->where('title','like',$search);
                 })
             ->with(
@@ -83,6 +87,11 @@ class KetiInfo extends Base
     public function ktZcr()
     {
         return $this->hasMany('\app\keti\model\KetiCanyu','ketiinfoid','id')->where('category',1);
+    }
+    // 课题参与人关联
+    public function ktCy()
+    {
+        return $this->hasMany('\app\keti\model\KetiCanyu','ketiinfoid','id')->where('category',2);
     }
 
     // 立项单位关联

@@ -20,16 +20,16 @@ class DwRongyu extends Base
     	$search = $search['search'];
 
     	$data = $this->order([$order_field =>$order])
-    		->when(!empty($hjschool),function($query) use($hjschool){
+    		->when(strlen($hjschool)>0,function($query) use($hjschool){
                 	$query->where('hjschool','in',$hjschool);
                 })
-    		->when(!empty($fzschool),function($query) use($fzschool){
+    		->when(strlen($fzschool)>0,function($query) use($fzschool){
                 	$query->where('fzschool','in',$fzschool);
                 })
-    		->when(!empty($category),function($query) use($category){
+    		->when(strlen($category)>0,function($query) use($category){
                 	$query->where('category','in',$category);
                 })
-    		->when(!empty($search),function($query) use($search){
+    		->when(strlen($search)>0,function($query) use($search){
                 	$query->where('title','like',$search);
                 })
             ->with(

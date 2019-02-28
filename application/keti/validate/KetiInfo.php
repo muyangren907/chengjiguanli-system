@@ -23,6 +23,9 @@ class KetiInfo extends Validate
         'category|课题研究类型'     =>  'require|number',
         'jhjtshijian|计划结题时间'     =>  'require|date',
         'cyteachers|参与人'    =>  'array',
+        'jtpic|结题鉴定图片'    =>  'length:1,100',
+        'jtshijian|结题时间'    =>  'require|date',
+        'jddengji|鉴定等级'    =>  'require|number',
     ];
     
     /**
@@ -36,6 +39,7 @@ class KetiInfo extends Validate
     // 验证场景
     protected $scene = [
         'add'  =>  ['ketice','title','bianhao','fzdanweiid','subject','category','jhjtshijian','hjteachers'],
-        'edit'  =>  ['id','title','hjteachers','hjschool','subject','hjshijian','jiangxiang','cyteachers'],
+        'edit'  =>  ['id','title','hjteachers','hjschool','subject','hjshijian','jiangxiang'],
+        'jieti'  =>  ['id','jtpic','jddengji','jtshijian','cyteachers'],
     ];
 }

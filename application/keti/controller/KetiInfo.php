@@ -85,6 +85,7 @@ class KetiInfo extends Base
             'fzdanweiid'=>$getdt['fzdanweiid'],
             'subject'=>$getdt['subject'],
             'category'=>$getdt['category'],
+            'jddengji'=>$getdt['jddengji'],
             'ketice'=>$getdt['ketice'],
             'search'=>$getdt['search']['value'],
             'order'=>$order,
@@ -177,10 +178,15 @@ class KetiInfo extends Base
             
 
         // 添加新的获奖人与参与人信息
-        $data->ktZcr()->saveAll($canyulist);
+        $cy = $data->ktZcr()->saveAll($canyulist);
 
         // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        if($cy){
+            $data=['msg'=>'添加成功','val'=>1];
+        }else{
+            $data=['msg'=>'数据处理错误','val'=>0];
+            $data->delete(true);
+        }
 
         // 返回信息
         return json($data);
@@ -312,24 +318,20 @@ class KetiInfo extends Base
         $data = ktinfo::update($list);
 
         // 删除原来的获奖人与参与人信息
-        $data->ktZcr()
-            ->where('ketiinfoid',$list['id'])
-            ->where('category',1)
-            ->delete(true);
+        $data->ktZcr()->delete(true);
         // 声明教师数组
             $teacherlist = [];
             // 循环组成获奖教师信息
             foreach ($list['hjteachers'] as $key => $value) {
                 $canyulist[] = [
                     'teacherid' => $value,
-                    'rongyuid' => $list['id'],
                     'category' => 1,
                 ];
             }
             
 
         // 添加新的获奖人与参与人信息
-        $data->ktZcr()->saveAll($canyulist);
+        $data = $data->ktZcr()->saveAll($canyulist);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -376,6 +378,109 @@ class KetiInfo extends Base
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
+    // 结题页面
+    public function jieTi($id)
+    {
+        // 获取课题信息
+        $list = ktinfo::where('id',$id)
+                ->field('id,title,jddengji,jtshijian,jtpic')
+                ->with([
+                    'ktCy'=>function($query){
+                        $query->field('ketiinfoid,teacherid')
+                        ->with(['teacher'=>function($query){
+                            $query->field('id,xingming');
+                        }]);
+                    },
+                ])
+                ->find();
+
+        // 模板赋值
+        $this->assign('list',$list);
+
+        // 渲染模板
+        return $this->fetch();
+    }
+
+
+    // 更新结题信息
+    public function jtUpdate($id)
+    {
+        // 获取表单数据
+        $list = request()->only(['jtpic','jddengji','jtshijian','cyteachers'],'PUT');
+        $list['id'] = $id;
+
+
+        // 实例化验证类
+        $validate = new \app\keti\validate\KetiInfo;
+        // 验证表单数据
+        $result = $validate->scene('jieti')->check($list);
+        $msg = $validate->getError();
+
+        // 如果验证不通过则停止保存
+        if(!$result){
+            return json(['msg'=>$msg,'val'=>0]);
+        }
+
+
+        // 更新数据
+        $data = ktinfo::update($list);
+
+        // 删除原来的获奖人与参与人信息
+        $data->ktCy()->delete(true);
+        // 声明教师数组
+            $teacherlist = [];
+            // 循环组成获奖教师信息
+            foreach ($list['cyteachers'] as $key => $value) {
+                $canyulist[] = [
+                    'teacherid' => $value,
+                    'category' => 2,
+                ];
+            }
+            
+
+        // 添加新的获奖人与参与人信息
+        $data = $data->ktCy()->saveAll($canyulist);
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
+
+
+    }
+
+
+    /**
+     * 上传荣誉图片并保存
+     *
+     * @param  \think\Request  $request
+     * @return \think\Response
+     */
+    public function jtupload()
+    {
+
+        // 获取表单上传文件 例如上传了001.jpg
+        $file = request()->file('file');
+        // 移动到框架应用根目录/uploads/ 目录下
+        $info = $file->validate(['size'=>2*1024*1024,'ext'=>'jpg,png,gif,jpeg'])->move('uploads\keti\jieti');
+
+        if($info){
+            // 成功上传后 获取上传信息
+            $list['url'] = $info->getSaveName();
+            $list['url'] = str_replace('\\','/',$list['url']);
+            // 如果图片上传成功，则返回
+            $data = array('msg'=>'上传成功','val'=>true,'url'=>$list['url']);
+        }else{
+            // 上传失败获取错误信息
+            $data = array('msg'=>$file->getError(),'val'=>false,'url'=>null);
+        }
 
         // 返回信息
         return json($data);

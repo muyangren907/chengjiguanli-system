@@ -71,13 +71,13 @@ class Student extends Base
 
 
         $data = $this->field('id,xingming,sex,shengri,banji,school,status')
-                ->when(!empty($schoolid),function($query) use($schoolid){
+                ->when(strlen($schoolid)>0,function($query) use($schoolid){
                     $query->where('school','in',$schoolid);
                 })
-                ->when(!empty($banji),function($query) use($banji){
+                ->when(count($banji)>0,function($query) use($banji){
                     $query->where('banji','in',$banji);
                 })
-                ->when(!empty($search),function($query) use($search){
+                ->when(strlen($search)>0,function($query) use($search){
                         $query->where('xingming','like','%'.$search.'%')->field('id');
                 })
                 ->order([$order_field=>$order])
