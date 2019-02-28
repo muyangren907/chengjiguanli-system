@@ -136,26 +136,6 @@ class JsRongyu extends Base
         return json($data);
     }
 
-    /**
-     * 批量上传教师荣誉册图片
-     *
-     * @param  \think\Request  $request
-     * @return \think\Response
-     */
-    // public function createall($id)
-    // {
-    //     // 设置页面标题
-    //     $list['title'] = '添加教师荣誉册';
-    //     $list['id'] = $id;
-
-    //     // 模板赋值
-    //     $this->assign('list',$list);
-
-    //     // 渲染
-    //     return $this->fetch();
-       
-    // }
-
 
 
     /**
@@ -166,18 +146,7 @@ class JsRongyu extends Base
      */
     public function read($id)
     {
-        // 获取变量
-        $list['id'] = $id;
-        // 设置页面标题
-        $list['title'] = '教师荣誉信息';
-        // 设置数据总数
-        $jsryinfo = new jsryinfo();
-        $list['count'] = $jsryinfo->where('rongyuce',$id)->count();
-
-        // 模板赋值
-        $this->assign('list',$list);
-
-        return $this->fetch('js_rongyu_info/read');
+        
     }
 
     /**

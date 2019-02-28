@@ -28,6 +28,27 @@ class JsRongyuInfo extends Base
         return $this->fetch();
     }
 
+/**
+     *荣誉册中荣誉信息列表
+     *
+     * @return \think\Response
+     */
+    public function rongyuList($id)
+    {
+        // 获取变量
+        $list['id'] = $id;
+        // 设置页面标题
+        $list['title'] = '教师荣誉信息';
+        // 设置数据总数
+        $list['count'] = ryinfo::where('rongyuce',$id)->count();
+
+        // 模板赋值
+        $this->assign('list',$list);
+
+        return $this->fetch('');
+    }
+
+
     /**
      * 显示教师荣誉册列表
      *

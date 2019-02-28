@@ -30,6 +30,29 @@ class KetiInfo extends Base
     }
 
 
+    /**
+     * 显示指定的资源
+     *
+     * @param  int  $id
+     * @return \think\Response
+     */
+    public function ketiList($id)
+    {
+        
+        // 获取变量
+        $list['id'] = $id;
+        // 设置页面标题
+        $list['title'] = '课题信息';
+        // 设置数据总数
+        $list['count'] = ktinfo::where('ketice',$id)->count();
+
+        // 模板赋值
+        $this->assign('list',$list);
+
+        return $this->fetch('');
+    }
+
+
 
     /**
      * 显示课题信息列表
@@ -323,7 +346,39 @@ class KetiInfo extends Base
      */
     public function delete($id)
     {
-        //
+
+        if($id == 'm')
+        {
+            $id = request()->delete('ids/a');// 获取delete请求方式传送过来的数据并转换成数据
+        }
+
+        $data = ktinfo::destroy($id);
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
+
+    // 设置荣誉状态
+    public function setStatus()
+    {
+
+        //  获取id变量
+        $id = request()->post('id');
+        $value = request()->post('value');
+
+        // 获取学生信息
+        $data = ktinfo::where('id',$id)->update(['status'=>$value]);
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
     }
 
 
