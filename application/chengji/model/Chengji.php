@@ -107,20 +107,20 @@ class Chengji extends Base
 
 
 		$data = $this->scope('kaoshi',$kaoshiid)
-            	->when(!empty($schoolid),function($query) use($schoolid){
+            	->when(strlen($schoolid)>0,function($query) use($schoolid){
                 	$query->where('school','in',$schoolid);
                 })
-                ->when(!empty($nianji),function($query) use($nianji){
+                ->when(strlen($nianji)>0,function($query) use($nianji){
                 	$query->where('nianji','in',$nianji);
                 })
-                ->when(!empty($banji),function($query) use($banji){
+                ->when(count($banji)>0,function($query) use($banji){
                 	$query->where('banji','in',$banji);
                 })
-                ->when(!empty($search) && is_numeric($search), function ($query) use($search){
+                ->when(strlen($search)>0 && is_numeric($search), function ($query) use($search){
 				    // 满足条件后执行
 				    $query->where('yuwen|shuxue|waiyu',$search);
 				})
-                ->when(!empty($search) && !is_numeric($search),function($query) use($search){
+                ->when(strlen($search)>0 && !is_numeric($search),function($query) use($search){
                 		$query->where('student','in',function ($q) use($search){
                 			$q->name('student')
 	                			->where('xingming','like','%'.$search.'%')

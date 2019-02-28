@@ -83,8 +83,7 @@
 					{/php}
 					<label class="f-l">班级：</label>
 					<dt>
-						<dd class=" mt-10">
-						{for start="1" end=$bjlist} 
+						{for start="1" end="$bjlist"} 
 							<label class="ml-10">
 								<input type="checkbox" value="{$i}" name="banji" onclick="dtreload()">
 								{$bjnames[$i]}
