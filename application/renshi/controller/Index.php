@@ -286,8 +286,8 @@ class Index extends Base
             $teacherlist[$i]['subject'] = srcSubject($value[7]);
             $teacherlist[$i]['zhuanye'] = $value[9];
             $teacherlist[$i]['xueli'] = srcXl($value[10]);
-            $teacherlist[$i]['quanpin'] = $value[11];
-            $teacherlist[$i]['shoupin'] = $value[12];
+            $teacherlist[$i]['quanpin'] = strtolower($value[11]);
+            $teacherlist[$i]['shoupin'] = strtolower($value[12]);
 
             $i++;
         }
@@ -353,6 +353,9 @@ class Index extends Base
         {
             return json($data);
         }
+        $str = strtolower($str);
+        $str = str_replace('　','', $str);
+        $str = str_replace(' ','', $str);
 
 
         // 如果有数据则查询教师信息
