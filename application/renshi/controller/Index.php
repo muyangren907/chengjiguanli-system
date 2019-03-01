@@ -377,6 +377,13 @@ class Index extends Base
         return $download->name('TeacherInfo.xlsx');
     }
 
+    // 下载表格VBA代码
+    public function downloadVba()
+    {
+        $download =  new \think\response\Download('jiaoShiXingMingVBA.bas');
+        return $download->name('TeacherVBA');
+    }
+
 
 
 }
