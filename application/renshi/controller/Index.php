@@ -30,10 +30,13 @@ class Index extends Base
     }
 
 
-    // 获取教师信息列表
+    /**
+     * 显示教师信息列表
+     *
+     * @return \think\Response
+     */
     public function ajaxData()
     {
-
         // 获取DT的传值
         $getdt = request()->param();
 
@@ -42,42 +45,47 @@ class Index extends Base
         //得到排序字段的下标
         $order_column = $getdt['order'][0]['column'];
         //根据排序字段的下标得到排序字段
-        $order_field = $getdt['columns'][$order_column]['data'];
+        $order_field = $getdt['columns'][$order_column]['name'];
+        if($order_field=='')
+        {
+            $order_field = $getdt['columns'][$order_column]['data'];
+        }
         //得到limit参数
         $limit_start = $getdt['start'];
         $limit_length = $getdt['length'];
+
         //得到搜索的关键词
-        $search = $getdt['search']['value'];
+        $search = [
+            'zhiwu'=>$getdt['zhiwu'],
+            'zhicheng'=>$getdt['zhicheng'],
+            'danwei'=>$getdt['danwei'],
+            'xueli'=>$getdt['xueli'],
+            'subject'=>$getdt['subject'],
+            'search'=>$getdt['search']['value'],
+            'order'=>$order,
+            'order_field'=>$order_field
+        ];
 
 
-        // 获取记录集总数
-        $cnt = Teacher::count();
-        //查询数据
-        $data =Teacher::field('id,xingming,sex,shengri,xueli,biye,worktime,zhuanye,danwei,status')
-            ->order([$order_field=>$order])
-            ->limit($limit_start,$limit_length)
-            ->all();
-        
+        // 实例化
+        $teacher = new Teacher;
 
-        // 如果需要查询
-        if($search){
-            $data = Teacher::field('id,xingming,sex,shengri,xueli,biye,worktime,zhuanye,danwei,status')
-                ->order([$order_field=>$order])
-                ->limit($limit_start,$limit_length)
-                ->where('xingming|biye|zhuanye','like','%'.$search.'%')
-                ->all();
-        }
+        // 获取荣誉总数
+        $cnt = $teacher->select()->count();
 
+        // 查询数据
+        $data = $teacher->search($search);
         $datacnt = $data->count();
-        $data = $data->append(['age','gongling']);
-        
-        
+
+        // 获取当前页数据
+        $data = $data->slice($limit_start,$limit_length);
 
 
+        // 重组返回内容
         $data = [
             'draw'=> $getdt["draw"] , // ajax请求次数，作为标识符
-            'recordsTotal'=>$datacnt,  // 获取到的结果数(每页显示数量)
-            'recordsFiltered'=>$cnt,       // 符合条件的总数据量
+            'recordsTotal'=>$cnt,  // 获取到的结果数(每页显示数量)
+            'recordsFiltered'=>$datacnt,       // 符合条件的总数据量
             'data'=>$data, //获取到的数据结果
         ];
 
@@ -353,16 +361,13 @@ class Index extends Base
         {
             return json($data);
         }
-        $str = strtolower($str);
-        $str = str_replace('　','', $str);
-        $str = str_replace(' ','', $str);
 
 
         // 如果有数据则查询教师信息
         $list = Teacher::field('id,xingming,danwei,shengri,sex')
-                    ->whereOr('xingming|quanpin','like',$str.'%')
-                    ->whereOr('quanpin','like',$str.'%')
-                    ->whereOr('shoupin','like',$str.'%')
+                    ->whereOr('xingming|quanpin|shoupin','like','%'.$str.'%')
+                    // ->whereOr('quanpin','like',$str.'%')
+                    // ->whereOr('shoupin','like',$str.'%')
                     ->append(['age'])
                     ->all();
         return json($list);

@@ -34,6 +34,87 @@
 			共有数据：<strong>{$list.count}</strong> 条
 		</span>
 	</div>
+	<div class="panel panel-default mt-10 mb-10">
+		<div class="panel-header" id="shaixuan">筛选教师信息</div>
+		<div class="panel-body" style="min-height: 60px">
+				<div>
+					{php}
+						$school = schlist('校级','区级');
+					{/php}
+					<label class="f-l">现工作单位：</label>
+					<dt>
+						<dd class=" mt-10">
+							{foreach $school as $key=>$vo } 
+							<label class="ml-10">
+								<input type="checkbox" value="{$vo.id}" id="hjschool" name="danwei" onclick="dtreload()">
+								{$vo.jiancheng}
+							</label>
+							{/foreach}
+						</dd>
+					</dt>
+				</div>
+				<div>
+					{php}$category = getCategory(107);{/php}
+					<label class="f-l">职务：</label>
+					<dt>
+						<dd class=" mt-10">
+							{foreach $category as $key=>$vo } 
+							<label class="ml-10">
+								<input type="checkbox" value="{$vo.id}" name="zhiwu" onclick="dtreload()">
+								{$vo.title}
+							</label>
+							{/foreach}
+						</dd>
+					</dt>
+				</div>
+				<div>
+					{php}$category = getCategory(106);{/php}
+					<label class="f-l">职专业技术职称：</label>
+					<dt>
+						<dd class=" mt-10">
+							{foreach $category as $key=>$vo } 
+							<label class="ml-10">
+								<input type="checkbox" value="{$vo.id}" name="zhicheng" onclick="dtreload()">
+								{$vo.title}
+							</label>
+							{/foreach}
+						</dd>
+					</dt>
+				</div>
+				<div>
+					{php}$category = getCategory(105);{/php}
+					<label class="f-l">学历：</label>
+					<dt>
+						<dd class=" mt-10">
+							{foreach $category as $key=>$vo } 
+							<label class="ml-10">
+								<input type="checkbox" value="{$vo.id}" name="xueli" onclick="dtreload()">
+								{$vo.title}
+							</label>
+							{/foreach}
+						</dd>
+					</dt>
+				</div>
+				<div>
+					{php}
+						$subject = new \app\teach\model\Subject;
+						$subject = $subject->where('status',1)->field('id,jiancheng')->select();
+
+					{/php}
+					<label class="f-l">任教学科：</label>
+					<dt>
+						<dd class=" mt-10">
+							{foreach $subject as $key=>$vo } 
+							<label class="ml-10">
+								<input type="checkbox" value="{$vo.id}" name="subject" onclick="dtreload()">
+								{$vo.jiancheng}
+							</label>
+							{/foreach}
+						</dd>
+					</dt>
+				</div>
+		</div>
+	</div>
 {/block}
 {block name="tables"}
 	<table id="table1" class="display" cellspacing="0" width="100%">
@@ -65,8 +146,62 @@
 	var myajax = {
 		url: "{:url('ajaxdata')}",
 		type: "post",
-		data: {},
+		data: {
+			danwei:function(){
+				var chk = [];
+				$('input[name="danwei"]:checked').each(function(){
+					if(typeof($(this).val()) != "undefined")
+					{
+						chk.push($(this).val());
+					}
+				});
+				return chk;
+			},
+			zhiwu:function(){
+				var chk = [];
+				$('input[name="zhiwu"]:checked').each(function(){
+					if(typeof($(this).val()) != "undefined")
+					{
+						chk.push($(this).val());
+					}
+				});
+				return chk;
+			},
+			zhicheng:function(){
+				var chk = [];
+				$('input[name="zhicheng"]:checked').each(function(){
+					if(typeof($(this).val()) != "undefined")
+					{
+						chk.push($(this).val());
+					}
+				});
+				return chk;
+			},
+			xueli:function(){
+				var chk = [];
+				$('input[name="xueli"]:checked').each(function(){
+					if(typeof($(this).val()) != "undefined")
+					{
+						chk.push($(this).val());
+					}
+				});
+				return chk;
+			},
+			subject:function(){
+				var chk = [];
+				$('input[name="subject"]:checked').each(function(){
+					if(typeof($(this).val()) != "undefined")
+					{
+						chk.push($(this).val());
+					}
+				});
+				return chk;
+			},
+
+		},
 	};
+
+
 
 	// 定义列参数
 	var mycolumns = [
@@ -74,11 +209,11 @@
         { "data": "xingming" },
         { "data": "sex" },
         { "data": "age" ,"defaultContent": ""},
-        { "data": "xueli" },
+        { "data": "js_xueli.title","name":"xueli","defaultContent": ""},
         { "data": "biye" },
         { "data": "gongling","defaultContent": ""},	//工龄
         { "data": "zhuanye" },
-        { "data": "danwei" },
+        { "data": "js_danwei.jiancheng","name":"danwei","defaultContent": ""},
         { "data": "status" },
         { "data": "id" },
 	];
@@ -132,5 +267,16 @@
         	"targets": [0,-1]
         }, 
 	];
+
+	// 筛选成绩面板折叠
+	$('#shaixuan').click(function(){
+		$(this).next().toggle();
+	});
+
+	// 重载数据
+	function dtreload()
+	{
+		$('#table1').DataTable().ajax.reload();
+	}
 </script>
 {/block}
