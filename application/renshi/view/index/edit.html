@@ -45,7 +45,7 @@
 				<select class="select" id="danwei" name="danwei" size="1" required>
 					<option value="">--请选择现工作单位--</option>
 					{volist name="school" id="vo"}
-						<option value="{$vo.id}" {eq name="$list.danwei" value="$vo.jiancheng" }selected{/eq}>{$vo.title}</option>
+						<option value="{$vo.id}" {eq name="$list.danwei" value="$vo.id" }selected{/eq}>{$vo.title}</option>
 					{/volist}
 				</select>
 				</span>
@@ -59,7 +59,7 @@
 				<select class="select" id="zhiwu" name="zhiwu" size="1" required>
 					<option value="">--请选择职务--</option>
 					{volist name="category" id="vo"}
-						<option value="{$vo.id}" {eq name="$list.zhiwu" value="$vo.title" }selected{/eq}>{$vo.title}</option>
+						<option value="{$vo.id}" {eq name="$list.zhiwu" value="$vo.id" }selected{/eq}>{$vo.title}</option>
 					{/volist}
 				</select>
 				</span>
@@ -73,7 +73,7 @@
 				<select class="select" id="zhicheng" name="zhicheng" size="1" required>
 					<option value="">--请选择职称--</option>
 					{volist name="category" id="vo"}
-						<option value="{$vo.id}" {eq name="$list.zhicheng" value="$vo.title" }selected{/eq}>{$vo.title}</option>
+						<option value="{$vo.id}" {eq name="$list.zhicheng" value="$vo.id" }selected{/eq}>{$vo.title}</option>
 					{/volist}
 				</select>
 				</span>
@@ -87,7 +87,7 @@
 				<select class="select" id="xueli" name="xueli" size="1" required>
 					<option value="">--请选择学历--</option>
 					{volist name="category" id="vo"}
-						<option value="{$vo.id}" {eq name="$list.xueli" value="$vo.title" }selected{/eq}>{$vo.title}</option>
+						<option value="{$vo.id}" {eq name="$list.xueli" value="$vo.id" }selected{/eq}>{$vo.title}</option>
 					{/volist}
 				</select>
 				</span>

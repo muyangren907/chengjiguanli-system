@@ -20,7 +20,7 @@ class SystemBase extends Seeder
             'update_time'   =>  time(),
             'title'         =>  '学生成绩统计系统',
             'keywords'      =>  '成绩统计,成绩管理',
-            'description'   =>  '这是我们自己开发的系统',
+            'description'   =>  '适合我们的才是好用的',
             'thinks'        =>  'H-ui前端框架、ThinkPhp框架',
             'danwei'        =>  '大连长兴岛经济区教科培中心',
         ];

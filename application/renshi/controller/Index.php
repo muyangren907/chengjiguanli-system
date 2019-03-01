@@ -124,7 +124,7 @@ class Index extends Base
         $result = $validate->check($list);
         $msg = $validate->getError();
 
-        $list['quanpin'] = strtolower($list['quanpin']);
+        $list['quanpin'] = strtolower(str_replace(' ', '', $list['quanpin']));
         $list['shoupin'] = strtolower($list['shoupin']);
 
 
@@ -187,7 +187,7 @@ class Index extends Base
             return json(['msg'=>$msg,'val'=>0]);;
         }
 
-        $list['quanpin'] = strtolower($list['quanpin']);
+        $list['quanpin'] = strtolower(str_replace(' ', '', $list['quanpin']));
         $list['shoupin'] = strtolower($list['shoupin']);
         // 更新数据
         $teacher = new Teacher();
@@ -294,7 +294,7 @@ class Index extends Base
             $teacherlist[$i]['subject'] = srcSubject($value[7]);
             $teacherlist[$i]['zhuanye'] = $value[9];
             $teacherlist[$i]['xueli'] = srcXl($value[10]);
-            $teacherlist[$i]['quanpin'] = strtolower($value[11]);
+            $teacherlist[$i]['quanpin'] = strtolower(str_replace(' ', '', $value[11]));
             $teacherlist[$i]['shoupin'] = strtolower($value[12]);
 
             $i++;
@@ -355,19 +355,15 @@ class Index extends Base
         // 声明结果数组
         $data = array();
 
-
         // 判断是否存在数据，如果没有数据则返回。
         if(strlen($str) <= 0)
         {
             return json($data);
         }
 
-
         // 如果有数据则查询教师信息
         $list = Teacher::field('id,xingming,danwei,shengri,sex')
                     ->whereOr('xingming|quanpin|shoupin','like','%'.$str.'%')
-                    // ->whereOr('quanpin','like',$str.'%')
-                    // ->whereOr('shoupin','like',$str.'%')
                     ->append(['age'])
                     ->all();
         return json($list);

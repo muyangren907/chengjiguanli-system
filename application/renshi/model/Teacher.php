@@ -129,7 +129,7 @@ class Teacher extends Base
     // 性别获取器
     public function getSexAttr($value)
     {
-        $sex = array('0'=>'女','1'=>'男','2'=>'保密');
+        $sex = array('0'=>'女','1'=>'男','2'=>'未知');
         return $sex[$value];
     }
 
