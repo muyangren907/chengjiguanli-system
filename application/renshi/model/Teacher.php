@@ -61,7 +61,7 @@ class Teacher extends Base
                     },
                 ]
             )
-            // ->append(['hjJsName'])
+            ->append(['age','gongling'])
             ->select();
 
 
