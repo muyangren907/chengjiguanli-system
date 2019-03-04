@@ -35,21 +35,48 @@ class School extends Base
         // 获取DT的传值
         $getdt = request()->param();
 
-        
-        // 实例化单位模型
-        $sch = new sch();
-        // 获取记录集总数
-        $cnt = $sch->searchAll()->count();
-        //查询数据
-        $data =$sch->searchAjax($getdt);
+        //得到排序的方式
+        $order = $getdt['order'][0]['dir'];
+        //得到排序字段的下标
+        $order_column = $getdt['order'][0]['column'];
+        //根据排序字段的下标得到排序字段
+        $order_field = $getdt['columns'][$order_column]['name'];
+        if($order_field=='')
+        {
+            $order_field = $getdt['columns'][$order_column]['data'];
+        }
+        //得到limit参数
+        $limit_start = $getdt['start'];
+        $limit_length = $getdt['length'];
 
+        //得到搜索的关键词
+        $search = [
+            'xingzhi'=>$getdt['xingzhi'],
+            'search'=>$getdt['search']['value'],
+            'order'=>$order,
+            'order_field'=>$order_field
+        ];
+
+
+        // 实例化
+        $sch = new sch;
+
+        // 获取荣誉总数
+        $cnt = $sch->select()->count();
+
+        // 查询数据
+        $data = $sch->search($search);
         $datacnt = $data->count();
-        
-        // 组合返回数据
+
+        // 获取当前页数据
+        $data = $data->slice($limit_start,$limit_length);
+
+
+        // 重组返回内容
         $data = [
             'draw'=> $getdt["draw"] , // ajax请求次数，作为标识符
-            'recordsTotal'=>$datacnt,  // 获取到的结果数(每页显示数量)
-            'recordsFiltered'=>$cnt,       // 符合条件的总数据量
+            'recordsTotal'=>$cnt,  // 获取到的结果数(每页显示数量)
+            'recordsFiltered'=>$datacnt,       // 符合条件的总数据量
             'data'=>$data, //获取到的数据结果
         ];
 

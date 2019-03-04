@@ -7,66 +7,75 @@ use app\common\model\Base;
 class School extends Base
 {
 
-    // 单位性质获取器
-    public function getXingzhiAttr($value)
+    // 教师数据模型关联
+    public function dwTeacher()
     {
-    	return $this->getcategory($value);
+        return $this->hasMany('\app\renshi\model\Teacher','danwei','id');
     }
 
-    // 单位级别获取器
-    public function getJibieAttr($value)
+    // 单位性质数据模型关联
+    public function  dwXingzhi()
     {
-    	return $this->getcategory($value);
+        return $this->belongsTo('\app\system\model\Category','xingzhi','id');
     }
 
-    // 单位学段获取器
-    public function getXueduanAttr($value)
+
+    // 单位级别数模型关联
+    public function  dwJibie()
     {
-    	return $this->getcategory($value);
+        return $this->belongsTo('\app\system\model\Category','jibie','id');
     }
 
-    // 获取类别名
-    public function getcategory($id)
+
+    // 单位学段数模型关联
+    public function  dwXueduan()
     {
-        $ct = new \app\system\model\Category;
-        return $ct
-            ->where('id',$id)
-            ->value('title');
+        return $this->belongsTo('\app\system\model\Category','xueduan','id');
     }
+
 
 
     // 查询所有单位
-    public function searchAjax($getdt)
+    public function search($search)
     {
-        //得到排序的方式
-        $order = $getdt['order'][0]['dir'];
-        //得到排序字段的下标
-        $order_column = $getdt['order'][0]['column'];
-        //根据排序字段的下标得到排序字段
-        $order_field = $getdt['columns'][$order_column]['data'];
-        //得到limit参数
-        $limit_start = $getdt['start'];
-        $limit_length = $getdt['length'];
-        //得到搜索的关键词
-        $search = $getdt['search']['value'];
+        // 获取参数
+        $xingzhi = $search['xingzhi'];
+        $order_field = $search['order_field'];
+        $order = $search['order'];
+        $search = $search['search'];
 
 
-        // 如果需要查询
-        if(trim($search)){
-            $data =sch::field('id,title,jiancheng,biaoshi,xingzhi,jibie,status,xueduan,paixu')
-                ->whereOr('title','like','%'.$search.'%')
-                ->whereOr('pid','in',function($query) use ($search){
-                    $query->name('category')->where('title','like','%'.$search.'%')->field('id');
+
+        $data = $this->order([$order_field =>$order])
+            ->when(strlen($xingzhi)>0,function($query) use($xingzhi){
+                    $query->where('xingzhi','in',$xingzhi);
                 })
-                ->order([$order_field=>$order])
-                ->limit($limit_start,$limit_length)
-                ->select();
-        }else{
-            $data =$this->field('id,title,jiancheng,biaoshi,xingzhi,jibie,status,xueduan,paixu')
-            ->order([$order_field=>$order])
-            ->limit($limit_start,$limit_length)
+            ->when(strlen($search)>0,function($query) use($search){
+                    $query->where('title|jiancheng','like',$search);
+                })
+            ->with(
+                [
+                    'dwXingzhi'=>function($query){
+                        $query->field('id,title');
+                    },
+                    'dwJibie'=>function($query){
+                        $query->field('id,title');
+                    },
+                    'dwXueduan'=>function($query){
+                        $query->field('id,title');
+                    },
+                ]
+            )
+            ->withCount(
+                [
+                    'dwTeacher'=>function($query){
+                        $query->where('status',1);
+                    }
+                ]
+            )
+            // ->append(['cnt'])
             ->select();
-        }
+
 
         return $data;
     }
@@ -76,26 +85,4 @@ class School extends Base
     {
         return $this->cache('key',180)->select();
     }
-
-    // 查询范围内数据
-    // public function searchMany($jibie1,$jibie2)
-    // {
-    //     $jb = new \app\system\model\Category;
-    //     $jibie1 = $jb->wherePid(102)
-    //         ->whereTitle($jibie1)
-    //         ->value('id');
-    //     $jibie2 = $jb->wherePid(102)
-    //         ->whereTitle($jibie2)
-    //         ->value('id');
-
-    //     $schlist = $this->where('jibie','between',[$jibie1,$jibie2])->select();
-    //     return $schlist;
-    // }
-
-
-
-
-
-
-
 }

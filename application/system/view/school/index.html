@@ -30,6 +30,25 @@
 			共有数据：<strong>{$list.count}</strong> 条
 		</span>
 	</div>
+	<div class="panel panel-default mt-10 mb-10">
+		<div class="panel-header" id="shaixuan">筛选荣誉册</div>
+		<div class="panel-body" style="min-height: 40px">
+			<div>
+				{php}$category = getCategory(101);{/php}
+				<label class="f-l">荣誉类别：</label>
+				<dt>
+					<dd class=" mt-10">
+						{foreach $category as $key=>$vo } 
+						<label class="ml-10">
+							<input type="checkbox" value="{$vo.id}" name="xingzhi" onclick="dtreload()">
+							{$vo.title}
+						</label>
+						{/foreach}
+					</dd>
+				</dt>
+			</div>
+		</div>
+	</div>
 {/block}
 {block name="tables"}
 	<table id="table1" class="display" cellspacing="0" width="100%">
@@ -39,10 +58,10 @@
 				<th>单位名称</th>
 				<th>简称</th>
 				<th>性质</th>
-				<th>标识码</th>
 				<th>级别</th>
 				<th>学段</th>
 				<th>排序</th>
+				<th>教师数</th>
 				<th>状态</th>
 				<th>操作</th>
 			</tr>
@@ -59,8 +78,19 @@
 	// 定义DTajax参数
 	var myajax = {
 		url: "{:url('ajaxdata')}",
-		type: "get",
-		data: {},
+		type: "post",
+		data: {
+			xingzhi:function(){
+				var chk = [];
+				$('input[name="xingzhi"]:checked').each(function(){
+					if(typeof($(this).val()) != "undefined")
+					{
+						chk.push($(this).val());
+					}
+				});
+				return chk;
+			},
+		},
 	};
 
 	// 定义列参数
@@ -68,11 +98,11 @@
         { "data": "id" },
         { "data": "title" },
         { "data": "jiancheng" },
-        { "data": "xingzhi" },
-        { "data": "biaoshi" },
-        { "data": "jibie" },
-        { "data": "xueduan" },
+        { "data": "dw_xingzhi.title" ,"name":"xingzhi","defaultContent": "" },
+        { "data": "dw_jibie.title" ,"name":"jibie","defaultContent": "" },
+        { "data": "dw_xueduan.title" ,"name":"xueduan","defaultContent": "" },
         { "data": "paixu" },
+        { "data": "dw_teacher_count","name":"id" ,"defaultContent":""},
         { "data": "status" },
         { "data": "id" },
 	];
@@ -126,5 +156,16 @@
         	"targets": [0,-1]
         }, 
 	];
+
+	// 筛选成绩面板折叠
+	$('#shaixuan').click(function(){
+		$(this).next().toggle();
+	});
+
+	// 重载数据
+	function dtreload()
+	{
+		$('#table1').DataTable().ajax.reload();
+	}
 </script>
 {/block}
