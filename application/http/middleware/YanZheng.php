@@ -13,20 +13,17 @@ class YanZheng  extends Controller
     public function handle($request, \Closure $next)
     {
         // 声明帐号密码变量
-        $username = 0;
-        $password = 0;
+        $username = session('username');
+        $password = session('password');
 
         // 如果用户没有登录直接跳转到登录页面
-        if( session('?username') )
+        if( strlen($username)<1 )
         {
-            $username = session('username');
-            $password = session('password');
-        }elseif(cookie('username') != null)
-        {
-            // 获取用户名和密码
             $username = cookie('username');
             $password = cookie('password');
-        }else{
+        }
+        if( strlen($username)<1 )
+        {
             $this->redirect('/login',302);
         }
 

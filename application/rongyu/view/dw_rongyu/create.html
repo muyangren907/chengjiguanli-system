@@ -248,7 +248,7 @@
 				}
 				for (var i = data.length - 1; i >= 0; i--) {
 					var myhtml = "";
-					myhtml = "<input class='btn btn-secondary radius mr-5 size-MINI' type='button' value='" + data[i]['xingming'] + "' onclick=addCy(this,"+data[i]['id']+") title="+data[i]['danwei']+'　'+data[i]['sex']+'　'+data[i]['age']+" >";
+					myhtml = "<input class='btn btn-secondary radius mr-5 size-MINI' type='button' value='" + data[i]['xingming'] + "' onclick=addCy(this,"+data[i]['id']+") title="+data[i]['js_danwei']['jiancheng']+'　'+data[i]['sex']+'　'+data[i]['age']+" >";
 					$('#cySelect').append(myhtml);
 				}
 				

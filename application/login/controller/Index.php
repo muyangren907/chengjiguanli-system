@@ -102,7 +102,7 @@ class Index extends Controller
         
         if($check)
         {
-            // Session存值
+            session(null);
             session('userid', $userinfo->id);
             session('username', $username);
             session('password', $password);
