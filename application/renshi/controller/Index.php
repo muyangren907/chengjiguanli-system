@@ -364,6 +364,13 @@ class Index extends Base
         // 如果有数据则查询教师信息
         $list = Teacher::field('id,xingming,danwei,shengri,sex')
                     ->whereOr('xingming|quanpin|shoupin','like','%'.$str.'%')
+                    ->with(
+                        [
+                            'jsDanwei'=>function($query){
+                                $query->field('id,jiancheng');
+                            },
+                        ]
+                    )
                     ->append(['age'])
                     ->all();
         return json($list);
