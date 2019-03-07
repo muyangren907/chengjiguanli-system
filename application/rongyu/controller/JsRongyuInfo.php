@@ -7,6 +7,11 @@ use app\common\controller\Base;
 // 引用教师数据模型类
 use app\rongyu\model\JsRongyuInfo as ryinfo;
 
+// 引用PhpSpreadsheet类
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
 class JsRongyuInfo extends Base
 {
     /**
@@ -399,5 +404,22 @@ class JsRongyuInfo extends Base
 
         // 返回信息
         return json($data);
+    }
+
+    // 下载荣誉信息
+    public function outXlsx($id)
+    {
+
+        //通过工厂模式创建内容
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('jsRongyu.xlsx');
+
+        $worksheet = $spreadsheet->getActiveSheet();
+
+        $worksheet->getCell('A1')->setValue('John');
+        $worksheet->getCell('A2')->setValue('Smith');
+        //通过工厂模式来写内容
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
+        $writer->save('write.xls');;
+
     }
 }
