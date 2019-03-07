@@ -47,9 +47,6 @@ class JsRongyuInfo extends Base
                     'hjSchool'=>function($query){
                         $query->field('id,jiancheng');
                     },
-                    // 'fzSchool'=>function($query){
-                    //     $query->field('id,jiancheng');
-                    // },
                     'rySubject'=>function($query){
                         $query->field('id,title');
                     },

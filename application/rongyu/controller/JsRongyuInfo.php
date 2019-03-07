@@ -270,7 +270,7 @@ class JsRongyuInfo extends Base
     {
         // 获取荣誉信息
         $list = ryinfo::where('id',$id)
-                ->field('id,title,bianhao,hjschool,subject,jiangxiang,hjshijian,pic')
+                ->field('id,rongyuce,title,bianhao,hjschool,subject,jiangxiang,hjshijian,pic')
                 ->with([
                     'hjJsry'=>function($query){
                         $query->field('rongyuid,teacherid')
@@ -284,8 +284,12 @@ class JsRongyuInfo extends Base
                             $query->field('id,xingming');
                         }]);
                     },
+                    'ryTuce'=>function($query){
+                        $query->field('id,fzshijian');
+                    }
                 ])
                 ->find();
+                dump($list);
 
         $this->assign('list',$list);
 

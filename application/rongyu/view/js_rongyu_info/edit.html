@@ -83,7 +83,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>获奖时间：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text Wdate" value="{$list.hjshijian}" placeholder="" id="hjshijian" name="hjshijian" onclick="WdatePicker({isShowClear:false,readOnly:true})" style="width: 180px">
+				<input type="text" class="input-text Wdate" value="{if $list.hjshijian > 0 }{$list.hjshijian}{else /}{$list.ry_tuce.fzshijian}{/if}" placeholder="" id="hjshijian" name="hjshijian" onclick="WdatePicker({isShowClear:false,readOnly:false})" style="width: 180px">
 			</div>
 		</div>
 		</div>
