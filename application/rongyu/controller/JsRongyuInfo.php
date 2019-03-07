@@ -289,7 +289,6 @@ class JsRongyuInfo extends Base
                     }
                 ])
                 ->find();
-                dump($list);
 
         $this->assign('list',$list);
 
