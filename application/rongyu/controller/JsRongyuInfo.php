@@ -406,20 +406,70 @@ class JsRongyuInfo extends Base
         return json($data);
     }
 
+    
+
     // 下载荣誉信息
     public function outXlsx($id)
     {
 
+        // 查询数据
+        $list = ryinfo::where('rongyuce',$id)
+                ->field('id,rongyuce,title,bianhao,hjschool,subject,jiangxiang,hjshijian,pic')
+                ->with([
+                    'hjJsry'=>function($query){
+                        $query->field('rongyuid,teacherid')
+                        ->with(['teacher'=>function($query){
+                            $query->field('id,xingming');
+                        }]);
+                    },
+                    'cyJsry'=>function($query){
+                        $query->field('rongyuid,teacherid')
+                        ->with(['teacher'=>function($query){
+                            $query->field('id,xingming');
+                        }]);
+                    },
+                    'ryTuce'=>function($query){
+                        $query->field('id,title,fzshijian');
+                    }
+                ])
+                ->select();
+        
+
+        if($list->isEmpty())
+        {
+            $this->error('兄弟，没有要下载的信息呀~');
+            return '';
+        }
+
+
+
         //通过工厂模式创建内容
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('jsRongyu.xlsx');
-
         $worksheet = $spreadsheet->getActiveSheet();
 
-        $worksheet->getCell('A1')->setValue('John');
-        $worksheet->getCell('A2')->setValue('Smith');
+        $worksheet->getCell('A1')->setValue($list[0]['ryTuce']['title']);
+        // 循环为excel每行赋值
+        foreach ($list as $key => $value) {
+            $worksheet->getCell('A'.($key+3))->setValue($key+1);
+            $worksheet->getCell('B'.($key+3))->setValue($value->title);
+            $worksheet->getCell('C'.($key+3))->setValue($value->title);
+            $worksheet->getCell('D'.($key+3))->setValue($value->title);
+            $worksheet->getCell('E'.($key+3))->setValue($value->title);
+            $worksheet->getCell('F'.($key+3))->setValue($value->title);
+            $worksheet->getCell('G'.($key+3))->setValue($value->title);
+            $worksheet->getCell('H'.($key+3))->setValue($value->title);
+        }
+        $worksheet->getCell('A2');
         //通过工厂模式来写内容
-        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
-        $writer->save('write.xls');;
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="' . $list[0]['ryTuce']['title'] . '.xlsx"');
+        header('Cache-Control: max-age=0');
 
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+
+        $spreadsheet->disconnectWorksheets();
+        unset($spreadsheet);
+        return '';
     }
 }
