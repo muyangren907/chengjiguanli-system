@@ -12,6 +12,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
+
 class JsRongyuInfo extends Base
 {
     /**
@@ -439,37 +440,91 @@ class JsRongyuInfo extends Base
         {
             $this->error('兄弟，没有要下载的信息呀~');
             return '';
+        }else{
+            $filename = $list[0]['ryTuce']['title'];
         }
 
 
 
         //通过工厂模式创建内容
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('jsRongyu.xlsx');
+
         $worksheet = $spreadsheet->getActiveSheet();
 
-        $worksheet->getCell('A1')->setValue($list[0]['ryTuce']['title']);
-        // 循环为excel每行赋值
-        foreach ($list as $key => $value) {
-            $worksheet->getCell('A'.($key+3))->setValue($key+1);
-            $worksheet->getCell('B'.($key+3))->setValue($value->title);
-            $worksheet->getCell('C'.($key+3))->setValue($value->title);
-            $worksheet->getCell('D'.($key+3))->setValue($value->title);
-            $worksheet->getCell('E'.($key+3))->setValue($value->title);
-            $worksheet->getCell('F'.($key+3))->setValue($value->title);
-            $worksheet->getCell('G'.($key+3))->setValue($value->title);
-            $worksheet->getCell('H'.($key+3))->setValue($value->title);
-        }
+
+        // $worksheet->getCell('A1')->setValue($filename);
+        // // 循环为excel每行赋值
+        // foreach ($list as $key => $value) {
+        //     $worksheet->getCell('A'.($key+3))->setValue($key+1);
+        //     $worksheet->getCell('B'.($key+3))->setValue($value->title);
+        //     $worksheet->getCell('C'.($key+3))->setValue($value->title);
+        //     $worksheet->getCell('D'.($key+3))->setValue($value->title);
+        //     $worksheet->getCell('E'.($key+3))->setValue($value->title);
+        //     $worksheet->getCell('F'.($key+3))->setValue($value->title);
+        //     $worksheet->getCell('G'.($key+3))->setValue($value->title);
+        //     $worksheet->getCell('H'.($key+3))->setValue($value->title);
+        // }
         $worksheet->getCell('A2');
         //通过工厂模式来写内容
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="' . $list[0]['ryTuce']['title'] . '.xlsx"');
-        header('Cache-Control: max-age=0');
+        // $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
 
+        // header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        // //告诉浏览器输出07Excel文件
+        // header('Content-Type:application/vnd.ms-excel');
+        // //告诉浏览器将要输出Excel03版本文件
+        // header('Content-Disposition: attachment;filename=01simple.xlsx');
+        // //告诉浏览器输出浏览器名称
+        // header('Cache-Control: max-age=0');//禁止缓存
+        // $writer = new Xlsx($spreadsheet);
+        // $writer->save('php://output');
+        // $writer->save('write.xlsx');
+
+        // $spreadsheet->disconnectWorksheets();
+        // unset($spreadsheet);
+
+        // return true;
+
+
+        // $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+
+        // // header('Content-Disposition: attachment;filename="01simple.xlsx"');
+        // header('Cache-Control: max-age=0');
+        // // // If you're serving to IE 9, then the following may be needed
+        // // header('Cache-Control: max-age=1');
+
+        // // If you're serving to IE over SSL, then the following may be needed
+        // header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        // header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        // header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        // header('Pragma: public'); // HTTP/1.0
+
+        
+        // $writer->save('php://output');
+        // exit;
+
+
+
+
+
+
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="fasdfas.xlsx"');
+        header('Cache-Control: max-age=0');
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save('php://output');
+        ob_flush();
+        flush();
 
-        $spreadsheet->disconnectWorksheets();
-        unset($spreadsheet);
-        return '';
+
+
+
+
+
+
+
+
+
+
     }
 }
