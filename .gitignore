@@ -5,4 +5,8 @@
 .DS_Store
 /runtime
 /public/uploads
+<<<<<<< HEAD
 /vendor
+=======
+/vendor
+>>>>>>> master
