@@ -407,12 +407,11 @@ class JsRongyuInfo extends Base
         return json($data);
     }
 
-    
 
-    // 下载荣誉信息
-    public function outXlsx($id)
+
+
+    public function aa($id)
     {
-
         // 查询数据
         $list = ryinfo::where('rongyuce',$id)
                 ->field('id,rongyuce,title,bianhao,hjschool,subject,jiangxiang,hjshijian,pic')
@@ -430,9 +429,53 @@ class JsRongyuInfo extends Base
                         }]);
                     },
                     'ryTuce'=>function($query){
-                        $query->field('id,title,fzshijian');
+                        $query->field('id,title,fzshijian,fzschool')
+                        ->with(['fzSchool'=>function($q){
+                            $q->field('id,jiancheng');
+                        }]);
+                    },
+                    'rySubject'=>function($query){
+                        $query->field('id,title');
                     }
                 ])
+                ->select();
+        $list = json($list);
+        
+        return $list;
+    }
+
+    
+
+    // 下载荣誉信息
+    public function outXlsx($id)
+    {
+
+        // 查询数据
+        $list = ryinfo::where('rongyuce',$id)
+                ->field('id,rongyuce,title,bianhao,hjschool,subject,jiangxiang,hjshijian,pic')
+                // ->with([
+                //     'hjJsry'=>function($query){
+                //         $query->field('rongyuid,teacherid')
+                //         ->with(['teacher'=>function($query){
+                //             $query->field('id,xingming');
+                //         }]);
+                //     },
+                //     'cyJsry'=>function($query){
+                //         $query->field('rongyuid,teacherid')
+                //         ->with(['teacher'=>function($query){
+                //             $query->field('id,xingming');
+                //         }]);
+                //     },
+                //     'ryTuce'=>function($query){
+                //         $query->field('id,title,fzshijian,fzschool')
+                //         ->with(['fzSchool'=>function($q){
+                //             $q->field('id,jiancheng');
+                //         }]);
+                //     },
+                //     'rySubject'=>function($query){
+                //         $query->field('id,title');
+                //     }
+                // ])
                 ->select();
         
 
@@ -447,84 +490,50 @@ class JsRongyuInfo extends Base
 
 
         //通过工厂模式创建内容
-        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('jsRongyu.xlsx');
+        // $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('jsRongyu.xlsx');
 
-        $worksheet = $spreadsheet->getActiveSheet();
+        // $worksheet = $spreadsheet->getActiveSheet();
 
 
         // $worksheet->getCell('A1')->setValue($filename);
         // // 循环为excel每行赋值
         // foreach ($list as $key => $value) {
-        //     $worksheet->getCell('A'.($key+3))->setValue($key+1);
-        //     $worksheet->getCell('B'.($key+3))->setValue($value->title);
-        //     $worksheet->getCell('C'.($key+3))->setValue($value->title);
-        //     $worksheet->getCell('D'.($key+3))->setValue($value->title);
-        //     $worksheet->getCell('E'.($key+3))->setValue($value->title);
-        //     $worksheet->getCell('F'.($key+3))->setValue($value->title);
-        //     $worksheet->getCell('G'.($key+3))->setValue($value->title);
-        //     $worksheet->getCell('H'.($key+3))->setValue($value->title);
+        //     $myrowid = $key + 3;
+        //     $worksheet->getCell('A'.$myrowid)->setValue($key+1);
+        //     $worksheet->getCell('B'.$myrowid)->setValue($value->title);
+        //     $worksheet->getCell('C'.$myrowid)->setValue($value->title);
+        //     // $worksheet->getCell('D'.$myrowid)->setValue($value['fz_school']['jiancheng']);
+        //     $worksheet->getCell('E'.$myrowid)->setValue($value->title);
+        //     $worksheet->getCell('F'.$myrowid)->setValue($value->title);
+        //     $worksheet->getCell('G'.$myrowid)->setValue($value->title);
+        //     $worksheet->getCell('H'.$myrowid)->setValue($value->bianhao);
         // }
+        dump($list);
+        $list = json($list);
+        return $list;
+        halt('aa');
+        // return json($list);
+        // return true;
         $worksheet->getCell('A2');
         //通过工厂模式来写内容
-        // $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-
-        // header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        // //告诉浏览器输出07Excel文件
-        // header('Content-Type:application/vnd.ms-excel');
-        // //告诉浏览器将要输出Excel03版本文件
-        // header('Content-Disposition: attachment;filename=01simple.xlsx');
-        // //告诉浏览器输出浏览器名称
-        // header('Cache-Control: max-age=0');//禁止缓存
-        // $writer = new Xlsx($spreadsheet);
-        // $writer->save('php://output');
-        // $writer->save('write.xlsx');
-
-        // $spreadsheet->disconnectWorksheets();
-        // unset($spreadsheet);
-
-        // return true;
-
-
-        // $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-
-        // // header('Content-Disposition: attachment;filename="01simple.xlsx"');
-        // header('Cache-Control: max-age=0');
-        // // // If you're serving to IE 9, then the following may be needed
-        // // header('Cache-Control: max-age=1');
-
-        // // If you're serving to IE over SSL, then the following may be needed
-        // header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        // header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
-        // header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        // header('Pragma: public'); // HTTP/1.0
-
-        
-        // $writer->save('php://output');
-        // exit;
-
-
-
-
-
-
-
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="fasdfas.xlsx"');
-        header('Cache-Control: max-age=0');
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        ob_end_clean();
+        ob_start();
+        //告诉浏览器输出07Excel文件
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        //告诉浏览器输出浏览器名称
+        header('Content-Disposition: attachment;filename=01simple.xlsx');
+        header('Cache-Control: max-age=0');//禁止缓存
+
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
         $writer->save('php://output');
-        ob_flush();
-        flush();
 
-
-
-
-
-
-
-
-
-
-
+        $spreadsheet->disconnectWorksheets();
+        unset($spreadsheet);
     }
+
+
+
+
+
 }
