@@ -158,3 +158,26 @@ function schlist($low='班级',$high='其它级')
 }
 
 
+// 整理教师名
+function teacherNames($list = array())
+{
+	if(count($list) == 0 )
+	{
+		return '';
+	}
+
+
+	$names = '';
+	foreach ($list as $key => $value) {
+		if($key == 0)
+		{
+			$names = $value['teacher']['xingming'];
+		}else{
+			$names = $names . '、'. $value['teacher']['xingming'];
+		}
+	}
+
+	return $names;
+}
+
+

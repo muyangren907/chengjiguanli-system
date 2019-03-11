@@ -64,11 +64,53 @@ class JsRongyuInfo extends Base
                     },
                 ]
             )
-            ->append(['hjJsName'])
+            ->append(['hjJsName','cyJsName'])
     		->select();
 
 
     	return $data;
+    }
+
+
+    // 获取需要下载的荣誉信息
+    public function srcTuceRy($id)
+    {
+        // 查询数据
+        $data =$this->where('rongyuce',$id)
+                ->field('id,rongyuce,title,bianhao,hjschool,subject,jiangxiang,hjshijian,pic')
+                ->with([
+                    'hjJsry'=>function($query){
+                        $query->field('rongyuid,teacherid')
+                        ->with(['teacher'=>function($query){
+                            $query->field('id,xingming');
+                        }]);
+                    },
+                    'cyJsry'=>function($query){
+                        $query->field('rongyuid,teacherid')
+                        ->with(['teacher'=>function($query){
+                            $query->field('id,xingming');
+                        }]);
+                    },
+                    'ryTuce'=>function($query){
+                        $query->field('id,title,fzshijian,fzschool')
+                        ->with(['fzSchool'=>function($q){
+                            $q->field('id,title');
+                        }]);
+                    },
+                    'rySubject'=>function($query){
+                        $query->field('id,title');
+                    },
+                    'hjSchool'=>function($query){
+                        $query->field('id,jiancheng');
+                    },
+                    'jxCategory'=>function($query){
+                        $query->field('id,title');
+                    }
+                ])
+                ->append(['hjJsName','cyJsName'])
+                ->select();
+
+        return $data;
     }
 
 
@@ -159,18 +201,17 @@ class JsRongyuInfo extends Base
     public function getHjJsNameAttr($value)
     {
         $teacherList = $this->getAttr('hjJsry');
-        $teachNames = "";
-        $i = 0;
-        foreach ($teacherList as $key => $value) {
-            # code...
-            if($i == 0)
-            {
-                $teachNames = $value['teacher']['xingming'];
-            }else{
-                $teachNames = $teachNames . '、' .$value['teacher']['xingming'];
-            }
-            $i++;
-        }
+        $teachNames = teacherNames($teacherList);
+
+        return $teachNames;
+
+    }
+
+    // 获奖教师名整理
+    public function getCyJsNameAttr($value)
+    {
+        $teacherList = $this->getAttr('cyJsry');
+        $teachNames = teacherNames($teacherList);
 
         return $teachNames;
 

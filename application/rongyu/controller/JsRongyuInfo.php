@@ -407,77 +407,16 @@ class JsRongyuInfo extends Base
         return json($data);
     }
 
-
-
-
-    public function aa($id)
-    {
-        // 查询数据
-        $list = ryinfo::where('rongyuce',$id)
-                ->field('id,rongyuce,title,bianhao,hjschool,subject,jiangxiang,hjshijian,pic')
-                ->with([
-                    'hjJsry'=>function($query){
-                        $query->field('rongyuid,teacherid')
-                        ->with(['teacher'=>function($query){
-                            $query->field('id,xingming');
-                        }]);
-                    },
-                    'cyJsry'=>function($query){
-                        $query->field('rongyuid,teacherid')
-                        ->with(['teacher'=>function($query){
-                            $query->field('id,xingming');
-                        }]);
-                    },
-                    'ryTuce'=>function($query){
-                        $query->field('id,title,fzshijian,fzschool')
-                        ->with(['fzSchool'=>function($q){
-                            $q->field('id,jiancheng');
-                        }]);
-                    },
-                    'rySubject'=>function($query){
-                        $query->field('id,title');
-                    }
-                ])
-                ->select();
-        $list = json($list);
-        
-        return $list;
-    }
-
     
 
     // 下载荣誉信息
     public function outXlsx($id)
     {
 
-        // 查询数据
-        $list = ryinfo::where('rongyuce',$id)
-                ->field('id,rongyuce,title,bianhao,hjschool,subject,jiangxiang,hjshijian,pic')
-                // ->with([
-                //     'hjJsry'=>function($query){
-                //         $query->field('rongyuid,teacherid')
-                //         ->with(['teacher'=>function($query){
-                //             $query->field('id,xingming');
-                //         }]);
-                //     },
-                //     'cyJsry'=>function($query){
-                //         $query->field('rongyuid,teacherid')
-                //         ->with(['teacher'=>function($query){
-                //             $query->field('id,xingming');
-                //         }]);
-                //     },
-                //     'ryTuce'=>function($query){
-                //         $query->field('id,title,fzshijian,fzschool')
-                //         ->with(['fzSchool'=>function($q){
-                //             $q->field('id,jiancheng');
-                //         }]);
-                //     },
-                //     'rySubject'=>function($query){
-                //         $query->field('id,title');
-                //     }
-                // ])
-                ->select();
-        
+        $ryinfo = new ryinfo();
+        $list = $ryinfo->srcTuceRy($id);
+
+        // halt($list);
 
         if($list->isEmpty())
         {
@@ -485,51 +424,74 @@ class JsRongyuInfo extends Base
             return '';
         }else{
             $filename = $list[0]['ryTuce']['title'];
+            $fzschool = $list[0]['ryTuce']['fz_school']['title'];
+            $fzshijian = strtotime($list[0]['ryTuce']['fzshijian']);
+            $fzshijian = date('Ym',$fzshijian);
         }
 
-
-
         //通过工厂模式创建内容
-        // $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('jsRongyu.xlsx');
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('jsRongyu.xlsx');
+        $worksheet = $spreadsheet->getActiveSheet();
 
-        // $worksheet = $spreadsheet->getActiveSheet();
+        $worksheet->getCell('A1')->setValue($filename);
+        $worksheet->getCell('A2')->setValue('发证单位:'.$fzschool);
+        $worksheet->getCell('G2')->setValue('发证时间:'.$list[0]['ryTuce']['fzshijian']);
+        // 循环为excel每行赋值
+        foreach ($list as $key => $value) {
+            $myrowid = $key + 4;
+            $worksheet->getCell('A'.$myrowid)->setValue($key+1);
+            $worksheet->getCell('B'.$myrowid)->setValue($value->title);
+            $worksheet->getCell('C'.$myrowid)->setValue($value->hjJsName);
+            if($value->hj_school){
+                $worksheet->getCell('D'.$myrowid)->setValue($value->hj_school->jiancheng);
+            }
+            if($value->ry_subject){
+                $worksheet->getCell('E'.$myrowid)->setValue($value->ry_subject->title);
+            }
+            $worksheet->getCell('F'.$myrowid)->setValue($value->cyJsName);
+            if($value->jx_category){
+                $worksheet->getCell('G'.$myrowid)->setValue($value->jx_category->title);
+            }
+            $worksheet->getCell('H'.$myrowid)->setValue($value->bianhao);
+        }
+
+        if($key+4>9)
+        {
+            // 给单元格加边框
+            $styleArray = [
+                'borders' => [
+                    'allBorders' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                        'color' => ['argb' => '00000000'],
+                    ],
+                ],
+            ];
+            $worksheet->getStyle('A10:I'.($key+4))->applyFromArray($styleArray);
+            // 设置行高
+            for($i = 10;  $i<=($key+4); $i++){
+                $worksheet->getRowDimension($i)->setRowHeight(30);
+            }
+            
+        }
+
+        $worksheet->getStyle('A4')->applyFromArray($styleArray);
 
 
-        // $worksheet->getCell('A1')->setValue($filename);
-        // // 循环为excel每行赋值
-        // foreach ($list as $key => $value) {
-        //     $myrowid = $key + 3;
-        //     $worksheet->getCell('A'.$myrowid)->setValue($key+1);
-        //     $worksheet->getCell('B'.$myrowid)->setValue($value->title);
-        //     $worksheet->getCell('C'.$myrowid)->setValue($value->title);
-        //     // $worksheet->getCell('D'.$myrowid)->setValue($value['fz_school']['jiancheng']);
-        //     $worksheet->getCell('E'.$myrowid)->setValue($value->title);
-        //     $worksheet->getCell('F'.$myrowid)->setValue($value->title);
-        //     $worksheet->getCell('G'.$myrowid)->setValue($value->title);
-        //     $worksheet->getCell('H'.$myrowid)->setValue($value->bianhao);
-        // }
-        dump($list);
-        $list = json($list);
-        return $list;
-        halt('aa');
-        // return json($list);
-        // return true;
-        $worksheet->getCell('A2');
-        //通过工厂模式来写内容
-        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        ob_end_clean();
-        ob_start();
         //告诉浏览器输出07Excel文件
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         //告诉浏览器输出浏览器名称
-        header('Content-Disposition: attachment;filename=01simple.xlsx');
-        header('Cache-Control: max-age=0');//禁止缓存
-
-        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
+        header('Content-Disposition: attachment;filename="'. $filename .$fzshijian.'.xlsx"');
+        //禁止缓存
+        header('Cache-Control: max-age=0');
+        $writer = new Xlsx($spreadsheet);
         $writer->save('php://output');
-
+        // ob_end_clean();
+        // ob_start();
+        // 释放内存
         $spreadsheet->disconnectWorksheets();
         unset($spreadsheet);
+
+        // return '下载后请关闭窗口';
     }
 
 

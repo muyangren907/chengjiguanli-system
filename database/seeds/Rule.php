@@ -181,7 +181,7 @@ class Rule extends Seeder
                     ['title'=>'编辑','name'=>'rongyu/DwRongyu/edit','paixu'=>3,'pid'=>801,],
                     ['title'=>'查看','name'=>'rongyu/DwRongyu/read','paixu'=>4,'pid'=>801,],
                     ['title'=>'状态','name'=>'rongyu/DwRongyu/setStatus','paixu'=>5,'pid'=>801],
-                    ['title'=>'批量上传','name'=>'rongyu/DwRongyu/createAll','paixu'=>6,'pid'=>801],
+                    // ['title'=>'批量上传','name'=>'rongyu/DwRongyu/createAll','paixu'=>6,'pid'=>801],
                     // 教师荣誉册管理
                     ['title'=>'添加','name'=>'rongyu/JsRongyu/create','paixu' =>1,'pid'=>802],
                     ['title'=>'删除','name'=>'rongyu/JsRongyu/delete','paixu'=>2,'pid'=>802],
@@ -195,6 +195,7 @@ class Rule extends Seeder
                     ['title'=>'查看','name'=>'rongyu/JsRongyuInfo/read','paixu'=>4,'pid'=>803,],
                     ['title'=>'状态','name'=>'rongyu/JsRongyuInfo/setStatus','paixu'=>5,'pid'=>803],
                     ['title'=>'批量上传','name'=>'rongyu/JsRongyuInfo/createAll','paixu'=>6,'pid'=>803],
+                    ['title'=>'下载表格','name'=>'rongyu/JsRongyuInfo/outXlsx','paixu'=>7,'pid'=>803],
 
 
                     // 课题管理
