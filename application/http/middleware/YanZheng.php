@@ -62,6 +62,8 @@ class YanZheng  extends Controller
             'dwchengjixls','dwBanjixls','dwNianjixls',
             //保存考号、下载试卷标签、下载成绩采集表
             'kaohaosave','biaoqianXls','dwcaiji',
+            //课题结题图片上传和更新
+            'jtupload','jtUpdate',
         );
         // 排除指定模块下的指定方法
         $uneed_u = array('index/Index/index');
