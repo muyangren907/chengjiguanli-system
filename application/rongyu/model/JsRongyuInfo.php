@@ -114,6 +114,58 @@ class JsRongyuInfo extends Base
     }
 
 
+    //搜索单位获奖荣誉
+    public function srcTeacher($search)
+    {
+        // 获取参数
+        $teacherid = $search['teacherid'];
+        $order_field = $search['order_field'];
+        $order = $search['order'];
+
+        $data = $this->order([$order_field =>$order])
+            ->where('id','in',function($query) use($teacherid){
+                $query->name('JsRongyuCanyu')
+                    ->where('category',1)
+                    ->where('teacherid',$teacherid)
+                    ->field('rongyuid');
+            })
+            ->where('status',1)
+            ->with(
+                [
+                    'hjSchool'=>function($query){
+                        $query->field('id,jiancheng');
+                    },
+                    'rySubject'=>function($query){
+                        $query->field('id,title');
+                    },
+                    'jxCategory'=>function($query){
+                        $query->field('id,title');
+                    },
+                    'ryTuce'=>function($query){
+                        $query->field('id,title')
+                            ->with([
+                                'fzSchool'=>function($query){
+                                    $query->field('id,title,jibie')
+                                        ->with(['']);
+                                }
+                            ]);
+                    },
+                    'hjJsry'=>function($query){
+                        $query->field('rongyuid,teacherid')
+                        ->with(['teacher'=>function($query){
+                            $query->field('id,xingming');
+                        }]);
+                    },
+                ]
+            )
+            ->append(['hjJsName','cyJsName'])
+            ->select();
+
+
+        return $data;
+    }
+
+
     // 荣誉图册关联
     public function ryTuce()
     {

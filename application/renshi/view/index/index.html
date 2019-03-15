@@ -228,6 +228,12 @@
 			}
 		},
 		{
+			"targets": 1,			
+			"render": function(data, type, row, meta) {
+				return '<a title="查看信息" data-href="teacher/'+ row.id +'" data-title="'+row.xingming+'" onClick="Hui_admin_tab(this)" class="" style="text-decoration:none"><i class="Hui-iconfont">'+row.xingming+'</i></a>'
+			}
+		},
+		{
 			"targets": -1,
 			"className":'.td-manage',			
 			"render": function(data, type, row, meta) {

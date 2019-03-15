@@ -116,7 +116,8 @@ class Rule extends Seeder
                     ['title'=>'编辑','name'=>'renshi/Index/edit','paixu'=>3,'pid'=>402,],
                     ['title'=>'查看','name'=>'renshi/Index/read','paixu'=>4,'pid'=>402,],
                     ['title'=>'状态','name'=>'renshi/Index/setStatus','paixu'=>5,'pid'=>402],
-                    
+                    ['title'=>'查询教师','name'=>'renshi/Index/srcTeacher','paixu'=>6,'pid'=>402],
+
 
                     // 教务管理
                     // 学期管理权限
@@ -188,6 +189,10 @@ class Rule extends Seeder
                     ['title'=>'编辑','name'=>'rongyu/JsRongyu/edit','paixu'=>3,'pid'=>802,],
                     ['title'=>'查看','name'=>'rongyu/JsRongyu/read','paixu'=>4,'pid'=>802,],
                     ['title'=>'状态','name'=>'rongyu/JsRongyu/setStatus','paixu'=>5,'pid'=>802],
+                    ['title'=>'查看荣誉信息','name'=>'rongyu/JsRongyuInfo/rongyuList','paixu'=>6,'pid'=>802],
+                    ['title'=>'下载表格','name'=>'rongyu/JsRongyuInfo/outXlsx','paixu'=>7,'pid'=>802],
+
+
                     // 教师荣誉信息管理
                     ['title'=>'添加','name'=>'rongyu/JsRongyuInfo/create','paixu' =>1,'pid'=>803],
                     ['title'=>'删除','name'=>'rongyu/JsRongyuInfo/delete','paixu'=>2,'pid'=>803],
@@ -195,8 +200,7 @@ class Rule extends Seeder
                     ['title'=>'查看','name'=>'rongyu/JsRongyuInfo/read','paixu'=>4,'pid'=>803,],
                     ['title'=>'状态','name'=>'rongyu/JsRongyuInfo/setStatus','paixu'=>5,'pid'=>803],
                     ['title'=>'批量上传','name'=>'rongyu/JsRongyuInfo/createAll','paixu'=>6,'pid'=>803],
-                    ['title'=>'下载表格','name'=>'rongyu/JsRongyuInfo/outXlsx','paixu'=>7,'pid'=>803],
-
+                    
 
                     // 课题管理
                     // 课题册
@@ -206,13 +210,16 @@ class Rule extends Seeder
                     ['title'=>'课题信息','name'=>'keti/ketiinfo/KetiCe','paixu'=>4,'pid'=>901,],
                     ['title'=>'查看','name'=>'keti/index/read','paixu'=>5,'pid'=>901,],
                     ['title'=>'状态','name'=>'keti/index/setStatus','paixu'=>6,'pid'=>901],
+                    ['title'=>'查看课题信息','name'=>'keti/ketiinfo/ketiList','paixu'=>7,'pid'=>901],
                     // 课题信息
-                    ['title'=>'添加','name'=>'ketiinfo/index/create','paixu' =>1,'pid'=>902],
-                    ['title'=>'删除','name'=>'ketiinfo/index/delete','paixu'=>2,'pid'=>902],
-                    ['title'=>'编辑','name'=>'ketiinfo/index/edit','paixu'=>3,'pid'=>902,],
-                    ['title'=>'查看','name'=>'ketiinfo/index/read','paixu'=>4,'pid'=>902,],
-                    ['title'=>'状态','name'=>'ketiinfo/index/setStatus','paixu'=>5,'pid'=>902],
-                    ['title'=>'批量上传','name'=>'ketiinfo/index/createAll','paixu'=>6,'pid'=>902],
+                    ['title'=>'添加','name'=>'keti/ketiinfo/create','paixu' =>1,'pid'=>902],
+                    ['title'=>'删除','name'=>'keti/ketiinfo/delete','paixu'=>2,'pid'=>902],
+                    ['title'=>'编辑','name'=>'keti/ketiinfo/edit','paixu'=>3,'pid'=>902,],
+                    ['title'=>'查看','name'=>'keti/ketiinfo/read','paixu'=>4,'pid'=>902,],
+                    ['title'=>'状态','name'=>'keti/ketiinfo/setStatus','paixu'=>5,'pid'=>902],
+                    ['title'=>'批量上传','name'=>'keti/ketiinfo/createAll','paixu'=>6,'pid'=>902],
+                    ['title'=>'结题','name'=>'keti/ketiinfo/jieTi','paixu'=>7,'pid'=>902],
+
 
 
             

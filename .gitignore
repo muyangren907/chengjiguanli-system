@@ -5,8 +5,5 @@
 .DS_Store
 /runtime
 /public/uploads
-<<<<<<< HEAD
+!/public/uploads/pic.jpg
 /vendor
-=======
-/vendor
->>>>>>> master

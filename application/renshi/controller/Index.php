@@ -146,7 +146,39 @@ class Index extends Base
     //
     public function read($id)
     {
-        //
+        // 查询教师信息
+        $myInfo = Teacher::where('id',$id)
+            ->with(
+                [
+                    'jsDanwei'=>function($query){
+                        $query->field('id,title');
+                    },
+                    'jsZhiwu'=>function($query){
+                        $query->field('id,title');
+                    },
+                    'jsZhicheng'=>function($query){
+                        $query->field('id,title');
+                    },
+                    'jsXueli'=>function($query){
+                        $query->field('id,title');
+                    },
+                    'jsSubject'=>function($query){
+                        $query->field('id,title');
+                    },
+                ]
+            )
+            ->limit(1)
+            ->select();
+            $myInfo = $myInfo[0];
+            // 设置数据总数
+        $myInfo['count'] = '';
+        // 设置页面标题
+        $myInfo['title'] = $myInfo->xingming;
+        
+        // 模板赋值
+        $this->assign('list',$myInfo);
+        // 渲染模板
+        return $this->fetch();
     }
 
 
