@@ -53,6 +53,13 @@ class Category extends Base
         //查询数据
         $data =CG::field('id,title,pid,status,paixu')
             ->order([$order_field=>$order])
+            ->with(
+                [
+                    'glPid'=>function($query){
+                        $query->field('id,title');
+                    },
+                ]
+            )
             ->limit($limit_start,$limit_length)
             ->all();
         
@@ -64,6 +71,13 @@ class Category extends Base
                 ->whereOr('pid','in',function($query) use ($search){
                     $query->name('category')->where('title','like','%'.$search.'%')->field('id');
                 })
+                ->with(
+                    [
+                        'glPid'=>function($query){
+                            $query->field('id,title');
+                        },
+                    ]
+                )
                 ->order([$order_field=>$order])
                 ->limit($limit_start,$limit_length)
                 ->select();

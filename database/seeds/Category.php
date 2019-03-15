@@ -29,7 +29,7 @@ class Category extends Seeder
             ['id'=>110,'title'=>'学科','pid'=>0,'paixu'=>10],
             ['id'=>111,'title'=>'文件','pid'=>0,'paixu'=>11],
             ['id'=>112,'title'=>'单位荣誉类型','pid'=>0,'paixu'=>12],
-            ['id'=>113,'title'=>'单位荣誉奖项','pid'=>0,'paixu'=>13],
+            ['id'=>113,'title'=>'荣誉奖项','pid'=>0,'paixu'=>13],
             ['id'=>114,'title'=>'教师荣誉类型','pid'=>0,'paixu'=>14],
             ['id'=>115,'title'=>'课题立项类型','pid'=>0,'paixu'=>15],
             ['id'=>116,'title'=>'课题研究所属学科分类','pid'=>0,'paixu'=>16,],
@@ -127,6 +127,8 @@ class Category extends Seeder
                 ['title'=>'三等奖','pid'=>113,'paixu'=>4],
                 ['title'=>'优秀奖','pid'=>113,'paixu'=>5],
                 ['title'=>'百十佳','pid'=>113,'paixu'=>6],
+                ['title'=>'指导奖','pid'=>113,'paixu'=>7],
+                ['title'=>'其他','pid'=>113,'paixu'=>8],
                 //  教师荣誉分类
                 ['title'=>'优质课','pid'=>114,'paixu'=>1],
                 ['title'=>'技能大赛','pid'=>114,'paixu'=>2],
