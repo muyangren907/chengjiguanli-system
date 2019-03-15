@@ -137,6 +137,7 @@ class Category extends Seeder
                 ['title'=>'一般课题','pid'=>115,'paixu'=>1],
                 ['title'=>'专项课题','pid'=>115,'paixu'=>2],
                 ['title'=>'重大或重点课题','pid'=>115,'paixu'=>3],
+                ['title'=>'子课题','pid'=>115,'paixu'=>4],
                 //  课题研究所属学科分类
                 ['title'=>'A. 教育政策研究(含教育发展战略)','pid'=>116,'paixu'=>1],
                 ['title'=>'B. 基础教育','pid'=>116,'paixu'=>2],

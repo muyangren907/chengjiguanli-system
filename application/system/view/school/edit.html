@@ -28,7 +28,7 @@
 				<select class="select" id="xingzhi" name="xingzhi" size="1" required>
 					<option value="" required="true">--请选择单位性质--</option>
 					{volist name="category" id="vo"}
-						<option value="{$vo.id}" {eq name="$list.xingzhi" value="$vo.title" }selected{/eq}>{$vo.title}</option>
+						<option value="{$vo.id}" {eq name="$list.xingzhi" value="$vo.id" }selected{/eq}>{$vo.title}</option>
 					{/volist}
 				</select>
 				</span>
@@ -42,7 +42,7 @@
 				<select class="select" id="jibie" name="jibie" size="1" required>
 					<option value="" required="true">--请选择单位级别--</option>
 					{volist name="category" id="vo"}
-						<option value="{$vo.id}" {eq name="$list.jibie" value="$vo.title" }selected{/eq}>{$vo.title}</option>
+						<option value="{$vo.id}" {eq name="$list.jibie" value="$vo.id" }selected{/eq}>{$vo.title}</option>
 					{/volist}
 				</select>
 				</span>
@@ -56,7 +56,7 @@
 				<select class="select" id="xueduan" name="xueduan" size="1" required>
 					<option value="" required="true">--请选择学段--</option>
 					{volist name="catetory" id="vo"}
-						<option value="{$vo.id}"  {eq name="$list.xueduan" value="$vo.title" }selected{/eq}>{$vo.title}</option>
+						<option value="{$vo.id}"  {eq name="$list.xueduan" value="$vo.id" }selected{/eq}>{$vo.title}</option>
 					{/volist}
 				</select>
 				</span>
