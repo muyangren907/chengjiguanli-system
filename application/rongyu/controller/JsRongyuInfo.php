@@ -455,17 +455,19 @@ class JsRongyuInfo extends Base
             $worksheet->getCell('H'.$myrowid)->setValue($value->bianhao);
         }
 
+        // 给单元格加边框
+        $styleArray = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => '00000000'],
+                ],
+            ],
+        ];
+        
         if($key+4>9)
         {
-            // 给单元格加边框
-            $styleArray = [
-                'borders' => [
-                    'allBorders' => [
-                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                        'color' => ['argb' => '00000000'],
-                    ],
-                ],
-            ];
+            
             $worksheet->getStyle('A10:I'.($key+4))->applyFromArray($styleArray);
             // 设置行高
             for($i = 10;  $i<=($key+4); $i++){
