@@ -40,7 +40,7 @@ class JsRongyuInfo extends Base
                 	$query->where('rongyuce',$rongyuce);
                 })
             ->when(strlen($search)>0,function($query) use($search){
-                    $query->where('title','like',$search);
+                    $query->where('title|bianhao','like',$search);
                 })
             ->with(
                 [
