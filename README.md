@@ -21,5 +21,10 @@
 *查看成绩统计结果
 
 
+## 演示地址
+http://www.xiaoshongshu.cn
+帐号   test1    密码  123456
+
+
 ## 更详细信息请查阅官方手册
 https://www.kancloud.cn/llblax/abcd/789222
