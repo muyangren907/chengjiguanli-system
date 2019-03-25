@@ -12,7 +12,7 @@
     <body>
     <div class="x-body">
         <blockquote class="layui-elem-quote">欢迎管理员：
-            <span class="x-red">test</span>！当前时间:2018-04-25 20:50:53  <a onclick="parent.x_admin_add_to_tab('在tab打开','https://www.163.com',true)" style="color: red" href="javascript:;">在tab打开</a>
+            <span class="x-red">{$list['username']}</span>！当前时间:{php} echo date('Y-m-d h:m:s'){/php}  <a onclick="parent.x_admin_add_to_tab('在tab打开','https://www.163.com',true)" style="color: red" href="javascript:;">在tab打开</a>
         </blockquote>
         <fieldset class="layui-elem-field">
             <legend>数据统计</legend>
@@ -80,12 +80,7 @@
                     <tbody>
                         <tr>
                             <td >
-                                <a class="x-a" href="/" target="_blank">新版x-admin 2.0上线了</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td >
-                                <a class="x-a" href="/" target="_blank">交流qq群:(519492808)</a>
+                                <a class="x-a" href="javascript:;">新版正式上线了！前端改成X-admin，看着更舒服使用更顺手。</a>
                             </td>
                         </tr>
                     </tbody>
@@ -98,17 +93,14 @@
                 <table class="layui-table">
                     <tbody>
                         <tr>
-                            <th>xxx版本</th>
-                            <td>1.0.180420</td></tr>
-                        <tr>
                             <th>服务器地址</th>
-                            <td>x.xuebingsi.com</td></tr>
+                            <td>{$list.server.SERVER_ADDR}</td></tr>
                         <tr>
                             <th>操作系统</th>
                             <td>WINNT</td></tr>
                         <tr>
                             <th>运行环境</th>
-                            <td>Apache/2.4.23 (Win32) OpenSSL/1.0.2j mod_fcgid/2.3.9</td></tr>
+                            <td>{$list.server.SERVER_SOFTWARE}</td></tr>
                         <tr>
                             <th>PHP版本</th>
                             <td>5.6.27</td></tr>
@@ -120,7 +112,10 @@
                             <td>5.5.53</td></tr>
                         <tr>
                             <th>ThinkPHP</th>
-                            <td>5.0.18</td></tr>
+                            <td>{$Think.version}</td></tr>
+                        <tr>
+                            <th>X-admin版本</th>
+                            <td>2.1</td></tr>
                         <tr>
                             <th>上传附件限制</th>
                             <td>2M</td></tr>
@@ -134,33 +129,7 @@
                 </table>
             </div>
         </fieldset>
-        <fieldset class="layui-elem-field">
-            <legend>开发团队</legend>
-            <div class="layui-field-box">
-                <table class="layui-table">
-                    <tbody>
-                        <tr>
-                            <th>版权所有</th>
-                            <td>xuebingsi(xuebingsi)
-                                <a href="http://x.xuebingsi.com/" class='x-a' target="_blank">访问官网</a></td>
-                        </tr>
-                        <tr>
-                            <th>开发者</th>
-                            <td>马志斌(113664000@qq.com)</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </fieldset>
-        <blockquote class="layui-elem-quote layui-quote-nm">感谢layui,百度Echarts,jquery,本系统由x-admin提供技术支持。</blockquote>
+        <blockquote class="layui-elem-quote layui-quote-nm">感谢{$list.thinks}本系统由大连巴掌(w86112@vip.163.com)提供技术支持。</blockquote>
     </div>
-        <script>
-        var _hmt = _hmt || [];
-        (function() {
-          var hm = document.createElement("script");
-          hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-          var s = document.getElementsByTagName("script")[0]; 
-          s.parentNode.insertBefore(hm, s);
-        })();
-        </script>
     </body>
 </html>

@@ -63,6 +63,7 @@ class Index extends Base
         // 查询用户登录次数
         $admin = new \app\admin\model\Admin;
         $userid = session('userid');
+        $list['username'] = session('username');
         $list['denglu'] = $admin->where('id',$userid)
                         ->field('denglucishu,lastip,lasttime')
                         ->find();
@@ -85,20 +86,5 @@ class Index extends Base
         // 渲染输出
         return $this->fetch();
     }
-
-    public function exit()
-    {
-        // 清除cookie
-        cookie(null, 'think_');
-        // 清除session（当前作用域）
-        session(null);
-
-        // 跳转页面
-        $this->redirect('/login');
-
-    }
-
-    
-
 
 }

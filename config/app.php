@@ -144,7 +144,7 @@ return [
     'exception_handle'       => '',
     // 版本号
     'chengji'               => [
-        'version'       =>      '1.0',
+        'version'       =>      '1.5',
     ],
     // Auth权限验证公共配置
     'auth'  => [
