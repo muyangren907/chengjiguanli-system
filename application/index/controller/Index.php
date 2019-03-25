@@ -33,7 +33,7 @@ class Index extends Base
         // 实例化管理员数据模型
         $admin = new \app\admin\model\Admin;
         // 获取管理员信息
-        $userinfo = $admin
+        $list->userinfo = $admin
             ->where('username',session('username'))
             ->field('username,id')
             ->find();
@@ -43,8 +43,6 @@ class Index extends Base
 
         // 模版赋值
         $this->assign('list',$list);
-        $this->assign('userinfo',$userinfo);
-
 
         // 渲染输出
         return $this->fetch();
@@ -52,6 +50,7 @@ class Index extends Base
 
     public function welcome()
     {
+
         //实例化数据模型
         $sysbasemod = new sysbasemod();
 

@@ -16,6 +16,11 @@ class Index extends Controller
     // 显示登录界面
     public function index()
     {
+        // 清除cookie
+        cookie(null, 'think_');
+        // 清除session（当前作用域）
+        session(null);
+
         // 渲染输出
         return $this->fetch();
     }
