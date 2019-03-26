@@ -41,6 +41,23 @@ class Index extends Base
         // 获取版本号
         $list->version = config('app.chengji.version');
 
+
+        // 实例化权限数据模型
+        $authrule = new \app\admin\model\AuthRule;
+
+        $list['menu'] = $authrule
+                        ->where('pid',0)
+                        ->where('status&ismenu',1)
+                        ->field('id,title,font,name,pid')
+                        ->with([
+                            'authCid'=>function($query){
+                                $query->field('id,title,name,pid,url');
+                            },
+                        ])
+                        ->order(['paixu'])
+                        ->select();
+                        // dump($list['menu']);halt('aa');
+
         // 模版赋值
         $this->assign('list',$list);
 
@@ -86,5 +103,6 @@ class Index extends Base
         // 渲染输出
         return $this->fetch();
     }
+
 
 }

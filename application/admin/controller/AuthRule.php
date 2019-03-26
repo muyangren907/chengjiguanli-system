@@ -223,4 +223,6 @@ class AuthRule extends Base
         // 返回信息
         return json($data);
     }
+
+    
 }

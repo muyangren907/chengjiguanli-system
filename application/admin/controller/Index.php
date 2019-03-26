@@ -21,6 +21,7 @@ class Index extends Base
         $list['title'] = '管理员列表';
         $list['count'] = $count;
 
+
         // 模板赋值
         $this->assign('list',$list);
 

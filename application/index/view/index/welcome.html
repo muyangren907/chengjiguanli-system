@@ -6,13 +6,13 @@
         <meta name="renderer" content="webkit">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
-        <link rel="stylesheet" href="__STATIC__/xadmin/css/font.css">
-        <link rel="stylesheet" href="__STATIC__/xadmin/css/xadmin.css">
+        {load href="__STATIC__/xadmin/css/font.css" /}
+        {load href="__STATIC__/xadmin/css/xadmin.css" /}
     </head>
     <body>
     <div class="x-body">
         <blockquote class="layui-elem-quote">欢迎管理员：
-            <span class="x-red">{$list['username']}</span>！当前时间:{php} echo date('Y-m-d h:m:s'){/php}  <a onclick="parent.x_admin_add_to_tab('在tab打开','https://www.163.com',true)" style="color: red" href="javascript:;">在tab打开</a>
+            <span class="x-red">{$list['username']}</span>！当前时间:{php} echo date('Y-m-d h:m:s'){/php}
         </blockquote>
         <fieldset class="layui-elem-field">
             <legend>数据统计</legend>
