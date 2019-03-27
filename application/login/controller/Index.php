@@ -16,6 +16,24 @@ class Index extends Controller
     // 显示登录界面
     public function index()
     {
+        // 清除cookie
+        cookie(null, 'think_');
+        // 清除session（当前作用域）
+        session(null);
+
+        //实例化数据模型
+        $sysbasemod = new \app\system\model\SystemBase;
+
+        // 查询系统信息
+        $list['title'] = $sysbasemod
+            ->order(['id'=>'desc'])
+            ->limit(1)
+            ->value('title');
+
+        $list['version'] = config('app.chengji.version');
+
+        $this->assign('list',$list);
+
         // 渲染输出
         return $this->fetch();
     }
@@ -30,7 +48,7 @@ class Index extends Controller
 
 
         // 获取表单数据
-        $data = request()->only(['username','password','captcha']);
+        $data = request()->only(['username','password']);
 
         
         // 验证表单数据
@@ -40,10 +58,10 @@ class Index extends Controller
             $this->error($msg);
         }
 
-        if(!captcha_check($data['captcha']))
-        {
-            $this->error('验证码错误');
-        }
+        // if(!captcha_check($data['captcha']))
+        // {
+        //     $this->error('验证码错误');
+        // }
 
 
         // 验证用户名和密码
@@ -71,13 +89,13 @@ class Index extends Controller
             $userinfo->save();
 
             // 跳转到首页
-            $this->redirect(url('/'));
+            $data=['msg'=>'验证成功','status'=>1];
         }else{
             // 提示错误信息
-            $this->error('用户名或密码错误');
+            $data=['msg'=>'用户名或密码错误','status'=>0];
         }
 
-        return '';
+        return json($data);
     }
 
 
