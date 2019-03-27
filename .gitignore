@@ -3,6 +3,6 @@
 *.log
 .env
 .DS_Store
-/runtime
+runtime/
 !/public/uploads/pic.jpg
-/vendor
+vendor/
