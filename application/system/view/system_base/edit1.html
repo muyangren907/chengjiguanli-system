@@ -1,0 +1,71 @@
+{extend name="common@create" /}
+{block name="formaa"}
+	<form action="/sysbase/{$list.id}" method="PUT" class="form form-horizontal" id="form-member-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>标题：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$list.title}" placeholder="" id="title" name="title">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>关键字：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$list.keywords}" placeholder="" id="keywords" name="keywords">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">描述：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$list.description}" placeholder="" id="description" name="description">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">感谢：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$list.thinks}" placeholder="" id="thinks" name="thinks">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">单位：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$list.danwei}" placeholder="" id="danwei" name="danwei">
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+{/block}
+{block name="yanzheng"}
+<script type="text/javascript">
+
+	// 设置表单验证规则
+	var myrules = {
+			title:{
+				required:true,
+				rangelength:[2,50]
+			},
+			keywords:{
+				required:true,
+				rangelength:[2,60]
+			},
+			description:{
+				required:true,
+				rangelength:[1,100]
+			},
+			thinks:{
+				required:true,
+				rangelength:[1,80]
+			},
+			danwei:{
+				required:true,
+				rangelength:[2,80]
+			},
+		};
+
+	// 设置表单提交方式
+	var mytype = 'PUT';
+</script>
+{/block}

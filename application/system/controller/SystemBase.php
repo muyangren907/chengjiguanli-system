@@ -14,11 +14,22 @@ class SystemBase extends Base
     public function index()
     {
 
+        // 获取用户信息
+        $list = sysbasemod::field('id,webtitle,keywords,description,thinks,danwei')
+            ->order(['id'=>'desc'])
+            ->find();
+
         // 设置要给模板赋值的信息
         $list['title'] = '系统设置';
 
+        $this->assign('list',$list);
+
+        return $this->fetch();
+
         // 模板赋值
         $this->assign('list',$list);
+
+        halt($list);
 
         // 渲染模板
         return $this->fetch();
@@ -71,7 +82,7 @@ class SystemBase extends Base
     public function edit($id)
     {
         // 获取用户信息
-        $list = sysbasemod::field('id,title,keywords,description,thinks,danwei')
+        $list = sysbasemod::field('id,webtitle,keywords,description,thinks,danwei')
             ->get($id);
 
 

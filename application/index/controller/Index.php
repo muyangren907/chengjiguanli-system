@@ -27,19 +27,13 @@ class Index extends Base
         // 查询系统信息
         $list = $sysbasemod
             ->order(['id'=>'desc'])
-            ->field('title,keywords,description')
-            ->find();
-
-        // 实例化管理员数据模型
-        $admin = new \app\admin\model\Admin;
-        // 获取管理员信息
-        $list->userinfo = $admin
-            ->where('username',session('username'))
-            ->field('username,id')
+            ->field('webtitle,keywords,description')
             ->find();
 
         // 获取版本号
         $list->version = config('app.chengji.version');
+        // 获取用户名
+        $list->username = session('username');
 
 
         // 实例化权限数据模型
@@ -74,7 +68,7 @@ class Index extends Base
         // 查询最新记录
         $list = $sysbasemod
             ->order(['id'=>'desc'])
-            ->field('title,thinks,danwei')
+            ->field('webtitle,thinks,danwei')
             ->find();
 
         // 查询用户登录次数

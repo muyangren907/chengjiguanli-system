@@ -18,7 +18,7 @@ class SystemBase extends Seeder
         $rows[] = [
             'create_time'   =>  time(),
             'update_time'   =>  time(),
-            'title'         =>  '学生成绩统计系统',
+            'webtitle'         =>  '学生成绩统计系统',
             'keywords'      =>  '成绩统计,成绩管理,成绩分析',
             'description'   =>  '适合的才是好用的。',
             'thinks'        =>  'ThinkPHP,X-admin,百度Echarts,jquery。',

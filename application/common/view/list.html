@@ -1,281 +1,100 @@
-﻿<!DOCTYPE HTML>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="renderer" content="webkit|ie-comp|ie-stand">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-<link rel="Bookmark" href="/favicon.ico" >
-<link rel="Shortcut Icon" href="/favicon.ico" />
-<!--[if lt IE 9]>
-<script type="text/javascript" src="lib/html5shiv.js"></script>
-<script type="text/javascript" src="lib/respond.min.js"></script>
-<![endif]-->
-{css href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/static/h-ui/css/H-ui.min.css" /}
-{css href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/static/h-ui.admin/css/H-ui.admin.css" /}
-{css href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/Hui-iconfont/1.0.8/iconfont.css" /}
-{css href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/static/h-ui.admin/skin/default/skin.css" id="skin" /}
-{css rel="stylesheet" type="text/css" href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/static/h-ui.admin/css/style.css" /}
-{css rel="stylesheet" type="text/css" href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/datatables/1.10.15/css/jquery.dataTables.css" /}
-<style type="text/css">
-.dataTables_wrapper .dataTables_paginate
-{
-	padding-top: 5px;
-}
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-	height: 40px;
-	/*padding-top: 10px;*/
-}
-.dataTables_wrapper .dataTables_info{
-	padding-top: 16px;
-}
-</style>
+<!DOCTYPE html>
+<html class="x-admin-sm">
+  <head>
+    <meta charset="UTF-8">
+    <title>{$list.title}</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    {load href="__STATIC__/xadmin/css/font.css" /}
+    {load href="__STATIC__/xadmin/css/xadmin.css" /}
+    {load href="__STATIC__/xadmin/js/jquery.min.js" /}
+    {load href="__STATIC__/xadmin/lib/layui/layui.js" /}
+    {load href="__STATIC__/xadmin/js/xadmin.js" /}
+    {load href="__STATIC__/xadmin/js/cookie.js" /}
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    {block name="myjs"}{/block}
+  </head>
+  
+  <body class="">
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        {block name="topnav"}{/block}
+      </span>
+      <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+    </div>
+    <div class="x-body">
+      <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so">
+          {block name="sreach"}{/block}
+        </form>
+      </div>
+      {block name="table"}{/block}
+    </div>
+    <script type="text/html" id="toolbarDemo">
+      <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+        <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+      </div>
+    </script>
+    <script type="text/html" id="switchTpl">
+      <!-- 这里的 checked 的状态只是演示 -->
+      <input type="checkbox" name="sex" value="{{d.id}}" lay-skin="switch" lay-text="女|男" lay-filter="sexDemo" {{ d.id == 10003 ? 'checked' : '' }}>
+    </script>
+    <script>
+      layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#start' //指定元素
+        });
 
-<!--[if IE 6]>
-<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
-<script>DD_belatedPNG.fix('*');</script>
-<![endif]-->
-<title>{$list.title}</title>
-</head>
-<body>
-	{block name="topnav"}{/block}
-	<div class="page-container">
-		{block name="bouttons"}{/block}
-		{block name="tables"}{/block}
-	</div>
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#end' //指定元素
+        });
 
-<!--_footer 作为公共模版分离出去-->
-{js href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/jquery/1.9.1/jquery.min.js"}
-{js href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/layer/2.4/layer.js"}
-{js href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/static/h-ui/js/H-ui.min.js"}
-{js href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/static/h-ui.admin/js/H-ui.admin.js"}
- <!--/_footer 作为公共模版分离出去-->
 
-<!--请在下方写此页面业务相关的脚本-->
-{js href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/datatables/1.10.15/js/jquery.dataTables.min.js"}
-{block name="myjs"}{/block}
-<script type="text/javascript">
-    //提示信息
-    var lang = {
-        "sProcessing": "搜索中...",
-        "sLengthMenu": "每页 _MENU_ 项",
-        "sZeroRecords": "没有匹配结果",
-        "sInfo": "当前显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项。",
-        "sInfoEmpty": "当前显示第 0 至 0 项，共 0 项",
-        "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
-        "sInfoPostFix": "",
-        "sSearch": "搜索:",
-        "sUrl": "",
-        "sEmptyTable": "没有数据",
-        "sLoadingRecords": "载入中...",
-        "sInfoThousands": ",",
-        "oPaginate": {
-            "sFirst": "首页",
-            "sPrevious": "上页",
-            "sNext": "下页",
-            "sLast": "末页",
-            "sJump": "跳转"
-        },
-        "oAria": {
-            "sSortAscending": ": 以升序排列此列",
-            "sSortDescending": ": 以降序排列此列"
-        }
-    };
+      });
+    </script>
+    <script>
+    layui.use('table', function(){
+      var table = layui.table;
+      
+      //监听单元格编辑
+      table.on('edit(test)', function(obj){
+        var value = obj.value //得到修改后的值
+        ,data = obj.data //得到所在行所有键值
+        ,field = obj.field; //得到字段
+        layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
+      });
 
- 
-    //初始化表格
-    var mytable = $("#table1").DataTable({
-        language:lang,  //提示信息
-        autoWidth: false,  //禁用自动调整列宽
-        //stripeClasses: ["odd", "even"],  //为奇偶行加上样式，兼容不支持CSS伪类的场合
-        processing: true,  //隐藏加载提示,自行处理
-        serverSide: true,  //启用服务器端分页
-        stateSave: true,
-        searching: true,  //禁用原生搜索
-        orderMulti: false,  //启用多列排序
-        //order: [],  //取消默认排序查询,否则复选框一列会出现小箭头
-        // renderer: "display",  //渲染样式：Bootstrap和jquery-ui
-        // pagingType: "simple_numbers",  //分页样式：simple,simple_numbers,full,full_numbers
-        order: [
-        	[ 0, 'desc' ]
-        ],
-        destroy: true,
-        //option显示数量
-        aLengthMenu: [[20, 60, 120], [20, 60, 120,]],
-        iDisplayLength: 20,   //默认显示20条
-        /*columnDefs: [{
-            "targets": 'nosort',  //列的样式名
-            "orderable": false    //包含上样式名‘nosort’的禁止排序
-        }],*/
-        ajax: myajax,
-        columns: mycolumns,
-        columnDefs: mycolumnDefs,
+      //头工具栏事件
+      table.on('toolbar(test)', function(obj){
+        var checkStatus = table.checkStatus(obj.config.id);
+        switch(obj.event){
+          case 'getCheckData':
+            var data = checkStatus.data;
+            layer.alert(JSON.stringify(data));
+          break;
+          case 'getCheckLength':
+            var data = checkStatus.data;
+            layer.msg('选中了：'+ data.length + ' 个');
+          break;
+          case 'isAll':
+            layer.msg(checkStatus.isAll ? '全选': '未全选');
+          break;
+        };
+      });
     });
+    </script>
+  </body>
 
-
-// 添加最大化
-function addfull(title,url){
-	var index = layer.open({
-		type: 2,
-		title: title,
-		content: url
-	});
-	layer.full(index);
-}
-// 添加设定窗口大小
-function add(title,url,w,h){
-	layer_show(title,url,w,h);
-}
-/*用户-查看*/
-function show(title,url,id,w,h){
-	layer_show(title,url,w,h);
-}
-/*用户-停用*/
-function stop(obj,id){
-	layer.confirm('确认要停用吗？',function(index){
-		$.ajax({
-			type: 'POST',
-			url: "{:url('setstatus')}",
-			dataType: 'json',
-			data:{
-				id:id,
-				value: 0,
-			},
-			success: function(data){
-				if(data.val == 1 || data.val == 0)
-				{
-					$(obj).parents("tr").find("span").parents("td").html('<span class="label label-error radius">已停用</span>');
-					$(obj).replaceWith('<a style="text-decoration:none" onClick="start(this,'+id+')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>')
-					
-					layer.msg('已停用!',{icon: 5,time:1000});
-				}else{
-					layer.msg(data.msg);
-				}
-			},
-			error:function(data) {
-				layer.msg('操作失败');
-			},
-		});		
-	});
-}
-
-/*用户-启用*/
-function start(obj,id){
-	layer.confirm('确认要启用吗？',function(index){
-		$.ajax({
-			type: 'POST',
-			url: "{:url('setstatus')}",
-			dataType: 'json',
-			data:{
-				id:id,
-				value: 1,
-			},
-			success: function(data){
-				if(data.val == 1 || data.val == 0)
-				{
-					$(obj).parents("tr").find("span").parents("td").html('<span class="label label-success radius">已启用</span>');
-					$(obj).replaceWith('<a style="text-decoration:none" onClick="stop(this,'+id+')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>');
-					layer.msg('已启用!',{icon: 6,time:1000});
-				}else{
-					layer.msg(data.msg);
-				}
-				
-			},
-			error:function(data) {
-				layer.msg('操作失败');
-			},
-		});
-	});
-}
-/*用户-编辑*/
-function edit(title,url,id,w,h){
-	layer_show(title,url,w,h);
-}
-/*密码-修改*/
-function change_password(title,url,id,w,h){
-	layer_show(title,url,w,h);	
-}
-/*用户-删除*/
-function del(obj,url){
-	layer.confirm('确认要删除吗？',function(index){
-		$.ajax({
-			type: 'DELETE',
-			url: url,
-			dataType: 'json',
-			success: function(data){
-				if(data.val == 1)
-				{
-					$(obj).parents("tr").remove();
-					// layer.alert(data.msg,{icon:1,time:1000});
-				}
-				layer.alert(data.msg);
-				
-			},
-			error:function(data) {
-				layer.alert('删除失败');
-			},
-		});		
-	});
-}
-/*批量删除*/
-function dels(url){
-	//声明数组
-	var chk_value =[]; 
-	//获取所有被选中的值
-	$('input[name="test"]:checked').each(function(){  
-		chk_value.push($(this).val()); 
-	}); 
-	//将选中的值进行排序
-	//chk_value.sort();
-	
-
-	//如果有选中值则退出并提示
-	if(chk_value.length==0){
-		layer.msg('没有选择任何信息');
-		return false;
-	}
-	//将数组转换成字符串
-	// chk_value=chk_value.toString();
-	layer.confirm('确认要删除选中的内容吗？',function(index){
-		$.ajax({
-			type: 'DELETE',
-			url:url,
-			dataType: 'json',
-			data: {
-				ids:chk_value,
-			}, 
-
-			success: function(data){
-				if(data.val == 1){
-					$('input[name="test"]:checked').each(function(){  
-						$(this).parents("tr").remove(); 
-					}); 
-				}
-				layer.alert(data.msg);
-			},
-			error:function(data) {
-				layer.msg('操作失败');
-			},
-		});
-	});
-}
-/*用户-密码重置*/
-function resetpw(obj,id){
-	layer.confirm('确认要重置密码吗？',function(index){
-		$.ajax({
-			type: 'GET',
-			url: "/resetpassword/" + id,
-			dataType: 'json',
-			success: function(data){
-				layer.alert(data.msg,{icon:1,time:3000});
-			},
-			error:function(data) {
-				layer.alert('操作失败');
-			},
-		});		
-	});
-}
-</script> 
-</body>
 </html>

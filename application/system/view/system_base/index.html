@@ -1,69 +1,130 @@
-{extend name="common@list" /}
-{block name="topnav"}
-	<nav class="breadcrumb">
-		<i class="Hui-iconfont">&#xe67f;</i> 首页
-		<span class="c-gray en">&gt;</span> 系统管理
-		<span class="c-gray en">&gt;</span> 系统设置
-		<a class="btn btn-success radius r"
-			style="line-height:1.6em;margin-top:3px"
-			href="javascript:location.replace(location.href);"
-			title="刷新" >
-			<i class="Hui-iconfont">&#xe68f;</i>
-	</a>
-	</nav>
-{/block}
-{block name="bouttons"}
-	<div></div>
-{/block}
-{block name="tables"}
-	<table id="table1" class="display" cellspacing="0" width="100%">
-		<thead>
-			<tr>
-				<th>标题</th>
-				<th>关键字</th>
-				<th>描述</th>
-				<th>感谢</th>
-				<th>单位</th>
-				<th>操作</th>
-			</tr>
-		</thead>
-		<tbody>
-		</tbody>
-	</table>
+<!DOCTYPE html>
+<html class="x-admin-sm">
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.1</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    {load href="__STATIC__/xadmin/css/font.css" /}
+    {load href="__STATIC__/xadmin/css/xadmin.css" /}
+    {load href="__STATIC__/xadmin/js/jquery.min.js" /}
+    {load href="__STATIC__/xadmin/lib/layui/layui.js" /}
+    {load href="__STATIC__/xadmin/js/xadmin.js" /}
+    {load href="__STATIC__/xadmin/js/cookie.js" /}
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  {php}
+    dump($list);
+  {/php}
+  <body>
+    <div class="x-body">
+        <form class="layui-form layui-form-pane">
+          <div class="layui-form-item">
+              <label for="L_email" class="layui-form-label">
+                  <span class="x-red">*</span>系统标题
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" id="L_email" name="email" required="" lay-verify="email"
+                  autocomplete="off" class="layui-input" value="{$list.webtitle}">
+              </div>
+              <div class="layui-form-mid layui-word-aux">
+                  <span class="x-red">*</span>将会成为您唯一的登入名
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="L_username" class="layui-form-label">
+                  <span class="x-red">*</span>关键字
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" id="L_username" name="username" required="" lay-verify="nikename"
+                  autocomplete="off" class="layui-input" value="{$list.keywords}">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="L_pass" class="layui-form-label">
+                  <span class="x-red">*</span>描述
+              </label>
+              <div class="layui-input-inline">
+                  <input type="password" id="L_pass" name="pass" required="" lay-verify="pass"
+                  autocomplete="off" class="layui-input" value="{$list.description}">
+              </div>
+              <div class="layui-form-mid layui-word-aux">
+                  6到16个字符
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="L_repass" class="layui-form-label">
+                  <span class="x-red">*</span>感谢
+              </label>
+              <div class="layui-input-inline">
+                  <input type="password" id="L_repass" name="repass" required="" lay-verify="repass"
+                  autocomplete="off" class="layui-input" value="{$list.thinks}">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="L_repass" class="layui-form-label">
+                  <span class="x-red">*</span>使用单位
+              </label>
+              <div class="layui-input-inline">
+                  <input type="password" id="L_repass" name="repass" required="" lay-verify="repass"
+                  autocomplete="off" class="layui-input" value="{$list.danwei}">
+              </div>
+          </div>
 
+              <button  class="layui-btn" lay-filter="edit" lay-submit="">
+                  设置
+              </button>
+      </form>
+    </div>
+    <script>
+      layui.use(['form','layer'], function(){
+          $ = layui.jquery;
+        var form = layui.form
+        ,layer = layui.layer;
+      
+        //自定义验证规则
+        form.verify({
+          nikename: function(value){
+            if(value.length < 5){
+              return '昵称至少得5个字符啊';
+            }
+          }
+          ,pass: [/(.+){6,12}$/, '密码必须6到12位']
+          ,repass: function(value){
+              if($('#L_pass').val()!=$('#L_repass').val()){
+                  return '两次密码不一致';
+              }
+          }
+        });
 
-{/block}
-{block name="myjs"}
-<script type="text/javascript">
+        //监听提交
+        form.on('submit(add)', function(data){
+          console.log(data);
+          //发异步，把数据提交给php
+          layer.alert("增加成功", {icon: 6},function () {
+              // 获得frame索引
+              var index = parent.layer.getFrameIndex(window.name);
+              //关闭当前frame
+              parent.layer.close(index);
+          });
+          return false;
+        });
+        
+        
+      });
+  </script>
+    <script>var _hmt = _hmt || []; (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();</script>
+  </body>
 
-	// 定义DTajax参数
-	var myajax = {
-		url: "{:url('ajaxdata')}",
-		type: "get",
-		data: {},
-	};
-
-	// 定义列参数
-	var mycolumns = [
-        { "data": "title" },
-        { "data": "keywords" },
-        { "data": "description" },
-        { "data": "thinks" },
-        { "data": "danwei" },
-        { "data": "id" },
-	];
-
-	// 定义修改列参数
-	var mycolumnDefs =[
-		{
-			"targets": -1,
-			"className":'.td-manage',			
-			"render": function(data, type, row, meta) {
-					// 编辑按钮
-					editbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/sysbase/'+row.id+'/edit") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
-					return editbut;
-                }
-        },
-	];
-</script>
-{/block}
+</html>

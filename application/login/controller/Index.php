@@ -25,10 +25,10 @@ class Index extends Controller
         $sysbasemod = new \app\system\model\SystemBase;
 
         // 查询系统信息
-        $list['title'] = $sysbasemod
+        $list['webtitle'] = $sysbasemod
             ->order(['id'=>'desc'])
             ->limit(1)
-            ->value('title');
+            ->value('webtitle');
 
         $list['version'] = config('app.chengji.version');
 
