@@ -3,9 +3,9 @@
 namespace app\admin\model;
 
 // 引用用户数据模型
-use app\common\model\Base;
+use think\model\Pivot;
 
-class AuthGroupAccess extends Base
+class AuthGroupAccess extends Pivot
 {
     //
 }

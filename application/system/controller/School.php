@@ -30,7 +30,7 @@ class School extends Base
 
 
     //  获取单位列表数据
-    public function ajaxData()
+    public function ajaxData1()
     {
         // 获取DT的传值
         $getdt = request()->param();
@@ -77,6 +77,29 @@ class School extends Base
             'draw'=> $getdt["draw"] , // ajax请求次数，作为标识符
             'recordsTotal'=>$cnt,  // 获取到的结果数(每页显示数量)
             'recordsFiltered'=>$datacnt,       // 符合条件的总数据量
+            'data'=>$data, //获取到的数据结果
+        ];
+
+        return json($data);
+    }
+
+
+    //  获取单位列表数据
+    public function ajaxData()
+    {
+
+        // 实例化
+        $sch = new sch;
+
+        // 获取荣誉总数
+        $data = $sch->select();
+
+
+        // 重组返回内容
+        $data = [
+            'code'=> 0 , // ajax请求次数，作为标识符
+            'msg'=>"",  // 获取到的结果数(每页显示数量)
+            'count'=>100,       // 符合条件的总数据量
             'data'=>$data, //获取到的数据结果
         ];
 

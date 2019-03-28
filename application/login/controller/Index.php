@@ -9,6 +9,8 @@ use app\admin\model\Admin as AD;
 use WhiteHat101\Crypt\APR1_MD5;
 // 引用Session类
 use \think\facade\Session;
+// 引用验证码类
+use think\captcha\Captcha;
 
 
 class Index extends Controller
@@ -21,15 +23,7 @@ class Index extends Controller
         // 清除session（当前作用域）
         session(null);
 
-        //实例化数据模型
-        $sysbasemod = new \app\system\model\SystemBase;
-
-        // 查询系统信息
-        $list['webtitle'] = $sysbasemod
-            ->order(['id'=>'desc'])
-            ->limit(1)
-            ->value('webtitle');
-
+        // 获取系统版本号
         $list['version'] = config('app.chengji.version');
 
         $this->assign('list',$list);
@@ -48,21 +42,15 @@ class Index extends Controller
 
 
         // 获取表单数据
-        $data = request()->only(['username','password']);
+        $data = request()->only(['username','password','captcha']);
 
         
         // 验证表单数据
         $result = $validate->check($data);
-        $msg = $validate->getError();
         if(!$result){
-            $this->error($msg);
+            $data=['msg'=>$validate->getError(),'status'=>0];
+            return json($data);
         }
-
-        // if(!captcha_check($data['captcha']))
-        // {
-        //     $this->error('验证码错误');
-        // }
-
 
         // 验证用户名和密码
         $check = $this->check($data['username'],$data['password']);
@@ -132,5 +120,14 @@ class Index extends Controller
         }
         return $check;        
     }
-    
+
+    // 生成验证码
+    public function verify()
+    {
+        $captcha = new Captcha();
+        $captcha->fontSize = 30;
+        $captcha->length   = 6;
+        $captcha->codeSet = '0123456789'; 
+        return $captcha->entry();    
+    }    
 }

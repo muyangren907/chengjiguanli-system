@@ -11,3 +11,5 @@
 
 Route::get('login','login/index/index');
 Route::post('login','login/index/yanzheng');
+Route::get('verify','login/index/verify');
+Route::get('verifyCheck','login/index/verifyCheck');

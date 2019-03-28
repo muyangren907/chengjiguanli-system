@@ -13,12 +13,12 @@ class Yanzheng extends Validate
      * @var array
      */	
 	protected $rule = [
-        'username'  =>  'require',
-        'password'  =>  'require',
+        'username|用户名'  =>  'require',
+        'password|密码'  =>  'require',
+        'captcha|验证码'=>'require|captcha',
     ];
 
     protected $message = [
-      'username.require' => '用户名必须填写',
-      'password.require'  => '密码必须填写',
+
     ];
 }

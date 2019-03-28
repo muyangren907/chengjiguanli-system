@@ -7,6 +7,13 @@ use app\common\model\Base;
 
 class Admin extends Base
 {
+    // 用户角色获取器
+    public function userGroup()
+    {
+        return $this->belongsToMany('AuthGroup','AuthGroupAccess','id','uid');
+    }
+
+
     // 获取密码
     public function password($username)
     {

@@ -1,84 +1,28 @@
-<!--_meta 作为公共模版分离出去-->
-<!DOCTYPE HTML>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="renderer" content="webkit|ie-comp|ie-stand">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-<link rel="Bookmark" href="/favicon.ico" >
-<link rel="Shortcut Icon" href="/favicon.ico" />
-<!--[if lt IE 9]>
-<script type="text/javascript" src="lib/html5shiv.js"></script>
-<script type="text/javascript" src="lib/respond.min.js"></script>
-<![endif]-->
-{css href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/static/h-ui/css/H-ui.min.css" /}
-{css href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/static/h-ui.admin/css/H-ui.admin.css" /}
-{css href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/Hui-iconfont/1.0.8/iconfont.css" /}
-{css href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/static/h-ui.admin/skin/default/skin.css" id="skin" /}
-{css rel="stylesheet" type="text/css" href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/static/h-ui.admin/css/style.css" /}
-{block name="mycss"}{/block}
-
-<!--[if IE 6]>
-<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
-<script>DD_belatedPNG.fix('*');</script>
-<![endif]-->
-<!--/meta 作为公共模版分离出去-->
-
-<title>{$list.title|default='添加信息'}</title>
-<meta name="keywords" content="{$list.keywords|default='成绩统计,学生'}">
-<meta name="description" content="{$list.description|default='这是我们自己缩写的程序'}">
-</head>
-<body>
-<article class="page-container">
-	{block name="formaa"}{/block}
-</article>
-
-<!--_footer 作为公共模版分离出去-->
-{js href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/jquery/1.9.1/jquery.js"}
-{js href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/layer/2.4/layer.js"}
-{js href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/static/h-ui/js/H-ui.min.js"}
-{js href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/static/h-ui.admin/js/H-ui.admin.js"}
- <!--/_footer 作为公共模版分离出去-->
-
-<!--请在下方写此页面业务相关的脚本-->
-{js href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/My97DatePicker/4.8/WdatePicker.js"}
-{js href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/jquery.validation/1.14.0/jquery.validate.js"} 
-{js href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/jquery.validation/1.14.0/validate-methods.js"} 
-{js href="/static/H-ui.admin_v3.1.3.1/H-ui.admin/lib/jquery.validation/1.14.0/messages_zh.js"}
-{block name="yanzheng"}{/block}
-<script type="text/javascript">
-$(function(){
-	$('.skin-minimal input').iCheck({
-		checkboxClass: 'icheckbox-blue',
-		radioClass: 'iradio-blue',
-		increaseArea: '20%'
-	});
-	
-	$("#form-member-add").validate({
-		rules:myrules,
-		onkeyup:false,
-		focusCleanup:true,
-		success:"valid",
-
-		submitHandler:function(form){
-			$('#form-member-add').ajaxSubmit({
-				type: mytype,
-				success: function(data){
-					layer.msg(data.msg,{
-						icon: 6,
-					});
-					window.parent.location.reload();
-				},
-				error: function(data){
-					layer.alert('保存信息失败');
-				}
-			});
-		}
-	});
-});
-</script> 
-<!--/请在上方写此页面业务相关的脚本-->
-</body>
+<!DOCTYPE html>
+<html class="x-admin-sm">
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>{$list.title}</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    {load href="__STATIC__/xadmin/css/font.css" /}
+    {load href="__STATIC__/xadmin/css/xadmin.css" /}
+    {load href="__STATIC__/xadmin/js/jquery.min.js" /}
+    {load href="__STATIC__/xadmin/lib/layui/layui.js" /}
+    {load href="__STATIC__/xadmin/js/xadmin.js" /}
+    {load href="__STATIC__/xadmin/js/cookie.js" /}
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="x-body">
+    	{block name="form"}{/block}
+    </div>
+    {block name="myjs"}{/block}
+  </body>
 </html>

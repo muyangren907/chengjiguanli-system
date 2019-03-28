@@ -13,7 +13,7 @@ class SystemBase extends Validate
      * @var array
      */	
 	protected $rule = [
-        'title|标题'      =>  'require|length:2,50',
+        'webtitle|标题'      =>  'require|length:2,50',
         'keywords|关键字'      =>  'require|length:2,60',
         'description|描述'      =>  'require|length:1,100',
         'thinks|感谢'      =>  'require|length:1,80',

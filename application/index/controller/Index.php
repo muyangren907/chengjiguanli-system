@@ -27,8 +27,11 @@ class Index extends Base
         // 查询系统信息
         $list = $sysbasemod
             ->order(['id'=>'desc'])
-            ->field('webtitle,keywords,description')
+            ->field('id,webtitle,keywords,description')
             ->find();
+
+        // 存储网站名
+        session('webtitle',$list->webtitle);
 
         // 获取版本号
         $list->version = config('app.chengji.version');
@@ -50,7 +53,7 @@ class Index extends Base
                         ])
                         ->order(['paixu'])
                         ->select();
-                        // dump($list['menu']);halt('aa');
+
 
         // 模版赋值
         $this->assign('list',$list);
@@ -81,11 +84,8 @@ class Index extends Base
         $list['yuyan'] = request()->langset();
         $list['server'] = request()->server();
         $list['env'] = request()->env();
-        
 
 
-        // $list['req'] = request();
-        // dump($list);
 
         // 获取版本号
         $list->version = config('app.chengji.version');

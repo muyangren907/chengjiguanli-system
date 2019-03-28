@@ -2,7 +2,7 @@
 <html  class="x-admin-sm">
 <head>
 	<meta charset="UTF-8">
-	<title>{$list['webtitle']} v{$list['version']}</title>
+	<title>小学生成绩管理平台 v{$list['version']}</title>
 	<meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -26,6 +26,10 @@
             <hr class="hr15">
             <input name="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input">
             <hr class="hr15">
+            <input name="captcha" lay-verify="required" placeholder="验证码"  type="text" class="layui-input">
+            <hr class="hr15"> 
+            <img style="width: 100%" id="captchaimg" src="/verify" alt="captcha" onclick="javascript:this.src=this.src+'?rnd=' + Math.random();" />
+            <hr class="hr15"> 
             <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
             <hr class="hr20" >
         </form>
@@ -35,18 +39,21 @@
         $(function  () {
             layui.use('form', function(){
               var form = layui.form;
+
               //监听提交
               form.on('submit(login)', function(data){
                 $.post("/login",data.field,function(data,status){
                   if(status != 'success')
                   {
                     layer.msg('数据传输错误');
+                    $('#captchaimg').onclick();
                   }
                   if(data.status == 1)
                   {
-                    window.location.href='/';
+                    window.location.href="/";
                   }else{
                     layer.msg(data.msg);
+                    $('#captchaimg').click();
                   }
                 });
                 return false;

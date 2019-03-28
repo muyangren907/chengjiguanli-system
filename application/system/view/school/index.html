@@ -1,171 +1,111 @@
-{extend name="common@list" /}
-{block name="topnav"}
-	<nav class="breadcrumb">
-		<i class="Hui-iconfont">&#xe67f;</i> 首页
-		<span class="c-gray en">&gt;</span> 系统管理
-		<span class="c-gray en">&gt;</span> 单位列表
-		<a class="btn btn-success radius r"
-			style="line-height:1.6em;margin-top:3px"
-			href="javascript:location.replace(location.href);"
-			title="刷新" >
-			<i class="Hui-iconfont">&#xe68f;</i>
-	</a>
-	</nav>
-{/block}
-{block name="bouttons"}
-	<div class="cl pd-5 bg-1 bk-gray mt-20">
-		<span class="l">
-			<!-- 删除按钮 -->
-			<a href="javascript:;" onclick="dels('/school/m')" class="btn btn-danger radius">
-				<i class="Hui-iconfont">&#xe6e2;</i>
-			批量删除
-			</a>
-			<!-- 添加按钮 -->
-			<a href="javascript:;" onclick=addfull('添加单位',"/school/create") class="btn btn-primary radius">
-				<i class="Hui-iconfont">&#xe600;</i>
-				添加单位
-			</a>
-		</span>
-		<span class="r">
-			共有数据：<strong>{$list.count}</strong> 条
-		</span>
-	</div>
-	<div class="panel panel-default mt-10 mb-10">
-		<div class="panel-header" id="shaixuan">筛选单位</div>
-		<div class="panel-body" style="min-height: 40px">
-			<div>
-				{php}$category = getCategory(101);{/php}
-				<label class="f-l">单位类别：</label>
-				<dt>
-					<dd class=" mt-10">
-						{foreach $category as $key=>$vo } 
-						<label class="ml-10">
-							<input type="checkbox" value="{$vo.id}" name="xingzhi" onclick="dtreload()">
-							{$vo.title}
-						</label>
-						{/foreach}
-					</dd>
-				</dt>
-			</div>
-		</div>
-	</div>
-{/block}
-{block name="tables"}
-	<table id="table1" class="display" cellspacing="0" width="100%">
-		<thead>
-			<tr>
-				<th><input type="checkbox" name="" value=""></th>
-				<th>单位名称</th>
-				<th>简称</th>
-				<th>性质</th>
-				<th>级别</th>
-				<th>学段</th>
-				<th>排序</th>
-				<th>教师数</th>
-				<th>状态</th>
-				<th>操作</th>
-			</tr>
-		</thead>
-		<tbody>
-		</tbody>
-	</table>
+<!DOCTYPE html>
+<html class="x-admin-sm">
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>{$list.title}</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    {load href="__STATIC__/xadmin/css/font.css" /}
+    {load href="__STATIC__/xadmin/css/xadmin.css" /}
+    {load href="__STATIC__/xadmin/js/jquery.min.js" /}
+    {load href="__STATIC__/xadmin/lib/layui/layui.js" /}
+    {load href="__STATIC__/xadmin/js/xadmin.js" /}
+    {load href="__STATIC__/xadmin/js/cookie.js" /}
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  
+  <body class="">
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">系统管理</a>
+        <a href="">单位管理</a>
+        <a>
+          <cite>单位列表</cite></a>
+      </span>
+      <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+    </div>
+    <div class="x-body">
+      <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so">
+          <input class="layui-input"  autocomplete="off" placeholder="开始日" name="start" id="start">
+          <input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">
+          <input type="text" name="username"  placeholder="请输入用户名" autocomplete="off" class="layui-input">
+          <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+        </form>
+      </div>
+      <table id="demo" lay-filter="test"></table>
+    </div>
+    <script type="text/html" id="toolbarDemo">
+      <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+        <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+      </div>
+    </script>
+    <script type="text/html" id="switchTpl">
+      <!-- 这里的 checked 的状态只是演示 -->
+      <input type="checkbox" name="sex" value="{{d.id}}" lay-skin="switch" lay-text="女|男" lay-filter="sexDemo" {{ d.id == 10003 ? 'checked' : '' }}>
+    </script>
+    <script>
+      layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#start' //指定元素
+        });
+
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#end' //指定元素
+        });
 
 
-{/block}
-{block name="myjs"}
-<script type="text/javascript">
+      });
+    </script>
+    <script>
+    layui.use('table', function(){
+      var table = layui.table;
 
-	// 定义DTajax参数
-	var myajax = {
-		url: "{:url('ajaxdata')}",
-		type: "post",
-		data: {
-			xingzhi:function(){
-				var chk = [];
-				$('input[name="xingzhi"]:checked').each(function(){
-					if(typeof($(this).val()) != "undefined")
-					{
-						chk.push($(this).val());
-					}
-				});
-				return chk;
-			},
-		},
-	};
 
-	// 定义列参数
-	var mycolumns = [
-        { "data": "id" },
-        { "data": "title" },
-        { "data": "jiancheng" },
-        { "data": "dw_xingzhi.title" ,"name":"xingzhi","defaultContent": "" },
-        { "data": "dw_jibie.title" ,"name":"jibie","defaultContent": "" },
-        { "data": "dw_xueduan.title" ,"name":"xueduan","defaultContent": "" },
-        { "data": "paixu" },
-        { "data": "dw_teacher_count","name":"id" ,"defaultContent":""},
-        { "data": "status" },
-        { "data": "id" },
-	];
+      //第一个实例
+      table.render({
+        elem: '#demo',
+        height: 312,
+        url:"{:url('ajaxdata')}",
+        method:"POST",   //数据接口
+        page: true, //开启分页
+        cols: [[ //表头
+          {field: 'title', title: '单位名称',sort: true, fixed: 'left'},
+          {field: 'jiancheng', title: '单位简称'},
+          {field: 'dw_xingzhi.title', title: '性质',sort: true},
+          {field: 'dw_jibie.title', title: '级别'} ,
+          {field: 'dw_xueduan.title', title: '学段'},
+          {field: 'paixu', title: '排序', sort: true},
+          {field: 'dw_teacher_count', title: '教师数', sort: true},
+          {field: 'status', title: '状态'},
+          {field: 'id', title: '操作', sort: true}
+        ]],
 
-	// 定义修改列参数
-	var mycolumnDefs =[
-		// 对象格式
-		{
-			"targets": 0,			
-			"render": function(data, type, row, meta) {
-				return '<input type="checkbox" name="test" value="' + row.id + '" />'
-			}
-		},
-		{
-			"targets": -1,
-			"className":'.td-manage',			
-			"render": function(data, type, row, meta) {
-					// 停用按钮
-					stopbut = '<a style="text-decoration:none" onClick="stop(this,'+ row.id +')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>';
-					// 启用按钮
-					startbut = '<a style="text-decoration:none" onClick="start(this,'+ row.id +')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>';
-					// 编辑按钮
-					editbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/school/'+row.id+'/edit") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
-					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/school/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
-					if(row.status == '已停用')
-					{
-						buts = startbut + editbut + delbut;
-					}else{
-						buts = stopbut + editbut + delbut;
-					} 
+      });
 
-					return buts;
-                }
-        },
-        {
-			"targets": -2,
-			"className":'.td-status',
-			"render": function(data, type, row, meta) {
-                    if(row.status == '已停用')
-                    {
-                    	d = "<span class='label label-error radius'>" + row.status + "</span>";
-                    }else{
-                    	d = "<span class='label label-success radius'>" + row.status + "</span>";
-                    }
 
-                    return d;
-                  },
-        },
-        {
-        	"orderable": false,
-        	"targets": [0,-1]
-        }, 
-	];
 
-	// 筛选成绩面板折叠
-	$('#shaixuan').click(function(){
-		$(this).next().toggle();
-	});
 
-	// 重载数据
-	function dtreload()
-	{
-		$('#table1').DataTable().ajax.reload();
-	}
-</script>
-{/block}
+
+
+
+
+      
+      
+    });
+    </script>
+  </body>
+</html>

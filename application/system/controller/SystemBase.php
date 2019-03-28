@@ -40,7 +40,7 @@ class SystemBase extends Base
         $validate = new \app\system\validate\SystemBase;
 
         // 获取表单数据
-        $list = request()->only(['title','keywords','description','thinks','danwei'],'put');;
+        $list = request()->only(['webtitle','keywords','description','thinks','danwei'],'put');;
 
         // 验证表单数据
         $result = $validate->check($list);
@@ -55,7 +55,7 @@ class SystemBase extends Base
         $data = sysbasemod::where('id',$id)->update($list);
 
         // 根据更新结果设置返回提示信息
-        $data>=0 ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data>=0 ? $data=['msg'=>'设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);
