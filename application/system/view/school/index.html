@@ -70,9 +70,30 @@
 
       });
     </script>
+
     <script>
     layui.use('table', function(){
       var table = layui.table;
+
+      //头工具栏事件
+      table.on('toolbar(test)', function(obj){
+        var checkStatus = table.checkStatus(obj.config.id);
+        switch(obj.event){
+          case 'getCheckData':
+            var data = checkStatus.data;
+            layer.alert(JSON.stringify(data));
+          break;
+          case 'getCheckLength':
+            var data = checkStatus.data;
+            layer.msg('选中了：'+ data.length + ' 个');
+          break;
+          case 'isAll':
+            layer.msg(checkStatus.isAll ? '全选': '未全选');
+          break;
+        };
+      });
+
+
 
 
       //第一个实例
@@ -82,8 +103,10 @@
         url:"{:url('ajaxdata')}",
         method:"POST",   //数据接口
         page: true, //开启分页
+        loading:true,
         cols: [[ //表头
-          {field: 'title', title: '单位名称',sort: true, fixed: 'left'},
+          {type:'checkbox', fixed: 'left'},
+          {field: 'title', title: '单位名称',sort: true},
           {field: 'jiancheng', title: '单位简称'},
           {field: 'dw_xingzhi.title', title: '性质',sort: true},
           {field: 'dw_jibie.title', title: '级别'} ,
@@ -93,7 +116,8 @@
           {field: 'status', title: '状态'},
           {field: 'id', title: '操作', sort: true}
         ]],
-
+        limits:[1],
+        limit:1,
       });
 
 

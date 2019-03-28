@@ -88,18 +88,21 @@ class School extends Base
     public function ajaxData()
     {
 
+        $list = request()->post();
+
         // 实例化
         $sch = new sch;
 
-        // 获取荣誉总数
-        $data = $sch->select();
+        $cnt = $sch->count();
 
+        // // 获取荣誉总数
+        $data = $sch->page($list['page'],$list['limit'])->select();
 
         // 重组返回内容
         $data = [
             'code'=> 0 , // ajax请求次数，作为标识符
             'msg'=>"",  // 获取到的结果数(每页显示数量)
-            'count'=>100,       // 符合条件的总数据量
+            'count'=>$cnt,       // 符合条件的总数据量
             'data'=>$data, //获取到的数据结果
         ];
 

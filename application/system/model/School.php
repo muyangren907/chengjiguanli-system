@@ -36,15 +36,9 @@ class School extends Base
 
 
     // 查询所有单位
-    public function search($search)
+    public function search()
     {
         // 获取参数
-        $xingzhi = $search['xingzhi'];
-        $order_field = $search['order_field'];
-        $order = $search['order'];
-        $search = $search['search'];
-
-
 
         $data = $this->order([$order_field =>$order])
             ->when(strlen($xingzhi)>0,function($query) use($xingzhi){
@@ -73,7 +67,6 @@ class School extends Base
                     }
                 ]
             )
-            // ->append(['cnt'])
             ->select();
 
 
