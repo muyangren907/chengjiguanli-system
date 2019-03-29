@@ -74,16 +74,16 @@ class Index extends Base
             ->field('webtitle,thinks,danwei')
             ->find();
 
-        // 查询用户登录次数
-        $admin = new \app\admin\model\Admin;
-        $userid = session('userid');
+        // // 查询用户登录次数
+        // $admin = new \app\admin\model\Admin;
+        // $userid = session('userid');
         $list['username'] = session('username');
-        $list['denglu'] = $admin->where('id',$userid)
-                        ->field('denglucishu,lastip,lasttime')
-                        ->find();
-        $list['yuyan'] = request()->langset();
+        // $list['denglu'] = $admin->where('id',$userid)
+        //                 ->field('denglucishu,lastip,lasttime')
+        //                 ->find();
+        // $list['yuyan'] = request()->langset();
         $list['server'] = request()->server();
-        $list['env'] = request()->env();
+        // $list['env'] = request()->env();
 
 
 

@@ -12,14 +12,8 @@ class School extends Base
     // 单位列表
     public function index()
     {
-        // 实例化单位模型
-        $sch = new sch();
-        // 获取记录集总数
-        $count = $sch->searchAll()->count();
-
         // 设置要给模板赋值的信息
-        $list['title'] = '单位列表';
-        $list['count'] = $count;
+        $list['webtitle'] = '单位列表';
 
         // 模板赋值
         $this->assign('list',$list);
@@ -32,17 +26,25 @@ class School extends Base
     //  获取单位列表数据
     public function ajaxData()
     {
-
-        $list = request()->post();
+        // 获取参数
+        $src = $this->request
+                ->only([
+                    'page'=>'1',
+                    'limit'=>'10',
+                    'field'=>'update_time',
+                    'order'=>'asc',
+                    'xingzhi'=>''
+                ]);
 
         // 实例化
         $sch = new sch;
 
+        // 获取记录总数
         $cnt = $sch->count();
 
-        // // 获取荣誉总数
-        $data = $sch->page($list['page'],$list['limit'])->select();
-
+        // 查询要显示的数据
+        $data = $sch->search($src);
+       
         // 重组返回内容
         $data = [
             'code'=> 0 , // ajax请求次数，作为标识符
@@ -50,6 +52,7 @@ class School extends Base
             'count'=>$cnt,       // 符合条件的总数据量
             'data'=>$data, //获取到的数据结果
         ];
+
 
         return json($data);
     }
@@ -60,7 +63,13 @@ class School extends Base
     public function create()
     {
         // 设置页面标题
-        $list['title'] = '添加单位';
+        $list['set'] = array(
+            'webtitle'=>'添加单位',
+            'butname'=>'添加',
+            'formpost'=>'POST',
+            'url'=>'/school',
+        );
+
 
         // 模板赋值
         $this->assign('list',$list);
@@ -111,12 +120,22 @@ class School extends Base
     public function edit($id)
     {
         // 获取单位信息
-        $list = sch::field('id,title,jiancheng,biaoshi,xingzhi,jibie,status,xueduan,paixu')
+        $list['data'] = sch::field('id,title,jiancheng,biaoshi,xingzhi,jibie,status,xueduan,paixu')
             ->get($id);
 
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'修改单位',
+            'butname'=>'修改',
+            'formpost'=>'PUT',
+        );
+
+        // 模板赋值
         $this->assign('list',$list);
 
-        return $this->fetch();
+        // 渲染
+        return $this->fetch('create');
+
     }
 
     // 更新单位信息

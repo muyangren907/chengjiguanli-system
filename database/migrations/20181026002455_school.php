@@ -45,7 +45,8 @@ class School extends Migrator
             ->addColumn('create_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
             ->addColumn('update_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
             ->addColumn('beizhu','string',['limit'=>80,'null'=>true,'comment'=>'备注'])
-            ->addIndex(array('title','jiancheng','biaoshi'), array('unique' => true))
+            ->addIndex(array('title'), array('unique' => true))
+            ->addIndex(array('jiancheng'), array('unique' => true))
             ->create();
     }
 }

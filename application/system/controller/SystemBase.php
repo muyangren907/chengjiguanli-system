@@ -19,12 +19,11 @@ class SystemBase extends Base
             ->order(['id'=>'desc'])
             ->find();
 
-        // 设置要给模板赋值的信息
-        $list['title'] = '系统设置';
-
-        $this->assign('list',$list);
-
-        return $this->fetch();
+        $list['set'] = array(
+            'webtitle'=>'设置系统信息',
+            'butname'=>'设置',
+            'formpost'=>'PUT',
+        );
 
         // 模板赋值
         $this->assign('list',$list);
@@ -40,7 +39,8 @@ class SystemBase extends Base
         $validate = new \app\system\validate\SystemBase;
 
         // 获取表单数据
-        $list = request()->only(['webtitle','keywords','description','thinks','danwei'],'put');;
+        $list = request()->only(['webtitle','keywords','description','thinks','danwei'],'put');
+        $list['id'] = $id;
 
         // 验证表单数据
         $result = $validate->check($list);

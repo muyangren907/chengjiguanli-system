@@ -36,17 +36,23 @@ class School extends Base
 
 
     // 查询所有单位
-    public function search()
+    public function search($src)
     {
-        // 获取参数
+        // 整理变量
+        // $xingzhi = $src['xingzhi'];
 
-        $data = $this->order([$order_field =>$order])
-            ->when(strlen($xingzhi)>0,function($query) use($xingzhi){
-                    $query->where('xingzhi','in',$xingzhi);
-                })
-            ->when(strlen($search)>0,function($query) use($search){
-                    $query->where('title|jiancheng','like',$search);
-                })
+        // 查询数据
+        $data = $this
+            ->order([$src['field'] =>$src['order']])
+            // ->when(strlen($src['xingzhi'])>0,function($query) use($xingzhi){
+            //         $query->where('xingzhi','in',$xingzhi);
+            //     })
+            // ->when(strlen($search)>0,function($query) use($search){
+            //         $query->where('title|jiancheng','like',$search);
+            //     })
+            // ->when(strlen($search)>0,function($query) use($search){
+            //         $query->where('title|jiancheng','like',$search);
+            //     })
             ->with(
                 [
                     'dwXingzhi'=>function($query){
@@ -60,6 +66,7 @@ class School extends Base
                     },
                 ]
             )
+            ->page($src['page'],$src['limit'])
             ->withCount(
                 [
                     'dwTeacher'=>function($query){
@@ -71,11 +78,5 @@ class School extends Base
 
 
         return $data;
-    }
-
-    // 查询所有数据
-    public function searchAll()
-    {
-        return $this->cache('key',180)->select();
     }
 }
