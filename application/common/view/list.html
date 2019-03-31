@@ -41,52 +41,124 @@
     </div>
     {block name="myjs"}{/block}
     <script type="text/javascript">
-      
 
-      /*停用*/
-      function status(obj,id){
-          layer.confirm('确认要停用吗？',function(index){
+      layui.use(['table','laypage'], function(){
+        var table = layui.table;
+        //监听排序事件
+        table.on('sort(test)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 
+          table.reload('demo', {
+            initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+            where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+              field: obj.field, //排序字段
+              order: obj.type //排序方式
+            }
+          });
+        });
+      });
 
-              if($(obj).attr('title')=='启用'){
 
-                //发异步把用户状态进行更改
-                $(obj).attr('title','停用')
-                $(obj).find('i').html('&#xe62f;');
+        
 
-                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                layer.msg('已停用!',{icon: 5,time:1000});
+        /*停用*/
+        function status(obj,id){
+            layer.confirm('确认要停用吗？',function(index){
 
-              }else{
-                $(obj).attr('title','启用')
-                $(obj).find('i').html('&#xe601;');
+                if($(obj).attr('title')=='启用'){
 
-                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
-                layer.msg('已启用!',{icon: 5,time:1000});
-              }
+                  //发异步把用户状态进行更改
+                  $(obj).attr('title','停用')
+                  $(obj).find('i').html('&#xe62f;');
+
+                  $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
+                  layer.msg('已停用!',{icon: 5,time:1000});
+
+                }else{
+                  $(obj).attr('title','启用')
+                  $(obj).find('i').html('&#xe601;');
+
+                  $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
+                  layer.msg('已启用!',{icon: 5,time:1000});
+                }
+                
+            });
+        }
+
+        /*删除*/
+        function del(obj,id,url){
+            layer.confirm('确认要删除吗？',function(index){
+                $.ajax({
+                    url:url+'/m',
+                    type:'delete',
+                    data:{
+                      ids:id
+                    },
+                    success:function(result){
+                      if(result.val == 1)
+                      {
+                        $(obj).remove();
+                        layer.msg('已删除!',{icon:1,time:1000});
+                      }else{
+                        layer.msg('数据处理错误!',{icon:1,time:1000});
+                      }
+                    },
+                    error:function(result){
+                      layer.msg('数据扔半道，回不来啦。',{icon:6,time:1000});
+                    },
+                });
+            });
+        }
+
+        // function delAll (argument) {
+
+        //   var data = tableCheck.getData();
+        //   // layer.msg(data);
+        //   return '';
+
+        //   // layer.confirm('确认要删除吗？',function(index){
+
+        //   //     $.ajax({
+        //   //             url:url+'/m',
+        //   //             type:'delete',
+        //   //             data:{
+        //   //               ids:data
+        //   //             },
+        //   //             success:function(result){
+        //   //               if(result.val == 1)
+        //   //               {
+        //   //                 $(".layui-form-checked").not('.header').parents('tr').remove();
+        //   //                 layer.msg('已删除!',{icon:1,time:1000});
+        //   //               }else{
+        //   //                 layer.msg('数据处理错误!',{icon:1,time:1000});
+        //   //               }
+        //   //             },
+        //   //             error:function(result){
+        //   //               layer.msg('数据扔半道，回不来啦。',{icon:6,time:1000});
+        //   //             },
+        //   //     });
               
-          });
-      }
+        //   // });
+        // }
 
-      /*删除*/
-      function del(obj,id){
-          layer.confirm('确认要删除吗？',function(index){
-              //发异步删除数据
-              $(obj).parents("tr").remove();
-              layer.msg('已删除!',{icon:1,time:1000});
-          });
-      }
+        function delAll (argument) {
 
-
-      // 批量删除
-      function delAll (argument) {
         var data = tableCheck.getData();
+  
         layer.confirm('确认要删除吗？'+data,function(index){
             //捉到所有被选中的，发异步进行删除
             layer.msg('删除成功', {icon: 1});
             $(".layui-form-checked").not('.header').parents('tr').remove();
         });
       }
+
+
+
+
+
       
+
+      
+
+
     </script>
   </body>
 </html>

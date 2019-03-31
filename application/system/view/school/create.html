@@ -1,7 +1,7 @@
 {extend name="common@create" /}
 
 {block name="form"}
-    <form class="layui-form layui-form-pane">
+    <form class="layui-form layui-form-pane" lay-filter="myform">
           <div class="layui-form-item">
               <label for="title" class="layui-form-label">
                   <span class="x-red">*</span>单位名称
@@ -94,11 +94,11 @@
               </label>
               <div class="layui-input-block">
                   <input type="input" id="paixu" name="paixu" lay-verify=""
-                  autocomplete="off" class="layui-input" value="">
+                  autocomplete="off" class="layui-input" value="999" >
               </div>
           </div>
           <div class="layui-form-item" style="text-align: center;">
-              <button  class="layui-btn" lay-filter="myform" lay-submit="">
+              <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
                   {$list.set.butname}
               </button>
           </div>
@@ -107,51 +107,61 @@
 
 {block name="myjs"}
     <script>
-      layui.use(['form','table'], function(){
+      layui.use(['form'], function(){
         var form = layui.form;
-        //当你在iframe页面关闭自身时
-                // var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                // layer.close(index); //再执行关闭 
-        table = layui.table;
-        parent.table.reload('test', {
-          url: '/api/table/search'
-        });
-
-
 
         //监听提交
-        form.on('submit(myform)', function(data){
+        form.on('submit(mysubmit)', function(data){
           $.ajax({
             url:"{$list.set.url}",
             type:"{$list.set.formpost}",
             data:data.field,
             dataType:'json',
             success:function(result){
-              if(result.val == 1)
+
+              if(result.val === 1)
               {
-                layer.msg(result.msg,{
-                  icon: 1,
-                  time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                //先得到当前iframe层的索引
+                var index = parent.layer.getFrameIndex(window.name); 
+                //再执行关闭 
+                parent.layer.close(index); 
+
+                parent.layui.table.reload('demo');
+              }
+              // 弹出提示
+              parent.layer.msg(result.msg,
+                {
+                  icon:1,
+                  time:2000
                 });
-              }else{
-                layer.msg(result.msg,{
-                  icon: 1,
-                  time: 2000 //2秒关闭（如果不配置，默认是3秒）
-                });
-                }
             },
             error:function(xhr,status,error) {
               layer.msg('数据处理错误',{
                   icon: 1,
                   time: 2000 //2秒关闭（如果不配置，默认是3秒）
               });
-              layer.close(layer.index);
             }
           });
           return false;
         });
 
+        // 设置排序默认值
+        $("#paixu").bind("focus",function(){
+          $("#paixu").val('');
+        }); 
+        $("#paixu").bind("blur",function(){
+          var str = $("#paixu").val();
+          if(str.length==0)
+          {
+            $("#paixu").val('999');
+          }
+        }); 
+
+        
+
       });
+
+
   </script>
 {/block}
 

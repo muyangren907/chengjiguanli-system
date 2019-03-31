@@ -1,133 +1,156 @@
 
 {extend name="common@list" /}
 {block name="nav"}
-  <span class="layui-breadcrumb">
-      <a href="">系统管理</a>
-      <a href="">单位管理</a>
-      <a><cite>单位列表</cite></a>
-  </span>
+	<span class="layui-breadcrumb">
+			<a href="">系统管理</a>
+			<a href="">单位管理</a>
+			<a><cite>单位列表</cite></a>
+	</span>
 {/block}
 {block name="search"}
-  <form class="layui-form layui-col-md12 x-so">
-    <input class="layui-input"  autocomplete="off" placeholder="开始日" name="start" id="start">
-    <input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">
-    <input type="text" name="username"  placeholder="请输入用户名" autocomplete="off" class="layui-input">
-    <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
-  </form>
+	<form class="layui-form layui-col-md12 x-so">
+		<input class="layui-input"  autocomplete="off" placeholder="开始日" name="start" id="start">
+		<input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">
+		<input type="text" name="username"  placeholder="请输入用户名" autocomplete="off" class="layui-input">
+		<button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+	</form>
 {/block}
 {block name="table"}
-  <table id="demo" lay-filter="test"></table>
+	<table id="demo" lay-filter="test"></table>
 {/block}
 {block name="myjs"}
-  <!-- 表格上面按钮模板 -->
-    <script type="text/html" id="toolbarDemo">
-      <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="iconfont">&#xe69d;</i>批量删除</button>
-        <button class="layui-btn" onclick="x_admin_show('添加单位','/school/create',600,400)"><i class="iconfont">&#xe6b9;</i>添加</button>
-      </div>
-    </script>
-    <script type="text/html" id="switchTpl">
-      <!-- 这里的 checked 的状态只是演示 -->
-      <input type="checkbox" name="sex" value="{{d.id}}" lay-skin="switch" lay-text="女|男" lay-filter="sexDemo" {{ d.id == 10003 ? 'checked' : '' }}>
-    </script>
-    <!-- 记录操作按钮模板 -->
-    <script type="text/html" id="barDemo">
-      <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
-      <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-      <a class="layui-btn layui-btn-xs" lay-event="check">审核</a>
-    </script>
-    <!-- 使用搜索中日期 -->
-    <script>
-      layui.use('laydate', function(){
-        var laydate = layui.laydate;
-        
-        //执行一个laydate实例
-        laydate.render({
-          elem: '#start' //指定元素
-        });
+	<!-- 表格上面按钮模板 -->
+		<script type="text/html" id="toolbarDemo">
+			<div class="layui-btn-container">
+				<button class="layui-btn layui-btn-danger" lay-event="dels"><i class="iconfont">&#xe69d;</i>批量删除</button>
+				<button class="layui-btn" onclick="x_admin_show('添加单位','/school/create','','',true)"><i class="iconfont">&#xe6b9;</i>添加</button>
+			</div>
+		</script>
+		<script type="text/html" id="status">
+			<!-- 这里的 checked 的状态只是演示 -->
+			<input type="checkbox" name="sex" value="{{d.id}}" lay-skin="switch" lay-text="启用|停用" lay-filter="status" {{ d.status == 1 ? 'checked' : '' }}>
+		</script>
+		<!-- 记录操作按钮模板 -->
+		<script type="text/html" id="barDemo">
+			<a class="layui-btn-xs" lay-event="detail"><i class="layui-icon">&#xe615;</i></a>
+			<a class="layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i></a>
+			<a class="layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i></a>
+		</script>
+		<!-- 使用搜索中日期 -->
+		<script>
+			layui.use('laydate', function(){
+				var laydate = layui.laydate;
+				
+				//执行一个laydate实例
+				laydate.render({
+					elem: '#start' //指定元素
+				});
 
-        //执行一个laydate实例
-        laydate.render({
-          elem: '#end' //指定元素
-        });
-
-
-      });
-    </script>
-    <!-- 表格操作 -->
-    <script>
-    layui.use(['table','laypage'], function(){
-      var table = layui.table;
-      // 实例化表格
-      table.render({
-        elem: '#demo',
-        toolbar: '#toolbarDemo',
-        height: 550,
-        url:"{:url('ajaxdata')}",
-        method:"POST",   //数据接口
-        page: true, //开启分页
-        loading:true,
-        autoSort:false,
-        cols: [[ //表头
-          {type:'checkbox', fixed: 'left'},
-          {field: 'title', title: '单位名称',sort: true},
-          {field: 'jiancheng', title: '单位简称'},
-          {field: 'dw_xingzhi.title',title: '性质'},
-          {field: 'dw_jibie.title', title: '级别'} ,
-          {field: 'dw_xueduan.title', title: '学段'},
-          {field: 'paixu', title: '排序', sort: true},
-          {field: 'dw_teacher_count', title: '教师数', sort: true},
-          {field: 'status', title: '状态'},
-          {field: 'id', title: '操作',toolbar: '#barDemo'}
-        ]],
-        initSort:{
-          field:'id',
-          type:'asc',
-        },
-      });
+				//执行一个laydate实例
+				laydate.render({
+					elem: '#end' //指定元素
+				});
 
 
-      //监听排序事件
-      table.on('sort(test)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 
-        table.reload('demo', {
-          initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
-          where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
-            field: obj.field, //排序字段
-            order: obj.type //排序方式
-          }
-        });
-      });
+			});
+		</script>
+		<!-- 表格操作 -->
+		<script>
+		layui.use(['table','laypage'], function(){
+			var table = layui.table;
+			// 实例化表格
+			table.render({
+				elem: '#demo',
+				toolbar: '#toolbarDemo',
+				height: 530,
+				url:"{:url('ajaxdata')}",
+				method:"POST",   //数据接口
+				page: true, //开启分页
+				loading:true,
+				autoSort:false,
+				cols: [[ //表头
+					{type:'checkbox', fixed: 'left'},
+					{field: 'title', title: '单位名称',sort: true, minWidth:240},
+					{field: 'jiancheng', title: '单位简称', minWidth:80},
+					{field: "xingzhi",title: '性质',sort: true,templet:function(d){
+						var str='';
+						if(d.dw_xingzhi)
+						{
+							str = d.dw_xingzhi.title;
+						}
+						return str;
+					}},
+					{field: 'jibie', title: '级别',sort: true,templet:function(d){
+						var str='';
+						if(d.dw_jibie)
+						{
+							str = d.dw_jibie.title;
+						}
+						return str;
+					}} ,
+					{field: 'xueduan', title: '学段',sort: true,templet:function(d){
+						var str='';
+						if(d.dw_xueduan)
+						{
+							str = d.dw_xueduan.title;
+						}
+						return str;
+					}},
+					{field: 'paixu', title: '排序', sort: true},
+					{field: 'dw_teacher_count', title: '教师数', sort: true},
+					{field: 'status', title: '状态',templet:'#status', sort: true},
+					{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
+				]],
+				initSort:{
+					field:'id',
+					type:'asc',
+				},
+			});
 
-      //监听工具条
-      table.on('tool(test)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
-        var data = obj.data; //获得当前行数据
-        var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
-        var tr = obj.tr; //获得当前行 tr 的DOM对象
-       
-        if(layEvent === 'detail'){ //查看
-          //do somehing
-        } else if(layEvent === 'del'){ //删除
-          layer.confirm('真的删除行么', function(index){
-            obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
-            layer.close(index);
-            //向服务端发送删除指令
-          });
-        } else if(layEvent === 'edit'){ //编辑
-          //do something
-          
-          //同步更新缓存对应的值
-          obj.update({
-            username: '123'
-            ,title: 'xxx'
-          });
-        }
-      });
+
+			//头工具栏事件
+	        table.on('toolbar(test)', function(obj){
+	            switch(obj.event){
+	              case 'dels':
+	                delAll('/school');
+	              break;
+	              case 'getCheckLength':
+	                var data = checkStatus.data;
+	                layer.msg('选中了：'+ data.length + ' 个');
+	              break;
+	              case 'isAll':
+	                layer.msg(checkStatus.isAll ? '全选': '未全选');
+	              break;
+	            };
+	        });
+
+	        //监听行工具条
+	        table.on('tool(test)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+	          var data = obj.data; //获得当前行数据
+	          var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+	          var tr = obj.tr; //获得当前行 tr 的DOM对象
+	   
+	          if(layEvent === 'detail'){ //查看
+	            layer.msg('查看' + data.id);
+	            //do somehing
+	          } else if(layEvent === 'del'){ //删除
+	            del(tr,data.id,"/school");
+	          } else if(layEvent === 'edit'){ //编辑
+	            //do something
+	            layer.msg('编辑'+data.id);
+	            
+	            //同步更新缓存对应的值
+	            obj.update({
+	              username: '123'
+	              ,title: 'xxx'
+	            });
+	          }
+	        });
 
 
-    
+		
 
 
-    });
-    </script>
+		});
+		</script>
 {/block}

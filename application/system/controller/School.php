@@ -34,7 +34,7 @@ class School extends Base
                     'field'=>'update_time',
                     'order'=>'asc',
                     'xingzhi'=>''
-                ]);
+                ],'POST');
 
         // 实例化
         $sch = new sch;
@@ -90,7 +90,7 @@ class School extends Base
 
         // 获取表单数据
         $list = request()
-                ->only(['title','jiancheng','biaoshi','xingzhi','jibie','xueduan','paixu'],'post');
+                ->only(['title','jiancheng','biaoshi','xingzhi','jibie','xueduan','paixu'=>999],'post');
 
 
         // 验证表单数据
