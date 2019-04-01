@@ -12,6 +12,7 @@
     {load href="__STATIC__/xadmin/lib/layui/layui.js" /}
     {load href="__STATIC__/xadmin/js/xadmin.js" /}
     {load href="__STATIC__/xadmin/js/cookie.js" /}
+    {block name="jsset"}{/block}
     <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
     <!--[if lt IE 9]>
       <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -39,40 +40,19 @@
 
       {block name="table"}{/block}
     </div>
-    {block name="myjs"}{/block}
     <script type="text/html" id="status">
       <span class="layui-btn {{ d.status == 1 ? 'layui-btn-normal' : 'layui-btn-disabled' }} layui-btn-mini">{{ d.status == 1 ? '启用' : '禁用' }}</span>
     </script>
     <script type="text/javascript">
-
-      layui.use(['table','laypage'], function(){
-        var table = layui.table;
-        //监听排序事件
-        table.on('sort(test)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 
-          table.reload('myform', {
-            initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
-            where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
-              field: obj.field, //排序字段
-              order: obj.type //排序方式
-            }
-          });
-        });
-      });
-
-
-        
-
-        /*停用*/
-        function status(obj,id,status){
-            // 判断是禁用操作还是启用操作
-            console.log(obj); 
+        /*状态*/
+        function status(obj,url){
+            // 判断是禁用操作还是启用操作后赋值标题。
             obj.data.status == 1 ? title='禁用' : title='启用' ;
+            // 设置修改后的状态值
             var statusval = -(obj.data.status-1);
-            // layer.msg(status[0]);
-
             layer.confirm('确认要'+title+'吗？',function(index){
               $.ajax({
-                    url:"{:url('setstatus')}",
+                    url:url,
                     type:'POST',
                     data:{
                       id:obj.data.id,
@@ -81,11 +61,13 @@
                     success:function(result){
                       if(result.val == 1)
                       {
+                        // 获取状态栏元素
                         var myspan = $(obj.tr).find("span");
+                        // 获取状操作按钮元素
                         var mya = $(obj.tr).find("[title='启用'],[title='禁用']");
-
+                        // 状态栏重新赋值
                         myspan.text(title);
-
+                        // 重新设置状态栏class和状态操作按钮图标
                         if(statusval == 1)
                         {
                           myspan.attr('class','layui-btn layui-btn-normal layui-btn-mini');
@@ -97,9 +79,11 @@
                           mya.attr("title",'禁用');
                           $(mya).find("i").attr('class','layui-icon layui-icon-ok');
                         }
-                          obj.update({
-                            status: statusval
-                          });
+                        // 更新缓存值，否则下次操作会报错。
+                        obj.update({
+                          status: statusval
+                        });
+                        // 操作提示
                         layer.msg('已'+title);
                       }else{
                         layer.msg('数据处理错误!',function(){});
@@ -117,14 +101,14 @@
             layer.confirm('确认要删除吗？',function(index){
                 $.ajax({
                     url:url+'/m',
-                    type:'delete',
+                    type:'DELETE',
                     data:{
                       ids:id
                     },
                     success:function(result){
                       if(result.val == 1)
                       {
-                        $(obj).remove();
+                        $(obj).del();
                         layer.msg('已删除!');
                       }else{
                         layer.msg('数据处理错误!',function(){});
@@ -137,12 +121,13 @@
             });
         }
 
-        function delAll (url,obj) {
+        function delAll (obj,url,tableid) {
           //判断是否选择数据
           if(obj.data.length==0){
             parent.layer.msg('请先选择要删除的数据行！',function(){});
             return ;
           }
+
           layer.confirm('确认要删除吗？',function(index){
             // 捉一下所有被选中的数据
             var ids = "";
@@ -154,19 +139,19 @@
                 ids= ids + "," + obj.data[i].id;
               }
             }
-            // 到服务器去删除一下。
+            // 到服务器去删除数据。
             $.ajax({
               url:url+'/m',
-              type:'delete',
+              type:'DELETE',
               data:{
                 ids:ids
               },
               success:function(result){
                 if(result.val == 1)
                 {
-                   layui.use(['table','laypage'], function(){
+                  layui.use(['table','laypage'], function(){
                     table = layui.table;
-                    table.reload('myform', {});
+                    table.reload(tableid, {});
                   });
                   layer.msg('已删除!');
                 }else{
@@ -180,6 +165,15 @@
           });
         }
 
+        // 添加
+        function add(title,url,width,height,max=false)
+        {
+          // layer.msg(url);
+
+          x_admin_show(title,url,width,height,max);
+        }
+
     </script>
+    {block name="myjs"}{/block}
   </body>
 </html>

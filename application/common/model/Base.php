@@ -17,10 +17,4 @@ class Base extends Model
     use SoftDelete;
     protected $deleteTime = 'delete_time';
 
-    // // 状态获取器
-    // public function getStatusAttr($value)
-    // {
-    //     $status =array('1'=>'已启用','0'=>'已停用');
-    //     return $status[$value];
-    // }
 }

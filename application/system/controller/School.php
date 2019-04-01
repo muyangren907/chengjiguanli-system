@@ -125,9 +125,10 @@ class School extends Base
 
         // 设置页面标题
         $list['set'] = array(
-            'webtitle'=>'修改单位',
+            'webtitle'=>'编辑单位',
             'butname'=>'修改',
             'formpost'=>'PUT',
+            'url'=>'/school/'.$id,
         );
 
         // 模板赋值

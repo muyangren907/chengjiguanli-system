@@ -1,5 +1,8 @@
 
 {extend name="common@list" /}
+{block name="jsset"}
+
+{/block}
 {block name="nav"}
 	<span class="layui-breadcrumb">
 			<a href="">系统管理</a>
@@ -16,22 +19,25 @@
 	</form>
 {/block}
 {block name="table"}
-	<table id="demo" lay-filter="test" lay-size="sm"></table>
+	<table id="demo" lay-filter="mytable" lay-size="sm"></table>
 {/block}
 {block name="myjs"}
 	<!-- 表格上面按钮模板 -->
 		<script type="text/html" id="toolbarDemo">
 			<div class="layui-btn-container">
-				<button class="layui-btn layui-btn-danger" lay-event="dels"><i class="iconfont">&#xe69d;</i>批量删除</button>
-				<button class="layui-btn" onclick="x_admin_show('添加单位','/school/create','','',true)"><i class="iconfont">&#xe6b9;</i>添加</button>
+				<button class="layui-btn layui-btn-danger" lay-event="dels">
+					<i class="iconfont">&#xe69d;</i>批量删除
+				</button>
+				<button class="layui-btn" lay-event="add">
+					<i class="iconfont">&#xe6b9;</i>添加
+				</button>
 			</div>
 		</script>
 		<!-- 记录操作按钮模板 -->
 		<script type="text/html" id="barDemo">
 			<a class="layui-btn-xs" lay-event="status" title="{{ d.status == 1 ? '禁用' : '启用' }}">
-        <i class="layui-icon {{ d.status == 1 ? 'layui-icon-close' : 'layui-icon-ok' }}"></i>
-      </a>
-      <!-- <a class="layui-btn-xs" lay-event="detail" title="查看"><i class="layui-icon">&#xe615;</i></a> -->
+				<i class="layui-icon {{ d.status == 1 ? 'layui-icon-close' : 'layui-icon-ok' }}"></i>
+			</a>
 			<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
 			<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
 		</script>
@@ -61,13 +67,13 @@
 			table.render({
 				elem: '#demo',
 				toolbar: '#toolbarDemo',
-				height: 530,
+				height: 520,
 				url:"{:url('ajaxdata')}",
 				method:"POST",   //数据接口
 				page: true, //开启分页
 				loading:true,
 				autoSort:false,
-        id:'myform',
+				id:'myform',
 				cols: [[ //表头
 					{type:'checkbox',LAY_CHECKED:false, fixed: 'left'},
 					{field: 'title', title: '单位名称',sort: true, minWidth:240},
@@ -101,71 +107,54 @@
 					{field: 'status', title: '状态',templet:'#status', sort: true},
 					{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
 				]],
-				// initSort:{
-				// 	field:'id',
-				// 	type:'asc',
-				// },
 			});
 
+			//监听排序事件
+	        table.on('sort(mytable)', function(obj){ //注：tool是工具条事件名，mytable是table原始容器的属性 
+	          table.reload('myform', {
+	            initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+	            where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+	              field: obj.field, //排序字段
+	              order: obj.type //排序方式
+	            }
+	          });
+	        });
 
-			//头工具栏事件
-	        table.on('toolbar(test)', function(obj){
+
+	        //头工具栏事件
+	        table.on('toolbar(mytable)', function(obj){
 	            switch(obj.event){
 	              case 'dels':
-                var checkStatus = table.checkStatus('myform'); //idTest 即为基础参数 id 对应的值
-	              delAll('/school',checkStatus);
-	              break;
-	              case 'getCheckLength':
-	                var data = checkStatus.data;
-	                layer.msg('选中了：'+ data.length + ' 个');
-	              break;
-	              case 'isAll':
-	                layer.msg(checkStatus.isAll ? '全选': '未全选');
-	              break;
+	                var checkStatus = table.checkStatus('myform'); //idmytable 即为基础参数 id 对应的值
+	                delAll(checkStatus,'/school','myform');
+	                break;
+	              case 'add':
+	                add('添加单位','/school/create','650','500',true);
+	                break;
 	            };
 	        });
 
 	        //监听行工具条
-	        table.on('tool(test)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+	        table.on('tool(mytable)', function(obj){ //注：tool是工具条事件名，mytable是table原始容器的属性 lay-filter="对应的值"
 	          var data = obj.data; //获得当前行数据
 	          var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
 	          var tr = obj.tr; //获得当前行 tr 的DOM对象
 
-            switch(layEvent){
-              case 'detail':
-                layer.msg('查看' + data.id);
-              break;
-              case 'getCheckLength':
-                var data = checkStatus.data;
-                layer.msg('选中了：'+ data.length + ' 个');
-              break;
-              case 'isAll':
-                layer.msg(checkStatus.isAll ? '全选': '未全选');
-              break;
-            };
-   
-	          if(layEvent === 'detail'){ //查看
-	            layer.msg('查看' + data.id);
-	            //do somehing
-	          } else if(layEvent === 'del'){ //删除
-	            del(tr,data.id,"/school");
-	          } else if(layEvent === 'edit'){ //编辑
-	            //do something
-	            layer.msg('编辑'+data.id);
-	            
-	            //同步更新缓存对应的值
-	            obj.update({
-	              username: '123'
-	              ,title: 'xxx'
-	            });
-	          } else if(layEvent === 'status'){ //状态
-               status(obj);
-            }
+	          switch(layEvent){
+	            case 'detail':// 查看
+	              layer.msg('查看' + data.id);
+	              break;
+	            case 'del':// 删除
+	              del(tr,data.id,"/school");
+	              break;
+	            case 'edit':// 编辑
+	              add('编辑单位','/school/'+obj.data.id+'/edit','650','500',true);
+	              break;
+	            case 'status':// 状态
+	              status(obj,"{:url('setstatus')}");
+	              break;
+	          };
 	        });
-
-
-		
-
 
 		});
 		</script>
