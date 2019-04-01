@@ -173,7 +173,7 @@ class School extends Base
     {
         if($id == 'm')
         {
-            $id = request()->delete('ids/a');
+            $id = request()->delete('ids');
         }
 
         $data = sch::destroy($id);
@@ -188,7 +188,6 @@ class School extends Base
     // 设置单位状态
     public function setStatus()
     {
-
         //  获取id变量
         $id = request()->post('id');
         $value = request()->post('value');
