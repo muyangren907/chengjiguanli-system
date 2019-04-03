@@ -35,6 +35,6 @@ return [
     // 全局替换
     'tpl_replace_string'  =>  [
     '__UPLOAD__'=>'/uploads',
-    '__STATIC__'=>'../static',
+    '__STATIC__'=>'/static',
 ]
 ];

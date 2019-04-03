@@ -13,9 +13,8 @@ class SystemBase extends Base
     // 系统设置
     public function index()
     {
-
         // 获取用户信息
-        $list = sysbasemod::field('id,webtitle,keywords,description,thinks,danwei')
+        $list['data'] = sysbasemod::field('id,webtitle,keywords,description,thinks,danwei')
             ->order(['id'=>'desc'])
             ->find();
 
@@ -23,7 +22,9 @@ class SystemBase extends Base
             'webtitle'=>'设置系统信息',
             'butname'=>'设置',
             'formpost'=>'PUT',
+            'url'=>'/sysbase/'.$list['data']['id'],
         );
+
 
         // 模板赋值
         $this->assign('list',$list);

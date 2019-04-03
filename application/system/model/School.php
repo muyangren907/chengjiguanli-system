@@ -39,14 +39,14 @@ class School extends Base
     public function search($src)
     {
         // 整理变量
-        // $xingzhi = $src['xingzhi'];
+        $xingzhi = $src['xingzhi'];
 
         // 查询数据
         $data = $this
             ->order([$src['field'] =>$src['order']])
-            // ->when(strlen($src['xingzhi'])>0,function($query) use($xingzhi){
-            //         $query->where('xingzhi','in',$xingzhi);
-            //     })
+            ->when(count($xingzhi)>0,function($query) use($xingzhi){
+                    $query->where('xingzhi','in',$xingzhi);
+                })
             // ->when(strlen($search)>0,function($query) use($search){
             //         $query->where('title|jiancheng','like',$search);
             //     })

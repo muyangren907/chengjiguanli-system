@@ -1,14 +1,34 @@
-{extend name="common@create" /}
-
-{block name="form"}
-    <form class="layui-form layui-form-pane">
+<!DOCTYPE html>
+<html class="x-admin-sm">
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>{$list.set.webtitle}</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    {load href="__STATIC__/xadmin/css/font.css" /}
+    {load href="__STATIC__/xadmin/css/xadmin.css" /}
+    {load href="__STATIC__/xadmin/js/jquery.min.js" /}
+    {load href="__STATIC__/xadmin/lib/layui/layui.js" /}
+    {load href="__STATIC__/xadmin/js/xadmin.js" /}
+    {load href="__STATIC__/xadmin/js/cookie.js" /}
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="x-body">
+      <form class="layui-form layui-form-pane">
           <div class="layui-form-item">
               <label for="webtitle" class="layui-form-label">
                   <span class="x-red">*</span>系统标题
               </label>
               <div class="layui-input-block">
                   <input type="text" id="webtitle" name="webtitle" required="true" lay-verify="required"
-                  autocomplete="off" class="layui-input " value="{$list.webtitle}">
+                  autocomplete="off" class="layui-input " value="{$list.data.webtitle|default=''}">
               </div>
           </div>
           <div class="layui-form-item">
@@ -17,7 +37,7 @@
               </label>
               <div class="layui-input-block">
                   <input type="text" id="keywords" name="keywords" required="true" lay-verify="required"
-                  autocomplete="off" class="layui-input" value="{$list.keywords}">
+                  autocomplete="off" class="layui-input" value="{$list.data.keywords|default=''}">
               </div>
           </div>
           <div class="layui-form-item">
@@ -26,7 +46,7 @@
               </label>
               <div class="layui-input-block">
                   <input type="input" id="description" name="description" required="true" lay-verify="required"
-                  autocomplete="off" class="layui-input" value="{$list.description}">
+                  autocomplete="off" class="layui-input" value="{$list.data.description|default=''}">
               </div>
           </div>
           <div class="layui-form-item">
@@ -35,7 +55,7 @@
               </label>
               <div class="layui-input-block">
                   <input type="input" id="thinks" name="thinks" required="true" lay-verify="required"
-                  autocomplete="off" class="layui-input" value="{$list.thinks}">
+                  autocomplete="off" class="layui-input" value="{$list.data.thinks|default=''}">
               </div>
           </div>
           <div class="layui-form-item">
@@ -44,41 +64,48 @@
               </label>
               <div class="layui-input-block">
                   <input type="input" id="danwei" name="danwei" required="true" lay-verify="required"
-                  autocomplete="off" class="layui-input" value="{$list.danwei}">
+                  autocomplete="off" class="layui-input" value="{$list.data.danwei|default=''}">
               </div>
           </div>
           <div class="layui-form-item" style="text-align: center;">
-              <button  class="layui-btn" lay-filter="edit" lay-submit="">
+              <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
                   设置
               </button>
           </div>
       </form>
-{/block}
-
-{block name="myjs"}
+    </div>
     <script>
-      layui.use(['form','layer'], function(){
-        var form = layui.form;    
+      layui.use(['form'], function(){
+        var form = layui.form;
 
         //监听提交
-        form.on('submit(edit)', function(data){
+        form.on('submit(mysubmit)', function(data){
           $.ajax({
-            url:"sysbase/{$list.id}",
-            type:"PUT",
+            url:"{$list.set.url}",
+            type:"{$list.set.formpost}",
             data:data.field,
             dataType:'json',
             success:function(result){
-                layer.msg(result.msg);
+              // 弹出提示
+              parent.layer.msg(result.msg,
+                {
+                  icon:1,
+                  time:2000
+                });
             },
             error:function(xhr,status,error) {
-              layer.msg(xhr + '-' + status + '-' + error);
+              layer.msg('数据处理错误',{
+                  icon: 1,
+                  time: 2000 //2秒关闭（如果不配置，默认是3秒）
+              });
             }
           });
           return false;
-        });
-
+        });        
 
       });
-  </script>
-{/block}
 
+
+  </script>
+  </body>
+</html>

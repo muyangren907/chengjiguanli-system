@@ -24,8 +24,48 @@
     	{block name="form"}{/block}
     </div>
     {block name="myjs"}{/block}
-    <script type="text/javascript">
-       
-    </script>
+    <script>
+      layui.use(['form'], function(){
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(mysubmit)', function(data){
+          $.ajax({
+            url:"{$list.set.url}",
+            type:"{$list.set.formpost}",
+            data:data.field,
+            dataType:'json',
+            success:function(result){
+
+              if(result.val === 1)
+              {
+                //先得到当前iframe层的索引
+                var index = parent.layer.getFrameIndex(window.name); 
+                //再执行关闭 
+                parent.layer.close(index); 
+
+                parent.layui.table.reload('mytable');
+              }
+              // 弹出提示
+              parent.layer.msg(result.msg,
+                {
+                  icon:1,
+                  time:2000
+                });
+            },
+            error:function(xhr,status,error) {
+              layer.msg('数据处理错误',{
+                  icon: 1,
+                  time: 2000 //2秒关闭（如果不配置，默认是3秒）
+              });
+            }
+          });
+          return false;
+        });        
+
+      });
+
+
+  </script>
   </body>
 </html>

@@ -15,11 +15,8 @@ class Category extends Base
     // 类别列表
     public function index()
     {
-        $count = CG::count();
-
         // 设置要给模板赋值的信息
-        $list['title'] = '类别列表';
-        $list['count'] = $count;
+        $list['webtitle'] = '类别列表';
 
         // 模板赋值
         $this->assign('list',$list);
@@ -29,73 +26,36 @@ class Category extends Base
     }
 
 
-    //  获取类别列表数据
+    //  获取单位列表数据
     public function ajaxData()
     {
-        // 获取DT的传值
-        $getdt = request()->param();
+        // 获取参数
+        $src = $this->request
+                ->only([
+                    'page'=>'1',
+                    'limit'=>'10',
+                    'field'=>'id',
+                    'order'=>'asc',
+                    'xingzhi'=>''
+                ],'POST');
 
-        //得到排序的方式
-        $order = $getdt['order'][0]['dir'];
-        //得到排序字段的下标
-        $order_column = $getdt['order'][0]['column'];
-        //根据排序字段的下标得到排序字段
-        $order_field = $getdt['columns'][$order_column]['name'];
-        if($order_field=='')
-        {
-            $order_field = $getdt['columns'][$order_column]['data'];
-        }
-        //得到limit参数
-        $limit_start = $getdt['start'];
-        $limit_length = $getdt['length'];
-        //得到搜索的关键词
-        $search = $getdt['search']['value'];
+        // 实例化
+        $cg = new CG;
 
+        // 获取记录总数
+        $cnt = $cg->count();
 
-        // 获取记录集总数
-        $cnt = CG::count();
-        //查询数据
-        $data =CG::field('id,title,pid,status,paixu')
-            ->order([$order_field=>$order])
-            ->with(
-                [
-                    'glPid'=>function($query){
-                        $query->field('id,title');
-                    },
-                ]
-            )
-            ->limit($limit_start,$limit_length)
-            ->all();
-        
-
-        // 如果需要查询
-        if($search){
-            $data =CG::field('id,title,pid,status,paixu')
-                ->whereOr('title','like','%'.$search.'%')
-                ->whereOr('pid','in',function($query) use ($search){
-                    $query->name('category')->where('title','like','%'.$search.'%')->field('id');
-                })
-                ->with(
-                    [
-                        'glPid'=>function($query){
-                            $query->field('id,title');
-                        },
-                    ]
-                )
-                ->order([$order_field=>$order])
-                ->limit($limit_start,$limit_length)
-                ->select();
-        }
-
-        $datacnt = $data->count();
-        
-        
+        // 查询要显示的数据
+        $data = $cg->search($src);
+       
+        // 重组返回内容
         $data = [
-            'draw'=> $getdt["draw"] , // ajax请求次数，作为标识符
-            'recordsTotal'=>$datacnt,  // 获取到的结果数(每页显示数量)
-            'recordsFiltered'=>$cnt,       // 符合条件的总数据量
+            'code'=> 0 , // ajax请求次数，作为标识符
+            'msg'=>"",  // 获取到的结果数(每页显示数量)
+            'count'=>$cnt,       // 符合条件的总数据量
             'data'=>$data, //获取到的数据结果
         ];
+
 
         return json($data);
     }

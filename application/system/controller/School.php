@@ -33,7 +33,7 @@ class School extends Base
                     'limit'=>'10',
                     'field'=>'update_time',
                     'order'=>'asc',
-                    'xingzhi'=>''
+                    'xingzhi'=>[]
                 ],'POST');
 
         // 实例化
@@ -133,7 +133,6 @@ class School extends Base
 
         // 模板赋值
         $this->assign('list',$list);
-
         // 渲染
         return $this->fetch('create');
 
@@ -147,7 +146,6 @@ class School extends Base
         // 获取表单数据
         $list = request()
                 ->only(['title','jiancheng','biaoshi','xingzhi','jibie','xueduan','paixu'],'put');
-
 
         // 验证表单数据
         $result = $validate->check($list);

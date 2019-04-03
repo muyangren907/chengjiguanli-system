@@ -25,7 +25,7 @@ class YanZheng  extends Controller
         if( strlen($username)<1 )
         {
             // $this->redirect('/login',302);
-            echo "<script>top.location.href='login';</script>";
+            echo "<script>top.location.href='/login';</script>";
         }
 
         // 检验用户名或密码是否正确

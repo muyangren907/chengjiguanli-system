@@ -54,7 +54,7 @@ class Rule extends Seeder
                 // 系统设置
                 ['id'=>701,'title'=>'类别管理','name'=>'system/Category/index','paixu'=>1,'ismenu' =>true,'pid' =>7,'url'=>'/category',],
                 ['id'=>702,'title'=>'单位管理','name'=>'system/School/index','paixu'=>2,'ismenu' =>true,'pid' =>7,'url'=>'/school',],
-                ['id'=>703,'title'=>'系统设置','name'=>'system/SystemBase/index','paixu'=>3,'ismenu' =>true,'pid' =>7,'url'=>'/sysbase',],
+                ['id'=>703,'title'=>'系统设置','name'=>'system/SystemBase/edit','paixu'=>3,'ismenu' =>true,'pid' =>7,'url'=>'/sysbase/1/edit',],
 
 
                 // 荣誉管理
@@ -172,8 +172,6 @@ class Rule extends Seeder
                     ['title'=>'编辑','name'=>'system/School/edit','paixu'=>3,'pid'=>702,],
                     ['title'=>'查看','name'=>'system/School/read','paixu'=>4,'pid'=>702,],
                     ['title'=>'状态','name'=>'system/School/setStatus','paixu'=>5,'pid'=>702],
-                    // 系统设置权限
-                    ['title'=>'编辑','name'=>'system/SystemBase/edit','paixu'=>1,'pid'=>703,],
 
                     // 荣誉管理
                     // 单位荣誉管理

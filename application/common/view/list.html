@@ -29,7 +29,7 @@
     <div class="x-body">
       <div class="layui-collapse">
         <div class="layui-colla-item">
-          <h2 class="layui-colla-title">查询条件</h2>
+          <h2 class="layui-colla-title">筛选</h2>
           <div class="layui-colla-content layui-hidden">
             <div class="layui-row">
                 {block name="search"}{/block}
@@ -37,7 +37,6 @@
           </div>
         </div>
       </div>
-
       {block name="table"}{/block}
     </div>
     <script type="text/html" id="status">
@@ -97,18 +96,18 @@
         }
 
         /*删除*/
-        function del(obj,id,url){
+        function del(obj,url){
             layer.confirm('确认要删除吗？',function(index){
                 $.ajax({
                     url:url+'/m',
                     type:'DELETE',
                     data:{
-                      ids:id
+                      ids:obj.data.id
                     },
                     success:function(result){
                       if(result.val == 1)
                       {
-                        $(obj).del();
+                        obj.del();
                         layer.msg('已删除!');
                       }else{
                         layer.msg('数据处理错误!',function(){});
@@ -173,6 +172,12 @@
           x_admin_show(title,url,width,height,max);
         }
 
+        // 提交表单
+        function submitform(formname)
+        {
+          $('#'+formname).submit();
+          // layer.msg('aa');
+        }
     </script>
     {block name="myjs"}{/block}
   </body>
