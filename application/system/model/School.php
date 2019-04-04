@@ -40,6 +40,7 @@ class School extends Base
     {
         // 整理变量
         $xingzhi = $src['xingzhi'];
+        $searchval = $src['searchval'];
 
         // 查询数据
         $data = $this
@@ -47,12 +48,9 @@ class School extends Base
             ->when(count($xingzhi)>0,function($query) use($xingzhi){
                     $query->where('xingzhi','in',$xingzhi);
                 })
-            // ->when(strlen($search)>0,function($query) use($search){
-            //         $query->where('title|jiancheng','like',$search);
-            //     })
-            // ->when(strlen($search)>0,function($query) use($search){
-            //         $query->where('title|jiancheng','like',$search);
-            //     })
+            ->when(strlen($searchval)>0,function($query) use($searchval){
+                    $query->where('title|jiancheng','like','%'.$searchval.'%');
+                })
             ->with(
                 [
                     'dwXingzhi'=>function($query){

@@ -18,23 +18,21 @@
           </label>
           <div class="layui-input-block">
               <input type="text" id="searchval" name="searchval"
-              autocomplete="off" class="layui-input ">
+              autocomplete="off" class="layui-input " onchange ="submitform('search')">
           </div>
         </div>
-        <div class="layui-form-item">
+        <div class="layui-form-item" style="margin-bottom: 0; botton">
 		    <label for="xingzhi" class="layui-form-label" style="height: 100%">单位性质</label>
-		    <div class="layui-input-block" onclick="submitform('search')">
+		    <div class="layui-input-block" onclick ="submitform('search')">
 		    	{php} $category = getCategory(101);{/php}
 		    	{volist name="category" id="vo"}
-		    		<input type="checkbox" name="xingzhi[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary" >
+		    		<input type="checkbox" name="xingzhi[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 		    	{/volist}
 		    </div>
+		    <button class="layui-btn layui-hide" id="aabbcc" lay-submit lay-filter="*">立即提交</button>
 		</div>
-		<div class="layui-form-item">
-    <div class="layui-input-block">
-      <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
-      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-    </div>
+
+      
   </div>
 	</form>
 {/block}
@@ -84,16 +82,16 @@ layui.use(['table','laypage','form'], function(){
 	var table = layui.table
 		,form = layui.form;
 	// 实例化表格
-	table.render({
+	var tableIns = table.render({
 		elem: '#tabledemo',
 		toolbar: '#toolbarDemo',
-		height: 520,
 		url:"{:url('ajaxdata')}",
 		method:"POST",   //数据接口
 		page: true, //开启分页
 		loading:true,
 		autoSort:false,
 		id:'mytable',
+		defaultToolbar:'',
 		cols: [[ //表头
 			{type:'checkbox',LAY_CHECKED:false, fixed: 'left'},
 			{field: 'title', title: '单位名称',sort: true, minWidth:240},
@@ -176,13 +174,17 @@ layui.use(['table','laypage','form'], function(){
       };
   	});
 
-  	// 监听筛选
+
   	form.on('submit(*)', function(data){
-  		table.reload('mytable', {
-	        where: data.field
-	    });
-  		return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
-  	});
+  		console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
+	  //这里以搜索为例
+tableIns.reload({
+  where: data.field
+});
+	  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+	});
+
+
 
 });
 

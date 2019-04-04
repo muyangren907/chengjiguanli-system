@@ -33,8 +33,10 @@ class School extends Base
                     'limit'=>'10',
                     'field'=>'update_time',
                     'order'=>'asc',
-                    'xingzhi'=>[]
+                    'xingzhi'=>[],
+                    'searchval'=>''
                 ],'POST');
+
 
         // 实例化
         $sch = new sch;
