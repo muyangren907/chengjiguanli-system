@@ -57,7 +57,6 @@
           {block name="table"}{/block}
           {block name="echart"}{/block}
         </div>
-
     </body>
 
     <!-- 状态按钮 -->
@@ -132,11 +131,13 @@
           parentId = $(data.elem).parents("div").attr('id');
           if(checkall == 'p'){
             cjgl.checkboxAll(parentId, data.elem.checked);
+            $("#srcsubmit").click();
+            return true;
           }else if(checkall == 'c'){
             cjgl.checkboxParent(parentId);
+            $("#srcsubmit").click();
+            return true;
           }
-          $("#srcsubmit").click();
-          return true;
         });
 
         // 监听单选
