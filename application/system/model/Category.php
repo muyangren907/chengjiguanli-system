@@ -41,19 +41,13 @@ class Category extends Base
             // ->when(strlen($search)>0,function($query) use($search){
             //         $query->where('title|jiancheng','like',$search);
             //     })
-            // ->with(
-            //     [
-            //         'dwXingzhi'=>function($query){
-            //             $query->field('id,title');
-            //         },
-            //         'dwJibie'=>function($query){
-            //             $query->field('id,title');
-            //         },
-            //         'dwXueduan'=>function($query){
-            //             $query->field('id,title');
-            //         },
-            //     ]
-            // )
+            ->with(
+                [
+                    'glPid'=>function($query){
+                        $query->field('id,title');
+                    }
+                ]
+            )
             ->page($src['page'],$src['limit'])
             ->select();
 

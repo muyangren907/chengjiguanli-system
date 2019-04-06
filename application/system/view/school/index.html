@@ -11,30 +11,26 @@
 	</span>
 {/block}
 {block name="search"}
-	<form class="layui-form layui-form-pane layui-col-md12 x-so" id="search" lay-filter="search">
+	<div class="layui-form layui-form-pane layui-col-md12 x-so" id="search" lay-filter="search">
 		<div class="layui-form-item">
           <label for="searchval" class="layui-form-label">
               关键字
           </label>
           <div class="layui-input-block">
               <input type="text" id="searchval" name="searchval"
-              autocomplete="off" class="layui-input " onchange ="submitform('search')">
+              autocomplete="off" class="layui-input">
           </div>
         </div>
         <div class="layui-form-item" style="margin-bottom: 0; botton">
 		    <label for="xingzhi" class="layui-form-label" style="height: 100%">单位性质</label>
-		    <div class="layui-input-block" onclick ="submitform('search')">
+		    <div class="layui-input-block" onclick ="clickc('#search','mytable')">
 		    	{php} $category = getCategory(101);{/php}
 		    	{volist name="category" id="vo"}
-		    		<input type="checkbox" name="xingzhi[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+		    		<input type="checkbox" name="xingzhi" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 		    	{/volist}
 		    </div>
-		    <button class="layui-btn layui-hide" id="aabbcc" lay-submit lay-filter="*">立即提交</button>
 		</div>
-
-      
-  </div>
-	</form>
+	</div>
 {/block}
 {block name="table"}
 	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
@@ -78,9 +74,10 @@
 </script>
 <!-- 表格操作 -->
 <script>
-layui.use(['table','laypage','form'], function(){
+layui.use(['table','laypage','form','mymod'], function(){
 	var table = layui.table
-		,form = layui.form;
+		,form = layui.form
+		,mymod = layui.mymod;
 	// 实例化表格
 	var tableIns = table.render({
 		elem: '#tabledemo',
@@ -93,7 +90,7 @@ layui.use(['table','laypage','form'], function(){
 		id:'mytable',
 		defaultToolbar:'',
 		cols: [[ //表头
-			{type:'checkbox',LAY_CHECKED:false, fixed: 'left'},
+			{type:'checkbox', fixed: 'left'},
 			{field: 'title', title: '单位名称',sort: true, minWidth:240},
 			{field: 'jiancheng', title: '单位简称', minWidth:100,sort: true},
 			{field: "xingzhi",title: '性质',sort: true,templet:function(d){
@@ -144,10 +141,10 @@ layui.use(['table','laypage','form'], function(){
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            delAll(checkStatus,'/school','mytable');
+            mymod.delAll(checkStatus,'/school','mytable');
             break;
           case 'add':
-            add('添加单位','/school/create','650','500',true);
+            mymod.add('添加单位','/school/create','650','500',true);
             break;
         };
     });
@@ -163,26 +160,25 @@ layui.use(['table','laypage','form'], function(){
           layer.msg('查看' + data.id);
           break;
         case 'del':// 删除
-          del(obj,"/school");
+          mymod.del(obj,"/school");
           break;
         case 'edit':// 编辑
           add('编辑单位','/school/'+obj.data.id+'/edit','650','500',true);
           break;
         case 'status':// 状态
-          status(obj,"{:url('setstatus')}");
+          mymod.status(obj,"{:url('setstatus')}");
           break;
       };
   	});
 
 
-  	form.on('submit(*)', function(data){
-  		console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value}
-	  //这里以搜索为例
-tableIns.reload({
-  where: data.field
-});
-	  return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
-	});
+ //  	form.on('submit(*)', function(data){
+ //  		//这里以搜索为例
+	// 	tableIns.reload({
+	// 		where: data.field,
+	// 	});
+	// 	return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+	// });
 
 
 
