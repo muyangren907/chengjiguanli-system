@@ -74,10 +74,10 @@
 </script>
 <!-- 表格操作 -->
 <script>
-layui.use(['table','laypage','form','mymod'], function(){
+layui.use(['table','laypage','form','cjgl'], function(){
 	var table = layui.table
 		,form = layui.form
-		,mymod = layui.mymod;
+		,cjgl = layui.cjgl;
 	// 实例化表格
 	var tableIns = table.render({
 		elem: '#tabledemo',
@@ -126,11 +126,17 @@ layui.use(['table','laypage','form','mymod'], function(){
 
 	//监听排序事件
     table.on('sort(mytable)', function(obj){ //注：tool是工具条事件名，mytable是table原始容器的属性 
+      // var formval = cjgl.getSearchVal('#search');
+      // formval['field']=obj.field;
+      // formval['order']=obj.type;
+      // console.log(obj);
+      // cjgl.reLoadTable(formval,'mytable');
       table.reload('mytable', {
         initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
         where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
-          field: obj.field, //排序字段
-          order: obj.type //排序方式
+          field: obj.field //排序字段
+          ,order: obj.type //排序方式
+          // formval
         }
       });
     });
@@ -141,10 +147,10 @@ layui.use(['table','laypage','form','mymod'], function(){
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            mymod.delAll(checkStatus,'/school','mytable');
+            cjgl.delAll(checkStatus,'/school','mytable');
             break;
           case 'add':
-            mymod.add('添加单位','/school/create','650','500',true);
+            cjgl.add('添加单位','/school/create','650','500',true);
             break;
         };
     });
@@ -160,28 +166,22 @@ layui.use(['table','laypage','form','mymod'], function(){
           layer.msg('查看' + data.id);
           break;
         case 'del':// 删除
-          mymod.del(obj,"/school");
+          cjgl.del(obj,"/school");
           break;
         case 'edit':// 编辑
-          add('编辑单位','/school/'+obj.data.id+'/edit','650','500',true);
+          cjgl.add('编辑单位','/school/'+obj.data.id+'/edit','650','500',true);
           break;
         case 'status':// 状态
-          mymod.status(obj,"{:url('setstatus')}");
+          cjgl.status(obj,"{:url('setstatus')}");
           break;
       };
   	});
 
 
- //  	form.on('submit(*)', function(data){
- //  		//这里以搜索为例
-	// 	tableIns.reload({
-	// 		where: data.field,
-	// 	});
-	// 	return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
-	// });
-
-
-
+  	// 监听复选框单击事件
+  	$('.searchforminput').bind('click',function(){
+  		layer.msg();
+  	})
 });
 
 

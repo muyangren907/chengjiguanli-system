@@ -11,7 +11,7 @@
 	</span>
 {/block}
 {block name="search"}
-	<form class="layui-form layui-form-pane layui-col-md12 x-so" id="search" lay-filter="search">
+	<div class="layui-form layui-form-pane layui-col-md12 x-so" id="search" lay-filter="search">
 		<div class="layui-form-item">
           <label for="searchval" class="layui-form-label">
               关键字
@@ -31,10 +31,7 @@
 		    </div>
 		    <button class="layui-btn layui-hide" id="searchbnt" lay-submit lay-filter="*">立即提交</button>
 		</div>
-
-      
-  </div>
-	</form>
+	</div>
 {/block}
 {block name="table"}
 	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
