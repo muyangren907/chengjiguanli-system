@@ -1,13 +1,13 @@
 ﻿/**
-  扩展一个test模块
-**/      
- 
+  扩展cjgl模块
+  **/      
+
 layui.define(['table'],function(exports){ //提示：模块也可以依赖其它模块，如：layui.define('layer', callback);
-  var table = layui.table;
-  var obj = {
+    var table = layui.table;
+    var obj = {
     // 新建弹窗
     add: function(title,url,width,height,max=false){
-      x_admin_show(title,url,width,height,max);
+        x_admin_show(title,url,width,height,max);
     },
     del:function(obj,url){
         layer.confirm('确认要删除吗？',function(index){
@@ -15,62 +15,61 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
                 url:url+'/m',
                 type:'DELETE',
                 data:{
-                  ids:obj.data.id
+                    ids:obj.data.id
                 },
                 success:function(result){
-                  if(result.val == 1)
-                  {
-                    obj.del();
-                    layer.msg('已删除!');
-                  }else{
-                    layer.msg('数据处理错误!',function(){});
-                  }
+                    if(result.val == 1)
+                    {
+                        obj.del();
+                        layer.msg('已删除!');
+                    }else{
+                        layer.msg('数据处理错误!',function(){});
+                    }
                 },
                 error:function(result){
-                  layer.msg('数据扔半道啦。',function(){});
+                    layer.msg('数据扔半道啦。',function(){});
                 },
             });
         });
     },
     delAll:function(obj,url,tableid){
         //判断是否选择数据
-          if(obj.data.length==0){
+        if(obj.data.length==0){
             parent.layer.msg('请先选择要删除的数据行！',function(){});
             return ;
-          }
+        }
 
-          layer.confirm('确认要删除吗？',function(index){
+        layer.confirm('确认要删除吗？',function(index){
             // 捉一下所有被选中的数据
             var ids = "";
             for(var i=0;i<obj.data.length;i++){
-              if(i == 0)
-              {
-                ids= obj.data[i].id;
-              }else{
-                ids= ids + "," + obj.data[i].id;
-              }
+                if(i == 0){
+                    ids= obj.data[i].id;
+                }else{
+                    ids= ids + "," + obj.data[i].id;
+                }
             }
             // 到服务器去删除数据。
             $.ajax({
-              url:url+'/m',
-              type:'DELETE',
-              data:{
-                ids:ids
-              },
-              success:function(result){
-                if(result.val == 1)
-                {
-                  table.reload(tableid, {});
-                  layer.msg('已删除!');
-                }else{
-                  layer.msg('数据处理错误!',function(){});
-                }
-              },
-              error:function(result){
-                layer.msg('数据扔半道，回不来啦。',function(){});
-              },
+                url:url+'/m',
+                type:'DELETE',
+                data:{
+                    ids:ids
+                },
+                success:function(result){
+                    if(result.val == 1)
+                    {
+                        table.reload(tableid, {});
+                        layer.msg('已删除!');
+                    }else{
+                        layer.msg('数据处理错误!',function(){});
+                    }
+                },
+                error:function(result){
+                    layer.msg('数据扔半道，回不来啦。',function(){});
+                },
             });
-          });
+        });
     },
     status:function(obj,url){
         // 判断是禁用操作还是启用操作后赋值标题。
@@ -78,86 +77,86 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
         // 设置修改后的状态值
         var statusval = -(obj.data.status-1);
         layer.confirm('确认要'+title+'吗？',function(index){
-          $.ajax({
+            $.ajax({
                 url:url,
                 type:'POST',
                 data:{
-                  id:obj.data.id,
-                  value: statusval,
+                    id:obj.data.id,
+                    value: statusval,
                 },
                 success:function(result){
-                  if(result.val == 1)
-                  {
-                    // 获取状态栏元素
-                    var myspan = $(obj.tr).find("span");
-                    // 获取状操作按钮元素
-                    var mya = $(obj.tr).find("[title='启用'],[title='禁用']");
-                    // 状态栏重新赋值
-                    myspan.text(title);
-                    // 重新设置状态栏class和状态操作按钮图标
-                    if(statusval == 1)
-                    {
-                      myspan.attr('class','layui-btn layui-btn-normal layui-btn-mini');
-                      mya.attr("title",'启用');
-                      $(mya).find("i").attr('class','layui-icon layui-icon-close');
-
+                    if(result.val == 1){
+                        // 获取状态栏元素
+                        var myspan = $(obj.tr).find("span");
+                        // 获取状操作按钮元素
+                        var mya = $(obj.tr).find("[title='启用'],[title='禁用']");
+                        // 状态栏重新赋值
+                        myspan.text(title);
+                        // 重新设置状态栏class和状态操作按钮图标
+                        if(statusval == 1){
+                            myspan.attr('class','layui-btn layui-btn-normal layui-btn-mini');
+                            mya.attr("title",'启用');
+                            $(mya).find("i").attr('class','layui-icon layui-icon-close');
+                        }else{
+                            myspan.attr('class','layui-btn layui-btn-disabled layui-btn-mini');
+                            mya.attr("title",'禁用');
+                            $(mya).find("i").attr('class','layui-icon layui-icon-ok');
+                        }
+                        // 更新缓存值，否则下次操作会报错。
+                        obj.update({
+                            status: statusval
+                        });
+                        // 操作提示
+                        layer.msg('已'+title);
                     }else{
-                      myspan.attr('class','layui-btn layui-btn-disabled layui-btn-mini');
-                      mya.attr("title",'禁用');
-                      $(mya).find("i").attr('class','layui-icon layui-icon-ok');
+                        layer.msg('数据处理错误!',function(){});
                     }
-                    // 更新缓存值，否则下次操作会报错。
-                    obj.update({
-                      status: statusval
-                    });
-                    // 操作提示
-                    layer.msg('已'+title);
-                  }else{
-                    layer.msg('数据处理错误!',function(){});
-                  }
                 },
                 error:function(result){
-                  layer.msg('数据扔半道啦。',function(){});
+                    layer.msg('数据扔半道啦。',function(){});
                 },
             });
         });
     },
     getSearchVal:function(name){
         // 声明对象，用于存表单名与数值
-          var obj=new Array();
-          // 循环获取有表单的div
-          $(name).children('div.layui-form-item').each(function(i){
+        var obj={};
+        // 循环获取有表单的div
+        $(name).children('div.layui-form-item').each(function(i){
             // 声明二级div
             var myblock = $(this).children('div.layui-input-block');
             var name=$(myblock).children("input:first").attr("name");
-              // 判断二级div下的第一个input是不是text
-              if($(myblock).children("input:first").attr("type") == 'text')
-              {
+            // 判断二级div下的第一个input是不是text
+            if($(myblock).children("input:first").attr("type") == 'text'){
                 // 如果是文本框，则直接获取。
                 var value=$(myblock).children('input').val();
                 obj[name] = value;
-              }
-              else if($(myblock).children("input:first").attr("type") == 'checkbox'){
+            }else if($(myblock).children("input:first").attr("type") == 'checkbox'){
                 // 如果是复选框，获取被选中的div
                 var checkdiv = $(myblock).children("div.layui-form-checked");
                 obj[name] = new Array();
-                  $(checkdiv).each(function(cd){
+                $(checkdiv).each(function(cd){
                     var value = $(this).prev('input').val();
                     obj[name].push(value);
-                  });
-              }
-          });
-          return obj;
-    },
-    reLoadTable:function(formval,tableID){
-        table.reload(tableID,{
-            where: formval
-            ,done:function(){
-                this.where={};
+                });
             }
         });
-    }
+        return obj;
+      },
+      reLoadTable:function(formname,tableID,mydata={}){
+          var formval = this.getSearchVal(formname);
+          var wheredata = $.extend(formval,mydata);
+          table.reload(tableID,{
+              where: formval
+              ,done:function(){
+                for(x in formval){
+                    delete this.where[x];
+                }
+            }
+        });
+      }
   };
+
   //输出test接口
   exports('cjgl', obj);
 });

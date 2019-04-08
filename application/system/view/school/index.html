@@ -23,7 +23,7 @@
         </div>
         <div class="layui-form-item" style="margin-bottom: 0; botton">
 		    <label for="xingzhi" class="layui-form-label" style="height: 100%">单位性质</label>
-		    <div class="layui-input-block" onclick ="clickc('#search','mytable')">
+		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
 		    	{php} $category = getCategory(101);{/php}
 		    	{volist name="category" id="vo"}
 		    		<input type="checkbox" name="xingzhi" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
@@ -75,9 +75,13 @@
 <!-- 表格操作 -->
 <script>
 layui.use(['table','laypage','form','cjgl'], function(){
+	
+	// 声明变量
 	var table = layui.table
 		,form = layui.form
 		,cjgl = layui.cjgl;
+
+
 	// 实例化表格
 	var tableIns = table.render({
 		elem: '#tabledemo',
@@ -124,20 +128,26 @@ layui.use(['table','laypage','form','cjgl'], function(){
 		]],
 	});
 
+
 	//监听排序事件
     table.on('sort(mytable)', function(obj){ //注：tool是工具条事件名，mytable是table原始容器的属性 
-      // var formval = cjgl.getSearchVal('#search');
-      // formval['field']=obj.field;
-      // formval['order']=obj.type;
-      // console.log(obj);
-      // cjgl.reLoadTable(formval,'mytable');
-      table.reload('mytable', {
-        initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
-        where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
-          field: obj.field //排序字段
-          ,order: obj.type //排序方式
-          // formval
-        }
+      // 获取表单值
+      var formval = cjgl.getSearchVal('#search');
+      // 获取排序字段及排序方式
+      var mydata = {};
+      mydata['field']=obj.field;
+      mydata['order']=obj.type;
+      //合并参数
+      var wheredata = $.extend(formval,mydata);
+      // 重载表格
+      tableIns.reload({
+      	where: wheredata
+      	,done:function(){
+            for(x in formval)
+            {
+              delete this.where[x];
+            }
+          }
       });
     });
 
@@ -154,6 +164,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
             break;
         };
     });
+
 
     //监听行工具条
     table.on('tool(mytable)', function(obj){ //注：tool是工具条事件名，mytable是table原始容器的属性 lay-filter="对应的值"
@@ -176,12 +187,6 @@ layui.use(['table','laypage','form','cjgl'], function(){
           break;
       };
   	});
-
-
-  	// 监听复选框单击事件
-  	$('.searchforminput').bind('click',function(){
-  		layer.msg();
-  	})
 });
 
 
