@@ -148,6 +148,9 @@ layui.use(['table','laypage','form','cjgl'], function(){
               delete this.where[x];
             }
           }
+        ,page:{
+                curr:1
+            }
       });
     });
 
@@ -180,7 +183,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
           cjgl.del(obj,"/school");
           break;
         case 'edit':// 编辑
-          cjgl.add('编辑单位','/school/'+obj.data.id+'/edit','650','500',true);
+          cjgl.add('编辑单位','/school/'+obj.data.id+'/edit','650','500');
           break;
         case 'status':// 状态
           cjgl.status(obj,"{:url('setstatus')}");

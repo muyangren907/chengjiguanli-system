@@ -97,7 +97,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
 		cols: [[ //表头
 			{type:'checkbox', fixed: 'left'},
 			{field: 'title', title: '名称',sort: true, minWidth:240},
-			{field: "pid",title: '性质',sort: true,templet:function(d){
+			{field: "pid",title: '父级类别',sort: true,templet:function(d){
 				var str='';
 				if(d.gl_pid)
 				{
@@ -133,7 +133,10 @@ layui.use(['table','laypage','form','cjgl'], function(){
             {
               delete this.where[x];
             }
-          }
+        }
+        ,page:{
+                curr:1
+            }
       });
     });
 
@@ -146,7 +149,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
             cjgl.delAll(checkStatus,'/category','mytable');
             break;
           case 'add':
-            cjgl.add('添加类别','/category/create','450','280');
+            cjgl.add('添加类别','/category/create','450','300');
             break;
         };
     });
@@ -166,7 +169,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
           cjgl.del(obj,"/category");
           break;
         case 'edit':// 编辑
-          cjgl.add('编辑类别','/category/'+obj.data.id+'/edit','650','500',true);
+          cjgl.add('编辑类别','/category/'+obj.data.id+'/edit','650','500');
           break;
         case 'status':// 状态
           cjgl.status(obj,"{:url('setstatus')}");

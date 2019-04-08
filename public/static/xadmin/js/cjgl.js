@@ -151,12 +151,16 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
           var formval = this.getSearchVal(formname);
           var wheredata = $.extend(formval,mydata);
           table.reload(tableID,{
-              where: formval
-              ,done:function(){
+            where: formval
+            ,done:function(){
                 for(x in formval){
                     delete this.where[x];
                 }
             }
+            ,page:{
+                curr:1
+            }
+
         });
       }
   };

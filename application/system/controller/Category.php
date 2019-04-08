@@ -124,13 +124,22 @@ class Category extends Base
     // 编辑类别
     public function edit($id)
     {
-        // 获取类别信息
-        $list = CG::field('id,title,pid,paixu')
-            ->get($id);
+        // 获取单位信息
+        $list['data'] = CG::field('id,title,pid,paixu')
+            ->find($id);
 
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'编辑类别',
+            'butname'=>'修改',
+            'formpost'=>'PUT',
+            'url'=>'/category/'.$id,
+        );
+
+        // 模板赋值
         $this->assign('list',$list);
-
-        return $this->fetch();
+        // 渲染
+        return $this->fetch('create');
     }
 
     // 更新类别信息
