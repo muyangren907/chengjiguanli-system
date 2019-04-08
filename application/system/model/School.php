@@ -64,7 +64,6 @@ class School extends Base
                     },
                 ]
             )
-            ->page($src['page'],$src['limit'])
             ->withCount(
                 [
                     'dwTeacher'=>function($query){
@@ -73,8 +72,6 @@ class School extends Base
                 ]
             )
             ->select();
-
-
         return $data;
     }
 }

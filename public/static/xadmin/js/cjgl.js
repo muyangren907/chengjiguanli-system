@@ -139,6 +139,10 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
                     var value = $(this).prev('input').val();
                     obj[name].push(value);
                 });
+            }else if($(myblock).children("input:first").attr("type") == 'radio'){
+                 var checkdiv = $(myblock).children("div.layui-form-radioed");
+                 var value = $(checkdiv).prev('input').val();
+                 obj[name] = value;
             }
         });
         return obj;

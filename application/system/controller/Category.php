@@ -36,17 +36,21 @@ class Category extends Base
                     'limit'=>'10',
                     'field'=>'id',
                     'order'=>'asc',
-                    'xingzhi'=>''
+                    'pid'=>'',
+                    'searchval'=>''
                 ],'POST');
 
         // 实例化
         $cg = new CG;
 
-        // 获取记录总数
-        $cnt = $cg->count();
-
         // 查询要显示的数据
         $data = $cg->search($src);
+        // 获取记录总数
+        $cnt = $data->count();
+        // 获取当前页数据
+        $limit_start = $src['page'] * $src['limit'] - $src['limit'];
+        $limit_length = $src['limit']-1;
+        $data = $data->slice($limit_start,$limit_length);
        
         // 重组返回内容
         $data = [
@@ -55,7 +59,6 @@ class Category extends Base
             'count'=>$cnt,       // 符合条件的总数据量
             'data'=>$data, //获取到的数据结果
         ];
-
 
         return json($data);
     }
@@ -66,7 +69,13 @@ class Category extends Base
     public function create()
     {
         // 设置页面标题
-        $list['title'] = '添加类别';
+        $list['set'] = array(
+            'webtitle'=>'添加类别',
+            'butname'=>'添加',
+            'formpost'=>'POST',
+            'url'=>'/category',
+        );
+
 
         // 模板赋值
         $this->assign('list',$list);

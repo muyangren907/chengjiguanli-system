@@ -27,7 +27,8 @@ class Category extends Base
     public function search($src)
     {
         // 整理变量
-        // $xingzhi = $src['xingzhi'];
+        $pid = $src['pid'];
+        $searchval = $src['searchval'];
 
         // 查询数据
         $data = $this
@@ -35,12 +36,12 @@ class Category extends Base
             // ->when(strlen($src['xingzhi'])>0,function($query) use($xingzhi){
             //         $query->where('xingzhi','in',$xingzhi);
             //     })
-            // ->when(strlen($search)>0,function($query) use($search){
-            //         $query->where('title|jiancheng','like',$search);
-            //     })
-            // ->when(strlen($search)>0,function($query) use($search){
-            //         $query->where('title|jiancheng','like',$search);
-            //     })
+            ->when(strlen($pid)>0,function($query) use($pid){
+                    $query->whereOr('pid','in',$pid);
+                })
+            ->when(strlen($searchval)>0,function($query) use($searchval){
+                    $query->where('title','like','%'.$searchval.'%');
+                })
             ->with(
                 [
                     'glPid'=>function($query){
@@ -48,10 +49,7 @@ class Category extends Base
                     }
                 ]
             )
-            ->page($src['page'],$src['limit'])
             ->select();
-
-
         return $data;
     }
 }

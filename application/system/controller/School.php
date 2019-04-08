@@ -33,7 +33,7 @@ class School extends Base
                     'limit'=>'10',
                     'field'=>'update_time',
                     'order'=>'asc',
-                    'xingzhi'=>[],
+                    'xingzhi'=>array(),
                     'searchval'=>''
                 ],'POST');
 
@@ -41,17 +41,20 @@ class School extends Base
         // 实例化
         $sch = new sch;
 
-        // 获取记录总数
-        $cnt = $sch->count();
-
         // 查询要显示的数据
         $data = $sch->search($src);
+        // 获取符合条件记录总数
+        $cnt = $data->count();
+        // 获取当前页数据
+        $limit_start = $src['page'] * $src['limit'] - $src['limit'];
+        $limit_length = $src['limit']-1;
+        $data = $data->slice($limit_start,$limit_length);
        
         // 重组返回内容
         $data = [
             'code'=> 0 , // ajax请求次数，作为标识符
             'msg'=>"",  // 获取到的结果数(每页显示数量)
-            'count'=>$cnt,       // 符合条件的总数据量
+            'count'=>$cnt, // 符合条件的总数据量
             'data'=>$data, //获取到的数据结果
         ];
 

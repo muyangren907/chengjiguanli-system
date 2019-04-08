@@ -18,18 +18,18 @@
           </label>
           <div class="layui-input-block">
               <input type="text" id="searchval" name="searchval"
-              autocomplete="off" class="layui-input ">
+              autocomplete="off" class="layui-input">
           </div>
         </div>
         <div class="layui-form-item" style="margin-bottom: 0; botton">
-		    <label for="xingzhi" class="layui-form-label" style="height: 100%">单位性质</label>
-		    <div class="layui-input-block" onclick ="submitform('search')">
-		    	{php} $category = getCategory(101);{/php}
-		    	{volist name="category" id="vo"}
-		    		<input type="checkbox" name="xingzhi[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+		    <label for="pid" class="layui-form-label" style="height: 100%">一级类型</label>
+		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+		    	<input type="radio" name="pid" value="" title="无">
+		    	{php} $pid = getCategory(0);{/php}
+		    	{volist name="pid" id="vo"}
+		    		<input type="radio" name="pid" value="{$vo.id}" title="{$vo.title}">
 		    	{/volist}
 		    </div>
-		    <button class="layui-btn layui-hide" id="searchbnt" lay-submit lay-filter="*">立即提交</button>
 		</div>
 	</div>
 {/block}
@@ -75,9 +75,14 @@
 </script>
 <!-- 表格操作 -->
 <script>
-layui.use(['table','laypage','form'], function(){
+layui.use(['table','laypage','form','cjgl'], function(){
+	
+	// 声明变量
 	var table = layui.table
-		,form = layui.form;
+		,form = layui.form
+		,cjgl = layui.cjgl;
+
+
 	// 实例化表格
 	var tableIns = table.render({
 		elem: '#tabledemo',
@@ -91,8 +96,8 @@ layui.use(['table','laypage','form'], function(){
 		defaultToolbar:'',
 		cols: [[ //表头
 			{type:'checkbox', fixed: 'left'},
-			{field: 'title', title: '类别名称',sort: true, minWidth:240},
-			{field: "pid",title: '父级类别',sort: true,templet:function(d){
+			{field: 'title', title: '名称',sort: true, minWidth:240},
+			{field: "pid",title: '性质',sort: true,templet:function(d){
 				var str='';
 				if(d.gl_pid)
 				{
@@ -106,14 +111,29 @@ layui.use(['table','laypage','form'], function(){
 		]],
 	});
 
+
 	//监听排序事件
     table.on('sort(mytable)', function(obj){ //注：tool是工具条事件名，mytable是table原始容器的属性 
-      table.reload('mytable', {
-        initSort: obj, //记录初始排序，如果不设的话，将无法标记表头的排序状态。
-        where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
-          field: obj.field, //排序字段
-          order: obj.type //排序方式
-        }
+      // 获取表单值
+      var formval = cjgl.getSearchVal('#search');
+      // 获取排序字段及排序方式
+      var mydata = {};
+      mydata['field']=obj.field;
+      mydata['order']=obj.type;
+      //合并参数
+      var wheredata = $.extend(formval,mydata);
+      // 重载表格
+      tableIns.reload({
+      	where: wheredata
+      	,page:{
+      		curr: 1 //重新从第 1 页开始
+      	}
+      	,done:function(){
+            for(x in formval)
+            {
+              delete this.where[x];
+            }
+          }
       });
     });
 
@@ -123,13 +143,14 @@ layui.use(['table','laypage','form'], function(){
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            delAll(checkStatus,'/category','mytable');
+            cjgl.delAll(checkStatus,'/category','mytable');
             break;
           case 'add':
-            add('添加单位','/category/create','650','500',true);
+            cjgl.add('添加类别','/category/create','450','280');
             break;
         };
     });
+
 
     //监听行工具条
     table.on('tool(mytable)', function(obj){ //注：tool是工具条事件名，mytable是table原始容器的属性 lay-filter="对应的值"
@@ -142,28 +163,16 @@ layui.use(['table','laypage','form'], function(){
           layer.msg('查看' + data.id);
           break;
         case 'del':// 删除
-          del(obj,"/category");
+          cjgl.del(obj,"/category");
           break;
         case 'edit':// 编辑
-          add('编辑单位','/category/'+obj.data.id+'/edit','650','500',true);
+          cjgl.add('编辑类别','/category/'+obj.data.id+'/edit','650','500',true);
           break;
         case 'status':// 状态
-          status(obj,"{:url('setstatus')}");
+          cjgl.status(obj,"{:url('setstatus')}");
           break;
       };
   	});
-
-
-  	form.on('submit(*)', function(data){
-  		//这里以搜索为例
-		tableIns.reload({
-			where: data.field
-		});
-		return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
-	});
-
-
-
 });
 
 
