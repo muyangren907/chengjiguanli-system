@@ -1,140 +1,146 @@
+
 {extend name="common@list" /}
-{block name="topnav"}
-	<nav class="breadcrumb">
-		<i class="Hui-iconfont">&#xe67f;</i> 首页
-		<span class="c-gray en">&gt;</span> 管理员管理
-		<span class="c-gray en">&gt;</span> 管理员列表
-		<a class="btn btn-success radius r"
-			style="line-height:1.6em;margin-top:3px"
-			href="javascript:location.replace(location.href);"
-			title="刷新" >
-			<i class="Hui-iconfont">&#xe68f;</i>
-	</a>
-	</nav>
+{block name="jsset"}
+
 {/block}
-{block name="bouttons"}
-	<div class="cl pd-5 bg-1 bk-gray mt-20">
-		<span class="l">
-			<!-- 删除按钮 -->
-			<a href="javascript:;" onclick="dels('/admin/m')" class="btn btn-danger radius">
-				<i class="Hui-iconfont">&#xe6e2;</i>
-			批量删除
-			</a>
-			<!-- 添加按钮 -->
-			<a href="javascript:;" onclick=addfull('添加管理员',"/admin/create") class="btn btn-primary radius">
-				<i class="Hui-iconfont">&#xe600;</i>
-				添加管理员
-			</a>
-		</span>
-		<span class="r">
-			共有数据：<strong>{$list.count}</strong> 条
-		</span>
+{block name="nav"}
+	<span class="layui-breadcrumb">
+		<a href="">管理员管理</a>
+		<a href="">角色管理</a>
+		<a><cite>角色列表</cite></a>
+	</span>
+{/block}
+{block name="search"}
+	<div class="layui-form layui-form-pane layui-col-md12 x-so" id="search" lay-filter="search">
+		<div class="layui-form-item">
+          <label for="searchval" class="layui-form-label">
+              关键字
+          </label>
+          <div class="layui-input-block">
+              <input type="text" id="searchval" name="searchval"
+              autocomplete="off" class="layui-input">
+          </div>
+        </div>
 	</div>
 {/block}
-{block name="tables"}
-	<table id="table1" class="display" cellspacing="0" width="100%">
-		<thead>
-			<tr>
-				<th><input type="checkbox" name="" value=""></th>
-				<th>单位</th>
-				<th>姓名</th>
-				<th>帐号</th>
-				<th>性别</th>
-				<th>出生日期</th>
-				<th>手机号码</th>
-				<th>角色</th>
-				<th>登录次数</th>
-				<th>创建时间</th>
-				<th>状态</th>
-				<th>操作</th>
-			</tr>
-		</thead>
-		<tbody>
-		</tbody>
-	</table>
-
-
+{block name="table"}
+	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
 {/block}
 {block name="myjs"}
-<script type="text/javascript">
+	<!-- 表格上面按钮模板 -->
+<script type="text/html" id="toolbarDemo">
+	<div class="layui-btn-container">
+		<button class="layui-btn layui-btn-danger" lay-event="dels">
+			<i class="iconfont">&#xe69d;</i>批量删除
+		</button>
+		<button class="layui-btn" lay-event="add">
+			<i class="iconfont">&#xe6b9;</i>添加
+		</button>
+	</div>
+</script>
+<!-- 记录操作按钮模板 -->
+<script type="text/html" id="barDemo">
+	<a class="layui-btn-xs" lay-event="status" title="{{ d.status == 1 ? '禁用' : '启用' }}">
+		<i class="layui-icon {{ d.status == 1 ? 'layui-icon-close' : 'layui-icon-ok' }}"></i>
+	</a>
+	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
+	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
+</script>
+<!-- 表格操作 -->
+<script>
+layui.use(['table','laypage','form','cjgl'], function(){
+	
+	// 声明变量
+	var table = layui.table
+		,form = layui.form
+		,cjgl = layui.cjgl;
 
-	// 定义DTajax参数
-	var myajax = {
-		url: "{:url('ajaxdata')}",
-		type: "get",
-		data: {},
-	};
 
-	// 定义列参数
-	var mycolumns = [
-        { "data": "id" },
-        { "data": "ad_school.jiancheng","name":"school","defaultContent": "" },
-        { "data": "xingming" },
-        { "data": "username" },
-        { "data": "sex" },
-        { "data": "shengri" },
-        { "data": "phone" },
-         { "data": "groupnames" },
-        { "data": "denglucishu" },
-        { "data": "create_time" },
-        { "data": "status" },
-        { "data": "id" },
-	];
+	// 实例化表格
+	var tableIns = table.render({
+		elem: '#tabledemo',
+		toolbar: '#toolbarDemo',
+		url:"{:url('ajaxdata')}",
+		method:"POST",   //数据接口
+		page: true, //开启分页
+		loading:true,
+		autoSort:false,
+		id:'mytable',
+		defaultToolbar:'',
+		cols: [[ //表头
+			{type:'checkbox', fixed: 'left'},
+			{field: 'title', title: '名称',sort: true, minWidth:240},
+			{field: "miaoshu",title: '描述',sort: true},
+			{field: 'status', title: '状态',templet:'#status', sort: true},
+			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
+		]],
+	});
 
-	// 定义修改列参数
-	var mycolumnDefs =[
-		// 对象格式
-		{
-			"targets": 0,			
-			"render": function(data, type, row, meta) {
-				return '<input type="checkbox" name="test" value="' + row.id + '" />'
-			}
-		},
-		{
-			"targets": -1,
-			"className":'.td-manage',			
-			"render": function(data, type, row, meta) {
-					// 初始化密码
-					resetpwbut = '<a class="ml-5" style="text-decoration:none" onClick="resetpw(this,'+ row.id +')" href="javascript:;" title="重置密码"><i class="Hui-iconfont">&#xe63f;</i></a>';
-					// 停用按钮
-					stopbut = '<a style="text-decoration:none" onClick="stop(this,'+ row.id +')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>';
-					// 启用按钮
-					startbut = '<a style="text-decoration:none" onClick="start(this,'+ row.id +')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>';
-					// 详细信息按钮
-					readbut = '<a title="详细信息" data-href="admin/'+ row.id +'" data-title="' + row.xingming + ' 信息" onClick="Hui_admin_tab(this)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe665;</i></a>';
-					// 编辑按钮
-					editbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/admin/'+row.id+'/edit") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
-					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/admin/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
-					
-					if(row.status == '已停用')
-					{
-						buts = startbut;
-					}else{
-						buts = stopbut;
-					}
-					buts =  buts + readbut + editbut + delbut + resetpwbut;
 
-					return buts;
-                }
-        },
-        {
-			"targets": -2,
-			"className":'.td-status',
-			"render": function(data, type, row, meta) {
-                    if(row.status == '已停用')
-                    {
-                    	d = "<span class='label label-error radius'>" + row.status + "</span>";
-                    }else{
-                    	d = "<span class='label label-success radius'>" + row.status + "</span>";
-                    }
+	//监听排序事件
+    table.on('sort(mytable)', function(obj){ //注：tool是工具条事件名，mytable是table原始容器的属性 
+      // 获取表单值
+      var formval = cjgl.getSearchVal('#search');
+      // 获取排序字段及排序方式
+      var mydata = {};
+      mydata['field']=obj.field;
+      mydata['order']=obj.type;
+      //合并参数
+      var wheredata = $.extend(formval,mydata);
+      // 重载表格
+      tableIns.reload({
+      	where: wheredata
+      	,page:{
+      		curr: 1 //重新从第 1 页开始
+      	}
+      	,done:function(){
+            for(x in formval)
+            {
+              delete this.where[x];
+            }
+        }
+        ,page:{
+                curr:1
+            }
+      });
+    });
 
-                    return d;
-                  },
-        },
-        {
-        	"orderable": false,
-        	"targets": [0,7,-1]
-        }, 
-	];
+
+    //头工具栏事件
+    table.on('toolbar(mytable)', function(obj){
+        switch(obj.event){
+          case 'dels':
+            var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
+            cjgl.delAll(checkStatus,'/admin','mytable');
+            break;
+          case 'add':
+            cjgl.add('添加角色','/admin/create','450','300');
+            break;
+        };
+    });
+
+
+    //监听行工具条
+    table.on('tool(mytable)', function(obj){ //注：tool是工具条事件名，mytable是table原始容器的属性 lay-filter="对应的值"
+      var data = obj.data; //获得当前行数据
+      var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+      var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+      switch(layEvent){
+        case 'detail':// 查看
+          layer.msg('查看' + data.id);
+          break;
+        case 'del':// 删除
+          cjgl.del(obj,"/admin");
+          break;
+        case 'edit':// 编辑
+          cjgl.add('编辑角色','/admin/'+obj.data.id+'/edit','650','500');
+          break;
+        case 'status':// 状态
+          cjgl.status(obj,"{:url('setstatus')}");
+          break;
+      };
+  	});
+});
 </script>
 {/block}

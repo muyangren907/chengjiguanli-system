@@ -7,5 +7,20 @@ use app\common\model\Base;
 
 class AuthGroup extends Base
 {
-    // 状态获取器
+    // 查询所有角色
+    public function search($src)
+    {
+        // 整理变量
+        $searchval = $src['searchval'];
+
+        // 查询数据
+        $data = $this
+            ->order([$src['field'] =>$src['order']])
+            ->when(strlen($searchval)>0,function($query) use($searchval){
+                    $query->where('title','like','%'.$searchval.'%');
+                })
+            ->select();
+        return $data;
+    }
+    
 }

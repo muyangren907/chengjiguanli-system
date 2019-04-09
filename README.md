@@ -26,6 +26,12 @@
 http://www.xiaoshongshu.cn
 帐号   test1    密码  123456
 
+## 更新内容
+更新版本号 学生成绩统计系统v2.0 xadmin前端版
+更换前端显示,重新整理后端代码。
+升级提示
+修改 cj_system_base 表 title字段名冲突，修改为 webtitle
+
 
 ## 更详细信息请查阅官方手册
 https://www.kancloud.cn/llblax/abcd/789222

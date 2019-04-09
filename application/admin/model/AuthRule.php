@@ -15,56 +15,26 @@ class AuthRule extends Base
     }
 
 
-
     // 子菜单数据模型关联
     public function authCid()
     {
         return $this->hasMany('AuthRule','pid','id');
     }
+    
 
-
-
-    // // 顶级权限列表
-    // public function getRule($pid = 0)
-    // {
-    // 	return $this
-    // 			->where('pid',$pid)
-    //             ->where('status',1)
-    // 			->field('id,title')
-    //             ->order(['paixu'])
-    // 			->select();
-    // }
-
-
-    // // 是否是菜单获取器
-    // public function getIsmenuAttr($value)
-    // {
-    //     $arr = array('0'=>'否','1'=>'是');
-
-    //     return $arr[$value];
-    // }
-
-
-    // // 父级菜单名获取器
-    // public function getPidAttr($value)
-    // {
-
-    //     return $this->where('id',$value)->value('title');
-    // }
-
-
-    // // 获取二级菜单
-    // public function getMymenuAttr($value)
-    // {
-    //     return $this
-    //         ->where('pid',$this->getAttr('id'))
-    //         ->where('status&ismenu',1)
-    //         ->field('title,url,name')
-    //         ->order(['paixu'])
-    //         ->select();
-    // }
-
-
-  
-
+    // 获取全部权限列表
+    public function all()
+    {
+        return $this
+            ->where('status',1)
+            ->where('pid',0)
+            ->with(['authCid'=>function($query){
+                $query->with(['authCid'=>function($q){
+                    $q->field('id,title,pid,paixu');
+                }])->field('id,title,pid,paixu');
+            }])
+            ->field('id,title,pid,paixu')
+            ->order(['paixu'])
+            ->select();
+    }
 }
