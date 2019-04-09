@@ -13,7 +13,6 @@ class AuthGroup extends Base
     // 角色列表
     public function index()
     {
-
         // 设置要给模板赋值的信息
         $list['webtitle'] = '角色列表';
 
@@ -134,16 +133,22 @@ class AuthGroup extends Base
     // 修改角色信息
     public function edit($id)
     {
+        // 获取单位信息
+        $list['data'] = AG::field('id,title,miaoshu,rules')
+            ->find($id);
 
-        // 获取角色信息
-        $list = AG::field('id,title,miaoshu,rules')
-            ->get($id);
-        $list->rules = explode(',',$list->rules);
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'编辑角色',
+            'butname'=>'修改',
+            'formpost'=>'PUT',
+            'url'=>'/authgroup/'.$id,
+        );
 
-
+        // 模板赋值
         $this->assign('list',$list);
-
-        return $this->fetch();
+        // 渲染
+        return $this->fetch('create');
     }
 
 
