@@ -17,7 +17,7 @@ class Admin extends Base
         $data = $this
             ->order([$src['field'] =>$src['order']])
             ->when(strlen($searchval)>0,function($query) use($searchval){
-                    $query->where('xingming','like','%'.$searchval.'%');
+                    $query->where('xingming|username','like','%'.$searchval.'%');
                 })
             ->with([
                 'adSchool'=>function($query){
@@ -79,6 +79,12 @@ class Admin extends Base
 
     // 最后登录时间取器
     public function getLasttimeAttr($value)
+    {
+        return date('Y年m月d日 h:i:s',$value);
+    }
+
+    // 本次登录时间取器
+    public function getThistimeAttr($value)
     {
         return date('Y年m月d日 h:i:s',$value);
     }

@@ -94,8 +94,8 @@ layui.use(['table','laypage','form','cjgl'], function(){
 			}},
 			{field: 'phone', title: '联系电话', sort: true},
 			{field: 'denglucishu', title: '登录次数', sort: true},
-			{field: 'lasttime', title: '最后登录时间', sort: true},
-			{field: 'lastip', title: '最后登录地址', sort: true},
+			{field: 'thistime', title: '最后登录时间', sort: true},
+			{field: 'ip', title: '最后登录地址', sort: true},
 			{field: 'status', title: '状态',templet:'#status', sort: true},
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
 		]],
@@ -133,10 +133,10 @@ layui.use(['table','laypage','form','cjgl'], function(){
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/school','mytable');
+            cjgl.delAll(checkStatus,'/admin','mytable');
             break;
           case 'add':
-            cjgl.add('添加单位','/school/create','650','500');
+            cjgl.add('添加管理员','/admin/create','650','500');
             break;
         };
     });
@@ -153,10 +153,10 @@ layui.use(['table','laypage','form','cjgl'], function(){
           layer.msg('查看' + data.id);
           break;
         case 'del':// 删除
-          cjgl.del(obj,"/school");
+          cjgl.del(obj,"/admin");
           break;
         case 'edit':// 编辑
-          cjgl.add('编辑单位','/school/'+obj.data.id+'/edit','650','500');
+          cjgl.add('编辑管理员','/admin/'+obj.data.id+'/edit','650','500');
           break;
         case 'status':// 状态
           cjgl.status(obj,"{:url('setstatus')}");
