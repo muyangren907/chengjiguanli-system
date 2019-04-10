@@ -35,7 +35,6 @@ class AuthRule extends Migrator
         $table
             ->addColumn('name','string',['limit'=>80,'null'=>false,'comment'=>'规则唯一标识'])
             ->addColumn('title','string',['limit'=>80,'null'=>false,'comment'=>'规则中文名'])
-            ->addColumn('type','boolean',['default'=>false,'null'=>true,'comment'=>''])
             ->addColumn('status','boolean',['default'=>true,'null'=>false,'comment'=>'规则状态'])
             ->addColumn('condition','string',['limit'=>100,'null'=>true,'comment'=>'规则表达式'])
             ->addColumn('paixu','integer',['limit'=>11,'default'=>999,'null'=>false,'comment'=>'排序'])

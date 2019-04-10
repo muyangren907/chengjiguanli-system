@@ -22,19 +22,22 @@ class AuthRule extends Base
     }
     
 
-    // 获取全部权限列表
-    public function all()
+    // 查询所有角色
+    public function search($src)
     {
-        return $this
-            ->where('status',1)
-            ->where('pid',0)
-            ->with(['authCid'=>function($query){
-                $query->with(['authCid'=>function($q){
-                    $q->field('id,title,pid,paixu');
-                }])->field('id,title,pid,paixu');
+        // 整理变量
+        $searchval = $src['searchval'];
+
+        // 查询数据
+        $data = $this
+            ->order([$src['field'] =>$src['order']])
+            ->when(strlen($searchval)>0,function($query) use($searchval){
+                    $query->where('title','like','%'.$searchval.'%');
+                })
+            ->with(['authPid'=>function($query){
+                $query->field('id,title');
             }])
-            ->field('id,title,pid,paixu')
-            ->order(['paixu'])
             ->select();
+        return $data;
     }
 }

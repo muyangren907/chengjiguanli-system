@@ -33,9 +33,6 @@ class Category extends Base
         // 查询数据
         $data = $this
             ->order([$src['field'] =>$src['order']])
-            // ->when(strlen($src['xingzhi'])>0,function($query) use($xingzhi){
-            //         $query->where('xingzhi','in',$xingzhi);
-            //     })
             ->when(strlen($pid)>0,function($query) use($pid){
                     $query->whereOr('pid','in',$pid);
                 })
