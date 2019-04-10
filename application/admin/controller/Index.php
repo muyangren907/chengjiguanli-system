@@ -14,13 +14,8 @@ class Index extends Base
     // 管理员列表
     public function index()
     {
-
-        $count = AD::where('id','>',2)->count();
-
         // 设置要给模板赋值的信息
-        $list['title'] = '管理员列表';
-        $list['count'] = $count;
-
+        $list['webtitle'] = '管理员列表';
 
         // 模板赋值
         $this->assign('list',$list);
@@ -33,67 +28,33 @@ class Index extends Base
     // 获取数据管理员数据
     public function ajaxData()
     {
+        // 获取参数
+        $src = $this->request
+                ->only([
+                    'page'=>'1'
+                    ,'limit'=>'10'
+                    ,'field'=>'id'
+                    ,'order'=>'asc'
+                    ,'searchval'=>''
+                ],'POST');
 
+        // 实例化
+        $ad = new AD;
 
-        // 获取DT的传值
-        $getdt = request()->param();
-
-        //得到排序的方式
-        $order = $getdt['order'][0]['dir'];
-        //得到排序字段的下标
-        $order_column = $getdt['order'][0]['column'];
-        //根据排序字段的下标得到排序字段
-        $order_field = $getdt['columns'][$order_column]['name'];
-        if($order_field=='')
-        {
-            $order_field = $getdt['columns'][$order_column]['data'];
-        }
-        //得到limit参数
-        $limit_start = $getdt['start'];
-        $limit_length = $getdt['length'];
-        //得到搜索的关键词
-        $search = $getdt['search']['value'];
-
-
-        
-        //查询数据
-        $data = AD::field('id,school,xingming,sex,username,phone,shengri,denglucishu,status,create_time')
-            ->where('id','>','2')
-            ->with(['adSchool'=>function($query){
-                    $query->field('id,jiancheng');
-                }])
-            ->order([$order_field=>$order])
-            ->limit($limit_start,$limit_length)
-            ->select();
-        // 获取记录集总数
+        // 查询要显示的数据
+        $data = $ad->search($src);
+        // 获取符合条件记录总数
         $cnt = $data->count();
-        
-
-        // 如果需要查询
-        if($search){
-            $data = AD::field('id,school,xingming,sex,username,phone,shengri,denglucishu,status,create_time')
-                ->where('id','>','1')
-                ->with(['adSchool'=>function($query){
-                    $query->field('jiancheng');
-                }])
-                ->order([$order_field=>$order])
-                ->limit($limit_start,$limit_length)
-                ->where('username|xingming','like','%'.$search.'%')
-                ->select();
-        }
-
-        $datacnt = $data->count();
-
-        // 追加角色名
-        $data = $data->append(['groupnames']);
-        
-        
-
-
+        // 获取当前页数据
+        $limit_start = $src['page'] * $src['limit'] - $src['limit'];
+        $limit_length = $src['limit']-1;
+        $data = $data->slice($limit_start,$limit_length);
+       
+        // 重组返回内容
         $data = [
-            'draw'=> $getdt["draw"] , // ajax请求次数，作为标识符
-            'recordsTotal'=>$datacnt,  // 获取到的结果数(每页显示数量)
-            'recordsFiltered'=>$cnt,       // 符合条件的总数据量
+            'code'=> 0 , // ajax请求次数，作为标识符
+            'msg'=>"",  // 获取到的结果数(每页显示数量)
+            'count'=>$cnt, // 符合条件的总数据量
             'data'=>$data, //获取到的数据结果
         ];
 

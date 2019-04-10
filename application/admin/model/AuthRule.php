@@ -32,7 +32,7 @@ class AuthRule extends Base
         $data = $this
             ->order([$src['field'] =>$src['order']])
             ->when(strlen($searchval)>0,function($query) use($searchval){
-                    $query->where('title','like','%'.$searchval.'%');
+                    $query->where('title|name','like','%'.$searchval.'%');
                 })
             ->with(['authPid'=>function($query){
                 $query->field('id,title');

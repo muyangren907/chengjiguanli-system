@@ -6,8 +6,8 @@
 {block name="nav"}
 	<span class="layui-breadcrumb">
 		<a href="">管理员管理</a>
-		<a href="">角色管理</a>
-		<a><cite>角色列表</cite></a>
+		<a href="">用户管理</a>
+		<a><cite>管理员列表</cite></a>
 	</span>
 {/block}
 {block name="search"}
@@ -21,6 +21,15 @@
               autocomplete="off" class="layui-input">
           </div>
         </div>
+        <div class="layui-form-item" style="margin-bottom: 0; botton">
+		    <label for="xingzhi" class="layui-form-label" style="height: 100%">单位性质</label>
+		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+		    	{php} $category = getCategory(101);{/php}
+		    	{volist name="category" id="vo"}
+		    		<input type="checkbox" name="xingzhi" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+		    	{/volist}
+		    </div>
+		</div>
 	</div>
 {/block}
 {block name="table"}
@@ -69,8 +78,24 @@ layui.use(['table','laypage','form','cjgl'], function(){
 		defaultToolbar:'',
 		cols: [[ //表头
 			{type:'checkbox', fixed: 'left'},
-			{field: 'title', title: '名称',sort: true, minWidth:240},
-			{field: "miaoshu",title: '描述',sort: true},
+			{field: 'xingming', title: '姓名',sort: true, minWidth:80},
+			{field: 'sex', title: '性别',sort: true},
+			{field: "shengri",title: '生日',sort: true},
+			{field: 'username', title: '帐号',sort: true} ,
+			{field: 'school', title: '所在单位',sort: true ,templet:function(d){
+				if(d.ad_school){
+					return d.ad_school.jiancheng;
+				}
+			}},
+			{title: '用户组',templet:function(d){
+				if(d.ad_school){
+					return d.ad_school.jiancheng;
+				}
+			}},
+			{field: 'phone', title: '联系电话', sort: true},
+			{field: 'denglucishu', title: '登录次数', sort: true},
+			{field: 'lasttime', title: '最后登录时间', sort: true},
+			{field: 'lastip', title: '最后登录地址', sort: true},
 			{field: 'status', title: '状态',templet:'#status', sort: true},
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
 		]],
@@ -90,15 +115,12 @@ layui.use(['table','laypage','form','cjgl'], function(){
       // 重载表格
       tableIns.reload({
       	where: wheredata
-      	,page:{
-      		curr: 1 //重新从第 1 页开始
-      	}
       	,done:function(){
             for(x in formval)
             {
               delete this.where[x];
             }
-        }
+          }
         ,page:{
                 curr:1
             }
@@ -111,10 +133,10 @@ layui.use(['table','laypage','form','cjgl'], function(){
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/admin','mytable');
+            cjgl.delAll(checkStatus,'/school','mytable');
             break;
           case 'add':
-            cjgl.add('添加角色','/admin/create','450','300');
+            cjgl.add('添加单位','/school/create','650','500');
             break;
         };
     });
@@ -131,10 +153,10 @@ layui.use(['table','laypage','form','cjgl'], function(){
           layer.msg('查看' + data.id);
           break;
         case 'del':// 删除
-          cjgl.del(obj,"/admin");
+          cjgl.del(obj,"/school");
           break;
         case 'edit':// 编辑
-          cjgl.add('编辑角色','/admin/'+obj.data.id+'/edit','650','500');
+          cjgl.add('编辑单位','/school/'+obj.data.id+'/edit','650','500');
           break;
         case 'status':// 状态
           cjgl.status(obj,"{:url('setstatus')}");
