@@ -22,8 +22,7 @@
 
 
 ## 演示地址
-域名正在备案中，腾讯云已经开始邮寄幕布，如果不耽误大约在4月份前看到演示页面。
-http://www.xiaoshongshu.cn
+http://xiaoshongshu.cn
 帐号   test1    密码  123456
 
 
