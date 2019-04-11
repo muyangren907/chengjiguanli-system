@@ -7,6 +7,57 @@ use app\common\model\Base;
 
 class Banji extends Base
 {
+    
+    // 查询所有班级
+    public function search($src)
+    {
+        // 整理变量
+        $school = $src['school'];
+        $ruxuenian = $src['ruxuenian'];
+        $searchval = $src['searchval'];
+
+        // 查询数据
+        $data = $this
+            ->order([$src['field'] =>$src['order']])
+            ->when(strlen($school)>0,function($query) use($school){
+                    $query->where('school',$school);
+                })
+            ->when(strlen($ruxuenian)>0,function($query) use($ruxuenian){
+                    $query->where('ruxuenian',$ruxuenian);
+                })
+            ->when(strlen($searchval)>0,function($query) use($searchval){
+                    $query->where('title','like','%'.$searchval.'%');
+                })
+            ->with(
+                [
+                    'glSchool'=>function($query){
+                        $query->field('id,title');
+                    },
+                    'glStudent'=>function($query){
+                        $query->count();
+                    },
+                    // 'dwXueduan'=>function($query){
+                    //     $query->field('id,title');
+                    // },
+                ]
+            )
+            ->append(['title'])
+            ->select();
+        return $data;
+    }
+
+
+    // 学校关联模型
+    public function glSchool(){
+        return $this->belongsTo('\app\system\model\School','school','id');
+    }
+
+    // 学校关联模型
+    public function glStudent(){
+        return $this->belongsTo('\app\renshi\model\Student','school','id');
+    }
+
+
     // 班级名获取器
     public function getNumTitleAttr()
     {
@@ -47,13 +98,13 @@ class Banji extends Base
 
 
     // 学校获取器
-    public function getSchoolAttr($value)
-    {
-    	// 查询学校名称
-    	$schoolname = db('school')->where('id',$value)->value('title');
-    	// 返回学校名称
-    	return $schoolname;
-    }
+    // public function getSchoolAttr($value)
+    // {
+    // 	// 查询学校名称
+    // 	$schoolname = db('school')->where('id',$value)->value('title');
+    // 	// 返回学校名称
+    // 	return $schoolname;
+    // }
 
 
 

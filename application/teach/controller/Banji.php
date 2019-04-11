@@ -12,15 +12,11 @@ class Banji extends Base
     // 显示班级列表
     public function index()
     {
-
-        // 设置数据总数
-        $list['count'] = BJ::count();
-        // 设置页面标题
-        $list['title'] = '班级列表';
-
+       // 设置要给模板赋值的信息
+        $list['webtitle'] = '班级列表';
 
         // 模板赋值
-        $this->assign('list', $list);
+        $this->assign('list',$list);
 
         // 渲染模板
         return $this->fetch();
@@ -32,65 +28,39 @@ class Banji extends Base
     public function ajaxData()
     {
 
-        // 获取DT的传值
-        $getdt = request()->param();
-
-        //得到排序的方式
-        $order = $getdt['order'][0]['dir'];
-        //得到排序字段的下标
-        $order_column = $getdt['order'][0]['column'];
-        //根据排序字段的下标得到排序字段
-         $order_field = $getdt['columns'][$order_column]['name'];
-        if($order_field=='')
-        {
-            $order_field = $getdt['columns'][$order_column]['data'];
-        }
-        //得到limit参数
-        $limit_start = $getdt['start'];
-        $limit_length = $getdt['length'];
-        //得到搜索的关键词
-        $search = $getdt['search']['value'];
+        // 获取参数
+        $src = $this->request
+                ->only([
+                    'page'=>'1',
+                    'limit'=>'10',
+                    'field'=>'update_time',
+                    'order'=>'asc',
+                    'school'=>'',
+                    'ruxuenian'=>'',
+                    'searchval'=>''
+                ],'POST');
 
 
-        // 获取记录集总数
-        $cnt = BJ::count();
-        //查询数据
-        $data =BJ::field('id,school,ruxuenian,paixu,status')
-            ->order([$order_field=>$order])
-            ->limit($limit_start,$limit_length)
-            ->all();
-        
+        // 实例化
+        $bj = new BJ;
 
-        // 如果需要查询
-        if($search){
-            $data = BJ::field('id,school,ruxuenian,paixu,status')
-                ->order([$order_field=>$order])
-                ->limit($limit_start,$limit_length)
-                // ->whereOr('title','like','%'.$search.'%')
-                ->whereOr('school','in',function($query) use($search)
-                {
-                    $query->name('school')
-                        ->where('title','like','%'.$search.'%')
-                        ->field('id');
-                })
-                ->where('paixu','<',26)
-                ->whereOr('ruxuenian',$search)
-                ->all();
-        }
-
-        $datacnt = $data->count();
-        //追加班级名称
-        $data = $data->append(['title','stusum']);
-        
-        
-
-
+        // 查询要显示的数据
+        $data = $bj->search($src);
+        // 获取符合条件记录总数
+        $cnt = $data->count();
+        // 获取当前页数据
+        $limit_start = $src['page'] * $src['limit'] - $src['limit'];
+        $limit_length = $src['limit']-1;
+        $data = $data->slice($limit_start,$limit_length);
+       
+        // 重组返回内容
         $data = [
-            'draw'=> $getdt["draw"] , // ajax请求次数，作为标识符
-            'recordsTotal'=>$datacnt,  // 获取到的结果数(每页显示数量)
-            'recordsFiltered'=>$cnt,       // 符合条件的总数据量
+            'code'=> 0 , // ajax请求次数，作为标识符
+            'msg'=>"",  // 获取到的结果数(每页显示数量)
+            'count'=>$cnt, // 符合条件的总数据量
             'data'=>$data, //获取到的数据结果
         ];
+
 
         return json($data);
     }
@@ -101,13 +71,17 @@ class Banji extends Base
     public function create()
     {
         // 设置页面标题
-        $list['title'] = '添加班级';
+        $list['set'] = array(
+            'webtitle'=>'添加班级',
+            'butname'=>'添加',
+            'formpost'=>'POST',
+            'url'=>'/banji',
+        );
 
         // 模板赋值
         $this->assign('list',$list);
-
         // 渲染
-        return $this->fetch();
+        return $this->fetch('create');
     }
 
     
@@ -136,6 +110,10 @@ class Banji extends Base
         $paixumax = BJ::where('school',$list['school'])
                 ->where('ruxuenian',$list['ruxuenian'])
                 ->max('paixu');
+
+        if($paixumax + $list['bjsum'] > 25){
+            $list['bjsum'] = 25 - $paixumax;
+        }
 
         $i = 1;
         while($i<=$list['bjsum'])

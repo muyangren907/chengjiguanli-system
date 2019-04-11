@@ -30,6 +30,7 @@ http://xiaoshongshu.cn
 更换前端显示,重新整理后端代码。
 升级提示
 修改 cj_system_base 表 title字段名冲突，修改为 webtitle
+authrule 表中的font字段数据需要重新导入
 
 
 ## 更详细信息请查阅官方手册
