@@ -69,6 +69,8 @@
 </script>
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
+	<a class="layui-btn-xs" lay-event="befo" title="前移">i class="layui-icon">&#xe640;</i></a>
+	<a class="layui-btn-xs" lay-event="end" title="后移">i class="layui-icon">&#xe640;</i></a>
 	<a class="layui-btn-xs" lay-event="status" title="{{ d.status == 1 ? '禁用' : '启用' }}">
 		<i class="layui-icon {{ d.status == 1 ? 'layui-icon-close' : 'layui-icon-ok' }}"></i>
 	</a>
@@ -173,6 +175,12 @@ layui.use(['table','laypage','form','cjgl'], function(){
         case 'detail':// 查看
           layer.msg('查看' + data.id);
           break;
+        case 'befo':// 前移
+          yidong(this,"/banji/'+row.id+'/yidong",1);
+          break;
+        case 'end':// 后移
+          yidong(this,"/banji/'+row.id+'/yidong",1);
+          break;
         case 'del':// 删除
           cjgl.del(obj,"/banji");
           break;
@@ -184,6 +192,44 @@ layui.use(['table','laypage','form','cjgl'], function(){
           break;
       };
   	});
+
+  	/*班级移动*/
+	function yidong(obj,url,caozuo){
+		layer.confirm('确认要移动班级位置吗？',function(index){
+			$.ajax({
+				type: 'POST',
+				url: url,
+				data: {
+					cz:caozuo,
+				},
+				dataType: 'json',
+				success: function(data){
+					
+					if(data.val == false){
+						layer.alert(data.msg);
+						return true;
+					}
+					var yd = $(obj).parents("tr").html();
+					if( caozuo === 1)
+					{
+						$(obj).parents("tr").prev().bofore('<tr role="row">' + yd + '</tr>');
+						
+					} else {
+						$(obj).parents("tr").next().after('<tr role="row">' + yd + '</tr>');
+					}
+					$(obj).parents("tr").remove();
+					layer.alert(data.msg);
+					return true;
+				},
+				error:function(data) {
+					layer.alert('移动失败');
+				},
+			});		
+		});
+	}
+
+
+
 });
 </script>
 {/block}
