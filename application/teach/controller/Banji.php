@@ -73,6 +73,7 @@ class Banji extends Base
                         ->where('title','like','%'.$search.'%')
                         ->field('id');
                 })
+                ->where('paixu','<',26)
                 ->whereOr('ruxuenian',$search)
                 ->all();
         }
