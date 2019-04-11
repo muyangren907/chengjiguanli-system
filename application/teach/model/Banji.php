@@ -34,6 +34,9 @@ class Banji extends Base
 
         $njkeys = array_keys($njname);
         $bjkeys = array_keys($bjname);
+        if($bjkeys>25){
+            $bjkeys=25;
+        }
 
         in_array($nj,$njkeys) ? $title = $njname[$nj] : $title = $nj.'届';
         in_array($bj,$bjkeys) ? $title = $title.$bjname[$bj] : $title = $title.$bj.'班';
