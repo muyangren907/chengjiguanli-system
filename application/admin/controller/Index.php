@@ -43,6 +43,7 @@ class Index extends Base
 
         // 查询要显示的数据
         $data = $ad->search($src);
+
         // 获取符合条件记录总数
         $cnt = $data->count();
         // 获取当前页数据

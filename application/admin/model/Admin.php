@@ -23,12 +23,17 @@ class Admin extends Base
                 'adSchool'=>function($query){
                     $query->field('id,jiancheng');
                 }
-                // ,'authGroup'=>function($query){
-
-                // }
+                ,'glGroup'=>function($query){
+                    $query->where('status',1)->field('title,rules,miaoshu');
+                }
                     ])
             ->select();
         return $data;
+    }
+
+    public function glGroup()
+    {
+        return $this->belongsToMany('AuthGroup','AuthGroupAccess','group_id','uid');
     }
 
 
