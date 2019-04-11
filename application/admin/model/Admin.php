@@ -85,13 +85,13 @@ class Admin extends Base
     // 最后登录时间取器
     public function getLasttimeAttr($value)
     {
-        return date('Y年m月d日 h:i:s',$value);
+        return date('Y年m月d日 H:i:s',$value);
     }
 
     // 本次登录时间取器
     public function getThistimeAttr($value)
     {
-        return date('Y年m月d日 h:i:s',$value);
+        return date('Y年m月d日 H:i:s',$value);
     }
 
 

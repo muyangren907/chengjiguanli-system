@@ -21,15 +21,6 @@
               autocomplete="off" class="layui-input">
           </div>
         </div>
-        <div class="layui-form-item" style="margin-bottom: 0; botton">
-		    <label for="xingzhi" class="layui-form-label" style="height: 100%">单位性质</label>
-		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-		    	{php} $category = getCategory(101);{/php}
-		    	{volist name="category" id="vo"}
-		    		<input type="checkbox" name="xingzhi" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
-		    	{/volist}
-		    </div>
-		</div>
 	</div>
 {/block}
 {block name="table"}
@@ -88,8 +79,16 @@ layui.use(['table','laypage','form','cjgl'], function(){
 				}
 			}},
 			{title: '用户组',templet:function(d){
-				if(d.ad_school){
-					return d.ad_school.jiancheng;
+				if(d.gl_group){
+					var str = '';
+					for (var k = 0, length = d.gl_group.length; k < length; k++) {
+						if(k == 0){
+							str = d.gl_group[k].title;
+						}else{
+							str =str+'、'+d.gl_group[k].title;
+						}
+					}
+					return str;
 				}
 			}},
 			{field: 'phone', title: '联系电话', sort: true},

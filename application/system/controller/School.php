@@ -140,7 +140,6 @@ class School extends Base
         $this->assign('list',$list);
         // 渲染
         return $this->fetch('create');
-
     }
 
     // 更新单位信息

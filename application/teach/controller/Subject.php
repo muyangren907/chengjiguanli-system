@@ -12,18 +12,14 @@ class Subject extends Base
     // 显示学期列表
     public function index()
     {
-
-        // 设置数据总数
-        $list['count'] = SJ::count();
-        // 设置页面标题
-        $list['title'] = '学科列表';
-
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = '学科列表';
 
         // 模板赋值
-        $this->assign('list', $list);
+        $this->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->fetch();       
     }
 
 
@@ -31,62 +27,36 @@ class Subject extends Base
     public function ajaxData()
     {
 
-        // 获取DT的传值
-        $getdt = request()->param();
+        // 获取参数
+        $src = $this->request
+                ->only([
+                    'page'=>'1',
+                    'limit'=>'10',
+                    'field'=>'update_time',
+                    'order'=>'asc',
+                    'xingzhi'=>array(),
+                    'searchval'=>''
+                ],'POST');
 
-        //得到排序的方式
-        $order = $getdt['order'][0]['dir'];
-        //得到排序字段的下标
-        $order_column = $getdt['order'][0]['column'];
-        //根据排序字段的下标得到排序字段
-        $order_field = $getdt['columns'][$order_column]['name'];
-        if($order_field=='')
-        {
-            $order_field = $getdt['columns'][$order_column]['data'];
-        }
-        //得到limit参数
-        $limit_start = $getdt['start'];
-        $limit_length = $getdt['length'];
-        //得到搜索的关键词
-        $search = $getdt['search']['value'];
+        // 实例化
+        $sj = new SJ;
 
-
-        // 获取记录集总数
-        $cnt = SJ::count();
-        //查询数据
-        $data =SJ::field('id,title,jiancheng,category,paixu,kaoshi,status')
-            ->append(['suj_category.title'])
-            ->order([$order_field=>$order])
-            ->limit($limit_start,$limit_length)
-            ->select();
-        
-
-        // 如果需要查询
-        if($search){
-            $data = SJ::field('id,title,jiancheng,category,paixu,kaoshi,status')
-                ->append(['suj_category.title'])
-                ->order([$order_field=>$order])
-                ->limit($limit_start,$limit_length)
-                ->whereOr('title','like','%'.$search.'%')
-                ->whereOr('category','in',function($query) use($search)
-                {
-                    $query->name('category')
-                        ->where('title','like','%'.$search.'%')
-                        ->field('id');
-                })
-                ->select();
-        }
-
-        $datacnt = $data->count();
-        
-
+        // 查询要显示的数据
+        $data = $sj->search($src);
+        // 获取符合条件记录总数
+        $cnt = $data->count();
+        // 获取当前页数据
+        $limit_start = $src['page'] * $src['limit'] - $src['limit'];
+        $limit_length = $src['limit']-1;
+        $data = $data->slice($limit_start,$limit_length);
+       
+        // 重组返回内容
         $data = [
-            'draw'=> $getdt["draw"] , // ajax请求次数，作为标识符
-            'recordsTotal'=>$datacnt,  // 获取到的结果数(每页显示数量)
-            'recordsFiltered'=>$cnt,       // 符合条件的总数据量
-            'data'=>$data, // 获取到的数据结果
+            'code'=> 0 , // ajax请求次数，作为标识符
+            'msg'=>"",  // 获取到的结果数(每页显示数量)
+            'count'=>$cnt, // 符合条件的总数据量
+            'data'=>$data, //获取到的数据结果
         ];
-
 
         return json($data);
     }
@@ -97,13 +67,17 @@ class Subject extends Base
     public function create()
     {
         // 设置页面标题
-        $list['title'] = '添加学科';
+        $list['set'] = array(
+            'webtitle'=>'添加学科',
+            'butname'=>'添加',
+            'formpost'=>'POST',
+            'url'=>'/subject',
+        );
 
         // 模板赋值
         $this->assign('list',$list);
-
         // 渲染
-        return $this->fetch();
+        return $this->fetch('create');
     }
 
     
@@ -153,13 +127,21 @@ class Subject extends Base
     {
 
         // 获取学期信息
-        $list = SJ::field('id,title,jiancheng,category,kaoshi,paixu,status')
-            ->get($id);
+        $list['data'] = SJ::field('id,title,jiancheng,category,kaoshi,paixu,status')
+            ->find($id);
 
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'编辑学科',
+            'butname'=>'修改',
+            'formpost'=>'PUT',
+            'url'=>'/subject/'.$id,
+        );
 
+        // 模板赋值
         $this->assign('list',$list);
-
-        return $this->fetch();
+        // 渲染
+        return $this->fetch('create');
     }
 
 
