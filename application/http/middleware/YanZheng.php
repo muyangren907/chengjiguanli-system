@@ -24,14 +24,12 @@ class YanZheng  extends Controller
         }
         if( strlen($username)<1 )
         {
-            // $this->redirect('/login',302);
             echo "<script>top.location.href='/login';</script>";
         }
 
         // 检验用户名或密码是否正确
         $yz = action('login/index/check',['username'=>$username,'password'=>$password]);
-        if($yz == null){
-            // $this->error('请重新登录');
+        if($yz['status'] == 0){
             echo "<script>top.location.href='login';</script>";
         }
         

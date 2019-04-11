@@ -55,7 +55,7 @@ class Index extends Controller
         // 验证用户名和密码
         $check = $this->check($data['username'],$data['password']);
 
-        if($check)
+        if($check['status']==1)
         {
 
             // 设置cookie值
@@ -80,7 +80,7 @@ class Index extends Controller
             $data=['msg'=>'验证成功','status'=>1];
         }else{
             // 提示错误信息
-            $data=['msg'=>'用户名或密码错误','status'=>0];
+            $data=['msg'=>$check['msg'],'status'=>0];
         }
 
         return json($data);
@@ -98,8 +98,11 @@ class Index extends Controller
 
         if($userinfo == null)
         {
-            // 提示错误信息
-            $this->error('帐号不存在');
+            // 清除session（当前作用域）
+            session(null);
+            // 验证结果;
+            $data=['msg'=>'用户名不存在或被禁用','status'=>0];
+            return $data;
         }
 
 
@@ -112,13 +115,15 @@ class Index extends Controller
             session('userid', $userinfo->id);
             session('username', $username);
             session('password', $password);
+            $data=['msg'=>'验证成功','status'=>1];
         }else{
              // 清除cookie
             cookie(null, 'think_');
             // 清除session（当前作用域）
             session(null);
+            $data=['msg'=>'用户名或密码错误','status'=>0];
         }
-        return $check;        
+        return $data;        
     }
 
     // 生成验证码
