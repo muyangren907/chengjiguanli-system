@@ -134,7 +134,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
           cjgl.del(obj,"/authgroup");
           break;
         case 'edit':// 编辑
-          cjgl.add('编辑角色','/authgroup/'+obj.data.id+'/edit','650','500');
+          cjgl.add('编辑角色','/authgroup/'+obj.data.id+'/edit','','',true);
           break;
         case 'status':// 状态
           cjgl.status(obj,"{:url('setstatus')}");

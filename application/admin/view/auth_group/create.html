@@ -22,7 +22,7 @@
           </div>
           {php}
             $authrule = new \app\admin\model\AuthRule;
-            $authrulelist = $authrule->all();
+            $authrulelist = $authrule->where('pid',0)->select();
           {/php}
           <div class="layui-form-item">
               {volist name="authrulelist" id="vo"}
@@ -37,16 +37,16 @@
                   {volist name="vo.auth_cid" id="vc"}
                     <div>
                       <input type="checkbox" name="rules[]" title="{$vc.title}" value="{$vc.id}" lay-skin="primary" id ="{$vc.id}" pid="{$vo.id}" action="midOnclick" {present name="$list.data.rules"}
-                    {in name="vc.id" value="$list['data']['rules']"}
-                     checked
-                    {/in}
-                  {/present}>
+                        {in name="vc.id" value="$list['data']['rules']"}
+                          checked
+                        {/in}
+                      {/present}>
                       {volist name="vc.auth_cid" id="vd"}
                         <input type="checkbox" name="rules[]" title="{$vd.title}" value="{$vd.id}" lay-skin="primary" id ="{$vd.id}" pid="{$vc.id}" action="btmOnclick" {present name="$list.data.rules"}
-                    {in name="vd.id" value="$list['data']['rules']"}
-                     checked
-                    {/in}
-                  {/present}>
+                          {in name="vd.id" value="$list['data']['rules']"}
+                            checked
+                          {/in}
+                        {/present}>
                       {/volist}
                     </div>
                   {/volist}
