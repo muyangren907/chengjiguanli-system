@@ -42,14 +42,14 @@
           <div class="layui-form-item">
             <label for="kaoshi" class="layui-form-label"><span class="x-red">*</span>是否参与考试</label>
             <div class="layui-input-block">
-              <input type="radio" name="kaoshi" value="nan" title="参与" 
+              <input type="radio" name="kaoshi" value="1" title="参与" 
                 {present name="$list.data.kaoshi"}
                 {$list.data.kaoshi}
                     {eq name="$list.data.kaoshi" value="1" }
                      checked
                     {/eq}
                 {/present}>
-              <input type="radio" name="kaoshi" value="nv" title="不参与" 
+              <input type="radio" name="kaoshi" value="0" title="不参与" 
                 {present name="$list.data.kaoshi"}
                     {eq name="list.data.kaoshi" value="0" }
                      checked

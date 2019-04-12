@@ -225,9 +225,8 @@ class Index extends Base
     public function delete($id)
     {
 
-        if($id == 'm')
-        {
-            $id = request()->delete('ids/a');
+        if($id == 'm'){
+            $id = request()->delete('ids');
         }
 
         $data = AD::destroy($id);
@@ -325,8 +324,6 @@ class Index extends Base
             $data=['msg'=>'旧密码错误','val'=>0];
             return json($data);
         }
-
-
 
         // 更新密码
         $password = $md5->hash($list['newpassword']);

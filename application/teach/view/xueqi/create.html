@@ -1,70 +1,111 @@
 {extend name="common@create" /}
-{block name="formaa"}
-	<form action="/xueqi" method="POST" class="form form-horizontal" id="form-member-add">
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>标题：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="标题" id="title" name="title">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>学年：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="例如：2018-2019学年度" id="xuenian" name="xuenian">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>分类：</label>
-			<div class="formControls col-xs-8 col-sm-9 f-l">
-				<span class="select-box f-l" style="width:180px;">
-				{php}$list = getCategory(108);{/php}
-				<select class="select" id="category" name="category" size="1" required>
-					<option value="">--请选择学期分类--</option>
-					{volist name="list" id="vo"}
-						<option value="{$vo.id}">{$vo.title}</option>
-					{/volist}
-				</select>
-				</span>
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>起始时间：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text Wdate" style="max-width:120px" value="" placeholder="" id="bfdate" name="bfdate" onclick="WdatePicker({isShowClear:false,readOnly:true})">
-				<span class="ml-10">~</span>
-				<input type="text" class="input-text Wdate ml-10" style="max-width:120px" value="" placeholder="" id="enddate" name="enddate" onclick="WdatePicker({isShowClear:false,readOnly:true})">
-			</div>
-		</div>
-		<div class="row cl">
-			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
-			</div>
-		</div>
-	</form>
-{/block}
-{block name="yanzheng"}
-<script type="text/javascript">
-	// 设置表单验证规则
-	var myrules = {
-			title:{
-				required:true,
-				rangelength:[2,25]
-			},
-			xuenian:{
-				required:true,
-				rangelength:[1,15]
-			},
-			bfdate:{
-				required:true,
-				dateISO:true
-			},
-			enddate:{
-				required:true,
-				dateISO:true
-			},
-		};
 
-	// 设置表单提交方式
-	var mytype = 'POST';
-</script>
+{block name="form"}
+    <form class="layui-form layui-form-pane" lay-filter="myform">
+          <div class="layui-form-item">
+              <label for="title" class="layui-form-label">
+                  <span class="x-red">*</span>单位名称
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="title" name="title" lay-verify="required"
+                  autocomplete="off" class="layui-input " value="{$list.data.title|default=''}" placeholder="中文2-25个字符">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="jiancheng" class="layui-form-label">
+                  <span class="x-red">*</span>单位简称
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="jiancheng" name="jiancheng" lay-verify="required"
+                  autocomplete="off" class="layui-input" value="{$list.data.jiancheng|default=''}" placeholder="中文1-6个字符">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="biaoshi" class="layui-form-label">
+                  单位标识
+              </label>
+              <div class="layui-input-block">
+                  <input type="input" id="biaoshi" name="biaoshi" lay-verify=""
+                  autocomplete="off" class="layui-input" value="{$list.data.biaoshi|default=''}" placeholder="数字">
+              </div>
+          </div>
+          <div class="layui-form-item">
+    		    <label for="xingzhi" class="layui-form-label"><span class="x-red">*</span>单位性质</label>
+    		    <div class="layui-input-block">
+    		    	{php} $category = getCategory(101);{/php}
+    		      <select name="xingzhi" lay-verify="required">
+    		      	<option value=""></option>
+    		      	{volist name="category" id="vo"}
+                  <option value="{$vo.id}"
+                  {present name="$list.data.xingzhi"}
+                    {eq name="$list.data.xingzhi" value="$vo.id" }
+                      selected
+                    {/eq}
+                  {/present}>
+                    {$vo.title}
+                  </option>
+    		        {/volist}
+    		      </select>
+    		    </div>
+    		  </div>
+          <div class="layui-form-item">
+            <label for="jibie" class="layui-form-label"><span class="x-red">*</span>单位级别</label>
+            <div class="layui-input-block">
+              {php} $category = getCategory(102);{/php}
+              <select name="jibie" lay-verify="required">
+                <option value=""></option>
+                {volist name="category" id="vo"}
+                  <option value="{$vo.id}"
+                  {present name="$list.data.jibie"}
+                    {eq name="$list.data.jibie" value="$vo.id" }
+                      selected
+                    {/eq}
+                  {/present}>
+                    {$vo.title}
+                  </option>
+                {/volist}
+              </select>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label for="xueduan" class="layui-form-label">
+              <span class="x-red">*</span>学段
+            </label>
+            <div class="layui-input-block">
+              {php} $category = getCategory(103);{/php}
+              <select name="xueduan" lay-verify="required">
+                <option value=""></option>
+                {volist name="category" id="vo"}
+                  <option value="{$vo.id}"
+                  {present name="$list.data.xueduan"}
+                    {eq name="$list.data.xueduan" value="$vo.id" }
+                      selected
+                    {/eq}
+                  {/present}>
+                    {$vo.title}
+                  </option>
+                {/volist}
+              </select>
+            </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="paixu" class="layui-form-label">
+                  排序
+              </label>
+              <div class="layui-input-block">
+                  <input type="input" id="paixu" name="paixu" lay-verify=""
+                  autocomplete="off" class="layui-input" value="999" placeholder="数字1-999">
+              </div>
+          </div>
+          <div class="layui-form-item" style="text-align: right;">
+              <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
+                  {$list.set.butname}
+              </button>
+          </div>
+      </form>
 {/block}
+
+{block name="myjs"}
+    
+{/block}
+

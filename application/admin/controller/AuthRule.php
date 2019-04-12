@@ -65,13 +65,18 @@ class AuthRule extends Base
     public function create()
     {
         // 设置页面标题
-        $list['title'] = '添加权限';
+        $list['set'] = array(
+            'webtitle'=>'添加权限',
+            'butname'=>'添加',
+            'formpost'=>'POST',
+            'url'=>'/authrule',
+        );
+
 
         // 模板赋值
         $this->assign('list',$list);
-
         // 渲染
-        return $this->fetch();
+        return $this->fetch('create');
     }
 
     
@@ -121,13 +126,22 @@ class AuthRule extends Base
     {
 
         // 获取权限信息
-        $list = AR::field('id,title,name,condition,pid,paixu,ismenu,font,url')
-            ->get($id);
+        $list['data'] = AR::field('id,title,name,condition,pid,paixu,ismenu,font,url')
+            ->find($id);
+
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'编辑权限',
+            'butname'=>'修改',
+            'formpost'=>'PUT',
+            'url'=>'/authrule/'.$id,
+        );
 
 
+        // 模板赋值
         $this->assign('list',$list);
-
-        return $this->fetch();
+        // 渲染
+        return $this->fetch('create');
     }
 
 
@@ -168,10 +182,9 @@ class AuthRule extends Base
     // 删除权限
     public function delete($id)
     {
-
         if($id == 'm')
         {
-            $id = request()->delete('ids/a');// 获取delete请求方式传送过来的数据并转换成数据
+            $id = request()->delete('ids');// 获取delete请求方式传送过来的数据并转换成数据
         }
 
         $data = AR::destroy($id);

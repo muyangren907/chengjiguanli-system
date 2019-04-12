@@ -351,7 +351,7 @@ class KetiInfo extends Base
 
         if($id == 'm')
         {
-            $id = request()->delete('ids/a');// 获取delete请求方式传送过来的数据并转换成数据
+            $id = request()->delete('ids');// 获取delete请求方式传送过来的数据并转换成数据
         }
 
         $data = ktinfo::destroy($id);

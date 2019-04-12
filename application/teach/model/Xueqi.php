@@ -38,4 +38,34 @@ class Xueqi extends Base
                 ->where('id',$value)
                 ->value('title');
     }
+
+    // 查询所有单位
+    public function search($src)
+    {
+        // 整理变量
+        $xingzhi = $src['xingzhi'];
+        $searchval = $src['searchval'];
+
+        // 查询数据
+        $data = $this
+            ->order([$src['field'] =>$src['order']])
+            ->when(strlen($searchval)>0,function($query) use($searchval){
+                    $query->where('title|jiancheng','like','%'.$searchval.'%');
+                })
+            ->with(
+                [
+                    'dwXingzhi'=>function($query){
+                        $query->field('id,title');
+                    },
+                    'dwJibie'=>function($query){
+                        $query->field('id,title');
+                    },
+                    'dwXueduan'=>function($query){
+                        $query->field('id,title');
+                    },
+                ]
+            )
+            ->select();
+        return $data;
+    }
 }

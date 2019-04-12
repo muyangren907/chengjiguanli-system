@@ -4,7 +4,7 @@
     <form class="layui-form layui-form-pane" lay-filter="myform">
           <div class="layui-form-item">
               <label for="title" class="layui-form-label">
-                  <span class="x-red">*</span>单位名称
+                  <span class="x-red">*</span>权限名称
               </label>
               <div class="layui-input-block">
                   <input type="text" id="title" name="title" lay-verify="required"
@@ -12,89 +12,107 @@
               </div>
           </div>
           <div class="layui-form-item">
-              <label for="jiancheng" class="layui-form-label">
-                  <span class="x-red">*</span>单位简称
+              <label for="name" class="layui-form-label">
+                  <span class="x-red">*</span>权限规则
               </label>
               <div class="layui-input-block">
-                  <input type="text" id="jiancheng" name="jiancheng" lay-verify="required"
-                  autocomplete="off" class="layui-input" value="{$list.data.jiancheng|default=''}" placeholder="中文1-6个字符">
+                  <input type="text" id="name" name="name" lay-verify="required"
+                  autocomplete="off" class="layui-input " value="{$list.data.name|default=''}" placeholder="中文2-25个字符">
               </div>
           </div>
           <div class="layui-form-item">
-              <label for="biaoshi" class="layui-form-label">
-                  单位标识
-              </label>
-              <div class="layui-input-block">
-                  <input type="input" id="biaoshi" name="biaoshi" lay-verify=""
-                  autocomplete="off" class="layui-input" value="{$list.data.biaoshi|default=''}" placeholder="数字">
-              </div>
-          </div>
-          <div class="layui-form-item">
-    		    <label for="xingzhi" class="layui-form-label"><span class="x-red">*</span>单位性质</label>
-    		    <div class="layui-input-block">
-    		    	{php} $category = getCategory(101);{/php}
-    		      <select name="xingzhi" lay-verify="required">
-    		      	<option value=""></option>
-    		      	{volist name="category" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.xingzhi"}
-                    {eq name="$list.data.xingzhi" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    {$vo.title}
-                  </option>
-    		        {/volist}
-    		      </select>
-    		    </div>
-    		  </div>
-          <div class="layui-form-item">
-            <label for="jibie" class="layui-form-label"><span class="x-red">*</span>单位级别</label>
+            <label for="pid" class="layui-form-label">父级权限</label>
             <div class="layui-input-block">
-              {php} $category = getCategory(102);{/php}
-              <select name="jibie" lay-verify="required">
-                <option value=""></option>
-                {volist name="category" id="vo"}
+              {php}
+                  $authrule = new \app\admin\model\AuthRule;
+                  $authrulelist = $authrule
+                              ->where('pid',0)
+                              ->where('status',1)
+                              ->with(['authCid'=>function($query){
+                                $query->field('id,title,pid');
+                                }
+                              ])
+                              ->field('pid,id,title')
+                              ->select();
+                {/php}
+              <select name="pid">
+                <option value="">顶级权限</option>
+                {volist name="authrulelist" id="vo"}
                   <option value="{$vo.id}"
-                  {present name="$list.data.jibie"}
-                    {eq name="$list.data.jibie" value="$vo.id" }
+                  {present name="$list.data.pid"}
+                    {eq name="$list.data.pid" value="$vo.id" }
                       selected
                     {/eq}
                   {/present}>
                     {$vo.title}
                   </option>
+
+                  {volist name="vo.auth_cid" id="va"}
+                    <option value="{$va.id}"
+                    {present name="$list.data.pid"}
+                      {eq name="$list.data.pid" value="$va.id" }
+                        selected
+                      {/eq}
+                    {/present}>
+                      &nbsp;&nbsp;├{$va.title}
+                    </option>
+                  {/volist}
                 {/volist}
               </select>
             </div>
           </div>
           <div class="layui-form-item">
-            <label for="xueduan" class="layui-form-label">
-              <span class="x-red">*</span>学段
-            </label>
-            <div class="layui-input-block">
-              {php} $category = getCategory(103);{/php}
-              <select name="xueduan" lay-verify="required">
-                <option value=""></option>
-                {volist name="category" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.xueduan"}
-                    {eq name="$list.data.xueduan" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    {$vo.title}
-                  </option>
-                {/volist}
-              </select>
-            </div>
+              <label for="condition" class="layui-form-label">
+                  权限表达式
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="condition" name="condition" autocomplete="off" class="layui-input " value="{$list.data.condition|default=''}" placeholder="">
+              </div>
           </div>
           <div class="layui-form-item">
               <label for="paixu" class="layui-form-label">
                   排序
               </label>
               <div class="layui-input-block">
-                  <input type="input" id="paixu" name="paixu" lay-verify=""
-                  autocomplete="off" class="layui-input" value="999" placeholder="数字1-999">
+                  <input type="text" id="paixu" name="paixu" autocomplete="off" class="layui-input " value="{$list.data.paixu|default=''}" placeholder="">
+              </div>
+          </div>
+          <div class="layui-form-item">
+            <label for="ismenu" class="layui-form-label"><span class="x-red">*</span>是否是菜单</label>
+            <div class="layui-input-block">
+              <input type="radio" name="ismenu" value="1" title="是" 
+                {present name="$list.data.ismenu"}
+                {$list.data.ismenu}
+                    {eq name="$list.data.ismenu" value="1" }
+                     checked
+                    {/eq}
+                {/present}>
+              <input type="radio" name="ismenu" value="0" title="否" 
+                {present name="$list.data.ismenu"}
+                    {eq name="list.data.ismenu" value="0" }
+                     checked
+                    {/eq}
+                {/present}
+                {notpresent name="$list.data.ismenu"}
+                 checked
+                {/notpresent}
+                >
+            </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="font" class="layui-form-label">
+                  菜单字体
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="font" name="font" autocomplete="off" class="layui-input " value="{$list.data.font|default=''}" placeholder="">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="url" class="layui-form-label">
+                  地址
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="url" name="url" autocomplete="off" class="layui-input " value="{$list.data.url|default=''}" placeholder="">
               </div>
           </div>
           <div class="layui-form-item" style="text-align: right;">
@@ -102,10 +120,122 @@
                   {$list.set.butname}
               </button>
           </div>
-      </form>
+    </form>
 {/block}
 
 {block name="myjs"}
-    
+    <script type="text/javascript">
+
+      // 监测复选框按钮
+      layui.use(['form'], function(){
+        var form = layui.form;
+        form.on('checkbox()', function(data){
+          var myelem = data.elem
+            ,ischecked = data.elem.checked
+            ,action = $(myelem).attr('action')
+            ,pid = $(myelem).attr('pid')
+            ,id = $(myelem).attr('id');
+          switch(action){
+            case 'topOnclick':
+              topOnclick(id,ischecked)
+              break;
+            case 'midOnclick':
+              midOnclick(id,pid,ischecked);
+              break;
+            case 'btmOnclick':
+              btmOnclick(id,ischecked);
+              break;
+          };
+        });        
+      });
+
+      // 顶层按钮
+      function topOnclick(id,ischecked)
+      {
+        if(ischecked == true){
+          // 更换全部子复选框样式
+          $('#'+id).parent().next().find('div.layui-form-checkbox').each(function(){
+            $(this).attr('class','layui-unselect layui-form-checkbox layui-form-checked');
+          });
+          // 全部子复选框
+          $('#'+id).parent().next().find('input').each(function(){
+            $(this).attr('checked',true);
+          });
+        }else{
+          // 更换全部子复选框样式
+          $('#'+id).parent().next().find('div.layui-form-checkbox').each(function(){
+            $(this).attr('class','layui-unselect layui-form-checkbox')
+          });
+          // 取消全部子复选框
+          $('#'+id).parent().next().find('input').each(function(){
+            $(this).attr('checked',false);
+          });
+        }
+      }
+
+      // 中层按钮
+      function midOnclick(id,pid,ischecked)
+      {
+        if(ischecked == true){
+
+          // 更换上级复选框样式
+          $('#'+id).parent().parent().prev().find('div.layui-form-checkbox').each(function(){
+            $(this).attr('class','layui-unselect layui-form-checkbox layui-form-checked')
+          });
+          // 选中上级复选框
+          $('#'+id).parent().parent().prev().find('input').each(function(){
+            $(this).attr('checked',true);
+          });
+
+          // 更换全部下级复选框样式
+          $('#'+id).siblings('div.layui-form-checkbox').each(function(){
+            $(this).attr('class','layui-unselect layui-form-checkbox layui-form-checked');
+          });
+          // 选中全部下级复选框
+          $('#'+id).siblings('input').each(function(){
+            $(this).attr('checked',true);
+          });
+        }else{
+          // 更换所有下级复选框样式
+          $('#'+id).siblings('div.layui-form-checkbox').each(function(){
+            $(this).attr('class','llayui-unselect layui-form-checkbox')
+          });
+          // 取消选中所有下级复选框
+          $('#'+id).siblings('input').each(function(){
+            $(this).attr('checked',false)
+          });
+
+          // 如果所有属于上级的复框为未状态，则取消选中上级复选框
+          var checkboxs = $('#'+id).parent().parent().find('div.layui-form-checked').length;
+          if(checkboxs == 0){
+            // 更换样式
+            $('#'+id).parent().parent().prev().find('div.layui-form-checkbox').each(function(){
+              $(this).attr('class','layui-unselect layui-form-checkbox')
+            });
+            // 取消选中
+            $('#'+id).parent().parent().prev().find('input').each(function(){
+              $(this).attr('checked',false)
+            });
+          }
+        }
+      }
+
+      // 下层按钮
+      function btmOnclick(id,ischecked)
+      {
+        if(ischecked == true){
+          // 设置上级复选框为状态
+          $('#'+id).parent().children('div.layui-form-checkbox').first().attr('class','layui-unselect layui-form-checkbox layui-form-checked');
+          // 选中上级复选框
+          $('#'+id).parent().children('input').first().attr('checked',true);
+
+          // 设置上级的上级复选框为状态
+          $('#'+id).parent().parent().prev().children('div.layui-form-checkbox').first().attr('class','layui-unselect layui-form-checkbox layui-form-checked');
+          // 选中上级的上级复选框
+          $('#'+id).parent().parent().prev().children('input').first().attr('checked',true);
+        }
+      }
+
+    </script>
 {/block}
 

@@ -12,15 +12,11 @@ class Xueqi extends Base
     // 显示学期列表
     public function index()
     {
-
-        // 设置数据总数
-        $list['count'] = XQ::count();
-        // 设置页面标题
-        $list['title'] = '学期列表';
-
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = '学期列表';
 
         // 模板赋值
-        $this->assign('list', $list);
+        $this->assign('list',$list);
 
         // 渲染模板
         return $this->fetch();
@@ -148,13 +144,21 @@ class Xueqi extends Base
     {
 
         // 获取学期信息
-        $list = XQ::field('id,title,xuenian,category,bfdate,enddate')
+        $list['data'] = XQ::field('id,title,xuenian,category,bfdate,enddate')
             ->get($id);
 
+       // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'编辑学期',
+            'butname'=>'修改',
+            'formpost'=>'PUT',
+            'url'=>'/xueqi/'.$id,
+        );
 
+        // 模板赋值
         $this->assign('list',$list);
-
-        return $this->fetch();
+        // 渲染
+        return $this->fetch('create');
     }
 
 
@@ -201,7 +205,7 @@ class Xueqi extends Base
 
         if($id == 'm')
         {
-            $id = request()->delete('ids/a');// 获取delete请求方式传送过来的数据并转换成数据
+            $id = request()->delete('ids');// 获取delete请求方式传送过来的数据并转换成数据
         }
 
         $data = XQ::destroy($id);

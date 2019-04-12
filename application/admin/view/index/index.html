@@ -135,7 +135,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
             cjgl.delAll(checkStatus,'/admin','mytable');
             break;
           case 'add':
-            cjgl.add('添加管理员','/admin/create','650','500');
+            cjgl.add('添加管理员','/admin/create','','',true);
             break;
         };
     });
@@ -155,7 +155,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
           cjgl.del(obj,"/admin");
           break;
         case 'edit':// 编辑
-          cjgl.add('编辑管理员','/admin/'+obj.data.id+'/edit','650','500');
+          cjgl.add('编辑管理员','/admin/'+obj.data.id+'/edit','','',true);
           break;
         case 'status':// 状态
           cjgl.status(obj,"{:url('setstatus')}");

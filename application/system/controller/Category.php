@@ -175,7 +175,7 @@ class Category extends Base
     {
         if($id == 'm')
         {
-            $id = request()->delete('ids/a');
+            $id = request()->delete('ids');
         }
 
         $data = CG::destroy($id);
