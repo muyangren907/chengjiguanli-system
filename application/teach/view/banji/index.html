@@ -25,17 +25,9 @@
 		    <label for="school" class="layui-form-label" style="height: 100%">学校</label>
 		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
 		    	{php}
-		    		$school = new \app\system\model\School;
-		    		$schoollist = $school->where('status',1)
-		    							->where('jibie','in',function($query){
-		    								$query->name('category')
-		    								->where('title','校级')
-		    								->field('id');
-		    							})
-		    							->field('id,jiancheng')
-		    							->select();
+		    		$schoollist = schlist('校级','校级');
 		    	{/php}
-		    	<input type="radio" name="school" value="" title="无">
+		    	<input type="radio" name="schoollist" value="" title="无">
 		    	{volist name="schoollist" id="vo"}
 		    		<input type="radio" name="school" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 		    	{/volist}

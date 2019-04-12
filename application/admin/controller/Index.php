@@ -66,15 +66,19 @@ class Index extends Base
     // 创建用户信息
     public function create()
     {
-
         // 设置页面标题
-        $list['title'] = '添加管理员';
+        $list['set'] = array(
+            'webtitle'=>'添加管理员',
+            'butname'=>'添加',
+            'formpost'=>'POST',
+            'url'=>'/admin',
+        );
+
 
         // 模板赋值
         $this->assign('list',$list);
-
         // 渲染
-        return $this->fetch();
+        return $this->fetch('create');
     }
 
     
@@ -109,14 +113,13 @@ class Index extends Base
         // 实例化管理员数据模型类 
         $admin = new AD();
         $admindata = $admin->create($list);
-        // 重组用户角色列表
-        foreach ($list['group_id'] as $key => $value) {
-            $groupids[]=['group_id'=>$value];
-        }
-        $authgroupdata = $admindata->authgroup()->saveAll($groupids);
+
+        // 更新中间表
+        $groupdata=$admindata->glGroup()->saveAll($list['group_id']);
+
 
         // 根据更新结果设置返回提示信息
-        $authgroupdata ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $admindata&&$groupdata ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);
@@ -148,16 +151,31 @@ class Index extends Base
     {
 
         // 获取用户信息
-        $list = AD::where('id',$id)
+       $list['data'] = AD::where('id',$id)
             ->field('id,school,username,xingming,sex,shengri,phone,beizhu')
+            ->with([
+                'adSchool'=>function($query){
+                    $query->field('id,jiancheng');
+                }
+                ,'glGroup'=>function($query){
+                    $query->where('status',1)->field('title');
+                }
+            ])
             ->find();
-        // 追加用户id字符串
-        $list = $list->append(['groupids']);
+
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'编辑管理员',
+            'butname'=>'修改',
+            'formpost'=>'PUT',
+            'url'=>'/admin/'.$id,
+        );
 
 
+        // 模板赋值
         $this->assign('list',$list);
-
-        return $this->fetch();
+        // 渲染
+        return $this->fetch('create');
 
     }
 
@@ -171,6 +189,8 @@ class Index extends Base
         // 获取表单数据
         $list = request()->only(['xingming','school','username','sex','shengri','phone','beizhu','group_id'],'put');
 
+        $list['group_id'] = array_values($list['group_id']);
+
         // 验证表单数据
         $result = $validate->check($list);
         $msg = $validate->getError();
@@ -180,18 +200,14 @@ class Index extends Base
             return json(['msg'=>$msg,'val'=>0]);;
         }
 
+
         // 更新管理员信息
         $list['id'] = $id;
         $admindata = AD::update($list);
-       
-        // 删除原来角色
-        $aa = $admindata->authgroup()->delete();
 
-        // 重组用户角色列表
-        foreach ($list['group_id'] as $key => $value) {
-            $groupids[]=['group_id'=>$value];
-        }
-        $groupdata = $admindata->authgroup()->saveAll($groupids);
+        // 更新中间表
+        $groupdata=$admindata->glGroup()->detach();
+        $groupdata=$admindata->glGroup()->attach($list['group_id']);
 
         // 根据更新结果设置返回提示信息
         $admindata&&$groupdata ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
