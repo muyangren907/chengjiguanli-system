@@ -31,19 +31,16 @@ class Xueqi extends Base
         return date('Y-m-d',$value);
     }
 
-    // 分类获取器
-    public function getcategoryAttr($value)
+    // 分类关联
+    public function glCategory()
     {
-        return db('category')
-                ->where('id',$value)
-                ->value('title');
+        return $this->belongsTo('\app\system\model\Category','category','id');
     }
 
     // 查询所有单位
     public function search($src)
     {
         // 整理变量
-        $xingzhi = $src['xingzhi'];
         $searchval = $src['searchval'];
 
         // 查询数据
@@ -54,13 +51,7 @@ class Xueqi extends Base
                 })
             ->with(
                 [
-                    'dwXingzhi'=>function($query){
-                        $query->field('id,title');
-                    },
-                    'dwJibie'=>function($query){
-                        $query->field('id,title');
-                    },
-                    'dwXueduan'=>function($query){
+                    'glCategory'=>function($query){
                         $query->field('id,title');
                     },
                 ]

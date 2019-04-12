@@ -122,7 +122,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
             cjgl.delAll(checkStatus,'/authrule','mytable');
             break;
           case 'add':
-            cjgl.add('添加权限','/authrule/create','650','500');
+            cjgl.add('添加权限','/authrule/create','','',true);
             break;
         };
     });
@@ -142,7 +142,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
           cjgl.del(obj,"/authrule");
           break;
         case 'edit':// 编辑
-          cjgl.add('编辑权限','/authrule/'+obj.data.id+'/edit','650','500');
+          cjgl.add('编辑权限','/authrule/'+obj.data.id+'/edit','','',true);
           break;
         case 'status':// 状态
           cjgl.status(obj,"{:url('setstatus')}");

@@ -27,7 +27,6 @@ class Banji extends Base
     // 获取班级信息列表
     public function ajaxData()
     {
-
         // 获取参数
         $src = $this->request
                 ->only([
@@ -60,7 +59,6 @@ class Banji extends Base
             'count'=>$cnt, // 符合条件的总数据量
             'data'=>$data, //获取到的数据结果
         ];
-
 
         return json($data);
     }
