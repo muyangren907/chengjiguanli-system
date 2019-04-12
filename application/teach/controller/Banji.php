@@ -279,9 +279,9 @@ class Banji extends Base
             $bj = new BJ();
             // 更新数据
             $data = $bj->saveAll($bjinfo);
-            $data ? $data = ['msg'=>'移动成功','val'=>true] : $data = ['msg'=>'数据处理错误','val'=>false];
+            $data ? $data = ['msg'=>'移动成功','val'=>1] : $data = ['msg'=>'数据处理错误','val'=>0];
         }else{
-            $data = ['msg'=>'已经到头啦~','val'=>false];
+            $data = ['msg'=>'已经到头啦~','val'=>0];
         }
 
         // 返回处理结果

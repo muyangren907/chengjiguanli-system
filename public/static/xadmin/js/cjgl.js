@@ -149,6 +149,7 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
       },
       reLoadTable:function(formname,tableID,mydata={}){
           var formval = this.getSearchVal(formname);
+          console.log(formval);
           var wheredata = $.extend(formval,mydata);
           table.reload(tableID,{
             where: formval
