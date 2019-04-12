@@ -10,37 +10,31 @@ class Teacher extends Base
     
 
     //搜索单位获奖荣誉
-    public function search($search)
+    public function search($src)
     {
         // 获取参数
-        $zhiwu = $search['zhiwu'];
-        $zhicheng = $search['zhicheng'];
-        $danwei = $search['danwei'];
-        $xueli = $search['xueli'];
-        $subject = $search['subject'];
-        $order_field = $search['order_field'];
-        $order = $search['order'];
-        $search = $search['search'];
+        $zhiwu = $src['zhiwu'];
+        $danwei = $src['danwei'];
+        $xueli = $src['xueli'];
+        $subject = $src['subject'];
+        $searchval = $src['searchval'];
 
 
-        $data = $this->order([$order_field =>$order])
-            ->when(strlen($danwei)>0,function($query) use($danwei){
+        $data = $this->order([$src['field'] =>$src['order']])
+            ->when(count($danwei)>0,function($query) use($danwei){
                     $query->where('danwei','in',$danwei);
                 })
-            ->when(strlen($zhiwu)>0,function($query) use($zhiwu){
+            ->when(count($zhiwu)>0,function($query) use($zhiwu){
                     $query->where('zhiwu','in',$zhiwu);
                 })
-            ->when(strlen($zhicheng)>0,function($query) use($zhicheng){
-                    $query->where('zhicheng','in',$zhicheng);
-                })
-            ->when(strlen($xueli)>0,function($query) use($xueli){
+            ->when(count($xueli)>0,function($query) use($xueli){
                     $query->where('xueli','in',$xueli);
                 })
-            ->when(strlen($subject)>0,function($query) use($subject){
+            ->when(count($subject)>0,function($query) use($subject){
                     $query->where('subject','in',$subject);
                 })
-            ->when(strlen($search)>0,function($query) use($search){
-                    $query->where('xingming|quanpin|shoupin','like','%'.$search.'%');
+            ->when(strlen($searchval)>0,function($query) use($searchval){
+                    $query->where('xingming|quanpin|shoupin','like','%'.$searchval.'%');
                 })
             ->with(
                 [

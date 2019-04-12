@@ -1,178 +1,111 @@
 {extend name="common@create" /}
-{block name="formaa"}
-	<form action="/teacher" method="POST" class="form form-horizontal" id="form-member-add">
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>教师姓名：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="教师姓名" id="xingming" name="xingming">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>姓名拼音：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" style="max-width: 250px" value="" placeholder="教师姓名全拼" id="quanpin" name="quanpin">
-				<input type="text" class="input-text ml-20" style="max-width: 150px" value="" placeholder="教师姓名首拼" id="shoupin" name="shoupin">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>性别：</label>
-			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
-				<div class="radio-box">
-					<input name="sex" type="radio" id="sex-1" value="1" required>
-					<label for="sex-1">男</label>
-				</div>
-				<div class="radio-box">
-					<input type="radio" id="sex-2" value="0" name="sex">
-					<label for="sex-2">女</label>
-				</div>
-				<div class="radio-box">
-					<input type="radio" id="sex-3" value="2" name="sex" checked>
-					<label for="sex-3">保密</label>
-				</div>
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">出生日期：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text Wdate" value="" placeholder="" id="shengri" name="shengri" onclick="WdatePicker({isShowClear:false,readOnly:true})" style="width:150px;">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>现工作单位：</label>
-			<div class="formControls col-xs-8 col-sm-9 f-l">
-				<span class="select-box f-l" style="width:300px;">
-				{php} $school = schlist('校级','区级');{/php}
-				<select class="select" id="danwei" name="danwei" size="1" required>
-					<option value="">--请选择现工作单位--</option>
-					{volist name="school" id="vo"}
-						<option value="{$vo.id}">{$vo.title}</option>
-					{/volist}
-				</select>
-				</span>
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">职务：</label>
-			<div class="formControls col-xs-8 col-sm-9 f-l">
-				<span class="select-box f-l" style="width:180px;">
-				{php}$list = getCategory(107);{/php}
-				<select class="select" id="zhiwu" name="zhiwu" size="1" required>
-					<option value="">--请选择职务--</option>
-					{volist name="list" id="vo"}
-						<option value="{$vo.id}">{$vo.title}</option>
-					{/volist}
-				</select>
-				</span>
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">职称：</label>
-			<div class="formControls col-xs-8 col-sm-9 f-l">
-				<span class="select-box f-l" style="width:180px;">
-				{php}$list = getCategory(106);{/php}
-				<select class="select" id="zhicheng" name="zhicheng" size="1" required>
-					<option value="">--请选择职称--</option>
-					{volist name="list" id="vo"}
-						<option value="{$vo.id}">{$vo.title}</option>
-					{/volist}
-				</select>
-				</span>
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">学历：</label>
-			<div class="formControls col-xs-8 col-sm-9 f-l">
-				<span class="select-box f-l" style="width:180px;">
-				{php}$list = getCategory(105);{/php}
-				<select class="select" id="xueli" name="xueli" size="1" required>
-					<option value="">--请选择学历--</option>
-					{volist name="list" id="vo"}
-						<option value="{$vo.id}">{$vo.title}</option>
-					{/volist}
-				</select>
-				</span>
-			</div>
-		</div>
 
-
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">毕业院校：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="毕业院校" id="biye" name="biye">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">专业：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="专业" id="zhuanye" name="zhuanye">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">参加工作时间：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text Wdate" value="" placeholder="" id="worktime" name="worktime" onclick="WdatePicker({isShowClear:false,readOnly:true})">
-			</div>
-		</div>
-		<div class="row cl">
-			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
-			</div>
-		</div>
-	</form>
+{block name="form"}
+    <form class="layui-form layui-form-pane" lay-filter="myform">
+          <div class="layui-form-item">
+              <label for="title" class="layui-form-label">
+                  <span class="x-red">*</span>单位名称
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="title" name="title" lay-verify="required"
+                  autocomplete="off" class="layui-input " value="{$list.data.title|default=''}" placeholder="中文2-25个字符">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="jiancheng" class="layui-form-label">
+                  <span class="x-red">*</span>单位简称
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="jiancheng" name="jiancheng" lay-verify="required"
+                  autocomplete="off" class="layui-input" value="{$list.data.jiancheng|default=''}" placeholder="中文1-6个字符">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="biaoshi" class="layui-form-label">
+                  单位标识
+              </label>
+              <div class="layui-input-block">
+                  <input type="input" id="biaoshi" name="biaoshi" lay-verify=""
+                  autocomplete="off" class="layui-input" value="{$list.data.biaoshi|default=''}" placeholder="数字">
+              </div>
+          </div>
+          <div class="layui-form-item">
+    		    <label for="xingzhi" class="layui-form-label"><span class="x-red">*</span>单位性质</label>
+    		    <div class="layui-input-block">
+    		    	{php} $category = getCategory(101);{/php}
+    		      <select name="xingzhi" lay-verify="required">
+    		      	<option value=""></option>
+    		      	{volist name="category" id="vo"}
+                  <option value="{$vo.id}"
+                  {present name="$list.data.xingzhi"}
+                    {eq name="$list.data.xingzhi" value="$vo.id" }
+                      selected
+                    {/eq}
+                  {/present}>
+                    {$vo.title}
+                  </option>
+    		        {/volist}
+    		      </select>
+    		    </div>
+    		  </div>
+          <div class="layui-form-item">
+            <label for="jibie" class="layui-form-label"><span class="x-red">*</span>单位级别</label>
+            <div class="layui-input-block">
+              {php} $category = getCategory(102);{/php}
+              <select name="jibie" lay-verify="required">
+                <option value=""></option>
+                {volist name="category" id="vo"}
+                  <option value="{$vo.id}"
+                  {present name="$list.data.jibie"}
+                    {eq name="$list.data.jibie" value="$vo.id" }
+                      selected
+                    {/eq}
+                  {/present}>
+                    {$vo.title}
+                  </option>
+                {/volist}
+              </select>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label for="xueduan" class="layui-form-label">
+              <span class="x-red">*</span>学段
+            </label>
+            <div class="layui-input-block">
+              {php} $category = getCategory(103);{/php}
+              <select name="xueduan" lay-verify="required">
+                <option value=""></option>
+                {volist name="category" id="vo"}
+                  <option value="{$vo.id}"
+                  {present name="$list.data.xueduan"}
+                    {eq name="$list.data.xueduan" value="$vo.id" }
+                      selected
+                    {/eq}
+                  {/present}>
+                    {$vo.title}
+                  </option>
+                {/volist}
+              </select>
+            </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="paixu" class="layui-form-label">
+                  排序
+              </label>
+              <div class="layui-input-block">
+                  <input type="input" id="paixu" name="paixu" lay-verify=""
+                  autocomplete="off" class="layui-input" value="999" placeholder="数字1-999">
+              </div>
+          </div>
+          <div class="layui-form-item" style="text-align: right;">
+              <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
+                  {$list.set.butname}
+              </button>
+          </div>
+      </form>
 {/block}
-{block name="yanzheng"}
-<script type="text/javascript">
-	// 匹配用户名
-	$.validator.addMethod("zh",function(value,element){
-		var tel = /^[\u4e00-\u9fa5]*$/;
-		return this.optional(element) || tel.test(value);
-	}, "请输入中文");
 
-	// 匹配帐号
-	$.validator.addMethod("ustr",function(value,element){
-		var tel = /^[a-zA-Z\/]*$/;
-		return this.optional(element) || tel.test(value);
-	}, "由字母和 / 组成");
-
-	// 匹配全拼
-	$.validator.addMethod("qp",function(value,element){
-		var tel = /^[a-zA-Z]*$/;
-		return this.optional(element) || tel.test(value);
-	}, "由大写和小写字母组成");
-
-
-	// 设置表单验证规则
-	var myrules = {
-			xingming:{
-				required:true,
-				zh:true,
-				rangelength:[2,8]
-			},
-			quanpin:{
-				required:true,
-				rangelength:[1,30],
-				qp:true,
-			},
-			shoupin:{
-				required:true,
-				rangelength:[1,5],
-				qp:true,
-			},
-			shengri:{
-				dateISO:true
-			},
-			biye:{
-				rangelength:[1,50]
-			},
-			zhuaye:{
-				rangelength:[1,20]
-			},
-			worktime:{
-				dateISO:true
-			},
-		};
-
-	// 设置表单提交方式
-	var mytype = 'POST';
-</script>
+{block name="myjs"}
+    
 {/block}
+

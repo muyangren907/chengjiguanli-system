@@ -15,13 +15,11 @@ class Index extends Base
     public function index()
     {
 
-        // 设置数据总数
-        $list['count'] = KS::count();
-        // 设置页面标题
-        $list['title'] = '考试列表';
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = '考试列表';
 
         // 模板赋值
-        $this->assign('list', $list);
+        $this->assign('list',$list);
 
         // 渲染模板
         return $this->fetch();
