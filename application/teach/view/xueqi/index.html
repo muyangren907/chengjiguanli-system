@@ -74,9 +74,9 @@ layui.use(['table','laypage','form','cjgl'], function(){
 			{field: 'xuenian', title: '学年',sort: true},
 			{field: "category",title: '分类',sort: true,templet:function(d){
 				var str='';
-				if(d.dw_xingzhi)
+				if(d.gl_category)
 				{
-					str = d.dw_xingzhi.title;
+					str = d.gl_category.title;
 				}
 				return str;
 			}},

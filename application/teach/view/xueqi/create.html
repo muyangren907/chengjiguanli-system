@@ -39,8 +39,18 @@
     		      </select>
     		    </div>
     		  </div>
+
+            <div class="layui-inline">
+              <label class="layui-form-label">范围</label>
+              <div class="layui-input-inline" style="width: 100px;">
+                <input class="layui-input" placeholder="开始日" name="bfdate" id="bfdate" value="{$list.data.bfdate|default=''}">
+              </div>
+              　至　
+              <div class="layui-input-inline" style="width: 100px;">
+                <input class="layui-input" placeholder="结束日" name="enddate" id="enddate" value="{$list.data.enddate|default=''}">
+              </div>
+            </div>
  
-          <input class="layui-input" placeholder="开始日" name="start" id="start">
           <div class="layui-form-item" style="text-align: right;">
               <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
                   {$list.set.butname}
@@ -52,26 +62,18 @@
 {block name="myjs"}
 <script>
 
-
-
-
-    // laydate.render({
-    //   elem: '#enddate' //指定元素
-
-
-
   layui.use('laydate', function(){
         var laydate = layui.laydate;
         
         //执行一个laydate实例
         laydate.render({
-          elem: '#start' //指定元素
+          elem: '#bfdate' //指定元素
         });
 
         // //执行一个laydate实例
-        // laydate.render({
-        //   elem: '#end' //指定元素
-        // });
+        laydate.render({
+          elem: '#enddate' //指定元素
+        });
       });
 
 </script>
