@@ -48,7 +48,7 @@ class Admin extends Base
     // 最后登录获取器
     public function getLasttimeAttr($value)
     {
-        return date('Y年m月d日 h:i:s',$value);
+        return date('Y年m月d日 H:i:s',$value);
     }
 
 
