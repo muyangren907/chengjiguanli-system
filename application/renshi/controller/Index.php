@@ -171,13 +171,21 @@ class Index extends Base
     {
 
         // 获取教师信息
-        $list = Teacher::field('id,xingming,sex,quanpin,shoupin,shengri,zhiwu,zhicheng,xueli,biye,worktime,zhuanye,danwei')
-            ->get($id);
+        $list['data'] = Teacher::field('id,xingming,sex,quanpin,shoupin,shengri,zhiwu,zhicheng,xueli,biye,worktime,zhuanye,danwei')
+            ->find($id);
 
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'编辑单位',
+            'butname'=>'修改',
+            'formpost'=>'PUT',
+            'url'=>'/teacher/'.$id,
+        );
 
+        // 模板赋值
         $this->assign('list',$list);
-
-        return $this->fetch();
+        // 渲染
+        return $this->fetch('create');
     }
 
 

@@ -82,9 +82,9 @@ layui.use(['table','laypage','form','cjgl'], function(){
 			{field: 'sex', title: '性别',sort: true},
 			{field: "shengri",title: '周岁',sort: true,templet:function(d){
 				var str='';
-				if(d.dw_xingzhi)
+				if(d.age)
 				{
-					str = d.dw_xingzhi.title;
+					str = d.age;
 				}
 				return str;
 			}},
@@ -104,7 +104,14 @@ layui.use(['table','laypage','form','cjgl'], function(){
 				}
 				return str;
 			}},
-			{field: 'worktime', title: '工龄', sort: true},
+			{field: 'worktime', title: '工龄', sort: true,templet:function(d){
+				var str='';
+				if(d.gongling)
+				{
+					str = d.gongling;
+				}
+				return str;
+			}},
 			{field: 'zhuanye', title: '专业', sort: true},
 			{field: 'danwei', title: '单位', sort: true},
 			{field: 'status', title: '状态',templet:'#status', sort: true},
