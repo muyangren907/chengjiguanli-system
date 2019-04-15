@@ -191,3 +191,56 @@ function teacherNames($list = array())
 }
 
 
+
+// 上传文件
+function upload($list,$file)
+{
+    // 移动到框架应用根目录/uploads/ 目录下
+    $info = $file->move($list['url']);
+
+    // 如果上传成功
+    if($info){
+        // 成功上传后 获取上传信息
+        $list['category'] = $info->getExtension();
+        $list['url'] = $info->getSaveName();
+        $list['newname'] = $info->getFilename(); 
+        $list['hash'] = $info->hash('sha1');
+        $list['userid'] = session('userid');
+
+        // 实例化文件数据模型
+        $field = new \app\system\model\Fields;
+
+        // 判断文件是否已经上传，如果已经上传则退出
+        if($field->hasHash($list['hash'])){
+            $data = array(
+                'msg'=>'文件不能重复上传。',
+                'val'=>0
+            );
+            return $data;
+        }
+
+        //将文件信息保存
+        $data = $field->create($list);
+
+        if($data){
+            $data = array(
+                'msg'=>'上传成功'
+                ,'val'=>true
+                ,'url'=>'..\public\uploads\teacher\\'.$list['url']
+            );
+        }else{
+            $data = array(
+                'msg'=>'保存文件信息失败'
+                ,'val'=>false
+            );
+        }
+    }else{
+        // 上传失败获取错误信息
+        $data = array('msg'=>$file->getError(),'val'=>false,'url'=>null);
+    }
+
+    // 返回信息
+    return $data;
+}
+
+

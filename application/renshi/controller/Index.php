@@ -234,8 +234,7 @@ class Index extends Base
     public function delete($id)
     {
 
-        if($id == 'm')
-        {
+        if($id == 'm'){
             $id = request()->delete('ids');// 获取delete请求方式传送过来的数据并转换成数据
         }
 
@@ -275,7 +274,7 @@ class Index extends Base
         $list['set'] = array(
             'webtitle'=>'批量上传教师信息',
             'butname'=>'批传',
-            'formpost'=>'PUT',
+            'formpost'=>'POST',
             'url'=>'/teacher/createall',
         );
 
@@ -300,7 +299,7 @@ class Index extends Base
         // 判断表格是否正确
         if($teacherinfo[0][1] != "教师基本情况表" )
         {
-            $data = array('msg'=>'请使用模板上传','val'=>false,'url'=>null);
+            $data = array('msg'=>'请使用模板上传','val'=>0,'url'=>null);
             return json($data);
         }
 
@@ -345,49 +344,10 @@ class Index extends Base
         $data = $teacher->saveAll($teacherlist);
 
         // 返回添加结果
-        $data ? $data = ['msg'=>'数据上传成功','val'=>true] : ['msg'=>'数据上传失败','val'=>false];
+        $data ? $data = ['msg'=>'数据上传成功','val'=>1] : ['msg'=>'数据上传失败','val'=>0];
        
         return json($data);
     }
-
-    
-
-    // 上传文件
-    public function upload()
-    {
-        // 获取文件信息
-        $list['text'] = '教师名单';
-        
-        // $list['bianjitime'] = input('post.lastModifiedDate');
-        // $list['fieldsize'] = input('post.size');
-        // 获取表单上传文件 例如上传了001.jpg
-        $file = request()->file('file');
-        // $list['oldname']=$file->info->name;
-        // $list['size']=$file->info->size;
-        // 移动到框架应用根目录/uploads/ 目录下
-        $info = $file->move( '..\public\uploads\teacher');
-        dump($file);
-        if($info){
-            // 成功上传后 获取上传信息
-            $list['category'] = $info->getExtension();
-            $list['url'] = $info->getSaveName();
-            $list['newname'] = $info->getFilename(); 
-            
-
-            //将文件信息保存
-            $data = Fields::create($list);
-
-            $data ? $data = array('msg'=>'上传成功','val'=>true,'url'=>'..\public\uploads\teacher\\'.$list['url']) : $data = array('msg'=>'保存文件信息失败','val'=>false,'url'=>null);
-        }else{
-            // 上传失败获取错误信息
-            $data = array('msg'=>$file->getError(),'val'=>false,'url'=>null);
-        }
-
-        // 返回信息
-        return json($data);
-    }
-
-
 
     // 根据教师姓名、首拼、全拼搜索教师信息
     public function srcTeacher($str="")
@@ -396,8 +356,7 @@ class Index extends Base
         $data = array();
 
         // 判断是否存在数据，如果没有数据则返回。
-        if(strlen($str) <= 0)
-        {
+        if(strlen($str) <= 0){
             return json($data);
         }
 
@@ -414,6 +373,21 @@ class Index extends Base
                     ->append(['age'])
                     ->all();
         return json($list);
+    }
+
+    // 上传文件
+    public function upload()
+    {
+        // 获取文件信息
+        $list['text'] = $this->request->post('text');
+        $list['url'] = $this->request->post('url');
+
+        // 获取表单上传文件
+        $file = request()->file('file');
+        // 上传文件并返回结果
+        $data = upload($list,$file);
+
+        return json($data);
     }
 
 

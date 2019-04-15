@@ -2,31 +2,37 @@
 
 {block name="form"}
     <div class="layui-form-item">
-      <button type="button" class="layui-btn" id="test1">
-        <i class="layui-icon">&#xe67c;</i>上传图片
+      <button type="button" class="layui-btn" id="upload">
+        <i class="layui-icon">&#xe67c;</i>上传文件
       </button>
     </div>
     <form class="layui-form layui-form-pane" lay-filter="myform">
           <div class="layui-form-item">
-              <label for="xingming" class="layui-form-label">
+              <label for="url" class="layui-form-label">
                   <span class="x-red">*</span>文件路径
               </label>
               <div class="layui-input-block">
-                  <input type="text" id="xingming" name="xingming" lay-verify="required"
-                  autocomplete="off" class="layui-input " value="{$list.data.xingming|default=''}" placeholder="中文2-25个字符">
+                  <input type="text" id="url" name="url" lay-verify="required"
+                  autocomplete="off" class="layui-input " value="{$list.data.url|default=''}" placeholder="中文2-25个字符" disabled="true">
               </div>
           </div>
           <div class="layui-form-item">
-            <div class="layui-inline">
-              <label class="layui-form-label">
-                  <span class="x-red">*</span>单位
-              </label>
-              <div class="layui-input-inline" style="width: 45%; margin-right: 20px">
-                <input type="text" name="quanpin" placeholder="全拼" autocomplete="off" class="layui-input" lay-verify="required" value="{$list.data.quanpin|default=''}">
-              </div>
-              <div class="layui-input-inline" style="width: 25%;">
-                <input type="text" name="shoupin" placeholder="简拼" autocomplete="off" class="layui-input" lay-verify="required" value="{$list.data.shoupin|default=''}">
-              </div>
+            <label for="school" class="layui-form-label"><span class="x-red">*</span>现工作单位</label>
+            <div class="layui-input-block">
+              {php} $schoollist = schlist('校级','区级');{/php}
+              <select name="school" lay-verify="required">
+                <option value=""></option>
+                {volist name="schoollist" id="vo"}
+                  <option value="{$vo.id}"
+                  {present name="$list.data.school"}
+                    {eq name="$list.data.school" value="$vo.id" }
+                      selected
+                    {/eq}
+                  {/present}>
+                    {$vo.title}
+                  </option>
+                {/volist}
+              </select>
             </div>
           </div>
           <div class="layui-form-item" style="text-align: right;">
@@ -45,13 +51,17 @@ layui.use('upload', function(){
    
   //执行实例
   var uploadInst = upload.render({
-    elem: '#test1' //绑定元素
+    elem: '#upload' //绑定元素
     ,url: "{:url('upload')}" //上传接口
     ,done: function(res){
-      //上传完毕回调
+      if(res.val == 1){
+        $('#url').val(res.url);
+      }
+      layer.msg(res.msg);
     }
     ,data: {
       text: '教师信息'
+      ,url:'..\\public\\uploads\\teacher'
 
     }
     ,acceptMime:'.xls,.xlsx'

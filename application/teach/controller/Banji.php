@@ -27,7 +27,6 @@ class Banji extends Base
     // 获取班级信息列表
     public function ajaxData()
     {
-<<<<<<< HEAD
         // 获取参数
         $src = $this->request
                 ->only([
@@ -54,62 +53,6 @@ class Banji extends Base
         $data = $data->slice($limit_start,$limit_length);
        
         // 重组返回内容
-=======
-
-        // 获取DT的传值
-        $getdt = request()->param();
-
-        //得到排序的方式
-        $order = $getdt['order'][0]['dir'];
-        //得到排序字段的下标
-        $order_column = $getdt['order'][0]['column'];
-        //根据排序字段的下标得到排序字段
-         $order_field = $getdt['columns'][$order_column]['name'];
-        if($order_field=='')
-        {
-            $order_field = $getdt['columns'][$order_column]['data'];
-        }
-        //得到limit参数
-        $limit_start = $getdt['start'];
-        $limit_length = $getdt['length'];
-        //得到搜索的关键词
-        $search = $getdt['search']['value'];
-
-
-        // 获取记录集总数
-        $cnt = BJ::count();
-        //查询数据
-        $data =BJ::field('id,school,ruxuenian,paixu,status')
-            ->order([$order_field=>$order])
-            ->limit($limit_start,$limit_length)
-            ->all();
-        
-
-        // 如果需要查询
-        if($search){
-            $data = BJ::field('id,school,ruxuenian,paixu,status')
-                ->order([$order_field=>$order])
-                ->limit($limit_start,$limit_length)
-                // ->whereOr('title','like','%'.$search.'%')
-                ->whereOr('school','in',function($query) use($search)
-                {
-                    $query->name('school')
-                        ->where('title','like','%'.$search.'%')
-                        ->field('id');
-                })
-                ->where('paixu','<',26)
-                ->whereOr('ruxuenian',$search)
-                ->all();
-        }
-
-        $datacnt = $data->count();
-        //追加班级名称
-        $data = $data->append(['title','stusum']);
-        
-        
-
-
->>>>>>> 0d5bedf7255ec98dc5b204a5a7b1de71ce51cb08
         $data = [
             'code'=> 0 , // ajax请求次数，作为标识符
             'msg'=>"",  // 获取到的结果数(每页显示数量)
