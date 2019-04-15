@@ -66,6 +66,12 @@
 		<button class="layui-btn" lay-event="upload">
 			<i class="iconfont">&#xe71d;</i> 导入数据
 		</button>
+		<button class="layui-btn" lay-event="download">
+			<i class="iconfont">&#xe714;</i> 下载模板
+		</button>
+		<button class="layui-btn" lay-event="downloadvba">
+			<i class="iconfont">&#xe714;</i> 下载汉字转拼音VBA
+		</button>
 	</div>
 </script>
 <!-- 记录操作按钮模板 -->
@@ -168,7 +174,13 @@ layui.use(['table','laypage','form','cjgl'], function(){
             cjgl.add('添加教师','/teacher/create','','',true);
             break;
           case 'upload':
-            cjgl.add('导入教师','/teacher/create','','',true);
+            cjgl.add('导入教师','/teacher/createall','','',true);
+            break;
+          case 'download':
+          	window.open("/renshi/index/download");
+            break;
+          case 'downloadvba':
+          	window.open("/renshi/index/downloadVba");
             break;
         };
     });

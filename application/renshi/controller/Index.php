@@ -271,6 +271,17 @@ class Index extends Base
     // 批量添加
     public function createAll()
     {
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'批量上传教师信息',
+            'butname'=>'批传',
+            'formpost'=>'PUT',
+            'url'=>'/teacher/createall',
+        );
+
+        // 模板赋值
+        $this->assign('list',$list);
+        // 渲染
         return $this->fetch();
     }
 
@@ -346,18 +357,22 @@ class Index extends Base
     {
         // 获取文件信息
         $list['text'] = '教师名单';
-        $list['oldname']=input('post.name');
-        $list['bianjitime'] = input('post.lastModifiedDate');
-        $list['fieldsize'] = input('post.size');
+        
+        // $list['bianjitime'] = input('post.lastModifiedDate');
+        // $list['fieldsize'] = input('post.size');
         // 获取表单上传文件 例如上传了001.jpg
         $file = request()->file('file');
+        // $list['oldname']=$file->info->name;
+        // $list['size']=$file->info->size;
         // 移动到框架应用根目录/uploads/ 目录下
         $info = $file->move( '..\public\uploads\teacher');
+        dump($file);
         if($info){
             // 成功上传后 获取上传信息
             $list['category'] = $info->getExtension();
             $list['url'] = $info->getSaveName();
             $list['newname'] = $info->getFilename(); 
+            
 
             //将文件信息保存
             $data = Fields::create($list);
