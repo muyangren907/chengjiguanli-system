@@ -16,7 +16,6 @@ class Teacher extends Base
         $zhiwu = $src['zhiwu'];
         $danwei = $src['danwei'];
         $xueli = $src['xueli'];
-        $subject = $src['subject'];
         $searchval = $src['searchval'];
 
 
@@ -29,9 +28,6 @@ class Teacher extends Base
                 })
             ->when(count($xueli)>0,function($query) use($xueli){
                     $query->where('xueli','in',$xueli);
-                })
-            ->when(count($subject)>0,function($query) use($subject){
-                    $query->where('subject','in',$subject);
                 })
             ->when(strlen($searchval)>0,function($query) use($searchval){
                     $query->where('xingming|quanpin|shoupin','like','%'.$searchval.'%');

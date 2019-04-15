@@ -136,6 +136,7 @@ class School extends Base
             'url'=>'/school/'.$id,
         );
 
+
         // 模板赋值
         $this->assign('list',$list);
         // 渲染

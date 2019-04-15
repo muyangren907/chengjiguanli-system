@@ -22,11 +22,29 @@
           </div>
         </div>
         <div class="layui-form-item" style="margin-bottom: 0; botton">
-		    <label for="xingzhi" class="layui-form-label" style="height: 100%">单位性质</label>
+		    <label for="wanwei" class="layui-form-label" style="height: 100%">单位</label>
 		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-		    	{php} $category = getCategory(101);{/php}
+		    	{php} $schoollist = schlist('校级','校级');{/php}
+		    	{volist name="schoollist" id="vo"}
+		    		<input type="checkbox" name="wanwei" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+		    	{/volist}
+		    </div>
+		</div>
+		<div class="layui-form-item" style="margin-bottom: 0; botton">
+		    <label for="zhiwu" class="layui-form-label" style="height: 100%">职务</label>
+		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+		    	{php} $category = getCategory(107);{/php}
 		    	{volist name="category" id="vo"}
-		    		<input type="checkbox" name="xingzhi" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+		    		<input type="checkbox" name="zhiwu" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+		    	{/volist}
+		    </div>
+		</div>
+		<div class="layui-form-item" style="margin-bottom: 0; botton">
+		    <label for="xueli" class="layui-form-label" style="height: 100%">学历</label>
+		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+		    	{php} $category = getCategory(105);{/php}
+		    	{volist name="category" id="vo"}
+		    		<input type="checkbox" name="xueli[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 		    	{/volist}
 		    </div>
 		</div>
@@ -40,10 +58,13 @@
 <script type="text/html" id="toolbarDemo">
 	<div class="layui-btn-container">
 		<button class="layui-btn layui-btn-danger" lay-event="dels">
-			<i class="iconfont">&#xe69d;</i>批量删除
+			<i class="iconfont">&#xe69d;</i> 批量删除
 		</button>
 		<button class="layui-btn" lay-event="add">
-			<i class="iconfont">&#xe6b9;</i>添加
+			<i class="iconfont">&#xe6b9;</i> 添加
+		</button>
+		<button class="layui-btn" lay-event="upload">
+			<i class="iconfont">&#xe71d;</i> 导入数据
 		</button>
 	</div>
 </script>
@@ -81,39 +102,29 @@ layui.use(['table','laypage','form','cjgl'], function(){
 			{field: 'xingming', title: '姓名',sort: true},
 			{field: 'sex', title: '性别',sort: true},
 			{field: "shengri",title: '周岁',sort: true,templet:function(d){
-				var str='';
-				if(d.age)
-				{
-					str = d.age;
-				}
-				return str;
+				return d.age;
 			}},
 			{field: 'xueli', title: '学历',sort: true,templet:function(d){
 				var str='';
-				if(d.dw_jibie)
+				if(d.js_xueli)
 				{
-					str = d.dw_jibie.title;
+					str = d.js_xueli.title;
 				}
 				return str;
 			}} ,
-			{field: 'biye', title: '毕业院校',sort: true,templet:function(d){
-				var str='';
-				if(d.dw_xueduan)
-				{
-					str = d.dw_xueduan.title;
-				}
-				return str;
-			}},
+			{field: 'biye', title: '毕业院校',sort: true},
 			{field: 'worktime', title: '工龄', sort: true,templet:function(d){
-				var str='';
-				if(d.gongling)
-				{
-					str = d.gongling;
-				}
-				return str;
+				return d.gongling;
 			}},
 			{field: 'zhuanye', title: '专业', sort: true},
-			{field: 'danwei', title: '单位', sort: true},
+			{field: 'danwei', title: '单位', sort: true,templet:function(d){
+				var str='';
+				if(d.js_danwei)
+				{
+					str = d.js_danwei.jiancheng;
+				}
+				return str;
+			}},
 			{field: 'status', title: '状态',templet:'#status', sort: true},
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
 		]],
@@ -155,6 +166,9 @@ layui.use(['table','laypage','form','cjgl'], function(){
             break;
           case 'add':
             cjgl.add('添加教师','/teacher/create','','',true);
+            break;
+          case 'upload':
+            cjgl.add('导入教师','/teacher/create','','',true);
             break;
         };
     });

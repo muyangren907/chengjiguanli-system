@@ -52,10 +52,10 @@
 <script type="text/html" id="toolbarDemo">
 	<div class="layui-btn-container">
 		<button class="layui-btn layui-btn-danger" lay-event="dels">
-			<i class="iconfont">&#xe69d;</i>批量删除
+			<i class="iconfont">&#xe69d;</i> 批量删除
 		</button>
 		<button class="layui-btn" lay-event="add">
-			<i class="iconfont">&#xe6b9;</i>添加
+			<i class="iconfont">&#xe6b9;</i> 添加
 		</button>
 	</div>
 </script>
@@ -151,7 +151,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
             cjgl.delAll(checkStatus,'/banji','mytable');
             break;
           case 'add':
-            cjgl.add('添加班级','/banji/create','400','400');
+            cjgl.add('添加班级','/banji/create','400','300');
             break;
         };
     });
@@ -177,7 +177,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
           cjgl.del(obj,"/banji");
           break;
         case 'edit':// 编辑
-          cjgl.add('编辑班级','/banji/'+obj.data.id+'/edit','400','400');
+          cjgl.add('编辑班级','/banji/'+obj.data.id+'/edit','400','300');
           break;
         case 'status':// 状态
           cjgl.status(obj,"{:url('setstatus')}");

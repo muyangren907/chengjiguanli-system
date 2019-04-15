@@ -45,7 +45,6 @@ class Index extends Base
                     'zhiwu'=>array(),
                     'danwei'=>array(),
                     'xueli'=>array(),
-                    'subject'=>array(),
                     'searchval'=>''
                 ],'POST');
 
@@ -80,13 +79,17 @@ class Index extends Base
     public function create()
     {
         // 设置页面标题
-        $list['title'] = '添加教师';
+        $list['set'] = array(
+            'webtitle'=>'添加老师',
+            'butname'=>'添加',
+            'formpost'=>'POST',
+            'url'=>'/teacher',
+        );
 
         // 模板赋值
         $this->assign('list',$list);
-
         // 渲染
-        return $this->fetch();
+        return $this->fetch('create');
     }
 
     

@@ -16,7 +16,7 @@
     		    <div class="layui-input-block">
     		    	{php} $category = getCategory(0);{/php}
     		      <select name="pid">
-    		      	<option value=""></option>
+    		      	<option value="">顶级类别</option>
     		      	{volist name="category" id="vo"}
                   <option value="{$vo.id}"
                   {present name="$list.data.pid"}
@@ -36,7 +36,7 @@
               </label>
               <div class="layui-input-block">
                   <input type="input" id="paixu" name="paixu" lay-verify=""
-                  autocomplete="off" class="layui-input" value="" placeholder="数字1-999">
+                  autocomplete="off" class="layui-input" value="{$list.data.paixu|default=''}" placeholder="数字1-999">
               </div>
           </div>
           <div class="layui-form-item" style="text-align: right;">

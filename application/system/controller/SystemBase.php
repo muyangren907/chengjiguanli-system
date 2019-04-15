@@ -11,7 +11,7 @@ use app\system\model\SystemBase as  sysbasemod;
 class SystemBase extends Base
 {
     // 系统设置
-    public function index()
+    public function edit()
     {
         // 获取用户信息
         $list['data'] = sysbasemod::field('id,webtitle,keywords,description,thinks,danwei')
