@@ -117,6 +117,7 @@ class Rule extends Seeder
                     ['title'=>'查看','name'=>'renshi/Index/read','paixu'=>4,'pid'=>402,],
                     ['title'=>'状态','name'=>'renshi/Index/setStatus','paixu'=>5,'pid'=>402],
                     ['title'=>'查询教师','name'=>'renshi/Index/srcTeacher','paixu'=>6,'pid'=>402],
+                    ['title'=>'批量上传','name'=>'renshi/Index/createAll','paixu'=>7,'pid'=>401],
 
 
                     // 教务管理
