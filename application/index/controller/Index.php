@@ -48,7 +48,7 @@ class Index extends Base
                         ->field('id,title,font,name,pid')
                         ->with([
                             'authCid'=>function($query){
-                                $query->field('id,title,name,pid,url');
+                                $query->where('status&ismenu',1)->field('id,title,name,pid,url');
                             },
                         ])
                         ->order(['paixu'])
