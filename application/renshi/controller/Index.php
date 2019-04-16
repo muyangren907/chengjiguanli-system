@@ -80,7 +80,7 @@ class Index extends Base
     {
         // 设置页面标题
         $list['set'] = array(
-            'webtitle'=>'添加老师',
+            'webtitle'=>'添加教师',
             'butname'=>'添加',
             'formpost'=>'POST',
             'url'=>'/teacher',
@@ -179,7 +179,7 @@ class Index extends Base
 
         // 设置页面标题
         $list['set'] = array(
-            'webtitle'=>'编辑单位',
+            'webtitle'=>'编辑教师',
             'butname'=>'修改',
             'formpost'=>'PUT',
             'url'=>'/teacher/'.$id,

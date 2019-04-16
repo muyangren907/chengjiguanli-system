@@ -52,14 +52,9 @@ class Student extends Base
         return $sex[$value];
     }
 
-    // // 获取入学年
-    // public function getNianjiAttr()
-    // {
-    //     return $this->stuBanji()->ruxuenian;
-    // }
 
     // 数据筛选
-    public function searchMany($search)
+    public function search($src)
     {
         // 设置变量
         $schoolid = $search['school'];
@@ -67,11 +62,15 @@ class Student extends Base
         $order = $search['order'];
         $order_field = $search['order_field'];
         $search = $search['search'];
+        // 获取参数
+        $school = $src['school'];
+        $banji = $src['banji'];
+        $searchval = $src['searchval'];
 
 
 
-        $data = $this->field('id,xingming,sex,shengri,banji,school,status')
-                ->when(strlen($schoolid)>0,function($query) use($schoolid){
+        $data = $this->order([$src['field'] =>$src['order']])
+                ->when(strlen($school)>0,function($query) use($schoolid){
                     $query->where('school','in',$schoolid);
                 })
                 ->when(count($banji)>0,function($query) use($banji){
