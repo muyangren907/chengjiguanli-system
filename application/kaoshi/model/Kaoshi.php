@@ -8,9 +8,49 @@ use app\common\model\Base;
 
 class Kaoshi extends Base
 {
+    // 查询所有单位
+    public function search($src)
+    {
+        // 整理变量
+        // $xingzhi = $src['xingzhi'];
+        // $searchval = $src['searchval'];
+
+        // 查询数据
+        $data = $this
+            ->order([$src['field'] =>$src['order']])
+            // ->when(count($xingzhi)>0,function($query) use($xingzhi){
+            //         $query->where('xingzhi','in',$xingzhi);
+            //     })
+            // ->when(strlen($searchval)>0,function($query) use($searchval){
+            //         $query->where('title|jiancheng','like','%'.$searchval.'%');
+            //     })
+            // ->with(
+            //     [
+            //         'dwXingzhi'=>function($query){
+            //             $query->field('id,title');
+            //         },
+            //         'dwJibie'=>function($query){
+            //             $query->field('id,title');
+            //         },
+            //         'dwXueduan'=>function($query){
+            //             $query->field('id,title');
+            //         },
+            //     ]
+            // )
+            // ->withCount(
+            //     [
+            //         'dwTeacher'=>function($query){
+            //             $query->where('status',1);
+            //         }
+            //     ]
+            // )
+            ->select();
+        return $data;
+    }
+
     // 开始时间修改器
     public function setBfdateAttr($value)
-  {
+    {
         return strtotime($value);
     }  
 
