@@ -78,7 +78,7 @@ class Student extends Base
         $list['set'] = array(
             'webtitle'=>'添加学生',
             'butname'=>'添加',
-            'formpost'=>'POOST',
+            'formpost'=>'POST',
             'url'=>'/student',
         );
 
@@ -137,6 +137,10 @@ class Student extends Base
 
         // 获取学生信息
         $list['data'] = STU::field('id,xingming,sex,shenfenzhenghao,shengri,banji,school,status')
+            ->with(['stuBanji'=>function($query){
+                $query->field('id,ruxuenian,paixu');
+            }
+            ])
             ->find($id);
 
         // 设置页面标题
@@ -144,7 +148,7 @@ class Student extends Base
             'webtitle'=>'编辑学生',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'/sutdent/'.$id,
+            'url'=>'/student/'.$id,
         );
 
         // 模板赋值
@@ -231,6 +235,17 @@ class Student extends Base
     // 批量添加
     public function createAll()
     {
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'批量上传学生信息',
+            'butname'=>'批传',
+            'formpost'=>'POST',
+            'url'=>'/student/createall',
+        );
+
+        // 模板赋值
+        $this->assign('list',$list);
+        // 渲染
         return $this->fetch();
     }
 
@@ -362,7 +377,7 @@ class Student extends Base
     // 下载表格模板
     public function download()
     {
-        $download =  new \think\response\Download('student_template.xlsx');
+        $download =  new \think\response\Download('uploads\student\student_template.xlsx');
         return $download->name('student_template.xlsx');
     }
 

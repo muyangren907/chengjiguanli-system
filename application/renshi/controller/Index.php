@@ -394,14 +394,14 @@ class Index extends Base
     // 下载表格模板
     public function download()
     {
-        $download =  new \think\response\Download('TeacherInfo.xlsx');
+        $download =  new \think\response\Download('uploads\teacher\TeacherInfo.xlsx');
         return $download->name('TeacherInfo.xlsx');
     }
 
     // 下载表格VBA代码
     public function downloadVba()
     {
-        $download =  new \think\response\Download('jiaoShiXingMingVBA.bas');
+        $download =  new \think\response\Download('uploads\teacher\jiaoShiXingMingVBA.bas');
         return $download->name('TeacherVBA');
     }
 

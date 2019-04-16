@@ -292,14 +292,13 @@ class Banji extends Base
     public function mybanji()
     {
         $school = input('post.school');
-        $nianji = input('post.nianji');
+        $ruxuenian = input('post.ruxuenian');
         // 获取班级id列表
         $list = BJ::where('school',$school)
-                ->where('ruxuenian',$nianji)
+                ->where('ruxuenian',$ruxuenian)
                 ->order('paixu')
+                ->append(['title'])
                 ->select();
-        // 追加班级名
-        $list = $list->append(['title']);
 
         // 声明班级空数组
         $banji = array();

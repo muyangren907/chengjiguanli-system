@@ -10,11 +10,6 @@ use app\teach\model\Banji;
 class Student extends Base
 {
     // 班级关联
-    public function stuNanji()
-    {
-        return $this->belongsTo('\app\teach\model\Banji','banji','id')->bind(['myruxuenian'=>'ruxuenian']);
-    }
-    // 班级关联
     public function stuBanji()
     {
         return $this->belongsTo('\app\teach\model\Banji','banji','id');
@@ -56,12 +51,6 @@ class Student extends Base
     // 数据筛选
     public function search($src)
     {
-        // 设置变量
-        $schoolid = $search['school'];
-        $banji = $search['banji'];
-        $order = $search['order'];
-        $order_field = $search['order_field'];
-        $search = $search['search'];
         // 获取参数
         $school = $src['school'];
         $banji = $src['banji'];
@@ -70,16 +59,24 @@ class Student extends Base
 
 
         $data = $this->order([$src['field'] =>$src['order']])
-                ->when(strlen($school)>0,function($query) use($schoolid){
-                    $query->where('school','in',$schoolid);
+                ->when(count($school)>0,function($query) use($school){
+                    $query->where('school','in',$school);
                 })
                 ->when(count($banji)>0,function($query) use($banji){
                     $query->where('banji','in',$banji);
                 })
-                ->when(strlen($search)>0,function($query) use($search){
-                        $query->where('xingming','like','%'.$search.'%')->field('id');
+                ->when(strlen($searchval)>0,function($query) use($searchval){
+                        $query->where('xingming','like','%'.$searchval.'%')->field('id');
                 })
-                ->order([$order_field=>$order])
+                ->with([
+                    'stuSchool'=>function($query){
+                        $query->field('id,title');
+                    },
+                    'stuBanji'=>function($query){
+                        $query->append(['title']);
+                    }
+                ])
+                ->append(['age'])
                 ->select();
 
         return $data;

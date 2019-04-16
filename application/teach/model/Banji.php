@@ -36,9 +36,6 @@ class Banji extends Base
                     'glStudent'=>function($query){
                         $query->count();
                     },
-                    // 'dwXueduan'=>function($query){
-                    //     $query->field('id,title');
-                    // },
                 ]
             )
             ->append(['title'])

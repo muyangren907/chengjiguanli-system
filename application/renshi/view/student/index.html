@@ -54,9 +54,6 @@
 {/block}
 {block name="table"}
 	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
-	<div class="layui-form layui-form-pane layui-col-md12 x-so" id="search" lay-filter="search">
-		<i class="layui-icon layui-icon-404" style="font-size: 500px"></i>   
-</div>
 {/block}
 {block name="myjs"}
 	<!-- 表格上面按钮模板 -->
@@ -112,24 +109,19 @@ layui.use(['table','laypage','form','cjgl'], function(){
 			{field: "shengri",title: '周岁',sort: true,templet:function(d){
 				return d.age;
 			}},
-			{field: 'xueli', title: '学历',sort: true,templet:function(d){
+			{field: 'school', title: '学校',minWidth:200,sort: true,templet:function(d){
 				var str='';
-				if(d.js_xueli)
+				if(d.stu_school)
 				{
-					str = d.js_xueli.title;
+					str = d.stu_school.title;
 				}
 				return str;
 			}} ,
-			{field: 'biye', title: '毕业院校',sort: true},
-			{field: 'worktime', title: '工龄', sort: true,templet:function(d){
-				return d.gongling;
-			}},
-			{field: 'zhuanye', title: '专业', sort: true},
-			{field: 'danwei', title: '单位', sort: true,templet:function(d){
+			{field: 'banji', title: '班级',sort: true,templet:function(d){
 				var str='';
-				if(d.js_danwei)
+				if(d.stu_banji)
 				{
-					str = d.js_danwei.jiancheng;
+					str = d.stu_banji.title;
 				}
 				return str;
 			}},
@@ -179,10 +171,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
             cjgl.add('导入学生','/student/createall','','',true);
             break;
           case 'download':
-          	window.open("/renshi/index/download");
-            break;
-          case 'downloadvba':
-          	window.open("/renshi/index/downloadVba");
+          	window.open("/renshi/student/download");
             break;
         };
     });
