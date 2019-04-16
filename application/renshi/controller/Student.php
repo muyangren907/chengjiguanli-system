@@ -264,7 +264,7 @@ class Student extends Base
         // 判断表格是否正确
         if($stuinfo[0][0] != "学生信息上传模板" )
         {
-            $data = array('msg'=>'请使用模板上传','val'=>false,'url'=>null);
+            $data = array('msg'=>'请使用模板上传','val'=>0,'url'=>null);
             return json($data);
         }
         
@@ -333,9 +333,7 @@ class Student extends Base
         $data = $student->saveAll($students);
         // $cnt = $data->count();
 
-        $data ? $data = ['msg'=>'数据同步成功','val'=>true] : ['msg'=>'数据同步失败','val'=>false];
-        
-
+        $data ? $data = ['msg'=>'数据同步成功','val'=>1] : ['msg'=>'数据同步失败','val'=>0];
         
         return json($data);
     }
@@ -346,31 +344,14 @@ class Student extends Base
     public function upload()
     {
         // 获取文件信息
-        $list['text'] = '学生名单';
-        $list['oldname']=input('post.name');
-        $list['bianjitime'] = input('post.lastModifiedDate');
-        $list['fieldsize'] = input('post.size');
+        $list['text'] = $this->request->post('text');
+        $list['serurl'] = $this->request->post('serurl');
 
-        // 获取表单上传文件 例如上传了001.jpg
+        // 获取表单上传文件
         $file = request()->file('file');
-        // 移动到框架应用根目录/uploads/ 目录下
-        $info = $file->move( '..\public\uploads\student');
-        if($info){
-            // 成功上传后 获取上传信息
-            $list['category'] = $info->getExtension();
-            $list['url'] = $info->getSaveName();
-            $list['newname'] = $info->getFilename(); 
+        // 上传文件并返回结果
+        $data = upload($list,$file);
 
-            //将文件信息保存
-            $data = Fields::create($list);
-
-            $data ? $data = array('msg'=>'上传成功','val'=>true,'url'=>'..\public\uploads\student\\'.$list['url']) : $data = array('msg'=>'保存文件信息失败','val'=>false,'url'=>null);
-        }else{
-            // 上传失败获取错误信息
-            $data = array('msg'=>$file->getError(),'val'=>false,'url'=>null);
-        }
-
-        // 返回信息
         return json($data);
     }
 

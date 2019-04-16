@@ -17,9 +17,9 @@
               </div>
           </div>
           <div class="layui-form-item">
-            <label for="school" class="layui-form-label"><span class="x-red">*</span>现工作单位</label>
+            <label for="school" class="layui-form-label"><span class="x-red">*</span>所在学校</label>
             <div class="layui-input-block">
-              {php} $schoollist = schlist('校级','区级');{/php}
+              {php} $schoollist = schlist('校级','校级');{/php}
               <select name="school" lay-verify="required">
                 <option value=""></option>
                 {volist name="schoollist" id="vo"}
@@ -60,8 +60,8 @@ layui.use('upload', function(){
       layer.msg(res.msg);
     }
     ,data: {
-      text: '教师信息'
-      ,url:'..\\public\\uploads\\teacher'
+      text: '学生信息'
+      ,serurl:'..\\public\\uploads\\student\\'
 
     }
     ,acceptMime:'.xls,.xlsx'

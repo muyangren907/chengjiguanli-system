@@ -380,7 +380,7 @@ class Index extends Base
     {
         // 获取文件信息
         $list['text'] = $this->request->post('text');
-        $list['url'] = $this->request->post('url');
+        $list['serurl'] = $this->request->post('serurl');
 
         // 获取表单上传文件
         $file = request()->file('file');

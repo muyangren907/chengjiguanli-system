@@ -196,7 +196,7 @@ function teacherNames($list = array())
 function upload($list,$file)
 {
     // 移动到框架应用根目录/uploads/ 目录下
-    $info = $file->move($list['url']);
+    $info = $file->move($list['serurl']);
 
     // 如果上传成功
     if($info){
@@ -226,7 +226,7 @@ function upload($list,$file)
             $data = array(
                 'msg'=>'上传成功'
                 ,'val'=>true
-                ,'url'=>'..\public\uploads\teacher\\'.$list['url']
+                ,'url'=>$list['serurl'].$list['url']
             );
         }else{
             $data = array(
