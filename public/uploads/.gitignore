@@ -1,7 +1,7 @@
-teacher/
-!teacher/jiaoShiXingMingVBA.bas
-!teacher/TeacherInfo.xlsx
-student/
-!student/student_template.xlsx
-jiaoshirongyu/
-!jiaoshirongyu/404.png
+/teacher
+!/teacher/jiaoShiXingMingVBA.bas
+!/teacher/TeacherInfo.xlsx
+/student
+!/student/student_template.xlsx
+/jiaoshirongyu
+!/jiaoshirongyu/404.png
