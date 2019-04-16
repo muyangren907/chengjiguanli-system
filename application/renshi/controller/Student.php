@@ -39,11 +39,24 @@ class Student extends Base
                     'field'=>'update_time',
                     'order'=>'asc',
                     'school'=>array(),
-                    'nianji'=>array(),
-                    'banji'=>array(),
+                    'ruxuenian'=>array(),
+                    'paixu'=>array(),
                     'searchval'=>''
                 ],'POST');
 
+        $ruxuenian = $src['ruxuenian'];
+        $paixu = $src['paixu'];
+
+        // 实例化班级数据模型
+        $banji = new  \app\teach\model\Banji;
+        $src['banji'] = $banji->where('status',1)
+                    ->when(count($ruxuenian)>0,function($query) use($ruxuenian){
+                        $query->where('ruxuenian','in',$ruxuenian);
+                    })
+                    ->when(count($paixu)>0,function($query) use($paixu){
+                        $query->where('paixu','in',$paixu);
+                    })
+                    ->column('id');
 
         // 实例化
         $stu = new STU;

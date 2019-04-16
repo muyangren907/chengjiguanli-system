@@ -21,16 +21,16 @@
               autocomplete="off" class="layui-input">
           </div>
         </div>
-        <div class="layui-form-item" style="margin-bottom: 0; botton">
-		    <label for="wanwei" class="layui-form-label" style="height: 100%">单位</label>
+        <div class="layui-form-item">
+		    <label for="danwei" class="layui-form-label" style="height: 100%">单位</label>
 		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
 		    	{php} $schoollist = schlist('校级','校级');{/php}
 		    	{volist name="schoollist" id="vo"}
-		    		<input type="checkbox" name="wanwei" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+		    		<input type="checkbox" name="danwei" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 		    	{/volist}
 		    </div>
 		</div>
-		<div class="layui-form-item" style="margin-bottom: 0; botton">
+		<div class="layui-form-item">
 		    <label for="zhiwu" class="layui-form-label" style="height: 100%">职务</label>
 		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
 		    	{php} $category = getCategory(107);{/php}

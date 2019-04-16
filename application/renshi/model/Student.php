@@ -62,12 +62,13 @@ class Student extends Base
                 ->when(count($school)>0,function($query) use($school){
                     $query->where('school','in',$school);
                 })
-                ->when(count($banji)>0,function($query) use($banji){
-                    $query->where('banji','in',$banji);
-                })
+                // ->when(count($banji)>0,function($query) use($banji){
+                //     $query->where('banji','in',$banji);
+                // })
                 ->when(strlen($searchval)>0,function($query) use($searchval){
                         $query->where('xingming','like','%'.$searchval.'%')->field('id');
                 })
+                ->where('banji','in',$banji)
                 ->with([
                     'stuSchool'=>function($query){
                         $query->field('id,title');

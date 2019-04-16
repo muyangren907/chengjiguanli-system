@@ -23,31 +23,38 @@
               autocomplete="off" class="layui-input">
           </div>
         </div>
-        <div class="layui-form-item" style="margin-bottom: 0; botton">
-		    <label for="wanwei" class="layui-form-label" style="height: 100%">单位</label>
+        <div class="layui-form-item">
+		    <label for="school" class="layui-form-label" style="height: 100%">学校</label>
 		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
 		    	{php} $schoollist = schlist('校级','校级');{/php}
 		    	{volist name="schoollist" id="vo"}
-		    		<input type="checkbox" name="wanwei" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+		    		<input type="checkbox" name="school" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 		    	{/volist}
 		    </div>
 		</div>
-		<div class="layui-form-item" style="margin-bottom: 0; botton">
-		    <label for="zhiwu" class="layui-form-label" style="height: 100%">职务</label>
+		<div class="layui-form-item">
+		    <label for="ruxuenian" class="layui-form-label" style="height: 100%">年级 </label>
 		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-		    	{php} $category = getCategory(107);{/php}
-		    	{volist name="category" id="vo"}
-		    		<input type="checkbox" name="zhiwu" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
-		    	{/volist}
+		    	{php} $njlist = nianjiList();{/php}
+		    	{foreach $njlist as $key=>$vo}
+		    		<input type="checkbox" name="ruxuenian" title="{$vo}" value="{$key}" lay-skin="primary">
+		    	{/foreach}
 		    </div>
 		</div>
 		<div class="layui-form-item" style="margin-bottom: 0; botton">
-		    <label for="xueli" class="layui-form-label" style="height: 100%">学历</label>
+		    <label for="paixu" class="layui-form-label" style="height: 100%">班级</label>
 		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-		    	{php} $category = getCategory(105);{/php}
-		    	{volist name="category" id="vo"}
-		    		<input type="checkbox" name="xueli[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
-		    	{/volist}
+		    	{php}
+		    		$banji = new \app\teach\model\Banji;
+		    		$ruxuenian = array_keys($njlist);
+		    		$paixu = $banji->where('status',1)
+		    				->where('ruxuenian','in',$ruxuenian)
+		    				->max('paixu');
+		    		$bjlist = banjinamelist();
+		    	{/php}
+		    	{for start="1" end="$paixu+1" }
+		    		<input type="checkbox" name="paixu[]" title="{$bjlist[$i]}" value="{$i}" lay-skin="primary">
+		    	{/for}
 		    </div>
 		</div>
 	</div>
