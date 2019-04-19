@@ -19,9 +19,6 @@ class Kaoshi extends Validate
         'category|分类'      =>  'require|number',
         'bfdate|考试时间'      =>  'require|date',
         'enddate|考试时间'      =>  'require|date',
-        'nianji|参考年级'      =>  'require|array',
-        'subject|参考学科'      =>  'require|array',
-        'manfen|满分'      =>  'require|array',
     ];
     
     /**

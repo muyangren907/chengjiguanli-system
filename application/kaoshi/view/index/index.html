@@ -42,7 +42,7 @@
 			<i class="iconfont">&#xe69d;</i> 批量删除
 		</button>
 		<button class="layui-btn" lay-event="add">
-			<i class="iconfont">&#xe6b9;</i> 添加
+			<i class="iconfont">&#xe6b9;</i> 新建
 		</button>
 	</div>
 </script>
@@ -51,8 +51,9 @@
 	<a class="layui-btn-xs" lay-event="status" title="{{ d.status == 1 ? '禁用' : '启用' }}">
 		<i class="layui-icon {{ d.status == 1 ? 'layui-icon-close' : 'layui-icon-ok' }}"></i>
 	</a>
-	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
+	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon layui-icon-edit"></i></a>
 	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
+	<a class="layui-btn-xs" lay-event="more" title="更多操作"><i class="layui-icon layui-icon-more-vertical"></i></a>
 </script>
 <!-- 表格操作 -->
 <script>
@@ -78,33 +79,44 @@ layui.use(['table','laypage','form','cjgl'], function(){
 		cols: [[ //表头
 			{type:'checkbox', fixed: 'left'},
 			{field: 'title', title: '单位名称',sort: true, minWidth:240},
-			{field: 'jiancheng', title: '单位简称', minWidth:100,sort: true},
-			{field: "xingzhi",title: '性质',sort: true,templet:function(d){
+			{field: 'category', title: '考试分类', minWidth:100,sort: true,templet:function(d){
 				var str='';
-				if(d.dw_xingzhi)
+				if(d.ks_category)
 				{
-					str = d.dw_xingzhi.title;
+					str = d.ks_category.title;
 				}
 				return str;
 			}},
-			{field: 'jibie', title: '级别',sort: true,templet:function(d){
+			{field: "",title: '参考年级',templet:function(d){
 				var str='';
-				if(d.dw_jibie)
+				if(d.ks_nianji.length>0)
 				{
-					str = d.dw_jibie.title;
+					for (var k = 0, length = d.ks_nianji.length; k < length; k++) {
+						if(k == 0){
+							str = d.ks_nianji[k].nianjiname;
+						}else{
+							str =str+'、'+d.ks_nianji[k].nianjiname;
+						}
+					}
+				}
+				return str;
+			}},
+			{field: '', title: '参考学科',templet:function(d){
+				var str='';
+				if(d.ks_subject.length>0)
+				{
+					for (var k = 0, length = d.ks_subject.length; k < length; k++) {
+						if(k == 0){
+							str = d.ks_subject[k].subject.jiancheng;
+						}else{
+							str =str+'、'+d.ks_subject[k].subject.jiancheng;
+						}
+					}
 				}
 				return str;
 			}} ,
-			{field: 'xueduan', title: '学段',sort: true,templet:function(d){
-				var str='';
-				if(d.dw_xueduan)
-				{
-					str = d.dw_xueduan.title;
-				}
-				return str;
-			}},
-			{field: 'paixu', title: '排序', sort: true},
-			{field: 'dw_teacher_count', title: '教师数', sort: true},
+			{field: 'bfdate', title: '开始时间',sort: true},
+			{field: 'enddate', title: '结束时间', sort: true},
 			{field: 'status', title: '状态',templet:'#status', sort: true},
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
 		]],
@@ -142,10 +154,10 @@ layui.use(['table','laypage','form','cjgl'], function(){
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/school','mytable');
+            cjgl.delAll(checkStatus,'/kaoshi','mytable');
             break;
           case 'add':
-            cjgl.add('添加单位','/school/create','650','500');
+            cjgl.add('新建考试','/kaoshi/create','','',true);
             break;
         };
     });
@@ -162,13 +174,16 @@ layui.use(['table','laypage','form','cjgl'], function(){
           layer.msg('查看' + data.id);
           break;
         case 'del':// 删除
-          cjgl.del(obj,"/school");
+          cjgl.del(obj,"/kaoshi");
           break;
         case 'edit':// 编辑
-          cjgl.add('编辑单位','/school/'+obj.data.id+'/edit','650','500');
+          cjgl.add('设置考试','/kaoshi/'+obj.data.id+'/edit','','',true);
           break;
         case 'status':// 状态
           cjgl.status(obj,"{:url('setstatus')}");
+          break;
+        case 'more':// 状态
+        cjgl.add(obj.data.title,'kaoshi/'+ obj.data.id +'/more','','',true);
           break;
       };
   	});

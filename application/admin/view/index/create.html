@@ -119,9 +119,12 @@
 <script>
     layui.use('laydate', function(){
       var laydate = layui.laydate;
-      //执行一个laydate实例
+      //开始时间
       laydate.render({
-        elem: '#shengri' //指定元素
+        elem: '#shengri'
+        ,type: 'datetime'
+        ,trigger: 'click' //采用click弹出
+        ,format: 'yyyy-M-d' //可任意组合
       });
     });
 </script>

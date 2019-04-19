@@ -73,10 +73,10 @@ class Index extends Base
     {
         // 设置页面标题
         $list['set'] = array(
-            'webtitle'=>'添加考试',
-            'butname'=>'添加',
+            'webtitle'=>'新建考试',
+            'butname'=>'创建',
             'formpost'=>'POST',
-            'url'=>'/kaoshi/'.$id,
+            'url'=>'/kaoshi',
         );
 
 
@@ -96,17 +96,17 @@ class Index extends Base
 
 
         // 获取表单数据
-        $list = request()->only(['title','xueqi','category','bfdate','enddate','nianji','subject','manfen','zuzhi'],'post');
-
+        $list = request()->only(['title','xueqi','category','bfdate','enddate','zuzhi'],'post');
 
         // 验证表单数据
         $result = $validate->check($list);
         $msg = $validate->getError();
+        // halt($msg);
 
 
         // 如果验证不通过则停止保存
         if(!$result){
-            return json(['msg'=>$msg,'val'=>0]);
+            // return json(['msg'=>$msg,'val'=>0]);
         }
 
 
@@ -117,34 +117,34 @@ class Index extends Base
 
        
 
-        // 获取年级列表
-        $njname = nianjilist();
-        // 重组参加考试年级信息
-        foreach ($list['nianji'] as $key => $value) {
-            $nianjiarr[]=['nianji'=>$value,'nianjiname'=>$njname[$value]];
-        }
+        // // 获取年级列表
+        // $njname = nianjilist();
+        // // 重组参加考试年级信息
+        // foreach ($list['nianji'] as $key => $value) {
+        //     $nianjiarr[]=['nianji'=>$value,'nianjiname'=>$njname[$value]];
+        // }
 
-        // 添加考试年级信息
-        $njdata = $ksdata->kaoshinianji()->saveAll($nianjiarr);
+        // // 添加考试年级信息
+        // $njdata = $ksdata->kaoshinianji()->saveAll($nianjiarr);
 
-        // 过滤分数掉空值
-        $list['manfen'] = array_values(array_filter($list['manfen']));
+        // // 过滤分数掉空值
+        // $list['manfen'] = array_values(array_filter($list['manfen']));
 
-        // 重组参加考试学科信息
-        foreach ($list['subject'] as $key => $value) {
-            $subjectarr[]=[
-                'subjectid'=>$value,
-                'manfen'=>$list['manfen'][$key],
-                'youxiu'=>$list['manfen'][$key]*0.9,
-                'jige'=>$list['manfen'][$key]*0.6
-            ];
-        }
+        // // 重组参加考试学科信息
+        // foreach ($list['subject'] as $key => $value) {
+        //     $subjectarr[]=[
+        //         'subjectid'=>$value,
+        //         'manfen'=>$list['manfen'][$key],
+        //         'youxiu'=>$list['manfen'][$key]*0.9,
+        //         'jige'=>$list['manfen'][$key]*0.6
+        //     ];
+        // }
 
-        // 添加考试学科信息
-        $xkdata = $ksdata->kaoshisubject()->saveAll($subjectarr);
+        // // 添加考试学科信息
+        // $xkdata = $ksdata->kaoshisubject()->saveAll($subjectarr);
 
         // 根据更新结果设置返回提示信息
-        $ksdata&&$njdata&&$xkdata ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $ksdata ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);

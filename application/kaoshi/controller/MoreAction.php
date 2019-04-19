@@ -21,20 +21,20 @@ class MoreAction extends Base
     // 考试更多操作页面
     public function index($id)
     {
-        
-        // 设置模板赋值数据
-        $list['kaoshiid']= $id;
-        $list['title']='考试操作';
+        // 获取考试信息
+        $kaoshi = KS::where('id',$id)
+            ->field('id,title,bfdate,enddate')
+            ->find();
 
-        $kaoshi = KS::get($id);
-        $list['kstitle'] = $kaoshi->title;
-        $list['bfdate'] = $kaoshi->bfdate;
+        // 设置页面标题
+        $list['webtitle'] = $kaoshi['title'] .'（'. $kaoshi['bfdate'].'~'.$kaoshi['enddate'].'）';
+        $list['kaoshiid'] = $kaoshi['id'];
+
 
 
         // 模板赋值
         $this->assign('list',$list);
-
-        // 渲染模板
+        // 渲染
         return $this->fetch();
     }
 

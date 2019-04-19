@@ -39,18 +39,19 @@
     		      </select>
     		    </div>
     		  </div>
-
+          <div class="layui-form-item">
             <div class="layui-inline">
-              <label class="layui-form-label">范围</label>
-              <div class="layui-input-inline" style="width: 100px;">
-                <input class="layui-input" placeholder="开始日" name="bfdate" id="bfdate" value="{$list.data.bfdate|default=''}">
+              <label for="title" class="layui-form-label">
+                <span class="x-red">*</span>时间范围
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" class="layui-input" id="bfdate" name="bfdate" placeholder="开始时间">
               </div>
-              　至　
-              <div class="layui-input-inline" style="width: 100px;">
-                <input class="layui-input" placeholder="结束日" name="enddate" id="enddate" value="{$list.data.enddate|default=''}">
+              <div class="layui-input-inline">
+                  <input type="text" class="layui-input" id="enddate" name="enddate" placeholder="结束时间">
               </div>
             </div>
- 
+          </div>
           <div class="layui-form-item" style="text-align: right;">
               <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
                   {$list.set.butname}
@@ -63,18 +64,22 @@
 <script>
 
   layui.use('laydate', function(){
-        var laydate = layui.laydate;
-        
-        //执行一个laydate实例
-        laydate.render({
-          elem: '#bfdate' //指定元素
-        });
-
-        // //执行一个laydate实例
-        laydate.render({
-          elem: '#enddate' //指定元素
-        });
-      });
+    var laydate = layui.laydate;
+    //开始时间
+    laydate.render({
+      elem: '#bfdate'
+      ,type: 'datetime'
+      ,trigger: 'click' //采用click弹出
+      ,format: 'yyyy-M-d' //可任意组合
+    });
+    //结束时间
+    laydate.render({
+      elem: '#enddate'
+      ,type: 'datetime'
+      ,trigger: 'click' //采用click弹出
+      ,format: 'yyyy-M-d' //可任意组合
+    });
+  });
 
 </script>
 {/block}

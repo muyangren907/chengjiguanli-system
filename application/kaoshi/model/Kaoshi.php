@@ -24,19 +24,19 @@ class Kaoshi extends Base
             // ->when(strlen($searchval)>0,function($query) use($searchval){
             //         $query->where('title|jiancheng','like','%'.$searchval.'%');
             //     })
-            // ->with(
-            //     [
-            //         'dwXingzhi'=>function($query){
-            //             $query->field('id,title');
-            //         },
-            //         'dwJibie'=>function($query){
-            //             $query->field('id,title');
-            //         },
-            //         'dwXueduan'=>function($query){
-            //             $query->field('id,title');
-            //         },
-            //     ]
-            // )
+            ->with(
+                [
+                    'ksCategory'=>function($query){
+                        $query->field('id,title');
+                    }
+                    ,'ksSubject'=>function($query){
+                        $query->with(['subject'=>function($q){
+                            $q->field('id,jiancheng');
+                        }]);
+                    }
+                    ,'ksNianji'
+                ]
+            )
             // ->withCount(
             //     [
             //         'dwTeacher'=>function($query){
@@ -73,112 +73,22 @@ class Kaoshi extends Base
     }
 
     //参考年级关联表
-    public function kaoshinianji()
+    public function ksNianji()
     {
         return $this->hasMany('KaoshiNianji','kaoshiid','id')->field('id,kaoshiid,nianji,nianjiname');
     } 
 
     // 参考学科关联表
-    public function kaoshisubject()
+    public function ksSubject()
     {
         return $this->hasMany('KaoshiSubject','kaoshiid','id')->field('kaoshiid,subjectid,manfen');
     }
-
-    // 类别获取器
-    public function getCategoryAttr($value)
+    // 参考学科关联表
+    public function ksCategory()
     {
-        return db('category')->where('id',$value)->value('title');
+        return $this->belongsTo('\app\system\model\Category','category','id');
     }
 
-    // 学期获取器
-    public function getXueqiAttr($value)
-    {
-        return db('xueqi')->where('id',$value)->value('title');
-    }
 
-    // 组织考试单位获取器
-    public function getZuzhiAttr($value)
-    {
-        return db('school')->where('id',$value)->value('title');
-    }
 
-    // 获取参考年级列表并返回nianji字段值
-    public function getNianjiidsAttr()
-    {
-        $list = $this->get($this->getAttr('id'));
-        $nianji = $list->kaoshinianji;
-
-        foreach ($nianji as $key => $value) {
-            $key == 0 ? $str = $value['nianji'] : $str = $str.','.$value['nianji'];
-        }
-        return $str;
-    }
-
-    // 获取参考学科并返回学科id
-    public function getSubjectidsAttr()
-    {
-        $list = $this->get($this->getAttr('id'));
-        $nianji = $list->kaoshisubject;
-
-        foreach ($nianji as $key => $value) {
-            $key == 0 ? $str = $value['subjectid'] : $str = $str.','.$value['subjectid'];
-        }
-        return $str;
-    }
-
-    // 获取参考年级，并返回年级名称
-    public function getNianjinamesAttr()
-    {
-        $list = $this->get($this->getAttr('id'));
-        $nianji = $list->kaoshinianji;
-
-        foreach ($nianji as $key => $value) {
-            $key == 0 ? $str = $value['nianjiname'] : $str = $str.'、'.$value['nianjiname'];
-        }
-        return $str;
-    }
-
-    // 获取参考学科，并返回学科简称
-    public function getSubjectnamesAttr()
-    {
-        $subject = $this->get($this->getAttr('id'))->append(['subjectids']);
-
-        $subject= db('subject')->where('id','in',$subject->subjectids)->column('jiancheng');
-        foreach ($subject as $key => $value) {
-            if($key == 0){
-                $str = $value;
-            }else{
-                $str = $str.'、'.$value;
-            }
-        }
-        return $str;
-    }
-
-    // 满分编辑数据
-    public function getManfeneditAttr()
-    {
-        // 获取各学科满分信息
-        $subject = $this->with('kaoshisubject')->get($this->getAttr('id'));
-
-        $manfenlist = array();
-        // 重新组成数组
-        foreach ($subject->kaoshisubject as $key => $value) {
-             $manfenlist[$value->subjectid] = $value->manfen;
-        }
-        // 返回数组
-        return $manfenlist;
-    }
-
-    // 考试结束获取器
-    public function getJieshuAttr()
-    {
-        time()>$this->getData('enddate') ? $str = 1 : $str = 0;
-        return $str;
-    }
-    // 考试结束获取器
-    public function getKaishiAttr()
-    {
-        time()>$this->getData('bfdate') ? $str = 1 : $str = 0;
-        return $str;
-    }
 }
