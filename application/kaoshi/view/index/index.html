@@ -48,10 +48,11 @@
 </script>
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
-	<a class="layui-btn-xs" lay-event="status" title="{{ d.status == 1 ? '禁用' : '启用' }}">
+<!-- 	<a class="layui-btn-xs" lay-event="status" title="{{ d.status == 1 ? '禁用' : '启用' }}">
 		<i class="layui-icon {{ d.status == 1 ? 'layui-icon-close' : 'layui-icon-ok' }}"></i>
-	</a>
+	</a> -->
 	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon layui-icon-edit"></i></a>
+	<a class="layui-btn-xs" lay-event="set" title="设置"><i class="layui-icon layui-icon-set-sm"></i></a>
 	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
 	<a class="layui-btn-xs" lay-event="more" title="更多操作"><i class="layui-icon layui-icon-more-vertical"></i></a>
 </script>
@@ -118,7 +119,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
 			{field: 'bfdate', title: '开始时间',sort: true},
 			{field: 'enddate', title: '结束时间', sort: true},
 			{field: 'status', title: '状态',templet:'#status', sort: true},
-			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
+			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:175}
 		]],
 	});
 
@@ -177,6 +178,9 @@ layui.use(['table','laypage','form','cjgl'], function(){
           cjgl.del(obj,"/kaoshi");
           break;
         case 'edit':// 编辑
+          cjgl.add('编辑考试','/kaoshi/'+obj.data.id+'/edit','','',true);
+          break;
+        case 'set':// 编辑
           cjgl.add('设置考试','/kaoshi/'+obj.data.id+'/edit','','',true);
           break;
         case 'status':// 状态

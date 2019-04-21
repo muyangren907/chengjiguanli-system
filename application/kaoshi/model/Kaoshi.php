@@ -37,13 +37,6 @@ class Kaoshi extends Base
                     ,'ksNianji'
                 ]
             )
-            // ->withCount(
-            //     [
-            //         'dwTeacher'=>function($query){
-            //             $query->where('status',1);
-            //         }
-            //     ]
-            // )
             ->select();
         return $data;
     }
