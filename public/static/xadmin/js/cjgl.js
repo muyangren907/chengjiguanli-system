@@ -96,11 +96,9 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
                         if(statusval == 1){
                             myspan.attr('class','layui-btn layui-btn-normal layui-btn-mini');
                             mya.attr("title",'启用');
-                            $(mya).find("i").attr('class','layui-icon layui-icon-close');
                         }else{
                             myspan.attr('class','layui-btn layui-btn-disabled layui-btn-mini');
                             mya.attr("title",'禁用');
-                            $(mya).find("i").attr('class','layui-icon layui-icon-ok');
                         }
                         // 更新缓存值，否则下次操作会报错。
                         obj.update({
