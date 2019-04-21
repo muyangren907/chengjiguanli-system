@@ -27,6 +27,7 @@ class Admin extends Base
                     $query->where('status',1)->field('title,rules,miaoshu');
                 }
                     ])
+            ->hidden(['password','create_time','update_time','delete_time'])
             ->select();
         return $data;
     }

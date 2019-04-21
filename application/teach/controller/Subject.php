@@ -218,4 +218,15 @@ class Subject extends Base
         return json($data);
     }
 
+
+
+    // 学科列表
+    public function subjectlist(){
+        $data = SJ::where('status',1)
+                    ->where('kaoshi',1)
+                    ->field('id,title,jiancheng,lieming')
+                    ->select();
+        return $data;
+    }
+
 }

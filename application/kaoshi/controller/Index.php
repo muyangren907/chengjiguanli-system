@@ -37,7 +37,6 @@ class Index extends Base
                     'limit'=>'10',
                     'field'=>'update_time',
                     'order'=>'asc',
-                    'xingzhi'=>array(),
                     'searchval'=>''
                 ],'POST');
 
@@ -114,33 +113,6 @@ class Index extends Base
 
         $ksdata = $ks->create($list);
 
-       
-
-        // // 获取年级列表
-        // $njname = nianjilist();
-        // // 重组参加考试年级信息
-        // foreach ($list['nianji'] as $key => $value) {
-        //     $nianjiarr[]=['nianji'=>$value,'nianjiname'=>$njname[$value]];
-        // }
-
-        // // 添加考试年级信息
-        // $njdata = $ksdata->kaoshinianji()->saveAll($nianjiarr);
-
-        // // 过滤分数掉空值
-        // $list['manfen'] = array_values(array_filter($list['manfen']));
-
-        // // 重组参加考试学科信息
-        // foreach ($list['subject'] as $key => $value) {
-        //     $subjectarr[]=[
-        //         'subjectid'=>$value,
-        //         'manfen'=>$list['manfen'][$key],
-        //         'youxiu'=>$list['manfen'][$key]*0.9,
-        //         'jige'=>$list['manfen'][$key]*0.6
-        //     ];
-        // }
-
-        // // 添加考试学科信息
-        // $xkdata = $ksdata->kaoshisubject()->saveAll($subjectarr);
 
         // 根据更新结果设置返回提示信息
         $ksdata ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -214,6 +186,130 @@ class Index extends Base
 
         // 根据更新结果设置返回提示信息
         $ksdata ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
+
+
+
+    // 设置考试信息
+    public function kaoshiset($id)
+    {
+
+        // 获取考试信息
+        $data = KS::where('id',$id)
+                    ->with(
+                            [
+                                'ksSubject'=>function($query){
+                                    $query->with([
+                                        'subjectName'=>function($q){
+                                            $q->field('id,jiancheng');
+                                        }
+                                    ]);
+                                }
+                                ,'ksNianji'
+                            ]
+                        )
+                    ->field('id')
+                    ->find();
+
+        // 重新整理年级和学科
+        $subject=array();
+        foreach ($data['ks_subject'] as $key => $value) {
+            $subject[] = $value['subjectid'];
+        }
+
+        $nianji = array();
+        foreach ($data['ks_nianji'] as $key => $value) {
+            $nianji[] = $value['nianji'];
+        }
+
+        $list['data']['ks_subjectid'] = implode(',' , $subject);
+        $list['data']['ks_nianjiid'] = implode(',' , $nianji);
+        $list['data']['ks_subject'] = $subject;
+
+
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'设置考试',
+            'butname'=>'设置',
+            'formpost'=>'PUT',
+            'url'=>'/kaoshiset/'.$id,
+        );
+
+
+        // 模板赋值
+        $this->assign('list',$list);
+        // 渲染
+        return $this->fetch();
+
+    }
+
+
+
+
+
+    // 更新考试信息
+    public function updateset($id)
+    {
+        $validate = new \app\kaoshi\validate\Kaoshiset;
+
+        // 获取表单数据
+        $list = request()->only(['nianji','subject','manfen','youxiu','jige','lieming','nianjiname'],'post');
+
+
+        // 验证表单数据
+        $result = $validate->check($list);
+        $msg = $validate->getError();
+        
+
+        // 如果验证不通过则停止保存
+        if(!$result){
+            return json(['msg'=>$msg,'val'=>0]);;
+        }
+
+        $list['id'] = $id;
+
+        // 整理数据
+        $data = array();
+        $i = 0;
+        foreach ($list['subject'] as $key => $value) {
+            $data[$i]['subjectid'] = $key;
+            $data[$i]['manfen'] = $list['manfen'][$key];
+            $data[$i]['youxiu'] = $list['youxiu'][$key];
+            $data[$i]['jige'] = $list['jige'][$key];
+            $data[$i]['lieming'] = $list['lieming'][$key];
+            $i++;
+        }
+
+        // 更新数据
+        $ks = new KS();
+        $ksdata = $ks->where('id',$list['id'])->find();
+
+        // 更新学科表
+        $subjectdata=$ksdata->ksSubject()->delete();
+        $subjectdata=$ksdata->ksSubject()->saveAll($data);
+
+
+        // 整理数据
+        $data = array();
+        $i = 0;
+        foreach ($list['nianji'] as $key => $value) {
+            $data[$i]['nianji'] = $key;
+            $data[$i]['nianjiname'] = $list['nianjiname'][$key];
+            $i++;
+        }
+
+        // 更新学科表
+        $nianjidata=$ksdata->ksNianji()->delete();
+        $nianjidata=$ksdata->ksNianji()->saveAll($data);
+
+
+        // 根据更新结果设置返回提示信息
+        $ksdata && $subjectdata && $nianjidata ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);

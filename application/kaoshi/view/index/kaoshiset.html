@@ -1,0 +1,102 @@
+{extend name="common@create" /}
+
+{block name="form"}
+    <form class="layui-form layui-form-pane" lay-filter="myform">
+          <div class="layui-form-item">
+            <div class="layui-inline">
+              <label for="nianji" class="layui-form-label">
+                <span class="x-red">*</span>参考年级
+              </label>
+              {php}$njlist = nianjiList();{/php}
+              {foreach $njlist as $key=>$vo}
+                <div class="layui-inline">
+                  <input type="checkbox" name="nianji[{$key}]" title="{$vo}" value="{$key}" lay-skin="primary" 
+                  {present name="$list['data']['ks_nianji']"}
+                    {in name="$key" value="$list['data']['ks_nianji']" }
+                      checked
+                    {/in}
+                  {/present}>
+                </div>
+                <input type="hidden" name="nianjiname[{$key}]" value="{$vo}">
+              {/foreach}
+            </div>
+          </div>
+          {php}
+              $subject = action('teach/Subject/subjectlist');
+          {/php}
+          <div class="layui-form-item">
+              <div class="layui-inline">
+                <div class="layui-inline" style="min-width: 150px" align="center">
+                  学科
+                </div>
+                <div class="layui-inline" style="min-width: 150px" align="center">
+                  满分
+                </div>
+                <div class="layui-inline" style="min-width: 150px" align="center">
+                  优秀分数线
+                </div>
+                <div class="layui-inline" style="min-width: 150px" align="center">
+                  及格分数线
+                </div>
+              </div>
+          </div>
+          {volist name="subject" id="vo"}
+          <div class="layui-form-item">
+              <div class="layui-inline">
+                <div class="layui-inline" style="min-width: 150px">
+                  <input type="checkbox" name="subject[{$vo.id}]" title="{$vo.title}" value="" lay-skin="primary" 
+                  {present name="$list['data']['ks_subjectid']"}
+                    {in name="$vo.id" value="$list['data']['ks_subjectid']"}
+                      checked
+                    {/in}
+                  {/present}>
+                </div>
+                <div class="layui-inline" style="min-width: 150px">
+                  <input type="text" name="manfen[{$vo.id}]" title="{$vo.title}" value="$list['data']['subject'][{$}]" placeholder="满分" lay-skin="primary" class="layui-input">
+                </div>
+                <div class="layui-inline" style="min-width: 150px">
+                  <input type="text" name="youxiu[{$vo.id}]" title="{$vo.title}" value="" placeholder="优秀分" lay-skin="primary" class="layui-input">
+                </div>
+                <div class="layui-inline" style="min-width: 150px">
+                  <input type="text" name="jige[{$vo.id}]" title="{$vo.title}" value="" placeholder="及格分" lay-skin="primary" class="layui-input">
+                </div>
+                <input type="hidden" name="lieming[{$vo.id}]" value="{$vo.lieming}">
+              </div>
+          </div>
+          {/volist}
+          <div class="layui-form-item" style="text-align: right;">
+              <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
+                  {$list.set.butname}
+              </button>
+          </div>
+      </form>
+{/block}
+
+{block name="myjs"}
+<script>
+
+  layui.use('laydate', function(){
+    var laydate = layui.laydate;
+    //开始时间
+    laydate.render({
+      elem: '#bfdate'
+      ,type: 'datetime'
+      ,trigger: 'click' //采用click弹出
+      ,min: 0 //今天
+      ,max: 30 //30天后
+      ,format: 'yyyy-M-d' //可任意组合
+    });
+    //结束时间
+    laydate.render({
+      elem: '#enddate'
+      ,type: 'datetime'
+      ,trigger: 'click' //采用click弹出
+      ,min: 0 //今天
+      ,max: 30 //30天后
+      ,format: 'yyyy-M-d' //可任意组合
+    });
+  });
+
+</script>
+{/block}
+

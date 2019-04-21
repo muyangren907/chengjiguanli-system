@@ -108,9 +108,9 @@ layui.use(['table','laypage','form','cjgl'], function(){
 				{
 					for (var k = 0, length = d.ks_subject.length; k < length; k++) {
 						if(k == 0){
-							str = d.ks_subject[k].subject.jiancheng;
+							str = d.ks_subject[k].subject_name.jiancheng;
 						}else{
-							str =str+'、'+d.ks_subject[k].subject.jiancheng;
+							str =str+'、'+d.ks_subject[k].subject_name.jiancheng;
 						}
 					}
 				}
@@ -181,7 +181,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
           cjgl.add('编辑考试','/kaoshi/'+obj.data.id+'/edit','','',true);
           break;
         case 'set':// 编辑
-          cjgl.add('设置考试','/kaoshi/'+obj.data.id+'/edit','','',true);
+          cjgl.add('设置考试','/kaoshiset/'+obj.data.id,'','',true);
           break;
         case 'status':// 状态
           cjgl.status(obj,"{:url('setstatus')}");

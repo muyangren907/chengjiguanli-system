@@ -70,19 +70,6 @@
           </div>
           <div class="layui-form-item">
             <div class="layui-inline">
-              <label for="nianji" class="layui-form-label">
-                <span class="x-red">*</span>参考年级
-              </label>
-              {php} $njlist = nianjiList();{/php}
-              {foreach $njlist as $key=>$vo}
-                <div class="layui-inline">
-                  <input type="checkbox" name="nianji[{$key}]" title="{$vo}" value="{$vo}" lay-skin="primary">
-                  </div>
-              {/foreach}
-            </div>
-          </div>
-          <div class="layui-form-item">
-            <div class="layui-inline">
               <label for="title" class="layui-form-label">
                 <span class="x-red">*</span>考试时间
               </label>

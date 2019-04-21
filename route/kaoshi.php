@@ -12,6 +12,9 @@
 //系统设置路由
 Route::resource('kaoshi','kaoshi/Index');
 Route::get('kaoshi/:id/more','kaoshi/MoreAction/index');
+// 考试设置保存
+Route::get('kaoshiset/:id','kaoshi/Index/kaoshiset');
+Route::put('kaoshiset/:id','kaoshi/Index/updateset');
 // 考号保存
 Route::get('kaoshi/:id/kaohao','kaoshi/MoreAction/kaohao');
 Route::post('kaoshi/kaohao','kaoshi/MoreAction/kaohaosave');

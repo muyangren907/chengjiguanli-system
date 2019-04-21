@@ -13,7 +13,7 @@ class Kaoshi extends Base
     {
         // 整理变量
         // $xingzhi = $src['xingzhi'];
-        // $searchval = $src['searchval'];
+        $searchval = $src['searchval'];
 
         // 查询数据
         $data = $this
@@ -21,16 +21,16 @@ class Kaoshi extends Base
             // ->when(count($xingzhi)>0,function($query) use($xingzhi){
             //         $query->where('xingzhi','in',$xingzhi);
             //     })
-            // ->when(strlen($searchval)>0,function($query) use($searchval){
-            //         $query->where('title|jiancheng','like','%'.$searchval.'%');
-            //     })
+            ->when(strlen($searchval)>0,function($query) use($searchval){
+                    $query->where('title','like','%'.$searchval.'%');
+                })
             ->with(
                 [
                     'ksCategory'=>function($query){
                         $query->field('id,title');
                     }
                     ,'ksSubject'=>function($query){
-                        $query->with(['subject'=>function($q){
+                        $query->with(['subjectName'=>function($q){
                             $q->field('id,jiancheng');
                         }]);
                     }
@@ -74,7 +74,7 @@ class Kaoshi extends Base
     // 参考学科关联表
     public function ksSubject()
     {
-        return $this->hasMany('KaoshiSubject','kaoshiid','id')->field('kaoshiid,subjectid,manfen');
+        return $this->hasMany('KaoshiSubject','kaoshiid','id')->field('kaoshiid,subjectid,manfen,youxiu,jige');
     }
     // 参考学科关联表
     public function ksCategory()

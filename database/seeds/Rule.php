@@ -86,6 +86,7 @@ class Rule extends Seeder
                     ['title'=>'删除','name'=>'Kaoshi/Index/delete','paixu'=>2,'pid'=>301],
                     ['title'=>'编辑','name'=>'Kaoshi/Index/edit','paixu'=>3,'pid'=>301,],
                     ['title'=>'状态','name'=>'Kaoshi/Index/setStatus','paixu'=>4,'pid'=>301],
+                    ['title'=>'设置','name'=>'Kaoshi/Index/kaoshiset','paixu'=>5,'pid'=>301],
                     // 考试操作
                     ['title'=>'分配考号','name'=>'Kaoshi/MoreAction/kaohao','paixu'=>1,'pid'=>302],
                     ['title'=>'下载试卷标签信息','name'=>'Kaoshi/MoreAction/biaoqian','paixu'=>2,'pid'=>302],
