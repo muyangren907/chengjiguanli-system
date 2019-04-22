@@ -48,8 +48,11 @@ class Category extends Base
         // 获取记录总数
         $cnt = $data->count();
         // 获取当前页数据
-        $limit_start = $src['page'] * $src['limit'] - $src['limit'];
-        $limit_length = $src['limit']-1;
+        // $data = $data->page(1,10);
+        // dump($data);
+
+        $limit_start = $src['page'] * $src['limit']-$src['limit'];
+        $limit_length = $src['limit'];
         $data = $data->slice($limit_start,$limit_length);
        
         // 重组返回内容

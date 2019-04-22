@@ -74,9 +74,9 @@ layui.use(['table','laypage','form','cjgl'], function(){
 		defaultToolbar:'',
 		cols: [[ //表头
 			{type:'checkbox', fixed: 'left'},
-			{field: 'title', title: '单位名称',sort: true, minWidth:240},
-			{field: 'jiancheng', title: '单位简称', minWidth:100,sort: true},
-			{field: "xingzhi",title: '性质',sort: true,templet:function(d){
+			{field: 'title', title: '荣誉名称',sort: true, minWidth:240},
+			{field: 'hjschool', title: '获奖单位', minWidth:100,sort: true},
+			{field: "category",title: '荣誉类别',sort: true,templet:function(d){
 				var str='';
 				if(d.dw_xingzhi)
 				{
@@ -84,7 +84,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
 				}
 				return str;
 			}},
-			{field: 'jibie', title: '级别',sort: true,templet:function(d){
+			{field: 'jiangxiang', title: '奖项',sort: true,templet:function(d){
 				var str='';
 				if(d.dw_jibie)
 				{
@@ -92,7 +92,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
 				}
 				return str;
 			}} ,
-			{field: 'xueduan', title: '学段',sort: true,templet:function(d){
+			{field: 'fzschool', title: '发证单位',sort: true,templet:function(d){
 				var str='';
 				if(d.dw_xueduan)
 				{
@@ -100,8 +100,8 @@ layui.use(['table','laypage','form','cjgl'], function(){
 				}
 				return str;
 			}},
-			{field: 'paixu', title: '排序', sort: true},
-			{field: 'dw_teacher_count', title: '教师数', sort: true},
+			{field: 'paixu', title: '级别', sort: true},
+			{field: 'fzshijian', title: '发证时间', sort: true},
 			{field: 'status', title: '状态',templet:'#status', sort: true},
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
 		]],
@@ -142,7 +142,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
             cjgl.delAll(checkStatus,'/dwry','mytable');
             break;
           case 'add':
-            cjgl.add('添加荣誉','/dwry/create','650','500');
+            cjgl.add('添加单位荣誉','/dwry/create','','',true);
             break;
         };
     });
@@ -162,7 +162,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
           cjgl.del(obj,"/dwry");
           break;
         case 'edit':// 编辑
-          cjgl.add('编辑荣誉','/dwry/'+obj.data.id+'/edit','650','500');
+          cjgl.add('编辑单位荣誉','/dwry/'+obj.data.id+'/edit','','',true);
           break;
         case 'status':// 状态
           cjgl.status(obj,"{:url('setstatus')}");

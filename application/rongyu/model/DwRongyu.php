@@ -8,29 +8,30 @@ use app\common\model\Base;
 class DwRongyu extends Base
 {
     //搜索单位获奖荣誉
-    public function search($search)
+    public function search($src)
     {
-    	// 获取参数
-    	$hjschool = $search['hjschool'];
-    	$fzschool = $search['fzschool'];
-    	$category = $search['category'];
-    	$order_field = $search['order_field'];
-    	$order = $search['order'];
-    	$category = $search['category'];
-    	$search = $search['search'];
+        // 整理变量
+        // 获取参数
+        $hjschool = $src['hjschool'];
+        $fzschool = $src['fzschool'];
+        $category = $src['category'];
+        $searchval = $src['searchval'];
 
-    	$data = $this->order([$order_field =>$order])
-    		->when(strlen($hjschool)>0,function($query) use($hjschool){
-                	$query->where('hjschool','in',$hjschool);
+
+        // 查询数据
+        $data = $this
+            ->order([$src['field'] =>$src['order']])
+            ->when(count($hjschool)>0,function($query) use($hjschool){
+                    $query->where('hjschool','in',$hjschool);
                 })
-    		->when(strlen($fzschool)>0,function($query) use($fzschool){
-                	$query->where('fzschool','in',$fzschool);
+            ->when(count($fzschool)>0,function($query) use($fzschool){
+                    $query->where('fzschool','in',$fzschool);
                 })
-    		->when(strlen($category)>0,function($query) use($category){
-                	$query->where('category','in',$category);
+            ->when(count($category)>0,function($query) use($category){
+                    $query->where('category','in',$category);
                 })
-    		->when(strlen($search)>0,function($query) use($search){
-                	$query->where('title','like',$search);
+            ->when(strlen($searchval)>0,function($query) use($searchval){
+                    $query->where('title|jiancheng','like','%'.$searchval.'%');
                 })
             ->with(
                 [
@@ -49,10 +50,8 @@ class DwRongyu extends Base
                 ]
             )
             ->append(['jibie'])
-    		->select();
-
-
-    	return $data;
+            ->select();
+        return $data;
     }
 
 

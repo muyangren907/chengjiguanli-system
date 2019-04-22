@@ -50,7 +50,7 @@ class Index extends Base
         $cnt = $data->count();
         // 获取当前页数据
         $limit_start = $src['page'] * $src['limit'] - $src['limit'];
-        $limit_length = $src['limit']-1;
+        $limit_length = $src['limit'];
         $data = $data->slice($limit_start,$limit_length);
        
         // 重组返回内容

@@ -4,35 +4,41 @@
     <form class="layui-form layui-form-pane" lay-filter="myform">
           <div class="layui-form-item">
               <label for="title" class="layui-form-label">
-                  <span class="x-red">*</span>单位名称
+                  图片
               </label>
-              <div class="layui-input-block">
-                  <input type="text" id="title" name="title" lay-verify="required"
-                  autocomplete="off" class="layui-input " value="{$list.data.title|default=''}" placeholder="中文2-25个字符">
+              <div class="layui-inline">
+                <div class="layui-input-inline" style="min-width: 100px">
+                  <button type="button" class="layui-btn" id="upload">
+                    <i class="layui-icon">&#xe67c;</i>上传文件
+                  </button>
+                </div>
+                <input type="hidden" name="url" id="url">
               </div>
           </div>
           <div class="layui-form-item">
-              <label for="jiancheng" class="layui-form-label">
-                  <span class="x-red">*</span>单位简称
+              <label for="title" class="layui-form-label">
+                  荣誉标题
               </label>
               <div class="layui-input-block">
-                  <input type="text" id="jiancheng" name="jiancheng" lay-verify="required"
-                  autocomplete="off" class="layui-input" value="{$list.data.jiancheng|default=''}" placeholder="中文1-6个字符">
+                  <input type="text" id="title" name="title"
+                  autocomplete="off" class="layui-input " value="{$list.data.title|default=''}" placeholder="中文1-40个字符">
               </div>
           </div>
           <div class="layui-form-item">
-              <label for="biaoshi" class="layui-form-label">
-                  单位标识
+              <label for="cyselect" class="layui-form-label">
+                  参与人
               </label>
-              <div class="layui-input-block">
-                  <input type="input" id="biaoshi" name="biaoshi" lay-verify=""
-                  autocomplete="off" class="layui-input" value="{$list.data.biaoshi|default=''}" placeholder="数字">
+              <div class="layui-inline">
+                <div class="layui-input-inline" style="min-width: 100px">
+                  <select id="cyselect" name="cyselect" lay-search onchange="selectsearch()"></select>
+                </div>
+                <input type="hidden" name="url" id="url">
               </div>
           </div>
           <div class="layui-form-item">
-    		    <label for="xingzhi" class="layui-form-label"><span class="x-red">*</span>单位性质</label>
+    		    <label for="xingzhi" class="layui-form-label"><span class="x-red">*</span>荣誉类型</label>
     		    <div class="layui-input-block">
-    		    	{php} $category = getCategory(101);{/php}
+    		    	{php} $category = getCategory(112);{/php}
     		      <select name="xingzhi" lay-verify="required">
     		      	<option value=""></option>
     		      	{volist name="category" id="vo"}
@@ -49,15 +55,15 @@
     		    </div>
     		  </div>
           <div class="layui-form-item">
-            <label for="jibie" class="layui-form-label"><span class="x-red">*</span>单位级别</label>
+            <label for="hjschool" class="layui-form-label"><span class="x-red">*</span>获奖单位</label>
             <div class="layui-input-block">
-              {php} $category = getCategory(102);{/php}
-              <select name="jibie" lay-verify="required">
+              {php} $school = schlist('校级','区级');{/php}
+              <select name="hjschool" lay-verify="required">
                 <option value=""></option>
-                {volist name="category" id="vo"}
+                {volist name="school" id="vo"}
                   <option value="{$vo.id}"
-                  {present name="$list.data.jibie"}
-                    {eq name="$list.data.jibie" value="$vo.id" }
+                  {present name="$list.data.hjschool"}
+                    {eq name="$list.data.hjschool" value="$vo.id" }
                       selected
                     {/eq}
                   {/present}>
@@ -68,34 +74,53 @@
             </div>
           </div>
           <div class="layui-form-item">
-            <label for="xueduan" class="layui-form-label">
-              <span class="x-red">*</span>学段
-            </label>
-            <div class="layui-input-block">
-              {php} $category = getCategory(103);{/php}
-              <select name="xueduan" lay-verify="required">
-                <option value=""></option>
-                {volist name="category" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.xueduan"}
-                    {eq name="$list.data.xueduan" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    {$vo.title}
-                  </option>
-                {/volist}
-              </select>
-            </div>
-          </div>
-          <div class="layui-form-item">
-              <label for="paixu" class="layui-form-label">
-                  排序
+              <label for="fzshijian" class="layui-form-label">
+                  <span class="x-red">*</span>获奖时间
               </label>
               <div class="layui-input-block">
-                  <input type="input" id="paixu" name="paixu" lay-verify=""
-                  autocomplete="off" class="layui-input" value="999" placeholder="数字1-999">
+                  <input type="text" id="fzshijian" name="fzshijian" lay-verify="required"
+                  autocomplete="off" class="layui-input " value="{$list.data.fzshijian|default=''}" placeholder="获奖时间">
               </div>
+          </div>
+                    <div class="layui-form-item">
+            <label for="jibie" class="layui-form-label"><span class="x-red">*</span>颁奖单位</label>
+            <div class="layui-input-block">
+              {php} $school = schlist('区级','其它级');{/php}
+              <select name="fzschool" lay-verify="required">
+                <option value=""></option>
+                {volist name="school" id="vo"}
+                  <option value="{$vo.id}"
+                  {present name="$list.data.fzschool"}
+                    {eq name="$list.data.fzschool" value="$vo.id" }
+                      selected
+                    {/eq}
+                  {/present}>
+                    {$vo.title}
+                  </option>
+                {/volist}
+              </select>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label for="jiangxiang" class="layui-form-label">
+              <span class="x-red">*</span>奖项
+            </label>
+            <div class="layui-input-block">
+              {php} $category = getCategory(113);{/php}
+              <select name="jiangxiang" lay-verify="required">
+                <option value=""></option>
+                {volist name="category" id="vo"}
+                  <option value="{$vo.id}"
+                  {present name="$list.data.jiangxiang"}
+                    {eq name="$list.data.jiangxiang" value="$vo.id" }
+                      selected
+                    {/eq}
+                  {/present}>
+                    {$vo.title}
+                  </option>
+                {/volist}
+              </select>
+            </div>
           </div>
           <div class="layui-form-item" style="text-align: right;">
               <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
@@ -106,6 +131,21 @@
 {/block}
 
 {block name="myjs"}
-    
+<script>
+
+  layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#fzshijian' //指定元素
+        });
+      });
+
+  function selectsearch()
+  {
+    layer.msg('adsfasdf');
+    console.log('asdfasd');
+  }
+</script>  
 {/block}
 
