@@ -20,15 +20,6 @@
               autocomplete="off" class="layui-input">
           </div>
         </div>
-        <div class="layui-form-item" style="margin-bottom: 0; botton">
-		    <label for="xingzhi" class="layui-form-label" style="height: 100%">单位性质</label>
-		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-		    	{php} $category = getCategory(101);{/php}
-		    	{volist name="category" id="vo"}
-		    		<input type="checkbox" name="xingzhi" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
-		    	{/volist}
-		    </div>
-		</div>
 	</div>
 {/block}
 {block name="table"}
@@ -187,7 +178,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
           cjgl.status(obj,"{:url('setstatus')}");
           break;
         case 'more':// 状态
-        cjgl.add(obj.data.title,'kaoshi/'+ obj.data.id +'/more','','',true);
+        parent.x_admin_add_to_tab(obj.data.title + ' 操作','kaoshi/'+obj.data.id+'/more',true);
           break;
       };
   	});

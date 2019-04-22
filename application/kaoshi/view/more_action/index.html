@@ -31,7 +31,7 @@
         <i class="iconfont" style="line-height:30px">&#xe6aa;</i></a>
     </div>
 
-	 
+	{php}$kaoshiid =$list['kaoshiid']; {/php} 
 	<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
 	  <ul class="layui-tab-title">
 	    <li class="layui-this">前期操作</li>
@@ -43,19 +43,20 @@
 	    	<!-- 内容开始 -->
         <div class="layui-row" style="margin-top: 30px">
           <div class="layui-container">
-            <a href="javascript:void(0);">
+            <a href="javascript:void(0);"
+            onclick="addteb('生成考号','kaoshi/{$kaoshiid}/kaohao')">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
                 <i class="layui-icon layui-icon-note" style="font-size: 100px;" onmouseover="onfont(this,1)" onmouseout="onfont(this,0)"></i>
                 <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">生成考号</div>
               </div>
             </a>
-            <a href="javascript:void(0);" onclick="addteb()">
+            <a href="javascript:void(0);" onclick="addteb('下载试卷标签','kaoshi/{$kaoshiid}/biaoqian')">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
                 <i class="layui-icon layui-icon-template" style="font-size: 100px;" onmouseover="onfont(this,1)" onmouseout="onfont(this,0)"></i>
                 <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">下载试卷标签</div>
               </div>
             </a>
-            <a href="javascript:void(0);" onclick="addteb()">
+            <a href="javascript:void(0);" onclick="addteb('下载成绩录入表格','kaoshi/{$kaoshiid}/caiji')">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
                 <i class="layui-icon layui-icon-template-1" style="font-size: 100px;" onmouseover="onfont(this,1)" onmouseout="onfont(this,0)"></i>
                 <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">下载成绩录入表格</div>
@@ -68,19 +69,19 @@
         <!-- 内容开始 -->
         <div class="layui-row" style="margin-top: 30px">
           <div class="layui-container">
-            <a href="javascript:void(0);" onclick="addteb()">
+            <a href="javascript:void(0);" onclick="addteb('学生成绩列表','chengji/{$kaoshiid}/stuChengjilist')">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
                 <i class="layui-icon layui-icon-note" style="font-size: 100px;" onmouseover="onfont(this,1)" onmouseout="onfont(this,0)"></i>
                 <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">学生成绩列表</div>
               </div>
             </a>
-            <a href="javascript:void(0);" onclick="addteb()">
+            <a href="javascript:void(0);" onclick="addteb('班级成绩成绩统计','cjtongji/{$kaoshiid}/banji')">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
                 <i class="layui-icon layui-icon-template" style="font-size: 100px;" onmouseover="onfont(this,1)" onmouseout="onfont(this,0)"></i>
                 <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">班级成绩成绩统计</div>
               </div>
             </a>
-            <a href="javascript:void(0);" onclick="addteb()">
+            <a href="javascript:void(0);" onclick="addteb('年级成绩统计','cjtongji/{$kaoshiid}/nianji')">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
                 <i class="layui-icon layui-icon-template-1" style="font-size: 100px;" onmouseover="onfont(this,1)" onmouseout="onfont(this,0)"></i>
                 <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">年级成绩统计</div>
@@ -93,19 +94,19 @@
         <!-- 内容开始 -->
         <div class="layui-row" style="margin-top: 30px">
           <div class="layui-container">
-            <a href="javascript:void(0);" onclick="addteb()">
+            <a href="javascript:void(0);" onclick="addteb('下载学生成绩','chengji/{$kaoshiid}/dwChengji')">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
                 <i class="layui-icon layui-icon-note" style="font-size: 100px;" onmouseover="onfont(this,1)" onmouseout="onfont(this,0)"></i>
-                <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">下载班级成绩</div>
+                <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">下载学生成绩</div>
               </div>
             </a>
-            <a href="javascript:void(0);" onclick="addteb()">
+            <a href="javascript:void(0);" onclick="addteb('下载班级成绩统计表','cjtongji/{$kaoshiid}/dwBanji')">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
                 <i class="layui-icon layui-icon-template" style="font-size: 100px;" onmouseover="onfont(this,1)" onmouseout="onfont(this,0)"></i>
                 <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">下载班级成绩统计表</div>
               </div>
             </a>
-            <a href="javascript:void(0);" onclick="addteb()">
+            <a href="javascript:void(0);" onclick="addteb('下载年级成绩统计表','cjtongji/{$kaoshiid}/dwNianji')">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
                 <i class="layui-icon layui-icon-template-1" style="font-size: 100px;" onmouseover="onfont(this,1)" onmouseout="onfont(this,0)"></i>
                 <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">下载年级成绩统计表</div>
@@ -150,10 +151,11 @@
 
 
   // 弹窗
-  function addteb()
+  function addteb(title,url,is_refresh=true)
   {
-    layer.msg('sasdf');
-    x_admin_add_to_tab('title','url','1');
+
+    console.log(url);
+    parent.x_admin_add_to_tab(title,url,is_refresh);
   }
 
 

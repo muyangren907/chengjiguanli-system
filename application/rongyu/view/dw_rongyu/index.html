@@ -1,228 +1,174 @@
+
 {extend name="common@list" /}
-{block name="topnav"}
-	<nav class="breadcrumb">
-		<i class="Hui-iconfont">&#xe67f;</i> 首页
-		<span class="c-gray en">&gt;</span> 荣誉管理
-		<span class="c-gray en">&gt;</span> 单位荣誉
-		<a class="btn btn-success radius r"
-			style="line-height:1.6em;margin-top:3px"
-			href="javascript:location.replace(location.href);"
-			title="刷新" >
-			<i class="Hui-iconfont">&#xe68f;</i>
-	</a>
-	</nav>
+{block name="jsset"}
+
 {/block}
-{block name="bouttons"}
-	<div class="cl pd-5 bg-1 bk-gray mt-20">
-		<span class="l">
-			<!-- 删除按钮 -->
-			<a href="javascript:;" onclick="dels('/dwry/m')" class="btn btn-danger radius">
-				<i class="Hui-iconfont">&#xe6e2;</i>
-			批量删除
-			</a>
-			<!-- 批量上传荣誉图片按钮 -->
-			<a href="javascript:;" onclick=addfull('批量上传',"/dwry/createall") class="btn btn-primary radius">
-				<i class="Hui-iconfont">&#xe642;</i>
-				批量上传
-			</a>
-			<!-- 添加按钮 -->
-			<a href="javascript:;" onclick=addfull('添加单位荣誉',"/dwry/create") class="btn btn-primary radius">
-				<i class="Hui-iconfont">&#xe600;</i>
-				添加荣誉
-			</a>
-		</span>
-		<span class="r">
-			共有数据：<strong>{$list.count}</strong> 条
-		</span>
-	</div>
-	<div class="panel panel-default mt-10 mb-10">
-		<div class="panel-header" id="shaixuan">筛选荣誉</div>
-		<div class="panel-body" style="min-height: 100px">
-				<div>
-					{php}
-						$school = schlist('校级','区级');
-					{/php}
-					<label class="f-l">获奖单位：</label>
-					<dt>
-						<dd class=" mt-10">
-							{foreach $school as $key=>$vo } 
-							<label class="ml-10">
-								<input type="checkbox" value="{$vo.id}" name="hjschool" onclick="dtreload()">
-								{$vo.jiancheng}
-							</label>
-							{/foreach}
-						</dd>
-					</dt>
-				</div>
-				<div>
-					{php}
-						$school = schlist('区级','部级');
-					{/php}
-					<label class="f-l">发奖单位：</label>
-					<dt>
-						<dd class=" mt-10">
-							{foreach $school as $key=>$vo } 
-							<label class="ml-10">
-								<input type="checkbox" value="{$vo.id}" name="fzschool" onclick="dtreload()">
-								{$vo.jiancheng}
-							</label>
-							{/foreach}
-						</dd>
-					</dt>
-				</div>
-				<div>
-					{php}$category = getCategory(112);{/php}
-					<label class="f-l">荣誉类别：</label>
-					<dt>
-						<dd class=" mt-10">
-							{foreach $category as $key=>$vo } 
-							<label class="ml-10">
-								<input type="checkbox" value="{$vo.id}" name="category" onclick="dtreload()">
-								{$vo.title}
-							</label>
-							{/foreach}
-						</dd>
-					</dt>
-				</div>
+{block name="nav"}
+	<span class="layui-breadcrumb">
+		<a href="">荣誉管理</a>
+		<a><cite>单位荣誉</cite></a>
+	</span>
+{/block}
+{block name="search"}
+	<div class="layui-form layui-form-pane layui-col-md12 x-so" id="search" lay-filter="search">
+		<div class="layui-form-item">
+          <label for="searchval" class="layui-form-label">
+              关键字
+          </label>
+          <div class="layui-input-block">
+              <input type="text" id="searchval" name="searchval"
+              autocomplete="off" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item" style="margin-bottom: 0; botton">
+		    <label for="xingzhi" class="layui-form-label" style="height: 100%">单位性质</label>
+		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+		    	{php} $category = getCategory(101);{/php}
+		    	{volist name="category" id="vo"}
+		    		<input type="checkbox" name="xingzhi" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+		    	{/volist}
+		    </div>
 		</div>
 	</div>
 {/block}
-{block name="tables"}
-	<table id="table1" class="display" cellspacing="0" width="100%">
-		<thead>
-			<tr>
-				<th><input type="checkbox" name="" value=""></th>
-				<th style="width: 200px">荣誉名称</th>
-				<th>获奖单位</th>
-				<th>荣誉类别</th>
-				<th>奖项</th>
-				<th>发证单位</th> 
-				<th>级别</th>
-				<th>发证时间</th>
-				<th>状态</th>
-				<th>操作</th>
-			</tr>
-		</thead>
-		<tbody>
-		</tbody>
-	</table>
-
-
+{block name="table"}
+	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
 {/block}
 {block name="myjs"}
-<script type="text/javascript">
+	<!-- 表格上面按钮模板 -->
+<script type="text/html" id="toolbarDemo">
+	<div class="layui-btn-container">
+		<button class="layui-btn layui-btn-danger" lay-event="dels">
+			<i class="iconfont">&#xe69d;</i> 批量删除
+		</button>
+		<button class="layui-btn" lay-event="add">
+			<i class="iconfont">&#xe6b9;</i> 添加
+		</button>
+	</div>
+</script>
+<!-- 记录操作按钮模板 -->
+<script type="text/html" id="barDemo">
+	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
+	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
+</script>
+<!-- 表格操作 -->
+<script>
+layui.use(['table','laypage','form','cjgl'], function(){
+	
+	// 声明变量
+	var table = layui.table
+		,form = layui.form
+		,cjgl = layui.cjgl;
 
-	// 定义DTajax参数
-	var myajax = {
-		url: "{:url('ajaxdata')}",
-		type: "post",
-		data: {
-			hjschool:function(){
-				var chk = [];
-				$('input[name="hjschool"]:checked').each(function(){
-					if(typeof($(this).val()) != "undefined")
-					{
-						chk.push($(this).val());
-					}
-				});
-				return chk;
-			},
-			fzschool:function(){
-				var chk = [];
-				$('input[name="fzschool"]:checked').each(function(){
-					if(typeof($(this).val()) != "undefined")
-					{
-						chk.push($(this).val());
-					}
-				});
-				return chk;
-			},
-			category:function(){
-				var chk = [];
-				$('input[name="category"]:checked').each(function(){
-					if(typeof($(this).val()) != "undefined")
-					{
-						chk.push($(this).val());
-					}
-				});
-				return chk;
-			},
-		},
-	};
 
-	// 定义列参数
-	var mycolumns = [
-        { "data": "id" },
-        { "data": "title","defaultContent": "" },
-        { "data": "hj_school.jiancheng","name":"hjschool" ,"defaultContent": ""},
-        { "data": "lx_category.title","name":"category","defaultContent": ""},
-        { "data": "jx_category.title","name":"jiangxiang","defaultContent": ""},
-        { "data": "fz_school.jiancheng" ,"name":"fzschool","defaultContent": ""},
-        { "data": "jibie","name":"fzschool","defaultContent": ""},
-        { "data": "fzshijian" ,"defaultContent": ""},
-        { "data": "status" },
-        { "data": "id" },
-	];
-
-	// 定义修改列参数
-	var mycolumnDefs =[
-		// 对象格式
-		{
-			"targets": 0,			
-			"render": function(data, type, row, meta) {
-				return '<input type="checkbox" name="test" value="' + row.id + '" />'
-			}
-		},
-		{
-			"targets": -1,
-			"className":'.td-manage',			
-			"render": function(data, type, row, meta) {
-					// 停用按钮
-					stopbut = '<a style="text-decoration:none" onClick="stop(this,'+ row.id +')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>';
-					// 启用按钮
-					startbut = '<a style="text-decoration:none" onClick="start(this,'+ row.id +')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>';
-					// 编辑按钮
-					editbut = '<a title="编辑" href="javascript:void(0);" onclick=addfull("编辑","/dwry/'+row.id+'/edit") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe60c;</i></a>';
-					delbut = '<a title="删除" href="javascript:void(0);" onclick=del(this,"/dwry/'+row.id+'") class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>';
-					if(row.status == '已停用')
-					{
-						buts = startbut + editbut + delbut;
-					}else{
-						buts = stopbut + editbut + delbut;
-					} 
-
-					return buts;
-                }
-        },
-        {
-			"targets": -2,
-			"className":'.td-status',
-			"render": function(data, type, row, meta) {
-                    if(row.status == '已停用')
-                    {
-                    	d = "<span class='label label-error radius'>" + row.status + "</span>";
-                    }else{
-                    	d = "<span class='label label-success radius'>" + row.status + "</span>";
-                    }
-
-                    return d;
-                  },
-        },
-        {
-        	"orderable": false,
-        	"targets": [0,-1]
-        }, 
-	];
-
-	// 筛选成绩面板折叠
-	$('#shaixuan').click(function(){
-		$(this).next().toggle();
+	// 实例化表格
+	var tableIns = table.render({
+		elem: '#tabledemo',
+		toolbar: '#toolbarDemo',
+		url:"{:url('ajaxdata')}",
+		method:"POST",   //数据接口
+		page: true, //开启分页
+		loading:true,
+		autoSort:false,
+		id:'mytable',
+		defaultToolbar:'',
+		cols: [[ //表头
+			{type:'checkbox', fixed: 'left'},
+			{field: 'title', title: '单位名称',sort: true, minWidth:240},
+			{field: 'jiancheng', title: '单位简称', minWidth:100,sort: true},
+			{field: "xingzhi",title: '性质',sort: true,templet:function(d){
+				var str='';
+				if(d.dw_xingzhi)
+				{
+					str = d.dw_xingzhi.title;
+				}
+				return str;
+			}},
+			{field: 'jibie', title: '级别',sort: true,templet:function(d){
+				var str='';
+				if(d.dw_jibie)
+				{
+					str = d.dw_jibie.title;
+				}
+				return str;
+			}} ,
+			{field: 'xueduan', title: '学段',sort: true,templet:function(d){
+				var str='';
+				if(d.dw_xueduan)
+				{
+					str = d.dw_xueduan.title;
+				}
+				return str;
+			}},
+			{field: 'paixu', title: '排序', sort: true},
+			{field: 'dw_teacher_count', title: '教师数', sort: true},
+			{field: 'status', title: '状态',templet:'#status', sort: true},
+			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
+		]],
 	});
 
-	// 重载数据
-	function dtreload()
-	{
-		$('#table1').DataTable().ajax.reload();
-	}
+
+	//监听排序事件
+    table.on('sort(mytable)', function(obj){ //注：tool是工具条事件名，mytable是table原始容器的属性 
+      // 获取表单值
+      var formval = cjgl.getSearchVal('#search');
+      // 获取排序字段及排序方式
+      var mydata = {};
+      mydata['field']=obj.field;
+      mydata['order']=obj.type;
+      //合并参数
+      var wheredata = $.extend(formval,mydata);
+      // 重载表格
+      tableIns.reload({
+      	where: wheredata
+      	,done:function(){
+            for(x in formval)
+            {
+              delete this.where[x];
+            }
+          }
+        ,page:{
+                curr:1
+            }
+      });
+    });
+
+
+    //头工具栏事件
+    table.on('toolbar(mytable)', function(obj){
+        switch(obj.event){
+          case 'dels':
+            var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
+            cjgl.delAll(checkStatus,'/dwry','mytable');
+            break;
+          case 'add':
+            cjgl.add('添加荣誉','/dwry/create','650','500');
+            break;
+        };
+    });
+
+
+    //监听行工具条
+    table.on('tool(mytable)', function(obj){ //注：tool是工具条事件名，mytable是table原始容器的属性 lay-filter="对应的值"
+      var data = obj.data; //获得当前行数据
+      var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+      var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+      switch(layEvent){
+        case 'detail':// 查看
+          layer.msg('查看' + data.id);
+          break;
+        case 'del':// 删除
+          cjgl.del(obj,"/dwry");
+          break;
+        case 'edit':// 编辑
+          cjgl.add('编辑荣誉','/dwry/'+obj.data.id+'/edit','650','500');
+          break;
+        case 'status':// 状态
+          cjgl.status(obj,"{:url('setstatus')}");
+          break;
+      };
+  	});
+});
 </script>
 {/block}
