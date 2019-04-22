@@ -74,7 +74,7 @@ class Kaoshi extends Base
     // 参考学科关联表
     public function ksSubject()
     {
-        return $this->hasMany('KaoshiSubject','kaoshiid','id')->field('kaoshiid,subjectid,manfen,youxiu,jige');
+        return $this->hasMany('KaoshiSubject','kaoshiid','id')->field('kaoshiid,subjectid,manfen,youxiu,jige,lieming');
     }
     // 参考学科关联表
     public function ksCategory()

@@ -27,7 +27,7 @@ class Subject extends Seeder
             ['title'=>'音乐','jiancheng'=>'音','category'=>1011008,'lieming'=>'yinyue','kaoshi'=>true,'paixu'=>9],
             ['title'=>'美术','jiancheng'=>'美','category'=>1011008,'lieming'=>'meishu','kaoshi'=>true,'paixu'=>10],
             ['title'=>'信息技术','jiancheng'=>'信息','category'=>1011009,'lieming'=>'xinxi','kaoshi'=>true,'paixu'=>11],
-            ['title'=>'研究性学习/社区服务、实践','jiancheng'=>'社区','lieming'=>'shequ','kaoshi'=>true,'category'=>1011009,'paixu'=>12],
+            ['title'=>'研究性学习/社区服务、实践','jiancheng'=>'社区','lieming'=>'shequ','category'=>1011009,'paixu'=>12],
             ['title'=>'劳动与技术','jiancheng'=>'劳动','category'=>1011009,'lieming'=>'laodong','kaoshi'=>false,'paixu'=>13],
             ['title'=>'品德与生活/社会','jiancheng'=>'品德','category'=>1011004,'lieming'=>'pinshe','kaoshi'=>false,'paixu'=>14],
             ['title'=>'思想品德','jiancheng'=>'品社','category'=>1011004,'lieming'=>'sixiang','paixu'=>15],

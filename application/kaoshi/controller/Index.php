@@ -201,8 +201,7 @@ class Index extends Base
 
         // 获取考试信息
         $data = KS::where('id',$id)
-                    ->with(
-                            [
+                    ->with([
                                 'ksSubject'=>function($query){
                                     $query->with([
                                         'subjectName'=>function($q){
@@ -211,23 +210,28 @@ class Index extends Base
                                     ]);
                                 }
                                 ,'ksNianji'
-                            ]
-                        )
+                            ])
                     ->field('id')
                     ->find();
 
+
         // 重新整理年级和学科
         $subject=array();
+        $subjectid=array();
         foreach ($data['ks_subject'] as $key => $value) {
-            $subject[] = $value['subjectid'];
+            $subjectid[] = $value['subjectid'];
+            $subject[$value->lieming]['manfen'] = $value['manfen'];
+            $subject[$value->lieming]['youxiu'] = $value['youxiu'];
+            $subject[$value->lieming]['jige'] = $value['jige'];
         }
+
 
         $nianji = array();
         foreach ($data['ks_nianji'] as $key => $value) {
             $nianji[] = $value['nianji'];
         }
 
-        $list['data']['ks_subjectid'] = implode(',' , $subject);
+        $list['data']['ks_subjectid'] = implode(',' , $subjectid);
         $list['data']['ks_nianjiid'] = implode(',' , $nianji);
         $list['data']['ks_subject'] = $subject;
 
