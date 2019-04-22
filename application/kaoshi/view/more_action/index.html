@@ -1,20 +1,92 @@
-
-{extend name="common@list" /}
-{block name="jsset"}
-
-{/block}
-{block name="nav"}
-	<span class="layui-breadcrumb">
+<!DOCTYPE html>
+<html class="x-admin-sm">
+  <head>
+    <meta charset="UTF-8">
+    <title>{$list.webtitle}</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    {load href="__STATIC__/xadmin/css/font.css" /}
+    {load href="__STATIC__/xadmin/css/xadmin.css" /}
+    {load href="__STATIC__/xadmin/js/jquery.min.js" /}
+    {load href="__STATIC__/xadmin/lib/layui/layui.js" /}
+    {load href="__STATIC__/xadmin/js/xadmin.js" /}
+    {load href="__STATIC__/xadmin/js/cookie.js" /}
+    {block name="jsset"}{/block}
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body class="">
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
 		<a href="">考试管理</a>
 		<a href="">考试列表</a>
 		<a><cite>考试操作</cite></a>
 	</span>
-{/block}
-{block name="search"}
-{/block}
-{block name="table"}
+      <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="iconfont" style="line-height:30px">&#xe6aa;</i></a>
+    </div>
 
-{/block}
-{block name="myjs"}
-
-{/block}
+	 
+	<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+	  <ul class="layui-tab-title">
+	    <li class="layui-this">前期操作</li>
+	    <li>成绩查看</li>
+	    <li>成绩下载</li>
+	  </ul>
+	  <div class="layui-tab-content" style="height: 100px;">
+	    <div class="layui-tab-item layui-show">
+	    	
+	    </div>
+	    <div class="layui-tab-item">内容2</div>
+	    <div class="layui-tab-item">内容3</div>
+	  </div>
+	</div> 
+  </body>
+  <script>
+layui.use('element', function(){
+  var $ = layui.jquery
+  ,element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+  
+  //触发事件
+  var active = {
+    tabAdd: function(){
+      //新增一个Tab项
+      element.tabAdd('demo', {
+        title: '新选项'+ (Math.random()*1000|0) //用于演示
+        ,content: '内容'+ (Math.random()*1000|0)
+        ,id: new Date().getTime() //实际使用一般是规定好的id，这里以时间戳模拟下
+      })
+    }
+    ,tabDelete: function(othis){
+      //删除指定Tab项
+      element.tabDelete('demo', '44'); //删除：“商品管理”
+      
+      
+      othis.addClass('layui-btn-disabled');
+    }
+    ,tabChange: function(){
+      //切换到指定Tab项
+      element.tabChange('demo', '22'); //切换到：用户管理
+    }
+  };
+  
+  $('.site-demo-active').on('click', function(){
+    var othis = $(this), type = othis.data('type');
+    active[type] ? active[type].call(this, othis) : '';
+  });
+  
+  //Hash地址的定位
+  var layid = location.hash.replace(/^#test=/, '');
+  element.tabChange('test', layid);
+  
+  element.on('tab(test)', function(elem){
+    location.hash = 'test='+ $(this).attr('lay-id');
+  });
+  
+});
+</script>
+</html>
