@@ -96,9 +96,9 @@ class Rule extends Seeder
                         ['title'=>'成绩状态','name'=>'Chengji/Index/setStatus','paixu'=>6,'pid'=>302],
                     ['title'=>'班级成绩统计','name'=>'Chengji/Tongji/tjBanji','paixu'=>7,'pid'=>302],
                     ['title'=>'年级成绩统计','name'=>'Chengji/Tongji/tjNianji','paixu'=>8,'pid'=>302],
-                    ['title'=>'下载学生成绩','name'=>'Chengji/Tongji/dwChengji','paixu'=>9,'pid'=>302],
-                    ['title'=>'下载班级成绩统计表','name'=>'Chengji/Tongji/dwBanji','paixu'=>10,'pid'=>302],
-                    ['title'=>'下载年级成绩统计表','name'=>'Chengji/Tongji/dwNianji','paixu'=>11,'pid'=>302],
+                    ['title'=>'下载学生成绩','name'=>'Chengji/Tongji/dwchengjixls','paixu'=>9,'pid'=>302],
+                    ['title'=>'下载班级成绩统计表','name'=>'Chengji/Tongji/dwBanjixls','paixu'=>10,'pid'=>302],
+                    ['title'=>'下载年级成绩统计表','name'=>'Chengji/Tongji/dwNianjixls','paixu'=>11,'pid'=>302],
 
 
 
