@@ -13,7 +13,7 @@ class Rule extends Validate
      * @var array
      */	
 	protected $rule = [
-        'title|规则名' =>  'require|chs|length:2,6',
+        'title|规则名' =>  'require|chs|length:2,10',
         'name|规则'   =>  ['require','length:1,80','uset'=>'/^[a-zA-Z\/]*$/'],
         'paixu|排序'          =>      'number|max:999',
     ];
