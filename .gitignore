@@ -4,5 +4,5 @@
 .env
 .DS_Store
 /runtime
-!/public/uploads/pic.jpg
 /vendor
+/public/uploads
