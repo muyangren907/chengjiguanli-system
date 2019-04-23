@@ -18,12 +18,18 @@
       <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
       <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    {block name="jscss"}{/block}
   </head>
   <body>
     <div class="x-body">
     	{block name="form"}{/block}
     </div>
     <script>
+      //config的设置是全局的
+        layui.config({
+            base: "__STATIC__/xadmin/js/" //假设这是你存放拓展模块的根目录
+        });
+        
       layui.use(['form'], function(){
         var form = layui.form;
 

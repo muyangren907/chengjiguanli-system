@@ -145,9 +145,9 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
         });
         return obj;
       },
+      // 表格重载
       reLoadTable:function(formname,tableID,mydata={}){
           var formval = this.getSearchVal(formname);
-          console.log(formval);
           var wheredata = $.extend(formval,mydata);
           table.reload(tableID,{
             where: formval
@@ -161,6 +161,22 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
             }
 
         });
+      },
+      // Select获取焦点
+      selectOnfocus:function(myobj){
+        // console.log('获取焦点');
+          // 声明变量
+          var srcInput = $(myobj)
+              ,selectID = $(myobj).attr('id');
+          srcInput.after('<div class="srcSelectStyly"><dl><dd onclick="cjgl.ab('+selectID+')">请选择</dd></dl></div>');
+      },
+      // Select失去焦点
+      selectOnblur:function(selectID){
+        var srcDiv = $('#' + selectID).next();
+        $(srcDiv).remove();
+      },
+      ab:function(myobj){
+        this.selectOnblur(myobj);
       }
   };
 

@@ -1,5 +1,29 @@
 {extend name="common@create" /}
-
+{block name="jscss"}
+<style type="text/css">
+  .srcSelectStyly{
+    height:50px;
+    margin-top:3px;
+    border-style:solid;
+    border-width: 1px;
+    border-color:#e2e2e2;
+    background-color:#ffffff;
+    position:absolute;
+    left:0;
+    right:0;
+    z-index:100;
+  }
+  .srcSelectStyly dl{
+    padding-top: 3px;
+  }
+  .srcSelectStyly dd{
+    margin-bottom: 3px;
+    /*background-color:#f2f2f2;*/
+    height: 30px;
+    padding-top: 10px;
+  }
+</style>
+{/block}
 {block name="form"}
     <form class="layui-form layui-form-pane" lay-filter="myform">
           <div class="layui-form-item">
@@ -30,9 +54,8 @@
               </label>
               <div class="layui-inline">
                 <div class="layui-input-inline" style="min-width: 100px">
-                  <select id="cyselect" name="cyselect" lay-search onchange="selectsearch()"></select>
+                  <input name="cySearch" id="cySearch" type="text" class="layui-input" autocomplete="off">
                 </div>
-                <input type="hidden" name="url" id="url">
               </div>
           </div>
           <div class="layui-form-item">
@@ -131,21 +154,35 @@
 {/block}
 
 {block name="myjs"}
+
 <script>
+  // 日期控件
+  layui.use(['laydate','form'], function(){
+    var laydate = layui.laydate
+        ,form = layui.form;
+    //执行一个laydate实例
+    laydate.render({
+      elem: '#fzshijian' //指定元素
+    });
+  });
 
-  layui.use('laydate', function(){
-        var laydate = layui.laydate;
-        //执行一个laydate实例
-        laydate.render({
-          elem: '#fzshijian' //指定元素
-        });
-      });
+  var cjgl = parent.layui.cjgl;
 
-  function selectsearch()
-  {
-    layer.msg('adsfasdf');
-    console.log('asdfasd');
-  }
+  // 监听SELECT
+  $('#cySearch').bind({
+    focus:function(){
+      cjgl.selectOnfocus(this);
+    },
+    keyup:function(){
+      // console.log('按键');
+    },
+    blur:function(){
+      // cjgl.selectOnblur(this);
+    },
+  })
+ 
+
+  
 </script>  
 {/block}
 
