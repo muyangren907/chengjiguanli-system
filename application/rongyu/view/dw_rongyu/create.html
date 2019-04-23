@@ -3,7 +3,7 @@
 <style type="text/css">
   .srcSelectStyly{
     height:50px;
-    margin-top:3px;
+    /*margin-top:20px;*/
     border-style:solid;
     border-width: 1px;
     border-color:#e2e2e2;
@@ -18,7 +18,7 @@
   }
   .srcSelectStyly dd{
     margin-bottom: 3px;
-    /*background-color:#f2f2f2;*/
+    background-color:#f2f2f2;
     height: 30px;
     padding-top: 10px;
   }
@@ -170,11 +170,14 @@
 
   // 监听SELECT
   $('#cySearch').bind({
-    focus:function(){
-      cjgl.selectOnfocus(this);
-    },
     keyup:function(){
-      // console.log('按键');
+      // $('#aaa').remove();
+      var val = $.trim($(this).val());
+      if(val.length>0){
+        cjgl.selectOnfocus(this,val);
+      }else{
+        // cjgl.selectOnblur('cySearch');
+      }
     },
     blur:function(){
       // cjgl.selectOnblur(this);
