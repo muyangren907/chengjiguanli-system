@@ -170,32 +170,30 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
         // 删除原来列表
         srcInput.next().remove();
 
-        
+        // 添加列表div
+        srcInput.after('<div class="srcSelectStyly"><dl><dd onclick="cjgl.addTeacher(this)">请选择</dd></dl></div>');
+        // 声明变量
+        var mydl = srcInput.next().children('dl');
 
-        srcInput.after('<div class="srcSelectStyly"><dl><dd onclick="cjgl.ab()">请选择</dd></dl></div>');
 
-       
-        // console.log(src);
         // 获取数据
-        // $.post(
-        //     "{:Url::build('renshi/index/srcTeacher')}",
-        //     {
-        //         "str":val,
-        //     },
-        //     function(data,status){
+        $.post(
+            "/renshi/index/srcTeacher",
+            {
+                "str":val,
+            },
+            function(data,status){
                 
-        //         if($.isEmptyObject(data))
-        //         {
-        //             return true;
-        //         }
-        //         for (var i = data.length - 1; i >= 0; i--) {
-        //             var myhtml = "";
-        //             myhtml = "<input class='btn btn-secondary radius mr-5 size-MINI' type='button' value='" + data[i]['xingming'] + "' onclick=addCy(this,"+data[i]['id']+") title="+data[i]['js_danwei']['jiancheng']+'　'+data[i]['sex']+'　'+data[i]['age']+" >";
-        //             $('#cySelect').append(myhtml);
-        //         }
+                if($.isEmptyObject(data))
+                {
+                    return true;
+                }
+                for (var i = data.length - 1; i >= 0; i--) {
+                    mydl.append('<dd id="'+data[i].id+'" onclick="cjgl.addTeacher(this)">'+data[i].xingming+'</dd>');
+                }
                 
-        //     }
-        // );
+            }
+        );
 
           
       },
@@ -204,8 +202,19 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
         var srcDiv = $('#' + selectID).next();
         $(srcDiv).remove();
       },
-      ab:function(myobj){
-        this.selectOnblur(myobj);
+      addTeacher:function(myobj){
+        var myId = $(myobj).attr('id')
+            ,myTitle = $(myobj).text();
+        var myList = $(myobj).parent().parent()
+        var myBut = $(myList).parent().parent();
+
+        $(myBut).append('<div class="layui-input-inline" style="width:60px"><div onclick="cjgl.delTeacher(this)" class="layui-btn layui-btn-normal">'+myTitle+'</div><input type="hidden" name="teachers[]" value="'+myId+'"></div>');
+
+        $(myList).prev().val('');
+        $(myList).remove();
+      },
+      delTeacher:function(myobj){
+        $(myobj).parent().remove();
       }
   };
 

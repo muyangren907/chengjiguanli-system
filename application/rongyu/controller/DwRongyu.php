@@ -171,29 +171,15 @@ class DwRongyu extends Base
      public function upload()
     {
 
-        // 获取表单上传文件 例如上传了001.jpg
+        // 获取文件信息
+        $list['text'] = $this->request->post('text');
+        $list['serurl'] = $this->request->post('serurl');
+
+        // 获取表单上传文件
         $file = request()->file('file');
-        // 移动到框架应用根目录/uploads/ 目录下
-        $info = $file->validate(['size'=>2*1024*1024,'ext'=>'jpg,png,gif,jpeg'])->move('uploads\danweirongyu');
+        // 上传文件并返回结果
+        $data = upload($list,$file);
 
-
-        if($info){
-            // 成功上传后 获取上传信息
-            $list['url'] = $info->getSaveName();
-            $list['url'] = str_replace('\\','/',$list['url']);
-
-
-            // 如果图片上传成功，则添加荣誉记录
-            $data = dwry::create(['url'=>$list['url']]);
-            $id = $data->id;
-
-            $id ? $data = array('msg'=>'上传成功','val'=>true,'url'=>$list['url'],'id'=>$id) : $data = array('msg'=>'保存文件信息失败','val'=>false,'url'=>null,'id'=>null);
-        }else{
-            // 上传失败获取错误信息
-            $data = array('msg'=>$file->getError(),'val'=>false,'url'=>null);
-        }
-
-        // 返回信息
         return json($data);
     }
 

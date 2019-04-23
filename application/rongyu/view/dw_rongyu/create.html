@@ -2,11 +2,10 @@
 {block name="jscss"}
 <style type="text/css">
   .srcSelectStyly{
-    height:50px;
     /*margin-top:20px;*/
-    border-style:solid;
     border-width: 1px;
     border-color:#e2e2e2;
+    border-style:solid;
     background-color:#ffffff;
     position:absolute;
     left:0;
@@ -15,10 +14,12 @@
   }
   .srcSelectStyly dl{
     padding-top: 3px;
+    padding-left: 6px;
+    background-color:#ffffff;
   }
   .srcSelectStyly dd{
-    margin-bottom: 3px;
-    background-color:#f2f2f2;
+    /*margin-bottom: 3px;*/
+    /*background-color:#f2f2f2;*/
     height: 30px;
     padding-top: 10px;
   }
@@ -31,12 +32,16 @@
                   图片
               </label>
               <div class="layui-inline">
+                <div class="layui-input-inline" style="min-width: 300px">
+                  <input type="text" id="url" name="url"
+                  autocomplete="off" class="layui-input " value="{$list.data.url|default=''}" placeholder="地址" readonly>
+                </div>
                 <div class="layui-input-inline" style="min-width: 100px">
                   <button type="button" class="layui-btn" id="upload">
-                    <i class="layui-icon">&#xe67c;</i>上传文件
+                    <i class="layui-icon">&#xe67c;</i>上传图片
                   </button>
                 </div>
-                <input type="hidden" name="url" id="url">
+                
               </div>
           </div>
           <div class="layui-form-item">
@@ -53,7 +58,7 @@
                   参与人
               </label>
               <div class="layui-inline">
-                <div class="layui-input-inline" style="min-width: 100px">
+                <div class="layui-input-inline">
                   <input name="cySearch" id="cySearch" type="text" class="layui-input" autocomplete="off">
                 </div>
               </div>
@@ -157,30 +162,49 @@
 
 <script>
   // 日期控件
-  layui.use(['laydate','form'], function(){
+  layui.use(['laydate','form','upload'], function(){
     var laydate = layui.laydate
-        ,form = layui.form;
+        ,form = layui.form
+        ,upload = layui.upload;
     //执行一个laydate实例
     laydate.render({
       elem: '#fzshijian' //指定元素
+    });
+
+    //执行实例
+    var uploadInst = upload.render({
+      elem: '#upload' //绑定元素
+      ,url: "{:url('upload')}" //上传接口
+      ,done: function(res){
+        if(res.val == 1){
+          $('#url').val(res.url);
+        }
+        layer.msg(res.msg);
+      }
+      ,data: {
+        text: '单位荣誉'
+        ,serurl:'..\\public\\uploads\\rongyu_school\\'
+
+      }
+      ,acceptMime:'.jpg,.jpeg,.png'
+      ,exts:'jpg|jpeg|png'
+      ,auto:true
+      ,error: function(){
+        //请求异常回调
+      }
     });
   });
 
   var cjgl = parent.layui.cjgl;
 
-  // 监听SELECT
+  // 搜索教师
   $('#cySearch').bind({
     keyup:function(){
       // $('#aaa').remove();
       var val = $.trim($(this).val());
       if(val.length>0){
         cjgl.selectOnfocus(this,val);
-      }else{
-        // cjgl.selectOnblur('cySearch');
       }
-    },
-    blur:function(){
-      // cjgl.selectOnblur(this);
     },
   })
  
