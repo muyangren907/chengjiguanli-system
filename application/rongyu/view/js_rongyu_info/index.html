@@ -6,6 +6,7 @@
 {block name="nav"}
 	<span class="layui-breadcrumb">
 		<a href="">荣誉管理</a>
+		<a href="">荣誉册</a>
 		<a><cite>荣誉列表</cite></a>
 	</span>
 {/block}
@@ -20,7 +21,7 @@
               autocomplete="off" class="layui-input">
           </div>
         </div>
-        <div class="layui-form-item" style="margin-bottom: 0; botton">
+        <div class="layui-form-item">
 		    <label for="xingzhi" class="layui-form-label" style="height: 100%">荣誉类别</label>
 		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
 		    	{php} $category = getCategory(112);{/php}
@@ -29,7 +30,7 @@
 		    	{/volist}
 		    </div>
 		</div>
-		<div class="layui-form-item" style="margin-bottom: 0; botton">
+		<div class="layui-form-item">
 		    <label for="fzschool" class="layui-form-label" style="height: 100%">颁奖单位</label>
 		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
 		    	{php} $school = schlist('区级','其它级'); {/php}
@@ -59,14 +60,10 @@
 		<button class="layui-btn layui-btn-danger" lay-event="dels">
 			<i class="iconfont">&#xe69d;</i> 批量删除
 		</button>
-		<button class="layui-btn" lay-event="add">
-			<i class="iconfont">&#xe6b9;</i> 添加
-		</button>
 	</div>
 </script>
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
-	<a class="layui-btn-xs" lay-event="detail" title="荣誉列表"><i class="layui-icon">&#xe62d;</i></a>
 	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
 	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
 </script>
@@ -93,25 +90,38 @@ layui.use(['table','laypage','form','cjgl'], function(){
 		defaultToolbar:'',
 		cols: [[ //表头
 			{type:'checkbox', fixed: 'left'},
-			{field: 'title', title: '荣誉名称',sort: true, minWidth:240},
-			{field: 'fzschool', title: '颁奖单位',sort: true,templet:function(d){
+			{title: '荣誉册',templet:function(d){
 				var str='';
-				if(d.fz_school)
+				if(d.ry_tuce)
 				{
-					str = d.fz_school.jiancheng;
+					str = d.ry_tuce.title;
 				}
 				return str;
 			}},
-			{field: "category",title: '荣誉类别',sort: true,templet:function(d){
+			{field: 'bianhao', title: '获奖编号 ',sort: true},
+			{title: '获奖人',templet:function(d){
 				var str='';
-				if(d.lx_category)
+				if(d.hj_jsry)
 				{
-					str = d.lx_category.title;
+					for (var k = 0, length = d.hj_jsry.length; k < length; k++) {
+						if(k == 0){
+							str = d.hj_jsry[k].teacher.xingming;
+						}else{
+							str =str+'、'+d.hj_jsry[k].teacher.xingming;
+						}
+					}
 				}
 				return str;
 			}},
-			{field: 'count', title: '荣誉数', sort: true},
-			{field: 'fzshijian', title: '颁奖时间', sort: true},
+			{field: "jiangxiang",title: '奖项',sort: true,templet:function(d){
+				var str='';
+				if(d.jx_category)
+				{
+					str = d.jx_category.title;
+				}
+				return str;
+			}},
+			{field: 'hjshijian', title: '获奖时间', sort: true},
 			{field: 'status', title: '状态',templet:'#status', sort: true},
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
 		]],
@@ -149,10 +159,10 @@ layui.use(['table','laypage','form','cjgl'], function(){
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/jsry','mytable');
+            cjgl.delAll(checkStatus,'/jsryinfo','mytable');
             break;
           case 'add':
-            cjgl.add('添加荣誉册','/jsry/create','500','350');
+            cjgl.add('添加荣誉','/jsryinfo/create','','',true);
             break;
         };
     });
@@ -165,14 +175,11 @@ layui.use(['table','laypage','form','cjgl'], function(){
       var tr = obj.tr; //获得当前行 tr 的DOM对象
 
       switch(layEvent){
-        case 'detail':// 查看
-          parent.x_admin_add_to_tab('荣誉列表','rylist/'+obj.data.id+'/'+obj.data.title,true);
-          break;
         case 'del':// 删除
-          cjgl.del(obj,"/jsry");
+          cjgl.del(obj,"/jsryinfo");
           break;
         case 'edit':// 编辑
-          cjgl.add('编辑荣誉册','/jsry/'+obj.data.id+'/edit','500','350');
+          cjgl.add('编辑荣誉','/jsryinfo/'+obj.data.id+'/edit','','',true);
           break;
         case 'status':// 状态
           cjgl.status(obj,"{:url('setstatus')}");

@@ -58,6 +58,7 @@ class JsRongyuInfo extends Base
      */
     public function ajaxData()
     {
+
         // 获取参数
         $src = $this->request
                 ->only([
@@ -110,6 +111,7 @@ class JsRongyuInfo extends Base
             'butname'=>'添加',
             'formpost'=>'POST',
             'url'=>'/jsryinfo',
+            'rongyuce'=>$id
         );
 
         // 模板赋值
@@ -124,7 +126,7 @@ class JsRongyuInfo extends Base
      * @param  \think\Request  $request
      * @return \think\Response
      */
-    public function save()
+    public function save($rongyuce)
     {
         
         // 获取表单数据
@@ -190,7 +192,7 @@ class JsRongyuInfo extends Base
             'webtitle'=>'批量上传教师荣誉册图片',
             'butname'=>'批传',
             'formpost'=>'POST',
-            'url'=>'jsryinfoaddall/'.$id,
+            'url'=>'/jsryinfoaddall/'.$id,
         );
 
         // 模板赋值
@@ -198,6 +200,36 @@ class JsRongyuInfo extends Base
         // 渲染
         return $this->fetch();
     }
+
+    // 保存批传
+    public function createAllSave($id)
+    {
+        // 获取文件信息
+        $list['text'] = $this->request->post('text');
+        $list['serurl'] = $this->request->post('serurl');
+
+        // 获取表单上传文件
+        $file = request()->file('file');
+        // 上传文件并返回结果
+        $data = upload($list,$file);
+
+        if($data['val'] != 1)
+        {
+            $data=['msg'=>'添加失败','val'=>0];
+        }
+
+        $data = ryinfo::create([
+            'url'=>$data['url']
+            ,'title'=>'批传'
+            ,'rongyuce'=>$id
+        ]);
+
+        $data ? $data=['msg'=>'批传成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        return json($data);
+    }
+
+
 
      /**
      * 上传荣誉图片并保存
@@ -208,37 +240,14 @@ class JsRongyuInfo extends Base
     public function upload()
     {
         // 获取文件信息
-        $rongyuce=input('post.rongyuce');
+        $list['text'] = $this->request->post('text');
+        $list['serurl'] = $this->request->post('serurl');
 
-
-        // 获取表单上传文件 例如上传了001.jpg
+        // 获取表单上传文件
         $file = request()->file('file');
-        // 移动到框架应用根目录/uploads/ 目录下
-        $info = $file->validate(['size'=>2*1024*1024,'ext'=>'jpg,png,gif,jpeg'])->move('uploads\jiaoshirongyu');
+        // 上传文件并返回结果
+        $data = upload($list,$file);
 
-     
-
-        if($info){
-            // 成功上传后 获取上传信息
-            $list['url'] = $info->getSaveName();
-            // $list['category'] = $info->getExtension();
-            // $list['newname'] = $info->getFilename(); 
-            // $myfileurl = '\uploads\\'.$list['url'];
-            // $list['bianjitime'] = filemtime('uploads\danweirongyu\\'.$list['url']);
-            $list['url'] = str_replace('\\','/',$list['url']);
-
-
-            // 如果图片上传成功，则添加荣誉记录
-            $data = ryinfo::create(['pic'=>$list['url'],'rongyuce'=>$rongyuce]);
-            $id = $data->id;
-
-            $id ? $data = array('msg'=>'上传成功','val'=>true,'url'=>$list['url'],'ryid'=>$id) : $data = array('msg'=>'保存文件信息失败','val'=>false,'url'=>null);
-        }else{
-            // 上传失败获取错误信息
-            $data = array('msg'=>$file->getError(),'val'=>false,'url'=>null);
-        }
-
-        // 返回信息
         return json($data);
     }
 
@@ -289,6 +298,7 @@ class JsRongyuInfo extends Base
             'butname'=>'修改',
             'formpost'=>'PUT',
             'url'=>'/jsryinfo/'.$id,
+            'rongyuce'=>$id
         );
 
         // 模板赋值
@@ -327,14 +337,13 @@ class JsRongyuInfo extends Base
         $data = ryinfo::update($list);
 
         // 删除原来的获奖人与参与人信息
-        $data->allJsry()->where('rongyuid',$list['id'])->delete(true);
+        $data->allJsry()->where('rongyuid',$id)->delete(true);
         // 声明教师数组
             $teacherlist = [];
             // 循环组成获奖教师信息
             foreach ($list['hjteachers'] as $key => $value) {
                 $canyulist[] = [
                     'teacherid' => $value,
-                    'rongyuid' => $list['id'],
                     'category' => 1,
                 ];
             }
@@ -343,7 +352,6 @@ class JsRongyuInfo extends Base
                 foreach ($list['cyteachers'] as $key => $value) {
                     $canyulist[] = [
                         'teacherid' => $value,
-                        'rongyuid' => $list['id'],
                         'category' => 2,
                     ];
                 }

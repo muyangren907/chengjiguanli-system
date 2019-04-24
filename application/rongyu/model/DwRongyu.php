@@ -79,7 +79,7 @@ class DwRongyu extends Base
     // 奖项
     public function jxCategory()
     {
-         return $this->belongsTo('\app\system\model\Category','category','id');
+         return $this->belongsTo('\app\system\model\Category','jiangxiang','id');
     }
 
     // 参与人

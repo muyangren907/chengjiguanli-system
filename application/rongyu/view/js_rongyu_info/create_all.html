@@ -17,13 +17,13 @@ layui.use('upload', function(){
   //执行实例
   var uploadInst = upload.render({
     elem: '#upload' //绑定元素
-    ,url: "/dwry/createall" //上传接口
+    ,url: "{$list.set.url}" //上传接口
     ,done: function(res){
       layer.msg(res.msg);
     }
     ,data: {
-      text: '单位荣誉'
-      ,serurl:'..\\public\\uploads\\rongyu_school\\'
+      text: '教师荣誉'
+      ,serurl:'..\\public\\uploads\\rongyu_teacher\\'
 
     }
     ,multiple:true

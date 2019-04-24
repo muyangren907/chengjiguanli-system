@@ -158,6 +158,7 @@ class DwRongyu extends Base
         return $this->fetch();
     }
 
+    // 保存批传
     public function createAllSave()
     {
         // 获取文件信息

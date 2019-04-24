@@ -1,11 +1,60 @@
 {extend name="common@create" /}
 {block name="jscss"}
+<style type="text/css">
+  .srcSelectStyly{
+    /*margin-top:20px;*/
+    border-width: 1px;
+    border-color:#e2e2e2;
+    border-style:solid;
+    background-color:#ffffff;
+    position:absolute;
+    left:0;
+    right:0;
+    z-index:100;
+  }
+  .srcSelectStyly dl{
+    padding-top: 3px;
+    padding-left: 6px;
+    background-color:#ffffff;
+  }
+  .srcSelectStyly dd{
+    /*margin-bottom: 3px;*/
+    /*background-color:#f2f2f2;*/
+    height: 30px;
+    padding-top: 10px;
+  }
+</style>
 {/block}
 {block name="form"}
+    <div class="layui-form-item" align="center">
+      {eq name="$list.set.formpost" value="PUT" }
+        {if strlen($list.data.pic)>0}
+          <img style="max-height: 300px;max-width: 500px" src="__UPLOAD__/rongyu_teacher/{$list.data.pic}" onclick="imgMax(this,true)">
+        {else /}
+          <img style="max-height: 300px;max-width: 500px" src="__UPLOAD__/rongyu_teacher/404.png" onclick="imgMax(this,true)">
+        {/if}
+      {/eq}
+    </div>
     <form class="layui-form layui-form-pane" lay-filter="myform">
           <div class="layui-form-item">
               <label for="title" class="layui-form-label">
-                  荣誉册标题
+                  图片
+              </label>
+              <div class="layui-inline">
+                <div class="layui-input-inline" style="min-width: 300px">
+                  <input type="text" id="pic" name="pic"
+                  autocomplete="off" class="layui-input " value="{$list.data.pic|default=''}" placeholder="地址" readonly>
+                </div>
+                <div class="layui-input-inline" style="min-width: 100px">
+                  <button type="button" class="layui-btn" id="upload">
+                    <i class="layui-icon">&#xe67c;</i>上传图片
+                  </button>
+                </div>
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="title" class="layui-form-label">
+                  荣誉标题
               </label>
               <div class="layui-input-block">
                   <input type="text" id="title" name="title"
@@ -13,34 +62,62 @@
               </div>
           </div>
           <div class="layui-form-item">
-    		    <label for="category" class="layui-form-label"><span class="x-red">*</span>荣誉类型</label>
-    		    <div class="layui-input-block">
-    		    	{php} $category = getCategory(112);{/php}
-    		      <select name="category" lay-verify="required">
-    		      	<option value=""></option>
-    		      	{volist name="category" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.category"}
-                    {eq name="$list.data.category" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    {$vo.title}
-                  </option>
-    		        {/volist}
-    		      </select>
-    		    </div>
-    		  </div>
+              <label for="bianhao" class="layui-form-label">
+                  荣誉册编号 
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="bianhao" name="bianhao"
+                  autocomplete="off" class="layui-input " value="{$list.data.bianhao|default=''}" placeholder="中文1-30个字符">
+              </div>
+          </div>
           <div class="layui-form-item">
-            <label for="jibie" class="layui-form-label"><span class="x-red">*</span>颁奖单位</label>
+              <label for="cyselect" class="layui-form-label">
+                  获奖人
+              </label>
+              <div class="layui-inline">
+                <div class="layui-input-inline">
+                  <input name="hjSearch" id="hjSearch" type="text" class="layui-input" autocomplete="off">
+                </div>
+                {present name="$list.data.hj_jsry"}
+                  {volist name="$list.data.hj_jsry" id="vo"}
+                  <div class="layui-input-inline" style="width:60px">
+                    <div onclick="cjgl.delTeacher(this)" class="layui-btn layui-btn-normal">
+                      {$vo.teacher.xingming}
+                    </div>
+                    <input type="hidden" name="hjteachers[]" value="{$vo.teacher.id}"></div>
+                  {/volist}
+                {/present}
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="cyselect" class="layui-form-label">
+                  参与人
+              </label>
+              <div class="layui-inline">
+                <div class="layui-input-inline">
+                  <input name="cySearch" id="cySearch" type="text" class="layui-input" autocomplete="off">
+                </div>
+                {present name="$list.data.cy_jsry"}
+                  {volist name="$list.data.cy_jsry" id="vo"}
+                  <div class="layui-input-inline" style="width:60px">
+                    <div onclick="cjgl.delTeacher(this)" class="layui-btn layui-btn-normal">
+                      {$vo.teacher.xingming}
+                    </div>
+                    <input type="hidden" name="cyteachers[]" value="{$vo.teacher.id}"></div>
+                  {/volist}
+                {/present}
+              </div>
+          </div>
+          <div class="layui-form-item">
+            <label for="hjschool" class="layui-form-label"><span class="x-red">*</span>所属单位</label>
             <div class="layui-input-block">
-              {php} $school = schlist('区级','其它级');{/php}
-              <select name="fzschool" lay-verify="required">
+              {php} $school = schlist('校级','区级');{/php}
+              <select name="hjschool" lay-verify="required">
                 <option value=""></option>
                 {volist name="school" id="vo"}
                   <option value="{$vo.id}"
-                  {present name="$list.data.fzschool"}
-                    {eq name="$list.data.fzschool" value="$vo.id" }
+                  {present name="$list.data.hjschool"}
+                    {eq name="$list.data.hjschool" value="$vo.id" }
                       selected
                     {/eq}
                   {/present}>
@@ -51,14 +128,56 @@
             </div>
           </div>
           <div class="layui-form-item">
-              <label for="fzshijian" class="layui-form-label">
+    		    <label for="subject" class="layui-form-label"><span class="x-red">*</span>所属学科 </label>
+    		    <div class="layui-input-block">
+    		    	{php}
+                $subject = new \app\teach\model\Subject;
+                $subjectlist = $subject->where('status',1)->order(['paixu'])->select();
+              {/php}
+    		      <select name="subject" lay-verify="required">
+    		      	<option value=""></option>
+    		      	{volist name="subjectlist" id="vo"}
+                  <option value="{$vo.id}"
+                  {present name="$list.data.subject"}
+                    {eq name="$list.data.subject" value="$vo.id" }
+                      selected
+                    {/eq}
+                  {/present}>
+                    {$vo.title}
+                  </option>
+    		        {/volist}
+    		      </select>
+    		    </div>
+    		  </div>
+          <div class="layui-form-item">
+            <label for="jiangxiang" class="layui-form-label"><span class="x-red">*</span>奖项 </label>
+            <div class="layui-input-block">
+              {php} $jiangxiang = getCategory(113);{/php}
+              <select name="jiangxiang" lay-verify="required">
+                <option value=""></option>
+                {volist name="jiangxiang" id="vo"}
+                  <option value="{$vo.id}"
+                  {present name="$list.data.jiangxiang"}
+                    {eq name="$list.data.jiangxiang" value="$vo.id" }
+                      selected
+                    {/eq}
+                  {/present}>
+                    {$vo.title}
+                  </option>
+                {/volist}
+              </select>
+            </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="hjshijian" class="layui-form-label">
                   <span class="x-red">*</span>获奖时间
               </label>
               <div class="layui-input-block">
-                  <input type="text" id="fzshijian" name="fzshijian" lay-verify="required"
-                  autocomplete="off" class="layui-input " value="{$list.data.fzshijian|default=''}" placeholder="获奖时间">
+                  <input type="text" id="hjshijian" name="hjshijian" lay-verify="required"
+                  autocomplete="off" class="layui-input " value="{$list.data.hjshijian|default=''}" placeholder="获奖时间">
               </div>
           </div>
+          <input type="hidden" name="rongyuce"  id="rongyuce" value="$list.set.rongyuce">
           <div class="layui-form-item" style="text-align: right;">
               <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
                   {$list.set.butname}
@@ -71,14 +190,76 @@
 
 <script>
   // 日期控件
-  layui.use(['laydate'], function(){
-    var laydate = layui.laydate;
+  layui.use(['laydate','upload'], function(){
+    var laydate = layui.laydate
+        ,upload = layui.upload;
     //执行一个laydate实例
     laydate.render({
-      elem: '#fzshijian' //指定元素
+      elem: '#hjshijian' //指定元素
       ,trigger: 'click' //采用click弹出
     });
+
+    //执行实例
+    var uploadInst = upload.render({
+      elem: '#upload' //绑定元素
+      ,url: "{:url('upload')}" //上传接口
+      ,done: function(res){
+        if(res.val == 1){
+          $('#pic').val(res.url);
+        }
+        layer.msg(res.msg);
+      }
+      ,data: {
+        text: '教师荣誉'
+        ,serurl:'..\\public\\uploads\\rongyu_teacher\\'
+
+      }
+      ,acceptMime:'.jpg,.jpeg,.png'
+      ,exts:'jpg|jpeg|png'
+      ,auto:true
+      ,error: function(){
+        //请求异常回调
+      }
+    });
   });
+
+  var cjgl = parent.layui.cjgl;
+
+  // 搜索教师
+  $('#cySearch').bind({
+    keyup:function(){
+      var val = $.trim($(this).val());
+      if(val.length>0){
+        cjgl.selectOnfocus(this,val,'cyteachers[]');
+      }
+    },
+  })
+  // 搜索教师
+  $('#hjSearch').bind({
+    keyup:function(){
+      var val = $.trim($(this).val());
+      if(val.length>0){
+        cjgl.selectOnfocus(this,val,'hjteachers[]');
+      }
+    },
+  })
+
+
+  // 图片放大
+  function imgMax(obj,max=false)
+  {
+    if(max == true){
+      $(obj).css("max-width","800px");
+      $(obj).css("max-height","1000px");
+      $(obj).attr('onclick',"imgMax(this)");
+    }else{
+      $(obj).css("max-width","500px");
+      $(obj).css("max-height","300px");
+      $(obj).attr('onclick',"imgMax(this,true)");
+    }
+  }
+
+
 </script>  
 {/block}
 

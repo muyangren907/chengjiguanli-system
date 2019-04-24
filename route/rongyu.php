@@ -21,3 +21,4 @@ Route::get('ryout/:id','rongyu/JsRongyuInfo/outXlsx');
 
 Route::get('jsryinfoadd/:id','rongyu/JsRongyuInfo/create');
 Route::get('jsryinfoaddall/:id','rongyu/JsRongyuInfo/createAll');
+Route::post('jsryinfoaddall/:id','rongyu/JsRongyuInfo/createAllSave');

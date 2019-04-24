@@ -34,7 +34,7 @@ class JsRongyuInfo extends Validate
 
     // 验证场景
     protected $scene = [
-        'add'  =>  ['rongyuce','title','hjteachers','hjschool','subject','hjshijian','jiangxiang','cyteachers'],
-        'edit'  =>  ['id','title','hjteachers','hjschool','subject','hjshijian','jiangxiang','cyteachers'],
+        'add'  =>  ['rongyuce','title','hjteachers','hjschool','subject','hjshijian','jiangxiang','cyteachers','pic'],
+        'edit'  =>  ['id','title','hjteachers','hjschool','subject','hjshijian','jiangxiang','cyteachers','pic'],
     ];
 }

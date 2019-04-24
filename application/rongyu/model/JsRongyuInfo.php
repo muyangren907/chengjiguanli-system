@@ -60,6 +60,12 @@ class JsRongyuInfo extends Base
                             $query->field('id,xingming');
                         }]);
                     },
+                    'cyJsry'=>function($query){
+                        $query->field('rongyuid,teacherid')
+                        ->with(['teacher'=>function($query){
+                            $query->field('id,xingming');
+                        }]);
+                    },
                 ]
             )
             // ->append(['hjJsName','cyJsName'])
