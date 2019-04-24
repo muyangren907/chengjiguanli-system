@@ -8,25 +8,24 @@ use app\common\model\Base;
 class JsRongyu extends Base
 {
 	//搜索教师获奖荣誉
-    public function search($search)
+    public function search($src)
     {
-    	// 获取参数
-    	$fzschool = $search['fzschool'];
-    	$category = $search['category'];
-    	$order_field = $search['order_field'];
-    	$order = $search['order'];
-    	$category = $search['category'];
-    	$search = $search['search'];
+    	// 整理参数
+        $hjschool = $src['hjschool'];
+        $fzschool = $src['fzschool'];
+        $category = $src['category'];
+        $searchval = $src['searchval'];
 
-    	$data = $this->order([$order_field =>$order])
-    		->when(strlen($fzschool)>0,function($query) use($fzschool){
+    	$data = $this
+            ->order([$src['field'] =>$src['order']])
+    		->when(count($fzschool)>0,function($query) use($fzschool){
                 	$query->where('fzschool','in',$fzschool);
                 })
-    		->when(strlen($category)>0,function($query) use($category){
+    		->when(count($category)>0,function($query) use($category){
                 	$query->where('category','in',$category);
                 })
-    		->when(strlen($search)>0,function($query) use($search){
-                	$query->where('title','like',$search);
+    		->when(strlen($searchval)>0,function($query) use($searchval){
+                	$query->where('title','like',$searchval);
                 })
             ->with(
                 [
@@ -36,9 +35,10 @@ class JsRongyu extends Base
                     'lxCategory'=>function($query){
                         $query->field('id,title');
                     },
+                    
                 ]
             )
-            ->append(['cnt'])
+            ->withCount(['ryInfo'=>'count'])
     		->select();
 
 

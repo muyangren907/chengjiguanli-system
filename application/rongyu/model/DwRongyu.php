@@ -11,7 +11,6 @@ class DwRongyu extends Base
     public function search($src)
     {
         // 整理变量
-        // 获取参数
         $hjschool = $src['hjschool'];
         $fzschool = $src['fzschool'];
         $category = $src['category'];

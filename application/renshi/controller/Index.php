@@ -41,7 +41,7 @@ class Index extends Base
                     'page'=>'1',
                     'limit'=>'10',
                     'field'=>'update_time',
-                    'order'=>'asc',
+                    'order'=>'desc',
                     'zhiwu'=>array(),
                     'danwei'=>array(),
                     'xueli'=>array(),

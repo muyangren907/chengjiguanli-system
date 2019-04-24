@@ -23,7 +23,7 @@ class JsRongyuInfo extends Base
     public function index()
     {
         // 设置要给模板赋值的信息
-        $list['webtitle'] = '教师列表';
+        $list['webtitle'] = '荣誉列表';
 
         // 模板赋值
         $this->assign('list',$list);
@@ -37,19 +37,17 @@ class JsRongyuInfo extends Base
      *
      * @return \think\Response
      */
-    public function rongyuList($id)
+    public function rongyuList($id,$title)
     {
-        // 获取变量
-        $list['id'] = $id;
-        // 设置页面标题
-        $list['title'] = '教师荣誉信息';
-        // 设置数据总数
-        $list['count'] = ryinfo::where('rongyuce',$id)->count();
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = $title . ' 荣誉';
+        $list['rongyuce'] = $id;
 
         // 模板赋值
         $this->assign('list',$list);
 
-        return $this->fetch('');
+        // 渲染模板
+        return $this->fetch();
     }
 
 
@@ -60,56 +58,41 @@ class JsRongyuInfo extends Base
      */
     public function ajaxData()
     {
-        // 获取DT的传值
-        $getdt = request()->param();
-
-        //得到排序的方式
-        $order = $getdt['order'][0]['dir'];
-        //得到排序字段的下标
-        $order_column = $getdt['order'][0]['column'];
-        //根据排序字段的下标得到排序字段
-        $order_field = $getdt['columns'][$order_column]['name'];
-        if($order_field=='')
-        {
-            $order_field = $getdt['columns'][$order_column]['data'];
-        }
-        //得到limit参数
-        $limit_start = $getdt['start'];
-        $limit_length = $getdt['length'];
-
-        //得到搜索的关键词
-        $search = [
-            'hjschool'=>$getdt['hjschool'],
-            'fzschool'=>$getdt['fzschool'],
-            'category'=>$getdt['category'],
-            'rongyuce'=>$getdt['rongyuce'],
-            'search'=>$getdt['search']['value'],
-            'order'=>$order,
-            'order_field'=>$order_field
-        ];
+        // 获取参数
+        $src = $this->request
+                ->only([
+                    'page'=>'1',
+                    'limit'=>'10',
+                    'field'=>'update_time',
+                    'order'=>'desc',
+                    'fzschool'=>array(),
+                    'hjschool'=>array(),
+                    'category'=>array(),
+                    'rongyuce'=>'',
+                    'searchval'=>''
+                ],'POST');
 
 
         // 实例化
         $ryinfo = new ryinfo;
 
-        // 获取荣誉总数
-        $cnt = $ryinfo->select()->count();
-
-        // 查询数据
-        $data = $ryinfo->search($search);
-        $datacnt = $data->count();
-
+        // 查询要显示的数据
+        $data = $ryinfo->search($src);
+        // 获取符合条件记录总数
+        $cnt = $data->count();
         // 获取当前页数据
+        $limit_start = $src['page'] * $src['limit'] - $src['limit'];
+        $limit_length = $src['limit'];
         $data = $data->slice($limit_start,$limit_length);
-
-
+       
         // 重组返回内容
         $data = [
-            'draw'=> $getdt["draw"] , // ajax请求次数，作为标识符
-            'recordsTotal'=>$cnt,  // 获取到的结果数(每页显示数量)
-            'recordsFiltered'=>$datacnt,       // 符合条件的总数据量
+            'code'=> 0 , // ajax请求次数，作为标识符
+            'msg'=>"",  // 获取到的结果数(每页显示数量)
+            'count'=>$cnt, // 符合条件的总数据量
             'data'=>$data, //获取到的数据结果
         ];
+
 
         return json($data);
     }
@@ -122,14 +105,17 @@ class JsRongyuInfo extends Base
     public function create($id = 0)
     {
         // 设置页面标题
-        $list['title'] = '添加教师荣誉';
-        $list['id'] = $id;
+        $list['set'] = array(
+            'webtitle'=>'添加荣誉',
+            'butname'=>'添加',
+            'formpost'=>'POST',
+            'url'=>'/jsryinfo',
+        );
 
         // 模板赋值
         $this->assign('list',$list);
-
         // 渲染
-        return $this->fetch();
+        return $this->fetch('create');
     }
 
     /**留备用
@@ -196,18 +182,21 @@ class JsRongyuInfo extends Base
      * @param  \think\Request  $request
      * @return \think\Response
      */
-    public function createall($id)
+    public function createAll($id)
     {
+
         // 设置页面标题
-        $list['title'] = '添加教师荣誉册';
-        $list['rongyuce'] = $id;
+        $list['set'] = array(
+            'webtitle'=>'批量上传教师荣誉册图片',
+            'butname'=>'批传',
+            'formpost'=>'POST',
+            'url'=>'jsryinfoaddall/'.$id,
+        );
 
         // 模板赋值
         $this->assign('list',$list);
-
         // 渲染
         return $this->fetch();
-       
     }
 
      /**
@@ -273,7 +262,7 @@ class JsRongyuInfo extends Base
     public function edit($id)
     {
         // 获取荣誉信息
-        $list = ryinfo::where('id',$id)
+        $list['data'] = ryinfo::where('id',$id)
                 ->field('id,rongyuce,title,bianhao,hjschool,subject,jiangxiang,hjshijian,pic')
                 ->with([
                     'hjJsry'=>function($query){
@@ -294,9 +283,18 @@ class JsRongyuInfo extends Base
                 ])
                 ->find();
 
-        $this->assign('list',$list);
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'编辑荣誉',
+            'butname'=>'修改',
+            'formpost'=>'PUT',
+            'url'=>'/jsryinfo/'.$id,
+        );
 
-        return $this->fetch();
+        // 模板赋值
+        $this->assign('list',$list);
+        // 渲染
+        return $this->fetch('create');
     }
 
     /**

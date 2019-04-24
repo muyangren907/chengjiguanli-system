@@ -27,11 +27,13 @@
 {/block}
 {block name="form"}
     <div class="layui-form-item" align="center">
-      {present name="$list.data.url"}
+      {eq name="$list.set.formpost" value="PUT" }
+        {if strlen($list.data.url)>0}
           <img style="max-height: 300px;max-width: 500px" src="__UPLOAD__/rongyu_school/{$list.data.url}" onclick="imgMax(this,true)">
         {else /}
-          <img style="max-height: 300px;max-width: 500px" src="__UPLOAD__/rongyu_school/{$list.data.url}" onclick="imgMax(this,true)">
-      {/present}
+          <img style="max-height: 300px;max-width: 500px" src="__UPLOAD__/rongyu_teacher/404.png" onclick="imgMax(this,true)">
+        {/if}
+      {/eq}
     </div>
     <form class="layui-form layui-form-pane" lay-filter="myform">
           <div class="layui-form-item">
@@ -74,7 +76,7 @@
                     <div onclick="cjgl.delTeacher(this)" class="layui-btn layui-btn-normal">
                       {$vo.teacher.xingming}
                     </div>
-                    <input type="hidden" name="teachers[]" value="{$vo.teacher.xingming}"></div>
+                    <input type="hidden" name="teachers[]" value="{$vo.teacher.id}"></div>
                   {/volist}
                 {/present}
               </div>
@@ -217,7 +219,6 @@
   // 搜索教师
   $('#cySearch').bind({
     keyup:function(){
-      // $('#aaa').remove();
       var val = $.trim($(this).val());
       if(val.length>0){
         cjgl.selectOnfocus(this,val);

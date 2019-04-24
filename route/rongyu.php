@@ -13,10 +13,11 @@
 Route::resource('dwry','rongyu/DwRongyu');
 Route::resource('jsry','rongyu/JsRongyu');
 Route::resource('jsryinfo','rongyu/JsRongyuInfo');
-Route::get('dwry/createall','rongyu/DwRongyu/createall');
+Route::get('dwry/createall','rongyu/DwRongyu/createAll');
+Route::post('dwry/createall','rongyu/DwRongyu/createAllSave');
 // 荣誉册中荣誉信息列表
-Route::get('rylist/:id','rongyu/JsRongyuInfo/rongyuList');
+Route::get('rylist/:id/:title','rongyu/JsRongyuInfo/rongyuList');
 Route::get('ryout/:id','rongyu/JsRongyuInfo/outXlsx');
 
 Route::get('jsryinfoadd/:id','rongyu/JsRongyuInfo/create');
-Route::get('jsryinfoaddall/:id','rongyu/JsRongyuInfo/createall');
+Route::get('jsryinfoaddall/:id','rongyu/JsRongyuInfo/createAll');

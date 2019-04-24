@@ -8,30 +8,28 @@ use app\common\model\Base;
 class JsRongyuInfo extends Base
 {
     //搜索单位获奖荣誉
-    public function search($search)
+    public function search($src)
     {
-        // 获取参数
-    	$hjschool = $search['hjschool'];
-    	$fzschool = $search['fzschool'];
-    	$category = $search['category'];
-        $rongyuce = $search['rongyuce'];
-    	$order_field = $search['order_field'];
-    	$order = $search['order'];
-    	$category = $search['category'];
-    	$search = $search['search'];
+        // 整理参数
+        $hjschool = $src['hjschool'];
+        $fzschool = $src['fzschool'];
+        $category = $src['category'];
+        $rongyuce = $src['rongyuce'];
+        $searchval = $src['searchval'];
 
 
-    	$data = $this->order([$order_field =>$order])
-    		->when(strlen($hjschool)>0,function($query) use($hjschool){
+    	$data = $this
+            ->order([$src['field'] =>$src['order']])
+    		->when(count($hjschool)>0,function($query) use($hjschool){
                 	$query->where('hjschool','in',$hjschool);
                 })
-    		->when(strlen($fzschool)>0,function($query) use($fzschool){
+    		->when(count($fzschool)>0,function($query) use($fzschool){
                     $query->where('rongyuce','in',function($q) use($fzschool){
                         $q->name('JsRongyu')->where('fzschool','in',$fzschool)->field('id');
                     });
                 	
                 })
-    		->when(strlen($category)>0,function($query) use($category){
+    		->when(count($category)>0,function($query) use($category){
                 	$query->where('rongyuce','in',function($q) use($category){
                         $q->name('JsRongyu')->where('category','in',$category)->field('id');
                     });
@@ -39,8 +37,8 @@ class JsRongyuInfo extends Base
     		->when(strlen($rongyuce)>0,function($query) use($rongyuce){
                 	$query->where('rongyuce',$rongyuce);
                 })
-            ->when(strlen($search)>0,function($query) use($search){
-                    $query->where('title|bianhao','like',$search);
+            ->when(strlen($searchval)>0,function($query) use($searchval){
+                    $query->where('title|bianhao','like',$searchval);
                 })
             ->with(
                 [
@@ -64,7 +62,7 @@ class JsRongyuInfo extends Base
                     },
                 ]
             )
-            ->append(['hjJsName','cyJsName'])
+            // ->append(['hjJsName','cyJsName'])
     		->select();
 
 

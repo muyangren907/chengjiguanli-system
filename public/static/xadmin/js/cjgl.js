@@ -188,8 +188,9 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
                 {
                     return true;
                 }
+
                 for (var i = data.length - 1; i >= 0; i--) {
-                    mydl.append('<dd id="'+data[i].id+'" onclick="cjgl.addTeacher(this)">'+data[i].xingming+'</dd>');
+                    mydl.append('<dd id="'+data[i].id+'" onclick="cjgl.addTeacher(this)" teachername="'+data[i].xingming+'">'+data[i].xingming+'　'+data[i].js_danwei.jiancheng+'　'+data[i].shengri+'</dd>');
                 }
                 
             }
@@ -197,22 +198,22 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
 
           
       },
-      // Select失去焦点
-      selectOnblur:function(selectID){
-        var srcDiv = $('#' + selectID).next();
-        $(srcDiv).remove();
-      },
+      // 添加教师
       addTeacher:function(myobj){
         var myId = $(myobj).attr('id')
-            ,myTitle = $(myobj).text();
-        var myList = $(myobj).parent().parent()
-        var myBut = $(myList).parent().parent();
+            ,teachername = $(myobj).attr('teachername')
+            ,myTitle = $(myobj).text()
+            ,myList = $(myobj).parent().parent()
+            ,myBut = $(myList).parent().parent();
 
-        $(myBut).append('<div class="layui-input-inline" style="width:60px"><div onclick="cjgl.delTeacher(this)" class="layui-btn layui-btn-normal">'+myTitle+'</div><input type="hidden" name="teachers[]" value="'+myId+'"></div>');
+        if(myId){
+            $(myBut).append('<div class="layui-input-inline" style="width:60px"><div onclick="cjgl.delTeacher(this)" class="layui-btn layui-btn-normal">'+teachername+'</div><input type="hidden" name="teachers[]" value="'+myId+'"></div>');
+        }
 
         $(myList).prev().val('');
         $(myList).remove();
       },
+      // 删除教师
       delTeacher:function(myobj){
         $(myobj).parent().remove();
       }

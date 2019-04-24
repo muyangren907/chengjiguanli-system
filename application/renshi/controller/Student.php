@@ -37,7 +37,7 @@ class Student extends Base
                     'page'=>'1',
                     'limit'=>'10',
                     'field'=>'update_time',
-                    'order'=>'asc',
+                    'order'=>'desc',
                     'school'=>array(),
                     'ruxuenian'=>array(),
                     'paixu'=>array(),

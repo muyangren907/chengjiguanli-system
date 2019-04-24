@@ -39,7 +39,7 @@ class DwRongyu extends Base
                     'page'=>'1',
                     'limit'=>'10',
                     'field'=>'update_time',
-                    'order'=>'asc',
+                    'order'=>'desc',
                     'fzschool'=>array(),
                     'hjschool'=>array(),
                     'category'=>array(),
@@ -141,17 +141,47 @@ class DwRongyu extends Base
      * @param  \think\Request  $request
      * @return \think\Response
      */
-    public function createall()
+    // 批量添加
+    public function createAll()
     {
         // 设置页面标题
-        $list['title'] = '添加单位荣誉';
+        $list['set'] = array(
+            'webtitle'=>'批量上传荣誉图片',
+            'butname'=>'批传',
+            'formpost'=>'POST',
+            'url'=>'/dwry/createall',
+        );
 
         // 模板赋值
         $this->assign('list',$list);
-
         // 渲染
         return $this->fetch();
-       
+    }
+
+    public function createAllSave()
+    {
+        // 获取文件信息
+        $list['text'] = $this->request->post('text');
+        $list['serurl'] = $this->request->post('serurl');
+
+        // 获取表单上传文件
+        $file = request()->file('file');
+        // 上传文件并返回结果
+        $data = upload($list,$file);
+
+        if($data['val'] != 1)
+        {
+            $data=['msg'=>'添加失败','val'=>0];
+        }
+
+        $data = dwry::create([
+            'url'=>$data['url']
+            ,'title'=>'批传'
+        ]);
+
+        $data ? $data=['msg'=>'批传成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        return json($data);
     }
 
      /**
@@ -215,7 +245,6 @@ class DwRongyu extends Base
             'url'=>'/dwry/'.$id,
         );
 
-
         // 模板赋值
         $this->assign('list',$list);
         // 渲染
@@ -233,14 +262,14 @@ class DwRongyu extends Base
     public function update($id)
     {
         // 获取表单数据
-        $list = request()->scene('edit')->only(['title','category','hjschool','fzshijian','fzschool','jiangxiang','teachers'],'put');
+        $list = request()->only(['title','category','hjschool','fzshijian','fzschool','jiangxiang','teachers','url'],'put');
         $list['id'] = $id;
         
 
         // 实例化验证类
         $validate = new \app\rongyu\validate\DwRongyu;
         // 验证表单数据
-        $result = $validate->check($list);
+        $result = $validate->scene('add')->check($list);
         $msg = $validate->getError();
 
         // 如果验证不通过则停止保存
@@ -250,25 +279,22 @@ class DwRongyu extends Base
 
 
         // 更新数据
-        // $dwry = new dwry();
+        $dwry = new dwry();
         $data = dwry::update($list);
 
-        if(!empty($list['teachers']))
-        {
+        // 删除原来的参与教师
+        $data->cyDwry()->where('rongyuid',$id)->delete(true);
 
-            $data->cyDwry()->delete(true);
-
-            // 声明参与教师数组
-            $canyulist = [];
-            // 循环组成参与信息
-            foreach ($list['teachers'] as $key => $value) {
-                $canyulist[] = [
-                    'teacherid' => $value,
-                ];
-            }
-
-            $data->cyDwry()->saveAll($canyulist);
+        // 声明参与教师数组
+        $canyulist = [];
+        // 循环组成参与教师
+        foreach ($list['teachers'] as $key => $value) {
+            $canyulist[] = [
+                'teacherid' => $value,
+            ];
         }
+        //  更新参考教师
+        $data->cyDwry()->saveAll($canyulist);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];

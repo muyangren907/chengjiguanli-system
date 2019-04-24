@@ -21,11 +21,29 @@
           </div>
         </div>
         <div class="layui-form-item" style="margin-bottom: 0; botton">
-		    <label for="xingzhi" class="layui-form-label" style="height: 100%">单位性质</label>
+		    <label for="xingzhi" class="layui-form-label" style="height: 100%">荣誉类别</label>
 		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-		    	{php} $category = getCategory(101);{/php}
+		    	{php} $category = getCategory(112);{/php}
 		    	{volist name="category" id="vo"}
-		    		<input type="checkbox" name="xingzhi" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+		    		<input type="checkbox" name="category" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+		    	{/volist}
+		    </div>
+		</div>
+		<div class="layui-form-item" style="margin-bottom: 0; botton">
+		    <label for="fzschool" class="layui-form-label" style="height: 100%">颁奖单位</label>
+		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+		    	{php} $school = schlist('区级','其它级'); {/php}
+		    	{volist name="school" id="vo"}
+		    		<input type="checkbox" name="fzschool" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+		    	{/volist}
+		    </div>
+		</div>
+		<div class="layui-form-item" style="margin-bottom: 0; botton">
+		    <label for="hjschool" class="layui-form-label" style="height: 100%">获奖单位</label>
+		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+		    	{php} $school = schlist('校级','区级'); {/php}
+		    	{volist name="school" id="vo"}
+		    		<input type="checkbox" name="hjschool" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 		    	{/volist}
 		    </div>
 		</div>
@@ -43,6 +61,9 @@
 		</button>
 		<button class="layui-btn" lay-event="add">
 			<i class="iconfont">&#xe6b9;</i> 添加
+		</button>
+		<button class="layui-btn" lay-event="more">
+			<i class="layui-icon">&#xe67c;</i> 批传
 		</button>
 	</div>
 </script>
@@ -157,6 +178,9 @@ layui.use(['table','laypage','form','cjgl'], function(){
             break;
           case 'add':
             cjgl.add('添加单位荣誉','/dwry/create','','',true);
+            break;
+          case 'more':
+            cjgl.add('批传','dwry/createall','300','200');
             break;
         };
     });
