@@ -233,7 +233,7 @@ function upload($list,$file,$isSave=false)
 	        $data = array(
 	            'msg'=>'上传成功'
 	            ,'val'=>true
-	            ,'url'=>$list['serurl'].$list['url']
+	            ,'url'=>$list['url']
 	        );
 	    }else{
 	        $data = array(
@@ -245,7 +245,7 @@ function upload($list,$file,$isSave=false)
 		$data = array(
             'msg'=>'上传成功'
             ,'val'=>true
-            ,'url'=>$list['serurl'].$list['url']
+            ,'url'=>$list['url']
         );
 	}
 

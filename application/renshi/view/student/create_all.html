@@ -55,7 +55,7 @@ layui.use('upload', function(){
     ,url: "{:url('upload')}" //上传接口
     ,done: function(res){
       if(res.val == 1){
-        $('#url').val(res.url);
+        $('#url').val('..\\public\\uploads\\student\\' + res.url);
       }
       layer.msg(res.msg);
     }

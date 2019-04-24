@@ -32,4 +32,10 @@ class DwRongyu extends Validate
      * @var array
      */	
     protected $message = [];
+
+    // 验证场景
+    protected $scene = [
+        'add'  =>  ['title','category','hjschool','fzshijian','fzschool','jiangxiang'],
+        'edit'  =>  ['id','title','category','hjschool','fzshijian','fzschool','jiangxiang' ],
+    ];
 }

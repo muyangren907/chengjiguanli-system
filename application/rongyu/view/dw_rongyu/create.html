@@ -26,6 +26,13 @@
 </style>
 {/block}
 {block name="form"}
+    <div class="layui-form-item" align="center">
+      {present name="$list.data.url"}
+          <img style="max-height: 300px;max-width: 500px" src="__UPLOAD__/rongyu_school/{$list.data.url}" onclick="imgMax(this,true)">
+        {else /}
+          <img style="max-height: 300px;max-width: 500px" src="__UPLOAD__/rongyu_school/{$list.data.url}" onclick="imgMax(this,true)">
+      {/present}
+    </div>
     <form class="layui-form layui-form-pane" lay-filter="myform">
           <div class="layui-form-item">
               <label for="title" class="layui-form-label">
@@ -61,18 +68,27 @@
                 <div class="layui-input-inline">
                   <input name="cySearch" id="cySearch" type="text" class="layui-input" autocomplete="off">
                 </div>
+                {present name="$list.data.cy_dwry"}
+                  {volist name="$list.data.cy_dwry" id="vo"}
+                  <div class="layui-input-inline" style="width:60px">
+                    <div onclick="cjgl.delTeacher(this)" class="layui-btn layui-btn-normal">
+                      {$vo.teacher.xingming}
+                    </div>
+                    <input type="hidden" name="teachers[]" value="{$vo.teacher.xingming}"></div>
+                  {/volist}
+                {/present}
               </div>
           </div>
           <div class="layui-form-item">
-    		    <label for="xingzhi" class="layui-form-label"><span class="x-red">*</span>荣誉类型</label>
+    		    <label for="category" class="layui-form-label"><span class="x-red">*</span>荣誉类型</label>
     		    <div class="layui-input-block">
     		    	{php} $category = getCategory(112);{/php}
-    		      <select name="xingzhi" lay-verify="required">
+    		      <select name="category" lay-verify="required">
     		      	<option value=""></option>
     		      	{volist name="category" id="vo"}
                   <option value="{$vo.id}"
-                  {present name="$list.data.xingzhi"}
-                    {eq name="$list.data.xingzhi" value="$vo.id" }
+                  {present name="$list.data.category"}
+                    {eq name="$list.data.category" value="$vo.id" }
                       selected
                     {/eq}
                   {/present}>
@@ -169,6 +185,7 @@
     //执行一个laydate实例
     laydate.render({
       elem: '#fzshijian' //指定元素
+      ,trigger: 'click' //采用click弹出
     });
 
     //执行实例
@@ -207,9 +224,23 @@
       }
     },
   })
- 
 
-  
+
+  // 图片放大
+  function imgMax(obj,max=false)
+  {
+    if(max == true){
+      $(obj).css("max-width","800px");
+      $(obj).css("max-height","1000px");
+      $(obj).attr('onclick',"imgMax(this)");
+    }else{
+      $(obj).css("max-width","500px");
+      $(obj).css("max-height","300px");
+      $(obj).attr('onclick',"imgMax(this,true)");
+    }
+  }
+
+
 </script>  
 {/block}
 

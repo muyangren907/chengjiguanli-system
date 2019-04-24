@@ -75,32 +75,46 @@ layui.use(['table','laypage','form','cjgl'], function(){
 		cols: [[ //表头
 			{type:'checkbox', fixed: 'left'},
 			{field: 'title', title: '荣誉名称',sort: true, minWidth:240},
-			{field: 'hjschool', title: '获奖单位', minWidth:100,sort: true},
+			{field: 'hjschool', title: '获奖单位', minWidth:100,sort: true,templet:function(d){
+				var str='';
+				if(d.hj_school)
+				{
+					str = d.hj_school.jiancheng;
+				}
+				return str;
+			}},
 			{field: "category",title: '荣誉类别',sort: true,templet:function(d){
 				var str='';
-				if(d.dw_xingzhi)
+				if(d.lx_category)
 				{
-					str = d.dw_xingzhi.title;
+					str = d.lx_category.title;
 				}
 				return str;
 			}},
 			{field: 'jiangxiang', title: '奖项',sort: true,templet:function(d){
 				var str='';
-				if(d.dw_jibie)
+				if(d.jx_category)
 				{
-					str = d.dw_jibie.title;
+					str = d.jx_category.title;
 				}
 				return str;
 			}} ,
 			{field: 'fzschool', title: '发证单位',sort: true,templet:function(d){
 				var str='';
-				if(d.dw_xueduan)
+				if(d.fz_school)
 				{
-					str = d.dw_xueduan.title;
+					str = d.fz_school.jiancheng;
 				}
 				return str;
 			}},
-			{field: 'paixu', title: '级别', sort: true},
+			{title: '级别',templet:function(d){
+				var str='';
+				if(d.fz_school)
+				{
+					str = d.fz_school.dw_jibie.title;
+				}
+				return str;
+			}},
 			{field: 'fzshijian', title: '发证时间', sort: true},
 			{field: 'status', title: '状态',templet:'#status', sort: true},
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}

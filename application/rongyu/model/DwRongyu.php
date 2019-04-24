@@ -39,7 +39,12 @@ class DwRongyu extends Base
                         $query->field('id,jiancheng');
                     },
                     'fzSchool'=>function($query){
-                        $query->field('id,jiancheng');
+                        $query->field('id,jiancheng,jibie')
+                            ->with([
+                                'dwJibie'=>function($query){
+                                    $query->field('id,title');
+                                },
+                            ]);
                     },
                     'lxCategory'=>function($query){
                         $query->field('id,title');
@@ -49,7 +54,6 @@ class DwRongyu extends Base
                     }
                 ]
             )
-            ->append(['jibie'])
             ->select();
         return $data;
     }
@@ -83,18 +87,6 @@ class DwRongyu extends Base
     public function cyDwry()
     {
         return $this->hasMany('\app\rongyu\model\DwRongyuCanyu','rongyuid','id');
-    }
-
-    // 荣誉级别
-    public function getJibieAttr()
-    {
-        $jibie = '';
-
-        if($this->fzschool){
-            $jibie = $this->fzSchool->jibie;
-        }
-        
-         return $jibie;   
     }
 
 
