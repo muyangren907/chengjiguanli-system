@@ -1,6 +1,7 @@
-/teacher
+/teacher/*
 !/teacher/jiaoShiXingMingVBA.bas
 !/teacher/TeacherInfo.xlsx
-/student
+/student/*
 !/student/student_template.xlsx
-/rongyu_school
+/rongyu_school/*
+/rongyu_teacher/404.png
