@@ -1,78 +1,84 @@
 {extend name="common@create" /}
-{block name="mycss"}
+{block name="jscss"}
 {/block}
-{block name="formaa"}
-	<form action="/kt" method="POST" class="form form-horizontal" id="form-member-add">
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>课题册标题：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="课题册标题" id="title" name="title">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>课题类型：</label>
-			<div class="formControls col-xs-8 col-sm-9 f-l">
-				<span class="select-box f-l" style="width:180px;">
-				{php}$category = getCategory(115);{/php}
-				<select class="select" id="category" name="category" size="1" required>
-					<option value="">--请选择课题类型--</option>
-					{volist name="category" id="vo"}
-						<option value="{$vo.id}">{$vo.title}</option>
-					{/volist}
-				</select>
-				</span>
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>立项单位：</label>
-			<div class="formControls col-xs-8 col-sm-9 f-l">
-				<span class="select-box f-l" style="width:300px;">
-				{php} $school = schlist('区级','其它级');{/php}
-				<select class="select" id="lxdanweiid" name="lxdanweiid" size="1" required>
-					<option value="">--请选择立项单位--</option>
-					{volist name="school" id="vo"}
-						<option value="{$vo.id}">{$vo.title}</option>
-					{/volist}
-				</select>
-				</span>
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>立项时间：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text Wdate" value="" placeholder="" id="lxshijian" name="lxshijian" onclick="WdatePicker({isShowClear:false,readOnly:true})" style="width: 180px">
-			</div>
-		</div>
-		<div class="row cl">
-			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
-			</div>
-		</div>
-	</form>
+{block name="form"}
+    <form class="layui-form layui-form-pane" lay-filter="myform">
+          <div class="layui-form-item">
+              <label for="title" class="layui-form-label">
+                  课题册标题
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="title" name="title"
+                  autocomplete="off" class="layui-input " value="{$list.data.title|default=''}" placeholder="中文1-30个字符">
+              </div>
+          </div>
+          <div class="layui-form-item">
+    		    <label for="category" class="layui-form-label"><span class="x-red">*</span>课题类型</label>
+    		    <div class="layui-input-block">
+    		    	{php} $category = getCategory(115);{/php}
+    		      <select name="category" lay-verify="required">
+    		      	<option value=""></option>
+    		      	{volist name="category" id="vo"}
+                  <option value="{$vo.id}"
+                  {present name="$list.data.category"}
+                    {eq name="$list.data.category" value="$vo.id" }
+                      selected
+                    {/eq}
+                  {/present}>
+                    {$vo.title}
+                  </option>
+    		        {/volist}
+    		      </select>
+    		    </div>
+    		  </div>
+          <div class="layui-form-item">
+            <label for="lxdanweiid" class="layui-form-label"><span class="x-red">*</span>立项单位</label>
+            <div class="layui-input-block">
+              {php} $school = schlist('区级','其它级');{/php}
+              <select name="lxdanweiid" lay-verify="required">
+                <option value=""></option>
+                {volist name="school" id="vo"}
+                  <option value="{$vo.id}"
+                  {present name="$list.data.lxdanweiid"}
+                    {eq name="$list.data.lxdanweiid" value="$vo.id" }
+                      selected
+                    {/eq}
+                  {/present}>
+                    {$vo.title}
+                  </option>
+                {/volist}
+              </select>
+            </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="lxshijian" class="layui-form-label">
+                  <span class="x-red">*</span>获奖时间
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="lxshijian" name="lxshijian" lay-verify="required"
+                  autocomplete="off" class="layui-input " value="{$list.data.lxshijian|default=''}" placeholder="立项时间">
+              </div>
+          </div>
+          <div class="layui-form-item" style="text-align: right;">
+              <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
+                  {$list.set.butname}
+              </button>
+          </div>
+      </form>
 {/block}
-{block name="yanzheng"}
-<script type="text/javascript">
-	// 匹配用户名
-	$.validator.addMethod("zh",function(value,element){
-		var tel = /^[\u4e00-\u9fa5]*$/;
-		return this.optional(element) || tel.test(value);
-	}, "请输入中文");
 
-	// 设置表单验证规则
-	var myrules = {
-			title:{
-				required:true,
-				maxlength:60,
-			},
-			lxshijian:{
-				required:true,
-				dateISO:true
-			},
-		};
+{block name="myjs"}
 
-	// 设置表单提交方式
-	var mytype = 'POST';
-
-	
-</script>
+<script>
+  // 日期控件
+  layui.use(['laydate'], function(){
+    var laydate = layui.laydate;
+    //执行一个laydate实例
+    laydate.render({
+      elem: '#lxshijian' //指定元素
+      ,trigger: 'click' //采用click弹出
+    });
+  });
+</script>  
 {/block}
+

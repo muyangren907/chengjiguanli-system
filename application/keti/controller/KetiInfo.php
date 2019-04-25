@@ -18,7 +18,7 @@ class KetiInfo extends Base
     public function index()
     {
         // 设置要给模板赋值的信息
-        $list['webtitle'] = '课题信息列表';
+        $list['webtitle'] = '课题列表';
 
         // 模板赋值
         $this->assign('list',$list);
@@ -34,20 +34,18 @@ class KetiInfo extends Base
      * @param  int  $id
      * @return \think\Response
      */
-    public function ketiList($id)
+    public function ketiList($id,$title)
     {
-        
-        // 获取变量
+
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = $title.' 列表';
         $list['id'] = $id;
-        // 设置页面标题
-        $list['title'] = '课题信息';
-        // 设置数据总数
-        $list['count'] = ktinfo::where('ketice',$id)->count();
 
         // 模板赋值
         $this->assign('list',$list);
 
-        return $this->fetch('');
+        // 渲染模板
+        return $this->fetch();
     }
 
 
@@ -59,58 +57,43 @@ class KetiInfo extends Base
      */
     public function ajaxData()
     {
-        // 获取DT的传值
-        $getdt = request()->param();
+        // 获取参数
+        $src = $this->request
+                ->only([
+                    'page'=>'1',
+                    'limit'=>'10',
+                    'field'=>'update_time',
+                    'order'=>'desc',
+                    'lxdanweiid'=>array(),
+                    'lxcategory'=>array(),
+                    'fzdanweiid'=>array(),
+                    'subject'=>array(),
+                    'category'=>array(),
+                    'jddengji'=>array(),
+                    'searchval'=>''
+                ],'POST');
 
-        //得到排序的方式
-        $order = $getdt['order'][0]['dir'];
-        //得到排序字段的下标
-        $order_column = $getdt['order'][0]['column'];
-        //根据排序字段的下标得到排序字段
-        $order_field = $getdt['columns'][$order_column]['name'];
-        if($order_field=='')
-        {
-            $order_field = $getdt['columns'][$order_column]['data'];
-        }
-        //得到limit参数
-        $limit_start = $getdt['start'];
-        $limit_length = $getdt['length'];
-
-        //得到搜索的关键词
-        $search = [
-            'lxdanweiid'=>$getdt['lxdanweiid'],
-            'lxcategory'=>$getdt['lxcategory'],
-            'fzdanweiid'=>$getdt['fzdanweiid'],
-            'subject'=>$getdt['subject'],
-            'category'=>$getdt['category'],
-            'jddengji'=>$getdt['jddengji'],
-            'ketice'=>$getdt['ketice'],
-            'search'=>$getdt['search']['value'],
-            'order'=>$order,
-            'order_field'=>$order_field
-        ];
 
         // 实例化
-        $keti = new ktinfo;
+        $ktinfo = new ktinfo;
 
-        // 获取荣誉总数
-        $cnt = $keti->select()->count();
-
-        // 查询数据
-        $data = $keti->search($search);
-        $datacnt = $data->count();
-
+        // 查询要显示的数据
+        $data = $ktinfo->search($src);
+        // 获取符合条件记录总数
+        $cnt = $data->count();
         // 获取当前页数据
+        $limit_start = $src['page'] * $src['limit'] - $src['limit'];
+        $limit_length = $src['limit'];
         $data = $data->slice($limit_start,$limit_length);
-
-
+       
         // 重组返回内容
         $data = [
-            'draw'=> $getdt["draw"] , // ajax请求次数，作为标识符
-            'recordsTotal'=>$cnt,  // 获取到的结果数(每页显示数量)
-            'recordsFiltered'=>$datacnt,       // 符合条件的总数据量
+            'code'=> 0 , // ajax请求次数，作为标识符
+            'msg'=>"",  // 获取到的结果数(每页显示数量)
+            'count'=>$cnt, // 符合条件的总数据量
             'data'=>$data, //获取到的数据结果
         ];
+
 
         return json($data);
     }
@@ -126,14 +109,18 @@ class KetiInfo extends Base
     public function create($id=0)
     {
         // 设置页面标题
-        $list['title'] = '添加课题信息';
-        $list['ketice'] = $id;
+        $list['set'] = array(
+            'webtitle'=>'添加课题册',
+            'butname'=>'添加',
+            'formpost'=>'POST',
+            'url'=>'/ktinfo',
+            'ketice'=>$id
+        );
 
         // 模板赋值
         $this->assign('list',$list);
-
         // 渲染
-        return $this->fetch();
+        return $this->fetch('create');
     }
 
     /**
@@ -266,7 +253,7 @@ class KetiInfo extends Base
     public function edit($id)
     {
         // 获取课题信息
-        $list = ktinfo::where('id',$id)
+        $list['id'] = ktinfo::where('id',$id)
                 ->field('id,title,fzdanweiid,bianhao,subject,category,jhjtshijian,lxpic')
                 ->with([
                     'ktZcr'=>function($query){
@@ -279,11 +266,18 @@ class KetiInfo extends Base
                 ->find();
         
 
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'编辑课题',
+            'butname'=>'修改',
+            'formpost'=>'PUT',
+            'url'=>'/ktinfo/'.$id,
+        );
+
         // 模板赋值
         $this->assign('list',$list);
-
-        // 渲染模板
-        return $this->fetch();
+        // 渲染
+        return $this->fetch('create');
     }
 
     /**
@@ -386,7 +380,7 @@ class KetiInfo extends Base
     public function jieTi($id)
     {
         // 获取课题信息
-        $list = ktinfo::where('id',$id)
+        $list['data'] = ktinfo::where('id',$id)
                 ->field('id,title,jddengji,jtshijian,jtpic')
                 ->with([
                     'ktCy'=>function($query){
@@ -398,11 +392,18 @@ class KetiInfo extends Base
                 ])
                 ->find();
 
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'编辑结题',
+            'butname'=>'修改',
+            'formpost'=>'PUT',
+            'url'=>'/ktjt/'.$id,
+        );
+
         // 模板赋值
         $this->assign('list',$list);
-
-        // 渲染模板
-        return $this->fetch();
+        // 渲染
+        return $this->fetch('create');
     }
 
 

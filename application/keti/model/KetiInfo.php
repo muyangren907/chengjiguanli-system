@@ -8,48 +8,43 @@ use app\common\model\Base;
 class KetiInfo extends Base
 {
     //搜索课题册
-    public function search($search)
+    public function search($src)
     {
     	// 获取参数
-    	$lxdanweiid = $search['lxdanweiid'];
-    	$lxcategory = $search['lxcategory'];
-    	$fzdanweiid = $search['fzdanweiid'];
-        $subject = $search['subject'];
-        $category = $search['category'];
-        $jddengji = $search['jddengji'];
-        $ketice = $search['ketice'];
-    	$order_field = $search['order_field'];
-    	$order = $search['order'];
-    	$search = $search['search'];
+    	$lxdanweiid = $src['lxdanweiid'];
+    	$lxcategory = $src['lxcategory'];
+    	$fzdanweiid = $src['fzdanweiid'];
+        $subject = $src['subject'];
+        $category = $src['category'];
+        $jddengji = $src['jddengji'];
+    	$searchval = $src['searchval'];
 
-    	$data = $this->order([$order_field =>$order])
-    		->when(strlen($lxdanweiid)>0,function($query) use($lxdanweiid){
+    	$data = $this
+            ->order([$src['field'] =>$src['order']])
+    		->when(count($lxdanweiid)>0,function($query) use($lxdanweiid){
                 	$query->where('ketice','in',function ($q) use($lxdanweiid){
                         $q->name('keti')->where('lxdanweiid','in',$lxdanweiid)->field('id');
                     });
                 })
-    		->when(strlen($lxcategory)>0,function($query) use($lxcategory){
+    		->when(count($lxcategory)>0,function($query) use($lxcategory){
                 	$query->where('ketice','in',function($q) use($lxcategory){
                         $q->name('keti')->where('category','in',$lxcategory)->field('id');
                     });
                 })
-    		->when(strlen($fzdanweiid)>0,function($query) use($fzdanweiid){
+    		->when(count($fzdanweiid)>0,function($query) use($fzdanweiid){
                 	$query->where('fzdanweiid','in',$fzdanweiid);
                 })
-            ->when(strlen($subject)>0,function($query) use($subject){
+            ->when(count($subject)>0,function($query) use($subject){
                     $query->where('subject','in',$subject);
                 })
-            ->when(strlen($category)>0,function($query) use($category){
+            ->when(count($category)>0,function($query) use($category){
                     $query->where('category','in',$category);
                 })
-            ->when(strlen($ketice)>0,function($query) use($ketice){
-                    $query->where('ketice','in',$ketice);
-                })
-            ->when(strlen($jddengji)>0,function($query) use($jddengji){
+            ->when(count($jddengji)>0,function($query) use($jddengji){
                     $query->where('jddengji','in',$jddengji);
                 })
-    		->when(strlen($search)>0,function($query) use($search){
-                	$query->where('title','like',$search);
+    		->when(strlen($searchval)>0,function($query) use($searchval){
+                	$query->where('title','like',$searchval);
                 })
             ->with(
                 [

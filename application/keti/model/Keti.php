@@ -9,25 +9,23 @@ use app\common\model\Base;
 class Keti extends Base
 {
     //搜索课题册
-    public function search($search)
+    public function search($src)
     {
-    	// 获取参数
-    	$lxdanweiid = $search['lxdanweiid'];
-    	$category = $search['category'];
-    	$order_field = $search['order_field'];
-    	$order = $search['order'];
-    	$category = $search['category'];
-    	$search = $search['search'];
+    	// 整理参数
+        $lxdanweiid = $src['lxdanweiid'];
+        $category = $src['category'];
+        $searchval = $src['searchval'];
 
-    	$data = $this->order([$order_field =>$order])
-    		->when(strlen($lxdanweiid)>0,function($query) use($lxdanweiid){
+    	$data = $this
+            ->order([$src['field'] =>$src['order']])
+    		->when(count($lxdanweiid)>0,function($query) use($lxdanweiid){
                 	$query->where('lxdanweiid','in',$lxdanweiid);
                 })
-    		->when(strlen($category)>0,function($query) use($category){
+    		->when(count($category)>0,function($query) use($category){
                 	$query->where('category','in',$category);
                 })
-    		->when(strlen($search)>0,function($query) use($search){
-                	$query->where('title','like',$search);
+    		->when(strlen( $searchval)>0,function($query) use( $searchval){
+                	$query->where('title','like', $searchval);
                 })
             ->with(
                 [
@@ -39,7 +37,10 @@ class Keti extends Base
                     },
                 ]
             )
-            ->append(['ktcnt','jtcnt'])
+            ->withCount(['ktInfo'=>'lxcount'],'id')
+            ->withCount(['ktInfo'=>function($query){
+                $query->where('id','between',[1,1000]);
+            }])
     		->select();
 
 
