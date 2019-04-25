@@ -4,5 +4,6 @@
 /student/*
 !/student/student_template.xlsx
 /rongyu_school/*
-/rongyu_teacher/404.png
+/rongyu_teacher/*
+!/rongyu_teacher/404.png
 /keti/*
