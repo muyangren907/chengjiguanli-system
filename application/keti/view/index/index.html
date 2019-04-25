@@ -29,7 +29,7 @@
 		    	{/volist}
 		    </div>
 		</div>
-		<div class="layui-form-item" style="margin-bottom: 0; botton">
+		<div class="layui-form-item" style="margin-bottom: 0;">
 		    <label for="lxdanweiid" class="layui-form-label" style="height: 100%">立项单位</label>
 		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
 		    	{php} $school = schlist('区级','其它级'); {/php}
@@ -159,7 +159,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
 
       switch(layEvent){
         case 'detail':// 查看
-          parent.x_admin_add_to_tab(obj.data.title + ' 列表','rylist/'+obj.data.id+'/'+obj.data.title,true);
+          parent.x_admin_add_to_tab(obj.data.title + ' 列表','/ktlist/'+obj.data.id+'/'+obj.data.title,true);
           break;
         case 'del':// 删除
           cjgl.del(obj,"/kt");
@@ -171,7 +171,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
           cjgl.status(obj,"{:url('setstatus')}");
           break;
         case 'more':// 状态
-          cjgl.add('批传','jsryinfoaddall/'+obj.data.id,'300','200');
+          cjgl.add('批传','/ktinfoaddall/'+obj.data.id,'300','200');
           break;
       };
   	});

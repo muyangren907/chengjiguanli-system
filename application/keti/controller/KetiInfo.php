@@ -34,12 +34,12 @@ class KetiInfo extends Base
      * @param  int  $id
      * @return \think\Response
      */
-    public function ketiList($id,$title)
+    public function ketiList($ketice,$title)
     {
 
         // 设置要给模板赋值的信息
         $list['webtitle'] = $title.' 列表';
-        $list['id'] = $id;
+        $list['ketice'] = $ketice;
 
         // 模板赋值
         $this->assign('list',$list);
@@ -70,6 +70,7 @@ class KetiInfo extends Base
                     'subject'=>array(),
                     'category'=>array(),
                     'jddengji'=>array(),
+                    'ketice'=>'',
                     'searchval'=>''
                 ],'POST');
 
@@ -106,7 +107,7 @@ class KetiInfo extends Base
      *
      * @return \think\Response
      */
-    public function create($id=0)
+    public function create($ketice=0)
     {
         // 设置页面标题
         $list['set'] = array(
@@ -114,7 +115,7 @@ class KetiInfo extends Base
             'butname'=>'添加',
             'formpost'=>'POST',
             'url'=>'/ktinfo',
-            'ketice'=>$id
+            'ketice'=>$ketice
         );
 
         // 模板赋值
@@ -179,17 +180,48 @@ class KetiInfo extends Base
 
 
     // 批量上传立项通知书
-    public function createall($id)
+    public function createAll($ketice)
     {
         // 设置页面标题
-        $list['title'] = '批量添加课题信息';
-        $list['ketice'] = $id;
+        $list['set'] = array(
+            'webtitle'=>'批量添加课题信息',
+            'butname'=>'批传',
+            'formpost'=>'POST',
+            'url'=>'/ktinfoaddall/'.$ketice,
+        );
 
         // 模板赋值
         $this->assign('list',$list);
-
         // 渲染
         return $this->fetch();
+    }
+
+    // 批量保存图片
+    public function createAllSave($ketice)
+    {
+        // 获取文件信息
+        $list['text'] = $this->request->post('text');
+        $list['serurl'] = $this->request->post('serurl');
+
+        // 获取表单上传文件
+        $file = request()->file('file');
+        // 上传文件并返回结果
+        $data = upload($list,$file);
+
+        if($data['val'] != 1)
+        {
+            $data=['msg'=>'添加失败','val'=>0];
+        }
+
+        $data = ktinfo::create([
+            'lxpic'=>$data['url']
+            ,'title'=>'批传立项'
+            ,'ketice'=>$ketice
+        ]);
+
+        $data ? $data=['msg'=>'批传成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        return json($data);
     }
 
 
@@ -202,33 +234,14 @@ class KetiInfo extends Base
     public function upload()
     {
         // 获取文件信息
-        $ketice=input('post.ketice');
+        $list['text'] = $this->request->post('text');
+        $list['serurl'] = $this->request->post('serurl');
 
-
-        // 获取表单上传文件 例如上传了001.jpg
+        // 获取表单上传文件
         $file = request()->file('file');
-        // 移动到框架应用根目录/uploads/ 目录下
-        $info = $file->validate(['size'=>2*1024*1024,'ext'=>'jpg,png,gif,jpeg'])->move('uploads\keti\lixiang');
+        // 上传文件并返回结果
+        $data = upload($list,$file);
 
-     
-
-        if($info){
-            // 成功上传后 获取上传信息
-            $list['url'] = $info->getSaveName();
-            $list['url'] = str_replace('\\','/',$list['url']);
-
-
-            // 如果图片上传成功，则添加荣誉记录
-            $data = ktinfo::create(['lxpic'=>$list['url'],'ketice'=>$ketice]);
-            $id = $data->id;
-
-            $id ? $data = array('msg'=>'上传成功','val'=>true,'url'=>$list['url'],'ktid'=>$id) : $data = array('msg'=>'保存文件信息失败','val'=>false,'url'=>null);
-        }else{
-            // 上传失败获取错误信息
-            $data = array('msg'=>$file->getError(),'val'=>false,'url'=>null);
-        }
-
-        // 返回信息
         return json($data);
     }
 
@@ -253,14 +266,16 @@ class KetiInfo extends Base
     public function edit($id)
     {
         // 获取课题信息
-        $list['id'] = ktinfo::where('id',$id)
+        $list['data'] = ktinfo::where('id',$id)
                 ->field('id,title,fzdanweiid,bianhao,subject,category,jhjtshijian,lxpic')
                 ->with([
                     'ktZcr'=>function($query){
                         $query->field('ketiinfoid,teacherid')
-                        ->with(['teacher'=>function($query){
-                            $query->field('id,xingming');
-                        }]);
+                            ->with([
+                                'teacher'=>function($q){
+                                    $q->field('id,xingming');
+                                }
+                            ]);
                     },
                 ])
                 ->find();
@@ -290,7 +305,7 @@ class KetiInfo extends Base
     public function update($id)
     {
         // 获取表单数据
-        $list = request()->only(['ketice','title','bianhao','fzdanweiid','subject','category','jhjtshijian','hjteachers','lxpic'],'PUT');
+        $list = request()->only(['title','bianhao','fzdanweiid','subject','category','jhjtshijian','hjteachers','lxpic'],'PUT');
         $list['id'] = $id;
 
 

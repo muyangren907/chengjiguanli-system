@@ -37,11 +37,11 @@ class JsRongyuInfo extends Base
      *
      * @return \think\Response
      */
-    public function rongyuList($id,$title)
+    public function rongyuList($rongyuce,$title)
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = $title . ' 荣誉';
-        $list['rongyuce'] = $id;
+        $list['rongyuce'] = $rongyuce;
 
         // 模板赋值
         $this->assign('list',$list);
@@ -103,7 +103,7 @@ class JsRongyuInfo extends Base
      *
      * @return \think\Response
      */
-    public function create($id = 0)
+    public function create($rongyuce = 0)
     {
         // 设置页面标题
         $list['set'] = array(
@@ -111,7 +111,7 @@ class JsRongyuInfo extends Base
             'butname'=>'添加',
             'formpost'=>'POST',
             'url'=>'/jsryinfo',
-            'rongyuce'=>$id
+            'rongyuce'=>$rongyuce
         );
 
         // 模板赋值
@@ -126,7 +126,7 @@ class JsRongyuInfo extends Base
      * @param  \think\Request  $request
      * @return \think\Response
      */
-    public function save($rongyuce)
+    public function save()
     {
         
         // 获取表单数据
@@ -184,7 +184,7 @@ class JsRongyuInfo extends Base
      * @param  \think\Request  $request
      * @return \think\Response
      */
-    public function createAll($id)
+    public function createAll($rongyuce)
     {
 
         // 设置页面标题
@@ -192,7 +192,7 @@ class JsRongyuInfo extends Base
             'webtitle'=>'批量上传教师荣誉册图片',
             'butname'=>'批传',
             'formpost'=>'POST',
-            'url'=>'/jsryinfoaddall/'.$id,
+            'url'=>'/jsryinfoaddall/'.$rongyuce,
         );
 
         // 模板赋值
@@ -202,7 +202,7 @@ class JsRongyuInfo extends Base
     }
 
     // 保存批传
-    public function createAllSave($id)
+    public function createAllSave($rongyuce)
     {
         // 获取文件信息
         $list['text'] = $this->request->post('text');
@@ -219,9 +219,9 @@ class JsRongyuInfo extends Base
         }
 
         $data = ryinfo::create([
-            'url'=>$data['url']
-            ,'title'=>'批传'
-            ,'rongyuce'=>$id
+            'pic'=>$data['url']
+            ,'title'=>'批传教师荣誉'
+            ,'rongyuce'=>$rongyuce
         ]);
 
         $data ? $data=['msg'=>'批传成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -272,7 +272,7 @@ class JsRongyuInfo extends Base
     {
         // 获取荣誉信息
         $list['data'] = ryinfo::where('id',$id)
-                ->field('id,rongyuce,title,bianhao,hjschool,subject,jiangxiang,hjshijian,pic')
+                ->field('id,title,bianhao,hjschool,subject,jiangxiang,hjshijian,pic')
                 ->with([
                     'hjJsry'=>function($query){
                         $query->field('rongyuid,teacherid')

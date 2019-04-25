@@ -17,6 +17,7 @@ class KetiInfo extends Base
         $subject = $src['subject'];
         $category = $src['category'];
         $jddengji = $src['jddengji'];
+        $ketice = $src['ketice'];
     	$searchval = $src['searchval'];
 
     	$data = $this
@@ -43,6 +44,9 @@ class KetiInfo extends Base
             ->when(count($jddengji)>0,function($query) use($jddengji){
                     $query->where('jddengji','in',$jddengji);
                 })
+            ->when(strlen($ketice)>0,function($query) use($ketice){
+                    $query->where('ketice',$ketice);
+                })
     		->when(strlen($searchval)>0,function($query) use($searchval){
                 	$query->where('title','like',$searchval);
                 })
@@ -68,9 +72,24 @@ class KetiInfo extends Base
                     'ktSubject'=>function($query){
                         $query->field('id,title');
                     },
+                    'ktZcr'=>function($query){
+                        $query->field('ketiinfoid,teacherid')
+                            ->with([
+                                'teacher'=>function($q){
+                                    $q->field('id,xingming');
+                                }
+                            ]);
+                    },
+                    'ktCy'=>function($query){
+                        $query->field('ketiinfoid,teacherid')
+                            ->with([
+                                'teacher'=>function($q){
+                                    $q->field('id,xingming');
+                                }
+                            ]);
+                    }
                 ]
             )
-            ->append(['zcrName'])
     		->select();
 
 
@@ -129,30 +148,6 @@ class KetiInfo extends Base
         return $str;
     }
 
-
-    // 立项
-
-
-    // 课题主持人名单整理
-    public function getZcrNameAttr($value)
-    {
-        $teacherList = $this->getAttr('ktZcr');
-        $teachNames = "";
-        $i = 0;
-        foreach ($teacherList as $key => $value) {
-            # code...
-            if($i == 0)
-            {
-                $teachNames = $value['teacher']['xingming'];
-            }else{
-                $teachNames = $teachNames . '、' .$value['teacher']['xingming'];
-            }
-            $i++;
-        }
-
-        return $teachNames;
-
-    }
 
 
     // 计划结题时间修改器

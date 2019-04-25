@@ -14,14 +14,16 @@ Route::resource('kt','keti/Index');
 Route::resource('ktinfo','keti/KetiInfo');
 
 // 课题册中课题列表
-Route::get('ktlist/:id','keti/KetiInfo/ketilist');
+Route::get('ktlist/:ketice/:title','keti/KetiInfo/ketilist');
 // 结题编辑
 Route::get('ktjt/:id/edit','keti/KetiInfo/jieTi');
 Route::put('ktjt/:id','keti/KetiInfo/jtUpdate');
 // 添加立项信息
-Route::get('ktinfoadd/:id','keti/KetiInfo/create');
+Route::get('ktinfoadd/:ketice','keti/KetiInfo/create');
 // 批量添加立项图片
-Route::get('ktinfoaddall/:id','keti/KetiInfo/createall');
+Route::get('ktinfoaddall/:ketice','keti/KetiInfo/createAll');
+Route::post('ktinfoaddall/:ketice','keti/KetiInfo/createAllSave');
+
 
 
 

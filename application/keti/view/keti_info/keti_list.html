@@ -5,9 +5,9 @@
 {/block}
 {block name="nav"}
 	<span class="layui-breadcrumb">
-		<a href="">师生名单</a>
-		<a href="">教师管理</a>
-		<a><cite>教师列表</cite></a>
+		<a href="">课题管理</a>
+		<a href="">课题册</a>
+		<a><cite>课题列表</cite></a>
 	</span>
 {/block}
 {block name="search"}
@@ -22,32 +22,60 @@
           </div>
         </div>
         <div class="layui-form-item">
-		    <label for="danwei" class="layui-form-label" style="height: 100%">单位</label>
+		    <label for="lxdanweiid" class="layui-form-label" style="height: 100%">立项单位</label>
 		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-		    	{php} $schoollist = schlist('校级','校级');{/php}
-		    	{volist name="schoollist" id="vo"}
-		    		<input type="checkbox" name="danwei" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+		    	{php} $school = schlist('校级','区级'); {/php}
+		    	{volist name="school" id="vo"}
+		    		<input type="checkbox" name="lxdanweiid" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+		    	{/volist}
+		    </div>
+		</div>
+        <div class="layui-form-item">
+		    <label for="lxcategory" class="layui-form-label" style="height: 100%">立项类别</label>
+		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+		    	{php} $category = getCategory(115);{/php}
+		    	{volist name="category" id="vo"}
+		    		<input type="checkbox" name="lxcategory" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 		    	{/volist}
 		    </div>
 		</div>
 		<div class="layui-form-item">
-		    <label for="zhiwu" class="layui-form-label" style="height: 100%">职务</label>
+		    <label for="fzdanweiid" class="layui-form-label" style="height: 100%">负责单位</label>
 		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-		    	{php} $category = getCategory(107);{/php}
+		    	{php} $school = schlist('校级','区级'); {/php}
+		    	{volist name="school" id="vo"}
+		    		<input type="checkbox" name="fzdanweiid" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+		    	{/volist}
+		    </div>
+		</div>
+		<div class="layui-form-item">
+		    <label for="subject" class="layui-form-label" style="height: 100%">所属学科</label>
+		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+		    	{php} $category = getCategory(116);{/php}
 		    	{volist name="category" id="vo"}
-		    		<input type="checkbox" name="zhiwu" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+		    		<input type="checkbox" name="subject" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+		    	{/volist}
+		    </div>
+		</div>
+		<div class="layui-form-item">
+		    <label for="category" class="layui-form-label" style="height: 100%">研究类别</label>
+		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+		    	{php} $category = getCategory(117);{/php}
+		    	{volist name="category" id="vo"}
+		    		<input type="checkbox" name="category" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 		    	{/volist}
 		    </div>
 		</div>
 		<div class="layui-form-item" style="margin-bottom: 0;">
-		    <label for="xueli" class="layui-form-label" style="height: 100%">学历</label>
+		    <label for="jddengji" class="layui-form-label" style="height: 100%">鉴定结果</label>
 		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-		    	{php} $category = getCategory(105);{/php}
-		    	{volist name="category" id="vo"}
-		    		<input type="checkbox" name="xueli[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
-		    	{/volist}
+		    		<input type="checkbox" name="jddengji" title="研究中" value="0" lay-skin="primary">
+		    		<input type="checkbox" name="jddengji" title="合格" value="1" lay-skin="primary">
+		    		<input type="checkbox" name="jddengji" title="优秀" value="2" lay-skin="primary">
+		    		<input type="checkbox" name="jddengji" title="流失" value="3" lay-skin="primary">
 		    </div>
 		</div>
+		
 	</div>
 {/block}
 {block name="table"}
@@ -63,20 +91,10 @@
 		<button class="layui-btn" lay-event="add">
 			<i class="iconfont">&#xe6b9;</i> 添加
 		</button>
-		<button class="layui-btn" lay-event="upload">
-			<i class="iconfont">&#xe71d;</i> 导入数据
-		</button>
-		<button class="layui-btn" lay-event="download">
-			<i class="iconfont">&#xe714;</i> 下载模板
-		</button>
-		<button class="layui-btn" lay-event="downloadvba">
-			<i class="iconfont">&#xe714;</i> 下载汉字转拼音VBA
-		</button>
 	</div>
 </script>
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
-	<a class="layui-btn-xs" lay-event="edit" title="查看"><i class="layui-icon layui-icon-search"></i></a>
 	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
 	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
 </script>
@@ -95,6 +113,9 @@ layui.use(['table','laypage','form','cjgl'], function(){
 		elem: '#tabledemo',
 		toolbar: '#toolbarDemo',
 		url:"{:url('ajaxdata')}",
+		where:{
+			ketice:"{$list.ketice}"
+		},
 		method:"POST",   //数据接口
 		page: true, //开启分页
 		loading:true,
@@ -103,32 +124,55 @@ layui.use(['table','laypage','form','cjgl'], function(){
 		defaultToolbar:'',
 		cols: [[ //表头
 			{type:'checkbox', fixed: 'left'},
-			{field: 'xingming', title: '姓名',sort: true},
-			{field: 'sex', title: '性别',sort: true},
-			{field: "shengri",title: '周岁',sort: true,templet:function(d){
-				return d.age;
-			}},
-			{field: 'xueli', title: '学历',sort: true,templet:function(d){
+			{field: 'title', title: '课题名称',sort: true, minWidth:240},
+			{field: 'bianhao', title: '课题编号 ',sort: true},
+			{title: '主持人',templet:function(d){
 				var str='';
-				if(d.js_xueli)
+				if(d.kt_zcr)
 				{
-					str = d.js_xueli.title;
-				}
-				return str;
-			}} ,
-			{field: 'biye', title: '毕业院校',sort: true},
-			{field: 'worktime', title: '工龄', sort: true,templet:function(d){
-				return d.gongling;
-			}},
-			{field: 'zhuanye', title: '专业', sort: true},
-			{field: 'danwei', title: '单位', sort: true,templet:function(d){
-				var str='';
-				if(d.js_danwei)
-				{
-					str = d.js_danwei.jiancheng;
+					for (var k = 0, length = d.kt_zcr.length; k < length; k++) {
+						if(k == 0){
+							str = d.kt_zcr[k].teacher.xingming;
+						}else{
+							str =str+'、'+d.kt_zcr[k].teacher.xingming;
+						}
+					}
 				}
 				return str;
 			}},
+			{title: '参与人',templet:function(d){
+				var str='';
+				if(d.kt_cy)
+				{
+					for (var k = 0, length = d.kt_cy.length; k < length; k++) {
+						if(k == 0){
+							str = d.kt_cy[k].teacher.xingming;
+						}else{
+							str =str+'、'+d.kt_cy[k].teacher.xingming;
+						}
+					}
+				}
+				return str;
+			}},
+			{field: "subject",title: '所属学科',sort: true,templet:function(d){
+				var str='';
+				if(d.kt_subject)
+				{
+					str = d.kt_subject.title;
+				}
+				return str;
+			}},
+			{field: "category",title: '奖研究类型',sort: true,templet:function(d){
+				var str='';
+				if(d.kt_category)
+				{
+					str = d.kt_category.title;
+				}
+				return str;
+			}},
+			{field: 'jddengji', title: '鉴定结果', sort: true},
+			{field: 'jhjtshijian', title: '计划结题', sort: true},
+			{field: 'jtshijian', title: '结题时间', sort: true},
 			{field: 'status', title: '状态',templet:'#status', sort: true},
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
 		]],
@@ -166,19 +210,10 @@ layui.use(['table','laypage','form','cjgl'], function(){
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/teacher','mytable');
+            cjgl.delAll(checkStatus,'/ktinfo','mytable');
             break;
           case 'add':
-            cjgl.add('添加教师','/teacher/create','','',true);
-            break;
-          case 'upload':
-            cjgl.add('导入教师','/teacher/createall','','',true);
-            break;
-          case 'download':
-          	window.open("/renshi/index/download");
-            break;
-          case 'downloadvba':
-          	window.open("/renshi/index/downloadVba");
+            cjgl.add('添加课题','/ktinfoadd/'+"{$list.ketice}",'','',true);
             break;
         };
     });
@@ -191,14 +226,11 @@ layui.use(['table','laypage','form','cjgl'], function(){
       var tr = obj.tr; //获得当前行 tr 的DOM对象
 
       switch(layEvent){
-        case 'detail':// 查看
-          layer.msg('查看' + data.id);
-          break;
         case 'del':// 删除
-          cjgl.del(obj,"/teacher");
+          cjgl.del(obj,"/ktinfo");
           break;
         case 'edit':// 编辑
-          cjgl.add('编辑教师','/teacher/'+obj.data.id+'/edit','','',true);
+          cjgl.add('编辑课题','/ktinfo/'+obj.data.id+'/edit','','',true);
           break;
         case 'status':// 状态
           cjgl.status(obj,"{:url('setstatus')}");

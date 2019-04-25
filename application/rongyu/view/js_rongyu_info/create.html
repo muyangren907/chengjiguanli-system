@@ -63,7 +63,7 @@
           </div>
           <div class="layui-form-item">
               <label for="bianhao" class="layui-form-label">
-                  荣誉册编号 
+                  荣誉编号 
               </label>
               <div class="layui-input-block">
                   <input type="text" id="bianhao" name="bianhao"
@@ -177,7 +177,7 @@
                   autocomplete="off" class="layui-input " value="{$list.data.hjshijian|default=''}" placeholder="获奖时间">
               </div>
           </div>
-          <input type="hidden" name="rongyuce"  id="rongyuce" value="$list.set.rongyuce">
+          <input type="hidden" name="rongyuce"  id="rongyuce" value="{$list.set.rongyuce}">
           <div class="layui-form-item" style="text-align: right;">
               <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
                   {$list.set.butname}
