@@ -16,14 +16,13 @@
                   <span class="x-red">*</span>身份证号
               </label>
               <div class="layui-input-block">
-                  <input type="text" id="shenfenzhenghao" name="shenfenzhenghao" lay-verify="required"
-                  autocomplete="off" class="layui-input " value="{$list.data.shenfenzhenghao|default=''}" placeholder="中文2-25个字符">
+                  <input type="text" id="shenfenzhenghao" name="shenfenzhenghao" lay-verify="required" autocomplete="off" class="layui-input " value="{$list.data.shenfenzhenghao|default=''}" placeholder="18位身份证号">
               </div>
           </div>
           <div class="layui-form-item">
             <label for="sex" class="layui-form-label"><span class="x-red">*</span>性别</label>
             <div class="layui-input-block">
-              <input type="radio" name="sex" value="1" class="layui-form-label" title="男" 
+              <input type="radio" name="sex" value="1" title="男" 
                 {present name="$list.data.sex"}
                 {$list.data.sex}
                     {eq name="$list.data.sex" value="男" }
@@ -132,13 +131,13 @@
 
 {block name="myjs"}
 <script>
-
 layui.use(['laydate','form'], function(){
 	var laydate = layui.laydate
 		,form = layui.form;
 	//执行一个laydate实例
 	laydate.render({
 		elem: '#shengri' //指定元素
+    ,trigger: 'click' //采用click弹出
 	});
 
 	// 监听选择按钮
@@ -194,15 +193,30 @@ layui.use(['laydate','form'], function(){
 		      });
 		    }
 		});
+  }
 
-	
-}      
+  $('#shenfenzhenghao').bind('change',function sfz(){
+    // 获取身份证号 210281198510288213
+    var str = $(this).val();
+    // 如果身份证号为18位则自动填表
+    if(str.length == 18){
+      // 填写性别
+      var sex = str.substr(16,1) % 2;
+      if(sex == 1){
+        // 选择性别男
+        $("input[name='sex']:first").prop('checked', true);
+      }else{
+        // 选择性别女
+        $("input[name='sex']:last").prop('checked', true);
+      }
+      form.render('radio');
 
+      // 填写出生日期
+      $("#shengri").val(str.substr(6,4) +'-'+ str.substr(10,2) +'-'+ str.substr(12,2));
+      $("#school").focus();
+    }
+  })  
 });
-
-
-
-
 </script>
 {/block}
 

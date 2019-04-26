@@ -202,7 +202,7 @@ class JsRongyuInfo extends Base
     }
 
     // 保存批传
-    public function createAllSave($rongyuce)
+    public function saveall($rongyuce)
     {
         // 获取文件信息
         $list['text'] = $this->request->post('text');

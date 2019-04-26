@@ -142,7 +142,7 @@ class DwRongyu extends Base
      * @return \think\Response
      */
     // 批量添加
-    public function createAll()
+    public function saveall()
     {
         // 设置页面标题
         $list['set'] = array(

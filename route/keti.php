@@ -22,7 +22,7 @@ Route::put('ktjt/:id','keti/KetiInfo/jtUpdate');
 Route::get('ktinfoadd/:ketice','keti/KetiInfo/create');
 // 批量添加立项图片
 Route::get('ktinfoaddall/:ketice','keti/KetiInfo/createAll');
-Route::post('ktinfoaddall/:ketice','keti/KetiInfo/createAllSave');
+Route::post('ktinfoaddall/:ketice','keti/KetiInfo/saveall');
 
 
 

@@ -33,11 +33,13 @@ class Banji extends Base
                     'glSchool'=>function($query){
                         $query->field('id,title');
                     },
-                    'glStudent'=>function($query){
-                        $query->count();
-                    },
                 ]
             )
+            ->withCount([
+                'glStudent'=>function($query){
+                    $query->where('status',1);
+                }
+            ])
             ->append(['title'])
             ->select();
         return $data;
@@ -88,21 +90,6 @@ class Banji extends Base
 
         return $title;
     }
-
-
-
-
-
-
-    // 学校获取器
-    // public function getSchoolAttr($value)
-    // {
-    // 	// 查询学校名称
-    // 	$schoolname = db('school')->where('id',$value)->value('title');
-    // 	// 返回学校名称
-    // 	return $schoolname;
-    // }
-
 
 
     // 班级学生数

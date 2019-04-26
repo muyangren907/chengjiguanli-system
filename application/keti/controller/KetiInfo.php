@@ -197,7 +197,7 @@ class KetiInfo extends Base
     }
 
     // 批量保存图片
-    public function createAllSave($ketice)
+    public function saveall($ketice)
     {
         // 获取文件信息
         $list['text'] = $this->request->post('text');

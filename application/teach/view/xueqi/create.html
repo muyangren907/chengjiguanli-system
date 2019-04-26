@@ -45,10 +45,10 @@
                 <span class="x-red">*</span>时间范围
               </label>
               <div class="layui-input-inline">
-                  <input type="text" class="layui-input" id="bfdate" name="bfdate" placeholder="开始时间">
+                  <input type="text" class="layui-input" id="bfdate" name="bfdate" placeholder="开始时间" autocomplete="off" value="{$list.data.bfdate|default=''}">
               </div>
               <div class="layui-input-inline">
-                  <input type="text" class="layui-input" id="enddate" name="enddate" placeholder="结束时间">
+                  <input type="text" class="layui-input" id="enddate" name="enddate" placeholder="结束时间" autocomplete="off" value="{$list.data.enddate|default=''}">
               </div>
             </div>
           </div>
