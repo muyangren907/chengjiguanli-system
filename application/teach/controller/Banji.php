@@ -289,27 +289,27 @@ class Banji extends Base
 
 
     // 根据单位年级获取班级列表
-    public function mybanji($school,$ruxuenian)
-    {
-        // 获取班级id列表
-        $list = BJ::where('school',$school)
-                ->where('ruxuenian',$ruxuenian)
-                ->order('paixu')
-                ->append(['title'])
-                ->select();
+    // public function mybanji($school,$ruxuenian)
+    // {
+    //     // 获取班级id列表
+    //     $list = BJ::where('school',$school)
+    //             ->where('ruxuenian','in',$ruxuenian)
+    //             ->order('paixu')
+    //             ->append(['title'])
+    //             ->select();
 
-        // 声明班级空数组
-        $banji = array();
-        // 重组数据
-        foreach ($list as $key => $value) {
-            $banji[] = ['id'=>$value['id'],'title'=>$value['title']];
-        }
-        return json($banji);
-    }
+    //     // 声明班级空数组
+    //     $banji = array();
+    //     // 重组数据
+    //     foreach ($list as $key => $value) {
+    //         $banji[] = ['id'=>$value['id'],'title'=>$value['title']];
+    //     }
+    //     return json($banji);
+    // }
 
 
     // 获取该学校各年级的班级名和id
-    public function banjilist($school)
+    public function banjilist($school,$ruxuenian)
     {
         // 获取年级名对应的入学年
         $njanmelist = nianjiList();
@@ -320,26 +320,19 @@ class Banji extends Base
 
         // 查询年级数据
         $list = BJ:: where('school',$school)
-                ->where('ruxuenian','in',$njlist)
+                ->where('ruxuenian','in',$ruxuenian)
                 ->group('ruxuenian')
-                ->field('school,ruxuenian')
+                ->field('id,ruxuenian')
+                ->with([
+                    'njBanji'=>function($query){
+                        $query->where('status',1)
+                        ->field('id,ruxuenian,paixu')
+                        ->append(['title']);
+                    }
+                ])
                 ->select();
-        // 追加年级对应的班级数
-        $list = $list->append(['banjiids']);
-        
-        // 重新组合数据
-        $bjarr = array();
-
-        foreach ($list as $key => $value) {
-            $bjarr[$value->ruxuenian]['title'] = $njanmelist[$value->ruxuenian];   #赋值年级名
-            $bj = array();
-            foreach ($value['banjiids'] as $key => $val) {
-                $bjarr[$value->ruxuenian]['banji'][$key] = $bjnamelist[$val];  #赋值班级名
-            }
-        }
-
         // 返回数据
-        return json($bjarr);
+        return json($list);
 
     }
 

@@ -15,8 +15,8 @@ Route::resource('kaoshi','teach/Kaoshi');
 Route::resource('subject','teach/Subject');
 Route::resource('banji','teach/Banji');
 Route::post('banji/:id/yidong','teach/Banji/yidong'); // 定义班级移动post规则
-Route::post('banji/njbanji/:school/:ruxuenian','teach/Banji/mybanji'); // 定义GET请求路由规则
-Route::post('banji/schbanji/:school','teach/Banji/banjilist'); // 定义GET请求路由规则
+Route::post('banji/njbanji','teach/Banji/mybanji'); // 定义GET请求路由规则
+Route::post('banji/schbanji','teach/Banji/banjilist'); // 定义GET请求路由规则
 Route::get('kaoshi/:id/kaohao','teach/Kaoshi/kaohao');
 Route::post('kaoshi/kaohao','teach/Kaoshi/kaohaosave');
 Route::get('kaoshi/:id/biaoqian','teach/Kaoshi/biaoqian');

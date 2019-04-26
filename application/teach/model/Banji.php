@@ -92,20 +92,10 @@ class Banji extends Base
     }
 
 
-    // 班级学生数
-    public function getStusumAttr()
+    // 年级-班级关联表
+    public function njBanji()
     {
-        // 返回学校名称
-        return db('student')->where('banji',$this->getData('id'))->count();
+        return $this->hasMany('Banji','ruxuenian','ruxuenian');
     }
 
-
-    // 根据学校和年级获取班级id
-    public function getBanjiidsAttr()
-    {
-        return $this
-            ->where('school',$this->getData('school'))
-            ->where('ruxuenian',$this->getData('ruxuenian'))
-            ->column('id,paixu');
-    }
 }

@@ -39,6 +39,18 @@ class MoreAction extends Base
     public function kaohao($kaoshi)
     {
 
+        // 获取参考年级
+        $kaoshilist = KS::where('id',$kaoshi)
+                ->with([
+                    'ksNianji'
+                ])
+                ->find();
+        foreach ($kaoshilist->ks_nianji as $key => $value) {
+            $list['data']['nianji'][$key]['id']=$value->nianji;
+            $list['data']['nianji'][$key]['title']=$value->nianjiname;
+        }
+
+
         // 设置页面标题
         $list['set'] = array(
             'webtitle'=>'生成考号',
@@ -63,7 +75,7 @@ class MoreAction extends Base
 
         // 获取表单数据
         $list = request()->only(['school','kaoshi','banjiids'],'post');
-        
+
 
         // 验证表单数据
         $result = $validate->check($list);
@@ -91,65 +103,33 @@ class MoreAction extends Base
                         ->select();
         $njlist = nianjiList();
         // 重新组合学生信息
-        $data = array();
+        $kaohao = array();
         foreach ($stulist as $key => $value) {
-
-            $data[$key]['student']= $value->id;
-            $data[$key]['school']= $list['school'];
-            $data[$key]['ruxuenian']= $value->stu_banji->ruxuenian;
-            $data[$key]['nianji']= $njlist[$data[$key]['ruxuenian']];
-            $data[$key]['banji']= $value->stu_banji->id;
+            $kaohao[$key]['student']= $value->id;
+            $kaohao[$key]['school']= $list['school'];
+            $kaohao[$key]['ruxuenian']= $value->stu_banji->ruxuenian;
+            $kaohao[$key]['nianji']= $njlist[$kaohao[$key]['ruxuenian']];
+            $kaohao[$key]['banji']= $value->stu_banji->id;
+            $kaohao[$key]['kaoshi']= $list['kaoshi'];
         }
 
         // 保存考号
-        $ks = new KS;
-        $kslist = $ks->where('id',$list['kaoshi'])->find();
+        $cj = new \app\chengji\model\Chengji;
 
-        $update = $kslist->ksChengji()
-            ->allowField(['student','school','ruxuenian','nianji','banji','create_time','update_time'])
-            ->saveAll($data);
+        $data = $cj
+            ->allowField(['id','kaoshi','student','school','ruxuenian','nianji','banji','create_time','update_time'])
+            ->saveAll($kaohao);
         
 
         // 根据更新结果设置返回提示信息
-        $update ? $data=['msg'=>'生成成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data ? $data=['msg'=>'生成成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);
     }
 
 
-    // 分批保存数据
-    private function khsave($stulist,$kaoshiid)
-    {
-        $njlist = nianjilist();
-
-        // 组合参加考试学生信息
-        $stus = array();
-        foreach ($stulist as $stuinfo) {
-            $src = Chengji::where('kaoshi',$kaoshiid)
-                    ->where('student',$stuinfo->id)
-                    ->select();
-            // dump($stuinfo);
-            if($src->isEmpty()){
-                $stus[] = [
-                'kaoshi' => $kaoshiid,
-                'school' => $stuinfo->getData('school'),
-                'ruxuenian' => $stuinfo->myruxuenian,
-                'nianji' => $njlist[$stuinfo->myruxuenian],
-                'banji' => $stuinfo->getData('banji'),
-                'student' => $stuinfo->id
-            ];
-            }
-        }
-
-        $cj = new Chengji();
-        // 保存学生信息并生成考号
-        $data = $cj->saveAll($stus);
-
-        $data ? $str = true : $str = false;
-
-        return $data;
-    }
+   
 
 
     /**
