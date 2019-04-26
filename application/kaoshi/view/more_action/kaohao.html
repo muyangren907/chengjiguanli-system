@@ -1,129 +1,116 @@
 {extend name="common@create" /}
-{block name="formaa"}
-	<form action="/kaoshi/kaohao" method="POST" class="form form-horizontal" id="form-member-add">
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>学校：</label>
-			<div class="formControls col-xs-8 col-sm-9 f-l">
-				<span class="select-box f-l">
-				{php}
-					$school = schlist('校级','校级');
-				{/php}
-				<select class="select" id="school" name="school" size="1" onchange="getbanji()">
-					<option value="">--请选择学校--</option>
-					{volist name="school" id="vo"}
-						<option value="{$vo.id}">{$vo.title}</option>
-					{/volist}
-				</select>
-				</span>
-			</div>
-		</div>
-		{php}
-			$njlist = nianjiList();
-		{/php}
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3">班级：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				{foreach $njlist as $key=>$vo}
-				<dl class="permission-list">
-					<dt>
-						<label>
-							<input type="checkbox"onclick="selectall(this)">
-							{$vo}
-						</label>
-					</dt>
-					<dd id="{$key}">
-					</dd>
-				</dl>
-				{/foreach}
-			</div>
-		</div>
-		<input type="hidden" value="{$id}" name="kaoshi">
-		<div class="row cl">
-			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
-			</div>
-		</div>
-	</form>
+
+{block name="form"}
+    <form class="layui-form layui-form-pane" lay-filter="myform">
+          <div class="layui-form-item">
+            <label for="school" class="layui-form-label"><span class="x-red">*</span>参考学校</label>
+            <div class="layui-input-block">
+              {php} $schoollist = schlist('校级','区级');{/php}
+              <select name="school" id="school" lay-filter="school" lay-verify="required">
+                <option value=""></option>
+                {volist name="schoollist" id="vo"}
+                  <option value="{$vo.id}"
+                  {present name="$list.data.school"}
+                    {eq name="$list.data.school" value="$vo.id" }
+                      selected
+                    {/eq}
+                  {/present}>
+                    {$vo.title}
+                  </option>
+                {/volist}
+              </select>
+            </div>
+          </div>
+          <div class="layui-form-item">
+          	{php}$njlist = nianjiList();{/php}
+          		{volist name="njlist" id="vo"}
+	              <label for="title" class="layui-form-label">{$vo}</label>
+	              <div class="layui-input-block">
+	                  <input id="{$key}" type="checkbox" title="全选" lay-skin="primary" action="parent">
+	              </div>
+              	{/volist}
+          </div>
+          <input type="hidden" name="kaoshi" id="kaoshi" value="{$list.set.kaoshi}">
+          <div class="layui-form-item" style="text-align: right;">
+              <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
+                  {$list.set.butname}
+              </button>
+          </div>
+      </form>
 {/block}
-{block name="yanzheng"}
-<script type="text/javascript">
-	// 设置表单验证规则
-	var myrules = {
-			title:{
-				required:true,
-				rangelength:[2,25]
-			},
-			xuenian:{
-				required:true,
-				rangelength:[1,15]
-			},
-			category:{
-				required:true,
-				digits:true
-			},
-			bfdate:{
-				required:true,
-				dateISO:true
-			},
-			enddate:{
-				required:true,
-				dateISO:true
-			},
-		};
 
-	// 设置表单提交方式
-	var mytype = 'POST';
+{block name="myjs"}
+<script>
+  layui.use('form', function(){
+    var form = layui.form;
 
-	function getbanji()
+    form.on('select(school)', function(data){
+	  // 声明变量
+	  var school = data.value;
+      
+      // 获取数据
+        $.post(
+            "/banji/schbanji/"+school,
+            {
+                "school":school,
+            },
+            function(data,status){
+                if($.isEmptyObject(data))
+                {
+                    return true;
+                }
+                for (var i in data) {
+                	for(x in data[i]['banji']){
+                		$('#'+i).parent().append('<input type="checkbox" name="banjiids[]" value="'+x+'" title="'+data[i]['banji'][x]+'" lay-skin="primary" pid="'+i+'" action="children">');
+                	}
+                }
+                form.render('checkbox');
+            }
+        );
+
+	}); 
+
+	form.on('checkbox()', function(data){
+      var myelem = data.elem
+        ,ischecked = data.elem.checked
+        ,action = $(myelem).attr('action')
+        ,pid = $(myelem).attr('pid')
+        ,id = $(myelem).attr('id');
+      switch(action){
+        case 'children':
+          selectChildren(pid,ischecked);
+          break;
+        case 'parent':
+          selectParent(id,ischecked);
+          break;
+      };
+    });  
+
+	// 更改子选项
+	function selectChildren(pid,checked)
 	{
-		$.ajax({
-			type: 'POST',
-			url: "/banji/banjilist",
-			data:{
-				school:$('#school').val(),
-			},
-			dataType: 'json',
-			success: function(data){
-				for (var val in data) {
-					for(var bj in data[val]['banji'])
-					{
-						$('#' + val).append('<label><input type="checkbox" class="ml-15 mr-5" value="'+bj+'" name="banjiids[]" onclick="selecttop(this)" id='+bj+'>'+data[val]['banji'][bj])+'</label>';
-					}
-				}
-				
-			},
-			error:function(data) {
-				layer.alert('获取班级失败');
-			},
-		});	
-	}
-
-	function selectall(obj)
-	{
-		// 定位复选框位置
-		var topobj = $(obj).parents('dt').next('dd');
-		var inputs = topobj.find('input');
-
-		if($(obj).prop('checked'))
+		if(checked==true)
 		{
-			inputs.prop('checked',true);
+			$('#'+pid).prop('checked',true);
+			form.render('checkbox');
+		}
+	}
+	// 更改父选项
+	function selectParent(id,checked)
+	{
+		if(checked == true)
+		{
+			$("input[pid='"+id+"']").prop('checked',true);
 		}else{
-			inputs.prop('checked',false);
+			$("input[pid='"+id+"']").prop('checked',false);
 		}
-	}
-
-	function selecttop(obj)
-	{
-		// 定位复选框位置
-		var topobj = $(obj).parents('dd').prev('dt');
-		var thatinput = topobj.find('input');
-		if($(obj).prop('checked'))
-		{
-			thatinput.prop('checked',true);
-		}
+		form.render('checkbox');
 
 	}
+     
 
-	
+  });
+
 </script>
 {/block}
+

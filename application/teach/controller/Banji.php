@@ -289,10 +289,8 @@ class Banji extends Base
 
 
     // 根据单位年级获取班级列表
-    public function mybanji()
+    public function mybanji($school,$ruxuenian)
     {
-        $school = input('post.school');
-        $ruxuenian = input('post.ruxuenian');
         // 获取班级id列表
         $list = BJ::where('school',$school)
                 ->where('ruxuenian',$ruxuenian)
@@ -311,10 +309,8 @@ class Banji extends Base
 
 
     // 获取该学校各年级的班级名和id
-    public function banjilist()
+    public function banjilist($school)
     {
-        // 获取学校
-        $school = input('post.school');
         // 获取年级名对应的入学年
         $njanmelist = nianjiList();
         $bjnamelist = banjinamelist();

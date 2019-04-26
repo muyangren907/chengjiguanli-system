@@ -178,7 +178,7 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
 
         // 获取数据
         $.post(
-            "/renshi/index/srcTeacher",
+            "/banji/banjilist",
             {
                 "str":val,
             },

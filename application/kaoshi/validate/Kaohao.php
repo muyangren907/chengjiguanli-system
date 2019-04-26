@@ -1,6 +1,6 @@
 <?php
 
-namespace app\teach\validate;
+namespace app\kaoshi\validate;
 
 use think\Validate;
 

@@ -82,6 +82,13 @@ class Kaoshi extends Base
         return $this->belongsTo('\app\system\model\Category','category','id');
     }
 
+    // 考试成绩关联表
+    public function ksChengji()
+    {
+        return $this->hasMany('\app\chengji\model\Chengji','kaoshi','id');
+    }
+
+
 
 
 }

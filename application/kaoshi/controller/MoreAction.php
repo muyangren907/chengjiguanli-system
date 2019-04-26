@@ -9,8 +9,6 @@ use app\kaoshi\model\Kaoshi as KS;
 // 引用学生类
 use app\renshi\model\Student;
 // 引用成绩类
-use app\chengji\model\Chengji;
-// 引用PhpSpreadsheet类
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 // 引用二维码生成类
 use \Endroid\QrCode\QrCode;
@@ -30,8 +28,6 @@ class MoreAction extends Base
         $list['webtitle'] = $kaoshi['title'] .'（'. $kaoshi['bfdate'].'~'.$kaoshi['enddate'].'）';
         $list['kaoshiid'] = $kaoshi['id'];
 
-
-
         // 模板赋值
         $this->assign('list',$list);
         // 渲染
@@ -40,11 +36,22 @@ class MoreAction extends Base
 
 
     // 生成考号
-    public function kaohao($id)
+    public function kaohao($kaoshi)
     {
-        // 考试ID赋值
-        $this->assign('id',$id);
 
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'生成考号',
+            'butname'=>'生成考号',
+            'formpost'=>'POST',
+            'url'=>'/kaoshi/kaohao',
+            'kaoshi'=>$kaoshi
+        );
+
+
+        // 模板赋值
+        $this->assign('list',$list);
+        // 渲染
         return $this->fetch();
     }
 
@@ -52,10 +59,10 @@ class MoreAction extends Base
     public function kaohaosave()
     {
         // 实例化验证模型
-        $validate = new \app\teach\validate\Kaohao;
+        $validate = new \app\kaoshi\validate\Kaohao;
 
         // 获取表单数据
-        $list = request()->only(['kaoshi','banjiids'],'post');
+        $list = request()->only(['school','kaoshi','banjiids'],'post');
         
 
         // 验证表单数据
@@ -74,16 +81,37 @@ class MoreAction extends Base
         // 获取参加考试学生名单
         $stulist = Student::where('status',1)
                         ->where('banji','in',$list['banjiids'])
+                        ->where('status',1)
                         ->field('id,school,banji')
-                        ->with('stuNanji')
+                        ->with([
+                            'stuBanji'=>function($query){
+                                $query->field('id,ruxuenian');
+                            }
+                        ])
                         ->select();
+        $njlist = nianjiList();
+        // 重新组合学生信息
+        $data = array();
+        foreach ($stulist as $key => $value) {
+
+            $data[$key]['student']= $value->id;
+            $data[$key]['school']= $list['school'];
+            $data[$key]['ruxuenian']= $value->stu_banji->ruxuenian;
+            $data[$key]['nianji']= $njlist[$data[$key]['ruxuenian']];
+            $data[$key]['banji']= $value->stu_banji->id;
+        }
 
         // 保存考号
-        $data = $this->khsave($stulist,$ksid);
+        $ks = new KS;
+        $kslist = $ks->where('id',$list['kaoshi'])->find();
+
+        $update = $kslist->ksChengji()
+            ->allowField(['student','school','ruxuenian','nianji','banji','create_time','update_time'])
+            ->saveAll($data);
         
 
         // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $update ? $data=['msg'=>'生成成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);
