@@ -196,6 +196,9 @@ function teacherNames($list = array())
 // 上传文件
 function upload($list,$file,$isSave=false)
 {
+    // 实例化文件数据模型
+    $field = new \app\system\model\Fields;
+
     // 移动到框架应用根目录/uploads/ 目录下
     $info = $file->move($list['serurl']);
 
@@ -213,9 +216,7 @@ function upload($list,$file,$isSave=false)
     $list['hash'] = $info->hash('sha1');
     $list['userid'] = session('userid');
 
-    // 实例化文件数据模型
-    $field = new \app\system\model\Fields;
-
+    
     // 如果需要保存文件 
     if($isSave == true){
 	    // 判断文件是否已经上传，如果已经上传则退出

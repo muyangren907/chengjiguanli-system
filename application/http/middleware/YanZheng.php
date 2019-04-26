@@ -61,7 +61,7 @@ class YanZheng  extends Controller
             // 下载成绩表、下载成绩统计表
             'dwchengjixls','dwBanjixls','dwNianjixls',
             //保存考号、下载试卷标签、下载成绩采集表
-            'kaohaosave','biaoqianXls','dwcaiji',
+            'updateset','kaohaosave','biaoqianXls','dwcaiji',
             //课题结题图片上传和更新
             'jtupload','jtupdate',
         );

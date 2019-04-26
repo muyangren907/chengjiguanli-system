@@ -114,7 +114,7 @@ class KetiInfo extends Base
             'webtitle'=>'添加课题册',
             'butname'=>'添加',
             'formpost'=>'POST',
-            'url'=>'/ktinfo',
+            'url'=>'/ktinfo', 
             'ketice'=>$ketice
         );
 
@@ -134,7 +134,6 @@ class KetiInfo extends Base
     {
         // 获取表单数据
         $list = request()->only(['ketice','title','bianhao','fzdanweiid','subject','category','jhjtshijian','hjteachers'],'POST');
-
 
 
         // 实例化验证类

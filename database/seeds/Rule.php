@@ -131,7 +131,7 @@ class Rule extends Seeder
                     ['title'=>'编辑','name'=>'teach/Xueqi/edit','paixu'=>3,'pid'=>501,],
                     ['title'=>'查看','name'=>'teach/Xueqi/read','paixu'=>4,'pid'=>501,],
                     ['title'=>'状态','name'=>'teach/Xueqi/setStatus','paixu'=>5,'pid'=>501],
-                                        // 班级列表权限
+                    // 班级列表权限
                     ['title'=>'添加','name'=>'teach/Banji/create','paixu' =>1,'pid'=>502],
                     ['title'=>'移动','name'=>'teach/Banji/yidong','paixu'=>2,'pid'=>502],
                     ['title'=>'状态','name'=>'teach/Banji/setStatus','paixu'=>3,'pid'=>502],

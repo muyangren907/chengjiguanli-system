@@ -177,7 +177,7 @@
                   autocomplete="off" class="layui-input " value="{$list.data.hjshijian|default=''}" placeholder="获奖时间">
               </div>
           </div>
-          <input type="hidden" name="rongyuce"  id="rongyuce" value="{$list.set.rongyuce}">
+          <input type="hidden" name="rongyuce"  id="rongyuce" value="{$list.set.rongyuce|default=''}">
           <div class="layui-form-item" style="text-align: right;">
               <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
                   {$list.set.butname}

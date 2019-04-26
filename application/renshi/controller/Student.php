@@ -6,8 +6,6 @@ namespace app\renshi\controller;
 use app\common\controller\Base;
 // 引用学生数据模型类
 use app\renshi\model\Student as STU;
-// 引用文件信息存储数据模型类
-use app\system\model\Fields;
 // 引用phpspreadsheet类
 use app\renshi\controller\Myexcel;
 

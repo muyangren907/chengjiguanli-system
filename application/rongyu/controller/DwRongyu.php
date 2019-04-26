@@ -102,7 +102,7 @@ class DwRongyu extends Base
     public function save()
     {
         // 获取表单数据
-        $list = request()->only(['url','title','teachers','hjschool','category','fzshijian','fzschool','jiangxiang'],'post');
+        $list = request()->only(['url','title','teachers'=>array(),'hjschool','category','fzshijian','fzschool','jiangxiang'],'post');
 
         // 实例化验证模型
         $validate = new \app\rongyu\validate\DwRongyu;
@@ -142,7 +142,7 @@ class DwRongyu extends Base
      * @return \think\Response
      */
     // 批量添加
-    public function saveall()
+    public function createAll()
     {
         // 设置页面标题
         $list['set'] = array(
@@ -159,7 +159,7 @@ class DwRongyu extends Base
     }
 
     // 保存批传
-    public function createAllSave()
+    public function saveall()
     {
         // 获取文件信息
         $list['text'] = $this->request->post('text');
@@ -177,7 +177,7 @@ class DwRongyu extends Base
 
         $data = dwry::create([
             'url'=>$data['url']
-            ,'title'=>'批传'
+            ,'title'=>'批传单位荣誉图片'
         ]);
 
         $data ? $data=['msg'=>'批传成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -263,14 +263,14 @@ class DwRongyu extends Base
     public function update($id)
     {
         // 获取表单数据
-        $list = request()->only(['title','category','hjschool','fzshijian','fzschool','jiangxiang','teachers','url'],'put');
+        $list = request()->only(['title','category','hjschool','fzshijian','fzschool','jiangxiang','teachers'=>array(),'url'],'put');
         $list['id'] = $id;
         
 
         // 实例化验证类
         $validate = new \app\rongyu\validate\DwRongyu;
         // 验证表单数据
-        $result = $validate->scene('add')->check($list);
+        $result = $validate->scene('edit')->check($list);
         $msg = $validate->getError();
 
         // 如果验证不通过则停止保存
