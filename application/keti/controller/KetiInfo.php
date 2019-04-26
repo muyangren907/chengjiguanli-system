@@ -418,7 +418,7 @@ class KetiInfo extends Base
         // 模板赋值
         $this->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->fetch();
     }
 
 
