@@ -62,13 +62,17 @@
                 ,"ruxuenian":"{$nianji}"
             },
             function(data,status){
+              $('input[title="全选"]').each(function(){
+                $(this).nextAll().remove();
+              });
                 if($.isEmptyObject(data))
                 {
                     return true;
                 }
                 for (var i in data) {
+                  // $('#'+data[i]['ruxuenian']).nextAll().remove();
                 	for(x in data[i]['nj_banji']){
-                		$('#'+data[i]['ruxuenian']).parent().append('<input type="checkbox" name="banjiids[]" value="'+data[i]['nj_banji'][x]['id']+'" title="'+data[i]['nj_banji'][x]['title']+'" lay-skin="primary" pid="'+data[i]['ruxuenian']+'" action="children">');
+                		$('#'+data[i]['ruxuenian']).parent().append('<input type="checkbox" name="banjiids[]" value="'+data[i]['nj_banji'][x]['id']+'" title="'+data[i]['nj_banji'][x]['banTitle']+'" lay-skin="primary" pid="'+data[i]['ruxuenian']+'" action="children">');
                 	}
                 }
                 form.render('checkbox');

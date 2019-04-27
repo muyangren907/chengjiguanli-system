@@ -40,7 +40,7 @@ class Banji extends Base
                     $query->where('status',1);
                 }
             ])
-            ->append(['title'])
+            ->append(['banjiTitle'])
             ->select();
         return $data;
     }
@@ -75,7 +75,7 @@ class Banji extends Base
 
 
     // 班级名获取器
-    public function getTitleAttr()
+    public function getBanjiTitleAttr()
     {
         $njname = nianjilist();
         $bjname = banjinamelist();
@@ -87,6 +87,19 @@ class Banji extends Base
 
         in_array($nj,$njkeys) ? $title = $njname[$nj] : $title = $nj.'届';
         in_array($bj,$bjkeys) ? $title = $title.$bjname[$bj] : $title = $title.$bj.'班';
+
+        return $title;
+    }
+
+    // 班级名获取器
+    public function getBanTitleAttr()
+    {
+        $bjname = banjinamelist();
+        $bj = $this->getAttr('paixu');
+
+        $bjkeys = array_keys($bjname);
+
+        in_array($bj,$bjkeys) ? $title = $bjname[$bj] : $title = $bj.'班';
 
         return $title;
     }

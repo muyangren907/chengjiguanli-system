@@ -327,10 +327,20 @@ class MoreAction extends Base
 
 
     // 下载考试成绩采集表
-    public function caiji($id)
+    public function caiji($kaoshi)
     {
         // 模板赋值
         $this->assign('id',$id);
+        // 渲染模板
+        return $this->fetch();
+
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = '考试列表';
+        $list['kaoshi'] =$kaoshi;
+
+        // 模板赋值
+        $this->assign('list',$list);
+
         // 渲染模板
         return $this->fetch();
     }
