@@ -71,7 +71,7 @@ class Student extends Base
                         $query->field('id,title');
                     },
                     'stuBanji'=>function($query){
-                        $query->append(['title']);
+                        $query->field('id,ruxuenian,paixu')->append(['banjiTitle']);
                     }
                 ])
                 ->append(['age'])

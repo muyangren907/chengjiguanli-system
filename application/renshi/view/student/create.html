@@ -100,7 +100,7 @@
               					->where('ruxuenian',$rxn)
               					->where('school',$sch)
               					->field('id,paixu,ruxuenian')
-              					->append(['title'])
+              					->append(['banTitle'])
               					->select();
             		}else{
             			$banjilist=array();
@@ -115,7 +115,7 @@
                       selected
                     {/eq}
                   {/present}>
-                    {$vo.title}
+                    {$vo.banTitle}
                   </option>
                 {/volist}
               </select>
@@ -169,7 +169,7 @@ layui.use(['laydate','form'], function(){
 
 		// 获取班级列表
 		$.ajax({
-		    url:"/banji/mybanji",
+		    url:"/banji/njbanji",
 		    type:"POST",
 		    data:{
 		    	school:school
@@ -179,9 +179,7 @@ layui.use(['laydate','form'], function(){
 		    success:function(result){
 		    	if(result.length > 0){
 		    		result.forEach(function(val,index){
-		    			console.log(val);
-		    			$(bj).append("<option value="+val['id']+">"+val['title']+"</option>");
-		    			$(bjdl).append("<dd>"+val['title']+"</dd>");
+		    			$(bj).append("<option value="+val['id']+">"+val['banTitle']+"</option>");
 		    		})
 		    		form.render('select'); //刷新select选择框渲染
 		    	}

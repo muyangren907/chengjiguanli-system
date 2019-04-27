@@ -289,23 +289,21 @@ class Banji extends Base
 
 
     // 根据单位年级获取班级列表
-    // public function mybanji($school,$ruxuenian)
-    // {
-    //     // 获取班级id列表
-    //     $list = BJ::where('school',$school)
-    //             ->where('ruxuenian','in',$ruxuenian)
-    //             ->order('paixu')
-    //             ->append(['title'])
-    //             ->select();
+    public function mybanji($school,$ruxuenian)
+    {
+        // 获取变量
+        $school = input('post.school');
+        $ruxuenian = input('post.ruxuenian');
+        // 获取班级id列表
+        $list = BJ::where('school',$school)
+                ->where('ruxuenian','in',$ruxuenian)
+                ->order('paixu')
+                ->field('id,ruxuenian,paixu')
+                ->append(['banTitle'])
+                ->select();
 
-    //     // 声明班级空数组
-    //     $banji = array();
-    //     // 重组数据
-    //     foreach ($list as $key => $value) {
-    //         $banji[] = ['id'=>$value['id'],'title'=>$value['title']];
-    //     }
-    //     return json($banji);
-    // }
+        return json($list);
+    }
 
 
     // 获取该学校各年级的班级名和id
@@ -329,6 +327,7 @@ class Banji extends Base
                         ->where('school',$school)
                         ->field('id,ruxuenian,paixu')
                         ->where('status',1)
+                        ->order('paixu')
                         ->append(['banjiTitle','banTitle']);
                     }
                 ])

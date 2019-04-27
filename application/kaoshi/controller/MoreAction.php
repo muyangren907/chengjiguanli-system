@@ -91,7 +91,7 @@ class MoreAction extends Base
         $ksid = $list['kaoshi'];
 
         // 获取参加考试学生名单
-        $stulist = Student::where('status',1)
+        $stulist = Student::where('school',$list['school'])
                         ->where('banji','in',$list['banjiids'])
                         ->where('status',1)
                         ->field('id,school,banji')
@@ -238,11 +238,43 @@ class MoreAction extends Base
 
 
     // 标签下载
-    public function biaoqian($id)
+    public function biaoqian($kaoshi)
     {
+        // 获取参考年级
+        $kaoshilist = KS::where('id',$kaoshi)
+                ->with([
+                    'ksNianji'
+                    ,'ksSubject'=>function($query){
+                                $query->field('id,subjectid,kaoshiid')->with(['subjectName'=>function($q){
+                                    $q->field('id,title');
+                                }]);
+                            }
+                ])
+                ->find();
+        foreach ($kaoshilist->ks_nianji as $key => $value) {
+            $list['data']['nianji'][$key]['id']=$value->nianji;
+            $list['data']['nianji'][$key]['title']=$value->nianjiname;
+        }
+        foreach ($kaoshilist->ks_subject as $key => $value) {
+            $list['data']['subject'][$key]['id']=$value->id;
+            $list['data']['subject'][$key]['title']=$value->subject_name->title;
+            $list['data']['subject'][$key]['lieming']=$value->lieming;
+        }
+
+
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'下载考号',
+            'butname'=>'下载标签数据',
+            'formpost'=>'POST',
+            'url'=>'/kaoshi/'.$kaoshi.'/biaoqianXls',
+            'kaoshi'=>$kaoshi
+        );
+
+
         // 模板赋值
-        $this->assign('id',$id);
-        // 渲染模板
+        $this->assign('list',$list);
+        // 渲染
         return $this->fetch();
     }
 
@@ -253,7 +285,8 @@ class MoreAction extends Base
     {
         set_time_limit(0);
         // 获取表单数据
-        $list = input();
+        $list = request()->only(['banjiids','kaoshi']);
+
 
         // 实例化验证模型
         $validate = new \app\kaoshi\validate\Biaoqian;
@@ -263,21 +296,49 @@ class MoreAction extends Base
 
         // 如果验证不通过则停止保存
         if(!$result){
-            $this->error($msg);
+            $data=['msg'=>'数据处理错误','val'=>0];
+            return json($data);
         }
 
+        $kaoshi = $list['kaoshi'];
+        $banji = $list['banjiids'];
+
+        // 获取考试信息
+        $chengjiinfo = KS::where('id',$kaoshi)
+                        ->field('id')
+                        ->with([
+                            'ksSubject'=>function($query){
+                                $query->with(['subjectName'=>function($q){
+                                    $q->field('id,jiancheng');
+                                }]);
+                            }
+                            ,'ksChengji'=>function($query) use($banji){
+                                $query->where('banji','in',$banji)
+                                    ->field('banji,student,kaoshi')
+                                    ->order(['banji','student'])
+                                    ->with([
+                                        'cjBanji'=>function($q){
+                                            $q->field('id,paixu,ruxuenian')->append(['banjiTitle']);
+                                        }
+                                        ,'cjStudent'=>function($q){
+                                            $q->field('id,xingming');
+                                        }
+                                    ]);
+                            }
+
+                        ])
+                        ->find();
 
 
-        $id = $list['id'];
         // 获取数据库信息
-        $chengjiinfo = Chengji::where('kaoshi',$id)
-                        ->where('school',$list['school'])
-                        ->where('ruxuenian',$list['ruxuenian'])
-                        ->append(['cj_school.jiancheng','cj_student.xingming','banjiNumname'])
+        $chengjiinfo = Chengji::where('kaoshi',$list['kaoshi'])
+                        ->where('banji','in',$list['banjiids'])
+                        // ->append(['cj_school.jiancheng','cj_student.xingming','banjiNumname'])
                         ->select();
 
-        // 获取学科id
-        $xks = KS::get($id);
+        // 保存考号
+        
+        $xks = $cj->get($kaoshi);
         $xks = $xks->Subjectids;
         // 获取学科名称
         $subject = new \app\teach\model\Subject();
@@ -289,7 +350,7 @@ class MoreAction extends Base
 
         // 设置表头信息
         $sheet->setCellValue('A1', '序号');
-        $sheet->setCellValue('B1', '专号');
+        $sheet->setCellValue('B1', '考号');
         $sheet->setCellValue('C1', '学校');
         $sheet->setCellValue('D1', '班级');
         $sheet->setCellValue('E1', '学科');

@@ -13,8 +13,9 @@ class Biaoqian extends Validate
      * @var array
      */	
 	protected $rule = [
-        'school|学校'      =>  'require',
-        'ruxuenian|年级'      =>  'require',
+        'banjiids|班级'      =>  'require|array',
+        'kaoshi|考试'      =>  'require|number',
+        'subject|学科'      =>  'require|array',
     ];
     
     /**

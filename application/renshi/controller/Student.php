@@ -148,10 +148,11 @@ class Student extends Base
 
         // 获取学生信息
         $list['data'] = STU::field('id,xingming,sex,shenfenzhenghao,shengri,banji,school,status')
-            ->with(['stuBanji'=>function($query){
-                $query->field('id,ruxuenian,paixu');
-            }
-            ])
+            ->with([
+                    'stuBanji'=>function($query){
+                        $query->field('id,ruxuenian,paixu')->append(['banTitle']);
+                    }
+                ])
             ->find($id);
 
         // 设置页面标题
@@ -161,6 +162,7 @@ class Student extends Base
             'formpost'=>'PUT',
             'url'=>'/student/'.$id,
         );
+
 
         // 模板赋值
         $this->assign('list',$list);
