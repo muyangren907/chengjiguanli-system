@@ -4,40 +4,51 @@ namespace app\chengji\controller;
 // 引用控制器基类
 use app\common\controller\Base;
 // 引用学生数据模型
-use app\renshi\model\Student;
+// use app\renshi\model\Student;
 // 引用成绩数据模型
 use app\chengji\model\Chengji;
 // 引用学科数据模型
-use app\teach\model\Subject;
+// use app\teach\model\Subject;
 // 引用文件信息存储数据模型类
 use app\system\model\Fields;
 // 引用phpspreadsheet类
 use app\renshi\controller\Myexcel;
 // 引用考试类
-use app\kaoshi\model\Kaoshi;
+// use app\kaoshi\model\Kaoshi;
 
 class Index extends Base
 {
     // 使用二维码录入成绩
     public function malu()
     {
-    	return $this->fetch();
+    	// 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'扫码录成绩',
+            'butname'=>'录入',
+            'formpost'=>'PUT',
+            'url'=>'/chengji/malu',
+        );
+
+
+        // 模板赋值
+        $this->assign('list',$list);
+        // 渲染
+        return $this->fetch();
     }
 
     // 保存使用二维码录入的成绩
     public function malusave()
-    {
+    {   
         // 获取表单数据
-        $list = request()->only(['id','ziduan','defen'],'post');
+        $list = $this->request->only(['id','zd','defen'],'post');
+        // $val = input('post.val');
+        // $val = action('system/Encrypt/decrypt',$val,'key'=>'dlbz']);
+        // $list = explode('|',$val)        
         
-        // 声明学科数组
-        $subject = array('1'=>'yuwen','2'=>'shuxue','3'=>'waiyu');
-        $zd = $subject[$list['ziduan']];
-
         // 更新成绩
-        $cj = Chengji::update(['id'=>$list['id'], $zd=>$list['defen']]);
+        $data = Chengji::update(['id'=>$list['id'], $list['zd']=>$list['defen']]);
 
-        empty($cj) ? $data = ['val' => 0] : $data = ['val' => 1,'defen'=>$cj->$zd];
+        $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         return json($data);
     }
@@ -76,20 +87,33 @@ class Index extends Base
     public function read()
     {
         // 获取表单数据 
-        $list = request()->only(['id','ziduan'],'post');
-        // 声明学科数组
-        $subject = array('1'=>array('yuwen','语文'),'2'=>array('shuxue','数学'),'3'=>array('waiyu','外语'));
+        // 获取表单数据
+        $val = input('post.val');
+        $val = action('system/Encrypt/decrypt',[$val,'key'=>'dlbz']);
+        $list = explode('|',$val);
 
+        $cj = new Chengji;
+        $cjlist = $cj->where('id',$list[0])
+                ->field('id,banji,school,student,'.$list[1])
+                ->with([
+                    'cjBanji'=>function($q){
+                        $q->field('id,paixu,ruxuenian')->append(['numTitle']);
+                    }
+                    ,'cjStudent'=>function($q){
+                        $q->field('id,xingming');
+                    }
+                    ,'cjSchool'=>function($q){
+                        $q->field('id,jiancheng');
+                    }
+                ])
+                ->find();
+        // 获取列名
+        $sbj = new \app\teach\model\Subject;
+        $cjlist->lieming = $sbj::where('lieming',$list[1])->value('title');
+        $cjlist->zd = $list[1];
+        $cjlist->defen = $cjlist[$list[1]];
 
-        $zd = $subject[$list['ziduan']][0];
-        $zdname = $subject[$list['ziduan']][1];
-        $stuinfo = Chengji::where('id',$list['id'])
-                    ->field('id,school,student,banji,'.$zd)
-                    ->append(['cj_school.jiancheng','cj_banji.title','cj_student.xingming'])
-                    ->find();
-        $stuinfo['zdname'] = $zdname;
-        $stuinfo['zdstr'] = $zd;
-        return json($stuinfo->visible(['cj_student.xingming','cj_school.jiancheng','cj_banji.title',$zd,'zdstr','zdname']));
+        return json($cjlist);
     }
 
 

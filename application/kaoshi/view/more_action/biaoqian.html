@@ -1,13 +1,13 @@
-{extend name="common@create" /}
+{extend name="common@createhref" /}
 
 {block name="form"}
-    <form class="layui-form layui-form-pane" lay-filter="myform">
+    <form action="{$list.set.url}" method="{$list.set.formpost}" class="layui-form layui-form-pane" lay-filter="myform">
           <div class="layui-form-item">
-            <label for="banji" class="layui-form-label">
+            <label for="mysubject" class="layui-form-label">
               <span class="x-red">*</span>学科
             </label>
-            <div class="layui-input-block" id="banji">
-              <input type="checkbox" title="全选" lay-skin="primary" name="subject[]" action="parent" id="subject">
+            <div class="layui-input-block">
+              <input type="checkbox" title="全选" lay-skin="primary" action="parent" id="subject">
               {volist name="$list.data.subject" id="vo"}
                 <input type="checkbox" title="{$vo.title}" value="{$vo.id}" lay-skin="primary" name="subject[]" action="children" pid="subject">
               {/volist}

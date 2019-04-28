@@ -141,7 +141,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
             cjgl.delAll(checkStatus,'/banji','mytable');
             break;
           case 'add':
-            cjgl.add('添加班级','/banji/create','400','300');
+            cjgl.add('添加班级','/banji/create','600','300');
             break;
         };
     });
@@ -167,7 +167,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
           cjgl.del(obj,"/banji");
           break;
         case 'edit':// 编辑
-          cjgl.add('编辑班级','/banji/'+obj.data.id+'/edit','400','300');
+          cjgl.add('编辑班级','/banji/'+obj.data.id+'/edit','600','300');
           break;
         case 'status':// 状态
           cjgl.status(obj,"{:url('setstatus')}");

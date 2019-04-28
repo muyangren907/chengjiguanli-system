@@ -15,7 +15,7 @@ Route::resource('chengji','Chengji/Index');
 
 // 扫码录入成绩
 Route::get('chengji/malu','chengji/Index/malu');
-Route::post('chengji/malu','chengji/Index/malusave');
+Route::put('chengji/malu','chengji/Index/malusave');
 Route::post('chengji/read','chengji/Index/read');
 // 表格录入成绩
 Route::get('chengji/biaolu','chengji/Index/biaolu');

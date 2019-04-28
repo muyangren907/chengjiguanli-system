@@ -19,7 +19,7 @@ Route::put('kaoshiset/:id','kaoshi/Index/updateset');
 Route::get('kaoshi/:kaoshi/kaohao','kaoshi/MoreAction/kaohao');
 Route::post('kaoshi/kaohao','kaoshi/MoreAction/kaohaosave');
 // 下载成绩采集表
-Route::get('kaoshi/:id/caiji','kaoshi/MoreAction/caiji');
+Route::get('kaoshi/:kaoshi/caiji','kaoshi/MoreAction/caiji');
 Route::post('kaoshi/caiji','kaoshi/MoreAction/dwcaiji');
 // 下载试卷标签
 Route::get('kaoshi/:kaoshi/biaoqian','kaoshi/MoreAction/biaoqian');

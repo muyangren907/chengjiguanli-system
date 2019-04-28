@@ -1,169 +1,102 @@
-{extend name="common@create" /}
-{block name="formaa"}
-	<div class="row cl">
-		<div class="formControls col-xs-8 col-sm-9">
-			<input type="text" class="input-text radius size-XL" value="" placeholder="请扫码" id="info" name="info" onkeydown="saoma(event)" onclick="maselect()">
-		</div>
-	</div>
-	<div class="row cl mt-20">
-		<div class="formControls col-xs-8 col-sm-9">
-			<input type="text" class="input-text radius size-XL" value="" placeholder="在这里输入得分，并按“回车”键保存" id="defen" name="defen" onkeydown="defen(event)">
-		</div>
-	</div>
+{extend name="common@createhref" /}
+<style type="text/css">
+  .bjSpan{
+    width: 80px;
+    margin-left: 5px;
+    margin-right: 5px;
+    float: left;
+    padding-top: 
+  }
+</style>
+{block name="form"}
+    <div class="layui-form-item">
+      <input type="text" id="saoma" name="saoma" lay-verify="required" autocomplete="off" class="layui-input " value="{$list.data.title|default=''}" placeholder="请在这里扫码" style="height: 60px;font-size: 25px">
+    </div>
 
-	<table id="table1" class="table table-border table-bordered table-hover table-bg table-sort mt-20">
-		<thead>
-			<tr class="text-c">
-				<th>序号</th>
-				<th>学校</th>
-				<th>班级</th>
-				<th>姓名</th>
-				<th>学科 </th>
-				<th>得分</th>
-				<th>时间</th>
-			</tr>
-		</thead>
-		<tbody id="addjg">
-		</tbody>
-		<thead>
-			<tr class="text-c">
-				<th>序号</th>
-				<th>学校</th>
-				<th>班级</th>
-				<th>姓名</th>
-				<th>学科 </th>
-				<th>得分</th>
-				<th>得分</th>
-			</tr>
-		</thead>
-	</table>
+    <div class="layui-row">
+      <div id="xianshi" class="layui-col-md6" style=" height: 150px; font-size: 25px; border-style:solid; border-width:1px;border-color:#e2e2e2;">
+      </div>
+      <div class="layui-col-md6">
+        <form style="float:left;">
+          <div class="layui-form-item">
+            <input type="text" id="defen" name="defen" lay-verify="required"
+                  autocomplete="off" class="layui-input " value="{$list.data.defen|default=''}" placeholder="得分" style="height: 150px;font-size: 90px">
+          </div>
+          <input type="hidden" name="id" id="id">
+          <input type="hidden" name="zd" id="zd">
+        </form>
+      </div>
+    </div>
 
+    
 {/block}
-{block name="yanzheng"}
-<script type="text/javascript">
-	// 设置表单验证规则
-	var myrules = {
-			
-		};
 
-	// 设置表单提交方式
-	var mytype = 'POST';
-	// 声明变量
-	var myinfo = [];
-	var cnt = 1;
-	// var myDate = new Date();//获取系统当前时间
+{block name="myjs"}
+<script>
+  $('#saoma').keypress(function(event){
+    $('#xianshi').children().remove();
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if(keycode == '13'){
+      // 查询并显示学生信息
+      $.ajax({
+        type: 'POST',
+        url: "/chengji/read",
+        data:{
+          val:$('#saoma').val()
+        },
+        dataType: 'json',
+        success: function(data){
+          var school = '<div>'+data.cj_school.jiancheng +'</div>'
+              ,banji = '<div'+data.cj_banji.numTitle +'</div>'
+              ,student = '<div'+data.cj_student.xingming +'</div>'
+              ,subject = '<div'+data.lieming +'</div>';
+         $('#id').val(data.id);
+         $('#zd').val(data.zd);
+         $('#defen').val(data.defen*1);
+         $('#saoma').val('');
+         $('#xianshi').append(school + banji + student + subject);
+         $('#defen').focus();
+        },
+        error:function(data) {
+          layer.msg('数据走丢了');
+        },
+      }); 
+    }
+  });
 
+  $('#defen').keypress(function(event){
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if(keycode == '13'){
+      // 查询并显示学生信息
+      $.ajax({
+        type: 'PUT',
+        url: "/chengji/malu",
+        data:{
+          id:$('#id').val()
+          ,zd:$('#zd').val()
+          ,defen:$('#defen').val()
+        },
+        dataType: 'json',
+        success: function(data){
+         if(data.val == 1){
+           $('#id').val('');
+           $('#zd').val('');
+           $('#defen').val('');
+           $('#xianshi').children().remove();
+           $('#saoma').focus();
+         }else{
+          layer.msg(data.msg);
+         }
+         
+        },
+        error:function(data) {
+          layer.msg('数据走丢了');
+        },
+      }); 
+    return false;
+    }
+  });
 
-
-	// 处理扫码获取的信息
-	function saoma(obj)
-	{
-		if (obj.keyCode != 13)
-		{
-			return false;
-		}
-
-		// 获取扫码值并分割成数据
-		myinfo = $('#info').val().split(',');
-
-		// 查询并显示学生信息
-		$.ajax({
-			type: 'POST',
-			url: "/chengji/read",
-			data:{
-				id:myinfo[0],
-				ziduan:myinfo[1]
-			},
-			dataType: 'json',
-			success: function(data){
-				data['id'] = myinfo[0];
-				data['ziduan'] = myinfo[1];
-				df = data['zdstr'];
-				df = data[df];
-				myinfo = data;
-				$('#info').val(myinfo['cj_school']['jiancheng'] + '   ' + myinfo['cj_banji']['title'] + '   ' + myinfo['cj_student']['xingming'] + '   ' + myinfo['zdname']);
-				var zd = data['ziduan'];
-				df>0 ? $('#defen').val(df) : $('#defen').val('');
-				$('#defen').focus();
-			},
-			error:function(data) {
-				$('#info').val('');
-				$('#defen').val('');
-				$('#info').focus();
-			},
-		});	
-	}
-
-
-	function maselect()
-	{
-		$('#info').val('');
-		$('#defen').val('');
-		myinfo = [];
-	}
-
-
-	$(document).ready(function(){
-	   $('#info').focus();
-	});
-
-	
-
-	// 得分文本框绑定回车键事件
-	function defen(obj){ 
-
-		// 不是回车退出 
-		if (obj.keyCode != 13)
-		{
-			return false;
-		}
-		// 获取得分
-		var df = $('#defen').val();
-		// 不是数字退出
-		if(isNaN(df))
-		{
-			return false;
-		}
-		// 得分不是0~100退出 
-		if(df<0 || df>100)
-		{
-			return false;
-		}
-		// 不能被0.5整除退出
-		if((df*10%5))
-		{
-			return false;
-		}
-
-		// 查询并显示学生信息
-		$.ajax({
-			type: 'POST',
-			url: "/chengji/malu",
-			data:{
-				id:myinfo['id'],
-				ziduan:myinfo['ziduan'],
-				defen:df
-			},
-			dataType: 'json',
-			success: function(data){
-				if(data['val'] == 1)
-				{
-					var date = new Date();
-					var hour = date.getHours();
-					var minute = date.getMinutes();
-					var second = date.getSeconds();
-					var addtime = hour + ':' + minute + ':' + second;
-					var str = '<tr><td>'+cnt+'</td><td>' + myinfo['cj_school']['jiancheng'] +'</td><td>' + myinfo['cj_banji']['title'] + '</td><td>'+myinfo['cj_student']['xingming']+'</td><td>'+myinfo['zdname']+'</td><td>'+data['defen']+'</td><td>'+addtime+'</td></tr>';
-					cnt++;
-					$('#addjg').prepend(str);
-				}
-			},
-			error:function(data) {
-			},
-		});	
-		$('#info').val('');
-		$('#defen').val('');
-		$('#info').focus();
-	};
 </script>
 {/block}
+
