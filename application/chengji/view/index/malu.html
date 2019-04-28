@@ -1,12 +1,6 @@
 {extend name="common@createhref" /}
 <style type="text/css">
-  .bjSpan{
-    width: 80px;
-    margin-left: 5px;
-    margin-right: 5px;
-    float: left;
-    padding-top: 
-  }
+
 </style>
 {block name="form"}
     <div class="layui-form-item">
@@ -14,10 +8,18 @@
     </div>
 
     <div class="layui-row">
-      <div id="xianshi" class="layui-col-md6" style=" height: 150px; font-size: 25px; border-style:solid; border-width:1px;border-color:#e2e2e2;">
+      <div id="xianshi" class="layui-col-md6" style=" height: 150px; font-size: 20px; border-style:solid; border-width:1px;border-color:#e2e2e2; float: left;">
+        <div style="width: 30%; background-color: #eeeeee; float: left; height: 30px;margin-left: 2px;margin-top: 4px;padding-top: 2px;" align="center">学校</div>
+        <div id="xsschool" style="width: 65%; float: left;margin-top: 4px;margin-left: 10px;padding-top: 2px;border-bottom-style:solid;border-width: 1px;height: 30px;border-color: #e2e2e2" align="center"></div>
+        <div style="width: 30%; background-color: #eeeeee; float: left; height: 30px;margin-left: 2px;margin-top: 2px;padding-top: 2px;" align="center">班级</div>
+        <div id="xsbanji" style="width: 65%; float: left;margin-top: 2px;margin-left: 10px;padding-top: 2px;border-bottom-style:solid;border-width: 1px;height: 30px;border-color: #e2e2e2" align="center"></div>
+        <div style="width: 30%; background-color: #eeeeee; float: left; height: 30px;margin-left: 2px;margin-top: 2px;padding-top: 2px;" align="center">姓名</div>
+        <div id="xsxingming" style="width: 65%; float: left;margin-top: 2px;margin-left: 10px;padding-top: 2px;border-bottom-style:solid;border-width: 1px;height: 30px;border-color: #e2e2e2" align="center"></div>
+        <div style="width: 30%; background-color: #eeeeee; float: left; height: 30px;margin-left: 2px;margin-top: 2px;padding-top: 2px;" align="center">学科</div>
+        <div id="xsxueke" style="width: 65%; float: left;margin-top: 2px;margin-left: 10px;padding-top: 2px;border-bottom-style:solid;border-width: 1px;height: 30px;border-color: #e2e2e2" align="center"></div>
       </div>
       <div class="layui-col-md6">
-        <form style="float:left;">
+        <form style="">
           <div class="layui-form-item">
             <input type="text" id="defen" name="defen" lay-verify="required"
                   autocomplete="off" class="layui-input " value="{$list.data.defen|default=''}" placeholder="得分" style="height: 150px;font-size: 90px">
@@ -34,7 +36,10 @@
 {block name="myjs"}
 <script>
   $('#saoma').keypress(function(event){
-    $('#xianshi').children().remove();
+    $('#xsschool').text('');
+    $('#xsbanji').text('');
+    $('#xsxingming').text('');
+    $('#xsxueke').text('');
     var keycode = (event.keyCode ? event.keyCode : event.which);
     if(keycode == '13'){
       // 查询并显示学生信息
@@ -46,15 +51,18 @@
         },
         dataType: 'json',
         success: function(data){
-          var school = '<div>'+data.cj_school.jiancheng +'</div>'
-              ,banji = '<div'+data.cj_banji.numTitle +'</div>'
-              ,student = '<div'+data.cj_student.xingming +'</div>'
-              ,subject = '<div'+data.lieming +'</div>';
+         $('#xsschool').text(data.cj_school.jiancheng);
+         $('#xsbanji').text(data.cj_banji.banjiTitle);
+         $('#xsxingming').text(data.cj_student.xingming);
+         $('#xsxueke').text(data.lieming);
+
          $('#id').val(data.id);
          $('#zd').val(data.zd);
-         $('#defen').val(data.defen*1);
+         if(data.defen*1>0){
+          $('#defen').val(data.defen*1);
+         }
          $('#saoma').val('');
-         $('#xianshi').append(school + banji + student + subject);
+         // $('#xianshi').append(school + banji + student + subject);
          $('#defen').focus();
         },
         error:function(data) {
@@ -82,7 +90,10 @@
            $('#id').val('');
            $('#zd').val('');
            $('#defen').val('');
-           $('#xianshi').children().remove();
+           $('#xsschool').text('');
+           $('#xsbanji').text('');
+           $('#xsxingming').text('');
+           $('#xsxueke').text('');
            $('#saoma').focus();
          }else{
           layer.msg(data.msg);

@@ -41,9 +41,6 @@ class Index extends Base
     {   
         // 获取表单数据
         $list = $this->request->only(['id','zd','defen'],'post');
-        // $val = input('post.val');
-        // $val = action('system/Encrypt/decrypt',$val,'key'=>'dlbz']);
-        // $list = explode('|',$val)        
         
         // 更新成绩
         $data = Chengji::update(['id'=>$list['id'], $list['zd']=>$list['defen']]);
@@ -97,7 +94,7 @@ class Index extends Base
                 ->field('id,banji,school,student,'.$list[1])
                 ->with([
                     'cjBanji'=>function($q){
-                        $q->field('id,paixu,ruxuenian')->append(['numTitle']);
+                        $q->field('id,paixu,ruxuenian')->append(['banjiTitle']);
                     }
                     ,'cjStudent'=>function($q){
                         $q->field('id,xingming');
