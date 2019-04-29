@@ -10,7 +10,7 @@ use app\chengji\model\Chengji;
 // 引用学科数据模型
 // use app\teach\model\Subject;
 // 引用文件信息存储数据模型类
-use app\system\model\Fields;
+// use app\system\model\Fields;
 // 引用phpspreadsheet类
 use app\renshi\controller\Myexcel;
 // 引用考试类
@@ -117,6 +117,17 @@ class Index extends Base
     // 表格录入成绩上传页面
     public function biaolu()
     {
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'表格录入成绩',
+            'butname'=>'批传',
+            'formpost'=>'POST',
+            'url'=>'/chengji/biaolu',
+        );
+
+        // 模板赋值
+        $this->assign('list',$list);
+        // 渲染
         return $this->fetch();
     }
 
@@ -130,34 +141,45 @@ class Index extends Base
         $url = input('post.url');
 
         // 实例化操作表格类
-        $excel = new Myexcel();
+        $excel = new \app\renshi\controller\Myexcel;
 
         // 读取表格数据
         $cjinfo = $excel->readXls($url);
 
-        // 获取成绩采集学科信息
+        // 删除空单元格得到学科列名数组
+        array_splice($cjinfo[1],0,4);
         $xk = $cjinfo[1];
-        array_splice($xk,0,4);
-        $xklie = Subject::where('id','in',$xk)->column('id,lieming');
+
        
-        // 删除成绩采集表标题行
+        // 删除成绩采集表无用的标题行得到成绩数组
         array_splice($cjinfo,0,3);
 
+
+        $cj = new Chengji();
+
+
+        $cjone = $cj->srcOne($cjinfo[0][1]);
+
+        halt($cjone);
+
+        
+
         // 获取学科满分
-        if($cjinfo[0][1] !=null)
-        {
-            $manfen = getmanfen($cjinfo[0][1],$xk);
-        }else{
-            $data = ['msg'=>'上传失败','val' => 0];
-            return json($data);
-        }
+        // if($cjinfo[0][1] !=null)
+        // {
+        //     $manfen = getmanfen($cjinfo[0][1],$xk);
+        // }else{
+        //     $data = ['msg'=>'上传失败','val' => 0];
+        //     return json($data);
+        // }
         $cj = array();
-        $i = 0;
+        // $i = 0;
         // 重新组合成绩信息
         foreach ($cjinfo as $key => $value) {
-            $x = 1;
+            // $x = 3;
             foreach ($xklie as $k => $val) {
-                if(!empty($value[3+$x]) && manfenvalidate($value[3+$x],$manfen[$k])){
+
+                if(!empty($value[3+$k]) && manfenvalidate($value[3+$k],$manfen[$k])){
                     $cj[$i][$xklie[$k]] = number_format($value[3+$x],1);
                     $cj[$i]['id'] = $value[1];  
                 }
@@ -185,31 +207,14 @@ class Index extends Base
     public function upload()
     {
         // 获取文件信息
-        $list['text'] = '成绩采集';
-        $list['oldname']=input('post.name');
-        $list['bianjitime'] = input('post.lastModifiedDate');
-        $list['fieldsize'] = input('post.size');
+        $list['text'] = $this->request->post('text');
+        $list['serurl'] = $this->request->post('serurl');
 
-        // 获取表单上传文件 例如上传了001.jpg
+        // 获取表单上传文件
         $file = request()->file('file');
-        // 移动到框架应用根目录/uploads/ 目录下
-        $info = $file->move( '..\public\uploads\chengji');
-        if($info){
-            // 成功上传后 获取上传信息
-            $list['category'] = $info->getExtension();
-            $list['url'] = $info->getSaveName();
-            $list['newname'] = $info->getFilename(); 
+        // 上传文件并返回结果
+        $data = upload($list,$file,true);
 
-            //将文件信息保存
-            $data = Fields::create($list);
-
-            $data ? $data = array('msg'=>'上传成功','val'=>true,'url'=>'..\public\uploads\chengji\\'.$list['url']) : $data = array('msg'=>'保存文件信息失败','val'=>false,'url'=>null);
-        }else{
-            // 上传失败获取错误信息
-            $data = array('msg'=>$file->getError(),'val'=>false,'url'=>null);
-        }
-
-        // 返回信息
         return json($data);
     }
 
