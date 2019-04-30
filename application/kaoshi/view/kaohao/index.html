@@ -35,6 +35,9 @@
                   }
                 {/php}
               {/volist}
+              {php}
+                if(empty($nianji)){ $nianji=''; }
+              {/php}
           </div>
           <input type="hidden" name="kaoshi" id="kaoshi" value="{$list.set.kaoshi}">
           <div class="layui-form-item" style="text-align: right;">

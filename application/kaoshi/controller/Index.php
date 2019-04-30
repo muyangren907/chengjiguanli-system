@@ -365,8 +365,21 @@ class Index extends Base
     }
 
 
+    // 考试更多操作页面
+    public function moreAction($kaoshi)
+    {
+        // 获取考试信息
+        $kaoshi = KS::where('id',$kaoshi)
+            ->field('id,title,bfdate,enddate')
+            ->find();
 
+        // 设置页面标题
+        $list['webtitle'] = $kaoshi['title'] .'（'. $kaoshi['bfdate'].'~'.$kaoshi['enddate'].'）';
+        $list['kaoshiid'] = $kaoshi['id'];
 
-
-
+        // 模板赋值
+        $this->assign('list',$list);
+        // 渲染
+        return $this->fetch();
+    }
 }

@@ -6,37 +6,19 @@ namespace app\kaoshi\controller;
 use app\common\controller\Base;
 // 引用考试数据模型类
 use app\kaoshi\model\Kaoshi as KS;
-// 引用学生类
-use app\renshi\model\Student;
+// 引用考号数据模型类
+use app\kaoshi\model\Kaohao as KH;
+
 // 引用成绩类
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 // 引用二维码生成类
 use \Endroid\QrCode\QrCode;
 
 
-class MoreAction extends Base
+class Kaohao extends Base
 {
-    // 考试更多操作页面
-    public function index($id)
-    {
-        // 获取考试信息
-        $kaoshi = KS::where('id',$id)
-            ->field('id,title,bfdate,enddate')
-            ->find();
-
-        // 设置页面标题
-        $list['webtitle'] = $kaoshi['title'] .'（'. $kaoshi['bfdate'].'~'.$kaoshi['enddate'].'）';
-        $list['kaoshiid'] = $kaoshi['id'];
-
-        // 模板赋值
-        $this->assign('list',$list);
-        // 渲染
-        return $this->fetch();
-    }
-
-
     // 生成考号
-    public function kaohao($kaoshi)
+    public function index($kaoshi)
     {
 
         // 获取参考年级
@@ -45,10 +27,16 @@ class MoreAction extends Base
                     'ksNianji'
                 ])
                 ->find();
-        foreach ($kaoshilist->ks_nianji as $key => $value) {
-            $list['data']['nianji'][$key]['id']=$value->nianji;
-            $list['data']['nianji'][$key]['title']=$value->nianjiname;
+        if(count($kaoshilist->ks_nianji)>0)
+        {
+            foreach ($kaoshilist->ks_nianji as $key => $value) {
+                $list['data']['nianji'][$key]['id']=$value->nianji;
+                $list['data']['nianji'][$key]['title']=$value->nianjiname;
+            }
+        }else{
+            $list['data']['nianji']= array();
         }
+        
 
 
         // 设置页面标题
@@ -68,7 +56,7 @@ class MoreAction extends Base
     }
 
     // 保存考号
-    public function kaohaosave()
+    public function save()
     {
         // 实例化验证模型
         $validate = new \app\kaoshi\validate\Kaohao;
@@ -90,8 +78,10 @@ class MoreAction extends Base
         $list['banjiids'] = implode(',',$list['banjiids']);
         $ksid = $list['kaoshi'];
 
+        // 获取实例化学生数据模型
+        $stu = new \app\renshi\model\Student;
         // 获取参加考试学生名单
-        $stulist = Student::where('school',$list['school'])
+        $stulist = $stu::where('school',$list['school'])
                         ->where('banji','in',$list['banjiids'])
                         ->where('status',1)
                         ->field('id,school,banji')
@@ -114,9 +104,9 @@ class MoreAction extends Base
         }
 
         // 保存考号
-        $cj = new \app\chengji\model\Chengji;
+        $kh = new \app\kaoshi\model\Kaohao;
 
-        $data = $cj
+        $data = $kh
             ->allowField(['id','kaoshi','student','school','ruxuenian','nianji','banji','create_time','update_time'])
             ->saveAll($kaohao);
         
@@ -245,21 +235,35 @@ class MoreAction extends Base
                 ->with([
                     'ksNianji'
                     ,'ksSubject'=>function($query){
-                                $query->field('id,subjectid,kaoshiid')
-                                    ->with(['subjectName'=>function($q){
-                                        $q->field('id,title');
-                                    }]
-                                );
-                            }
+                        $query->field('id,subjectid,kaoshiid')
+                            ->with(['subjectName'=>function($q){
+                                $q->field('id,title');
+                            }]
+                        );
+                    }
                 ])
                 ->find();
-        foreach ($kaoshilist->ks_nianji as $key => $value) {
-            $list['data']['nianji'][$key]['id']=$value->nianji;
-            $list['data']['nianji'][$key]['title']=$value->nianjiname;
+
+
+        // 获取考试年级
+        if(count($kaoshilist->ks_nianji)>0)
+        {
+            foreach ($kaoshilist->ks_nianji as $key => $value) {
+                $list['data']['nianji'][$key]['id']=$value->nianji;
+                $list['data']['nianji'][$key]['title']=$value->nianjiname;
+            }
+        }else{
+            $list['data']['nianji']= array();
         }
-        foreach ($kaoshilist->ks_subject as $key => $value) {
-            $list['data']['subject'][$key]['id']=$value->subjectid;
-            $list['data']['subject'][$key]['title']=$value->subject_name->title;
+        // 获取考试学科
+        if(count($kaoshilist->ks_subject)>0)
+        {
+            foreach ($kaoshilist->ks_subject as $key => $value) {
+                $list['data']['subject'][$key]['id']=$value->subjectid;
+                $list['data']['subject'][$key]['title']=$value->subject_name->title;
+            }
+        }else{
+            $list['data']['nianji']= array();
         }
 
 
@@ -271,7 +275,6 @@ class MoreAction extends Base
             'url'=>'/kaoshi/'.$kaoshi.'/biaoqianXls',
             'kaoshi'=>$kaoshi
         );
-
 
         // 模板赋值
         $this->assign('list',$list);
@@ -305,8 +308,24 @@ class MoreAction extends Base
         }
 
         $ks = new KS();
+        $kslist = $ks::where('id',$kaoshi)
+                    ->field('id,title')
+                    ->with([
+                        'ksSubject'=>function($query) use($subject){
+                            $query->where('subjectid','in',$subject)
+                                ->field('kaoshiid,subjectid')
+                                ->with(['subjectName'=>function($q){
+                                    $q->field('id,jiancheng,lieming');
+                                }]
+                            );
+                        }
+                    ])
+                    ->find();
+
+        $kh = new KH();
         // 获取考试信息
-        $chengjiinfo = $ks->srcChengji($kaoshi,$subject,$banji);
+        $kaohao = $kh->srcKaohao($kaoshi,$banji);
+
 
         // 创建表格
         $spreadsheet = new Spreadsheet();
@@ -320,24 +339,30 @@ class MoreAction extends Base
         $sheet->setCellValue('E1', '学科');
         $sheet->setCellValue('F1', '姓名');
 
+
         // 循环写出信息
         $i = 2;
-        foreach ($chengjiinfo->ks_subject as $key => $sbj) {
-            foreach ($chengjiinfo->ks_chengji as $xkkey => $cj) {
-                // 表格赋值
-                $sheet->setCellValue('A'.$i, $i-1);
-                $sheet->setCellValue('B'.$i, action('system/Encrypt/encrypt',['data'=>$cj->id.'|'.$sbj->lieming,'key'=>'dlbz']));
-                $sheet->setCellValue('C'.$i, $cj->cj_school->jiancheng);
-                $sheet->setCellValue('D'.$i, $cj->cj_banji->numTitle);
-                $sheet->setCellValue('E'.$i, $sbj->subject_name->title);
-                $sheet->setCellValue('F'.$i, $cj->cj_student->xingming);
-                $i++;
+        foreach ($kaohao as $key=>$bj)
+        {
+            foreach ($kslist->ks_subject as $ksbj => $sbj)
+            {
+                foreach ($bj->banji_kaohao as $kkh => $kh)
+                {
+                    // 表格赋值
+                    $sheet->setCellValue('A'.$i, $i-1);
+                    $sheet->setCellValue('B'.$i, action('system/Encrypt/encrypt',['data'=>$kh->id.'|'.$sbj->subject_name->id,'key'=>'dlbz']));
+                    $sheet->setCellValue('C'.$i, $bj->cj_school->jiancheng);
+                    $sheet->setCellValue('D'.$i, $bj->cj_banji->numTitle);
+                    $sheet->setCellValue('E'.$i, $sbj->subject_name->jiancheng);
+                    $sheet->setCellValue('F'.$i, $kh->cj_student->xingming);
+                    $i++;
+                }
             }
         }
 
-
         // 保存文件
-        $filename = $chengjiinfo['title'].date('ymdHis').'.xls';
+        // $filename = $kslist->title.' 标签数据'.date('ymdHis').'.xls';
+        $filename = 'aa.xls';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
@@ -366,15 +391,26 @@ class MoreAction extends Base
                             }
                 ])
                 ->find();
-        foreach ($kaoshilist->ks_nianji as $key => $value) {
-            $list['data']['nianji'][$key]['id']=$value->nianji;
-            $list['data']['nianji'][$key]['title']=$value->nianjiname;
+        // 获取考试年级
+        if(count($kaoshilist->ks_nianji)>0)
+        {
+            foreach ($kaoshilist->ks_nianji as $key => $value) {
+                $list['data']['nianji'][$key]['id']=$value->nianji;
+                $list['data']['nianji'][$key]['title']=$value->nianjiname;
+            }
+        }else{
+            $list['data']['nianji']= array();
         }
-        foreach ($kaoshilist->ks_subject as $key => $value) {
-            $list['data']['subject'][$key]['id']=$value->subjectid;
-            $list['data']['subject'][$key]['title']=$value->subject_name->title;
+        // 获取考试学科
+        if(count($kaoshilist->ks_subject)>0)
+        {
+            foreach ($kaoshilist->ks_subject as $key => $value) {
+                $list['data']['subject'][$key]['id']=$value->subjectid;
+                $list['data']['subject'][$key]['title']=$value->subject_name->title;
+            }
+        }else{
+            $list['data']['nianji']= array();
         }
-
 
         // 设置页面标题
         $list['set'] = array(
@@ -384,7 +420,6 @@ class MoreAction extends Base
             'url'=>'/kaoshi/caiji',
             'kaoshi'=>$kaoshi
         );
-
 
         // 模板赋值
         $this->assign('list',$list);
@@ -420,8 +455,24 @@ class MoreAction extends Base
         }
         
         $ks = new KS();
+        $kslist = $ks::where('id',$kaoshi)
+                    ->field('id,title')
+                    ->with([
+                        'ksSubject'=>function($query) use($subject){
+                            $query->where('subjectid','in',$subject)
+                                ->field('kaoshiid,subjectid')
+                                ->with(['subjectName'=>function($q){
+                                    $q->field('id,title,lieming');
+                                }]
+                            );
+                        }
+                    ])
+                    ->find();
+
+        $kh = new KH();
         // 获取考试信息
-        $chengjiinfo = $ks->srcChengji($kaoshi,$subject,$banji);
+        $kaohao = $kh->srcKaohao($kaoshi,$banji);
+
 
         // 获取电子表格列名
         $lieming = excelLieming();
@@ -431,21 +482,21 @@ class MoreAction extends Base
         $sheet = $spreadsheet->getActiveSheet();
 
         // 设置表格标题与表头信息
-        $sheet->setCellValue('A1',$chengjiinfo->title.' 成绩采集表');
+        $sheet->setCellValue('A1',$kslist->title.' 成绩采集表');
 
         $sheet->setCellValue('A3', '序号');
         $sheet->setCellValue('B3', '考号');
         $sheet->setCellValue('C3', '班级');
         $sheet->setCellValue('D3', '姓名');
         // 获取列数并合并和一行
-        $col = $lieming[count($chengjiinfo->ks_subject)+3];
+        $col = $lieming[count($kslist->ks_subject)+3];
         $sheet->mergeCells('A1:'.$col.'1');
 
-         // 写入列名
-        foreach ($chengjiinfo->ks_subject as $key => $value) {
-            $sheet->setCellValue($lieming[$key + 4].'3', $value->subject_name['title']);
-            $sheet->setCellValue($lieming[$key + 4].'2', $value->lieming);
 
+         // 写入列名
+        foreach ($kslist->ks_subject as $key => $value) {
+            $sheet->setCellValue($lieming[$key + 4].'3', $value->subject_name->title);
+            $sheet->setCellValue($lieming[$key + 4].'2', $value->subject_name->lieming);
         }
         // 隐藏第二行和第二列
         $sheet->getRowDimension('2')->setRowHeight('0');
@@ -454,18 +505,20 @@ class MoreAction extends Base
 
         // 将学生信息循环写入表中
         $i = 4;
-        foreach ($chengjiinfo->ks_chengji as $key=>$value)
+        foreach ($kaohao as $key=>$bj)
         {
-            $sheet->setCellValue('A'.$i, $i-3);
-            $sheet->setCellValue('B'.$i, $value['id']);
-            $sheet->setCellValue('C'.$i, '\''.$value['banjiNumname']);
-            $sheet->setCellValue('D'.$i, $value['cj_student']['xingming']);
-            $i++;
+            foreach ($bj->banji_kaohao as $k => $kh) {
+                $sheet->setCellValue('A'.$i, $i-3);
+                $sheet->setCellValue('B'.$i, $kh->id);
+                $sheet->setCellValue('C'.$i, $bj->cj_banji->banjiTitle);
+                $sheet->setCellValue('D'.$i, $kh->cj_student->xingming);
+                $i++;
+            }
         }
 
 
         // 保存文件
-        $filename = $chengjiinfo->title.'成绩采集表'.date('ymdHis').'.xls';
+        $filename = $kslist->title.'成绩采集表'.date('ymdHis').'.xls';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');

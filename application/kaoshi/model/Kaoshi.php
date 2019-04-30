@@ -42,45 +42,7 @@ class Kaoshi extends Base
             ->select();
         return $data;
     }
-
-
-    //查询考试成绩
-    public function srcChengji($kaoshi,$subject,$banji)
-    {
-        // 获取考试信息
-        $data = $this->where('id',$kaoshi)
-            ->field('id,title')
-                ->with([
-                    'ksSubject'=>function($query)use($subject){
-                        $query->field('kaoshiid,subjectid')
-                            ->where('subjectid','in',$subject)
-                            ->field('kaoshiid,subjectid,lieming')
-                            ->with([
-                                'subjectName'=>function($q){
-                                    $q->field('id,title');
-                                }
-                            ]);
-                    }
-                    ,'ksChengji'=>function($query) use($banji){
-                        $query->where('banji','in',$banji)
-                            ->field('id,banji,student,kaoshi,school')
-                            ->order(['banji','student'])
-                            ->with([
-                                'cjBanji'=>function($q){
-                                    $q->field('id,paixu,ruxuenian')->append(['numTitle']);
-                                }
-                                ,'cjStudent'=>function($q){
-                                    $q->field('id,xingming');
-                                }
-                                ,'cjSchool'=>function($q){
-                                    $q->field('id,jiancheng');
-                                }
-                            ]);
-                    }
-                ])
-            ->find();
-        return $data;
-    }
+  
 
 
     // 开始时间修改器

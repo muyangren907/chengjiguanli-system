@@ -3,18 +3,11 @@ namespace app\chengji\controller;
 
 // 引用控制器基类
 use app\common\controller\Base;
-// 引用学生数据模型
-// use app\renshi\model\Student;
 // 引用成绩数据模型
 use app\chengji\model\Chengji;
-// 引用学科数据模型
-// use app\teach\model\Subject;
-// 引用文件信息存储数据模型类
-// use app\system\model\Fields;
-// 引用phpspreadsheet类
-use app\renshi\controller\Myexcel;
-// 引用考试类
-// use app\kaoshi\model\Kaoshi;
+// 引用考号数据模型
+use app\kaoshi\model\Kaohao;
+
 
 class Index extends Base
 {
@@ -88,27 +81,26 @@ class Index extends Base
         $val = input('post.val');
         $val = action('system/Encrypt/decrypt',[$val,'key'=>'dlbz']);
         $list = explode('|',$val);
+        $sbj = $list[1];
 
-        $cj = new Chengji;
-        $cjlist = $cj->where('id',$list[0])
-                ->field('id,banji,school,student,'.$list[1])
+        $kh = new Kaohao;
+        $cjlist = $kh->where('id',$list[0])
+                ->field('id,banji,school,student')
                 ->with([
-                    'cjBanji'=>function($q){
-                        $q->field('id,paixu,ruxuenian')->append(['banjiTitle']);
-                    }
-                    ,'cjStudent'=>function($q){
-                        $q->field('id,xingming');
-                    }
-                    ,'cjSchool'=>function($q){
-                        $q->field('id,jiancheng');
+                    'ksChengji'=>function($q) use($sbj){
+                        $q->where('stubject_id',$sbj)
+                            ->field('id,kaohao_id,stubject_id,student_id,user_id');
                     }
                 ])
                 ->find();
+        
+
         // 获取列名
         $sbj = new \app\teach\model\Subject;
         $cjlist->lieming = $sbj::where('lieming',$list[1])->value('title');
-        $cjlist->zd = $list[1];
-        $cjlist->defen = $cjlist[$list[1]];
+
+
+        halt($cjlist);
 
         return json($cjlist);
     }

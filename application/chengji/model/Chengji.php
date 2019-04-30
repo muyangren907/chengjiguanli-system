@@ -11,8 +11,8 @@ class Chengji extends Base
    
 
    // 定义更新成绩后计算平均分和总分
-	protected static function init()
-    {
+	// protected static function init()
+ //    {
    //      self::afterUpdate(function ($cj) {
    //      	$cj =self::where('id',$cj->id)->find();
    //      	// 重新组合数组
@@ -41,42 +41,15 @@ class Chengji extends Base
 
    //          $cj->save();
    //      });
-    }
+    // }
+
 
 
 
 
 
     
-    // 学校信息关联表
-    public function cjSchool()
-    {
-    	return $this->belongsTo('\app\system\model\School','school','id');
-    }
-
-    // 班级信息关联表
-    public function cjBanji()
-    {
-    	return $this->belongsTo('\app\teach\model\Banji','banji','id');
-    }
-
-    // 学生信息关联
-    public function cjStudent()
-    {
-    	return $this->belongsTo('\app\renshi\model\Student','student','id');
-    }
-
-    // 满分
-    public function cjManfen()
-    {
-    	return $this->hasMany('\app\kaoshi\model\KaoshiSubject','kaoshiid','kaoshi');
-    }
-
-    // 考试关联
-    public function cjKaoshi()
-    {
-    	return $this->belongsTo('\app\kaoshi\model\Kaoshi','kaoshi','id');
-    }
+    
     
 
 
@@ -94,61 +67,61 @@ class Chengji extends Base
 
 
 	// 查询根据考试ID查询考试成绩
-	public function searchAjax($search)
-	{
-		// 获取参数
-		$kaoshiid = $search['kaoshiid'];
-		$schoolid = $search['school'];
-		$nianji = $search['nianji'];
-		$banji = $search['banji'];
-		$order = $search['order'];
-		$order_field = $search['order_field'];
-		$search = $search['search'];
+	// public function searchAjax($search)
+	// {
+	// 	// 获取参数
+	// 	$kaoshiid = $search['kaoshiid'];
+	// 	$schoolid = $search['school'];
+	// 	$nianji = $search['nianji'];
+	// 	$banji = $search['banji'];
+	// 	$order = $search['order'];
+	// 	$order_field = $search['order_field'];
+	// 	$search = $search['search'];
 
 
-		$data = $this->where('kaoshi',$kaoshiid)
-            	->when(count($schoolid)>0,function($query) use($schoolid){
-                	$query->where('school','in',$schoolid);
-                })
-                ->when(count($nianji)>0,function($query) use($nianji){
-                	$query->where('nianji','in',$nianji);
-                })
-                ->when(count($banji)>0,function($query) use($banji){
-                	$query->where('banji','in',$banji);
-                })
-    //             ->when(strlen($search)>0 && is_numeric($search), function ($query) use($search){
-				//     // 满足条件后执行
-				//     $query->where('yuwen|shuxue|waiyu',$search);
-				// })
-                ->when(strlen($search)>0 && !is_numeric($search),function($query) use($search){
-                		$query->where('student','in',function ($q) use($search){
-                			$q->name('student')
-	                			->where('xingming','like','%'.$search.'%')
-	                			->field('id');
-                	});
-                })
-                ->order([$order_field=>$order])
-                ->select();
+	// 	$data = $this->where('kaoshi',$kaoshiid)
+ //            	->when(count($schoolid)>0,function($query) use($schoolid){
+ //                	$query->where('school','in',$schoolid);
+ //                })
+ //                ->when(count($nianji)>0,function($query) use($nianji){
+ //                	$query->where('nianji','in',$nianji);
+ //                })
+ //                ->when(count($banji)>0,function($query) use($banji){
+ //                	$query->where('banji','in',$banji);
+ //                })
+ //    //             ->when(strlen($search)>0 && is_numeric($search), function ($query) use($search){
+	// 			//     // 满足条件后执行
+	// 			//     $query->where('yuwen|shuxue|waiyu',$search);
+	// 			// })
+ //                ->when(strlen($search)>0 && !is_numeric($search),function($query) use($search){
+ //                		$query->where('student','in',function ($q) use($search){
+ //                			$q->name('student')
+	//                 			->where('xingming','like','%'.$search.'%')
+	//                 			->field('id');
+ //                	});
+ //                })
+ //                ->order([$order_field=>$order])
+ //                ->select();
         
 
-        // $data = $data->append(['cj_school.jiancheng','cj_banji.title','cj_student.xingming']);
+ //        // $data = $data->append(['cj_school.jiancheng','cj_banji.title','cj_student.xingming']);
 
-    	return $data;
-	}
+ //    	return $data;
+	// }
 
 
 
-	// 根据成绩ID查询单条成绩
-	public function srcOne($id)
-	{
-		$data = $this->where('id',$id)
-				->with([
-					'cjManfen'
-				])
-				->find();
+	// // 根据成绩ID查询单条成绩
+	// public function srcOne($id)
+	// {
+	// 	$data = $this->where('id',$id)
+	// 			->with([
+	// 				'cjManfen'
+	// 			])
+	// 			->find();
 
-		return $data;
-	}
+	// 	return $data;
+	// }
 
 
 

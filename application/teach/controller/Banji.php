@@ -299,6 +299,7 @@ class Banji extends Base
                 ->where('ruxuenian','in',$ruxuenian)
                 ->order('paixu')
                 ->field('id,ruxuenian,paixu')
+                ->where('status',1)
                 ->append(['banTitle'])
                 ->select();
 
@@ -321,6 +322,7 @@ class Banji extends Base
                 ->where('ruxuenian','in',$ruxuenian)
                 ->group('ruxuenian')
                 ->field('id,ruxuenian')
+                ->where('status',1)
                 ->with([
                     'njBanji'=>function($query)use($school){
                         $query->where('status',1)
