@@ -43,120 +43,12 @@ class Chengji extends Base
    //      });
     // }
 
+    // 成绩和学科关联
+    public function cjSubject()
+    {
+    	return $this->belongsTo('\app\teach\model\Subject');
+    }
 
-
-
-
-
-    
-    
-    
-
-
-	// 班级名称(数字)获取器
-	// public function getBanjiNumnameAttr()
-	// {
-	// 	$bj = new \app\teach\model\Banji;
-	// 	$bj = $bj->find($this->getdata('banji'));
-
-	// 	// 返回班级名称 
-	// 	return $bj->numTitle;
-	// }
-
-
-
-
-	// 查询根据考试ID查询考试成绩
-	// public function searchAjax($search)
-	// {
-	// 	// 获取参数
-	// 	$kaoshiid = $search['kaoshiid'];
-	// 	$schoolid = $search['school'];
-	// 	$nianji = $search['nianji'];
-	// 	$banji = $search['banji'];
-	// 	$order = $search['order'];
-	// 	$order_field = $search['order_field'];
-	// 	$search = $search['search'];
-
-
-	// 	$data = $this->where('kaoshi',$kaoshiid)
- //            	->when(count($schoolid)>0,function($query) use($schoolid){
- //                	$query->where('school','in',$schoolid);
- //                })
- //                ->when(count($nianji)>0,function($query) use($nianji){
- //                	$query->where('nianji','in',$nianji);
- //                })
- //                ->when(count($banji)>0,function($query) use($banji){
- //                	$query->where('banji','in',$banji);
- //                })
- //    //             ->when(strlen($search)>0 && is_numeric($search), function ($query) use($search){
-	// 			//     // 满足条件后执行
-	// 			//     $query->where('yuwen|shuxue|waiyu',$search);
-	// 			// })
- //                ->when(strlen($search)>0 && !is_numeric($search),function($query) use($search){
- //                		$query->where('student','in',function ($q) use($search){
- //                			$q->name('student')
-	//                 			->where('xingming','like','%'.$search.'%')
-	//                 			->field('id');
- //                	});
- //                })
- //                ->order([$order_field=>$order])
- //                ->select();
-        
-
- //        // $data = $data->append(['cj_school.jiancheng','cj_banji.title','cj_student.xingming']);
-
- //    	return $data;
-	// }
-
-
-
-	// // 根据成绩ID查询单条成绩
-	// public function srcOne($id)
-	// {
-	// 	$data = $this->where('id',$id)
-	// 			->with([
-	// 				'cjManfen'
-	// 			])
-	// 			->find();
-
-	// 	return $data;
-	// }
-
-
-
-
-	// // 根据考试ID查询所有考试成绩
-	// public function searchAll($kaoshiid)
-	// {
-	// 	return $this::scope('kaoshi',$kaoshiid)
-	// 		// ->cache('key',180)
-	// 		->select();
-	// }
-
-
-	// // 查询年级成绩 
-	// public function searchNianji($kaoshiid,$schoolid='',$nianji)
-	// {
-	// 	return $this->where('kaoshi',$kaoshiid)
-	// 			->where('ruxuenian',$nianji)
-	// 			->when(!empty($schoolid),function($query) use($schoolid){
- //                	$query->where('school',$schoolid);
- //                })
- //                ->where('status',1)
-	// 			->field('id,kaoshi,banji,school,yuwen,shuxue,waiyu')
-	// 			// ->cache('key',180)
-	// 			->select();
-	// }
-
-
-
-
-	// // 考试项目查询范围
-	// public function scopeKaoshi($query,$kaoshiid)
-	// {
-	// 	$query->where('kaoshi',$kaoshiid);
-	// }
 
 
 	

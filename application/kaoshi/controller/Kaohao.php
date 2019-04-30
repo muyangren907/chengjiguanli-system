@@ -263,7 +263,7 @@ class Kaohao extends Base
                 $list['data']['subject'][$key]['title']=$value->subject_name->title;
             }
         }else{
-            $list['data']['nianji']= array();
+            $list['data']['subject']= array();
         }
 
 
@@ -409,7 +409,7 @@ class Kaohao extends Base
                 $list['data']['subject'][$key]['title']=$value->subject_name->title;
             }
         }else{
-            $list['data']['nianji']= array();
+            $list['data']['subject']= array();
         }
 
         // 设置页面标题

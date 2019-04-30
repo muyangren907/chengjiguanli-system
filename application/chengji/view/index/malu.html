@@ -24,8 +24,8 @@
             <input type="text" id="defen" name="defen" lay-verify="required"
                   autocomplete="off" class="layui-input " value="{$list.data.defen|default=''}" placeholder="得分" style="height: 150px;font-size: 90px">
           </div>
-          <input type="hidden" name="id" id="id">
-          <input type="hidden" name="zd" id="zd">
+          <input type="hidden" name="kaohao_id" id="kaohao_id">
+          <input type="hidden" name="subject_id" id="subject_id">
         </form>
       </div>
     </div>
@@ -54,12 +54,12 @@
          $('#xsschool').text(data.cj_school.jiancheng);
          $('#xsbanji').text(data.cj_banji.banjiTitle);
          $('#xsxingming').text(data.cj_student.xingming);
-         $('#xsxueke').text(data.lieming);
+         $('#xsxueke').text(data.sbj.title);
 
-         $('#id').val(data.id);
-         $('#zd').val(data.zd);
-         if(data.defen*1>0){
-          $('#defen').val(data.defen*1);
+         $('#kaohao_id').val(data.id);
+         $('#subject_id').val(data.sbj.id);
+         if(data.ks_chengji[0].defen){
+          $('#defen').val(data.ks_chengji[0].defen);
          }
          $('#saoma').val('');
          // $('#xianshi').append(school + banji + student + subject);
@@ -80,15 +80,15 @@
         type: 'PUT',
         url: "/chengji/malu",
         data:{
-          id:$('#id').val()
-          ,zd:$('#zd').val()
+          subject_id:$('#subject_id').val()
+          ,kaohao_id:$('#kaohao_id').val()
           ,defen:$('#defen').val()
         },
         dataType: 'json',
         success: function(data){
          if(data.val == 1){
-           $('#id').val('');
-           $('#zd').val('');
+           $('#kaohao_id').val('');
+           $('#subject_id').val('');
            $('#defen').val('');
            $('#xsschool').text('');
            $('#xsbanji').text('');

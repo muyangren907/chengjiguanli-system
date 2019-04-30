@@ -7,6 +7,8 @@ use app\common\controller\Base;
 use app\chengji\model\Chengji;
 // 引用考号数据模型
 use app\kaoshi\model\Kaohao;
+// 引用学科数据模型
+use \app\teach\model\Subject;
 
 
 class Index extends Base
@@ -33,10 +35,21 @@ class Index extends Base
     public function malusave()
     {   
         // 获取表单数据
-        $list = $this->request->only(['id','zd','defen'],'post');
-        
+        $list = $this->request->only(['kaohao_id','subject_id','defen'],'post');
+
         // 更新成绩
-        $data = Chengji::update(['id'=>$list['id'], $list['zd']=>$list['defen']]);
+        $data = Kaohao::where('id',$list['kaohao_id'])->find();
+        $cj = $data->ksChengji()->isEmpty();
+        if($cj == false)
+        {
+            $data->ksChengji()->delete();
+        }
+
+        $data = $data->ksChengji()->save([
+                    'subject_id'=>$list['subject_id'],
+                    'defen'=>$list['defen'],
+                    'user_id'=>session('userid')
+                ]);
 
         $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
@@ -88,20 +101,24 @@ class Index extends Base
                 ->field('id,banji,school,student')
                 ->with([
                     'ksChengji'=>function($q) use($sbj){
-                        $q->where('stubject_id',$sbj)
-                            ->field('id,kaohao_id,stubject_id,student_id,user_id');
+                        $q->where('subject_id',$sbj)
+                            ->field('kaohao_id,subject_id,defen');
+                    }
+                    ,'cjBanji'=>function($q){
+                        $q->field('id,paixu,ruxuenian')
+                            ->append(['numTitle','banjiTitle']);
+                    }
+                    ,'cjSchool'=>function($q){
+                        $q->field('id,jiancheng');
+                    }
+                    ,'cjStudent'=>function($q){
+                        $q->field('id,xingming');
                     }
                 ])
                 ->find();
-        
+        $cjlist->sbj = Subject::where('id',$sbj)->field('id,title')->find();
 
         // 获取列名
-        $sbj = new \app\teach\model\Subject;
-        $cjlist->lieming = $sbj::where('lieming',$list[1])->value('title');
-
-
-        halt($cjlist);
-
         return json($cjlist);
     }
 
