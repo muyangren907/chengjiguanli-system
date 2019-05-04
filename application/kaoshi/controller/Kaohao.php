@@ -361,8 +361,7 @@ class Kaohao extends Base
         }
 
         // 保存文件
-        // $filename = $kslist->title.' 标签数据'.date('ymdHis').'.xls';
-        $filename = 'aa.xls';
+        $filename = $kslist->title.' 标签数据'.date('ymdHis').'.xls';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
@@ -496,7 +495,7 @@ class Kaohao extends Base
          // 写入列名
         foreach ($kslist->ks_subject as $key => $value) {
             $sheet->setCellValue($lieming[$key + 4].'3', $value->subject_name->title);
-            $sheet->setCellValue($lieming[$key + 4].'2', $value->subject_name->lieming);
+            $sheet->setCellValue($lieming[$key + 4].'2', $value->subject_name->id);
         }
         // 隐藏第二行和第二列
         $sheet->getRowDimension('2')->setRowHeight('0');

@@ -7,7 +7,7 @@ use app\common\controller\Base;
 use app\chengji\model\Chengji;
 // 引用考号数据模型
 use app\kaoshi\model\Kaohao;
-// 引用学科数据模型
+// // 引用学科数据模型
 use \app\teach\model\Subject;
 
 
@@ -42,7 +42,7 @@ class Index extends Base
         $cj = $data->ksChengji()->isEmpty();
         if($cj == false)
         {
-            $data->ksChengji()->delete();
+            $data->ksChengji()->delete(true);
         }
 
         $data = $data->ksChengji()->save([
@@ -164,51 +164,38 @@ class Index extends Base
         array_splice($cjinfo,0,3);
 
 
-        $cj = new Chengji();
-
-
-        $cjone = $cj->srcOne($cjinfo[0][1]);
-
-        halt($cjone);
-
-        
-
-        // 获取学科满分
-        // if($cjinfo[0][1] !=null)
-        // {
-        //     $manfen = getmanfen($cjinfo[0][1],$xk);
-        // }else{
-        //     $data = ['msg'=>'上传失败','val' => 0];
-        //     return json($data);
-        // }
-        $cj = array();
-        // $i = 0;
+        $user_id = session('userid');
         // 重新组合成绩信息
         foreach ($cjinfo as $key => $value) {
-            // $x = 3;
-            foreach ($xklie as $k => $val) {
-
-                if(!empty($value[3+$k]) && manfenvalidate($value[3+$k],$manfen[$k])){
-                    $cj[$i][$xklie[$k]] = number_format($value[3+$x],1);
-                    $cj[$i]['id'] = $value[1];  
+            foreach ($xk as $k => $val) {
+                if($value[$k+4] == null){
+                    continue;
                 }
-                $x++;
+                // 查询是否存在这个成绩
+                $cj = Chengji::where('kaohao_id',$value[1])
+                            ->where('subject_id',$val)
+                            ->find();
+                // 如果存在则删除
+                if($cj){
+                    $cj->delete(true);
+                }
+                Chengji::create([
+                    'kaohao_id'=>$value[1],
+                    'subject_id'=>$val,
+                    'user_id'=>$user_id,
+                    'defen'=>$value[$k+4]
+                ]);
             }
-            $i++;
         }
-
-        // 实例成绩模块
-        $cjmod = new Chengji();
-        // 保存成绩
-        $data = $cjmod->saveAll($cj);
 
         // 判断成绩更新结果
         empty($cj) ? $data=['msg'=>'上传失败','val'=>0] : $data=['msg'=>'上传成功','val'=>1];
 
-        // 返回成绩结果
-        return json($data);
         ob_flush();
         flush();
+        // 返回成绩结果
+        return json($data);
+        
     }
 
 
@@ -229,19 +216,31 @@ class Index extends Base
 
 
     // 成绩列表
-    public function stuChengjilist($id)
+    public function index($id)
     {
-        // 实例化成绩数据模型
-        $cj = new Chengji();
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = '成绩列表';
 
-        // 查询成绩数量
-        $list['count'] = $cj->searchAll($id)->count();
-        // 设置页面标题
-        $list['title'] = '成绩列表';
-        $list['kaoshi'] = $id;
+        // 实例化考试数据模型
+        $kaoshi = new \app\kaoshi\model\Kaoshi;
+        $ksinfo = $kaoshi->where('id',$id)
+                    ->field('id')
+                    ->with([
+                        'ksSubject'=>function($query){
+                            $query->field('kaoshiid,subjectid')
+                                ->with(['subjectName'=>function($q){
+                                    $q->field('id,jiancheng,lieming');
+                                }]
+                            );
+                        }
+                    ])
+                    ->find();
+
+        $list['subject'] = $ksinfo->ks_subject;
+
 
         // 模板赋值
-        $this->assign('list', $list);
+        $this->assign('list',$list);
 
         // 渲染模板
         return $this->fetch();
@@ -252,65 +251,44 @@ class Index extends Base
     // 获取考试信息
     public function ajaxData()
     {
-        // 获取DT的传值
-        $getdt = request()->param();
-
-        //得到排序的方式
-        $order = $getdt['order'][0]['dir'];
-        //得到排序字段的下标
-        $order_column = $getdt['order'][0]['column'];
-        //根据排序字段的下标得到排序字段
-        $order_field = $getdt['columns'][$order_column]['name'];
-        if($order_field=='')
-        {
-            $order_field = $getdt['columns'][$order_column]['data'];
-        }
-        //得到limit参数
-        $limit_start = $getdt['start'];
-        $limit_length = $getdt['length'];
-
-        // 获取班级id
-        $njlist = nianjiList();
-        $njnum = array_keys($njlist);
-        $bj = new \app\teach\model\Banji;
-        $bjlist = $bj->where('ruxuenian','in',$njnum)
-                ->where('paixu','in',$getdt['banji'])
-                ->column('id');
+        // 获取参数
+        $src = $this->request
+                ->only([
+                    'page'=>'1',
+                    'limit'=>'10',
+                    'field'=>'update_time',
+                    'order'=>'desc',
+                    'kaoshi'=>'1',
+                    // 'danwei'=>array(),
+                    // 'xueli'=>array(),
+                    'searchval'=>''
+                ],'POST');
 
 
-        //得到搜索的关键词
-        $search = [
-            'kaoshiid'=>$getdt['kaoshi'],
-            'school'=>$getdt['school'],
-            'nianji'=>$getdt['nianji'],
-            'banji'=>$bjlist,
-            'search'=>$getdt['search']['value'],
-            'order'=>$order,
-            'order_field'=>$order_field
-        ];
-        
+        // 实例化
+        $chengji = new Kaohao;
 
-        // 实例化成绩数据模型
-        $cj = new Chengji();
+        // 查询要显示的数据
+        $data = $chengji->srcChengji($src);
 
-        // 查询成绩总数
-        $cnt = $cj->searchAll($getdt['kaoshi'])->count();
 
-        // 分页查询成绩
-        $data = $cj->searchAjax($search);
-        // 获取符合条件记录数
-        $datacnt = $data->count();
+
+
+        // 获取符合条件记录总数
+        $cnt = $data->count();
         // 获取当前页数据
+        $limit_start = $src['page'] * $src['limit'] - $src['limit'];
+        $limit_length = $src['limit'];
         $data = $data->slice($limit_start,$limit_length);
-
-
+       
         // 重组返回内容
         $data = [
-            'draw'=> $getdt["draw"] , // ajax请求次数，作为标识符
-            'recordsTotal'=>$cnt,  // 获取到的结果数(每页显示数量)
-            'recordsFiltered'=>$datacnt,       // 符合条件的总数据量
+            'code'=> 0 , // ajax请求次数，作为标识符
+            'msg'=>"",  // 获取到的结果数(每页显示数量)
+            'count'=>$cnt, // 符合条件的总数据量
             'data'=>$data, //获取到的数据结果
         ];
+
 
         return json($data);
     }

@@ -17,24 +17,53 @@ class Kaohao extends Base
                     ->order(['banji'])
                     ->group('banji')
                     ->with([
-                        'cjBanji'=>function($q){
-                            $q->field('id,paixu,ruxuenian')
+                        'cjBanji'=>function($query){
+                            $query->field('id,paixu,ruxuenian')
                                 ->append(['numTitle','banjiTitle']);
                         }
-                        ,'cjSchool'=>function($q){
-                            $q->field('id,jiancheng');
+                        ,'cjSchool'=>function($query){
+                            $query->field('id,jiancheng');
                         }
-                        ,'banjiKaohao'=>function($q){
-                            $q->field('id,banji,student,kaoshi,school')
+                        ,'banjiKaohao'=>function($query){
+                            $query->field('id,banji,student,kaoshi,school')
                                 ->order(['banji','id'])
                                 ->with([
-                                    'cjStudent'=>function($qsm){
-                                        $qsm->field('id,xingming');
+                                    'cjStudent'=>function($q){
+                                        $q->field('id,xingming');
                                     }
                             ]);
                         }
                     ])
                     ->select();
+        return $data;
+    }
+
+
+    // 查询学生成绩
+    public function srcChengji($src)
+    {
+        $data = $this->where('kaoshi',$src['kaoshi'])
+                ->field('id,school,student,nianji,banji')
+                ->with([
+                    'ksChengji'=>function($query){
+                        $query->field('kaohao_id,subject_id,defen')
+                            ->with([
+                                'subjectName'=>function($q){
+                                    $q->field('id,lieming');
+                                }
+                            ]);
+                    }
+                    ,'cjBanji'=>function($query){
+                        $query->field('id,paixu,ruxuenian')
+                            ->append(['numTitle','banjiTitle']);
+                    }
+                    ,'cjSchool'=>function($query){
+                        $query->field('id,jiancheng');
+                    }
+                ])
+                ->order([$src['field'] =>$src['order']])
+                ->select();
+
         return $data;
     }
 
