@@ -294,9 +294,10 @@ class Index extends Base
         $ksdata = $ks->where('id',$list['id'])->find();
 
         // 更新学科表
-        $subjectdata=$ksdata->ksSubject();
-        if(!$subjectdata->isEmpty()){
-            $subjectdata->delete();
+        $subjectdata=$ksdata->ksSubject->isEmpty();
+
+        if($subjectdata == false){
+            $ksdata->ksSubject()->delete(true);
         }
         $subjectdata=$ksdata->ksSubject()->saveAll($data);
 

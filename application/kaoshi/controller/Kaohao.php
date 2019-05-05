@@ -324,7 +324,7 @@ class Kaohao extends Base
 
         $kh = new KH();
         // 获取考试信息
-        $kaohao = $kh->srcKaohao($kaoshi,$banji);
+        $kaohao = $kh->srcBiaoqian($kaoshi,$banji);
 
 
         // 创建表格
@@ -470,7 +470,7 @@ class Kaohao extends Base
 
         $kh = new KH();
         // 获取考试信息
-        $kaohao = $kh->srcKaohao($kaoshi,$banji);
+        $kaohao = $kh->srcBiaoqian($kaoshi,$banji);
 
 
         // 获取电子表格列名

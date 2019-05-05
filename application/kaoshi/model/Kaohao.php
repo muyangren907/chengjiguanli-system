@@ -8,9 +8,9 @@ use app\common\model\Base;
 class Kaohao extends Base
 {
     //查询考试成绩
-    public function srcKaohao($kaoshi,$banji)
+    public function srcBiaoqian($kaoshi,$banji)
     {
-        // 获取考试信息
+        // 获取考试标签
         $data = $this->where('kaoshi',$kaoshi)
                     ->where('banji','in',$banji)
                     ->field('id,banji,school')
@@ -39,8 +39,8 @@ class Kaohao extends Base
     }
 
 
-    // 查询学生成绩
-    public function srcChengji($src)
+    // 查询学生成绩录入表
+    public function srcKaohao($src)
     {
         $data = $this->where('kaoshi',$src['kaoshi'])
                 ->field('id,school,student,nianji,banji')
@@ -63,7 +63,70 @@ class Kaohao extends Base
                 ])
                 ->order([$src['field'] =>$src['order']])
                 ->select();
+        return $data;
+    }
 
+
+    // 查询学生成绩
+    public function srcChengji($src)
+    {
+        $school = $src['school'];
+        $nianji = $src['nianji'];
+
+        $khlist = $this->where('kaoshi',$src['kaoshi'])
+                ->field('id,school,student,nianji,banji')
+                ->when(count($school)>0,function($query) use($school){
+                    $query->where('school','in',$school);
+                })
+                ->when(count($nianji)>0,function($query) use($nianji){
+                    $query->where('nianji','in',$nianji);
+                })
+                ->with([
+                    'ksChengji'=>function($query){
+                        $query->field('kaohao_id,subject_id,defen');
+                    }
+                    ,'cjBanji'=>function($query){
+                        $query->field('id,paixu,ruxuenian')
+                            ->append(['numTitle','banjiTitle']);
+                    }
+                    ,'cjSchool'=>function($query){
+                        $query->field('id,jiancheng');
+                    }
+                    ,'cjStudent'=>function($query){
+                        $query->field('id,xingming');
+                    }
+                ])
+                ->select();
+        // 获取参考学科
+        $kaoshi = new \app\kaoshi\model\Kaoshi;
+        $ksinfo = $kaoshi->where('id',$src['kaoshi'])
+                    ->with([
+                        'ksSubject'=>function($query){
+                            $query->field('kaoshiid,subjectid,lieming');
+                        }
+                    ])
+                    ->find();
+        $xk = array();
+        foreach ($ksinfo->ks_subject as $key => $value) {
+            $xk[$value->subjectid] = $value->lieming;
+        }
+
+        // 整理数据
+        $data = array();
+        foreach ($khlist as $key => $value) {
+            $data[$key]['id'] = $value->id;
+            $data[$key]['school'] = $value->cj_school->jiancheng;
+            $data[$key]['student'] = $value->cj_student->xingming;
+            $data[$key]['nianji'] = $value->nianji;
+            $data[$key]['banji'] = $value->cj_banji->num_title;
+            foreach ($value->ks_chengji as $k => $val) {
+                $data[$key][$xk[$val->subject_id]] = $val->defen;
+            }
+        }
+        // 按条件排序
+        if(count($data)>0){
+            $data = arraySequence($data,$src['field']); //排序
+        }
         return $data;
     }
 

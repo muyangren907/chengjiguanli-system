@@ -256,11 +256,11 @@ class Index extends Base
                 ->only([
                     'page'=>'1',
                     'limit'=>'10',
-                    'field'=>'update_time',
+                    'field'=>'banji',
                     'order'=>'desc',
                     'kaoshi'=>'1',
-                    // 'danwei'=>array(),
-                    // 'xueli'=>array(),
+                    'school'=>array(),
+                    'nianji'=>array(),
                     'searchval'=>''
                 ],'POST');
 
@@ -275,11 +275,11 @@ class Index extends Base
 
 
         // 获取符合条件记录总数
-        $cnt = $data->count();
+        $cnt = count($data);
         // 获取当前页数据
         $limit_start = $src['page'] * $src['limit'] - $src['limit'];
         $limit_length = $src['limit'];
-        $data = $data->slice($limit_start,$limit_length);
+        $data = array_slice($data,$limit_start,$limit_length);
        
         // 重组返回内容
         $data = [

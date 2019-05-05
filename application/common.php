@@ -258,3 +258,29 @@ function upload($list,$file,$isSave=false)
 }
 
 
+
+
+/**
+ * 数组重新排序
+ * $array 要排序的数组
+ * $field 排序字段
+ * $sort 排序方式 SORT_DESC 降序；SORT_ASC 升序
+ * */
+function arraySequence($array, $field = 'age', $sort = 'SORT_DESC') {
+	$arr = array();
+	foreach ($array as $key => $value) {
+		foreach ($value as $k => $val) {
+			$arr[$k][$key] = $val;
+		}
+	}
+	// 获取数组大小
+	$arraycnt = count($array);
+	$arrcnt = count($arr[$field]);
+	while($arrcnt<$arraycnt) {
+	  $arr[$field][$arrcnt+1] = '';
+	  $arrcnt++;
+	} 
+
+	array_multisort($arr[$field], constant($sort), $array);
+	return $array;
+}
