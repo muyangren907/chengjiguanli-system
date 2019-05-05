@@ -179,7 +179,7 @@ class Index extends Base
                 if($cj){
                     $cj->delete(true);
                 }
-                Chengji::create([
+                $data = Chengji::create([
                     'kaohao_id'=>$value[1],
                     'subject_id'=>$val,
                     'user_id'=>$user_id,
@@ -189,7 +189,7 @@ class Index extends Base
         }
 
         // 判断成绩更新结果
-        empty($cj) ? $data=['msg'=>'上传失败','val'=>0] : $data=['msg'=>'上传成功','val'=>1];
+        empty($data) ? $data=['msg'=>'上传失败','val'=>0] : $data=['msg'=>'上传成功','val'=>1];
 
         ob_flush();
         flush();

@@ -88,8 +88,9 @@ layui.use(['table','laypage','form','cjgl'], function(){
 	var table = layui.table
 		,form = layui.form
 		,cjgl = layui.cjgl
-		,laypage = layui.laypage;
-	var mycols;
+		,laypage = layui.laypage
+		,mycols;
+    // 设置列
 	mycols =[ //表头
 			{type:'checkbox', fixed: 'left'},
 			{field: 'school', title: '学校',sort: true},
@@ -100,14 +101,12 @@ layui.use(['table','laypage','form','cjgl'], function(){
 		];
 	var xk = '<?php echo json_encode($list["subject"]);?>';
 	xk = eval(decodeURIComponent(xk));
-	
 	for(x in xk)
     {
-      // console.log(xk[x]);
       mycols.push({field: xk[x].subject_name.lieming, title: xk[x].subject_name.jiancheng ,sort: true});
     }
 	mycols.push({field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140});
-
+	
 
 	// 实例化表格
 	var tableIns = table.render({
@@ -123,23 +122,6 @@ layui.use(['table','laypage','form','cjgl'], function(){
 		cols: [mycols],
 	});
 
-	  //执行一个laypage实例
-	  laypage.render({
-		  elem: 'test1'
-		  ,count: 70 //数据总数，从服务端得到
-		  ,jump: function(obj, first){
-		    //obj包含了当前分页的所有参数，比如：
-		    console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
-		    console.log(obj.limit); //得到每页显示的条数
-		    
-		    //首次不执行
-		    if(!first){
-		      //do something
-		    }
-		  }
-		});
-
-
 
 
 	//监听排序事件
@@ -153,12 +135,6 @@ layui.use(['table','laypage','form','cjgl'], function(){
       
       //合并参数
       var wheredata = $.extend(formval,mydata);
-
-      for(x in wheredata)
-      {
-      	console.log(wheredata[x]);
-      }
-
 
       // 重载表格
       tableIns.reload({
