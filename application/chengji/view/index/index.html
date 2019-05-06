@@ -61,7 +61,7 @@
 {/block}
 {block name="table"}
 	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
-	<div id="test1"></div>
+	<div id="mypage"></div>
 {/block}
 {block name="myjs"}
 	<!-- 表格上面按钮模板 -->
@@ -83,7 +83,6 @@
 <!-- 表格操作 -->
 <script>
 layui.use(['table','laypage','form','cjgl'], function(){
-	
 	// 声明变量
 	var table = layui.table
 		,form = layui.form
@@ -97,7 +96,6 @@ layui.use(['table','laypage','form','cjgl'], function(){
 			{field: 'nianji', title: '年级 ', minWidth:100,sort: true},
 			{field: "banji",title: '班级',sort: true},
 			{field: "student",title: '学生姓名',sort: true}
-			
 		];
 	var xk = '<?php echo json_encode($list["subject"]);?>';
 	xk = eval(decodeURIComponent(xk));
@@ -107,7 +105,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
     }
 	mycols.push({field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140});
 	
-
+	var formval = cjgl.getSearchVal('#search');
 	// 实例化表格
 	var tableIns = table.render({
 		elem: '#tabledemo',
@@ -132,10 +130,8 @@ layui.use(['table','laypage','form','cjgl'], function(){
       var mydata = {};
       mydata['field']=obj.field;
       mydata['order']=obj.type;
-      
       //合并参数
       var wheredata = $.extend(formval,mydata);
-
       // 重载表格
       tableIns.reload({
       	where: wheredata
@@ -152,7 +148,7 @@ layui.use(['table','laypage','form','cjgl'], function(){
     });
 
 
-    //头工具栏事件
+    //表头工具栏事件
     table.on('toolbar(mytable)', function(obj){
         switch(obj.event){
           case 'dels':
@@ -187,6 +183,36 @@ layui.use(['table','laypage','form','cjgl'], function(){
           break;
       };
   	});
+
+
+    // 分页
+  	laypage.render({
+	  elem: 'mypage'
+	  ,count: 70 //数据总数，从服务端得到
+	  ,jump: function(obj, first){
+	    
+	    
+	    //首次不执行
+	    if(!first){
+	      //do something
+	      var formval = formval = cjgl.getSearchVal('#search');
+        // 重载表格
+	      tableIns.reload({
+	      	where: formval
+	      	,done:function(){
+	            for(x in formval)
+	            {
+	              delete this.where[x];
+	            }
+	          }
+	        ,page:{
+	                curr:obj.curr
+	                ,limit:obj.limit
+	            }
+	      });
+	    }
+	  }
+	});
 });
 </script>
 {/block}
