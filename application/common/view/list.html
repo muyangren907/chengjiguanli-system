@@ -32,13 +32,21 @@
           <h2 class="layui-colla-title">筛选</h2>
           <div class="layui-colla-content layui-hidden" style="margin: 2;padding: 2;">
             <div class="layui-row">
+              <form class="layui-form layui-form-pane" lay-filter="search">
                 {block name="search"}{/block}
+                <div class="layui-form-item" style="text-align: right;">
+                    <button  class="layui-btn" lay-filter="srcsubmit" lay-submit="">
+                        搜索
+                    </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
       </div>
       {block name="table"}{/block}
     </div>
+    <!-- 状态按钮 -->
     <script type="text/html" id="status">
       <span class="layui-btn {{ d.status == 1 ? 'layui-btn-normal' : 'layui-btn-disabled' }} layui-btn-mini" lay-event="status">{{ d.status == 1 ? '启用' : '禁用' }}</span>
     </script>
@@ -47,23 +55,50 @@
         layui.config({
             base: "__STATIC__/xadmin/js/" //假设这是你存放拓展模块的根目录
         });
-
-        // 提交表单
-        function clickSearchButton(formname='#search',tableID='mytable'){
-            layui.use(['cjgl'],function(){
-                var cjgl = layui.cjgl;
-                cjgl.reLoadTable(formname,tableID);
-            });
-        }
-
-        // 获取搜索框文字
-        $('#searchval').bind("keyup",function(){
-            var searchval = $('#searchval').val();
-            if($.trim(searchval)!="" || searchval==""){
-                clickSearchButton();
-            }
-        })
+        // 声明表格,和表格参数变量
+        var userTable,options;
+        // 设置表格初始变量
+        options = {
+          elem: '#tabledemo',
+          toolbar: '#toolbarDemo',
+          url:"{:url('ajaxdata1')}",
+          cols:[[ //表头
+            {type:'checkbox', fixed: 'left'},
+            {field: 'school', title: '学校',sort: true},
+            {field: 'nianji', title: '年级 ', minWidth:100,sort: true},
+            {field: "banji",title: '班级',sort: true},
+            {field: "student",title: '学生姓名',sort: true},
+            {field: 'status', title: '状态',templet:'#status', sort: true},
+            {field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
+          ]]
+        };
     </script>
     {block name="myjs"}{/block}
+    <script type="text/javascript">
+
+        // 实例化表格
+        layui.use('table',function(){
+          var lTable = layui.table;
+          userTable = lTable.render(options)  //获取数据并渲染
+        })
+
+
+        // 提交表单
+        // function clickSearchButton(formname='#search',tableID='mytable'){
+        //     layui.use(['cjgl'],function(){
+        //         var cjgl = layui.cjgl;
+        //         cjgl.reLoadTable(formname,tableID);
+        //     });
+        // }
+
+        // // 获取搜索框文字
+        // $('#searchval').bind("keyup",function(){
+        //     var searchval = $('#searchval').val();
+        //     if($.trim(searchval)!="" || searchval==""){
+        //         clickSearchButton();
+        //     }
+        // })
+    </script>
+    
   </body>
 </html>
