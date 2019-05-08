@@ -73,6 +73,7 @@ class Kaohao extends Base
         $school = $src['school'];
         $nianji = $src['nianji'];
         $paixu = $src['paixu'];
+        $seachval = $src['searchval'];
 
         $khlist = $this->where('kaoshi',$src['kaoshi'])
                 ->field('id,school,student,nianji,banji')
@@ -86,6 +87,11 @@ class Kaohao extends Base
                 })
                 ->when(count($nianji)>0,function($query) use($nianji){
                     $query->where('nianji','in',$nianji);
+                })
+                ->when(strlen($seachval)>0,function($query) use($seachval){
+                    $query->where('id','in',function($q)use($seachval){
+                        $q->name('student')->where('xingming','like','%'.$seachval.'%')->field('id');
+                    });
                 })
                 ->with([
                     'ksChengji'=>function($query){
@@ -125,18 +131,28 @@ class Kaohao extends Base
             $data[$key]['student'] = $value->cj_student->xingming;
             $data[$key]['nianji'] = $value->nianji;
             $data[$key]['banji'] = $value->cj_banji->num_title;
+            $dfcnt = 0;
+            $sbjcnt = 0;
             foreach ($value->ks_chengji as $k => $val) {
-                $data[$key][$xk[$val->subject_id]] = $val->defen;
+                $data[$key][$xk[$val->subject_id]] = $val->defen*1;
+                $dfcnt = $dfcnt + $val->defen*1;
+                $sbjcnt ++;
+            }
+            $data[$key]['cnt'] = $dfcnt;
+            if($sbjcnt>0){
+                $data[$key]['avg'] = $dfcnt/$sbjcnt;
+            }else{
+                $data[$key]['avg'] = 0;
             }
         }
 
         // dump($data);
 
-        $src['type'] == 'asc' ? $sort='SORT_ASC' : $sort='SORT_DESC';
+        // $src['type'] == 'asc' ? $sort='SORT_ASC' : $sort='SORT_DESC';
 
         // 按条件排序
         if(count($data)>0){
-            $data = arraySequence($data,$src['field'],$sort); //排序
+            $data = arraySequence($data,$src['field'],$src['type']); //排序
         }
         return $data;
     }

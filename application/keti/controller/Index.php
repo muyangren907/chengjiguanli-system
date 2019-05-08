@@ -42,7 +42,7 @@ class Index extends Base
                     'page'=>'1',
                     'limit'=>'10',
                     'field'=>'update_time',
-                    'order'=>'desc',
+                    'type'=>'desc',
                     'lxdanweiid'=>array(),
                     'category'=>array(),
                     'searchval'=>''

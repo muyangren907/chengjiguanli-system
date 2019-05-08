@@ -19,7 +19,7 @@ class DwRongyu extends Base
 
         // 查询数据
         $data = $this
-            ->order([$src['field'] =>$src['order']])
+            ->order([$src['field'] =>$src['type']])
             ->when(count($hjschool)>0,function($query) use($hjschool){
                     $query->where('hjschool','in',$hjschool);
                 })

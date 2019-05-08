@@ -65,7 +65,7 @@ class JsRongyuInfo extends Base
                     'page'=>'1',
                     'limit'=>'10',
                     'field'=>'update_time',
-                    'order'=>'desc',
+                    'type'=>'desc',
                     'fzschool'=>array(),
                     'hjschool'=>array(),
                     'category'=>array(),

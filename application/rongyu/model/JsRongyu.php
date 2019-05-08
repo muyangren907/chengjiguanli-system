@@ -17,7 +17,7 @@ class JsRongyu extends Base
         $searchval = $src['searchval'];
 
     	$data = $this
-            ->order([$src['field'] =>$src['order']])
+            ->order([$src['field'] =>$src['type']])
     		->when(count($fzschool)>0,function($query) use($fzschool){
                 	$query->where('fzschool','in',$fzschool);
                 })

@@ -21,7 +21,7 @@ class KetiInfo extends Base
     	$searchval = $src['searchval'];
 
     	$data = $this
-            ->order([$src['field'] =>$src['order']])
+            ->order([$src['field'] =>$src['type']])
     		->when(count($lxdanweiid)>0,function($query) use($lxdanweiid){
                 	$query->where('ketice','in',function ($q) use($lxdanweiid){
                         $q->name('keti')->where('lxdanweiid','in',$lxdanweiid)->field('id');

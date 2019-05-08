@@ -17,7 +17,7 @@ class Keti extends Base
         $searchval = $src['searchval'];
 
     	$data = $this
-            ->order([$src['field'] =>$src['order']])
+            ->order([$src['field'] =>$src['type']])
     		->when(count($lxdanweiid)>0,function($query) use($lxdanweiid){
                 	$query->where('lxdanweiid','in',$lxdanweiid);
                 })

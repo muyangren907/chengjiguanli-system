@@ -266,23 +266,60 @@ function upload($list,$file,$isSave=false)
  * $field 排序字段
  * $sort 排序方式 SORT_DESC 降序；SORT_ASC 升序
  * */
-function arraySequence($array, $field = 'id', $sort = 'SORT_DESC') {
+function arraySequence($array, $field = 'id', $sort = 'desc') {
 
-	// $arr = array();
+	// $arr = array_column($array,$field);
 
-	$arr = array_column($array,$jield);
+	// // 获取数组大小
+	// $arraycnt = count($array);
+	// $arrcnt = count($arr);
+	// while($arrcnt<$arraycnt) {
+	//   $arr[$arrcnt] = null;
+	//   $arrcnt++;
+	// }
 
-	// 获取数组大小
-	$arraycnt = count($array);
-	$arrcnt = count($arr[$field]);
-	while($arrcnt<$arraycnt) {
-	  $arr[$field][$arrcnt+1] = null;
-	  $arrcnt++;
-	} 
-	$arr = array_column($array,$field,'id');
+	// foreach ($array as $key => $value) {
+	// 	if($value[$field]){
+	// 		foreach ($variable as $key => $value) {
+	// 			# code...
+	// 		}
+	// 	}
+	// }
 
 
 
-	array_multisort($arr[$field], constant($sort), $array);
+	$len = count($array)-1;
+	if($sort == 'asc')
+	{
+		for($i = 0 ; $i<$len ; $i++){
+			for($x=0 ; $x<($len-$i) ; $x++)
+			{
+				if(isset($array[$x][$field]) && isset($array[$x+1][$field]))
+				{
+					if($array[$x][$field] > $array[$x+1][$field])
+					{
+						$temp = $array[$x][$field];
+						$array[$x][$field] = $array[$x+1][$field];
+						$array[$x+1][$field] = $temp;
+					}
+				}
+			}
+		}
+	}else{
+		for($i = 0 ; $i<$len ; $i++){
+			for($x=0 ; $x<($len-$i) ; $x++)
+			{
+				if(isset($array[$x][$field]) && isset($array[$x+1][$field]))
+				{
+					if($array[$x][$field] < $array[$x+1][$field])
+					{
+						$temp = $array[$x][$field];
+						$array[$x][$field] = $array[$x+1][$field];
+						$array[$x+1][$field] = $temp;
+					}
+				}
+			}
+		}
+	}
 	return $array;
 }

@@ -94,10 +94,11 @@
     {
       options.cols[0].push({field: xk[x].subject_name.lieming, title: xk[x].subject_name.jiancheng ,sort: true});
     }
-	options.cols[0].push({field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140});
+    options.cols[0].push({field: 'avg', title: '平均分',sort: true});
+    options.cols[0].push({field: 'cnt', title: '总分',sort: true});
+    options.cols[0].push({field: 'cnt', title: '总分',sort: true});
 
 
-	console.log(options);
 
 	// 提交搜索条件后重载表格
     layui.use(['table','cjgl'],function(){
