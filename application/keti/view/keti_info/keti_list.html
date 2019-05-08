@@ -61,17 +61,17 @@
 	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
 	    	{php} $category = getCategory(117);{/php}
 	    	{volist name="category" id="vo"}
-	    		<input type="checkbox" name="category" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="checkbox" name="category[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
 	<div class="layui-form-item" style="margin-bottom: 0;">
 	    <label for="jddengji" class="layui-form-label" style="height: 100%">鉴定结果</label>
 	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-	    		<input type="checkbox" name="jddengji" title="研究中" value="0" lay-skin="primary">
-	    		<input type="checkbox" name="jddengji" title="合格" value="1" lay-skin="primary">
-	    		<input type="checkbox" name="jddengji" title="优秀" value="2" lay-skin="primary">
-	    		<input type="checkbox" name="jddengji" title="流失" value="3" lay-skin="primary">
+	    		<input type="checkbox" name="jddengji[]" title="研究中" value="0" lay-skin="primary">
+	    		<input type="checkbox" name="jddengji[]" title="合格" value="1" lay-skin="primary">
+	    		<input type="checkbox" name="jddengji[]" title="优秀" value="2" lay-skin="primary">
+	    		<input type="checkbox" name="jddengji[]" title="流失" value="3" lay-skin="primary">
 	    </div>
 	</div>
 {/block}
@@ -100,7 +100,7 @@
 <script>
 	// 设置列
   options.cols=[[ //表头
-			{type:'checkbox', fixed: 'left'},
+  			{type:'checkbox', fixed: 'left'},
 			{field: 'title', title: '课题名称',sort: true, minWidth:240},
 			{field: 'bianhao', title: '课题编号 ',sort: true},
 			{title: '主持人',templet:function(d){

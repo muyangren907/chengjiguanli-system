@@ -25,7 +25,7 @@
 	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
 	    	{php} $school = schlist('校级','区级'); {/php}
 	    	{volist name="school" id="vo"}
-	    		<input type="checkbox" name="lxdanweiid" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="checkbox" name="lxdanweiid[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
@@ -34,7 +34,7 @@
 	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
 	    	{php} $category = getCategory(115);{/php}
 	    	{volist name="category" id="vo"}
-	    		<input type="checkbox" name="lxcategory" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="checkbox" name="lxcategory[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
@@ -43,7 +43,7 @@
 	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
 	    	{php} $school = schlist('校级','区级'); {/php}
 	    	{volist name="school" id="vo"}
-	    		<input type="checkbox" name="fzdanweiid" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="checkbox" name="fzdanweiid[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
@@ -52,7 +52,7 @@
 	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
 	    	{php} $category = getCategory(116);{/php}
 	    	{volist name="category" id="vo"}
-	    		<input type="checkbox" name="subject" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="checkbox" name="subject[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
@@ -61,17 +61,17 @@
 	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
 	    	{php} $category = getCategory(117);{/php}
 	    	{volist name="category" id="vo"}
-	    		<input type="checkbox" name="category" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="checkbox" name="category[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
 	<div class="layui-form-item" style="margin-bottom: 0;">
 	    <label for="jddengji" class="layui-form-label" style="height: 100%">鉴定结果</label>
 	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-	    		<input type="checkbox" name="jddengji" title="研究中" value="0" lay-skin="primary">
-	    		<input type="checkbox" name="jddengji" title="合格" value="1" lay-skin="primary">
-	    		<input type="checkbox" name="jddengji" title="优秀" value="2" lay-skin="primary">
-	    		<input type="checkbox" name="jddengji" title="流失" value="3" lay-skin="primary">
+	    		<input type="checkbox" name="jddengji[]" title="研究中" value="0" lay-skin="primary">
+	    		<input type="checkbox" name="jddengji[]" title="合格" value="1" lay-skin="primary">
+	    		<input type="checkbox" name="jddengji[]" title="优秀" value="2" lay-skin="primary">
+	    		<input type="checkbox" name="jddengji[]" title="流失" value="3" lay-skin="primary">
 	    </div>
 	</div>
 {/block}
@@ -156,6 +156,7 @@
 	          break;
         };
       });
+    });
     
 </script>
 {/block}

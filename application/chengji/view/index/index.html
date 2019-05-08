@@ -17,7 +17,7 @@
           </label>
           <div class="layui-input-block">
               <input type="text" id="searchval" name="searchval"
-              autocomplete="off" class="layui-input">
+              autocomplete="off" class="layui-input" placeholder="姓名、考号">
           </div>
         </div>
         <div class="layui-form-item">
@@ -97,7 +97,7 @@
     options.cols[0].push({field: 'avg', title: '平均分',sort: true});
     options.cols[0].push({field: 'cnt', title: '总分',sort: true});
     options.cols[0].push({field: 'cnt', title: '总分',sort: true});
-
+	options.cols[0].push({field: 'id', title: '操作',toolbar: '#barDemo',minWidth:125});
 
 
 	// 提交搜索条件后重载表格

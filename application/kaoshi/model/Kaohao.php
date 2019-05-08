@@ -89,8 +89,11 @@ class Kaohao extends Base
                     $query->where('nianji','in',$nianji);
                 })
                 ->when(strlen($seachval)>0,function($query) use($seachval){
-                    $query->where('id','in',function($q)use($seachval){
-                        $q->name('student')->where('xingming','like','%'.$seachval.'%')->field('id');
+                    $query->where(function($w) use ($seachval){
+                        $w->whereOr('id',$seachval)
+                        ->whereOr('student','in',function($q)use($seachval){
+                            $q->name('student')->where('xingming',$seachval)->field('id');
+                        });
                     });
                 })
                 ->with([
