@@ -72,11 +72,17 @@ class Kaohao extends Base
     {
         $school = $src['school'];
         $nianji = $src['nianji'];
+        $paixu = $src['paixu'];
 
         $khlist = $this->where('kaoshi',$src['kaoshi'])
                 ->field('id,school,student,nianji,banji')
                 ->when(count($school)>0,function($query) use($school){
                     $query->where('school','in',$school);
+                })
+                ->when(count($paixu)>0,function($query) use($paixu){
+                    $query->where('banji','in',function($q) use($paixu){
+                        $q->name('banji')->where('paixu','in',$paixu)->field('id');
+                    });
                 })
                 ->when(count($nianji)>0,function($query) use($nianji){
                     $query->where('nianji','in',$nianji);
@@ -123,6 +129,8 @@ class Kaohao extends Base
                 $data[$key][$xk[$val->subject_id]] = $val->defen;
             }
         }
+
+        // dump($data);
 
         $src['type'] == 'asc' ? $sort='SORT_ASC' : $sort='SORT_DESC';
 

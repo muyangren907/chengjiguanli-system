@@ -261,6 +261,7 @@ class Index extends Base
                     'kaoshi'=>'1',
                     'school'=>array(),
                     'nianji'=>array(),
+                    'paixu'=>array(),
                     'searchval'=>''
                 ],'POST');
 
