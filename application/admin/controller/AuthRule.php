@@ -32,7 +32,7 @@ class AuthRule extends Base
                     'page'=>'1'
                     ,'limit'=>'10'
                     ,'field'=>'id'
-                    ,'order'=>'asc'
+                    ,'type'=>'asc'
                     ,'searchval'=>''
                 ],'POST');
 

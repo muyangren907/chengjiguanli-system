@@ -15,7 +15,7 @@ class Admin extends Base
 
         // 查询数据
         $data = $this
-            ->order([$src['field'] =>$src['order']])
+            ->order([$src['field'] =>$src['type']])
             ->where('id','>',2)
             ->when(strlen($searchval)>0,function($query) use($searchval){
                     $query->where('xingming|username','like','%'.$searchval.'%');

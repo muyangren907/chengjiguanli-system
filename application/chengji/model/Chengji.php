@@ -26,13 +26,9 @@ class Chengji extends Base
 
         $data = $this
                 ->order([$src['field'] =>$src['order']])
-                // ->when(count($school)>0,function($query) use($school){
-                //     $query->where('school','in',$school);
-                // })
                 ->when(strlen($searchval)>0,function($query) use($searchval){
                         $query->where('xingming','like','%'.$searchval.'%')->field('id');
                 })
-                // ->append(['age'])
                 ->select();
 
         return $data;

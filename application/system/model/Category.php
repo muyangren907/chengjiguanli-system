@@ -32,7 +32,7 @@ class Category extends Base
 
         // 查询数据
         $data = $this
-            ->order([$src['field'] =>$src['order']])
+            ->order([$src['field'] =>$src['type']])
             ->when(strlen($pid)>0,function($query) use($pid){
                     $query->whereOr('pid','in',$pid);
                 })

@@ -19,7 +19,7 @@ class Teacher extends Base
         $searchval = $src['searchval'];
 
 
-        $data = $this->order([$src['field'] =>$src['order']])
+        $data = $this->order([$src['field'] =>$src['type']])
             ->when(count($danwei)>0,function($query) use($danwei){
                     $query->where('danwei','in',$danwei);
                 })

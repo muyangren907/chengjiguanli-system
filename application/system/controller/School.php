@@ -32,7 +32,7 @@ class School extends Base
                     'page'=>'1',
                     'limit'=>'10',
                     'field'=>'paixu',
-                    'order'=>'asc',
+                    'type'=>'asc',
                     'xingzhi'=>array(),
                     'searchval'=>''
                 ],'POST');

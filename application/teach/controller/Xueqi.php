@@ -33,7 +33,7 @@ class Xueqi extends Base
                     'page'=>'1',
                     'limit'=>'10',
                     'field'=>'id',
-                    'order'=>'desc',
+                    'type'=>'desc',
                     'searchval'=>''
                 ],'POST');
 

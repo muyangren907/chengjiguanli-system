@@ -18,7 +18,7 @@ class Banji extends Base
 
         // 查询数据
         $data = $this
-            ->order([$src['field'] =>$src['order']])
+            ->order([$src['field'] =>$src['type']])
             ->when(strlen($school)>0,function($query) use($school){
                     $query->where('school',$school);
                 })

@@ -266,7 +266,8 @@ function upload($list,$file,$isSave=false)
  * $field 排序字段
  * $sort 排序方式 SORT_DESC 降序；SORT_ASC 升序
  * */
-function arraySequence($array, $field = 'age', $sort = 'SORT_DESC') {
+function arraySequence($array, $field = 'id', $sort = 'SORT_DESC') {
+
 	$arr = array();
 	foreach ($array as $key => $value) {
 		foreach ($value as $k => $val) {

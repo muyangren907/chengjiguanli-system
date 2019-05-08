@@ -58,7 +58,7 @@ class Student extends Base
 
 
         $data = $this
-                ->order([$src['field'] =>$src['order']])
+                ->order([$src['field'] =>$src['type']])
                 ->when(count($school)>0,function($query) use($school){
                     $query->where('school','in',$school);
                 })

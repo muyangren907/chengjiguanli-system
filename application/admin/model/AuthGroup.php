@@ -15,7 +15,7 @@ class AuthGroup extends Base
 
         // 查询数据
         $data = $this
-            ->order([$src['field'] =>$src['order']])
+            ->order([$src['field'] =>$src['type']])
             ->when(strlen($searchval)>0,function($query) use($searchval){
                     $query->where('title','like','%'.$searchval.'%');
                 })

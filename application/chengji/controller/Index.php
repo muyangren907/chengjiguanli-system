@@ -257,7 +257,7 @@ class Index extends Base
                     'page'=>'1',
                     'limit'=>'10',
                     'field'=>'banji',
-                    'order'=>'desc',
+                    'type'=>'desc',
                     'kaoshi'=>'1',
                     'school'=>array(),
                     'nianji'=>array(),

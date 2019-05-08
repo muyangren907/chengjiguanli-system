@@ -44,7 +44,7 @@ class School extends Base
 
         // 查询数据
         $data = $this
-            ->order([$src['field'] =>$src['order']])
+            ->order([$src['field'] =>$src['type']])
             ->when(count($xingzhi)>0,function($query) use($xingzhi){
                     $query->where('xingzhi','in',$xingzhi);
                 })

@@ -32,12 +32,10 @@
           <h2 class="layui-colla-title">筛选</h2>
           <div class="layui-colla-content layui-hidden" style="margin: 2;padding: 2;">
             <div class="layui-row">
-              <form class="layui-form layui-form-pane" lay-filter="search">
+              <form class="layui-form layui-form-pane" id="search" lay-filter="search">
                 {block name="search"}{/block}
                 <div class="layui-form-item" style="text-align: right;">
-                    <button  class="layui-btn" lay-filter="srcsubmit" lay-submit="">
-                        搜索
-                    </button>
+                    <input type="hidden" class="layui-btn" id="srcsubmit" lay-filter="srcsubmit" lay-submit="">
                 </div>
               </form>
             </div>
@@ -55,49 +53,74 @@
         layui.config({
             base: "__STATIC__/xadmin/js/" //假设这是你存放拓展模块的根目录
         });
+
         // 声明表格,和表格参数变量
-        var userTable,options;
+        var userTable,options,formval;
         // 设置表格初始变量
         options = {
           elem: '#tabledemo',
           toolbar: '#toolbarDemo',
-          url:"{:url('ajaxdata1')}",
-          cols:[[ //表头
-            {type:'checkbox', fixed: 'left'},
-            {field: 'school', title: '学校',sort: true},
-            {field: 'nianji', title: '年级 ', minWidth:100,sort: true},
-            {field: "banji",title: '班级',sort: true},
-            {field: "student",title: '学生姓名',sort: true},
-            {field: 'status', title: '状态',templet:'#status', sort: true},
-            {field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
-          ]]
+          url:"{:url('ajaxdata')}",
+          method:"POST",   //数据接口
+          page: true, //开启分页
+          loading:true,
+          autoSort:false,
+          id:'mytable',
+          defaultToolbar:'',
         };
     </script>
     {block name="myjs"}{/block}
     <script type="text/javascript">
-
         // 实例化表格
         layui.use('table',function(){
           var lTable = layui.table;
-          userTable = lTable.render(options)  //获取数据并渲染
-        })
+          userTable = lTable.render(options);  //获取数据并渲染
 
+          // 监听排序
+          lTable.on('sort(mytable)', function(obj){
+            $("#srcsubmit").click();
+            formval.field = obj.field;
+            formval.type = obj.type; 
+            tablereload(formval);
+          });
+        });
+
+        // 提交搜索条件后重载表格
+        layui.use('form',function(){
+          var form = layui.form;
+          // 监听表单提交
+          form.on('submit(srcsubmit)', function(data){
+            formval = data.field;
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+          });
+        });
+
+        // 表格重载
+        function tablereload(val)
+        {
+          userTable.reload({
+              where: val
+              ,page: {
+                curr: 1 //重新从第 1 页开始
+              }
+            });
+        }
 
         // 提交表单
-        // function clickSearchButton(formname='#search',tableID='mytable'){
-        //     layui.use(['cjgl'],function(){
-        //         var cjgl = layui.cjgl;
-        //         cjgl.reLoadTable(formname,tableID);
-        //     });
-        // }
+        function clickSearchButton(){
+            $("#srcsubmit").click();
+            tablereload(formval);
+        }
 
-        // // 获取搜索框文字
-        // $('#searchval').bind("keyup",function(){
-        //     var searchval = $('#searchval').val();
-        //     if($.trim(searchval)!="" || searchval==""){
-        //         clickSearchButton();
-        //     }
-        // })
+        // 获取搜索框文字
+        $('#searchval').bind("keyup",function(){
+            var searchval = $('#searchval').val();
+            if($.trim(searchval)!="" || searchval==""){
+                $("#srcsubmit").click();
+                tablereload(formval);
+            }
+        })
+
     </script>
     
   </body>

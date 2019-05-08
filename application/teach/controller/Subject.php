@@ -33,7 +33,7 @@ class Subject extends Base
                     'page'=>'1',
                     'limit'=>'10',
                     'field'=>'update_time',
-                    'order'=>'asc',
+                    'type'=>'asc',
                     'xingzhi'=>array(),
                     'searchval'=>''
                 ],'POST');
