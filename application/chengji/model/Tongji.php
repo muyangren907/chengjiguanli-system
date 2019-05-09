@@ -6,199 +6,230 @@ use think\Model;
 
 class Tongji extends Model
 {
-    //统计成绩
-    public function tongji($cjlist,$fenshuxian)
-    {
-        // 循环计算各科成绩
-        foreach ($fenshuxian as $key => $value) {
-            // 获取列名
-            $lieming = $value['lieming'];
-            // 获取学科成绩
-            $xkchengji = $cjlist->column($value['lieming']);
+    // //统计成绩
+    // public function tongji($cjlist,$fenshuxian)
+    // {
+    //     // 循环计算各科成绩
+    //     foreach ($fenshuxian as $key => $value) {
+    //         // 获取列名
+    //         $lieming = $value['lieming'];
+    //         // 获取学科成绩
+    //         $xkchengji = $cjlist->column($value['lieming']);
 
-            // 过滤空元素
-            $xkchengji = array_filter($xkchengji);
-            // 获取成绩个数
-            $cnt = count($xkchengji);
+    //         // 过滤空元素
+    //         $xkchengji = array_filter($xkchengji);
+    //         // 获取成绩个数
+    //         $cnt = count($xkchengji);
 
 
-            // 获取优秀人数
-            $yx = $value['youxiu'];
-            $youxiu = array_filter($xkchengji,function($var) use($yx){
-                if( $var<$yx )
-                {
-                    return false;
-                }else{
-                    return true;
-                };
-            });
-            $youxiu = count($youxiu);
+    //         // 获取优秀人数
+    //         $yx = $value['youxiu'];
+    //         $youxiu = array_filter($xkchengji,function($var) use($yx){
+    //             if( $var<$yx )
+    //             {
+    //                 return false;
+    //             }else{
+    //                 return true;
+    //             };
+    //         });
+    //         $youxiu = count($youxiu);
 
-            // 获取及格人数
-            $jg = $value['jige'];
-            $jg = array_filter($xkchengji,function($var) use($jg){
-                if( $var<$jg )
-                {
-                    return false;
-                }else{
-                    return true;
-                }
-            });
-            $jige = count($jg);
+    //         // 获取及格人数
+    //         $jg = $value['jige'];
+    //         $jg = array_filter($xkchengji,function($var) use($jg){
+    //             if( $var<$jg )
+    //             {
+    //                 return false;
+    //             }else{
+    //                 return true;
+    //             }
+    //         });
+    //         $jige = count($jg);
 
-            // 计算成绩
-            $data[$value['lieming']] = $this->tjxueke($xkchengji,$cnt,$youxiu,$jige);
-        }        
+    //         // 计算成绩
+    //         $data[$value['lieming']] = $this->tjxueke($xkchengji,$cnt,$youxiu,$jige);
+    //     }        
     	
-    	return $data;
-    }
+    // 	return $data;
+    // }
 
 
-    public function tjnianji($kaoshiid,$school,$ruxuenian)
+    // 查询学生成绩
+    public function srcChengji($kaoshi,$banji=array(),$nianji=array())
     {
-        // 实例化成绩数据模型
-        $cj = new \app\chengji\model\Chengji;
+        $kh = new \app\kaoshi\model\Kaohao;
 
-        // 根据考试号和年级获取考试成绩
-        $cjlist = $cj->searchNianji($kaoshiid,$school,$ruxuenian);
-
-        // 根据年级获取一个有多少个班级
-        $bj = new \app\teach\model\Banji;
-        $bjids = $bj->where('ruxuenian',$ruxuenian)
-                ->when(!empty($school),function($query) use($school){
-                    $query->where('school','in',$school);
+        $khlist = $kh->where('kaoshi',$kaoshi)
+                ->field('id,nianji,banji')
+                ->when(count($nianji)>0,function($query) use($nianji){
+                    $query->where('nianji','in',$nianji);
                 })
-                ->append(['title'])
-                ->select(); 
+                ->when(count($banji)>0,function($query) use($banji){
+                    $query->where('banji','in',$banji);
+                })
+                ->with([
+                    'ksChengji'=>function($query){
+                        $query->field('kaohao_id,subject_id,defen');
+                    }
+                ])
+                ->select();
 
-
-        // 获取统计成绩参数
-        $canshu = $this->getCanshu($kaoshiid);
-
-        
-
-        // 循环获取各班级成绩
-        $i = 0;
-        foreach ($bjids as $key => $value) {
-            $data[$i]['id'] = $i+1;
-            $data[$i]['title'] = $value['title'];
-            $bjlist = $cjlist->where('banji',$value['id']);
-            $data[$i]['data'] = $this->tongji($bjlist,$canshu);
-            
-            $i++;
+        // 获取参考学科
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $ksinfo = $ks->where('id',$kaoshi)
+                    ->with([
+                        'ksSubject'=>function($query){
+                            $query->field('kaoshiid,subjectid,lieming');
+                        }
+                    ])
+                    ->find();
+        $xk = array();
+        foreach ($ksinfo->ks_subject as $key => $value) {
+            $xk[$value->subjectid] = $value->lieming;
         }
 
-        $data[$i]['id'] = $i+1;
-        $data[$i]['title'] = '合计';
-        $data[$i]['data'] = $this->tongji($cjlist,$canshu);
-
-
-        return $data;
-        
-    }
-
-
-
-    // 统计全区各学校的年级成绩
-    public function tjschool($kaoshiid,$ruxuenian)
-    {
-        // 实例化成绩数据模型
-        $cj = new \app\chengji\model\Chengji;
-        // 根据考试号和年级获取考试成绩
-        $cjlist = $cj->searchNianji($kaoshiid,'',$ruxuenian);
-
-        // 获取学校列表
-        $sch = schlist($low='校级',$high='校级');
-
-
-        // 获取统计成绩参数
-        $canshu = $this->getCanshu($kaoshiid);
-
-        
-
-        // 循环获取各班级成绩
-        $i = 0;
-        foreach ($sch as $key => $value) {
-            $data[$i]['id'] = $i+1;
-            $data[$i]['title'] = $value['jiancheng'];
-            $bjlist = $cjlist->where('school',$value['id']);
-            $data[$i]['data'] = $this->tongji($bjlist,$canshu);
-            $i++;
+        // 整理数据
+        $data = array();
+        foreach ($khlist as $key => $value) {
+            foreach ($value->ks_chengji as $k => $val) {
+                $data[$key][$xk[$val->subject_id]] = $val->defen*1;
+            }
         }
-
-        $data[$i]['id'] = $i+1;
-        $data[$i]['title'] = '合计';
-        $data[$i]['data'] = $this->tongji($cjlist,$canshu);
 
         return $data;
     }
 
 
 
-    // 统计学科成绩
-    public function tjxueke($xkchengji,$cnt,$youxiu,$jige)
-    {
+    // 统计成绩
+    public function tongji($cj=array(),$kaoshi)
+    {   
+        
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $ksinfo = $ks->where('id',$kaoshi)
+                ->field('id')
+                ->with('ksSubject')
+                ->find();
+        $data = array();
+        foreach ($ksinfo->ks_subject as $key => $value) {
+            $cjcol = array_column($cj,$value->lieming);
+            $temp = array();
+            $temp['cnt'] = count($cjcol);
+            $temp['sum'] = array_sum($cjcol);
+            $temp['cnt']>0 ? $temp['avg'] = $temp['sum']/$temp['cnt'] : $temp['avg']=0;
+            $temp['biaozhuncha'] = round($this->getVariance($temp['avg'], $cjcol,true),2);
+            $temp['avg'] = round($temp['avg'],1);
+            $temp['sifenwei'] = $this->quartile($cjcol);
+            $data[$value->lieming] = $temp;
+        }
+        return $data;
+    }
+
+
+
+
+
+
+    // // 统计全区各学校的年级成绩
+    // public function tjschool($kaoshiid,$ruxuenian)
+    // {
+    //     // 实例化成绩数据模型
+    //     $cj = new \app\chengji\model\Chengji;
+    //     // 根据考试号和年级获取考试成绩
+    //     $cjlist = $cj->searchNianji($kaoshiid,'',$ruxuenian);
+
+    //     // 获取学校列表
+    //     $sch = schlist($low='校级',$high='校级');
+
+
+    //     // 获取统计成绩参数
+    //     $canshu = $this->getCanshu($kaoshiid);
+
+        
+
+    //     // 循环获取各班级成绩
+    //     $i = 0;
+    //     foreach ($sch as $key => $value) {
+    //         $data[$i]['id'] = $i+1;
+    //         $data[$i]['title'] = $value['jiancheng'];
+    //         $bjlist = $cjlist->where('school',$value['id']);
+    //         $data[$i]['data'] = $this->tongji($bjlist,$canshu);
+    //         $i++;
+    //     }
+
+    //     $data[$i]['id'] = $i+1;
+    //     $data[$i]['title'] = '合计';
+    //     $data[$i]['data'] = $this->tongji($cjlist,$canshu);
+
+    //     return $data;
+    // }
+
+
+
+    // // 统计学科成绩
+    // public function tjxueke($xkchengji,$cnt,$youxiu,$jige)
+    // {
       
-        // 如果没有数据则返回空数组
-        if($cnt == 0)
-        {
-            $data = ['cnt'=>0,'sum'=>'-','avg'=>'-','youxiu'=>'-','jige'=>'-','max'=>'-','min'=>'-','biaozhuncha'=>'-','sifenwei'=>array()];
-            return $data;
-        }
+    //     // 如果没有数据则返回空数组
+    //     if($cnt == 0)
+    //     {
+    //         $data = ['cnt'=>0,'sum'=>'-','avg'=>'-','youxiu'=>'-','jige'=>'-','max'=>'-','min'=>'-','biaozhuncha'=>'-','sifenwei'=>array()];
+    //         return $data;
+    //     }
 
-        // 计算数据
-        $sum = array_sum($xkchengji);
-        $avg = round($sum/$cnt,1);
-        $youxiulv = round($youxiu/$cnt*100,1);
-        $jigelv = round($jige/$cnt*100,1);
-        $max = max($xkchengji);
-        $min = min($xkchengji);
-        $biaozhuncha = round($this->getVariance($avg,$xkchengji,true),1);
-        $sifenwei = $this->quartile($xkchengji);
-        // 数组赋值
-        $data = [
-            'cnt'=>$cnt,
-            'sum'=>$sum,
-            'avg'=>$avg,
-            'youxiu'=>$youxiulv,
-            'jige'=>$jigelv,
-            'max'=>$max,
-            'min'=>$min,
-            'biaozhuncha'=>$biaozhuncha,
-            'sifenwei'=>$sifenwei,
-        ];
+    //     // 计算数据
+    //     $sum = array_sum($xkchengji);
+    //     $avg = round($sum/$cnt,1);
+    //     $youxiulv = round($youxiu/$cnt*100,1);
+    //     $jigelv = round($jige/$cnt*100,1);
+    //     $max = max($xkchengji);
+    //     $min = min($xkchengji);
+    //     $biaozhuncha = round($this->getVariance($avg,$xkchengji,true),1);
+    //     $sifenwei = $this->quartile($xkchengji);
+    //     // 数组赋值
+    //     $data = [
+    //         'cnt'=>$cnt,
+    //         'sum'=>$sum,
+    //         'avg'=>$avg,
+    //         'youxiu'=>$youxiulv,
+    //         'jige'=>$jigelv,
+    //         'max'=>$max,
+    //         'min'=>$min,
+    //         'biaozhuncha'=>$biaozhuncha,
+    //         'sifenwei'=>$sifenwei,
+    //     ];
 
-        // 返回计算结果
-        return $data;
-    }
+    //     // 返回计算结果
+    //     return $data;
+    // }
 
 
-    // 获取统计成绩需要的参数
-    public function getCanshu($kaoshiid)
-    {
-        // 获取学科信息
-        $xk = new \app\teach\model\Subject;
-        $xk = $xk->where('id','<',4)->select();
-        $xkTitle = $xk->column('title','id');
-        $xkLieming = $xk->column('lieming','id');
+    // // 获取统计成绩需要的参数
+    // public function getCanshu($kaoshiid)
+    // {
+    //     // 获取学科信息
+    //     $xk = new \app\teach\model\Subject;
+    //     $xk = $xk->where('id','<',4)->select();
+    //     $xkTitle = $xk->column('title','id');
+    //     $xkLieming = $xk->column('lieming','id');
 
-        // 获取参加考试学科满分
-        $kssub = new \app\kaoshi\model\KaoshiSubject;
+    //     // 获取参加考试学科满分
+    //     $kssub = new \app\kaoshi\model\KaoshiSubject;
 
-        $fenshuxian = $kssub ->where('kaoshiid',$kaoshiid)->append(['subject.title','subject.lieming'])->select();
+    //     $fenshuxian = $kssub ->where('kaoshiid',$kaoshiid)->append(['subject.title','subject.lieming'])->select();
 
-        // 循环取出优秀和及格分数线
-        foreach ($fenshuxian as $key => $value) {
-            $fsx[$value['subjectid']]['youxiu']=$value['youxiu'];
-            $fsx[$value['subjectid']]['jige']=$value['jige'];
-            $fsx[$value['subjectid']]['title']=$value['subject']['title'];
-            $fsx[$value['subjectid']]['lieming']=$value['subject']['lieming'];
-            $fsx[$value['subjectid']]['manfen']=$value['manfen'];
-        }
+    //     // 循环取出优秀和及格分数线
+    //     foreach ($fenshuxian as $key => $value) {
+    //         $fsx[$value['subjectid']]['youxiu']=$value['youxiu'];
+    //         $fsx[$value['subjectid']]['jige']=$value['jige'];
+    //         $fsx[$value['subjectid']]['title']=$value['subject']['title'];
+    //         $fsx[$value['subjectid']]['lieming']=$value['subject']['lieming'];
+    //         $fsx[$value['subjectid']]['manfen']=$value['manfen'];
+    //     }
 
-        // 返回数据
-        return $fsx;
-    }
+    //     // 返回数据
+    //     return $fsx;
+    // }
 
 
     /**

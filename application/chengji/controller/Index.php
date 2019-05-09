@@ -6,7 +6,7 @@ use app\common\controller\Base;
 // 引用成绩数据模型
 use app\chengji\model\Chengji;
 // 引用考号数据模型
-use app\kaoshi\model\Kaohao;
+use \app\kaoshi\model\Kaohao;
 // // 引用学科数据模型
 use \app\teach\model\Subject;
 
@@ -216,14 +216,14 @@ class Index extends Base
 
 
     // 成绩列表
-    public function index($id)
+    public function index($kaoshi)
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = '成绩列表';
 
         // 实例化考试数据模型
-        $kaoshi = new \app\kaoshi\model\Kaoshi;
-        $ksinfo = $kaoshi->where('id',$id)
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $ksinfo = $ks->where('id',$kaoshi)
                     ->field('id')
                     ->with([
                         'ksSubject'=>function($query){
@@ -237,6 +237,7 @@ class Index extends Base
                     ->find();
 
         $list['subject'] = $ksinfo->ks_subject;
+        $list['kaoshi'] = $kaoshi;
 
 
         // 模板赋值

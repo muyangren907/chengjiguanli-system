@@ -268,26 +268,6 @@ function upload($list,$file,$isSave=false)
  * */
 function arraySequence($array, $field = 'id', $sort = 'desc') {
 
-	// $arr = array_column($array,$field);
-
-	// // 获取数组大小
-	// $arraycnt = count($array);
-	// $arrcnt = count($arr);
-	// while($arrcnt<$arraycnt) {
-	//   $arr[$arrcnt] = null;
-	//   $arrcnt++;
-	// }
-
-	// foreach ($array as $key => $value) {
-	// 	if($value[$field]){
-	// 		foreach ($variable as $key => $value) {
-	// 			# code...
-	// 		}
-	// 	}
-	// }
-
-
-
 	$len = count($array)-1;
 	if($sort == 'asc')
 	{

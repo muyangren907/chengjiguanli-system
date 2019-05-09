@@ -4,19 +4,42 @@ namespace app\chengji\controller;
 
 // 引用控制器基类
 use app\common\controller\Base;
+// 引用成绩统计数据模型
+use app\chengji\model\Tongji as TJ;
 
 class Tongji extends Base
 {
     // 年级成绩汇总
-    public function tjBanji($id)
+    public function tjBanji($kaoshi)
     {
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $ksinfo = $ks->where('id',$kaoshi)
+            ->with([
+                'KsNianji'
+                ,'ksSubject'=>function($query){
+                    $query->field('kaoshiid,subjectid')
+                        ->with(['subjectName'=>function($q){
+                            $q->field('id,jiancheng,lieming');
+                        }]
+                    );
+                }
+            ])
+            ->field('id')
+            ->find();
+        if($ksinfo->ks_nianji[0])
+        {
 
-        // 设置页面标题
-        $list['title'] = '班级成绩统计';
-        $list['kaoshi'] = $id;
+            $list['nianji'] = $ksinfo->ks_nianji[0]->nianjiname;
+        }else{
+            $list['nianji'] ='一年级';
+        }
+        $list['subject'] = $ksinfo->ks_subject;
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = '各年级的班级成绩列表';
+        $list['kaoshi'] = $kaoshi;
 
         // 模板赋值
-        $this->assign('list', $list);
+        $this->assign('list',$list);
 
         // 渲染模板
         return $this->fetch();
@@ -26,32 +49,95 @@ class Tongji extends Base
     // 获取年级成绩统计结果
     public function ajaxBianji()
     {
-        // 获取表单参数
-        $getParam = request()->param();
+        // 获取参数
+        $src = $this->request
+                ->only([
+                    'page'=>'1',
+                    'limit'=>'10',
+                    'kaoshi'=>'',
+                    'nianji'=>'一年级',
+                    'school'=>array(),
+                    'paixu'=>array(),
+                ],'POST');
 
-        // 实例化统计成绩数据模型
-        $tj = new \app\chengji\model\Tongji;
-        $data = $tj->tjnianji($getParam['kaoshiid'],$getParam['school'],$getParam['ruxuenian']);
+        // 查询要统计成绩的班级
+        $kh = new \app\kaoshi\model\Kaohao;
+        $school = $src['school'];
+        $paixu = $src['paixu'];
+
+        $bj = $kh->where('nianji',$src['nianji'])
+                ->where('kaoshi',$src['kaoshi'])
+                ->when(count($school)>0,function($query) use($school){
+                    $query->where('school','in',$school);
+                })
+                ->when(count($paixu)>0,function($query) use($paixu){
+                    $query->where('banji','in',function($q)use($paixu){
+                        $q->name('banji')->where('paixu','in',$paixu)->field('id');
+                    });
+                })
+                ->with([
+                    'cjBanji'=>function($query){
+                        $query->field('id,paixu,ruxuenian')
+                            ->append(['numTitle','banjiTitle']);
+                    }
+                    ,'cjSchool'=>function($query){
+                        $query->field('id,jiancheng');
+                    }
+                ])
+                ->group('banji')
+                ->field('id,banji,school')
+                ->select();
+
+        if($bj->isEmpty()){
+            // 重组返回内容
+            $data = [
+                'code'=> 0 , // ajax请求次数，作为标识符
+                'msg'=>"",  // 获取到的结果数(每页显示数量)
+                'count'=>0, // 符合条件的总数据量
+                'data'=>array(), //获取到的数据结果
+            ];
+
+
+            return json($data);
+        }
+
+
+
+        // 获取并统计各班级成绩
+        $tj = new TJ;
+        $data = array();
+        foreach ($bj as $key => $value) {
+            $banji=[$value->banji];
+            $nianji = array();
+            $temp = $tj->srcChengji($src['kaoshi'],$banji,$nianji);
+            $temp = $tj->tongji($temp,$src['kaoshi']);
+            $data[] = [
+                'banji'=>$value->cj_banji->banjiTitle,
+                'school'=>$value->cj_school->jiancheng,
+                'chengji'=>$temp
+            ];
+        }
+
         $cnt = count($data);
-
 
         // 重组返回内容
         $data = [
-            'draw'=> $getParam["draw"] , // ajax请求次数，作为标识符
-            'recordsTotal'=>$cnt,  // 获取到的结果数(每页显示数量)
-            'recordsFiltered'=>$cnt,       // 符合条件的总数据量
+            'code'=> 0 , // ajax请求次数，作为标识符
+            'msg'=>"",  // 获取到的结果数(每页显示数量)
+            'count'=>$cnt, // 符合条件的总数据量
             'data'=>$data, //获取到的数据结果
         ];
+
 
         return json($data);
     }
 
 
     // 年级、班级学生成绩统计结果下载界面
-    public function dwBanji($id)
+    public function dwBanji($kaoshi)
     {
         // 模板赋值
-        $this->assign('id',$id);
+        $this->assign('id',$kaoshi);
         // 渲染模板
         return $this->fetch();
 
@@ -59,7 +145,7 @@ class Tongji extends Base
 
 
     // 年级、班级学生成绩统计下载表格
-    public function dwBanjixls($id)
+    public function dwBanjixls($kaoshi)
     {
         // 获取表单参数
         $getParam = request()->param();
@@ -146,11 +232,11 @@ class Tongji extends Base
 
 
     // 获取各学校、各年级考试成绩
-    public function tjNianji($id)
+    public function tjNianji($kaoshi)
     {
         // 设置页面标题
-        $list['title'] = '学校成绩统计';
-        $list['kaoshi'] = $id;
+        $list['title'] = '各学校的年级成绩统计表';
+        $list['kaoshi'] = $kaoshi;
 
         // 模板赋值
         $this->assign('list', $list);
@@ -186,10 +272,10 @@ class Tongji extends Base
 
 
     // 年级、班级学生成绩统计结果下载界面
-    public function dwNianji($id)
+    public function dwNianji($kaoshi)
     {
         // 模板赋值
-        $this->assign('id',$id);
+        $this->assign('id',$kaoshi);
         // 渲染模板
         return $this->fetch();
 
@@ -197,7 +283,7 @@ class Tongji extends Base
 
 
     // 年级、班级学生成绩统计下载表格
-    public function dwNianjixls($id)
+    public function dwNianjixls($kaoshi)
     {
 
         // 获取表单参数

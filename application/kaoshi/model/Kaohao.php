@@ -149,16 +149,14 @@ class Kaohao extends Base
             }
         }
 
-        // dump($data);
-
-        // $src['type'] == 'asc' ? $sort='SORT_ASC' : $sort='SORT_DESC';
-
         // 按条件排序
         if(count($data)>0){
             $data = arraySequence($data,$src['field'],$src['type']); //排序
         }
         return $data;
     }
+
+    
 
     // 满分
     public function banjiKaohao()
