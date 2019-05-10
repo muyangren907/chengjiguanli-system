@@ -81,25 +81,27 @@
 	var xk = '<?php echo json_encode($list["subject"]);?>';
 	xk = eval(decodeURIComponent(xk));
 	var xiangmu = {cnt:'人数',sum:'总分',avg:'平均分'};		// 要显示哪些统计结果
-	for(x in xk)
-    {
-    	for(y in xiangmu)
-    	{
-    		var colname = xk[x].subject_name.lieming;
-    		console.log(x + ' ' + y);
+
+    $.each(xk,function(index,value){
+	    $.each(xiangmu,function(i,val){
+		    var colname = xk[index].subject_name.lieming;
+    		// console.log(colname + ' ' + i);
     		var colinfo = {
-	    		title:xiangmu[y]
+	    		title:val
 	    		,sort:true
 	    		,templet:function(d){
-	    			console.log(x + ' - ' + y);
-	    			var str = d.chengji[colname][y];
+	    			// console.log(x + ' - ' + y);
+	    			var str = d.chengji[colname][i];
+	    			// console.log(colname + ' ' + i);
 					return str;
 				}
 	    	};
 	    	
 	    	options.cols[0].push(colinfo);
-    	}
-    };
+		});
+	});
+
+
 
     // for(x in xk)
     // {
