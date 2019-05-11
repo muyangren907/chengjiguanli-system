@@ -73,32 +73,36 @@
 	options.url = "{:url('ajaxBianji')}";
 	// 设置列
   	options.cols=[[ //表头
-			{type:'numbers',title:'序号'},
-			{field: 'school', title: '学校',sort: true},
-			{field: 'banji', title: '班级',sort: true},
-		]];
+			{type:'numbers',title:'序号',rowspan:2},
+			{field: 'school', title: '学校',sort: true,minWidth:80,rowspan:2},
+			{field: 'banji', title: '班级',sort: true,minWidth:100,rowspan:2},
+		]
+		,[]
+		];
 	// 获取学科
 	var xk = '<?php echo json_encode($list["subject"]);?>';
 	xk = eval(decodeURIComponent(xk));
 	var xiangmu = {cnt:'人数',avg:'平均分',youxiu:'优秀率',jige:'及格率'};		// 要显示哪些统计结果
 
     $.each(xk,function(index,value){
+    	options.cols[0].push({title: xk[index].subject_name.title,colspan:4,align:'center'});
 	    $.each(xiangmu,function(i,val){
 		    var colname = xk[index].subject_name.lieming;
     		// console.log(colname + ' ' + i);
     		var colinfo = {
 	    		title:val
 	    		,sort:true
+	    		,minWidth:100
 	    		,templet:function(d){
 	    			var str = d.chengji[colname][i];
 					return str;
 				}
 	    	};
 	    	
-	    	options.cols[0].push(colinfo);
+	    	options.cols[1].push(colinfo);
 		});
 	});
-	options.cols[0].push({ title: '总平均分',sort: true,templet:function(d){
+	options.cols[0].push({ title: '总平均分',sort: true,minWidth:100,rowspan:2,templet:function(d){
 	    			var str = d.chengji.avg;
 					return str;
 				}});
@@ -109,6 +113,8 @@
 		kaoshi:"{$list.kaoshi}"
 		,nianji:"{$list.nianji}"
 	}
+
+	options.autoSort=true;
 
 	
 
