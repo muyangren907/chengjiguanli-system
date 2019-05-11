@@ -80,7 +80,7 @@
 	// 获取学科
 	var xk = '<?php echo json_encode($list["subject"]);?>';
 	xk = eval(decodeURIComponent(xk));
-	var xiangmu = {cnt:'人数',sum:'总分',avg:'平均分'};		// 要显示哪些统计结果
+	var xiangmu = {cnt:'人数',avg:'平均分',youxiu:'优秀率',jige:'及格率'};		// 要显示哪些统计结果
 
     $.each(xk,function(index,value){
 	    $.each(xiangmu,function(i,val){
@@ -90,9 +90,7 @@
 	    		title:val
 	    		,sort:true
 	    		,templet:function(d){
-	    			// console.log(x + ' - ' + y);
 	    			var str = d.chengji[colname][i];
-	    			// console.log(colname + ' ' + i);
 					return str;
 				}
 	    	};
@@ -100,32 +98,12 @@
 	    	options.cols[0].push(colinfo);
 		});
 	});
+	options.cols[0].push({ title: '总平均分',sort: true,templet:function(d){
+	    			var str = d.chengji.avg;
+					return str;
+				}});
 
-
-
-    // for(x in xk)
-    // {
-    // 	for(var y=0; y<xiangmu.length; y++)
-	   //  {
-	   //  	var colname = xk[x].subject_name.lieming;
-    // 		var xm = xiangmu[y];
-    // 		console.log(colname + ' ' + xm);
-    // 		var colinfo = {
-	   //  		// title:xk[x].subject_name.jiancheng
-	   //  		title:colname+xm
-	   //  		,sort:true
-	   //  		,templet:function(d){
-	   //  			console.log(d);
-	   //  			console.log(x + ' - ' + y);
-	   //  			var str = d.chengji['yuwen']['avg'];
-				// 	return str;
-				// }
-	   //  	};
-	    	
-	   //  	options.cols[0].push(colinfo);
-	   //  }
-    // }
-
+	
 	// 设置查询条件
 	options.where = {
 		kaoshi:"{$list.kaoshi}"

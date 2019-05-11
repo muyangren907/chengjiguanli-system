@@ -239,7 +239,6 @@ class Index extends Base
         $list['subject'] = $ksinfo->ks_subject;
         $list['kaoshi'] = $kaoshi;
 
-
         // 模板赋值
         $this->assign('list',$list);
 

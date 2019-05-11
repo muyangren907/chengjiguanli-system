@@ -75,6 +75,7 @@ class Kaohao extends Base
         $paixu = $src['paixu'];
         $seachval = $src['searchval'];
 
+
         $khlist = $this->where('kaoshi',$src['kaoshi'])
                 ->field('id,school,student,nianji,banji')
                 ->when(count($school)>0,function($query) use($school){
@@ -112,6 +113,8 @@ class Kaohao extends Base
                     }
                 ])
                 ->select();
+
+                
         // 获取参考学科
         $kaoshi = new \app\kaoshi\model\Kaoshi;
         $ksinfo = $kaoshi->where('id',$src['kaoshi'])
@@ -125,6 +128,7 @@ class Kaohao extends Base
         foreach ($ksinfo->ks_subject as $key => $value) {
             $xk[$value->subjectid] = $value->lieming;
         }
+
 
         // 整理数据
         $data = array();

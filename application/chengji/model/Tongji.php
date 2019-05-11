@@ -111,18 +111,42 @@ class Tongji extends Model
                 ->with('ksSubject')
                 ->find();
         $data = array();
+        $allcj = array();
         foreach ($ksinfo->ks_subject as $key => $value) {
             $cjcol = array_column($cj,$value->lieming);
+            $allcj = array_merge($allcj,$cjcol);
             $temp = array();
             $temp['cnt'] = count($cjcol);
             $temp['sum'] = array_sum($cjcol);
             $temp['cnt']>0 ? $temp['avg'] = $temp['sum']/$temp['cnt'] : $temp['avg']=0;
             $temp['biaozhuncha'] = round($this->getVariance($temp['avg'], $cjcol,true),2);
             $temp['avg'] = round($temp['avg'],1);
+            $temp['youxiu'] = $this->rate($cjcol,$value->youxiu);
+            $temp['jige'] = $this->rate($cjcol,$value->jige);
             $temp['sifenwei'] = $this->quartile($cjcol);
             $data[$value->lieming] = $temp;
         }
+        $data['cnt'] = count($allcj);
+        $data['sum'] = array_sum($allcj);
+        $data['cnt']>0 ? $data['avg'] = $data['sum']/$data['cnt'] : $data['avg']=0;
+        
+
         return $data;
+    }
+
+
+    // 统计优秀、及格率
+    public function rate($cj = array(),$fenshuxian)
+    {
+        $cnt = 0;
+        foreach ($cj as $key => $value) {
+            if($value>=$fenshuxian)
+            {
+                $cnt++;
+            }
+        }
+
+        return round($cnt/count($cj)*100);
     }
 
 

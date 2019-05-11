@@ -38,6 +38,7 @@ class Tongji extends Base
         $list['webtitle'] = '各年级的班级成绩列表';
         $list['kaoshi'] = $kaoshi;
 
+
         // 模板赋值
         $this->assign('list',$list);
 
@@ -97,7 +98,6 @@ class Tongji extends Base
                 'data'=>array(), //获取到的数据结果
             ];
 
-
             return json($data);
         }
 
@@ -106,10 +106,12 @@ class Tongji extends Base
         // 获取并统计各班级成绩
         $tj = new TJ;
         $data = array();
+        $allcj = array();
         foreach ($bj as $key => $value) {
             $banji=[$value->banji];
             $nianji = array();
             $temp = $tj->srcChengji($src['kaoshi'],$banji,$nianji);
+            $allcj = array_merge($allcj,  $temp);;
             $temp = $tj->tongji($temp,$src['kaoshi']);
             $data[] = [
                 'banji'=>$value->cj_banji->banjiTitle,
@@ -117,7 +119,7 @@ class Tongji extends Base
                 'chengji'=>$temp
             ];
         }
-
+        
         $cnt = count($data);
 
         // 重组返回内容
