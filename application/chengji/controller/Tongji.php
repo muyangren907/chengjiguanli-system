@@ -119,7 +119,15 @@ class Tongji extends Base
                 'chengji'=>$temp
             ];
         }
-        
+
+        // 获取年级成绩
+        $temp = $tj->tongji($allcj,$src['kaoshi']);
+        $data[] = [
+            'banji'=>'',
+            'school'=>'合计',
+            'chengji'=>$temp
+        ];
+
         $cnt = count($data);
 
         // 重组返回内容
@@ -236,12 +244,36 @@ class Tongji extends Base
     // 获取各学校、各年级考试成绩
     public function tjNianji($kaoshi)
     {
-        // 设置页面标题
-        $list['title'] = '各学校的年级成绩统计表';
+
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $ksinfo = $ks->where('id',$kaoshi)
+            ->with([
+                'KsNianji'
+                ,'ksSubject'=>function($query){
+                    $query->field('kaoshiid,subjectid')
+                        ->with(['subjectName'=>function($q){
+                            $q->field('id,title,lieming');
+                        }]
+                    );
+                }
+            ])
+            ->field('id')
+            ->find();
+        if($ksinfo->ks_nianji[0])
+        {
+
+            $list['nianji'] = $ksinfo->ks_nianji[0]->nianjiname;
+        }else{
+            $list['nianji'] ='一年级';
+        }
+        $list['subject'] = $ksinfo->ks_subject;
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = '各学校的年级成绩统计表';
         $list['kaoshi'] = $kaoshi;
 
+
         // 模板赋值
-        $this->assign('list', $list);
+        $this->assign('list',$list);
 
         // 渲染模板
         return $this->fetch();
@@ -251,22 +283,88 @@ class Tongji extends Base
     // 获取年级成绩统计结果
     public function ajaxNianji()
     {
-        // 获取表单参数
-        $getParam = request()->param();
+        // 获取参数
+        $src = $this->request
+                ->only([
+                    'page'=>'1',
+                    'limit'=>'10',
+                    'kaoshi'=>'',
+                    'nianji'=>'一年级',
+                    'paixu'=>array(),
+                ],'POST');
 
-        // 实例化统计成绩数据模型
-        $tj = new \app\chengji\model\Tongji;
-        $data = $tj->tjschool($getParam['kaoshiid'],$getParam['ruxuenian']);
+        // 查询要统计成绩的班级
+        $kh = new \app\kaoshi\model\Kaohao;
+        $paixu = $src['paixu'];
+
+        $bj = $kh->where('nianji',$src['nianji'])
+                ->where('kaoshi',$src['kaoshi'])
+                ->when(count($paixu)>0,function($query) use($paixu){
+                    $query->where('banji','in',function($q)use($paixu){
+                        $q->name('banji')->where('paixu','in',$paixu)->field('id');
+                    });
+                })
+                ->with([
+                    'cjBanji'=>function($query){
+                        $query->field('id,paixu,ruxuenian')
+                            ->append(['numTitle','banjiTitle']);
+                    }
+                    ,'cjSchool'=>function($query){
+                        $query->field('id,jiancheng');
+                    }
+                ])
+                ->group('school')
+                ->field('id,banji,school')
+                ->select();
+
+        if($bj->isEmpty()){
+            // 重组返回内容
+            $data = [
+                'code'=> 0 , // ajax请求次数，作为标识符
+                'msg'=>"",  // 获取到的结果数(每页显示数量)
+                'count'=>0, // 符合条件的总数据量
+                'data'=>array(), //获取到的数据结果
+            ];
+
+            return json($data);
+        }
+
+
+
+        // 获取并统计各班级成绩
+        $tj = new TJ;
+        $data = array();
+        $allcj = array();
+        foreach ($bj as $key => $value) {
+            $school=array();
+            $nianji = [$src['nianji']];
+            $banji = array();
+            $temp = $tj->srcChengji($src['kaoshi'],$banji,$nianji,$school);
+            $allcj = array_merge($allcj,  $temp);;
+            $temp = $tj->tongji($temp,$src['kaoshi']);
+            $data[] = [
+                'school'=>$value->cj_school->jiancheng,
+                'chengji'=>$temp
+            ];
+        }
+
+        // 获取年级成绩
+        $temp = $tj->tongji($allcj,$src['kaoshi']);
+        $data[] = [
+            'school'=>'合计',
+            'chengji'=>$temp
+        ];
+
         $cnt = count($data);
 
-        
         // 重组返回内容
         $data = [
-            'draw'=> $getParam["draw"] , // ajax请求次数，作为标识符
-            'recordsTotal'=>$cnt,  // 获取到的结果数(每页显示数量)
-            'recordsFiltered'=>$cnt,       // 符合条件的总数据量
+            'code'=> 0 , // ajax请求次数，作为标识符
+            'msg'=>"",  // 获取到的结果数(每页显示数量)
+            'count'=>$cnt, // 符合条件的总数据量
             'data'=>$data, //获取到的数据结果
         ];
+
 
         return json($data);
     }

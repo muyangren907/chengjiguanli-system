@@ -147,7 +147,7 @@ class Kaohao extends Base
             }
             $data[$key]['cnt'] = $dfcnt;
             if($sbjcnt>0){
-                $data[$key]['avg'] = $dfcnt/$sbjcnt;
+                $data[$key]['avg'] = round($dfcnt/$sbjcnt,1);
             }else{
                 $data[$key]['avg'] = 0;
             }

@@ -1,135 +1,138 @@
+
 {extend name="common@list" /}
-{block name="topnav"}
-	<nav class="breadcrumb">
-		<i class="Hui-iconfont">&#xe67f;</i> 首页
-		<span class="c-gray en">&gt;</span> 成绩管理
-		<span class="c-gray en">&gt;</span> 成绩列表
-		<a class="btn btn-success radius r"
-			style="line-height:1.6em;margin-top:3px"
-			href="javascript:location.replace(location.href);"
-			title="刷新" >
-			<i class="Hui-iconfont">&#xe68f;</i>
-	</a>
-	</nav>
-{/block}
-{block name="bouttons"}
-	<div class="panel panel-default mt-10 mb-10">
-		<div class="panel-header" id="shaixuan">筛选</div>
-		<div class="panel-body" style="min-height: 60px">
-				<div>
-					{php}
-						$njlist = nianjiList();
-					{/php}
-					<label class="f-l">年级：</label>
-					{foreach $njlist as $key=>$vo } 
-						<div class="radio-box f-l">
-							<input name="sex" type="radio" id="nj-{$key}" value="{$key}" name="nianji" onclick="dtreload()">
-							<label for="nj-{$key}">{$vo}</label>
-						</div>
-					{/foreach}
+{block name="jsset"}
 
-				</div>
-		</div>
+{/block}
+{block name="nav"}
+	<span class="layui-breadcrumb">
+		<a href="">考试管理</a>
+		<a href="">成绩管理</a>
+		<a><cite>各年级成绩统计表</cite></a>
+	</span>
+{/block}
+{block name="search"}
+	<div class="layui-form-item">
+	    <label for="nianji" class="layui-form-label" style="height: 100%">年级 </label>
+	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')" pane>
+	    	{php} $njlist = nianjiList();{/php}
+	    	{foreach $njlist as $key=>$vo}
+	    		<input type="radio" name="nianji" title="{$vo}" value="{$vo}" lay-skin="primary">
+	    	{/foreach}
+	    </div>
 	</div>
-
+	<input type="hidden" name="kaoshi" value="{$list.kaoshi}">
 {/block}
-{block name="tables"}
-	<table id="table1" class="display" cellspacing="0" width="100%">
-		<thead>
-			<tr>
-				<th rowspan="2">序号</th>
-				<th rowspan="2">班级</th>
-				<th class="text-c" colspan="4" style="border: 0px;">语文</th>
-				<th class="text-c" colspan="4" style="border: 0px;">数学</th>
-				<th class="text-c" colspan="4" style="border: 0px;">英语</th>
-			</tr>
-			<tr>
-				<th>人数</th>
-				<th>平均分</th>
-				<th>优秀率%</th>
-				<th>及格率%</th>
-
-				<th>人数</th>
-				<th>平均分</th>
-				<th>优秀率%</th>
-				<th>及格率%</th>
-
-				<th>人数</th>
-				<th>平均分</th>
-				<th>优秀率%</th>
-				<th>及格率%</th>
-			</tr>
-		</thead>
-		<tbody>
-		</tbody>
-	</table>
-
-
+{block name="table"}
+	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
 {/block}
 {block name="myjs"}
-<script type="text/javascript">
+	<!-- 表格上面按钮模板 -->
+<script type="text/html" id="toolbarDemo">
+	<div class="layui-btn-container">
+		<button class="layui-btn layui-btn-danger" lay-event="dels">
+			<i class="iconfont">&#xe69d;</i> 批量删除
+		</button>
+		<button class="layui-btn" lay-event="add">
+			<i class="iconfont">&#xe6b9;</i> 添加
+		</button>
+	</div>
+</script>
+<!-- 记录操作按钮模板 -->
+<script type="text/html" id="barDemo">
+	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
+	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
+</script>
+<!-- 表格操作 -->
+<script>
+	// 设置请求地址
+	options.url = "{:url('ajaxNianji')}";
+	// 设置列
+  	options.cols=[[ //表头
+			{type:'numbers',title:'序号',rowspan:2},
+			{field: 'school', title: '学校',sort: true,minWidth:80,rowspan:2},
+		]
+		,[]
+		];
+	// 获取学科
+	var xk = '<?php echo json_encode($list["subject"]);?>';
+	xk = eval(decodeURIComponent(xk));
+	var xiangmu = {cnt:'人数',avg:'平均分',youxiu:'优秀率%',jige:'及格率%'};		// 要显示哪些统计结果
 
-	// 定义DTajax参数
-	var myajax = {
-		url: "{:url('ajaxNianji')}",
-		type: "post",
-		data: {
-			kaoshiid:"{$list.kaoshi}",
-			ruxuenian:function(){
-				var a = $('input:radio:checked').val();
-				// if(typeof(a) == "undefined")
-				// {
-				// 	var date=new Date;
-				// 	a = date.getFullYear()-1; 
-				// }
-				return a;
-			},			
-		},
-	};
-
-	// 定义列参数
-	var mycolumns = [
-        { "data": "id" },
-        { "data": "title" },
-
-        { "data": "data.yuwen.cnt","defaultContent": "" },
-        { "data": "data.yuwen.avg","defaultContent": "" },
-        { "data": "data.yuwen.youxiu" ,"defaultContent": ""},
-        { "data": "data.yuwen.jige","defaultContent": "" },
-
-        { "data": "data.shuxue.cnt" ,"defaultContent": ""},
-        { "data": "data.shuxue.avg","defaultContent": "" },
-        { "data": "data.shuxue.youxiu","defaultContent": "" },
-        { "data": "data.shuxue.jige","defaultContent": "" },
-
-        { "data": "data.waiyu.cnt","defaultContent": "" },
-        { "data": "data.waiyu.avg","defaultContent": "" },
-        { "data": "data.waiyu.youxiu","defaultContent": "" },
-        { "data": "data.waiyu.jige","defaultContent": "" },
-        
-	];
-
-		// 定义修改列参数
-	var mycolumnDefs =[
-		// 对象格式
-        {
-        	"orderable": false,
-        	"targets": [0,1,2,3,4,5,6,7,8,9,10,11,12,13]
-        }, 
-	];
-
-
-	// 筛选成绩面板折叠
-	$('#shaixuan').click(function(){
-		$(this).next().toggle();
+    $.each(xk,function(index,value){
+    	options.cols[0].push({title: xk[index].subject_name.title,colspan:4,align:'center'});
+	    $.each(xiangmu,function(i,val){
+		    var colname = xk[index].subject_name.lieming;
+    		// console.log(colname + ' ' + i);
+    		var colinfo = {
+	    		title:val
+	    		,minWidth:100
+	    		,templet:function(d){
+	    			var str = d.chengji[colname][i];
+					return str;
+				}
+	    	};
+	    	
+	    	options.cols[1].push(colinfo);
+		});
 	});
+	options.cols[0].push({title: '全科及格率',minWidth:100,rowspan:2,templet:function(d){
+	    			var str = d.chengji.rate;
+					return str;
+				}});
+	options.cols[0].push({ title: '总平均分',minWidth:100,rowspan:2,templet:function(d){
+	    			var str = d.chengji.avg;
+					return str;
+				}});
 
-	// 重载数据
-	function dtreload()
-	{
-		mytable.ajax.reload();
-	}
 
 	
+	// 设置查询条件
+	options.where = {
+		kaoshi:"{$list.kaoshi}"
+		,nianji:"{$list.nianji}"
+	}
+
+	options.autoSort=true;
+
+	
+
+  // 提交搜索条件后重载表格
+    layui.use(['table','cjgl'],function(){
+      var table = layui.table
+          cjgl = layui.cjgl;
+      //表头工具栏事件
+      table.on('toolbar(mytable)', function(obj){
+        switch(obj.event){
+          case 'dels':
+            var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
+            cjgl.delAll(checkStatus,'/school','mytable');
+            break;
+          case 'add':
+            cjgl.add('添加单位','/school/create','650','500');
+            break;
+        };
+      });
+
+      //监听行工具条
+      table.on('tool(mytable)', function(obj){
+        var data = obj.data; //获得当前行数据
+        var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+        var tr = obj.tr; //获得当前行 tr 的DOM对象
+        switch(layEvent){
+          case 'detail':// 查看
+          	layer.msg('查看' + data.id);
+          	break;
+          case 'del':// 删除
+          	cjgl.del(obj,"/school");
+          	break;
+          case 'edit':// 编辑
+          	cjgl.add('编辑单位','/school/'+obj.data.id+'/edit','650','500');
+          	break;
+          case 'status':// 状态
+          	cjgl.status(obj,"{:url('setstatus')}");
+          	break;
+        };
+      });
+    });
 </script>
 {/block}

@@ -82,7 +82,7 @@
 	// 获取学科
 	var xk = '<?php echo json_encode($list["subject"]);?>';
 	xk = eval(decodeURIComponent(xk));
-	var xiangmu = {cnt:'人数',avg:'平均分',youxiu:'优秀率',jige:'及格率'};		// 要显示哪些统计结果
+	var xiangmu = {cnt:'人数',avg:'平均分',youxiu:'优秀率%',jige:'及格率%'};		// 要显示哪些统计结果
 
     $.each(xk,function(index,value){
     	options.cols[0].push({title: xk[index].subject_name.title,colspan:4,align:'center'});
@@ -91,7 +91,6 @@
     		// console.log(colname + ' ' + i);
     		var colinfo = {
 	    		title:val
-	    		,sort:true
 	    		,minWidth:100
 	    		,templet:function(d){
 	    			var str = d.chengji[colname][i];
@@ -102,10 +101,15 @@
 	    	options.cols[1].push(colinfo);
 		});
 	});
-	options.cols[0].push({ title: '总平均分',sort: true,minWidth:100,rowspan:2,templet:function(d){
+	options.cols[0].push({title: '全科及格率',minWidth:100,rowspan:2,templet:function(d){
+	    			var str = d.chengji.rate;
+					return str;
+				}});
+	options.cols[0].push({ title: '总平均分',minWidth:100,rowspan:2,templet:function(d){
 	    			var str = d.chengji.avg;
 					return str;
 				}});
+
 
 	
 	// 设置查询条件

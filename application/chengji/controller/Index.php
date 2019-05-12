@@ -378,12 +378,20 @@ class Index extends Base
 
 
     // 下载成绩表格
-    public function dwChengji($id)
+    public function dwChengji($kaoshi)
     {
 
-       // 模板赋值
-        $this->assign('id',$id);
-        // 渲染模板
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'成绩下载',
+            'butname'=>'下载',
+            'formpost'=>'POST',
+            'url'=>'/chengji/dwChengji',
+        );
+
+        // 模板赋值
+        $this->assign('list',$list);
+        // 渲染
         return $this->fetch();
     }
 

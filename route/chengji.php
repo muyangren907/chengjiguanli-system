@@ -25,7 +25,7 @@ Route::get('chengji/:kaoshi/stuChengjilist','chengji/Index/index');
 Route::delete('chengji/:kaoshi/cj','chengji/Index/deletecj');  #只清空成绩
 // 成绩统计表
 Route::get('cjtongji/:kaoshi/banji','chengji/Tongji/tjBanji');	# 班级成绩统计列表
-Route::get('cjtongji/:id/nianji','chengji/Tongji/tjNianji');	# 年级成绩统计列表
+Route::get('cjtongji/:kaoshi/nianji','chengji/Tongji/tjNianji');	# 年级成绩统计列表
 
 // 下载学生成绩
 Route::get('chengji/:kaoshi/dwChengji','chengji/Index/dwChengji');
