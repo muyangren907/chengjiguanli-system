@@ -15,7 +15,6 @@ class Base extends Controller
     protected $middleware = [
     	'YanZheng'=>[
     		'except'=>[
-    			// 'ajaxData',
                 'exit',
     		],
     	],
