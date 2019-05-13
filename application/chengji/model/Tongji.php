@@ -102,8 +102,13 @@ class Tongji extends Model
                 $cnt++;
             }
         }
+        if(count($cj)>0)
+        {
+            return round($cnt/count($cj)*100);
+        }else{
+            return '';
+        }
 
-        return round($cnt/count($cj)*100);
     }
 
 
@@ -115,18 +120,23 @@ class Tongji extends Model
             $tempcj = 0;
             foreach ($sbj as $k => $val) {
                 $tempsbj = 0;
-                // if(isset($value[$val->lieming]))
-                // {
+                if(isset($value[$val->lieming]))
+                {
                     if($value[$val->lieming]>$val->jige)
                     {
                        $tempsbj++; 
                     }
-                // }
+                }
             }
             $tempcj == $tempsbj ? $jige++ : $jige ;
         }
 
-        return round($jige/count($cj)*100);
+        if(count($cj)>0)
+        {
+            return round($jige/count($cj)*100);
+        }else{
+            return '';
+        }
     }
 
 
