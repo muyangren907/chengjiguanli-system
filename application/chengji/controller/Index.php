@@ -387,6 +387,7 @@ class Index extends Base
             'butname'=>'下载',
             'formpost'=>'POST',
             'url'=>'/chengji/dwChengji',
+            'kaoshi'=>$kaoshi
         );
 
         // 模板赋值
