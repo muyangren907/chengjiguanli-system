@@ -1,7 +1,7 @@
 {extend name="common@create" /}
 
 {block name="form"}
-    <form class="layui-form layui-form-pane" lay-filter="myform">
+    <form action="{$list.set.url}" method="{$list.set.formpost}" class="layui-form layui-form-pane" lay-filter="myform">
 
           <div class="layui-form-item">
             <label for="school" class="layui-form-label"><span class="x-red">*</span>学校</label>
@@ -42,41 +42,12 @@
             <label for="banji" class="layui-form-label">
               <span class="x-red">*</span>班级
             </label>
-            <div class="layui-input-block">
-            	{php}
-            		if(isset($list['data'])){
-            			// 获取参数
-            			$rxn = $list['data']['stu_banji']['ruxuenian'];
-            			$sch = $list['data']['school'];
-            			// 获取班级列表
-            			$banji = new \app\teach\model\Banji;
-            			$banjilist = $banji
-              					->where('ruxuenian',$rxn)
-              					->where('school',$sch)
-              					->field('id,paixu,ruxuenian')
-              					->append(['banTitle'])
-              					->select();
-            		}else{
-            			$banjilist=array();
-            		}
-              {/php}
-              <select name="banji" class="layui-form-label" id="banji" lay-filter="banji">
-                <option value=""></option>
-                {volist name="banjilist" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.banji"}
-                    {eq name="$list.data.banji" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    {$vo.banTitle}
-                  </option>
-                {/volist}
-              </select>
+            <div class="layui-input-block" id="banjidiv">
             </div>
           </div>
+          <input type="hidden" id="kaoshi" name="kaoshi" value="{$list.set.kaoshi}">
           <div class="layui-form-item" style="text-align: right;">
-              <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
+              <button  class="layui-btn" lay-filter="" lay-submit="">
                   {$list.set.butname}
               </button>
           </div>
@@ -85,14 +56,9 @@
 
 {block name="myjs"}
 <script>
-layui.use(['laydate','form'], function(){
-	var laydate = layui.laydate
-		,form = layui.form;
-	//执行一个laydate实例
-	laydate.render({
-		elem: '#shengri' //指定元素
-    ,trigger: 'click' //采用click弹出
-	});
+layui.use(['form'], function(){
+	var form = layui.form;
+
 
 	// 监听选择按钮
 	form.on('select', function(data){
@@ -102,6 +68,28 @@ layui.use(['laydate','form'], function(){
 	  }
 	});
 
+  // 监听班级复选框
+  form.on('checkbox(selectall)', function(data){
+    // console.log(data.elem); //得到checkbox原始DOM对象
+    // console.log(data.elem.checked); //是否被选中，true或者false
+    // console.log(data.value); //复选框value值，也可以通过data.elem.value得到
+    // console.log(data.othis); //得到美化后的DOM对象
+    if(data.elem.checked == true)
+    {
+      $(data.elem).nextAll('input').each(function()
+        {
+          $(this).attr('checked',true);
+        });
+    }else{
+      $(data.elem).nextAll('input').each(function()
+        {
+          $(this).attr('checked',false);
+        });
+    }
+
+    form.render('checkbox');
+  });        
+
 	//获取班级列表并更新
 	function mybanji(){
 		// 获取表单值
@@ -109,18 +97,10 @@ layui.use(['laydate','form'], function(){
 		,ruxuenian = $('#ruxuenian').val();
 		
 		// 获取节点
-		var bj = $("#banji");
-		var bjdl = $('#banji').next().children('dl');
-		var bjdiv = $('#banji').next().children('div');
+		var bj = $("#banjidiv");
 
 		// 删除原来已有值
-		$(bj).empty();
-		$(bjdl).children('dd').each(function(){
-			this.remove();
-		});
-		// 删除选中值
-		$(bjdiv).children('input:first').val('');
-
+		$(bj).children().remove();
 		// 获取班级列表
 		$.ajax({
 		    url:"/banji/njbanji",
@@ -131,12 +111,13 @@ layui.use(['laydate','form'], function(){
 		    },
 		    dataType:'json',
 		    success:function(result){
-		    	if(result.length > 0){
+          $(bj).append('<input type="checkbox" name="banji[]" title="全选" value="" lay-skin="primary" onclick="selectAll(this)" lay-filter="selectall">');
+		    	// if(result.length > 0){
 		    		result.forEach(function(val,index){
-		    			$(bj).append("<option value="+val['id']+">"+val['banTitle']+"</option>");
+              $(bj).append('<input type="checkbox" name="banji[]" title="'+val['banTitle']+'" value="'+val['id']+'" lay-skin="primary">');
 		    		})
-		    		form.render('select'); //刷新select选择框渲染
-		    	}
+		    	// }
+          form.render('checkbox');
 		    },
 		    error:function(xhr,status,error) {
 		      layer.msg('数据处理错误',{
@@ -146,28 +127,6 @@ layui.use(['laydate','form'], function(){
 		    }
 		});
   }
-
-  $('#shenfenzhenghao').bind('change',function sfz(){
-    // 获取身份证号 210281198510288213
-    var str = $(this).val();
-    // 如果身份证号为18位则自动填表
-    if(str.length == 18){
-      // 填写性别
-      var sex = str.substr(16,1) % 2;
-      if(sex == 1){
-        // 选择性别男
-        $("input[name='sex']:first").prop('checked', true);
-      }else{
-        // 选择性别女
-        $("input[name='sex']:last").prop('checked', true);
-      }
-      form.render('radio');
-
-      // 填写出生日期
-      $("#shengri").val(str.substr(6,4) +'-'+ str.substr(10,2) +'-'+ str.substr(12,2));
-      $("#school").focus();
-    }
-  })  
 });
 </script>
 {/block}

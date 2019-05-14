@@ -85,7 +85,7 @@ class Tongji extends Model
         $data['cnt'] = count($allcj);
         $data['sum'] = array_sum($allcj);
         $data['cnt']>0 ? $data['avg'] = round($data['sum']/$data['cnt'],2) : $data['avg']=0;
-        $data['rate'] = $this->rateAll($cj,$ksinfo->ks_subject);
+        $data['rate'] = $this->rateAll($cj,$ksinfo->ks_subject); #全科及格率
         
 
         return $data;
@@ -117,12 +117,12 @@ class Tongji extends Model
     {
         $jige = 0;
         foreach ($cj as $key => $value) {
-            $tempcj = 0;
+            $tempcj = count($value);
             foreach ($sbj as $k => $val) {
                 $tempsbj = 0;
                 if(isset($value[$val->lieming]))
                 {
-                    if($value[$val->lieming]>$val->jige)
+                    if($value[$val->lieming]>=$val->jige)
                     {
                        $tempsbj++; 
                     }

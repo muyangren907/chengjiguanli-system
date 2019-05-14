@@ -400,8 +400,14 @@ class Index extends Base
     //生成学生表格
     public function dwchengjixls()
     {
-        // 获取表单值
-        $list = request()->post();
+        // 获取参数
+        $list = $this->request
+                ->only([
+                    'kaoshi'=>'1',
+                    'banji'=>array(),
+                ],'POST');
+
+
         // 实例化验证模型
         $validate = new \app\chengji\validate\Cjdownload;
         // 验证表单数据
@@ -418,84 +424,105 @@ class Index extends Base
         
         set_time_limit(0);
         $list = input();
-        $id = $list['id'];
+        $kaoshi = $list['kaoshi'];
         // 获取数据库信息
-        $chengjiinfo = Chengji::where('kaoshi',$id)
-                        ->where('banji','in',$list['banjiids'])
-                        ->order(['stuAvg'=>'desc'])
-                        ->append(['cj_student.xingming','cj_banji.title'])
-                        ->select();
+        $cj = new Chengji();
+        // $kh = new \app\kaoshi\model\Kaohao;
+        $chengjiinfo = $cj->srcChengji($kaoshi,$list['banji']);
+
 
         // 获取考试标题
-        $ks = Kaoshi::where('id',$id)->find('title');
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $ks = $ks->where('id',$kaoshi)
+                ->field('id,title')
+                ->with([
+                    'ksSubject'=>function($query){
+                        $query->field('kaoshiid,subjectid')
+                            ->with(['subjectName'=>function($q){
+                                $q->field('id,title,lieming');
+                            }]
+                        );
+                    }
+                ])
+                ->find();
 
-        // 实例化成绩统计模型
-        $tj = new \app\chengji\model\Tongji();
-        // 获取统计成绩参数
-        $canshu = $tj->getCanshu($id);
-        $tj = $tj->tongji($chengjiinfo,$canshu);
+        $colname = excelLieming();
 
-       
 
         // 创建表格
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
 
         // 设置表头信息
-        $sheet->setCellValue('A1', $ks.'学生成绩列表');
+        $sheet->setCellValue('A1', $ks->title.'学生成绩列表');
         $sheet->setCellValue('A2', '序号');
         $sheet->setCellValue('B2', '班级');
         $sheet->setCellValue('C2', '姓名');
-        $sheet->setCellValue('D2', '语文');
-        $sheet->setCellValue('E2', '数学');
-        $sheet->setCellValue('F2', '英语');
-        $sheet->setCellValue('G2', '平均分');
-        $sheet->setCellValue('H2', '总分');
-        $sheet->setCellValue('J2', '项目');
-        $sheet->setCellValue('K2', '语文');
-        $sheet->setCellValue('L2', '数学');
-        $sheet->setCellValue('M2', '英语');
-        $sheet->setCellValue('J3', '人数');
-        $sheet->setCellValue('J4', '平均分');
-        $sheet->setCellValue('J5', '优秀率');
-        $sheet->setCellValue('J6', '及格率');
-        $sheet->setCellValue('J7', '标准差');
-
-
+        $i = 3;
+        foreach ($ks->ks_subject as $key => $value) {
+            $sheet->setCellValue($colname[$i].'2', $value->subject_name->title);
+            $i++;
+        }
+        $sheet->setCellValue($colname[$i].'2', '平均分');
+        $sheet->setCellValue($colname[$i+1].'2', '总分');
+        $i=$i+3;
+        $sheet->setCellValue($colname[$i].'2', '项目');
+        $sheet->setCellValue($colname[$i].'3', '人数');
+        $sheet->setCellValue($colname[$i].'4', '平均分');
+        $sheet->setCellValue($colname[$i].'5', '优秀率%');
+        $sheet->setCellValue($colname[$i].'6', '及格率%');
+        $sheet->setCellValue($colname[$i].'7', '标准差');
+        $i++;
+        foreach ($ks->ks_subject as $key => $value) {
+            $sheet->setCellValue($colname[$i].'2', $value->subject_name->title);
+            $i++;
+        }
+        $sheet->setCellValue($colname[$i+1].'2', '总平均分');
+        $sheet->setCellValue($colname[$i+2].'2', '全科及格率%');
+        
 
         // 循环写出信息
         $i = 3;
         foreach ($chengjiinfo as $key => $value) {
-            if($value->stuSum !== null)
-            {
                 // 表格赋值
                 $sheet->setCellValue('A'.$i, $i-2);
-                $sheet->setCellValue('B'.$i, $value['cj_banji']['title']);
-                $sheet->setCellValue('C'.$i, $value['cj_student']['xingming']);
-                $sheet->setCellValue('D'.$i, $value->yuwen);
-                $sheet->setCellValue('E'.$i, $value->shuxue);
-                $sheet->setCellValue('F'.$i, $value->waiyu);
-                $sheet->setCellValue('G'.$i, $value->stuAvg);
-                $sheet->setCellValue('H'.$i, $value->stuSum);
+                $sheet->setCellValue('B'.$i, $value['banji']);
+                $sheet->setCellValue('C'.$i, $value['student']);
+                $colcnt = 3;
+                foreach ($ks->ks_subject as $k => $val) {
+                    $sheet->setCellValue($colname[$colcnt].$i, $value[$val->subject_name->lieming]);
+                    $colcnt++;
+                }
+                $sheet->setCellValue($colname[$colcnt].$i, $value['avg']);
+                $sheet->setCellValue($colname[$colcnt+1].$i, $value['cnt']);
                 $i++;
-            }
         }
 
+        $tj = new \app\chengji\model\Tongji;
+        $nianji = array();
+        $chengjiinfo = $tj->srcChengji($kaoshi,$list['banji']);
+        $temp = $tj->tongji($chengjiinfo,$kaoshi);
+        $colcnt = $colcnt+4;
         // 循环写出统计结果
-        $x = 11;
-        $lieming = array(11=>'K',12=>'L',13=>'M');
-        foreach ($tj as $key => $value) {
-            $sheet->setCellValue($lieming[$x].'3', $value['cnt']);
-            $sheet->setCellValue($lieming[$x].'4', $value['avg']);
-            $sheet->setCellValue($lieming[$x].'5', $value['youxiu']);
-            $sheet->setCellValue($lieming[$x].'6', $value['jige']);
-            $sheet->setCellValue($lieming[$x].'7', $value['biaozhuncha']);
-            $x++;
+        foreach ($ks->ks_subject as $key => $value) {
+            $sheet->setCellValue($colname[$colcnt].'3', $temp[$value->subject_name->lieming]['cnt']);
+            $sheet->setCellValue($colname[$colcnt].'4', $temp[$value->subject_name->lieming]['avg']);
+            $sheet->setCellValue($colname[$colcnt].'5', $temp[$value->subject_name->lieming]['youxiu']);
+            $sheet->setCellValue($colname[$colcnt].'6', $temp[$value->subject_name->lieming]['jige']);
+            $sheet->setCellValue($colname[$colcnt].'7', $temp[$value->subject_name->lieming]['biaozhuncha']);
+            $colcnt++;
         }
+
+        $sheet->setCellValue($colname[$colcnt+1].'3', $temp['avg']);
+        $sheet->setCellValue($colname[$colcnt+2].'3', $temp['rate']);
+
+
+
+        
 
 
         // 保存文件
-        $filename = $ks.'学生成绩列表'.date('ymdHis').'.xlsx';
+        $filename = $ks->title.'学生成绩列表'.date('ymdHis').'.xlsx';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
