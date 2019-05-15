@@ -434,7 +434,7 @@ class JsRongyuInfo extends Base
         }
 
         //通过工厂模式创建内容
-        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('jsRongyu.xlsx');
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load("uploads/rongyu_teacher/js_rongyu.xlsx");
         $worksheet = $spreadsheet->getActiveSheet();
 
         $worksheet->getCell('A1')->setValue($filename);
