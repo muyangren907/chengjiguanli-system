@@ -490,7 +490,10 @@ class Index extends Base
                 $sheet->setCellValue('C'.$i, $value['student']);
                 $colcnt = 3;
                 foreach ($ks->ks_subject as $k => $val) {
-                    $sheet->setCellValue($colname[$colcnt].$i, $value[$val->subject_name->lieming]);
+                    if(isset($value[$val->subject_name->lieming]))
+                    {
+                        $sheet->setCellValue($colname[$colcnt].$i, $value[$val->subject_name->lieming]);
+                    }
                     $colcnt++;
                 }
                 $sheet->setCellValue($colname[$colcnt].$i, $value['avg']);

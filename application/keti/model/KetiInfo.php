@@ -97,6 +97,59 @@ class KetiInfo extends Base
     }
 
 
+    //搜索课题册
+    public function srcketi($ketice)
+    {
+        $data = $this
+            ->order([$src['field'] =>$src['type']])
+            ->where('ketice',$ketice)
+            ->with(
+                [
+                    'fzSchool'=>function($query){
+                        $query->field('id,jiancheng');
+                    },
+                    'KtCe'=>function($query){
+                        $query->field('id,lxdanweiid,category,lxshijian')
+                            ->with([
+                                'ktCategory' => function($q){
+                                    $q->field('id,title');
+                                },
+                                'ktLxdanwei' => function($q){
+                                    $q->field('id,jiancheng');
+                                }
+                            ]);
+                    },
+                    'ktCategory'=>function($query){
+                        $query->field('id,title');
+                    },
+                    'ktSubject'=>function($query){
+                        $query->field('id,title');
+                    },
+                    'ktZcr'=>function($query){
+                        $query->field('ketiinfoid,teacherid')
+                            ->with([
+                                'teacher'=>function($q){
+                                    $q->field('id,xingming');
+                                }
+                            ]);
+                    },
+                    'ktCy'=>function($query){
+                        $query->field('ketiinfoid,teacherid')
+                            ->with([
+                                'teacher'=>function($q){
+                                    $q->field('id,xingming');
+                                }
+                            ]);
+                    }
+                ]
+            )
+            ->select();
+
+
+        return $data;
+    }
+
+
     // 课题主持人关联
     public function ktZcr()
     {

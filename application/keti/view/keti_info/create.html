@@ -217,6 +217,7 @@
     keyup:function(){
       var val = $.trim($(this).val());
       if(val.length>0){
+        layer.msg('bb');
         cjgl.selectOnfocus(this,val,'hjteachers[]');
       }
     },

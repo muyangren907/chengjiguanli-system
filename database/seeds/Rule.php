@@ -222,6 +222,7 @@ class Rule extends Seeder
                     ['title'=>'状态','name'=>'keti/ketiinfo/setStatus','paixu'=>5,'pid'=>902],
                     ['title'=>'批量上传','name'=>'keti/ketiinfo/createAll','paixu'=>6,'pid'=>902],
                     ['title'=>'结题','name'=>'keti/ketiinfo/jieTi','paixu'=>7,'pid'=>902],
+                    ['title'=>'下载','name'=>'keti/KetiInfo/outXlsx','paixu'=>8,'pid'=>902],
 
 
 

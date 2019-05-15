@@ -61,6 +61,9 @@
 		<button class="layui-btn" lay-event="add">
 			<i class="iconfont">&#xe6b9;</i> 添加
 		</button>
+		<button class="layui-btn" lay-event="download">
+			<i class="iconfont">&#xe714;</i> 下载
+		</button>
 	</div>
 </script>
 <!-- 记录操作按钮模板 -->
@@ -137,6 +140,9 @@
             break;
           case 'add':
             cjgl.add('添加荣誉','/jsryinfoadd/'+"{$list.rongyuce}",'','',true);
+            break;
+          case 'download':
+            cjgl.add('下载荣誉信息','/ryout/'+"{$list.rongyuce}",'300','200',false);
             break;
         };
       });

@@ -13,7 +13,10 @@
 Route::resource('teacher','renshi/Index');
 Route::get('teacher/createall','renshi/Index/createAll'); // 定义GET请求路由规则
 Route::post('teacher/createall','renshi/Index/saveAll'); // 定义POST请求路由规则
+Route::post('srcteacher','renshi/Index/srcTeacher'); // 定义POST请求路由规则
+
 Route::resource('student','renshi/Student');
 Route::get('student/createall','renshi/Student/createAll'); // 定义GET请求路由规则
 Route::post('student/createall','renshi/Student/saveAll'); // 定义POST请求路由规则
+
 // Route::post('student/download','renshi/Student/download'); // 定义POST请求路由规则

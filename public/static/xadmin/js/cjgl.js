@@ -116,35 +116,35 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
             });
         });
     },
-    getSearchVal:function(name){
-        // 声明对象，用于存表单名与数值
-        var obj={};
-        // 循环获取有表单的div
-        $(name).children('div.layui-form-item').each(function(i){
-            // 声明二级div
-            var myblock = $(this).children('div.layui-input-block');
-            var name=$(myblock).children("input:first").attr("name");
-            // 判断二级div下的第一个input是不是text
-            if($(myblock).children("input:first").attr("type") == 'text'){
-                // 如果是文本框，则直接获取。
-                var value=$(myblock).children('input').val();
-                obj[name] = value;
-            }else if($(myblock).children("input:first").attr("type") == 'checkbox'){
-                // 如果是复选框，获取被选中的div
-                var checkdiv = $(myblock).children("div.layui-form-checked");
-                obj[name] = new Array();
-                $(checkdiv).each(function(cd){
-                    var value = $(this).prev('input').val();
-                    obj[name].push(value);
-                });
-            }else if($(myblock).children("input:first").attr("type") == 'radio'){
-                 var checkdiv = $(myblock).children("div.layui-form-radioed");
-                 var value = $(checkdiv).prev('input').val();
-                 obj[name] = value;
-            }
-        });
-        return obj;
-      },
+    // getSearchVal:function(name){
+    //     // 声明对象，用于存表单名与数值
+    //     var obj={};
+    //     // 循环获取有表单的div
+    //     $(name).children('div.layui-form-item').each(function(i){
+    //         // 声明二级div
+    //         var myblock = $(this).children('div.layui-input-block');
+    //         var name=$(myblock).children("input:first").attr("name");
+    //         // 判断二级div下的第一个input是不是text
+    //         if($(myblock).children("input:first").attr("type") == 'text'){
+    //             // 如果是文本框，则直接获取。
+    //             var value=$(myblock).children('input').val();
+    //             obj[name] = value;
+    //         }else if($(myblock).children("input:first").attr("type") == 'checkbox'){
+    //             // 如果是复选框，获取被选中的div
+    //             var checkdiv = $(myblock).children("div.layui-form-checked");
+    //             obj[name] = new Array();
+    //             $(checkdiv).each(function(cd){
+    //                 var value = $(this).prev('input').val();
+    //                 obj[name].push(value);
+    //             });
+    //         }else if($(myblock).children("input:first").attr("type") == 'radio'){
+    //              var checkdiv = $(myblock).children("div.layui-form-radioed");
+    //              var value = $(checkdiv).prev('input').val();
+    //              obj[name] = value;
+    //         }
+    //     });
+    //     return obj;
+    //   },
       // 表格重载
       reLoadTable:function(formname,tableID,mydata={}){
           var formval = this.getSearchVal(formname);
@@ -164,6 +164,7 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
       },
       // Select获取焦点
       selectOnfocus:function(myobj,val,addname){
+        layer.msg('aa');
 
         // 声明变量
         var srcInput = $(myobj);
@@ -175,10 +176,9 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
         // 声明变量
         var mydl = srcInput.next().children('dl');
 
-
         // 获取数据
         $.post(
-            "/banji/banjilist",
+            "/srcteacher",
             {
                 "str":val,
             },
@@ -197,7 +197,7 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
         );
 
           
-      },
+      }, 
       // 添加教师
       addTeacher:function(myobj){
         var myId = $(myobj).attr('id')

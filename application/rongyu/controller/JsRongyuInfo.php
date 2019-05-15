@@ -414,11 +414,11 @@ class JsRongyuInfo extends Base
     
 
     // 下载荣誉信息
-    public function outXlsx($id)
+    public function outXlsx($rongyuce)
     {
 
         $ryinfo = new ryinfo();
-        $list = $ryinfo->srcTuceRy($id);
+        $list = $ryinfo->srcTuceRy($rongyuce);
 
         // halt($list);
 

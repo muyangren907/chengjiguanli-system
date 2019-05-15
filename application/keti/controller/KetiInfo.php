@@ -500,5 +500,92 @@ class KetiInfo extends Base
     }
 
 
+    // 下载课题信息表
+    public function outXlsx($ketice)
+    {
+        $ketiinfo = new ketiinfo();
+        $list = $ketiinfo->srcTuceRy($ketice);
+
+        halt($list);
+
+        if($list->isEmpty())
+        {
+            $this->error('兄弟，没有要下载的信息呀~');
+            return '';
+        }else{
+            $filename = $list[0]['ryTuce']['title'];
+            $fzschool = $list[0]['ryTuce']['fz_school']['title'];
+            $fzshijian = strtotime($list[0]['ryTuce']['fzshijian']);
+            $fzshijian = date('Ym',$fzshijian);
+        }
+
+        //通过工厂模式创建内容
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('jsRongyu.xlsx');
+        $worksheet = $spreadsheet->getActiveSheet();
+
+        $worksheet->getCell('A1')->setValue($filename);
+        $worksheet->getCell('A2')->setValue('发证单位:'.$fzschool);
+        $worksheet->getCell('G2')->setValue('发证时间:'.$list[0]['ryTuce']['fzshijian']);
+        // 循环为excel每行赋值
+        foreach ($list as $key => $value) {
+            $myrowid = $key + 4;
+            $worksheet->getCell('A'.$myrowid)->setValue($key+1);
+            $worksheet->getCell('B'.$myrowid)->setValue($value->title);
+            $worksheet->getCell('C'.$myrowid)->setValue($value->hjJsName);
+            if($value->hj_school){
+                $worksheet->getCell('D'.$myrowid)->setValue($value->hj_school->jiancheng);
+            }
+            if($value->ry_subject){
+                $worksheet->getCell('E'.$myrowid)->setValue($value->ry_subject->title);
+            }
+            $worksheet->getCell('F'.$myrowid)->setValue($value->cyJsName);
+            if($value->jx_category){
+                $worksheet->getCell('G'.$myrowid)->setValue($value->jx_category->title);
+            }
+            $worksheet->getCell('H'.$myrowid)->setValue($value->bianhao);
+        }
+
+        // 给单元格加边框
+        $styleArray = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => '00000000'],
+                ],
+            ],
+        ];
+        
+        if($key+4>9)
+        {
+            
+            $worksheet->getStyle('A10:I'.($key+4))->applyFromArray($styleArray);
+            // 设置行高
+            for($i = 10;  $i<=($key+4); $i++){
+                $worksheet->getRowDimension($i)->setRowHeight(30);
+            }
+            
+        }
+
+        $worksheet->getStyle('A4')->applyFromArray($styleArray);
+
+
+        //告诉浏览器输出07Excel文件
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        //告诉浏览器输出浏览器名称
+        header('Content-Disposition: attachment;filename="'. $filename .$fzshijian.'.xlsx"');
+        //禁止缓存
+        header('Cache-Control: max-age=0');
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('php://output');
+        // ob_end_clean();
+        // ob_start();
+        // 释放内存
+        $spreadsheet->disconnectWorksheets();
+        unset($spreadsheet);
+
+        // return '下载后请关闭窗口';
+    }
+
+
 
 }

@@ -15,6 +15,7 @@ Route::resource('ktinfo','keti/KetiInfo');
 
 // 课题册中课题列表
 Route::get('ktlist/:ketice/:title','keti/KetiInfo/ketilist');
+Route::get('ktout/:ketice','keti/KetiInfo/outXlsx');
 // 结题编辑
 Route::get('ktjt/:id/edit','keti/KetiInfo/jieTi');
 Route::put('ktjt/:id','keti/KetiInfo/jtUpdate');
