@@ -29,7 +29,7 @@ Route::get('cjtongji/:kaoshi/nianji','chengji/Tongji/tjNianji');	# 年级成绩�
 
 // 下载学生成绩
 Route::get('chengji/:kaoshi/dwChengji','chengji/Index/dwChengji');
-Route::post('chengji/dwChengji','chengji/Index/dwchengjixls');
+Route::post('chengji/dwChengji','chengji/Index/dwchengjixls'); 
  
 // 下载班级成绩统计表
 Route::get('cjtongji/:kaoshi/dwBanji','chengji/Tongji/dwBanji');	
