@@ -53,15 +53,15 @@ class YanZheng  extends Controller
             'index','mybanji','banjilist',
             'editpassword','updatepassword',
             // 教师信息查询
-            'srcTeacher',
+            'srcteacher',
             // 查询班级成绩、查询年级成绩
             'ajaxbanji','ajaxnianji',
             // 批量保存
             'saveall',
             // 下载成绩表、下载成绩统计表
-            'dwchengjixls','dwBanjixls','dwNianjixls',
+            'dwchengjixls','dwbanjixls','dwnianjixls',
             //保存考号、下载试卷标签、下载成绩采集表
-            'updateset','kaohaosave','biaoqianXls','dwcaiji',
+            'updateset','kaohaosave','biaoqianxls','dwcaiji',
             //课题结题图片上传和更新
             'jtupload','jtupdate',
         );
