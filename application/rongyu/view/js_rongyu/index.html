@@ -114,7 +114,7 @@
         console.log(obj.data.title);
         switch(layEvent){
           	case 'detail':// 查看
-	          parent.x_admin_add_to_tab(obj.data.title + ' 列表','rylist/'+obj.data.id+'/'+obj.data.title,true);
+	          parent.x_admin_add_to_tab(obj.data.title + ' 列表','rylist/'+obj.data.id,true);
 	          break;
 	        case 'del':// 删除
 	          cjgl.del(obj,"/jsry");

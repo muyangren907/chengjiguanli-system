@@ -16,7 +16,7 @@ Route::resource('jsryinfo','rongyu/JsRongyuInfo');
 Route::get('dwry/createall','rongyu/DwRongyu/createAll');
 Route::post('dwry/createall','rongyu/DwRongyu/saveall');
 // 荣誉册中荣誉信息列表
-Route::get('rylist/:rongyuce/:title','rongyu/JsRongyuInfo/rongyuList');
+Route::get('rylist/:rongyuce','rongyu/JsRongyuInfo/rongyuList');
 Route::get('ryout/:rongyuce','rongyu/JsRongyuInfo/outXlsx');
 
 Route::get('jsryinfoadd/:rongyuce','rongyu/JsRongyuInfo/create');

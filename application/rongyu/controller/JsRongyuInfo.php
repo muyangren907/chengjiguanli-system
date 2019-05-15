@@ -40,9 +40,9 @@ class JsRongyuInfo extends Base
     public function rongyuList($rongyuce)
     {
         // 荣誉数据模型
-        $ry = 
+        $ry = new \app\rongyu\model\JsRongyu;
         // 设置要给模板赋值的信息
-        $list['webtitle'] = $title . ' 荣誉';
+        $list['webtitle'] = $ry->where('id',$rongyuce)->value('title') . ' 荣誉';
         $list['rongyuce'] = $rongyuce;
 
         // 模板赋值

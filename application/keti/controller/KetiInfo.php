@@ -34,11 +34,12 @@ class KetiInfo extends Base
      * @param  int  $id
      * @return \think\Response
      */
-    public function ketiList($ketice,$title)
+    public function ketiList($ketice)
     {
 
+        $kt = new \app\keti\model\Keti;
         // 设置要给模板赋值的信息
-        $list['webtitle'] = $title.' 列表';
+        $list['webtitle'] = $kt->where('id',$ketice)->value('title').' 列表';
         $list['ketice'] = $ketice;
 
         // 模板赋值

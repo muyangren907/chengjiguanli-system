@@ -29,6 +29,10 @@ class Tongji extends Model
                     }
                 ])
                 ->select();
+        if($khlist->isEmpty())
+        {
+            return $data = array();
+        }
 
         // 获取参考学科
         $ks = new \app\kaoshi\model\Kaoshi;
@@ -39,6 +43,10 @@ class Tongji extends Model
                         }
                     ])
                     ->find();
+        if($ksinfo->ks_subject->isEmpty())
+        {
+            return $data = array();
+        }
         $xk = array();
         foreach ($ksinfo->ks_subject as $key => $value) {
             $xk[$value->subjectid] = $value->lieming;

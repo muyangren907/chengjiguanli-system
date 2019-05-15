@@ -113,6 +113,10 @@ class Kaohao extends Base
                     }
                 ])
                 ->select();
+        if($khlist->isEmpty())
+        {
+            return $data = array();
+        }
 
                 
         // 获取参考学科
@@ -124,11 +128,14 @@ class Kaohao extends Base
                         }
                     ])
                     ->find();
+        if($ksinfo->ks_subject->isEmpty())
+        {
+            return $data = array();
+        }
         $xk = array();
         foreach ($ksinfo->ks_subject as $key => $value) {
             $xk[$value->subjectid] = $value->lieming;
         }
-
 
         // 整理数据
         $data = array();

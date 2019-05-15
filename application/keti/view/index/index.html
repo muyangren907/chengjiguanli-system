@@ -113,7 +113,7 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
           	case 'detail':// 查看
-	          parent.x_admin_add_to_tab(obj.data.title + ' 列表','/ktlist/'+obj.data.id+'/'+obj.data.title,true);
+	          parent.x_admin_add_to_tab(obj.data.title + ' 列表','/ktlist/'+obj.data.id,true);
 	          break;
 	        case 'del':// 删除
 	          cjgl.del(obj,"/kt");
