@@ -37,8 +37,10 @@ class JsRongyuInfo extends Base
      *
      * @return \think\Response
      */
-    public function rongyuList($rongyuce,$title)
+    public function rongyuList($rongyuce)
     {
+        // 荣誉数据模型
+        $ry = 
         // 设置要给模板赋值的信息
         $list['webtitle'] = $title . ' 荣誉';
         $list['rongyuce'] = $rongyuce;
