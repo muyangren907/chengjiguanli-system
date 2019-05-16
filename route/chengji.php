@@ -33,11 +33,11 @@ Route::post('chengji/dwChengji','chengji/Index/dwchengjixls');
  
 // 下载班级成绩统计表
 Route::get('cjtongji/:kaoshi/dwBanji','chengji/Tongji/dwBanji');	
-Route::post('cjtongji/:kaoshi/dwBanji','chengji/Tongji/dwBanjixls');	
+Route::post('cjtongji/dwBanji','chengji/Tongji/dwBanjixls');	
 
 // 下载年级成绩统计表
 Route::get('cjtongji/:kaoshi/dwNianji','chengji/Tongji/dwNianji');	
-Route::post('cjtongji/:kaoshi/dwNanji','chengji/Tongji/dwNianjixls');
+Route::post('cjtongji/dwNanji','chengji/Tongji/dwNianjixls');
 
 
 

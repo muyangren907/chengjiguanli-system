@@ -35,6 +35,9 @@
 		<button class="layui-btn" lay-event="add">
 			<i class="iconfont">&#xe6b9;</i> 添加
 		</button>
+		<button class="layui-btn" lay-event="download">
+	      <i class="layui-icon layui-icon-download-circle"></i> 下载
+	    </button>
 	</div>
 </script>
 <!-- 记录操作按钮模板 -->
@@ -110,6 +113,9 @@
           case 'add':
             cjgl.add('添加单位','/school/create','650','500');
             break;
+          case 'download':
+  			cjgl.add('下载成绩','/cjtongji/{$list.kaoshi}/dwNianji','650','300');
+  			break;
         };
       });
 

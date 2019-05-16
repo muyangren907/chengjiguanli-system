@@ -142,7 +142,7 @@ function getAgeByBirth($date,$type = 1){
 // EXCEL表格列名
 function excelLieming()
 {
-	$liemingarr = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+	$liemingarr = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF'];
 	return $liemingarr;
 }
 

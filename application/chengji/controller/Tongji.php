@@ -146,9 +146,18 @@ class Tongji extends Base
     // 年级、班级学生成绩统计结果下载界面
     public function dwBanji($kaoshi)
     {
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'各班级成绩汇总表下载',
+            'butname'=>'下载',
+            'formpost'=>'POST',
+            'url'=>'/cjtongji/dwBanji',
+            'kaoshi'=>$kaoshi
+        );
+
         // 模板赋值
-        $this->assign('id',$kaoshi);
-        // 渲染模板
+        $this->assign('list',$list);
+        // 渲染
         return $this->fetch();
 
     }
@@ -158,77 +167,142 @@ class Tongji extends Base
     public function dwBanjixls($kaoshi)
     {
         // 获取表单参数
-        $getParam = request()->param();
+        $src = $this->request
+                ->only([
+                    'kaoshi'=>'',
+                    'nianji'=>'一年级',
+                    'school'=>'',
+                ],'POST');
 
-        // 实例化统计成绩数据模型
-        $tj = new \app\chengji\model\Tongji;
-        // 获取统计成绩参数
-        $canshu = $tj->getCanshu($getParam['kaoshiid']);
-        // 获取统计结果
-        $data = $tj->tjnianji($getParam['kaoshiid'],$getParam['school'],$getParam['ruxuenian']);
+
+        // 查询要统计成绩的班级
+        $kh = new \app\kaoshi\model\Kaohao;
+
+        $bj = $kh->where('nianji',$src['nianji'])
+                ->where('kaoshi',$src['kaoshi'])
+                ->where('school',$src['school'])
+                ->with([
+                    'cjBanji'=>function($query){
+                        $query->field('id,paixu,ruxuenian')
+                            ->append(['numTitle','banjiTitle']);
+                    }
+                    ,'cjSchool'=>function($query){
+                        $query->field('id,jiancheng');
+                    }
+                ])
+                ->group('banji')
+                ->field('id,banji,school')
+                ->select();
+
+        if($bj->isEmpty()){
+            // 重组返回内容
+            $data = [
+                'code'=> 0 , // ajax请求次数，作为标识符
+                'msg'=>"",  // 获取到的结果数(每页显示数量)
+                'count'=>0, // 符合条件的总数据量
+                'data'=>array(), //获取到的数据结果
+            ];
+
+            return json($data);
+        }
+
+
+
+        // 获取并统计各班级成绩
+        $tj = new TJ;
+        $data = array();
+        $allcj = array();
+        foreach ($bj as $key => $value) {
+            $banji=[$value->banji];
+            $nianji = array();
+            $temp = $tj->srcChengji($src['kaoshi'],$banji,$nianji);
+            $allcj = array_merge($allcj,  $temp);;
+            $temp = $tj->tongji($temp,$src['kaoshi']);
+            $data[] = [
+                'banji'=>$value->cj_banji->banjiTitle,
+                'school'=>$value->cj_school->jiancheng,
+                'chengji'=>$temp
+            ];
+        }
+
+        // 获取年级成绩
+        $temp = $tj->tongji($allcj,$src['kaoshi']);
+        $data[] = [
+            'banji'=>'合计',
+            'school'=>'',
+            'chengji'=>$temp
+        ];
+
+        
+        // 获取参考学科
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $ksinfo = $ks->where('id',$src['kaoshi'])
+                    ->field('id')
+                    ->with([
+                        'ksSubject'=>function($query){
+                            $query->field('kaoshiid,subjectid,manfen')
+                                ->with(['subjectName'=>function($q){
+                                    $q->field('id,title,lieming');
+                                }]
+                            );
+                        }
+                    ])
+                    ->find();
+        $xk = $ksinfo->ks_subject;
+
 
         // 创建表格
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
 
+        $sbjcol = ['cnt'=>'人数','avg'=>'平均分','youxiu'=>'优秀率','jige'=>'及格率'];
+        $sbjcolcnt = count($sbjcol);
+        $colname = excelLieming();
+        $colcnt = $sbjcolcnt*count($xk)+3;
+
+
         // 设置表头信息
-        $sheet->mergeCells('A1:K1');
-        $sheet->setCellValue('A1', '学生成绩列表');
+        $sheet->mergeCells('A1:'.$colname[$colcnt].'1');
+        $sheet->setCellValue('A1', '各班级学生成绩列表');
         $sheet->mergeCells('A3:A4');
         $sheet->setCellValue('A3', '序号');
         $sheet->mergeCells('B3:B4');
         $sheet->setCellValue('B3', '班级');
-        $sheet->mergeCells('C3:E3');
-        $sheet->setCellValue('C3', '语文('.$canshu[1]['manfen'].')');
-        $sheet->setCellValue('C4', '平均分');
-        $sheet->setCellValue('D4', '优秀率%');
-        $sheet->setCellValue('E4', '及格率%');
-        $sheet->mergeCells('F3:H3');
-        $sheet->setCellValue('F3', '数学('.$canshu[2]['manfen'].')');
-        $sheet->setCellValue('F4', '平均分');
-        $sheet->setCellValue('G4', '优秀率%');
-        $sheet->setCellValue('H4', '及格率%');
-        $sheet->mergeCells('I3:K3');
-        $sheet->setCellValue('I3', '英语('.$canshu[3]['manfen'].')');
-        $sheet->setCellValue('I4', '平均分');
-        $sheet->setCellValue('J4', '优秀率%');
-        $sheet->setCellValue('K4', '及格率%');
-
-        $i = 5;
-        foreach ($data as $key => $value) {
-            $sheet->setCellValue('A'.$i, $i-4);
-            $sheet->setCellValue('B'.$i, $value['title']);
-            $sheet->setCellValue('C'.$i, $value['data']['yuwen']['avg']);
-            $sheet->setCellValue('D'.$i, $value['data']['yuwen']['youxiu']);
-            $sheet->setCellValue('E'.$i, $value['data']['yuwen']['jige']);
-            $sheet->setCellValue('F'.$i, $value['data']['shuxue']['avg']);
-            $sheet->setCellValue('G'.$i, $value['data']['shuxue']['youxiu']);
-            $sheet->setCellValue('H'.$i, $value['data']['shuxue']['jige']);
-            $sheet->setCellValue('I'.$i, $value['data']['waiyu']['avg']);
-            $sheet->setCellValue('J'.$i, $value['data']['waiyu']['youxiu']);
-            $sheet->setCellValue('K'.$i, $value['data']['waiyu']['jige']);
-            $i++;
+        $col = 2;
+        foreach ($xk as $key => $value) {
+            $colend = $col + $sbjcolcnt - 1;
+            $sheet->mergeCells($colname[$col].'3:'.$colname[$colend].'3');
+            $sheet->setCellValue($colname[$col].'3', $value->subject_name->title.' '.$value->manfen);
+            foreach ($sbjcol as $k => $val) {
+                 $sheet->setCellValue($colname[$col].'4', $val);
+                 $col++;
+            }
         }
-        $sheet->getColumnDimension('B')->setWidth(15);
+        $sheet->mergeCells($colname[$col].'3:'.$colname[$col].'4');
+        $sheet->setCellValue($colname[$col].'3', '全科及格');
+        $col++;
+        $sheet->mergeCells($colname[$col].'3:'.$colname[$col].'4');
+        $sheet->setCellValue($colname[$col].'3', '全科平均');
 
-        $styleArrayBody = [
-            'borders' => [
-                'allBorders' => [
-                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                    'color' => ['argb' => '666666'],
-                ],
-            ],
-            'alignment' => [
-                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-            ],
-        ];
-        $i = $i-1;
-        $sheet->getStyle('A3:K'.$i)->applyFromArray($styleArrayBody);
-
-
+        $row = 5;
+        foreach ($data as $key => $value) {
+            $col = 2;
+            $sheet->setCellValue('A'.$row, $row-4);
+            $sheet->setCellValue('B'.$row, $value['banji']);
+            foreach ($xk as $ke => $val) {
+                foreach ($sbjcol as $k => $v) {
+                     $sheet->setCellValue($colname[$col].$row, $value['chengji'][$val->subject_name->lieming][$k]);
+                     $col++;
+                }
+            }
+            $sheet->setCellValue($colname[$col].$row, $value['chengji']['rate']);
+            $col++;
+            $sheet->setCellValue($colname[$col].$row, $value['chengji']['avg']);
+            $row++;
+        }
 
         // 保存文件
-        $filename = '学生成绩列表'.date('ymdHis').'.xlsx';
+        $filename = '各班级成绩汇总'.date('ymdHis').'.xlsx';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
@@ -338,7 +412,7 @@ class Tongji extends Base
         foreach ($bj as $key => $value) {
             $school=array();
             $nianji = [$src['nianji']];
-            $banji = array();
+            $banji = array(); #不限定班级
             $temp = $tj->srcChengji($src['kaoshi'],$banji,$nianji,$school);
             $allcj = array_merge($allcj,  $temp);;
             $temp = $tj->tongji($temp,$src['kaoshi']);
@@ -374,9 +448,19 @@ class Tongji extends Base
     // 年级、班级学生成绩统计结果下载界面
     public function dwNianji($kaoshi)
     {
+
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'各年级成绩汇总表下载',
+            'butname'=>'下载',
+            'formpost'=>'POST',
+            'url'=>'/cjtongji/dwNanji',
+            'kaoshi'=>$kaoshi
+        );
+
         // 模板赋值
-        $this->assign('id',$kaoshi);
-        // 渲染模板
+        $this->assign('list',$list);
+        // 渲染
         return $this->fetch();
 
     }
@@ -386,78 +470,148 @@ class Tongji extends Base
     public function dwNianjixls($kaoshi)
     {
 
-        // 获取表单参数
-        $getParam = request()->param();
+        // 获取参数
+        $src = $this->request
+                ->only([
+                    'page'=>'1',
+                    'limit'=>'10',
+                    'kaoshi'=>'',
+                    'nianji'=>'一年级',
+                    'paixu'=>array(),
+                ],'POST');
 
-        // 实例化统计成绩数据模型
-        $tj = new \app\chengji\model\Tongji;
-        // 获取统计成绩参数
-        $canshu = $tj->getCanshu($getParam['kaoshiid']);
-        // 获取统计结果
-        $data = $tj->tjschool($getParam['kaoshiid'],$getParam['ruxuenian']);
+        // 查询要统计成绩的班级
+        $kh = new \app\kaoshi\model\Kaohao;
+        $paixu = $src['paixu'];
+
+        $bj = $kh->where('nianji',$src['nianji'])
+                ->where('kaoshi',$src['kaoshi'])
+                ->when(count($paixu)>0,function($query) use($paixu){
+                    $query->where('banji','in',function($q)use($paixu){
+                        $q->name('banji')->where('paixu','in',$paixu)->field('id');
+                    });
+                })
+                ->with([
+                    'cjBanji'=>function($query){
+                        $query->field('id,paixu,ruxuenian')
+                            ->append(['numTitle','banjiTitle']);
+                    }
+                    ,'cjSchool'=>function($query){
+                        $query->field('id,jiancheng');
+                    }
+                ])
+                ->group('school')
+                ->field('id,banji,school')
+                ->select();
+
+        if($bj->isEmpty()){
+            // 重组返回内容
+            $data = [
+                'code'=> 0 , // ajax请求次数，作为标识符
+                'msg'=>"",  // 获取到的结果数(每页显示数量)
+                'count'=>0, // 符合条件的总数据量
+                'data'=>array(), //获取到的数据结果
+            ];
+
+            return json($data);
+        }
+
+
+
+        // 获取并统计各班级成绩
+        $tj = new TJ;
+        $data = array();
+        $allcj = array();
+        foreach ($bj as $key => $value) {
+            $school=array();
+            $nianji = [$src['nianji']];
+            $banji = array(); #不限定班级
+            $temp = $tj->srcChengji($src['kaoshi'],$banji,$nianji,$school);
+            $allcj = array_merge($allcj,  $temp);;
+            $temp = $tj->tongji($temp,$src['kaoshi']);
+            $data[] = [
+                'school'=>$value->cj_school->jiancheng,
+                'chengji'=>$temp
+            ];
+        }
+
+        // 获取年级成绩
+        $temp = $tj->tongji($allcj,$src['kaoshi']);
+        $data[] = [
+            'school'=>'合计',
+            'chengji'=>$temp
+        ];
+
+        
+        // 获取参考学科
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $ksinfo = $ks->where('id',$src['kaoshi'])
+                    ->field('id')
+                    ->with([
+                        'ksSubject'=>function($query){
+                            $query->field('kaoshiid,subjectid,manfen')
+                                ->with(['subjectName'=>function($q){
+                                    $q->field('id,title,lieming');
+                                }]
+                            );
+                        }
+                    ])
+                    ->find();
+        $xk = $ksinfo->ks_subject;
+
 
         // 创建表格
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
 
+        $sbjcol = ['cnt'=>'人数','avg'=>'平均分','youxiu'=>'优秀率','jige'=>'及格率'];
+        $sbjcolcnt = count($sbjcol);
+        $colname = excelLieming();
+        $colcnt = $sbjcolcnt*count($xk)+3;
+
+
         // 设置表头信息
-        $sheet->mergeCells('A1:K1');
-        $sheet->setCellValue('A1', '学生成绩列表');
+        $sheet->mergeCells('A1:'.$colname[$colcnt].'1');
+        $sheet->setCellValue('A1', '各班级学生成绩列表');
         $sheet->mergeCells('A3:A4');
         $sheet->setCellValue('A3', '序号');
         $sheet->mergeCells('B3:B4');
         $sheet->setCellValue('B3', '班级');
-        $sheet->mergeCells('C3:E3');
-        $sheet->setCellValue('C3', '语文('.$canshu[1]['manfen'].')');
-        $sheet->setCellValue('C4', '平均分');
-        $sheet->setCellValue('D4', '优秀率%');
-        $sheet->setCellValue('E4', '及格率%');
-        $sheet->mergeCells('F3:H3');
-        $sheet->setCellValue('F3', '数学('.$canshu[2]['manfen'].')');
-        $sheet->setCellValue('F4', '平均分');
-        $sheet->setCellValue('G4', '优秀率%');
-        $sheet->setCellValue('H4', '及格率%');
-        $sheet->mergeCells('I3:K3');
-        $sheet->setCellValue('I3', '英语('.$canshu[3]['manfen'].')');
-        $sheet->setCellValue('I4', '平均分');
-        $sheet->setCellValue('J4', '优秀率%');
-        $sheet->setCellValue('K4', '及格率%');
-
-        $i = 5;
-        foreach ($data as $key => $value) {
-            $sheet->setCellValue('A'.$i, $i-4);
-            $sheet->setCellValue('B'.$i, $value['title']);
-            $sheet->setCellValue('C'.$i, $value['data']['yuwen']['avg']);
-            $sheet->setCellValue('D'.$i, $value['data']['yuwen']['youxiu']);
-            $sheet->setCellValue('E'.$i, $value['data']['yuwen']['jige']);
-            $sheet->setCellValue('F'.$i, $value['data']['shuxue']['avg']);
-            $sheet->setCellValue('G'.$i, $value['data']['shuxue']['youxiu']);
-            $sheet->setCellValue('H'.$i, $value['data']['shuxue']['jige']);
-            $sheet->setCellValue('I'.$i, $value['data']['waiyu']['avg']);
-            $sheet->setCellValue('J'.$i, $value['data']['waiyu']['youxiu']);
-            $sheet->setCellValue('K'.$i, $value['data']['waiyu']['jige']);
-            $i++;
+        $col = 2;
+        foreach ($xk as $key => $value) {
+            $colend = $col + $sbjcolcnt - 1;
+            $sheet->mergeCells($colname[$col].'3:'.$colname[$colend].'3');
+            $sheet->setCellValue($colname[$col].'3', $value->subject_name->title.' '.$value->manfen);
+            foreach ($sbjcol as $k => $val) {
+                 $sheet->setCellValue($colname[$col].'4', $val);
+                 $col++;
+            }
         }
-        $sheet->getColumnDimension('B')->setWidth(15);
+        $sheet->mergeCells($colname[$col].'3:'.$colname[$col].'4');
+        $sheet->setCellValue($colname[$col].'3', '全科及格');
+        $col++;
+        $sheet->mergeCells($colname[$col].'3:'.$colname[$col].'4');
+        $sheet->setCellValue($colname[$col].'3', '全科平均');
 
-        $styleArrayBody = [
-            'borders' => [
-                'allBorders' => [
-                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                    'color' => ['argb' => '666666'],
-                ],
-            ],
-            'alignment' => [
-                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-            ],
-        ];
-        $i = $i-1;
-        $sheet->getStyle('A3:K'.$i)->applyFromArray($styleArrayBody);
-
-
+        $row = 5;
+        foreach ($data as $key => $value) {
+            $col = 2;
+            $sheet->setCellValue('A'.$row, $row-4);
+            $sheet->setCellValue('B'.$row, $value['school']);
+            foreach ($xk as $ke => $val) {
+                foreach ($sbjcol as $k => $v) {
+                     $sheet->setCellValue($colname[$col].$row, $value['chengji'][$val->subject_name->lieming][$k]);
+                     $col++;
+                }
+            }
+            $sheet->setCellValue($colname[$col].$row, $value['chengji']['rate']);
+            $col++;
+            $sheet->setCellValue($colname[$col].$row, $value['chengji']['avg']);
+            $row++;
+        }
 
         // 保存文件
-        $filename = '各学校年级成绩统计表'.date('ymdHis').'.xlsx';
+        $filename = '各学校'.$src['nianji'].'年级成绩汇总'.date('ymdHis').'.xlsx';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
@@ -465,7 +619,6 @@ class Tongji extends Base
         $writer->save('php://output');
         ob_flush();
         flush();
-
     }
 
 }
