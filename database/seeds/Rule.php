@@ -34,7 +34,7 @@ class Rule extends Seeder
                 ['id'=>201,'title'=>'班级成绩','name'=>'tongji/Index/banji','paixu'=>1,'ismenu' =>true,'pid' =>2,'url'=>'/tongji',],
                 // 考试管理
                 ['id'=>301,'title'=>'考试列表','name'=>'kaoshi/Index/index','paixu'=>1,'ismenu' =>true,'pid' =>3,'url'=>'/kaoshi',],
-                ['id'=>302,'title'=>'考试操作','name'=>'Kaoshi/MoreAction/index','paixu'=>2,'ismenu' =>false,'pid' =>3],
+                ['id'=>302,'title'=>'考试操作','name'=>'Kaoshi/Index/MoreAction','paixu'=>2,'ismenu' =>false,'pid' =>3],
 
                 // 师生名单
                 ['id'=>401,'title'=>'学生列表','name'=>'renshi/Student/index','paixu'=>1,'ismenu' =>true,'pid' =>4,'url'=>'/student',],
@@ -88,9 +88,9 @@ class Rule extends Seeder
                     ['title'=>'状态','name'=>'Kaoshi/Index/setStatus','paixu'=>4,'pid'=>301],
                     ['title'=>'设置','name'=>'Kaoshi/Index/kaoshiset','paixu'=>5,'pid'=>301],
                     // 考试操作
-                    ['title'=>'分配考号','name'=>'Kaoshi/MoreAction/kaohao','paixu'=>1,'pid'=>302],
-                    ['title'=>'下载试卷标签信息','name'=>'Kaoshi/MoreAction/biaoqian','paixu'=>2,'pid'=>302],
-                    ['title'=>'下载成绩采集表','name'=>'Kaoshi/MoreAction/caiji','paixu'=>3,'pid'=>302],
+                    ['title'=>'分配考号','name'=>'kaoshi/Kaohao/index','paixu'=>1,'pid'=>302],
+                    ['title'=>'下载试卷标签信息','name'=>'kaoshi/Kaohao/biaoqian','paixu'=>2,'pid'=>302],
+                    ['title'=>'下载成绩采集表','name'=>'kaoshi/Kaohao/caiji','paixu'=>3,'pid'=>302],
                     ['title'=>'成绩列表','name'=>'Chengji/Index/stuChengjilist','paixu'=>4,'pid'=>302],
                         ['title'=>'成绩清除','name'=>'Chengji/Index/deletecj','paixu'=>5,'pid'=>302],
                         ['title'=>'成绩状态','name'=>'Chengji/Index/setStatus','paixu'=>6,'pid'=>302],

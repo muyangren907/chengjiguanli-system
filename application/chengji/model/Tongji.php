@@ -112,7 +112,7 @@ class Tongji extends Model
         }
         if(count($cj)>0)
         {
-            return round($cnt/count($cj)*100);
+            return round($cnt/count($cj)*100,2);
         }else{
             return '';
         }
