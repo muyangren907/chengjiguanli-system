@@ -168,7 +168,7 @@ class Index extends Base
         // 重新组合成绩信息
         foreach ($cjinfo as $key => $value) {
             foreach ($xk as $k => $val) {
-                if($value[$k+4] == null){
+                if($value[$k+4] === null){
                     continue;
                 }
                 // 查询是否存在这个成绩

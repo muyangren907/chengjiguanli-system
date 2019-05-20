@@ -55,11 +55,15 @@ class Tongji extends Model
         // 整理数据
         $data = array();
         foreach ($khlist as $key => $value) {
+            $data[$key]['sum'] = 0;
+            $sbjcnt = 0;
             foreach ($value->ks_chengji as $k => $val) {
                 $data[$key][$xk[$val->subject_id]] = $val->defen*1;
+                $data[$key]['sum'] = ($data[$key]['sum'] + $val->defen) * 1;
+                $sbjcnt ++ ;
             }
+            $data[$key]['sum'] == 0 ? $data[$key]['avg'] = 0 :  $data[$key]['sum'] / $sbjcnt;
         }
-
         return $data;
     }
 
@@ -90,12 +94,12 @@ class Tongji extends Model
             $temp['sifenwei'] = $this->quartile($cjcol);
             $data[$value->lieming] = $temp;
         }
-        $data['cnt'] = count($allcj);
-        $data['sum'] = array_sum($allcj);
-        $data['cnt']>0 ? $data['avg'] = round($data['sum']/$data['cnt'],2) : $data['avg']=0;
+        $cjcol = array_column($cj,'sum');
+        $data['cnt'] = count($cjcol);
+        $data['sum'] = array_sum($cjcol);
+        $data['cnt']>0 ? $data['avg'] = round($data['sum']/$data['cnt'],1) : $data['avg']=0;
         $data['rate'] = $this->rateAll($cj,$ksinfo->ks_subject); #全科及格率
         
-
         return $data;
     }
 
@@ -112,7 +116,7 @@ class Tongji extends Model
         }
         if(count($cj)>0)
         {
-            return round($cnt/count($cj)*100,2);
+            return round($cnt/count($cj)*100,1);
         }else{
             return '';
         }
@@ -141,7 +145,7 @@ class Tongji extends Model
 
         if(count($cj)>0)
         {
-            return round($jige/count($cj)*100);
+            return round($jige/count($cj)*100,1);
         }else{
             return '';
         }

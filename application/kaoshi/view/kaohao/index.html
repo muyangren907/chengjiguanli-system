@@ -68,6 +68,7 @@
               $('input[title="全选"]').each(function(){
                 $(this).nextAll().remove();
               });
+              $('input[title="全选"]').prop('checked',false);
                 if($.isEmptyObject(data))
                 {
                     return true;
