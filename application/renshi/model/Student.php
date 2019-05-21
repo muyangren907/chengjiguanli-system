@@ -24,7 +24,10 @@ class Student extends Base
     // 年龄获取器
     public function getAgeAttr()
     {
-    	return getAgeByBirth($this->getdata('shengri'),2);
+    	if(strlen($this->getData('shengri')) == 0){
+            return '';
+        };
+        return getAgeByBirth($this->getData('shengri'),2);
     }
 
 
@@ -74,6 +77,7 @@ class Student extends Base
                         $query->field('id,ruxuenian,paixu')->append(['banjiTitle']);
                     }
                 ])
+                ->field('id,xingming,school,sex,shengri')
                 ->append(['age'])
                 ->select();
 

@@ -89,16 +89,17 @@ class Rule extends Seeder
                     ['title'=>'设置','name'=>'Kaoshi/Index/kaoshiset','paixu'=>5,'pid'=>301],
                     // 考试操作
                     ['title'=>'分配考号','name'=>'kaoshi/Kaohao/index','paixu'=>1,'pid'=>302],
-                    ['title'=>'下载试卷标签信息','name'=>'kaoshi/Kaohao/biaoqian','paixu'=>2,'pid'=>302],
-                    ['title'=>'下载成绩采集表','name'=>'kaoshi/Kaohao/caiji','paixu'=>3,'pid'=>302],
-                    ['title'=>'成绩列表','name'=>'Chengji/Index/stuChengjilist','paixu'=>4,'pid'=>302],
-                        ['title'=>'成绩清除','name'=>'Chengji/Index/deletecj','paixu'=>5,'pid'=>302],
-                        ['title'=>'成绩状态','name'=>'Chengji/Index/setStatus','paixu'=>6,'pid'=>302],
-                    ['title'=>'班级成绩统计','name'=>'Chengji/Tongji/tjBanji','paixu'=>7,'pid'=>302],
-                    ['title'=>'年级成绩统计','name'=>'Chengji/Tongji/tjNianji','paixu'=>8,'pid'=>302],
-                    ['title'=>'下载学生成绩','name'=>'chengji/Index/dwChengji','paixu'=>9,'pid'=>302],
-                    ['title'=>'下载班级成绩统计表','name'=>'chengji/Tongji/dwBanji','paixu'=>10,'pid'=>302],
-                    ['title'=>'下载年级成绩统计表','name'=>'chengji/Tongji/dwNianji','paixu'=>11,'pid'=>302],
+                    ['title'=>'删除考号','name'=>'kaoshi/Kaohao/delete','paixu'=>2,'pid'=>302],
+                    ['title'=>'下载试卷标签信息','name'=>'kaoshi/Kaohao/biaoqian','paixu'=>3,'pid'=>302],
+                    ['title'=>'下载成绩采集表','name'=>'kaoshi/Kaohao/caiji','paixu'=>4,'pid'=>302],
+                    ['title'=>'成绩列表','name'=>'Chengji/Index/stuChengjilist','paixu'=>5,'pid'=>302],
+                        ['title'=>'成绩清除','name'=>'Chengji/Index/deletecj','paixu'=>6,'pid'=>302],
+                        ['title'=>'成绩状态','name'=>'Chengji/Index/setStatus','paixu'=>7,'pid'=>302],
+                    ['title'=>'班级成绩统计','name'=>'Chengji/Tongji/tjBanji','paixu'=>8,'pid'=>302],
+                    ['title'=>'年级成绩统计','name'=>'Chengji/Tongji/tjNianji','paixu'=>9,'pid'=>302],
+                    ['title'=>'下载学生成绩','name'=>'chengji/Index/dwChengji','paixu'=>10,'pid'=>302],
+                    ['title'=>'下载班级成绩统计表','name'=>'chengji/Tongji/dwBanji','paixu'=>11,'pid'=>302],
+                    ['title'=>'下载年级成绩统计表','name'=>'chengji/Tongji/dwNianji','paixu'=>12,'pid'=>302],
 
 
 

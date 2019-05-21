@@ -11,6 +11,7 @@
 
 //系统设置路由
 Route::resource('kaoshi','kaoshi/Index');
+Route::resource('kaohao','kaoshi/Kaohao');
 // 考试更多操作
 Route::get('kaoshi/:kaoshi/more','kaoshi/Index/moreAction');
 // 考试设置保存

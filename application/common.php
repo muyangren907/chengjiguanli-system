@@ -113,7 +113,7 @@ function banjinamelist()
 * $date是时间戳
 * $type为1的时候是虚岁,2的时候是周岁
 */
-function getAgeByBirth($date,$type = 1){
+function getAgeByBirth($date = 0,$type = 1){
    $nowYear = date("Y",time());
    $nowMonth = date("m",time());
    $nowDay = date("d",time());
@@ -220,13 +220,13 @@ function upload($list,$file,$isSave=false)
     // 如果需要保存文件 
     if($isSave == true){
 	    // 判断文件是否已经上传，如果已经上传则退出
-	    if($field->hasHash($list['hash'])){
-	        $data = array(
-	            'msg'=>'文件不能重复上传。',
-	            'val'=>0
-	        );
-	        return $data;
-	    }
+	    // if($field->hasHash($list['hash'])){
+	    //     $data = array(
+	    //         'msg'=>'文件不能重复上传。',
+	    //         'val'=>0
+	    //     );
+	    //     return $data;
+	    // }
 
 	    //将文件信息保存
 		$data = $field->create($list);
@@ -269,6 +269,7 @@ function upload($list,$file,$isSave=false)
 function arraySequence($array, $field = 'id', $sort = 'desc') {
 
 	$len = count($array)-1;
+
 	if($sort == 'asc')
 	{
 		for($i = 0 ; $i<$len ; $i++){
@@ -278,9 +279,9 @@ function arraySequence($array, $field = 'id', $sort = 'desc') {
 				{
 					if($array[$x][$field] > $array[$x+1][$field])
 					{
-						$temp = $array[$x][$field];
-						$array[$x][$field] = $array[$x+1][$field];
-						$array[$x+1][$field] = $temp;
+						$temp = $array[$x];
+						$array[$x] = $array[$x+1];
+						$array[$x+1] = $temp;
 					}
 				}
 			}
@@ -293,9 +294,9 @@ function arraySequence($array, $field = 'id', $sort = 'desc') {
 				{
 					if($array[$x][$field] < $array[$x+1][$field])
 					{
-						$temp = $array[$x][$field];
-						$array[$x][$field] = $array[$x+1][$field];
-						$array[$x+1][$field] = $temp;
+						$temp = $array[$x];
+						$array[$x] = $array[$x+1];
+						$array[$x+1] = $temp;
 					}
 				}
 			}

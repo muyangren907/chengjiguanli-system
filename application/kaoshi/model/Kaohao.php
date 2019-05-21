@@ -24,8 +24,9 @@ class Kaohao extends Base
                         ,'cjSchool'=>function($query){
                             $query->field('id,jiancheng');
                         }
-                        ,'banjiKaohao'=>function($query){
+                        ,'banjiKaohao'=>function($query) use($kaoshi){
                             $query->field('id,banji,student,kaoshi,school')
+                                ->where('kaoshi',$kaoshi)
                                 ->order(['banji','id'])
                                 ->with([
                                     'cjStudent'=>function($q){
@@ -93,7 +94,7 @@ class Kaohao extends Base
                     $query->where(function($w) use ($seachval){
                         $w->whereOr('id',$seachval)
                         ->whereOr('student','in',function($q)use($seachval){
-                            $q->name('student')->where('xingming',$seachval)->field('id');
+                            $q->name('student')->where('xingming','like','%'.$seachval.'%')->field('id');
                         });
                     });
                 })
@@ -145,20 +146,21 @@ class Kaohao extends Base
             $data[$key]['student'] = $value->cj_student->xingming;
             $data[$key]['nianji'] = $value->nianji;
             $data[$key]['banji'] = $value->cj_banji->num_title;
-            $dfcnt = 0;
+            $dfsum = 0;
             $sbjcnt = 0;
             foreach ($value->ks_chengji as $k => $val) {
                 $data[$key][$xk[$val->subject_id]] = $val->defen*1;
-                $dfcnt = $dfcnt + $val->defen*1;
+                $dfsum = $dfsum + $val->defen*1;
                 $sbjcnt ++;
             }
-            $data[$key]['cnt'] = $dfcnt;
+            $data[$key]['sum'] = $dfsum;
             if($sbjcnt>0){
-                $data[$key]['avg'] = round($dfcnt/$sbjcnt,1);
+                $data[$key]['avg'] = round($dfsum/$sbjcnt,1);
             }else{
                 $data[$key]['avg'] = 0;
             }
         }
+
 
         // 按条件排序
         if(count($data)>0){

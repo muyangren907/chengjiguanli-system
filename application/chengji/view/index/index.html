@@ -85,10 +85,10 @@
 	// 设置列
 	options.cols=[[ //表头
 		{type:'checkbox', fixed: 'left'},
-		{field: 'school', title: '学校',sort: true},
+		{field: 'school', title: '学校', minWidth:100,sort: true},
 		{field: 'nianji', title: '年级 ', minWidth:100,sort: true},
 		{field: "banji",title: '班级',sort: true},
-		{field: "student",title: '学生姓名',sort: true},
+		{field: "student",title: '学生姓名',sort: true, minWidth:100},
 	]];
 
 
@@ -98,15 +98,18 @@
     {
       options.cols[0].push({field: xk[x].subject_name.lieming, title: xk[x].subject_name.jiancheng ,sort: true});
     }
-    options.cols[0].push({field: 'avg', title: '平均分',sort: true});
-    options.cols[0].push({field: 'cnt', title: '总分',sort: true});
-    options.cols[0].push({field: 'cnt', title: '总分',sort: true});
+    options.cols[0].push({field: 'avg', title: '平均分', minWidth:100,sort: true});
+    options.cols[0].push({field: 'sum', title: '总分', minWidth:100,sort: true});
 	options.cols[0].push({field: 'id', title: '操作',toolbar: '#barDemo',minWidth:125});
 
 	// 设置查询条件
 	options.where = {
 		kaoshi:"{$list.kaoshi}"
 	}
+
+	// 设置每页显示条数
+	options.limit = 55;
+	options.limits = [55,60,100,150,200];
 
 
 	// 提交搜索条件后重载表格
@@ -118,10 +121,10 @@
       	switch(obj.event){
       		case 'dels':
 	      		var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-	      		cjgl.delAll(checkStatus,'/school','mytable');
+	      		cjgl.delAll(checkStatus,'/kaohao','mytable');
       			break;
       		case 'add':
-      			cjgl.add('添加单位','/school/create','650','500');
+      			cjgl.add('添加单位','/kaohao/create','650','500');
       			break;
       		case 'download':
       			cjgl.add('下载成绩','/chengji/{$list.kaoshi}/dwChengji','650','300');
@@ -139,10 +142,10 @@
 	      		layer.msg('查看' + data.id);
 	      		break;
       		case 'del':// 删除
-	      		cjgl.del(obj,"/school");
+	      		cjgl.del(obj,"/kaohao");
 	      		break;
       		case 'edit':// 编辑
-	      		cjgl.add('编辑单位','/school/'+obj.data.id+'/edit','650','500');
+	      		cjgl.add('编辑单位','/kaohao/'+obj.data.id+'/edit','650','500');
 	      		break;
       		case 'status':// 状态
 	      		cjgl.status(obj,"{:url('setstatus')}");

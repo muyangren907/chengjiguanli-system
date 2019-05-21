@@ -255,7 +255,7 @@ class Tongji extends Base
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
 
-        $sbjcol = ['cnt'=>'人数','avg'=>'平均分','youxiu'=>'优秀率','jige'=>'及格率'];
+        $sbjcol = ['cnt'=>'人数','avg'=>'平均分','jige'=>'及格率','youxiu'=>'优秀率'];
         $sbjcolcnt = count($sbjcol);
         $colname = excelLieming();
         $colcnt = $sbjcolcnt*count($xk)+3;
@@ -364,26 +364,14 @@ class Tongji extends Base
                     'limit'=>'10',
                     'kaoshi'=>'',
                     'nianji'=>'一年级',
-                    'paixu'=>array(),
                 ],'POST');
 
         // 查询要统计成绩的班级
         $kh = new \app\kaoshi\model\Kaohao;
-        $paixu = $src['paixu'];
 
-        $bj = $kh->where('nianji',$src['nianji'])
+        $nianji = $kh->where('nianji',$src['nianji'])
                 ->where('kaoshi',$src['kaoshi'])
-                ->when(count($paixu)>0,function($query) use($paixu){
-                    $query->where('banji','in',function($q)use($paixu){
-                        $q->name('banji')->where('paixu','in',$paixu)->field('id');
-                    });
-                })
-                ->with([
-                    'cjBanji'=>function($query){
-                        $query->field('id,paixu,ruxuenian')
-                            ->append(['numTitle','banjiTitle']);
-                    }
-                    ,'cjSchool'=>function($query){
+                ->with(['cjSchool'=>function($query){
                         $query->field('id,jiancheng');
                     }
                 ])
@@ -391,7 +379,7 @@ class Tongji extends Base
                 ->field('id,banji,school')
                 ->select();
 
-        if($bj->isEmpty()){
+        if($nianji->isEmpty()){
             // 重组返回内容
             $data = [
                 'code'=> 0 , // ajax请求次数，作为标识符
@@ -404,16 +392,14 @@ class Tongji extends Base
         }
 
 
-
         // 获取并统计各班级成绩
         $tj = new TJ;
         $data = array();
         $allcj = array();
-        foreach ($bj as $key => $value) {
-            $school=array();
+        foreach ($nianji as $key => $value) {
+            $school=[$value->cj_school->id];
             $nianji = [$src['nianji']];
-            $banji = array(); #不限定班级
-            $temp = $tj->srcChengji($src['kaoshi'],$banji,$nianji,$school);
+            $temp = $tj->srcChengji($src['kaoshi'],array(),$nianji,$school);
             $allcj = array_merge($allcj,  $temp);;
             $temp = $tj->tongji($temp,$src['kaoshi']);
             $data[] = [
@@ -477,26 +463,14 @@ class Tongji extends Base
                     'limit'=>'10',
                     'kaoshi'=>'',
                     'nianji'=>'一年级',
-                    'paixu'=>array(),
                 ],'POST');
 
         // 查询要统计成绩的班级
         $kh = new \app\kaoshi\model\Kaohao;
-        $paixu = $src['paixu'];
 
-        $bj = $kh->where('nianji',$src['nianji'])
+        $nianji = $kh->where('nianji',$src['nianji'])
                 ->where('kaoshi',$src['kaoshi'])
-                ->when(count($paixu)>0,function($query) use($paixu){
-                    $query->where('banji','in',function($q)use($paixu){
-                        $q->name('banji')->where('paixu','in',$paixu)->field('id');
-                    });
-                })
-                ->with([
-                    'cjBanji'=>function($query){
-                        $query->field('id,paixu,ruxuenian')
-                            ->append(['numTitle','banjiTitle']);
-                    }
-                    ,'cjSchool'=>function($query){
+                ->with(['cjSchool'=>function($query){
                         $query->field('id,jiancheng');
                     }
                 ])
@@ -504,7 +478,8 @@ class Tongji extends Base
                 ->field('id,banji,school')
                 ->select();
 
-        if($bj->isEmpty()){
+
+        if($nianji->isEmpty()){
             // 重组返回内容
             $data = [
                 'code'=> 0 , // ajax请求次数，作为标识符
@@ -517,16 +492,14 @@ class Tongji extends Base
         }
 
 
-
         // 获取并统计各班级成绩
         $tj = new TJ;
         $data = array();
         $allcj = array();
-        foreach ($bj as $key => $value) {
-            $school=array();
+        foreach ($nianji as $key => $value) {
+            $school=[$value->cj_school->id];
             $nianji = [$src['nianji']];
-            $banji = array(); #不限定班级
-            $temp = $tj->srcChengji($src['kaoshi'],$banji,$nianji,$school);
+            $temp = $tj->srcChengji($src['kaoshi'],array(),$nianji,$school);
             $allcj = array_merge($allcj,  $temp);;
             $temp = $tj->tongji($temp,$src['kaoshi']);
             $data[] = [
@@ -564,7 +537,7 @@ class Tongji extends Base
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
 
-        $sbjcol = ['cnt'=>'人数','avg'=>'平均分','youxiu'=>'优秀率','jige'=>'及格率'];
+        $sbjcol = ['cnt'=>'人数','avg'=>'平均分','jige'=>'及格率%','youxiu'=>'优秀率%'];
         $sbjcolcnt = count($sbjcol);
         $colname = excelLieming();
         $colcnt = $sbjcolcnt*count($xk)+3;
@@ -588,10 +561,10 @@ class Tongji extends Base
             }
         }
         $sheet->mergeCells($colname[$col].'3:'.$colname[$col].'4');
-        $sheet->setCellValue($colname[$col].'3', '全科及格');
+        $sheet->setCellValue($colname[$col].'3', '全科及格率%');
         $col++;
         $sheet->mergeCells($colname[$col].'3:'.$colname[$col].'4');
-        $sheet->setCellValue($colname[$col].'3', '全科平均');
+        $sheet->setCellValue($colname[$col].'3', '总平均分');
 
         $row = 5;
         foreach ($data as $key => $value) {

@@ -3,17 +3,15 @@
 {block name="form"}
     <form action="{$list.set.url}" method="{$list.set.formpost}" class="layui-form layui-form-pane" lay-filter="myform">
           <div class="layui-form-item">
-            <label for="ruxuenian" class="layui-form-label">
+            <label for="nianji" class="layui-form-label">
               <span class="x-red">*</span>年级
             </label>
             <div class="layui-input-block">
               {php} $njlist = nianjiList();{/php}
-              <select name="ruxuenian" id="ruxuenian" lay-verify="required" class="layui-form-label">
+              <select name="nianji" id="nianji" lay-verify="required" class="layui-form-label">
                 <option value=""></option>
                 {foreach $njlist as $key=>$vo}
-                	<option value="{$key}" {present name="$list.data.stu_banji"}{eq name="$list.data.stu_banji.ruxuenian" value="$key" }selected{/eq}{/present}>
-                		{$vo}
-                	</option>
+                	<option value="{$vo}">{$vo}</option>
                 {/foreach}
               </select>
             </div>

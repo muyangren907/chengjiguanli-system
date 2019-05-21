@@ -158,17 +158,46 @@ class Index extends Base
         // 删除空单元格得到学科列名数组
         array_splice($cjinfo[1],0,4);
         $xk = $cjinfo[1];
-
-       
+      
         // 删除成绩采集表无用的标题行得到成绩数组
         array_splice($cjinfo,0,3);
 
+        // 查询考试信息
+        $kh = new Kaohao;
+        $ks = new \app\kaoshi\model\Kaoshi;
 
         $user_id = session('userid');
         // 重新组合成绩信息
         foreach ($cjinfo as $key => $value) {
             foreach ($xk as $k => $val) {
-                if($value[$k+4] === null){
+
+                $thissbj = $val;    # 当前学科
+                $defen = $value[$k+4];    # 当前学科
+
+                // 如果不存在值，跳过这次循环
+                if($defen === null){
+                    continue;
+                }
+                // 如果不为数字、则跳过
+                if(is_numeric($defen)==false){
+                    continue;
+                }
+
+
+                $kaoshiid = $kh->where('id',$value[1])->value('kaoshi');
+                $manfen = $ks->where('id',$kaoshiid)
+                            ->field('id')
+                            ->with([
+                                'ksSubject'=>function($query) use($thissbj){
+                                    $query->field('kaoshiid,subjectid,manfen')
+                                        ->where('subjectid',$thissbj);
+                                }
+                            ])
+                            ->find();
+
+                // 如果大于满分、小于0分的时候也跳过
+                if( $defen<0 || $defen>$manfen->ks_subject[0]->manfen )
+                {
                     continue;
                 }
                 // 查询是否存在这个成绩
@@ -183,7 +212,7 @@ class Index extends Base
                     'kaohao_id'=>$value[1],
                     'subject_id'=>$val,
                     'user_id'=>$user_id,
-                    'defen'=>$value[$k+4]
+                    'defen'=>$defen
                 ]);
             }
         }
@@ -271,8 +300,6 @@ class Index extends Base
 
         // 查询要显示的数据
         $data = $chengji->srcChengji($src);
-
-
 
 
         // 获取符合条件记录总数
@@ -518,10 +545,6 @@ class Index extends Base
 
         $sheet->setCellValue($colname[$colcnt+1].'3', $temp['avg']);
         $sheet->setCellValue($colname[$colcnt+2].'3', $temp['rate']);
-
-
-
-        
 
 
         // 保存文件

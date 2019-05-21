@@ -526,5 +526,26 @@ class Kaohao extends Base
     }
 
 
+    // 删除考试
+    public function delete($id)
+    {
+
+        if($id == 'm')
+        {
+            $id = request()->delete('ids');// 获取delete请求方式传送过来的数据并转换成数据
+        }
+        
+        $kh = new KH;
+        $list = $kh->where('id','in',$id)->field('id')->find();
+        $data = $list->together('ksChengji')->delete();
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
     
 }

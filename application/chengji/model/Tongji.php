@@ -55,6 +55,10 @@ class Tongji extends Model
         // 整理数据
         $data = array();
         foreach ($khlist as $key => $value) {
+            if(count($value->ks_chengji)== 0)
+            {
+                continue;
+            }
             $data[$key]['sum'] = 0;
             $sbjcnt = 0;
             foreach ($value->ks_chengji as $k => $val) {
@@ -88,7 +92,7 @@ class Tongji extends Model
             $temp['sum'] = array_sum($cjcol);
             $temp['cnt']>0 ? $temp['avg'] = $temp['sum']/$temp['cnt'] : $temp['avg']=0;
             $temp['biaozhuncha'] = round($this->getVariance($temp['avg'], $cjcol,true),2);
-            $temp['avg'] = round($temp['avg'],1);
+            $temp['avg'] = round($temp['avg'],2);
             $temp['youxiu'] = $this->rate($cjcol,$value->youxiu);
             $temp['jige'] = $this->rate($cjcol,$value->jige);
             $temp['sifenwei'] = $this->quartile($cjcol);
@@ -97,7 +101,11 @@ class Tongji extends Model
         $cjcol = array_column($cj,'sum');
         $data['cnt'] = count($cjcol);
         $data['sum'] = array_sum($cjcol);
-        $data['cnt']>0 ? $data['avg'] = round($data['sum']/$data['cnt'],1) : $data['avg']=0;
+        $data['cnt']>0 ? $data['avg'] = round($data['sum']/$data['cnt'],2) : $data['avg']=0;
+        foreach ($cj as $key => $value) {
+            unset($cj[$key]['avg']);
+            unset($cj[$key]['sum']);
+        }
         $data['rate'] = $this->rateAll($cj,$ksinfo->ks_subject); #全科及格率
         
         return $data;
@@ -116,7 +124,7 @@ class Tongji extends Model
         }
         if(count($cj)>0)
         {
-            return round($cnt/count($cj)*100,1);
+            return round($cnt/count($cj)*100,2);
         }else{
             return '';
         }
@@ -127,25 +135,28 @@ class Tongji extends Model
     // 全科及格率
     public function rateAll($cj = array(), $sbj=array())
     {
-        $jige = 0;
+        $jige = 0;  # 总及格人数
+        // 开始循环每个人的成绩
         foreach ($cj as $key => $value) {
-            $tempcj = count($value);
+            $temjige = 0; #记录学生及格的学科数
+            // 开始循环这个学生的每个学科成绩
             foreach ($sbj as $k => $val) {
-                $tempsbj = 0;
                 if(isset($value[$val->lieming]))
                 {
                     if($value[$val->lieming]>=$val->jige)
                     {
-                       $tempsbj++; 
+                       $temjige++; 
                     }
                 }
             }
-            $tempcj == $tempsbj ? $jige++ : $jige ;
+            // 如果这个学生及格学科数等于学科总数，那么全科及格总数加1
+            $temjige == count($value) && $temjige>0 ? $jige++ : $jige ;
         }
+
 
         if(count($cj)>0)
         {
-            return round($jige/count($cj)*100,1);
+            return round($jige/count($cj)*100,2);
         }else{
             return '';
         }
