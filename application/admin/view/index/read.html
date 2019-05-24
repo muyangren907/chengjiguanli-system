@@ -37,6 +37,18 @@
                             <th>出生日期</th>
                             <td>{$list.shengri}</td></tr>
                         <tr>
+                            <th>所在单位</th>
+                            <td>{$list.ad_school.title}</td></tr>
+                         <tr>
+                            <th>拥有角色</th>
+                            <td>
+                                {volist name="list.gl_group" id="vo"}
+                                    {gt name="key" value="0"}、{/gt}
+                                    {$vo.title}
+                                {/volist}
+
+                            </td></tr>
+                        <tr>
                             <th>联系电话</th>
                             <td>{$list.phone}</td></tr>
                         <tr>

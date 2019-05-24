@@ -135,6 +135,14 @@ class Index extends Base
         // 获取管理员信息
         $list = AD::where('id',$id)
                 ->field('id,xingming,sex,shengri,username,school,phone,denglucishu,lastip,ip,lasttime,thistime,create_time,update_time')
+                ->with([
+                    'adSchool'=>function($query){
+                        $query->field('id,title');
+                    }
+                    ,'glGroup'=>function($query){
+                        $query->where('status',1)->field('title,rules,miaoshu');
+                    }
+                ])
                 ->find();
         $list['webtitle'] = '帐号信息';
 
@@ -153,6 +161,14 @@ class Index extends Base
         // 获取管理员信息
         $list = AD::where('id',$id)
                 ->field('id,xingming,sex,shengri,username,school,phone,denglucishu,lastip,ip,lasttime,thistime,create_time,update_time')
+                ->with([
+                    'adSchool'=>function($query){
+                        $query->field('id,title');
+                    }
+                   ,'glGroup'=>function($query){
+                    $query->where('status',1)->field('title,rules,miaoshu');
+                }
+                ])
                 ->find();
         $list['webtitle'] = '我的信息';
 
@@ -179,7 +195,7 @@ class Index extends Base
                     $query->field('id,jiancheng');
                 }
                 ,'glGroup'=>function($query){
-                    $query->where('status',1)->field('title');
+                    $query->where('status',1)->field('title,rules,miaoshu');
                 }
             ])
             ->find();
