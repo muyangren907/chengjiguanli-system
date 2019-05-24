@@ -28,12 +28,14 @@
         </div>
         <ul class="layui-nav left fast-add" lay-filter="">
           <li class="layui-nav-item">
-            <a href="javascript:;">+新增</a>
+            <a href="javascript:;">+快捷操作</a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
-              <dd><a onclick="x_admin_show('资讯','https://www.baidu.com')"><i class="iconfont">&#xe6a2;</i>资讯</a></dd>
-              <dd><a onclick="x_admin_show('图片','https://www.baidu.com')"><i class="iconfont">&#xe6a8;</i>图片</a></dd>
-               <dd><a onclick="x_admin_show('用户','https://www.baidu.com')"><i class="iconfont">&#xe6b8;</i>用户</a></dd>
+              <dd><a onclick="x_admin_show('扫码录入','/chengji/malu')"><i class="layui-icon layui-icon-search"></i>扫码录入</a></dd>
+              <dd><a onclick="x_admin_show('表格录入','/chengji/biaolu')"><i class="layui-icon layui-icon-table"></i>表格录入</a></dd>
+              <dd><a onclick="x_admin_show('创建考试','/kaoshi/create')"><i class="layui-icon layui-icon-chart"></i>创建考试</a></dd>
+               <dd><a onclick="x_admin_show('添加学生','/student/create')"><i class="layui-icon layui-icon-username"></i>添加学生</a></dd>
                <dd>
+              <dd><a onclick="x_admin_show('系统帮助','https://www.kancloud.cn/llblax/abcd/789222')"><i class="layui-icon layui-icon-help"></i>系统帮助</a></dd>
             </dl>
           </li>
         </ul>
@@ -41,8 +43,8 @@
           <li class="layui-nav-item">
             <a href="javascript:;">{$list.username}</a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
-              <dd><a onclick="x_admin_show('个人信息','http://www.baidu.com')">个人信息</a></dd>
-              <!-- <dd><a onclick="x_admin_show('切换帐号','/login')">切换帐号</a></dd> -->
+              <dd><a onclick="x_admin_show('个人信息','/myinfo')">个人信息</a></dd>
+  <!--             <dd><a onclick="x_admin_show('操作手册','https://www.kancloud.cn/llblax/abcd/789222')">操作手册</a></dd> -->
               <dd><a href="/login">切换帐号</a></dd>
             </dl>
           </li>

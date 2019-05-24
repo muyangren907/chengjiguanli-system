@@ -39,7 +39,7 @@ class Keti extends Base
             )
             ->withCount(['ktInfo'=>'lxcount'],'id')
             ->withCount(['ktInfo'=>function($query){
-                $query->where('id','between',[1,1000]);
+                $query->where('jddengji','between',[1,2]);
             }])
     		->select();
 

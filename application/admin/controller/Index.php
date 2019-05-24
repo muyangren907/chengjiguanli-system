@@ -132,15 +132,36 @@ class Index extends Base
     // 读取用户信息
     public function read($id)
     {
-
         // 获取管理员信息
-        $list = AD::where('id',$id)->find();
+        $list = AD::where('id',$id)
+                ->field('id,xingming,sex,shengri,username,school,phone,denglucishu,lastip,ip,lasttime,thistime,create_time,update_time')
+                ->find();
+        $list['webtitle'] = '帐号信息';
 
         // 模板赋值
         $this->assign('list',$list);
 
         // 渲染模板
         return $this->fetch();
+    }
+
+
+    // 读取用户信息
+    public function myinfo()
+    {
+        $id = session('userid');
+        // 获取管理员信息
+        $list = AD::where('id',$id)
+                ->field('id,xingming,sex,shengri,username,school,phone,denglucishu,lastip,ip,lasttime,thistime,create_time,update_time')
+                ->find();
+        $list['webtitle'] = '我的信息';
+
+        // 模板赋值
+        $this->assign('list',$list);
+
+
+        // 渲染模板
+        return $this->fetch('read');
     }
 
     

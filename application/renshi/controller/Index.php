@@ -125,9 +125,10 @@ class Index extends Base
         return json($data);
     }
 
-    //
+    // 查看教师信息
     public function read($id)
     {
+        
         // 查询教师信息
         $myInfo = Teacher::where('id',$id)
             ->with(
@@ -149,14 +150,13 @@ class Index extends Base
                     },
                 ]
             )
+            ->append(['age','gongling'])
             ->limit(1)
             ->select();
             $myInfo = $myInfo[0];
-            // 设置数据总数
-        $myInfo['count'] = '';
         // 设置页面标题
-        $myInfo['title'] = $myInfo->xingming;
-        
+        $myInfo['webtitle'] = $myInfo->xingming.'信息';
+
         // 模板赋值
         $this->assign('list',$myInfo);
         // 渲染模板
@@ -400,6 +400,119 @@ class Index extends Base
     {
         $download =  new \think\response\Download('uploads\teacher\jiaoShiXingMingVBA.bas');
         return $download->name('TeacherVBA');
+    }
+
+
+    // 查询教师荣誉
+    public function srcRy($teacherid)
+    {
+        // 实例化荣誉数据模型
+        $ry = new \app\rongyu\model\JsRongyuInfo;
+
+        // 查询荣誉信息
+        $data = $ry->where('status',1)
+                ->where('id','in',function($query) use($teacherid){
+                    $query->name('jsRongyuCanyu')
+                        ->where('teacherid',$teacherid)
+                        ->field('rongyuid');
+                })
+                ->with(
+                [
+                    'jxCategory'=>function($query){
+                        $query->field('id,title');
+                    },
+                    'ryTuce'=>function($query){
+                        $query->field('id,title,fzschool,category')
+                            ->with([
+                                    'fzSchool'=>function($query){
+                                        $query->field('id,jiancheng,jibie')
+                                        ->with(['dwJibie'=>function($q){
+                                            $q->field('id,title');
+                                        }]);
+                                    },
+                                    'lxCategory'=>function($query){
+                                        $query->field('id,title');
+                                    },
+                                    
+                                ]);
+                    },
+                    'hjJsry'=>function($query){
+                        $query->field('rongyuid,teacherid')
+                        ->with(['teacher'=>function($query){
+                            $query->field('id,xingming');
+                        }]);
+                    },
+                ])
+                ->field('id,rongyuce,jiangxiang,hjshijian,title')
+                ->order('hjshijian')
+                ->select();
+
+       // 获取符合条件记录总数
+        $cnt = $data->count();
+       
+        // 重组返回内容
+        $data = [
+            'code'=> 0 , // ajax请求次数，作为标识符
+            'msg'=>"",  // 获取到的结果数(每页显示数量)
+            'count'=>$cnt, // 符合条件的总数据量
+            'data'=>$data, //获取到的数据结果
+        ];
+
+
+        return json($data);
+    }
+
+
+    // 查询教师课题
+    public function srcKt($teacherid)
+    {
+        // 实例化荣誉数据模型
+        $ry = new \app\keti\model\KetiInfo;
+
+        // 查询荣誉信息
+        $data = $ry->where('status',1)
+                ->where('id','in',function($query) use($teacherid){
+                    $query->name('KetiCanyu')
+                        ->where('teacherid',$teacherid)
+                        ->field('ketiinfoid');
+                })
+                ->with(
+                [
+                    'fzSchool'=>function($query){
+                        $query->field('id,jiancheng,jibie')
+                            ->with(['dwJibie'=>function($q){
+                                $q->field('id,title');
+                            }]);
+                    },
+                    'ktCategory'=>function($query){
+                        $query->field('id,title');
+                    },
+                      'ktZcr'=>function($query){
+                        $query->field('ketiinfoid,teacherid')
+                            ->with([
+                                'teacher'=>function($q){
+                                    $q->field('id,xingming');
+                                }
+                            ]);
+                    }
+                ])
+                ->field('id,title,fzdanweiid,category,jddengji')
+                ->order('id')
+                ->select();
+       
+       // 获取符合条件记录总数
+        $cnt = $data->count();
+       
+        // 重组返回内容
+        $data = [
+            'code'=> 0 , // ajax请求次数，作为标识符
+            'msg'=>"",  // 获取到的结果数(每页显示数量)
+            'count'=>$cnt, // 符合条件的总数据量
+            'data'=>$data, //获取到的数据结果
+        ];
+
+
+        return json($data);
     }
 
 

@@ -18,7 +18,6 @@ class Rule extends Seeder
         $rows= [
             // 一级菜单 1
             ['id'=>1,'title' =>'成绩采集','name'=>'chengji','paixu' =>1,'ismenu' =>true,'font'=>'&#xe6c9;'],
-            ['id'=>2,'title' =>'成绩统计','name'=>'tongji','paixu' =>2,'ismenu' =>true,'font'=>'&#xe812;','status'=>false],
             ['id'=>3,'title' =>'考试管理','name'=>'kaoshi','paixu' =>3,'ismenu' =>true,'font'=>'&#xe6ee;'],
             ['id'=>4,'title' =>'师生名单','name'=>'renshi','paixu' =>4,'ismenu' =>true,'font'=>'&#xe699;'],
             ['id'=>5,'title' =>'教务管理','name'=>'teach','paixu' =>5,'ismenu' =>true,'font'=>'&#xe6da;'],

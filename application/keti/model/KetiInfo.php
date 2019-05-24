@@ -88,8 +88,7 @@ class KetiInfo extends Base
                                 }
                             ]);
                     }
-                ]
-            )
+                ])
     		->select();
 
 

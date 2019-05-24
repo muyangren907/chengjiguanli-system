@@ -30,7 +30,10 @@ class JsRongyu extends Base
             ->with(
                 [
                     'fzSchool'=>function($query){
-                        $query->field('id,jiancheng');
+                        $query->field('id,jiancheng,jibie')
+                        ->with(['dwJibie'=>function($q){
+                            $q->field('id,title');
+                        }]);
                     },
                     'lxCategory'=>function($query){
                         $query->field('id,title');

@@ -201,7 +201,7 @@ class JsRongyuInfo extends Base
          return $this->belongsTo('\app\system\model\Category','jiangxiang','id');
     }
 
-    // 获奖人关联
+    // 获奖人信息关联
     public function hjJsry()
     {
         return $this->hasMany('\app\rongyu\model\JsRongyuCanyu','rongyuid','id')->where('category',1);
@@ -215,7 +215,7 @@ class JsRongyuInfo extends Base
     }
 
 
-    // 获奖人关联
+    // 参与人关联
     public function cyJsry()
     {
         return $this->hasMany('\app\rongyu\model\JsRongyuCanyu','rongyuid','id')->where('category',2);
