@@ -1,4 +1,4 @@
-﻿免费学生成绩统计系统。
+﻿﻿免费学生成绩统计系统。
 一款符合教师工作习惯、使用简单方便、数据分析结果能为教师、学生所用的成绩统计系统。
 开发者是一名小学教师，为了让自己统计成绩工作变得更优雅，才自学、自写这个小学生成绩统计系统。
 本系统前端采用H-ui框架，后端采用ThinkPHP框架开发，更多功能正在开发中。
@@ -20,22 +20,34 @@
 *查看成绩列表
 *查看成绩统计结果
 
+![学生成绩列表](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/20190524162731.png)
+学生成绩列表
+
+![班级成绩统计](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/20190524164321.png)
+班级成绩统计
+
+![扫码录入成绩页面](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/20190524164409.png)
+扫码录入成绩页面
+
+![权限分配](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/20190524164451.png)
+权限分配页面
+
 
 ## 演示地址
 http://xiaoshongshu.cn
 帐号   test1    密码  123456
 
 ## 更新内容
-更新版本号 学生成绩统计系统v2.0 xadmin前端版
-更换前端显示,重新整理后端代码。
+前端使用X-admin（感谢singliang大神建议）
+后端更新最新TP框架。
+优化后端代码
 升级提示
-修改 cj_system_base 表 title字段名冲突，修改为 webtitle
-authrule 表中的font字段数据需要重新导入
-修改 cj_fields 表, 添加hash和userid字段
+修改了很多数据表和权限，建议重新建表
+
 
 
 ## 更详细信息请查阅官方手册
 https://www.kancloud.cn/llblax/abcd/789222
 
 ## 下一步工作
-当前采用singliang大神的建议,另建分支将前端改成X-admin。修改后的界面看着会更舒服，操作更方便。下一步会完善各种统计表、将用户按“职务”分配权限。
+添加成绩统计图表
