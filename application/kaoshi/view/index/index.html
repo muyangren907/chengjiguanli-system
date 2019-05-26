@@ -60,7 +60,7 @@
 				}
 				return str;
 			}},
-			{field: "",title: '参考年级',templet:function(d){
+			{field: "",title: '参考年级', minWidth:160,templet:function(d){
 				var str='';
 				if(d.ks_nianji.length>0)
 				{
@@ -74,7 +74,7 @@
 				}
 				return str;
 			}},
-			{field: '', title: '参考学科',templet:function(d){
+			{field: '', title: '参考学科', minWidth:150,templet:function(d){
 				var str='';
 				if(d.ks_subject.length>0)
 				{
@@ -88,8 +88,8 @@
 				}
 				return str;
 			}} ,
-			{field: 'bfdate', title: '开始时间',sort: true},
-			{field: 'enddate', title: '结束时间', sort: true},
+			{field: 'bfdate', title: '开始时间', minWidth:100,sort: true},
+			{field: 'enddate', title: '结束时间', minWidth:100, sort: true},
 			{field: 'status', title: '状态',templet:'#status', sort: true},
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:175}
 		]];

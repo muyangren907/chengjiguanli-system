@@ -94,36 +94,6 @@
   </body>
 <script>
 
-
-  // 菜单动画
-  function onfont(obj,cz){
-    if(cz == 1)
-    {
-      // 获取当前
-      var mydiv = $(obj);
-      // 更改字体
-      mydiv.css('font-size',150);
-      // 更改样式
-      mydiv.parent().css('padding-top',11);
-      mydiv.parent().addClass('layui-bg-gray');
-      // 更改样式
-      mydiv.next().css('margin-top',11);
-      mydiv.next().addClass('layui-bg-black');
-    }else{
-      // 获取当前
-      var mydiv = $(obj);
-      // 更改字体
-      mydiv.css('font-size',100);
-      // 更改样式
-      mydiv.parent().css('padding-top',38);
-      mydiv.parent().removeClass('layui-bg-gray');
-      // 更改样式
-      mydiv.next().css('margin-top',38);
-      mydiv.next().removeClass('layui-bg-black');
-    }
-  }
-
-
   // 弹窗
   function addteb(title,url,is_refresh=true)
   {

@@ -47,15 +47,15 @@
   options.cols=[[ //表头
 			{type:'checkbox', fixed: 'left'},
 			{field: 'xingming', title: '姓名',sort: true, minWidth:80},
-			{field: 'sex', title: '性别',sort: true},
-			{field: "shengri",title: '生日',sort: true},
+			{field: 'sex', title: '性别', minWidth:100,sort: true},
+			{field: "shengri",title: '生日', minWidth:100,sort: true},
 			{field: 'username', title: '帐号',sort: true} ,
-			{field: 'school', title: '所在单位',sort: true ,templet:function(d){
+			{field: 'school', title: '所在单位', minWidth:100,sort: true ,templet:function(d){
 				if(d.ad_school){
 					return d.ad_school.jiancheng;
 				}
 			}},
-			{title: '用户组',templet:function(d){
+			{title: '用户组', minWidth:140,templet:function(d){
 				var str = '';
 				if(d.gl_group.length>0){
 					for (var k = 0, length = d.gl_group.length; k < length; k++) {
@@ -68,10 +68,10 @@
 				}
 				return str;
 			}},
-			{field: 'phone', title: '联系电话', sort: true},
-			{field: 'denglucishu', title: '登录次数', sort: true},
-			{field: 'thistime', title: '最后登录时间', sort: true},
-			{field: 'ip', title: '最后登录地址', sort: true},
+			{field: 'phone', title: '联系电话', minWidth:130, sort: true},
+			{field: 'denglucishu', title: '登录次数', minWidth:100, sort: true},
+			{field: 'thistime', title: '最后登录时间', minWidth:130, sort: true},
+			{field: 'ip', title: '最后登录地址', minWidth:150, sort: true},
 			{field: 'status', title: '状态',templet:'#status', sort: true},
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
 		]];
