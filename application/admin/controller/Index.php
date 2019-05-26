@@ -317,9 +317,15 @@ class Index extends Base
 
 
     // 修改自己的密码
-    public function editPassword($id)
+    public function editPassword()
     {
-        $list['id'] = $id;
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'修改密码',
+            'butname'=>'修改',
+            'formpost'=>'PUT',
+            'url'=>'/editpassword/'.session('userid'),
+        );
 
         // 模板赋值
         $this->assign('list',$list);
@@ -334,7 +340,6 @@ class Index extends Base
     {
         // 获取表单数据
         $list = request()->post();
-
 
         // 验证表单数据
          // 实例化验证模型
