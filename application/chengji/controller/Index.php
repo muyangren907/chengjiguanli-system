@@ -258,7 +258,7 @@ class Index extends Base
                         'ksSubject'=>function($query){
                             $query->field('kaoshiid,subjectid')
                                 ->with(['subjectName'=>function($q){
-                                    $q->field('id,jiancheng,lieming');
+                                    $q->field('id,title,lieming');
                                 }]
                             );
                         }

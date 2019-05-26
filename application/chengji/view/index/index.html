@@ -96,7 +96,7 @@
 	xk = eval(decodeURIComponent(xk));
 	for(x in xk)
     {
-      options.cols[0].push({field: xk[x].subject_name.lieming, title: xk[x].subject_name.jiancheng ,sort: true});
+      options.cols[0].push({field: xk[x].subject_name.lieming, title: xk[x].subject_name.title , minWidth:100,sort: true});
     }
     options.cols[0].push({field: 'avg', title: '平均分', minWidth:100,sort: true});
     options.cols[0].push({field: 'sum', title: '总分', minWidth:100,sort: true});

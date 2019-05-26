@@ -74,21 +74,33 @@ class Index extends Base
             ->field('webtitle,thinks,danwei')
             ->find();
 
-        // // 查询用户登录次数
-        // $admin = new \app\admin\model\Admin;
-        // $userid = session('userid');
+        // 查询用户登录次数
         $list['username'] = session('username');
-        // $list['denglu'] = $admin->where('id',$userid)
-        //                 ->field('denglucishu,lastip,lasttime')
-        //                 ->find();
-        // $list['yuyan'] = request()->langset();
         $list['server'] = request()->server();
-        // $list['env'] = request()->env();
-
-
-
         // 获取版本号
         $list->version = config('app.chengji.version');
+
+        // 考试数
+        $con = new \app\kaoshi\model\Kaoshi;
+        $list['kaoshi'] = $con->count();
+        // 教师数
+        $con = new \app\renshi\model\Teacher;
+        $list['teacher'] =  $con->count();
+        // 学生数
+        $con = new \app\renshi\model\Student;
+        $list['student'] =  $con->count();
+        // 管理员数
+        $con = new \app\admin\model\Admin;
+        $list['admin'] =  $con->count();
+        // 荣誉数
+        $con = new \app\rongyu\model\JsRongyuInfo;
+        $list['rongyu'] =  $con->count();
+        // 课题数
+        $con = new \app\keti\model\KetiInfo;
+        $list['keti'] =  $con->count();
+
+
+
 
         // 模版赋值
         $this->assign('list',$list);
