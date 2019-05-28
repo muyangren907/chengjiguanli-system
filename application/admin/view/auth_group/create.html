@@ -22,7 +22,7 @@
           </div>
           {php}
             $authrule = new \app\admin\model\AuthRule;
-            $authrulelist = $authrule->where('pid',0)->select();
+            $authrulelist = $authrule->where('status',1)->where('pid',0)->select();
           {/php}
           <div class="layui-form-item">
               {volist name="authrulelist" id="vo"}
