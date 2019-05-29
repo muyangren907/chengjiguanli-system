@@ -117,7 +117,7 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
         });
     },
     resetpassword:function(xingming,url){
-        layer.confirm('确认要重置密码'+xingming+'吗？',function(index){
+        layer.confirm('确认要重置'+xingming+'的密码为“123456”吗？',function(index){
             $.ajax({
                 url:url,
                 type:'POST',
