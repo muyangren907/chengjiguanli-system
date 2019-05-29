@@ -70,7 +70,7 @@
 	// 设置列
   options.cols=[[ //表头
 			{type:'checkbox', fixed: 'left'},
-			{title: '荣誉册',templet:function(d){
+			{title: '荣誉册',minWidth:180,templet:function(d){
 				var str='';
 				if(d.ry_tuce)
 				{
@@ -78,7 +78,7 @@
 				}
 				return str;
 			}},
-			{field: 'bianhao', title: '获奖编号 ',sort: true},
+			{field: 'bianhao', title: '获奖编号',minWidth:120,sort: true},
 			{field: 'title', title: '荣誉名称',minWidth:180,sort: true},
 			{title: '获奖人',minWidth:100,templet:function(d){
 				var str='';
