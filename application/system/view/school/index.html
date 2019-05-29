@@ -21,6 +21,15 @@
 	  </div>
 	</div>
 	<div class="layui-form-item" style="margin-bottom: 0;">
+	    <label for="xingzhi" class="layui-form-label" style="height: 100%">单位级别</label>
+	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+	    	{php} $category = getCategory(102);{/php}
+	    	{volist name="category" id="vo"}
+	    		<input type="checkbox" name="jibie[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+	    	{/volist}
+	    </div>
+	</div>
+	<div class="layui-form-item" style="margin-bottom: 0;">
 	    <label for="xingzhi" class="layui-form-label" style="height: 100%">单位性质</label>
 	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
 	    	{php} $category = getCategory(101);{/php}

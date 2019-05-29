@@ -33,6 +33,7 @@ class School extends Base
                     'limit'=>'10',
                     'field'=>'paixu',
                     'type'=>'asc',
+                    'jibie'=>array(),
                     'xingzhi'=>array(),
                     'searchval'=>''
                 ],'POST');
