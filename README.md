@@ -4,7 +4,7 @@
 
 ![表情包](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/timg.jpg)
 
-言规正传
+言归正传
 
 这是一款注重成绩采集、成绩分析的成绩统计系统，力争做到符合教师工作习惯、使用方法简单、数据分析多样、分析结果科学，为教师的试卷分析、教育科研提供数据参考。
 开发者是一名小学教师，为了让自己统计成绩工作变得更优雅，才边学、边写这个小学生成计系绩统统。
