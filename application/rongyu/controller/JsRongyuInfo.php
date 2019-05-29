@@ -72,6 +72,7 @@ class JsRongyuInfo extends Base
                     'hjschool'=>array(),
                     'category'=>array(),
                     'rongyuce'=>'',
+                    'subject'=>array(),
                     'searchval'=>''
                 ],'POST');
 

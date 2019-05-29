@@ -21,20 +21,14 @@
       </div>
     </div>
     <div class="layui-form-item">
-	    <label for="xingzhi" class="layui-form-label" style="height: 100%">荣誉类别</label>
+	    <label for="xingzhi" class="layui-form-label" style="height: 100%">所属学科</label>
 	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-	    	{php} $category = getCategory(112);{/php}
-	    	{volist name="category" id="vo"}
-	    		<input type="checkbox" name="category[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
-	    	{/volist}
-	    </div>
-	</div>
-	<div class="layui-form-item">
-	    <label for="fzschool" class="layui-form-label" style="height: 100%">颁奖单位</label>
-	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-	    	{php} $school = schlist('区级','其它级'); {/php}
-	    	{volist name="school" id="vo"}
-	    		<input type="checkbox" name="fzschool[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+	    	{php}
+	    		$sbj = new \app\teach\model\Subject;
+	    		$subject = $sbj->field('id,title')->where('status',1)->order('paixu')->select();
+	    	{/php}
+	    	{volist name="subject" id="vo"}
+	    		<input type="checkbox" name="subject[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>

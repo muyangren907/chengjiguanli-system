@@ -16,6 +16,7 @@ class JsRongyuInfo extends Base
         $category = $src['category'];
         $rongyuce = $src['rongyuce'];
         $searchval = $src['searchval'];
+        $subject = $src['subject'];
 
 
     	$data = $this
@@ -32,6 +33,11 @@ class JsRongyuInfo extends Base
     		->when(count($category)>0,function($query) use($category){
                 	$query->where('rongyuce','in',function($q) use($category){
                         $q->name('JsRongyu')->where('category','in',$category)->field('id');
+                    });
+                })
+            ->when(count($subject)>0,function($query) use($subject){
+                    $query->where('rongyuce','in',function($q) use($subject){
+                        $q->name('JsRongyu')->where('subject','in',$subject)->field('id');
                     });
                 })
     		->when(strlen($rongyuce)>0,function($query) use($rongyuce){
@@ -52,7 +58,12 @@ class JsRongyuInfo extends Base
                         $query->field('id,title');
                     },
                     'ryTuce'=>function($query){
-                        $query->field('id,title');
+                        $query->field('id,title,fzschool')
+                            ->with([
+                                'fzSchool'=>function($q){
+                                    $q->field('id,title');
+                                }
+                            ]);
                     },
                     'hjJsry'=>function($query){
                         $query->field('rongyuid,teacherid')

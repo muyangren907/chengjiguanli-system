@@ -79,7 +79,8 @@
 				return str;
 			}},
 			{field: 'bianhao', title: '获奖编号 ',sort: true},
-			{title: '获奖人',templet:function(d){
+			{field: 'title', title: '荣誉名称',minWidth:180,sort: true},
+			{title: '获奖人',minWidth:100,templet:function(d){
 				var str='';
 				if(d.hj_jsry)
 				{
@@ -93,7 +94,7 @@
 				}
 				return str;
 			}},
-			{field: "jiangxiang",title: '奖项',sort: true,templet:function(d){
+			{field: "jiangxiang",title: '奖项',minWidth:100,sort: true,templet:function(d){
 				var str='';
 				if(d.jx_category)
 				{
@@ -101,8 +102,16 @@
 				}
 				return str;
 			}},
-			{field: 'hjshijian', title: '获奖时间', sort: true},
-			{field: 'status', title: '状态',templet:'#status', sort: true},
+			{title: '颁奖单位项',minWidth:260,sort: true,templet:function(d){
+				var str='';
+				if(d.ry_tuce)
+				{
+					str = d.ry_tuce.fz_school.title;
+				}
+				return str;
+			}},
+			{field: 'hjshijian', title: '获奖时间',minWidth:80, sort: true},
+			{field: 'status', title: '状态',minWidth:80,templet:'#status', sort: true},
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
 		]];
 
