@@ -47,6 +47,7 @@
 	    	{/volist}
 	    </div>
 	</div>
+	<input type="hidden" name="rongyuce" value="{$list.rongyuce}">
 {/block}
 {block name="table"}
 	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
@@ -126,6 +127,9 @@
 			{field: 'status', title: '状态',templet:'#status', sort: true},
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
 		]];
+	options.where = {
+		rongyuce : "{$list.rongyuce}"
+	};
 
   // 提交搜索条件后重载表格
     layui.use(['table','cjgl'],function(){
