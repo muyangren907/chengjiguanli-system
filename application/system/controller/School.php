@@ -151,7 +151,7 @@ class School extends Base
 
         // 获取表单数据
         $list = request()
-                ->only(['title','jiancheng','biaoshi','xingzhi','jibie','xueduan','paixu'],'put');
+                ->only(['title','jiancheng','biaoshi','xingzhi','jibie','xueduan','paixu'=>999],'put');
 
         // 验证表单数据
         $result = $validate->check($list);
