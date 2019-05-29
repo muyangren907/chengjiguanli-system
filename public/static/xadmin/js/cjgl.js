@@ -116,6 +116,20 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
             });
         });
     },
+    resetpassword:function(xingming,url){
+        layer.confirm('确认要重置密码'+xingming+'吗？',function(index){
+            $.ajax({
+                url:url,
+                type:'POST',
+                success:function(result){
+                    layer.msg(result.msg);
+                },
+                error:function(result){
+                    layer.msg('数据扔半道啦。',function(){});
+                },
+            });
+        });
+    },
     // getSearchVal:function(name){
     //     // 声明对象，用于存表单名与数值
     //     var obj={};
@@ -145,11 +159,11 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
     //     });
     //     return obj;
     //   },
-      // 表格重载
-      reLoadTable:function(formname,tableID,mydata={}){
-          var formval = this.getSearchVal(formname);
-          var wheredata = $.extend(formval,mydata);
-          table.reload(tableID,{
+    // 表格重载
+    reLoadTable:function(formname,tableID,mydata={}){
+        var formval = this.getSearchVal(formname);
+        var wheredata = $.extend(formval,mydata);
+        table.reload(tableID,{
             where: formval
             ,done:function(){
                 for(x in formval){
@@ -159,13 +173,10 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
             ,page:{
                 curr:1
             }
-
         });
-      },
+    },
       // Select获取焦点
       selectOnfocus:function(myobj,val,addname){
-        layer.msg('aa');
-
         // 声明变量
         var srcInput = $(myobj);
         // 删除原来列表
