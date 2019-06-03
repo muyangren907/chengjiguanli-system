@@ -77,7 +77,7 @@ class Student extends Base
                         $query->field('id,ruxuenian,paixu')->append(['banjiTitle']);
                     }
                 ])
-                ->field('id,xingming,school,sex,shengri,banji')
+                ->field('id,xingming,school,sex,shengri,banji,status')
                 ->append(['age'])
                 ->select();
 
