@@ -68,11 +68,13 @@ class Index extends Controller
             }
 
             // 将本次信息上传到服务器上
-            $userinfo = AD::getByUsername($data['username']);
+            $userinfo = AD::where('username',$data['username'])
+                    ->field('lastip,username,ip,denglucishu,lasttime,thistime')
+                    ->find();
             $userinfo->lastip = $userinfo->ip;
             $userinfo->ip = request()->ip();
             $userinfo->denglucishu = ['inc', 1];
-            $userinfo->lasttime = $userinfo->thistime;
+            $userinfo->lasttime = $userinfo->getData('thistime');
             $userinfo->thistime = time();
             $userinfo->save();
 
