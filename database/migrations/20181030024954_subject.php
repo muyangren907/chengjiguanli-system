@@ -44,6 +44,9 @@ class Subject extends Migrator
             ->addColumn('update_time','integer',['limit'=>11,'null'=>true,'comment'=>'更新时间'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
             ->addColumn('beizhu','string',['limit'=>80,'null'=>true,'comment'=>'备注'])
+            ->addIndex(array('lieming'), array('unique' => true))
+            ->addIndex(array('title'), array('unique' => true))
+            ->addIndex(array('jiancheng'), array('unique' => true))
             ->create();
     }
 }

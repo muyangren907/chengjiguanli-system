@@ -68,7 +68,7 @@ class Index extends Base
         return $this->fetch();
     }
 
-
+    // 扫码录入成绩
     public function update($id)
     {
         // 获取表单数据
@@ -76,6 +76,62 @@ class Index extends Base
         
         // 更新成绩
         $data = Chengji::update($list);
+
+        // 判断返回内容
+        $data ? $data=['msg'=>'录入成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回更新结果
+        return $data;
+    }
+
+    // 学生成绩表中修改成绩
+    public function ajaxupdate()
+    {
+        // 获取表单数据
+        $list = $this->request->only(
+            ['kaohao_id',
+            'colname',
+            'newdefen']
+            ,'post');
+        // 获取学科信息
+        $subject = new \app\teach\model\Subject;
+        $subject_id = $subject->where('lieming',$list['colname'])->value('id');
+        // 获取考试信息
+        $kaohao = new \app\kaoshi\model\Kaohao;
+        $kaohaoinfo = $kaohao->where('id',$list['kaohao_id'])
+                        ->with([
+                            'cjKaoshi'=>function($query) use($subject_id){
+                                $query->field('id')
+                                    ->with([
+                                        'ksSubject'=>function($q) use($subject_id){
+                                            $q->field('id,kaoshiid,subjectid,manfen')
+                                                ->where('subjectid',$subject_id);
+                                        }
+                                    ]);
+                            }
+                        ])
+                        ->field('id,kaoshi')
+                        ->find();
+        // 验证成绩
+        if($list['newdefen'] === null){ # 如果不存在值，跳过这次循环
+            $data=['msg'=>'没有找到值','val'=>0];
+            return $data;
+        }
+        if(is_numeric($list['newdefen'])==false){ # 如果不为数字、则跳过
+            $data=['msg'=>'请输入数字','val'=>0];
+            return $data;
+        }
+        if( $list['newdefen']<0 || $list['newdefen'] > $kaohaoinfo->cj_kaoshi->ks_subject[0]->manfen) # 如果大于满分、小于0分的时候也跳过
+        {
+            $data=['msg'=>'得分范围在要大于等于0分，小于等于'.$kaohaoinfo->cj_kaoshi->ks_subject[0]->manfen.'分','val'=>0];
+            return $data;
+        }
+
+        // 更新成绩 
+        $cj = new Chengji;
+        $data = $cj->where('kaohao_id',$list['kaohao_id'])
+                    ->where('subject_id',$subject_id)
+                    ->update(['defen'=>$list['newdefen']]);
 
         // 判断返回内容
         $data ? $data=['msg'=>'录入成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];

@@ -96,7 +96,7 @@
 	xk = eval(decodeURIComponent(xk));
 	for(x in xk)
     {
-      options.cols[0].push({field: xk[x].subject_name.lieming, title: xk[x].subject_name.title , minWidth:100,sort: true});
+      options.cols[0].push({field: xk[x].subject_name.lieming, title: xk[x].subject_name.title , minWidth:100,sort: true,edit:'text'});
     }
     options.cols[0].push({field: 'avg', title: '平均分', minWidth:100,sort: true});
     options.cols[0].push({field: 'sum', title: '总分', minWidth:100,sort: true});
@@ -152,6 +152,33 @@
 	      		break;
       	};
       });
+
+      // 单元格编辑
+      table.on('edit(mytable)',function(obj){
+      	// 声明变量
+      	var newdefen = obj.value
+      		,colname = obj.field
+      		,rowdata = obj.data;
+
+      	// 修改服务器数据 
+        $.post(
+            "/chengji/Index/ajaxupdate",
+            {
+                "kaohao_id":rowdata.id,
+                "colname":colname,
+                "newdefen":newdefen
+            },
+            function(data,status){
+                if(data.val == 0){
+					layer.msg(data.msg,{icon:5});
+				}
+            }
+        );
+
+      }) 
+
+
+
     });
 </script>
 {/block}
