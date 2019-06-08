@@ -160,20 +160,28 @@
       		,colname = obj.field
       		,rowdata = obj.data;
 
+      		console.log(obj.data);
+
       	// 修改服务器数据 
-        $.post(
-            "/chengji/Index/ajaxupdate",
-            {
-                "kaohao_id":rowdata.id,
-                "colname":colname,
-                "newdefen":newdefen
-            },
-            function(data,status){
-                if(data.val == 0){
-					layer.msg(data.msg,{icon:5});
-				}
-            }
-        );
+        $.ajax({
+                url:"/chengji/"+rowdata.id,
+                type:'PUT',
+                data:{
+                    "colname":colname,
+                    "newdefen":newdefen
+                },
+                success:function(result){
+                    if(result.val == 0)
+                    {
+                        layer.msg(result.msg,{icon:5});
+                    }else{
+                    	// 这个地方重新赋值平均分和总分
+                    }
+                },
+                error:function(result){
+                    layer.msg('数据扔半道啦。',function(){});
+                },
+            });
 
       }) 
 

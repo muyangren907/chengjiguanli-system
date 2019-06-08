@@ -68,31 +68,31 @@ class Index extends Base
         return $this->fetch();
     }
 
-    // 扫码录入成绩
-    public function update($id)
-    {
-        // 获取表单数据
-        $list = request()->param();
+    // // 保存扫码录入成绩
+    // public function save($id)
+    // {
+    //     // 获取表单数据
+    //     $list = request()->param();
         
-        // 更新成绩
-        $data = Chengji::update($list);
+    //     // 更新成绩
+    //     $data = Chengji::update($list);
 
-        // 判断返回内容
-        $data ? $data=['msg'=>'录入成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+    //     // 判断返回内容
+    //     $data ? $data=['msg'=>'录入成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
-        // 返回更新结果
-        return $data;
-    }
+    //     // 返回更新结果
+    //     return $data;
+    // }
 
     // 学生成绩表中修改成绩
-    public function ajaxupdate()
+    public function update($id)  #id为考号ID
     {
         // 获取表单数据
         $list = $this->request->only(
-            ['kaohao_id',
-            'colname',
+            ['colname',
             'newdefen']
             ,'post');
+        $list['kaohao_id'] = $id;
         // 获取学科信息
         $subject = new \app\teach\model\Subject;
         $subject_id = $subject->where('lieming',$list['colname'])->value('id');
@@ -129,9 +129,22 @@ class Index extends Base
 
         // 更新成绩 
         $cj = new Chengji;
-        $data = $cj->where('kaohao_id',$list['kaohao_id'])
+        $cjinfo = $cj->where('kaohao_id',$list['kaohao_id'])
                     ->where('subject_id',$subject_id)
-                    ->update(['defen'=>$list['newdefen']]);
+                    ->find();
+        // 如果存在成绩则更新，不存在则添加
+        if($cjinfo){
+            $cjinfo->defen = $list['newdefen'];
+            $cjinfo->user_id = session('userid');
+            $data = $cjinfo->save();
+        }else{
+            $cj->defen = $list['newdefen'];
+            $cj->kaohao_id = $list['kaohao_id'];
+            $cj->subject_id = $subject_id;
+            $cj->user_id = session('userid');
+            $data = $cj->save();
+        }
+                    // update(['defen'=>$list['newdefen']]);
 
         // 判断返回内容
         $data ? $data=['msg'=>'录入成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
