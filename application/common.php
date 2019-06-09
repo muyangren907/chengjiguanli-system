@@ -219,14 +219,6 @@ function upload($list,$file,$isSave=false)
     
     // 如果需要保存文件 
     if($isSave == true){
-	    // 判断文件是否已经上传，如果已经上传则退出
-	    // if($field->hasHash($list['hash'])){
-	    //     $data = array(
-	    //         'msg'=>'文件不能重复上传。',
-	    //         'val'=>0
-	    //     );
-	    //     return $data;
-	    // }
 
 	    //将文件信息保存
 		$data = $field->create($list);
@@ -283,6 +275,10 @@ function arraySequence($array, $field = 'id', $sort = 'desc') {
 						$array[$x] = $array[$x+1];
 						$array[$x+1] = $temp;
 					}
+				}elseif(!isset($array[$x+1][$field])){
+					$temp = $array[$x];
+					$array[$x] = $array[$x+1];
+					$array[$x+1] = $temp;
 				}
 			}
 		}
@@ -298,7 +294,11 @@ function arraySequence($array, $field = 'id', $sort = 'desc') {
 						$array[$x] = $array[$x+1];
 						$array[$x+1] = $temp;
 					}
-				}
+				}elseif(!isset($array[$x][$field])){
+						$temp = $array[$x];
+						$array[$x] = $array[$x+1];
+						$array[$x+1] = $temp;
+					}
 			}
 		}
 	}

@@ -57,33 +57,6 @@ class Index extends Base
     }
 
 
-
-    public function edit($id)
-    {
-        // 获取该学生成绩信息
-        $cj = Chengji::where('id',$id)->append(['cj_kaoshi.title','cj_student.xingming'])->find();
-        // 模板赋值
-        $this->assign('list',$cj);
-        // 渲染
-        return $this->fetch();
-    }
-
-    // // 保存扫码录入成绩
-    // public function save($id)
-    // {
-    //     // 获取表单数据
-    //     $list = request()->param();
-        
-    //     // 更新成绩
-    //     $data = Chengji::update($list);
-
-    //     // 判断返回内容
-    //     $data ? $data=['msg'=>'录入成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
-
-    //     // 返回更新结果
-    //     return $data;
-    // }
-
     // 学生成绩表中修改成绩
     public function update($id)  #id为考号ID
     {
