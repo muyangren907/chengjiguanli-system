@@ -7,8 +7,15 @@ use app\common\model\Base;
 
 class Kaohao extends Base
 {
-    //查询考试成绩
-    public function srcBiaoqian($kaoshi,$banji)
+    /**  
+    * 根据班级ID查询参加当前考试的学生信息 
+    * 
+    * @access public 
+    * @param mixed $kaoshi 当前考试ID 
+    * @param array $banji 学生所在班级 
+    * @return array 返回类型
+    */  
+    public function srcKaohao($kaoshi,$banji)
     {
         // 获取考试标签
         $data = $this->where('kaoshi',$kaoshi)
@@ -40,35 +47,18 @@ class Kaohao extends Base
     }
 
 
-    // 查询学生成绩录入表
-    public function srcKaohao($src)
-    {
-        $data = $this->where('kaoshi',$src['kaoshi'])
-                ->field('id,school,student,nianji,banji')
-                ->with([
-                    'ksChengji'=>function($query){
-                        $query->field('kaohao_id,subject_id,defen')
-                            ->with([
-                                'subjectName'=>function($q){
-                                    $q->field('id,lieming');
-                                }
-                            ]);
-                    }
-                    ,'cjBanji'=>function($query){
-                        $query->field('id,paixu,ruxuenian')
-                            ->append(['numTitle','banjiTitle']);
-                    }
-                    ,'cjSchool'=>function($query){
-                        $query->field('id,jiancheng');
-                    }
-                ])
-                ->order([$src['field'] =>$src['order']])
-                ->select();
-        return $data;
-    }
-
-
-    // 查询学生成绩
+    /**  
+    * 以考号为基础查询学生成绩并排序 
+    * @access public 
+    * @param array $src 参数数组 
+    * @param number $src['school'] 学生所在学校
+    * @param number $src['nianji'] 学生所在年级 
+    * @param number $src['paixu'] 班级标识 
+    * @param number $src['searchval'] 关键字
+    * @param number $src['field'] 排序字段
+    * @param number $src['type'] 排序类型
+    * @return array 返回类型
+    */
     public function srcChengji($src)
     {
         $school = $src['school'];
@@ -166,6 +156,8 @@ class Kaohao extends Base
         if(count($data)>0){
             $data = arraySequence($data,$src['field'],$src['type']); //排序
         }
+
+
         return $data;
     }
 

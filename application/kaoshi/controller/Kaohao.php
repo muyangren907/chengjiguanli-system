@@ -119,9 +119,6 @@ class Kaohao extends Base
     }
 
 
-   
-
-
     /**
      * 生成指定网址的二维码
      * @param string $url 二维码中所代表的网址
@@ -136,7 +133,7 @@ class Kaohao extends Base
 
 
 
-    // 生成试卷标签二维码
+    // 生成试卷标签二维码可以换成pdf格式
     public function biaoqiandoc($id)
     {
 
@@ -144,7 +141,6 @@ class Kaohao extends Base
         // 获取数据库信息
         $chengjiinfo = Chengji::where('kaoshi',$id)
                         ->where('ruxuenian',2017)
-                        // ->limit(15)
                         ->append(['cj_school.jiancheng','cj_Student.xingming','banjiNumname'])
                         ->select();
 
@@ -324,7 +320,7 @@ class Kaohao extends Base
 
         $kh = new KH();
         // 获取考试信息
-        $kaohao = $kh->srcBiaoqian($kaoshi,$banji);
+        $kaohao = $kh->srcKaohao($kaoshi,$banji);
 
 
         // 创建表格
@@ -470,7 +466,7 @@ class Kaohao extends Base
 
         $kh = new KH();
         // 获取考试信息
-        $kaohao = $kh->srcBiaoqian($kaoshi,$banji);
+        $kaohao = $kh->srcKaohao($kaoshi,$banji);
 
 
         // 获取电子表格列名
@@ -526,7 +522,7 @@ class Kaohao extends Base
     }
 
 
-    // 删除考试
+    // 删除考号
     public function delete($id)
     {
 
