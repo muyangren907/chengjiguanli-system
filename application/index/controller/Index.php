@@ -71,7 +71,10 @@ class Index extends Base
                         ->with([
                             'authCid'=>function($query) use($rules){
                                 $query->where('status&ismenu',1)
-                                    ->where('id','in',$rules)
+                                    ->when(session('userid')>2,function($query) use($rules)
+                                    {
+                                        $query->where('id','in',$rules);
+                                    })
                                     ->field('id,title,name,pid,url');
                             },
                         ])
