@@ -35,8 +35,8 @@ class Subject extends Seeder
             ['title'=>'地理','jiancheng'=>'地理','category'=>1011005,'lieming'=>'dili','kaoshi'=>fasle,'paixu'=>17],
             ['title'=>'地方课程','jiancheng'=>'地方','lieming'=>'difang','category'=>1011010,'paixu'=>18],
             ['title'=>'校本课程','jiancheng'=>'校本','lieming'=>'xiaoben','category'=>1011010,'paixu'=>19],
-            ['title'=>'幼儿园全科','jiancheng'=>'幼儿园','category'=>1011011,'paixu'=>20],
-            ['title'=>'其他','jiancheng'=>'其他','category'=>1011012,'paixu'=>21],
+            ['title'=>'幼儿园全科','jiancheng'=>'幼儿园','lieming'=>'youeryuan','category'=>1011011,'paixu'=>20],
+            ['title'=>'其他','jiancheng'=>'其他','lieming'=>'qita','category'=>1011012,'paixu'=>21],
 
         ];
         // 保存数据

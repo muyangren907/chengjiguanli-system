@@ -15,6 +15,7 @@ class Subject extends Validate
 	protected $rule = [
         'title|名称'     =>  'require|length:1,25',
         'jiancheng|简称'     =>  'require|length:1,6',
+        'lieming|列标识'     =>  'require',
         'category|分类'     =>  'require|number',
         'paixu|排序'     =>  'number',
     ];

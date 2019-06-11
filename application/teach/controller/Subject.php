@@ -90,7 +90,7 @@ class Subject extends Base
 
 
         // 获取表单数据
-        $list = request()->only(['title','jiancheng','category','kaoshi','paixu'],'post');
+        $list = request()->only(['title','jiancheng','category','kaoshi','paixu','lieming'],'post');
 
 
         // 验证表单数据
@@ -127,7 +127,7 @@ class Subject extends Base
     {
 
         // 获取学期信息
-        $list['data'] = SJ::field('id,title,jiancheng,category,kaoshi,paixu,status')
+        $list['data'] = SJ::field('id,title,jiancheng,category,kaoshi,lieming,paixu,status')
             ->find($id);
 
         // 设置页面标题
