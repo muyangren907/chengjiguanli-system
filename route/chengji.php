@@ -22,7 +22,9 @@ Route::get('chengji/biaolu','chengji/Index/biaolu');
 Route::post('chengji/biaolu','chengji/Index/saveAll');
 // 获取学生成绩列表
 Route::get('chengji/:kaoshi/stuChengjilist','chengji/Index/index');
-Route::delete('chengji/:kaoshi/cj','chengji/Index/deletecj');  #只清空成绩
+Route::delete('chengji/:kaoshi/cj','chengji/Index/deletecj');  # 删除考号
+Route::get('readcjadd/:kaohao','chengji/Index/readAdd');  # 删除考号
+
 // 成绩统计表
 Route::get('cjtongji/:kaoshi/banji','chengji/Tongji/tjBanji');	# 班级成绩统计列表
 Route::get('cjtongji/:kaoshi/nianji','chengji/Tongji/tjNianji');	# 年级成绩统计列表

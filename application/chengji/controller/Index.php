@@ -37,19 +37,31 @@ class Index extends Base
         // 获取表单数据
         $list = $this->request->only(['kaohao_id','subject_id','defen'],'post');
 
-        // 更新成绩
-        $data = Kaohao::where('id',$list['kaohao_id'])->find();
-        $cj = $data->ksChengji()->isEmpty();
-        if($cj == false)
+        // 成绩验证
+        $manfen =  getmanfen($list['kaohao_id'],$list['subject_id']);
+        $mfyz = manfenvalidate($list['defen'],$manfen);
+        if($mfyz['val'] == 0)
         {
-            $data->ksChengji()->delete(true);
+            return json($mfyz);
         }
 
-        $data = $data->ksChengji()->save([
-                    'subject_id'=>$list['subject_id'],
-                    'defen'=>$list['defen'],
-                    'user_id'=>session('userid')
-                ]);
+        $cj = new Chengji();
+        // 更新成绩
+        $data = Chengji::withTrashed()
+                ->where('subject_id',$list['subject_id'])
+                ->where('kaohao_id',$list['kaohao_id'])
+                ->find();
+
+        if($data)
+        {
+            $data->delete(true);
+        }
+
+        $cj->kaohao_id = $list['kaohao_id'];
+        $cj->subject_id = $list['subject_id'];
+        $cj->defen = $list['defen'];
+        $cj->user_id = session('userid');
+        $data = $cj->save();
 
         $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
@@ -69,44 +81,24 @@ class Index extends Base
         // 获取学科信息
         $subject = new \app\teach\model\Subject;
         $subject_id = $subject->where('lieming',$list['colname'])->value('id');
-        // 获取考试信息
-        $kaohao = new \app\kaoshi\model\Kaohao;
-        $kaohaoinfo = $kaohao->where('id',$list['kaohao_id'])
-                        ->with([
-                            'cjKaoshi'=>function($query) use($subject_id){
-                                $query->field('id')
-                                    ->with([
-                                        'ksSubject'=>function($q) use($subject_id){
-                                            $q->field('id,kaoshiid,subjectid,manfen')
-                                                ->where('subjectid',$subject_id);
-                                        }
-                                    ]);
-                            }
-                        ])
-                        ->field('id,kaoshi')
-                        ->find();
-        // 验证成绩
-        if($list['newdefen'] === null){ # 如果不存在值，跳过这次循环
-            $data=['msg'=>'没有找到值','val'=>0];
-            return $data;
-        }
-        if(is_numeric($list['newdefen'])==false){ # 如果不为数字、则跳过
-            $data=['msg'=>'请输入数字','val'=>0];
-            return $data;
-        }
-        if( $list['newdefen']<0 || $list['newdefen'] > $kaohaoinfo->cj_kaoshi->ks_subject[0]->manfen) # 如果大于满分、小于0分的时候也跳过
+
+        // 成绩验证
+        $manfen =  getmanfen($list['kaohao_id'],$subject_id);
+        $mfyz = manfenvalidate($list['newdefen'],$manfen);
+        if($mfyz['val'] == 0)
         {
-            $data=['msg'=>'得分范围在要大于等于0分，小于等于'.$kaohaoinfo->cj_kaoshi->ks_subject[0]->manfen.'分','val'=>0];
-            return $data;
+            return json($mfyz);
         }
 
         // 更新成绩 
         $cj = new Chengji;
-        $cjinfo = $cj->where('kaohao_id',$list['kaohao_id'])
+        $cjinfo = Chengji::withTrashed()
+                    ->where('kaohao_id',$list['kaohao_id'])
                     ->where('subject_id',$subject_id)
                     ->find();
         // 如果存在成绩则更新，不存在则添加
         if($cjinfo){
+            $cjinfo->restore();
             $cjinfo->defen = $list['newdefen'];
             $cjinfo->user_id = session('userid');
             $data = $cjinfo->save();
@@ -138,8 +130,7 @@ class Index extends Base
         $list = explode('|',$val);
         $sbj = $list[1];
 
-        $kh = new Kaohao;
-        $cjlist = $kh->where('id',$list[0])
+        $cjlist = Kaohao::where('id',$list[0])
                 ->field('id,banji,school,student')
                 ->with([
                     'ksChengji'=>function($q) use($sbj){
@@ -220,30 +211,46 @@ class Index extends Base
                 if($defen === null){
                     continue;
                 }
-                // 如果不为数字、则跳过
-                if(is_numeric($defen)==false){
-                    continue;
-                }
 
-
-                $kaoshiid = $kh->where('id',$value[1])->value('kaoshi');
-                $manfen = $ks->where('id',$kaoshiid)
-                            ->field('id')
-                            ->with([
-                                'ksSubject'=>function($query) use($thissbj){
-                                    $query->field('kaoshiid,subjectid,manfen')
-                                        ->where('subjectid',$thissbj);
-                                }
-                            ])
-                            ->find();
-
-                // 如果大于满分、小于0分的时候也跳过
-                if( $defen<0 || $defen>$manfen->ks_subject[0]->manfen )
+                // 成绩验证
+                $manfen =  getmanfen($value[1],$val);
+                $mfyz = manfenvalidate($defen,$manfen);
+                if($mfyz['val'] == 0)
                 {
                     continue;
                 }
+
+                // dump($value);
+                // halt($val);
+
+                // // 如果不为数字、则跳过
+                // if(is_numeric($defen)==false){
+                //     continue;
+                // }
+
+
+                // $kaoshiid = $kh->where('id',$value[1])->value('kaoshi');
+                // $manfen = $ks->where('id',$kaoshiid)
+                //             ->field('id')
+                //             ->with([
+                //                 'ksSubject'=>function($query) use($thissbj){
+                //                     $query->field('kaoshiid,subjectid,manfen')
+                //                         ->where('subjectid',$thissbj);
+                //                 }
+                //             ])
+                //             ->find();
+
+                // // 如果大于满分、小于0分的时候也跳过
+                // if( $defen<0 || $defen>$manfen->ks_subject[0]->manfen )
+                // {
+                //     continue;
+                // }
+
+
+
                 // 查询是否存在这个成绩
-                $cj = Chengji::where('kaohao_id',$value[1])
+                $cj = Chengji::withTrashed()
+                            ->where('kaohao_id',$value[1])
                             ->where('subject_id',$val)
                             ->find();
                 // 如果存在则删除
@@ -611,6 +618,73 @@ class Index extends Base
         flush();
     }
 
+
+    // 学生成绩录入信息
+    public function readAdd($kaohao)
+    {
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = '查看成绩录入信息';
+        $list['kaohao'] = $kaohao;
+
+        // 模板赋值
+        $this->assign('list',$list);
+
+        // 渲染模板
+        return $this->fetch();
+    }
+
+    // ajax获取学生成绩录入信息
+    public function ajaxaddinfo()
+    {
+        // 获取参数
+        $src = $this->request
+                ->only([
+                    'page'=>'1',
+                    'limit'=>'10',
+                    'field'=>'banji',
+                    'type'=>'desc',
+                    'kaohao'=>''
+                ],'POST');
+
+        $chengji = new Chengji;
+
+        $data = $chengji
+                ->where('kaohao_id',$src['kaohao'])
+                ->field('id,kaohao_id,subject_id,user_id,defen,update_time')
+                ->order('subject_id')
+                ->with([
+                    'subjectName'=>function($query){
+                        $query->field('id,title');
+                    },
+                    'userName'=>function($query){
+                        $query->field('id,school,xingming')
+                            ->with([
+                                'adSchool'=>function($query){
+                                    $query->field('id,jiancheng');
+                                }
+                            ]);
+                    }
+                ])
+                ->select();
+
+        $cnt = count($data);
+
+        // 获取当前页数据
+        $limit_start = $src['page'] * $src['limit'] - $src['limit'];
+        $limit_length = $src['limit'];
+        $data = $data->slice($limit_start,$limit_length);
+
+        // 重组返回内容
+        $data = [
+            'code'=> 0 , // ajax请求次数，作为标识符
+            'msg'=>"",  // 获取到的结果数(每页显示数量)
+            'count'=>$cnt, // 符合条件的总数据量
+            'data'=>$data, //获取到的数据结果
+        ];
+
+
+        return json($data);
+    }
 
       
 }
