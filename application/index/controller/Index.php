@@ -94,17 +94,38 @@ class Index extends Base
         //实例化数据模型
         $sysbasemod = new sysbasemod();
 
-        // 查询最新记录
+        // 查询系统设置
         $list = $sysbasemod
             ->order(['id'=>'desc'])
             ->field('webtitle,thinks,danwei')
             ->find();
 
-        // 查询用户登录次数
+        // 查询用户登信息
         $list['username'] = session('username');
+        // 查询用户组
+        $admin = new \app\admin\model\Admin;
+        $admininfo = $admin->where('username',$list['username'])
+                    ->field('id')
+                    ->with([
+                        'glGroup'=>function($query){
+                            $query->where('status',1)->field('title,rules,miaoshu');
+                        }
+                    ])
+                    ->find();
+        $list['group'] = '';
+        foreach ($admininfo->gl_group as $key => $value) {
+            if($key==0)
+            {
+                $list['group'] = $value->title;
+            }else{
+                $list['group'] = $list['group'].'、'.$value->title;
+            }
+        }
+
         $list['server'] = request()->server();
         // 获取版本号
         $list->version = config('app.chengji.version');
+
 
         // 考试数
         $con = new \app\kaoshi\model\Kaoshi;
