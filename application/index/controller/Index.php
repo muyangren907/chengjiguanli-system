@@ -38,7 +38,7 @@ class Index extends Base
         // 获取用户名
         $list->username = session('username');
 
-        // 查询拥有的权限
+        // 查询用户拥有的权限
         $admin = new \app\admin\model\Admin;
         $admininfo = $admin->where('id',session('userid'))
                         ->field('id')
