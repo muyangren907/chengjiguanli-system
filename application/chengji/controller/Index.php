@@ -474,7 +474,14 @@ class Index extends Base
                 ->only([
                     'kaoshi'=>'1',
                     'banji'=>array(),
+                    'school',
+                    'ruxuenian'
                 ],'POST');
+
+        // 获取要下载成绩的学校和年级信息
+        $school = new \app\system\model\School;
+        $schoolname = $school->where('id',$list['school'])->value('jiancheng');
+        $nianji = nianjiList();
 
 
         // 实例化验证模型
@@ -515,6 +522,8 @@ class Index extends Base
                 ])
                 ->find();
 
+        $tabletitle =$ks->title.' '.$schoolname.' '.$nianji[$list['ruxuenian']].' '.'学生成绩详细列表';
+
         $colname = excelLieming();
 
 
@@ -522,8 +531,10 @@ class Index extends Base
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
 
+        
+
         // 设置表头信息
-        $sheet->setCellValue('A1', $ks->title.'学生成绩列表');
+        $sheet->setCellValue('A1', $tabletitle);
         $sheet->setCellValue('A2', '序号');
         $sheet->setCellValue('B2', '班级');
         $sheet->setCellValue('C2', '姓名');
@@ -590,7 +601,7 @@ class Index extends Base
 
 
         // 保存文件
-        $filename = $ks->title.'学生成绩列表'.date('ymdHis').'.xlsx';
+        $filename = $tabletitle.date('ymdHis').'.xlsx';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');

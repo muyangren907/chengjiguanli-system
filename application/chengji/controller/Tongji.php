@@ -237,7 +237,7 @@ class Tongji extends Base
         // 获取参考学科
         $ks = new \app\kaoshi\model\Kaoshi;
         $ksinfo = $ks->where('id',$src['kaoshi'])
-                    ->field('id')
+                    ->field('id,title')
                     ->with([
                         'ksSubject'=>function($query){
                             $query->field('kaoshiid,subjectid,manfen')
@@ -249,6 +249,11 @@ class Tongji extends Base
                     ])
                     ->find();
         $xk = $ksinfo->ks_subject;
+
+        // 获取要下载成绩的学校和年级信息
+        $school = new \app\system\model\School;
+        $schoolname = $school->where('id',$src['school'])->value('jiancheng');
+        $tabletitle = $ksinfo->title.' '.$schoolname.' '.$src['nianji'].'各班级成绩汇总';
 
 
         // 创建表格
@@ -263,7 +268,7 @@ class Tongji extends Base
 
         // 设置表头信息
         $sheet->mergeCells('A1:'.$colname[$colcnt].'1');
-        $sheet->setCellValue('A1', '各班级学生成绩列表');
+        $sheet->setCellValue('A1', $tabletitle);
         $sheet->mergeCells('A3:A4');
         $sheet->setCellValue('A3', '序号');
         $sheet->mergeCells('B3:B4');
@@ -302,7 +307,7 @@ class Tongji extends Base
         }
 
         // 保存文件
-        $filename = '各班级成绩汇总'.date('ymdHis').'.xlsx';
+        $filename = $tabletitle.date('ymdHis').'.xlsx';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
@@ -519,7 +524,7 @@ class Tongji extends Base
         // 获取参考学科
         $ks = new \app\kaoshi\model\Kaoshi;
         $ksinfo = $ks->where('id',$src['kaoshi'])
-                    ->field('id')
+                    ->field('id,title')
                     ->with([
                         'ksSubject'=>function($query){
                             $query->field('kaoshiid,subjectid,manfen')
@@ -531,6 +536,9 @@ class Tongji extends Base
                     ])
                     ->find();
         $xk = $ksinfo->ks_subject;
+
+        // 获取要下载成绩的学校和年级信息
+        $tabletitle = $ksinfo->title.' '.$src['nianji'].'各学校成绩汇总';
 
 
         // 创建表格
@@ -545,7 +553,7 @@ class Tongji extends Base
 
         // 设置表头信息
         $sheet->mergeCells('A1:'.$colname[$colcnt].'1');
-        $sheet->setCellValue('A1', '各班级学生成绩列表');
+        $sheet->setCellValue('A1', $tabletitle);
         $sheet->mergeCells('A3:A4');
         $sheet->setCellValue('A3', '序号');
         $sheet->mergeCells('B3:B4');
@@ -584,7 +592,7 @@ class Tongji extends Base
         }
 
         // 保存文件
-        $filename = '各学校'.$src['nianji'].'年级成绩汇总'.date('ymdHis').'.xlsx';
+        $filename = $tabletitle.date('ymdHis').'.xlsx';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
