@@ -50,7 +50,7 @@ class YanZheng  extends Controller
         // 排除方法
         $uneed_a = array(
             'welcome','upload','myinfo',
-            'index','mybanji','banjilist',
+            'mybanji','banjilist',
             'editpassword','updatepassword',
             // 教师信息查询
             'srcteacher','srcry','srckt',

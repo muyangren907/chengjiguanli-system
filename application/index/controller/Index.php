@@ -38,6 +38,25 @@ class Index extends Base
         // 获取用户名
         $list->username = session('username');
 
+        // 查询拥有的权限
+        $admin = new \app\admin\model\Admin;
+        $admininfo = $admin->where('id',session('userid'))
+                        ->field('id')
+                        ->with([
+                            'glGroup'=>function($query){
+                                $query->where('status',1)->field('title,rules,miaoshu');
+                            }
+                        ])
+                        ->find();
+        $rules = '';
+        foreach ($admininfo->gl_group as $key => $value) {
+            if($key == 0){
+                $rules = $value->rules;
+            }else{
+                $rules = $rules.','.$value->rules;
+            }
+        }
+
 
         // 实例化权限数据模型
         $authrule = new \app\admin\model\AuthRule;
@@ -45,14 +64,21 @@ class Index extends Base
         $list['menu'] = $authrule
                         ->where('pid',0)
                         ->where('status&ismenu',1)
+                        ->when(session('userid')>2,function($query) use($rules){
+                            $query->where('id','in',$rules);
+                        })
                         ->field('id,title,font,name,pid')
                         ->with([
-                            'authCid'=>function($query){
-                                $query->where('status&ismenu',1)->field('id,title,name,pid,url');
+                            'authCid'=>function($query) use($rules){
+                                $query->where('status&ismenu',1)
+                                    ->where('id','in',$rules)
+                                    ->field('id,title,name,pid,url');
                             },
                         ])
                         ->order(['paixu'])
                         ->select();
+
+        
 
 
         // 模版赋值
