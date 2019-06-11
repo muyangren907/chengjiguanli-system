@@ -220,33 +220,6 @@ class Index extends Base
                     continue;
                 }
 
-                // dump($value);
-                // halt($val);
-
-                // // 如果不为数字、则跳过
-                // if(is_numeric($defen)==false){
-                //     continue;
-                // }
-
-
-                // $kaoshiid = $kh->where('id',$value[1])->value('kaoshi');
-                // $manfen = $ks->where('id',$kaoshiid)
-                //             ->field('id')
-                //             ->with([
-                //                 'ksSubject'=>function($query) use($thissbj){
-                //                     $query->field('kaoshiid,subjectid,manfen')
-                //                         ->where('subjectid',$thissbj);
-                //                 }
-                //             ])
-                //             ->find();
-
-                // // 如果大于满分、小于0分的时候也跳过
-                // if( $defen<0 || $defen>$manfen->ks_subject[0]->manfen )
-                // {
-                //     continue;
-                // }
-
-
 
                 // 查询是否存在这个成绩
                 $cj = Chengji::withTrashed()

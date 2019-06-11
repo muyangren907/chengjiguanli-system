@@ -49,15 +49,15 @@ class YanZheng  extends Controller
         $uneed_c = array();     # 荣誉器名首字母要大写
         // 排除方法
         $uneed_a = array(
-            'welcome','update','save','upload','myinfo',
+            'welcome','upload','myinfo',
             'index','mybanji','banjilist',
             'editpassword','updatepassword',
             // 教师信息查询
             'srcteacher','srcry','srckt',
-            // 查询班级成绩、查询年级成绩
-            'ajaxbianji','ajaxnianji',
+            // 查询班级成绩、查询年级成绩、查询录入成绩人员信息
+            'ajaxbianji','ajaxnianji','ajaxaddinfo',
             // 批量保存
-            'saveall',
+            // 'saveall',
             // 下载成绩表、下载成绩统计表
             'dwchengjixls','dwbanjixls','dwnianjixls',
             //保存考号、下载试卷标签、下载成绩采集表
