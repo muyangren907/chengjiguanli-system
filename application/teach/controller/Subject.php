@@ -154,7 +154,7 @@ class Subject extends Base
         $validate = new \app\teach\validate\Subject;
 
         // 获取表单数据
-        $list = request()->only(['title','jiancheng','category','kaoshi','paixu'],'put');
+        $list = request()->only(['title','jiancheng','category','kaoshi','lieming','paixu'],'put');
 
         // 验证表单数据
         $result = $validate->check($list);
