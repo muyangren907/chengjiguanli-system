@@ -518,14 +518,15 @@ class Index extends Base
         $sheet->setCellValue('A2', '序号');
         $sheet->setCellValue('B2', '班级');
         $sheet->setCellValue('C2', '姓名');
-        $i = 3;
+        $sheet->setCellValue('D2', '性别');
+        $i = 4;
         foreach ($ks->ks_subject as $key => $value) {
             $sheet->setCellValue($colname[$i].'2', $value->subject_name->title);
             $i++;
         }
         $sheet->setCellValue($colname[$i].'2', '平均分');
         $sheet->setCellValue($colname[$i+1].'2', '总分');
-        $i=$i+3;
+        $i=$i+4;
         $sheet->setCellValue($colname[$i].'2', '项目');
         $sheet->setCellValue($colname[$i].'3', '人数');
         $sheet->setCellValue($colname[$i].'4', '平均分');
@@ -548,7 +549,8 @@ class Index extends Base
                 $sheet->setCellValue('A'.$i, $i-2);
                 $sheet->setCellValue('B'.$i, $value['banji']);
                 $sheet->setCellValue('C'.$i, $value['student']);
-                $colcnt = 3;
+                 $sheet->setCellValue('D'.$i, $value['sex']);
+                $colcnt = 4;
                 foreach ($ks->ks_subject as $k => $val) {
                     if(isset($value[$val->subject_name->lieming]))
                     {
@@ -565,7 +567,7 @@ class Index extends Base
         $nianji = array();
         $chengjiinfo = $tj->srcChengji($kaoshi,$list['banji']);
         $temp = $tj->tongji($chengjiinfo,$kaoshi);
-        $colcnt = $colcnt+4;
+        $colcnt = $colcnt+5;
         // 循环写出统计结果
         foreach ($ks->ks_subject as $key => $value) {
             $sheet->setCellValue($colname[$colcnt].'3', $temp[$value->subject_name->lieming]['cnt']);

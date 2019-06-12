@@ -36,7 +36,7 @@ class Chengji extends Base
                         $query->field('id,jiancheng');
                     }
                     ,'cjStudent'=>function($query){
-                        $query->field('id,xingming');
+                        $query->field('id,xingming,sex');
                     }
                 ])
                 ->select();
@@ -63,6 +63,7 @@ class Chengji extends Base
             $data[$key]['id'] = $value->id;
             $data[$key]['school'] = $value->cj_school->jiancheng;
             $data[$key]['student'] = $value->cj_student->xingming;
+            $data[$key]['sex'] = $value->cj_student->sex;
             $data[$key]['nianji'] = $value->nianji;
             $data[$key]['banji'] = $value->cj_banji->banji_title;
             $dfcnt = 0;
