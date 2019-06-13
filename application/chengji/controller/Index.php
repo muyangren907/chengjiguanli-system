@@ -246,7 +246,6 @@ class Index extends Base
         flush();
         // 返回成绩结果
         return json($data);
-        
     }
 
 
