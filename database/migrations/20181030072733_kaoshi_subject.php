@@ -39,6 +39,8 @@ class KaoshiSubject extends Migrator
             ->addColumn('manfen','integer',['limit'=>3,'null'=>false,'comment'=>'满分'])
             ->addColumn('youxiu','integer',['limit'=>3,'null'=>false,'comment'=>'优秀'])
             ->addColumn('jige','integer',['limit'=>3,'null'=>false,'comment'=>'及格'])
+            ->addColumn('create_time','integer',['limit'=>11,'null'=>true,'comment'=>'创建时间'])
+            ->addColumn('update_time','integer',['limit'=>11,'null'=>true,'comment'=>'更新时间'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
             ->create();
     }

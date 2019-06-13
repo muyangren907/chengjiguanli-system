@@ -36,6 +36,8 @@ class KaoshiNianji extends Migrator
             ->addColumn('kaoshiid','integer',['limit'=>11,'null'=>false,'comment'=>'考试id'])
             ->addColumn('nianji','integer',['limit'=>80,'null'=>false,'comment'=>'年级'])
             ->addColumn('nianjiname','string',['limit'=>10,'null'=>false,'comment'=>'年级名'])
+            ->addColumn('create_time','integer',['limit'=>11,'null'=>true,'comment'=>'创建时间'])
+            ->addColumn('update_time','integer',['limit'=>11,'null'=>true,'comment'=>'更新时间'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
             ->create();
     }

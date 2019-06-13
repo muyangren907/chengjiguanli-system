@@ -95,6 +95,24 @@ class Kaohao extends Base
         // 重新组合学生信息
         $kaohao = array();
         foreach ($stulist as $key => $value) {
+            $check = KH::withTrashed()
+                        ->where('kaoshi',$list['kaoshi'])
+                        ->where('student',$value->id)
+                        ->find();
+            if($check)
+            {
+                if($check->delete_time>0)
+                {
+                    $check->restore();
+                }
+                if($check->status == 0)
+                {
+                    $check->status = 1;
+                    $check->save();
+                }
+
+                continue;
+            }
             $kaohao[$key]['student']= $value->id;
             $kaohao[$key]['school']= $list['school'];
             $kaohao[$key]['ruxuenian']= $value->stu_banji->ruxuenian;

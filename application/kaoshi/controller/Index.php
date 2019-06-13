@@ -286,21 +286,14 @@ class Index extends Base
             $data[$i]['youxiu'] = $list['youxiu'][$key];
             $data[$i]['jige'] = $list['jige'][$key];
             $data[$i]['lieming'] = $list['lieming'][$key];
+            $data[$i]['kaoshiid'] = $id;
             $i++;
         }
 
         // 更新数据
-        $ks = new KS();
-        $ksdata = $ks->where('id',$list['id'])->find();
-
-        // 更新学科表
-        $subjectdata=$ksdata->ksSubject->isEmpty();
-
-        if($subjectdata == false){
-            $ksdata->ksSubject()->delete(true);
-        }
-        $subjectdata=$ksdata->ksSubject()->saveAll($data);
-
+        $subject = new \app\kaoshi\model\KaoshiSubject;
+        $subject->where('kaoshiid',$id)->delete();
+        $subjectdata = $subject->saveAll($data);
 
         // 整理数据
         $data = array();
@@ -308,16 +301,18 @@ class Index extends Base
         foreach ($list['nianji'] as $key => $value) {
             $data[$i]['nianji'] = $key;
             $data[$i]['nianjiname'] = $list['nianjiname'][$key];
+            $data[$i]['kaoshiid'] = $id;
             $i++;
         }
 
-        // 更新学科表
-        $nianjidata=$ksdata->ksNianji()->delete();
-        $nianjidata=$ksdata->ksNianji()->saveAll($data);
+        // 更新数据
+        $nianji = new \app\kaoshi\model\KaoshiNianji;
+        $nianji->where('kaoshiid',$id)->delete();
+        $nianjidata = $nianji->saveAll($data);
 
 
         // 根据更新结果设置返回提示信息
-        $ksdata && $subjectdata && $nianjidata ? $data=['msg'=>'设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $subjectdata && $nianjidata ? $data=['msg'=>'设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);
