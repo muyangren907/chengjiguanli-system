@@ -327,17 +327,24 @@ class Student extends Base
             intval(substr($value[2],16,1) )% 2 ? $students[$i]['sex'] = 1 :$students[$i]['sex'] = 0 ;
             $students[$i]['shengri'] = substr($value[2],6,4).'-'.substr($value[2],10,2).'-'.substr($value[2],12,2);
             $students[$i]['school'] = $list['school'];
-            $stuid = STU::where('shenfenzhenghao',$value[2])->value('id');
-            if($stuid > 0)
+            $stuid = STU::withTrashed()->where('shenfenzhenghao',$value[2])->find();
+            if($stuid)
             {
-                $students[$i]['id'] = $stuid;
-                $students[$i]['delete_time'] = null;
-                $students[$i]['status'] = true;
+                if($stuid->delete_time>0)
+                {
+                    $stuid->restore();
+                }
+                if($stuid->status == 0)
+                {
+                    $stuid->status = 1;
+                    $stuid->save();
+                }
+                $students[$i]['id'] = $stuid->id;
             }
             // 销毁无用变量
             $i++;
         }
-        
+       
         
         // 实例化学生信息数据模型
         $student = new STU();
