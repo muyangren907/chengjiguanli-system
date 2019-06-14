@@ -15,7 +15,14 @@ class Chengji extends Base
     	return $this->belongsTo('\app\teach\model\Subject');
     }
 
-    // 查询学生成绩
+    /**  
+    * 根据考试ID和班级获取学生各学科成绩、平均分、总分 
+    * 
+    * @access public 
+    * @param mixed $kaoshi 当前考试ID 
+    * @param array $banji 学生所在班级 
+    * @return array 返回类型
+    */ 
     public function srcChengji($kaoshi=0,$banji=array())
     {
         $kh = new \app\kaoshi\model\Kaohao;
@@ -66,16 +73,16 @@ class Chengji extends Base
             $data[$key]['sex'] = $value->cj_student->sex;
             $data[$key]['nianji'] = $value->nianji;
             $data[$key]['banji'] = $value->cj_banji->banji_title;
-            $dfcnt = 0;
+            $dfsum = 0;
             $sbjcnt = 0;
             foreach ($value->ks_chengji as $k => $val) {
                 $data[$key][$xk[$val->subject_id]] = $val->defen*1;
-                $dfcnt = $dfcnt + $val->defen*1;
+                $dfsum = $dfsum + $val->defen*1;
                 $sbjcnt ++;
             }
-            $data[$key]['cnt'] = $dfcnt;
+            $data[$key]['sum'] = $dfsum;
             if($sbjcnt>0){
-                $data[$key]['avg'] = round($dfcnt/$sbjcnt,1);
+                $data[$key]['avg'] = round($dfsum/$sbjcnt,1);
             }else{
                 $data[$key]['avg'] = 0;
             }

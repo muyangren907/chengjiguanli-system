@@ -298,7 +298,7 @@ class Index extends Base
 
 
 
-    // 获取考试信息
+    // 获取成绩信息
     public function ajaxData()
     {
         // 获取参数
@@ -317,10 +317,10 @@ class Index extends Base
 
 
         // 实例化
-        $chengji = new Kaohao;
+        $kaohao = new Kaohao;
 
         // 查询要显示的数据
-        $data = $chengji->srcChengji($src);
+        $data = $kaohao->srcChengji($src);
 
 
         // 获取符合条件记录总数
@@ -482,7 +482,6 @@ class Index extends Base
         $kaoshi = $list['kaoshi'];
         // 获取数据库信息
         $cj = new Chengji();
-        // $kh = new \app\kaoshi\model\Kaohao;
         $chengjiinfo = $cj->srcChengji($kaoshi,$list['banji']);
 
 
@@ -509,7 +508,6 @@ class Index extends Base
         // 创建表格
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
-
         
 
         // 设置表头信息
@@ -558,7 +556,7 @@ class Index extends Base
                     $colcnt++;
                 }
                 $sheet->setCellValue($colname[$colcnt].$i, $value['avg']);
-                $sheet->setCellValue($colname[$colcnt+1].$i, $value['cnt']);
+                $sheet->setCellValue($colname[$colcnt+1].$i, $value['sum']);
                 $i++;
         }
 
@@ -569,7 +567,7 @@ class Index extends Base
         $colcnt = $colcnt+5;
         // 循环写出统计结果
         foreach ($ks->ks_subject as $key => $value) {
-            $sheet->setCellValue($colname[$colcnt].'3', $temp[$value->subject_name->lieming]['cnt']);
+            $sheet->setCellValue($colname[$colcnt].'3', $temp[$value->subject_name->lieming]['sum']);
             $sheet->setCellValue($colname[$colcnt].'4', $temp[$value->subject_name->lieming]['avg']);
             $sheet->setCellValue($colname[$colcnt].'5', $temp[$value->subject_name->lieming]['youxiu']);
             $sheet->setCellValue($colname[$colcnt].'6', $temp[$value->subject_name->lieming]['jige']);

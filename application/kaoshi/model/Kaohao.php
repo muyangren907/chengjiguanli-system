@@ -128,12 +128,20 @@ class Kaohao extends Base
             $xk[$value->subjectid] = $value->lieming;
         }
 
+        // halt($khlist);
+
         // 整理数据
         $data = array();
         foreach ($khlist as $key => $value) {
             $data[$key]['id'] = $value->id;
             $data[$key]['school'] = $value->cj_school->jiancheng;
-            $data[$key]['student'] = $value->cj_student->xingming;
+            if(isset($value->cj_student)){
+                $data[$key]['student'] = $value->cj_student->xingming;
+            }else{
+                $stu = new \app\renshi\model\Student;
+                $stuname = $stu::withTrashed()->where('id',$value->student)->value('xingming');
+                $data[$key]['student'] = $stuname;
+            }
             $data[$key]['nianji'] = $value->nianji;
             $data[$key]['banji'] = $value->cj_banji->num_title;
             $dfsum = 0;
