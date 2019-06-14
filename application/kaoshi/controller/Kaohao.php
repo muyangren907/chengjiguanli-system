@@ -368,7 +368,7 @@ class Kaohao extends Base
                     $sheet->setCellValue('C'.$i, $bj->cj_school->jiancheng);
                     $sheet->setCellValue('D'.$i, $bj->cj_banji->numTitle);
                     $sheet->setCellValue('E'.$i, $sbj->subject_name->jiancheng);
-                    $sheet->setCellValue('F'.$i, $kh->cj_student->xingming);
+                    $sheet->setCellValue('F'.$i, $kh->cj_student['xingming']);
                     $i++;
                 }
             }

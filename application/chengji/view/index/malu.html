@@ -57,7 +57,7 @@
         success: function(data){
          $('#xsschool').text(data.cj_school.jiancheng);
          $('#xsbanji').text(data.cj_banji.banjiTitle);
-         $('#xsxingming').text(data.cj_student.xingming);
+         $('#xsxingming').text(data.cj_student['xingming']);
          $('#xsxueke').text(data.sbj.title);
 
          $('#kaohao_id').val(data.id);

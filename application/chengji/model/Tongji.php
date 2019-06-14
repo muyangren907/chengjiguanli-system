@@ -7,7 +7,16 @@ use think\Model;
 class Tongji extends Model
 {
 
-    // 查询学生成绩
+    /**  
+    * 以考号为基础查询学生成绩 
+    * 信息包括：各学科成绩、平均分、总分
+    * @access public 
+    * @param number $kaoshi 考试id
+    * @param array $banji 班级
+    * @param array $nianji 年级 
+    * @param array $school 学校 
+    * @return array 返回类型
+    */
     public function srcChengji($kaoshi,$banji=array(),$nianji=array(),$school=array())
     {
         $kh = new \app\kaoshi\model\Kaohao;

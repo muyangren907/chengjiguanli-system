@@ -304,3 +304,21 @@ function arraySequence($array, $field = 'id', $sort = 'desc') {
 	}
 	return $array;
 }
+
+
+/**
+ * 根据键值，用数组2的值替换数组1的值
+ * $cover 覆盖数组，存储新值的数组
+ * $covered 被覆盖数组，被更改值的数组
+ * 返回 新arr1
+ * */
+function array_cover( $cover = array(), $covered = array() )
+{
+	foreach ($cover as $key => $value) {
+		if(isset($covered[$key]) == true)
+		{
+			$covered[$key] = $cover[$key];
+		}
+	}
+	return $covered;
+}

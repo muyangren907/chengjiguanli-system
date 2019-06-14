@@ -8,7 +8,7 @@ use app\common\model\Base;
 class Kaohao extends Base
 {
     /**  
-    * 根据班级ID查询参加当前考试的学生信息 
+    * 根据班级ID和考试ID，以班级为单位分组，查询参加当前考试的学生信息 
     * 
     * @access public 
     * @param mixed $kaoshi 当前考试ID 
@@ -43,12 +43,29 @@ class Kaohao extends Base
                         }
                     ])
                     ->select();
+
+        $stu = new \app\renshi\model\Student;
+        // 找出已经被删除学生，并添加该学生信息
+        foreach ($data as $key => $value) {
+            foreach ($value->banji_kaohao as $k => $val) {
+                if($val->cj_student == Null)
+                {
+                    $stuinof = $stu::withTrashed()
+                            ->where('id',$val->student)
+                            ->field('id,xingming')
+                            ->find();
+                    $data[$key]->banji_kaohao[$key]->cj_student = array('id'=>$stuinof->id,'xingming'=>$stuinof->xingming);
+                }
+            }
+        }
+
         return $data;
     }
 
 
     /**  
-    * 以考号为基础查询学生成绩并排序 
+    * 以考号为基础查询学生成绩信息并排序 
+    * 信息包括：学校、年级、班级、姓名、性别、各学科成绩、平均分、总分
     * @access public 
     * @param array $src 参数数组 
     * @param number $src['school'] 学生所在学校
@@ -59,26 +76,39 @@ class Kaohao extends Base
     * @param number $src['type'] 排序类型
     * @return array 返回类型
     */
-    public function srcChengji($src)
+    public function srcChengji($srcfrom)
     {
+        // 初始化参数 
+        $src = array(
+            'page'=>'1',
+            'limit'=>'10',
+            'field'=>'banji',
+            'type'=>'desc',
+            'kaoshi'=>'1',
+            'school'=>array(),
+            'nianji'=>array(),
+            'banji'=>array(),
+            'searchval'=>''
+        );
+        // 用新值替换初始值
+        $src = array_cover( $srcfrom , $src ) ;
+
+
         $school = $src['school'];
         $nianji = $src['nianji'];
-        $paixu = $src['paixu'];
+        $banji = $src['banji'];
         $seachval = $src['searchval'];
-
 
         $khlist = $this->where('kaoshi',$src['kaoshi'])
                 ->field('id,school,student,nianji,banji')
                 ->when(count($school)>0,function($query) use($school){
                     $query->where('school','in',$school);
                 })
-                ->when(count($paixu)>0,function($query) use($paixu){
-                    $query->where('banji','in',function($q) use($paixu){
-                        $q->name('banji')->where('paixu','in',$paixu)->field('id');
-                    });
+                ->when(count($banji)>0,function($query) use($banji){
+                    $query->where('banji','in',$banji);
                 })
                 ->when(count($nianji)>0,function($query) use($nianji){
-                    $query->where('nianji','in',$nianji);
+                    $query->where('ruxuenian','in',$nianji);
                 })
                 ->when(strlen($seachval)>0,function($query) use($seachval){
                     $query->where(function($w) use ($seachval){
@@ -100,7 +130,7 @@ class Kaohao extends Base
                         $query->field('id,jiancheng');
                     }
                     ,'cjStudent'=>function($query){
-                        $query->field('id,xingming');
+                        $query->field('id,xingming,sex');
                     }
                 ])
                 ->select();
@@ -128,19 +158,22 @@ class Kaohao extends Base
             $xk[$value->subjectid] = $value->lieming;
         }
 
-        // halt($khlist);
-
+        $stu = new \app\renshi\model\Student;
         // 整理数据
         $data = array();
         foreach ($khlist as $key => $value) {
             $data[$key]['id'] = $value->id;
             $data[$key]['school'] = $value->cj_school->jiancheng;
-            if(isset($value->cj_student)){
+            if($value->cj_student != Null){
                 $data[$key]['student'] = $value->cj_student->xingming;
+                $data[$key]['sex'] = $stuinfo->sex;
             }else{
-                $stu = new \app\renshi\model\Student;
-                $stuname = $stu::withTrashed()->where('id',$value->student)->value('xingming');
-                $data[$key]['student'] = $stuname;
+                $stuinfo = $stu::withTrashed()
+                        ->where('id',$value->student)
+                        ->field('id,xingming,sex')
+                        ->find();
+                $data[$key]['student'] = $stuinfo->xingming;
+                $data[$key]['sex'] = $stuinfo->sex;
             }
             $data[$key]['nianji'] = $value->nianji;
             $data[$key]['banji'] = $value->cj_banji->num_title;

@@ -149,6 +149,18 @@ class Index extends Base
                     }
                 ])
                 ->find();
+        if($cjlist->cj_student == Null)
+        {
+            $stu = new \app\renshi\model\Student;
+            $stuinfo = $stu::withTrashed()
+                            ->where('id',$cjlist->student)
+                            ->field('id,xingming,sex')
+                            ->find();
+            $cjlist->cj_student = array(
+                'id'=>$stuinfo->id,
+                'xingming'=>$stuinfo->xingming
+            );
+        }
         $cjlist->sbj = Subject::where('id',$sbj)->field('id,title')->find();
 
         // 获取列名
@@ -269,7 +281,7 @@ class Index extends Base
     public function index($kaoshi)
     {
         // 设置要给模板赋值的信息
-        $list['webtitle'] = '成绩列表';
+        $list['webtitle'] = '学生成绩列表';
 
         // 实例化考试数据模型
         $ks = new \app\kaoshi\model\Kaoshi;
@@ -303,18 +315,19 @@ class Index extends Base
     {
         // 获取参数
         $src = $this->request
-                ->only([
-                    'page'=>'1',
-                    'limit'=>'10',
-                    'field'=>'banji',
-                    'type'=>'desc',
-                    'kaoshi'=>'1',
-                    'school'=>array(),
-                    'nianji'=>array(),
-                    'paixu'=>array(),
-                    'searchval'=>''
+                ->only(['page','limit','field','type','kaoshi','school','nianji','paixu','searchval'
                 ],'POST');
 
+
+        // 根据班级排序获取班级id
+        if(isset($src['paixu']))
+        {
+            $banji = new \app\teach\model\Banji;
+            $src['banji'] = $banji
+                    ->where('paixu','in',$src['paixu'])
+                    ->column('id');
+        }
+        
 
         // 实例化
         $kaohao = new Kaohao;
@@ -473,21 +486,20 @@ class Index extends Base
         if(!$result){
             $this->error($msg);
         }
-
-
-
         
-        set_time_limit(0);
-        $list = input();
-        $kaoshi = $list['kaoshi'];
+
         // 获取数据库信息
-        $cj = new Chengji();
-        $chengjiinfo = $cj->srcChengji($kaoshi,$list['banji']);
+        $kh = new Kaohao();
+        $src = [
+            'kaoshi'=>$list['kaoshi'],
+            'banji'=>$list['banji'],
+        ];
+        $chengjiinfo = $kh->srcChengji($src);
 
 
         // 获取考试标题
         $ks = new \app\kaoshi\model\Kaoshi;
-        $ks = $ks->where('id',$kaoshi)
+        $ks = $ks->where('id',$list['kaoshi'])
                 ->field('id,title')
                 ->with([
                     'ksSubject'=>function($query){
@@ -504,7 +516,7 @@ class Index extends Base
 
         $colname = excelLieming();
 
-
+        set_time_limit(0);
         // 创建表格
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
@@ -539,14 +551,14 @@ class Index extends Base
         $sheet->setCellValue($colname[$i+2].'2', '全科及格率%');
         
 
-        // 循环写出信息
+        // 循环写出成绩及个人信息
         $i = 3;
         foreach ($chengjiinfo as $key => $value) {
                 // 表格赋值
                 $sheet->setCellValue('A'.$i, $i-2);
                 $sheet->setCellValue('B'.$i, $value['banji']);
                 $sheet->setCellValue('C'.$i, $value['student']);
-                 $sheet->setCellValue('D'.$i, $value['sex']);
+                $sheet->setCellValue('D'.$i, $value['sex']);
                 $colcnt = 4;
                 foreach ($ks->ks_subject as $k => $val) {
                     if(isset($value[$val->subject_name->lieming]))
@@ -562,12 +574,12 @@ class Index extends Base
 
         $tj = new \app\chengji\model\Tongji;
         $nianji = array();
-        $chengjiinfo = $tj->srcChengji($kaoshi,$list['banji']);
-        $temp = $tj->tongji($chengjiinfo,$kaoshi);
+        $chengjiinfo = $tj->srcChengji($list['kaoshi'],$list['banji']);
+        $temp = $tj->tongji($chengjiinfo,$list['kaoshi']);
         $colcnt = $colcnt+5;
         // 循环写出统计结果
         foreach ($ks->ks_subject as $key => $value) {
-            $sheet->setCellValue($colname[$colcnt].'3', $temp[$value->subject_name->lieming]['sum']);
+            $sheet->setCellValue($colname[$colcnt].'3', $temp[$value->subject_name->lieming]['cnt']);
             $sheet->setCellValue($colname[$colcnt].'4', $temp[$value->subject_name->lieming]['avg']);
             $sheet->setCellValue($colname[$colcnt].'5', $temp[$value->subject_name->lieming]['youxiu']);
             $sheet->setCellValue($colname[$colcnt].'6', $temp[$value->subject_name->lieming]['jige']);
