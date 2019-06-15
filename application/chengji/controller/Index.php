@@ -625,7 +625,7 @@ class Index extends Base
                 ->only([
                     'page'=>'1',
                     'limit'=>'10',
-                    'field'=>'banji',
+                    'field'=>'subject_id',
                     'type'=>'desc',
                     'kaohao'=>''
                 ],'POST');
