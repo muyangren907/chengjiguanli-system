@@ -133,18 +133,17 @@ class Index extends Base
     public function read($id)
     {
         // 获取管理员信息
+        $ad = new AD;
         $list = AD::where('id',$id)
                 ->field('id,xingming,sex,shengri,username,school,phone,denglucishu,lastip,ip,lasttime,thistime,create_time,update_time')
                 ->with([
                     'adSchool'=>function($query){
                         $query->field('id,title');
                     }
-                    ,'glGroup'=>function($query){
-                        $query->where('status',1)->field('title,rules,miaoshu');
-                    }
                 ])
                 ->find();
         $list['webtitle'] = '帐号信息';
+        $list->groupnames = $ad->getGroupnames($id);
 
         // 模板赋值
         $this->assign('list',$list);
@@ -158,18 +157,19 @@ class Index extends Base
     public function myinfo()
     {
         $id = session('userid');
+        $ad = new AD;
         // 获取管理员信息
-        $list = AD::where('id',$id)
+        $list = $ad->where('id',$id)
                 ->field('id,xingming,sex,shengri,username,school,phone,denglucishu,lastip,ip,lasttime,thistime,create_time,update_time')
                 ->with([
                     'adSchool'=>function($query){
                         $query->field('id,title');
                     }
-                   ,'glGroup'=>function($query){
-                    $query->where('status',1)->field('title,rules,miaoshu');
-                }
                 ])
                 ->find();
+        $list->groupnames = $ad->getGroupnames($id);
+
+
         $list['webtitle'] = '我的信息';
 
         // 模板赋值

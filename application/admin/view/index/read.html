@@ -42,11 +42,7 @@
                          <tr>
                             <th>拥有角色</th>
                             <td>
-                                {volist name="list.gl_group" id="vo"}
-                                    {gt name="key" value="0"}、{/gt}
-                                    {$vo.title}
-                                {/volist}
-
+                                {$list.groupnames}
                             </td></tr>
                         <tr>
                             <th>联系电话</th>

@@ -104,44 +104,36 @@ class Admin extends Base
     }
 
 
-    // // 获取角色id表
-    // public function getGroupidsAttr()
-    // {
-    //     // 获取当前当前管理员信息
-    //     $admin = $this->get($this->getAttr('id'));
-    //     // 获取角色id
-    //     $list = $admin->authgroup()->column('group_id');
+    // 获取角色名称
+    public function getGroupnames($userid)
+    {
+        // 如果用户ID为1或2，则为超级管理员
+        if($userid == 1 || $userid == 2)
+        {
+            return '超级管理员';
+        }
 
-    //     $str = '';
-    //     // 将角色id转换成数组
-    //     foreach ($list as $key => $value) {
-    //         $key == 0 ? $str =$value : $str = $str.','.$value;
-    //     }
+        // 查询用户拥有的权限
+        $admininfo = $this->where('id',$userid)
+                        ->field('id')
+                        ->with([
+                            'glGroup'=>function($query){
+                                $query->where('status',1)->field('title');
+                            }
+                        ])
+                        ->find();
+        $groupname = '';
+        foreach ($admininfo->gl_group as $key => $value) {
+            if($key == 0){
+                $groupname = $value->title;
+            }else{
+                $groupname = $groupname.'、'.$value->title;
+            }
+        }
 
-    //     // 返回值
-    //     return $str;
-    // }
-
-    // // 获取角色名称
-    // public function getGroupnamesAttr()
-    // {
-    //     // 获取角色id
-    //     $group = $this->get($this->getAttr('id'))->append(['groupids']);
-
-    //     $str = '';
-    //     // 查询角色名称
-    //     $grouplist= db('AuthGroup')->where('id','in',$group->groupids)->column('title');
-    //     // 重组角色名
-    //     foreach ($grouplist as $key => $value) {
-    //         if($key == 0){
-    //             $str = $value;
-    //         }else{
-    //             $str = $str.'、'.$value;
-    //         }
-    //     }
-    //     // 返回角色名
-    //     return $str;
-    // }
+        // 返回角色名
+        return $groupname;
+    }
 
     // 单位关联模型
     public function adSchool()
