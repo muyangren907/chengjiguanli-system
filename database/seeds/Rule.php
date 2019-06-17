@@ -97,7 +97,7 @@ class Rule extends Seeder
                     ['title'=>'删除考号','name'=>'kaoshi/Kaohao/delete','paixu'=>2,'pid'=>302],
                     ['title'=>'下载试卷标签信息','name'=>'kaoshi/Kaohao/biaoqian','paixu'=>3,'pid'=>302],
                     ['title'=>'下载成绩采集表','name'=>'kaoshi/Kaohao/caiji','paixu'=>4,'pid'=>302],
-                    ['title'=>'成绩列表','name'=>'Chengji/Index/stuChengjilist','paixu'=>5,'pid'=>302],
+                    ['title'=>'成绩列表','name'=>'Chengji/Index/index','paixu'=>5,'pid'=>302],
                          ['title'=>'录入人信息','name'=>'Chengji/Index/readAdd','paixu'=>6,'pid'=>302],
                         ['title'=>'考号删除','name'=>'Chengji/Index/deletecj','paixu'=>7,'pid'=>302],
                         ['title'=>'成绩状态','name'=>'Chengji/Index/setStatus','paixu'=>8,'pid'=>302],
