@@ -193,7 +193,17 @@ function teacherNames($list = array())
 
 
 
-// 上传文件
+/**  
+* 上传文件，并返回文件存储地址 
+* 
+* @access public 
+* @param array $list 文件信息
+* @param mixed $list['serurl'] 文件要存到哪儿  
+* @param mixed $list[''] 文件要存到哪儿 
+* @param mixed $file 文件 
+* @param array $isSave 是否将文件信息保存到数据库 
+* @return string 返回类型  文件在服务器地址
+*/  
 function upload($list,$file,$isSave=false)
 {
     // 实例化文件数据模型
