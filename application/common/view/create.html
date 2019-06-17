@@ -41,24 +41,16 @@
             data:data.field,
             dataType:'json',
             success:function(result){
-              val = result.val
-              
-              
-              // 弹出提示
-              layer.msg(result.msg,
+              if(result.val == 1)
               {
-                icon:1,
-                time:2000,
-                },function(){
-                  if(val == 1)
-                  {
-                    //先得到当前iframe层的索引
-                    var index = parent.layer.getFrameIndex(window.name); 
-                    //再执行关闭 
-                    parent.layui.table.reload('mytable');
-                    parent.layer.close(index); 
-                  }
-                });
+                //先得到当前iframe层的索引
+                var index = parent.layer.getFrameIndex(window.name); 
+                //再执行关闭 
+                // layer.msg(result.msg);
+                parent.layui.table.reload('mytable');
+                parent.layer.close(index); 
+                parent.layer.msg(result.msg);
+              }
             },
             error:function(xhr,status,error) {
               layer.msg('数据处理错误',{
