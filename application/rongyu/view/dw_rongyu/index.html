@@ -85,7 +85,7 @@
 				}
 				return str;
 			}},
-			{field: "category",title: '荣誉类别',sort: true,templet:function(d){
+			{field: "category",title: '荣誉类别', minWidth:100,sort: true,templet:function(d){
 				var str='';
 				if(d.lx_category)
 				{
@@ -93,7 +93,7 @@
 				}
 				return str;
 			}},
-			{field: 'jiangxiang', title: '奖项',sort: true,templet:function(d){
+			{field: 'jiangxiang', title: '奖项', minWidth:100,sort: true,templet:function(d){
 				var str='';
 				if(d.jx_category)
 				{
@@ -101,7 +101,7 @@
 				}
 				return str;
 			}} ,
-			{field: 'fzschool', title: '发证单位',sort: true,templet:function(d){
+			{field: 'fzschool', title: '发证单位', minWidth:100,sort: true,templet:function(d){
 				var str='';
 				if(d.fz_school)
 				{
@@ -109,7 +109,7 @@
 				}
 				return str;
 			}},
-			{title: '级别',templet:function(d){
+			{title: '级别', minWidth:100,templet:function(d){
 				var str='';
 				if(d.fz_school)
 				{
@@ -117,8 +117,8 @@
 				}
 				return str;
 			}},
-			{field: 'fzshijian', title: '发证时间', sort: true},
-			{field: 'status', title: '状态',templet:'#status', sort: true},
+			{field: 'fzshijian', minWidth:100, title: '发证时间', sort: true},
+			{field: 'status', minWidth:100, title: '状态',templet:'#status', sort: true},
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
 		]];
 
