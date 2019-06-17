@@ -108,7 +108,7 @@
             cjgl.delAll(checkStatus,'/jsry','mytable');
             break;
           case 'add':
-            cjgl.add('添加荣誉册','/jsry/create','550','450');
+            cjgl.add('添加荣誉册','/jsry/create','650','550');
             break;
         };
       });
@@ -128,7 +128,7 @@
 	          cjgl.del(obj,"/jsry");
 	          break;
 	        case 'edit':// 编辑
-	          cjgl.add('编辑荣誉册','/jsry/'+obj.data.id+'/edit','550','450');
+	          cjgl.add('编辑荣誉册','/jsry/'+obj.data.id+'/edit','650','550');
 	          break;
 	        case 'status':// 状态
 	          cjgl.status(obj,"{:url('setstatus')}");
