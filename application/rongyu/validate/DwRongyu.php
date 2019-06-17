@@ -15,7 +15,7 @@ class DwRongyu extends Validate
 	protected $rule = [
         // 'url|请先上传荣誉图片'     =>  'require',
         'id|请先上传荣誉图片'     =>  'require',
-        'title|荣誉标题'     =>  'length:1,40',
+        'title|荣誉标题'     =>  'length:1,50',
         'category|荣誉类型'     =>  'require|number',
         'hjschool|获奖单位'     =>  'require|number',
         'fzshijian|发证时间'     =>  'require|date',

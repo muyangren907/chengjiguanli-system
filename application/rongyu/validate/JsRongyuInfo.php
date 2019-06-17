@@ -15,7 +15,7 @@ class JsRongyuInfo extends Validate
 	protected $rule = [
         'id|请先上传图片'      =>    'require',
         'rongyuce|荣誉册ID丢失'      =>    'require',
-        'title|荣册标题'     =>  'require|length:1,100',
+        'title|荣册标题'     =>  'require|length:1,50',
         'hjteachers|获奖人'     =>  'require|array',
         'hjschool|荣誉所在单位'     =>  'require|number',
         'subject|荣誉所属学科'     =>  'require|number',

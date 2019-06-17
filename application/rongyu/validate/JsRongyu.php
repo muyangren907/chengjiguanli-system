@@ -13,7 +13,7 @@ class JsRongyu extends Validate
      * @var array
      */	
 	protected $rule = [
-        'title|荣誉册标题'     =>  'require|length:1,30',
+        'title|荣誉册标题'     =>  'require|length:1,50',
         'category|荣誉类型'     =>  'require|number',
         'fzshijian|发证时间'     =>  'require|date',
         'fzschool|颁奖单位'     =>  'require|number',

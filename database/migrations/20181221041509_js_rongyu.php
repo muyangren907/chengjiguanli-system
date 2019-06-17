@@ -33,7 +33,7 @@ class JsRongyu extends Migrator
 
         // 添加当前表字段
         $table
-            ->addColumn('title','string',['limit'=>30,'null'=>false,'comment'=>'荣誉册名称'])
+            ->addColumn('title','string',['limit'=>50,'null'=>false,'comment'=>'荣誉册名称'])
             ->addColumn('fzschool','integer',['limit'=>11,'null'=>false,'comment'=>'发证单位'])
             ->addColumn('fzshijian','integer',['limit'=>11,'null'=>false,'comment'=>'发证时间'])
             ->addColumn('category','integer',['limit'=>15,'null'=>false,'comment'=>'类型'])
