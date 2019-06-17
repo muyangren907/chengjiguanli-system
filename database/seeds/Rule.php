@@ -120,6 +120,7 @@ class Rule extends Seeder
                     ['title'=>'状态','name'=>'renshi/Student/setStatus','paixu'=>7,'pid'=>401],
                     ['title'=>'下载模板','name'=>'renshi/Student/download','paixu'=>8,'pid'=>401],
                     ['title'=>'批量上传','name'=>'renshi/Student/createAll','paixu'=>9,'pid'=>401],
+                    ['title'=>'批量保存','name'=>'renshi/Student/saveAll','paixu'=>10,'pid'=>401],
 
                     // 教师管理权限
                     ['title'=>'添加','name'=>'renshi/Index/create','paixu' =>1,'pid'=>402],
@@ -131,8 +132,9 @@ class Rule extends Seeder
                     ['title'=>'状态','name'=>'renshi/Index/setStatus','paixu'=>7,'pid'=>402],
                     ['title'=>'查询教师','name'=>'renshi/Index/srcTeacher','paixu'=>8,'pid'=>402],
                     ['title'=>'批量上传','name'=>'renshi/Index/createAll','paixu'=>9,'pid'=>402],
-                    ['title'=>'表格模板下载','name'=>'renshi/Index/download','paixu'=>10,'pid'=>402],
-                    ['title'=>'姓名转换VBA下载','name'=>'renshi/Index/downloadVba','paixu'=>11,'pid'=>402],
+                    ['title'=>'批量保存','name'=>'renshi/Index/saveAll','paixu'=>10,'pid'=>402],
+                    ['title'=>'表格模板下载','name'=>'renshi/Index/download','paixu'=>11,'pid'=>402],
+                    ['title'=>'姓名转换VBA下载','name'=>'renshi/Index/downloadVba','paixu'=>12,'pid'=>402],
 
 
                     // 教务管理
@@ -214,6 +216,7 @@ class Rule extends Seeder
                     ['title'=>'查看','name'=>'rongyu/DwRongyu/read','paixu'=>6,'pid'=>801,],
                     ['title'=>'状态','name'=>'rongyu/DwRongyu/setStatus','paixu'=>7,'pid'=>801],
                     ['title'=>'批量上传','name'=>'rongyu/DwRongyu/createAll','paixu'=>8,'pid'=>801],
+                    ['title'=>'批量保存','name'=>'rongyu/DwRongyu/saveAll','paixu'=>9,'pid'=>801],
                     // 教师荣誉册管理
                     ['title'=>'添加','name'=>'rongyu/JsRongyu/create','paixu' =>1,'pid'=>802],
                     ['title'=>'保存','name'=>'rongyu/JsRongyu/save','paixu' =>2,'pid'=>802],
@@ -235,6 +238,7 @@ class Rule extends Seeder
                     ['title'=>'查看','name'=>'rongyu/JsRongyuInfo/read','paixu'=>6,'pid'=>803,],
                     ['title'=>'状态','name'=>'rongyu/JsRongyuInfo/setStatus','paixu'=>7,'pid'=>803],
                     ['title'=>'批量上传','name'=>'rongyu/JsRongyuInfo/createAll','paixu'=>8,'pid'=>803],
+                    ['title'=>'批量保存','name'=>'rongyu/JsRongyuInfo/saveAll','paixu'=>9,'pid'=>803],
                     
 
                     // 课题管理
@@ -257,8 +261,9 @@ class Rule extends Seeder
                     ['title'=>'查看','name'=>'keti/ketiinfo/read','paixu'=>6,'pid'=>902,],
                     ['title'=>'状态','name'=>'keti/ketiinfo/setStatus','paixu'=>7,'pid'=>902],
                     ['title'=>'批量上传','name'=>'keti/ketiinfo/createAll','paixu'=>8,'pid'=>902],
-                    ['title'=>'结题','name'=>'keti/ketiinfo/jieTi','paixu'=>9,'pid'=>902],
-                    ['title'=>'下载','name'=>'keti/KetiInfo/outXlsx','paixu'=>10,'pid'=>902],
+                    ['title'=>'批量保存','name'=>'keti/ketiinfo/saveAll','paixu'=>9,'pid'=>902],
+                    ['title'=>'结题','name'=>'keti/ketiinfo/jieTi','paixu'=>10,'pid'=>902],
+                    ['title'=>'下载','name'=>'keti/KetiInfo/outXlsx','paixu'=>11,'pid'=>902],
 
 
 
