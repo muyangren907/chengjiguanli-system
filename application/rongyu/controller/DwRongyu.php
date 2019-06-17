@@ -102,7 +102,7 @@ class DwRongyu extends Base
     public function save()
     {
         // 获取表单数据
-        $list = request()->only(['url','title','teachers'=>array(),'hjschool','category','fzshijian','fzschool','jiangxiang'],'post');
+        $list = request()->only(['url','project','title','teachers'=>array(),'hjschool','category','fzshijian','fzschool','jiangxiang'],'post');
 
         // 实例化验证模型
         $validate = new \app\rongyu\validate\DwRongyu;
@@ -227,7 +227,7 @@ class DwRongyu extends Base
     {
         // 获取学生信息
         $list['data'] = dwry::where('id',$id)
-                ->field('id,title,category,hjschool,fzshijian,fzschool,jiangxiang,url')
+                ->field('id,title,project,category,hjschool,fzshijian,fzschool,jiangxiang,url')
                 ->with([
                     'cyDwry'=>function($query){
                         $query->field('rongyuid,teacherid')
@@ -263,7 +263,7 @@ class DwRongyu extends Base
     public function update($id)
     {
         // 获取表单数据
-        $list = request()->only(['title','category','hjschool','fzshijian','fzschool','jiangxiang','teachers'=>array(),'url'],'put');
+        $list = request()->only(['title','project','category','hjschool','fzshijian','fzschool','jiangxiang','teachers'=>array(),'url'],'put');
         $list['id'] = $id;
         
 

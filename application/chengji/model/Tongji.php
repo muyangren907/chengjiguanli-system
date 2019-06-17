@@ -82,15 +82,7 @@ class Tongji extends Model
 
 
 
-    /**  
-    * 统计全样本成绩 
-    * 包括：数量、合计、标准差、平均、优秀、及格、四分位
-    *      全科及格率、全科平均分
-    * @access public 
-    * @param array $cj 成绩
-    * @param number $kaoshi 考试ID
-    * @return array 返回类型
-    */
+    // 统计成绩
     public function tongji($cj=array(),$kaoshi)
     {   
         
@@ -100,9 +92,20 @@ class Tongji extends Model
                 ->with('ksSubject')
                 ->find();
         $data = array();
+        $allcj = array();
         foreach ($ksinfo->ks_subject as $key => $value) {
             $cjcol = array_column($cj,$value->lieming);
-            $data[$value->lieming] = $this->tj($cjcol,$value->youxiu,$value->jige);
+            $allcj = array_merge($allcj,$cjcol);
+            $temp = array();
+            $temp['cnt'] = count($cjcol);
+            $temp['sum'] = array_sum($cjcol);
+            $temp['cnt']>0 ? $temp['avg'] = $temp['sum']/$temp['cnt'] : $temp['avg']=0;
+            $temp['biaozhuncha'] = round($this->getVariance($temp['avg'], $cjcol,true),2);
+            $temp['avg'] = round($temp['avg'],2);
+            $temp['youxiu'] = $this->rate($cjcol,$value->youxiu);
+            $temp['jige'] = $this->rate($cjcol,$value->jige);
+            $temp['sifenwei'] = $this->quartile($cjcol);
+            $data[$value->lieming] = $temp;
         }
         $cjcol = array_column($cj,'sum');
         $data['cnt'] = count($cjcol);
@@ -115,30 +118,6 @@ class Tongji extends Model
         $data['rate'] = $this->rateAll($cj,$ksinfo->ks_subject); #全科及格率
         
         return $data;
-    }
-
-
-    /**  
-    * 统计给定一维数组的成绩 
-    * 包括：数量、合计、标准差、平均、优秀、及格、四分位
-    * @access public 
-    * @param array $cj 成绩
-    * @param number $youxiu 优秀分数线
-    * @param number $jige 优秀分数线
-    * @return array 返回类型
-    */
-    public function tj($cj=array(),$youxiu,$jige)
-    {
-        $temp = array();
-        $temp['cnt'] = count($cj);
-        $temp['sum'] = array_sum($cj);
-        $temp['cnt']>0 ? $temp['avg'] = $temp['sum']/$temp['cnt'] : $temp['avg']=0;
-        $temp['biaozhuncha'] = round($this->getVariance($temp['avg'], $cj,true),2);
-        $temp['avg'] = round($temp['avg'],2);
-        $temp['youxiu'] = $this->rate($cj,$youxiu);
-        $temp['jige'] = $this->rate($cj,$jige);
-        $temp['sifenwei'] = $this->quartile($cj);
-        return $temp;
     }
 
 
@@ -201,7 +180,7 @@ class Tongji extends Model
      * @param Array $list
      * @param Boolen $isSwatch
      * @return unknown type
-    */
+     */
     public static  function getVariance($avg, $list, $isSwatch  = FALSE) {
             $arrayCount = count($list);
             if($arrayCount == 1 && $isSwatch == TRUE){

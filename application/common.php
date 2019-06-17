@@ -67,9 +67,6 @@ function nianjiList()
 	$njlist[$nian-3]='四年级';
 	$njlist[$nian-4]='五年级';
 	$njlist[$nian-5]='六年级';
-	$njlist[$nian-6]='七年级';
-	$njlist[$nian-5]='八年级';
-	$njlist[$nian-5]='九年级';
 
 	return $njlist;
 }

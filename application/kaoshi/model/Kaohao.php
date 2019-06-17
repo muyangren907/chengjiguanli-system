@@ -166,7 +166,7 @@ class Kaohao extends Base
             $data[$key]['school'] = $value->cj_school->jiancheng;
             if($value->cj_student != Null){
                 $data[$key]['student'] = $value->cj_student->xingming;
-                $data[$key]['sex'] = $value->cj_student->sex;
+                $data[$key]['sex'] = $stuinfo->sex;
             }else{
                 $stuinfo = $stu::withTrashed()
                         ->where('id',$value->student)

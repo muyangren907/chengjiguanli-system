@@ -54,6 +54,15 @@
               </div>
           </div>
           <div class="layui-form-item">
+              <label for="project" class="layui-form-label">
+                  项目名称
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="project" name="project"
+                  autocomplete="off" class="layui-input " value="{$list.data.project|default=''}" placeholder="中文1-40个字符">
+              </div>
+          </div>
+          <div class="layui-form-item">
               <label for="title" class="layui-form-label">
                   荣誉标题
               </label>
