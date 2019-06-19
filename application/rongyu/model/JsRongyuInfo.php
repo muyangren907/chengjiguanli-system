@@ -44,7 +44,17 @@ class JsRongyuInfo extends Base
                 	$query->where('rongyuce',$rongyuce);
                 })
             ->when(strlen($searchval)>0,function($query) use($searchval){
-                    $query->where('title|bianhao','like','%'.$searchval.'%');
+                    $query->whereOr('title|bianhao','like','%'.$searchval.'%')
+                        ->whereOr('id','in',function($q) use($searchval){
+                            $q->name('JsRongyuCanyu')
+                            ->distinct(true)
+                                ->where('teacherid','in',function($w) use($searchval){
+                                    $w->name('Teacher')
+                                        ->where('xingming','like','%'.$searchval.'%')
+                                        ->field('id');
+                                })
+                                ->field('rongyuid');
+                        });
                 })
             ->with(
                 [
