@@ -67,7 +67,7 @@
               </label>
               <div class="layui-input-block">
                   <input type="text" id="bianhao" name="bianhao"
-                  autocomplete="off" class="layui-input " value="{$list.data.bianhao|default=''}" placeholder="中文1-30个字符">
+                  autocomplete="off" class="layui-input " value="{$list.data.bianhao|default=''}" placeholder="">
               </div>
           </div>
           <div class="layui-form-item">
@@ -173,7 +173,7 @@
                   获奖时间
               </label>
               <div class="layui-input-block">
-                  <input type="text" id="hjshijian" name="hjshijian" autocomplete="off" class="layui-input " value="{$list.data.hjshijian|default=''}" placeholder="获奖时间">
+                  <input type="text" id="hjshijian" name="hjshijian" autocomplete="off" class="layui-input " value="{$list.data.hjshijian|default=''}" placeholder="默认获奖时间与荣誉册获奖时间相同">
               </div>
           </div>
           <input type="hidden" name="rongyuce"  id="rongyuce" value="{$list.set.rongyuce|default=''}">
