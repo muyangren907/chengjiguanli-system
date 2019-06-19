@@ -54,7 +54,7 @@
           </div>
           <div class="layui-form-item">
               <label for="title" class="layui-form-label">
-                  荣誉标题
+                  <span class="x-red">*</span>荣誉标题
               </label>
               <div class="layui-input-block">
                   <input type="text" id="title" name="title"
@@ -72,7 +72,7 @@
           </div>
           <div class="layui-form-item">
               <label for="cyselect" class="layui-form-label">
-                  获奖人
+                  <span class="x-red">*</span>获奖人
               </label>
               <div class="layui-inline">
                 <div class="layui-input-inline">
@@ -170,11 +170,10 @@
           </div>
           <div class="layui-form-item">
               <label for="hjshijian" class="layui-form-label">
-                  <span class="x-red">*</span>获奖时间
+                  获奖时间
               </label>
               <div class="layui-input-block">
-                  <input type="text" id="hjshijian" name="hjshijian" lay-verify="required"
-                  autocomplete="off" class="layui-input " value="{$list.data.hjshijian|default=''}" placeholder="获奖时间">
+                  <input type="text" id="hjshijian" name="hjshijian" autocomplete="off" class="layui-input " value="{$list.data.hjshijian|default=''}" placeholder="获奖时间">
               </div>
           </div>
           <input type="hidden" name="rongyuce"  id="rongyuce" value="{$list.set.rongyuce|default=''}">

@@ -135,6 +135,15 @@ class JsRongyuInfo extends Base
         // 获取表单数据
         $list = request()->only(['rongyuce','title','bianhao','category','hjschool','subject','hjshijian','jiangxiang','hjteachers','cyteachers','pic'],'put');
 
+        // 判断获奖时间是否为空，如果为空，则使用荣誉册时间
+        if($list['hjshijian'] == "")
+        {
+            $ryce = new \app\rongyu\model\JsRongyu;
+            $ryceinfo = $ryce::where('id',$list['rongyuce'])
+                    ->field('id,fzshijian')
+                    ->find();
+            $list['hjshijian'] = $ryceinfo->fzshijian;
+        }
 
         // 实例化验证类
         $validate = new \app\rongyu\validate\JsRongyuInfo;
@@ -322,6 +331,19 @@ class JsRongyuInfo extends Base
         // 获取表单数据
         $list = request()->only(['bianhao','title','category','hjschool','subject','hjshijian','jiangxiang','hjteachers','cyteachers','pic'],'put');
         $list['id'] = $id;
+        // 判断获奖时间是否为空，如果为空，则使用荣誉册时间
+        if($list['hjshijian'] == "")
+        {
+            $ryinfo = ryinfo::where('id',$id)
+                    ->field('id,rongyuce')
+                    ->with([
+                        'ryTuce'=>function($query){
+                            $query->field('id,fzshijian');
+                        }
+                    ])
+                    ->find();
+            $list['hjshijian'] = $ryinfo->ry_tuce->fzshijian;
+        }
 
 
         // 实例化验证类
