@@ -122,6 +122,7 @@ class JsRongyuInfo extends Base
                         $query->field('id,title');
                     }
                 ])
+                ->order(['hjschool'])
                 ->append(['hjJsName','cyJsName'])
                 ->select();
 
