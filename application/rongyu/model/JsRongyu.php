@@ -25,7 +25,7 @@ class JsRongyu extends Base
                 	$query->where('category','in',$category);
                 })
     		->when(strlen($searchval)>0,function($query) use($searchval){
-                	$query->where('title','like',$searchval);
+                	$query->where('title','like','%'.$searchval.'%');
                 })
             ->with(
                 [
