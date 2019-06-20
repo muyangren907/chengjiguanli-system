@@ -35,8 +35,9 @@ class Index extends Base
 
         // 获取版本号
         $list->version = config('app.chengji.version');
-        // 获取用户名
-        $list->username = session('username');
+        // 获取用户姓名
+        $ad = new \app\admin\model\Admin;
+        $list->xingming = $ad->where('id',session('userid'))->value('xingming');
 
         // 查询用户拥有的权限
         $admin = new \app\admin\model\Admin;
@@ -106,8 +107,9 @@ class Index extends Base
         // 查询用户登信息
         $list['username'] = session('username');
 
-        // 查询用户所
+        // 查询用户姓名及用户拥有的权限
         $admin = new \app\admin\model\Admin;
+        $list['xingming'] = $admin->where('id',session('userid'))->value('xingming');
         $list['group'] = $admin->getGroupnames(session('userid'));
 
         $list['server'] = request()->server();
