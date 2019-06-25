@@ -252,7 +252,7 @@ class Index extends Base
         }
 
         // 判断成绩更新结果
-        empty($data) ? $data=['msg'=>'表格录入失败','val'=>0] : $data=['msg'=>'表格录入成功','val'=>1];
+        empty($data) ? $data=['msg'=>'表格录入成绩失败','val'=>0] : $data=['msg'=>'表格录入成绩成功','val'=>1];
 
         ob_flush();
         flush();
@@ -328,7 +328,6 @@ class Index extends Base
                     ->column('id');
         }
         
-
         // 实例化
         $kaohao = new Kaohao;
 
