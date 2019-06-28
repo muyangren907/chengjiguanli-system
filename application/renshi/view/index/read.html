@@ -84,9 +84,18 @@
             ,method:"POST"   //数据接口
             ,url: '/srcry/'+"{$list.id}" //数据接口
             ,page: false //开启分页
+            ,width:1050
             ,cols: [[ //表头
-               {type:'numbers',sort:true,width:100,title:'序号'}
-              ,{field: 'title',sort:true, title: '荣誉标题', minWidth:200}
+               {type:'numbers',sort:true,width:50,title:'序号'}
+              ,{field: 'title',sort:true, title: '荣誉标题', minWidth:250}
+              ,{title: '所属荣誉册',sort:true,width:250,templet:function(d){
+                    var str='';
+                    if(d.ry_tuce)
+                    {
+                        str = d.ry_tuce.title;
+                    }
+                    return str;
+                }}
               ,{title: '获奖人',templet:function(d){
                     var str='';
                     if(d.hj_jsry)
@@ -101,7 +110,7 @@
                     }
                     return str;
                 }}
-              ,{title: '级别',sort:true,templet:function(d){
+              ,{title: '级别',sort:true,width:100,templet:function(d){
                     var str='';
                     if(d.ry_tuce)
                     {
@@ -109,7 +118,7 @@
                     }
                     return str;
                 }}
-              ,{title: '奖项',sort:true,templet:function(d){
+              ,{title: '奖项',sort:true,width:100,templet:function(d){
                     var str='';
                     if(d.jx_category)
                     {
@@ -117,7 +126,7 @@
                     }
                     return str;
                 }}
-              ,{field: 'hjshijian',sort:true, title: '获奖时间'} 
+              ,{field: 'hjshijian',sort:true,width:120, title: '获奖时间'} 
               ,{title: '发证单位',sort:true, minWidth: 177,templet:function(d){
                     var str='';
                     if(d.ry_tuce)
@@ -126,14 +135,6 @@
                     }
                     return str;
                 }}
-              ,{title: '所属荣誉册',sort:true,templet:function(d){
-                var str='';
-                if(d.ry_tuce)
-                {
-                    str = d.ry_tuce.title;
-                }
-                return str;
-            }}
             ]]
           });
 
@@ -143,6 +144,7 @@
             ,method:"POST"   //数据接口
             ,url: '/srckt/'+"{$list.id}" //数据接口
             ,page: false //开启分页
+            ,width:1050
             ,cols: [[ //表头
                {type:'numbers',sort:true,width:100,title:'序号'}
               ,{field: 'title',sort:true, title: '课题名称', minWidth:200}
