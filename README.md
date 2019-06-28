@@ -31,16 +31,16 @@
 * 查看成绩统计结果
 
 ![学生成绩列表](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/20190524162731.png)
--学生成绩列表-
+学生成绩列表
 
 ![班级成绩统计](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/20190524164321.png)
--班级成绩统计-
+班级成绩统计
 
 ![扫码录入成绩页面](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/20190524164409.png)
--扫码录入成绩页面-
+扫码录入成绩页面
 
 ![权限分配](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/20190524164451.png)
--权限分配页面-
+权限分配页面
 
 
 ## 演示地址
@@ -52,6 +52,7 @@
 前端使用X-admin（感谢singliang大神建议），最佳浏览器为 Chrome 和 Firefox ，搜狗、360等浏览器请打开极速模式，只使用IE浏览器的朋友请绕行。后端更新最新TP框架。优化代码。
 ## 升级提示
 　　修改了很多数据表和权限，建议重新建表。
+
 
 ## 更详细信息请查阅官方手册
 https://www.kancloud.cn/llblax/abcd/789222
