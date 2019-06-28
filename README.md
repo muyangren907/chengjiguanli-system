@@ -31,16 +31,16 @@
 * 查看成绩统计结果
 
 ![学生成绩列表](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/20190524162731.png)
-学生成绩列表
+-学生成绩列表-
 
 ![班级成绩统计](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/20190524164321.png)
-班级成绩统计
+-班级成绩统计-
 
 ![扫码录入成绩页面](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/20190524164409.png)
-扫码录入成绩页面
+-扫码录入成绩页面-
 
 ![权限分配](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/20190524164451.png)
-权限分配页面
+-权限分配页面-
 
 
 ## 演示地址
