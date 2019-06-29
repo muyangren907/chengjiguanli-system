@@ -327,6 +327,11 @@ class Index extends Base
                     ->where('paixu','in',$src['paixu'])
                     ->column('id');
         }
+
+        $CJ = new Chengji;
+        $cjlist = $CJ->srcChengji(); 
+
+
         
         // 实例化
         $kaohao = new Kaohao;

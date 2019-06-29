@@ -36,7 +36,10 @@ class Subject extends Seeder
             ['title'=>'地方课程','jiancheng'=>'地方','lieming'=>'difang','category'=>1011010,'paixu'=>18],
             ['title'=>'校本课程','jiancheng'=>'校本','lieming'=>'xiaoben','category'=>1011010,'paixu'=>19],
             ['title'=>'幼儿园全科','jiancheng'=>'幼儿园','lieming'=>'youeryuan','category'=>1011011,'paixu'=>20],
-            ['title'=>'其他','jiancheng'=>'其他','lieming'=>'qita','category'=>1011012,'paixu'=>21],
+            ['title'=>'德育','jiancheng'=>'德','lieming'=>'deyu','category'=>1011010,'paixu'=>21],
+            ['title'=>'心理健康','jiancheng'=>'心','lieming'=>'xinli','category'=>1011010,'paixu'=>22],
+            ['title'=>'写字','jiancheng'=>'写','lieming'=>'xiezi','category'=>1011010,'paixu'=>23],
+            ['title'=>'其他','jiancheng'=>'其他','lieming'=>'qita','category'=>1011012,'paixu'=>100],
 
         ];
         // 保存数据

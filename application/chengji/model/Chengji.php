@@ -26,8 +26,5 @@ class Chengji extends Base
     {
         return $this->belongsTo('\app\admin\model\Admin','user_id','id');
     }
-
-
-
 	
 }
