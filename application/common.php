@@ -261,73 +261,22 @@ function upload($list,$file,$isSave=false)
 
 
 
-
 /**
  * 数组重新排序
  * $array 要排序的数组
  * $field 排序字段
  * $sort 排序方式 SORT_DESC 降序；SORT_ASC 升序
  * */
-function arraySequence($array, $field = 'id', $sort = 'desc') {
+function arraySequence($data, $field = 'id', $sort = 'desc') {
+	// 排序方式
+	$sort == 'desc' ? $sort = 'SORT_DESC' : $sort = 'SORT_ASC';
+	// 获取参考列
+	$column = array_column($data, $field);
+	// 排序
+	array_multisort($column, SORT_ASC, $data);
 
-	$len = count($array)-1;
-
-	if($sort == 'asc')
-	{
-		for($i = 0 ; $i<$len ; $i++){
-			for($x=0 ; $x<($len-$i) ; $x++)
-			{
-				if(isset($array[$x][$field]) && isset($array[$x+1][$field]))
-				{
-					if($array[$x][$field] > $array[$x+1][$field])
-					{
-						$temp = $array[$x];
-						$array[$x] = $array[$x+1];
-						$array[$x+1] = $temp;
-					}
-				}elseif(!isset($array[$x+1][$field])){
-					$temp = $array[$x];
-					$array[$x] = $array[$x+1];
-					$array[$x+1] = $temp;
-				}
-			}
-		}
-	}else{
-		for($i = 0 ; $i<$len ; $i++){
-			for($x=0 ; $x<($len-$i) ; $x++)
-			{
-				if(isset($array[$x][$field]) && isset($array[$x+1][$field]))
-				{
-					if($array[$x][$field] < $array[$x+1][$field])
-					{
-						$temp = $array[$x];
-						$array[$x] = $array[$x+1];
-						$array[$x+1] = $temp;
-					}
-				}elseif(!isset($array[$x][$field])){
-						$temp = $array[$x];
-						$array[$x] = $array[$x+1];
-						$array[$x+1] = $temp;
-					}
-			}
-		}
-	}
-	return $array;
+	return $data;
 }
-
-
-
-/**
- * 数组重新排序
- * $array 要排序的数组
- * $field 排序字段
- * $sort 排序方式 SORT_DESC 降序；SORT_ASC 升序
- * */
-// function arraySequence($array, $field = 'id', $sort = 'desc') {
-// 	$array = array();
-	
-// 	return $array;
-// }
 
 
 
