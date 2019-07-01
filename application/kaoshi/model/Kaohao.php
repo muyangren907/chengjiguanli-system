@@ -84,7 +84,7 @@ class Kaohao extends Base
             'limit'=>'10',
             'field'=>'banji',
             'type'=>'desc',
-            'kaoshi'=>'1',
+            'kaoshi'=>'',
             'school'=>array(),
             'nianji'=>array(),
             'banji'=>array(),
@@ -93,12 +93,13 @@ class Kaohao extends Base
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
 
-
+        // 重新定义变量
         $school = $src['school'];
         $nianji = $src['nianji'];
         $banji = $src['banji'];
         $seachval = $src['searchval'];
 
+        // 查询成绩
         $khlist = $this->where('kaoshi',$src['kaoshi'])
                 ->field('id,school,student,nianji,banji')
                 ->when(count($school)>0,function($query) use($school){
@@ -139,7 +140,7 @@ class Kaohao extends Base
             return $data = array();
         }
 
-                
+
         // 获取参考学科
         $kaoshi = new \app\kaoshi\model\Kaoshi;
         $ksinfo = $kaoshi->where('id',$src['kaoshi'])
@@ -149,41 +150,51 @@ class Kaohao extends Base
                         }
                     ])
                     ->find();
+
         if($ksinfo->ks_subject->isEmpty())
         {
             return $data = array();
         }
+
         $xk = array();
         foreach ($ksinfo->ks_subject as $key => $value) {
             $xk[$value->subjectid] = $value->lieming;
         }
 
-        $stu = new \app\renshi\model\Student;
         // 整理数据
         $data = array();
         foreach ($khlist as $key => $value) {
             $data[$key]['id'] = $value->id;
             $data[$key]['school'] = $value->cj_school->jiancheng;
-            if($value->cj_student != Null){
+            // if($value->cj_student != Null){
                 $data[$key]['student'] = $value->cj_student->xingming;
                 $data[$key]['sex'] = $value->cj_student->sex;
-            }else{
-                $stuinfo = $stu::withTrashed()
-                        ->where('id',$value->student)
-                        ->field('id,xingming,sex')
-                        ->find();
-                $data[$key]['student'] = $stuinfo->xingming;
-                $data[$key]['sex'] = $stuinfo->sex;
-            }
+            // }else{
+            //     $stuinfo = $stu::withTrashed()
+            //             ->where('id',$value->student)
+            //             ->field('id,xingming,sex')
+            //             ->find();
+            //     $data[$key]['student'] = $stuinfo->xingming;
+            //     $data[$key]['sex'] = $stuinfo->sex;
+            // }
             $data[$key]['nianji'] = $value->nianji;
             $data[$key]['banji'] = $value->cj_banji->num_title;
             $dfsum = 0;
             $sbjcnt = 0;
-            foreach ($value->ks_chengji as $k => $val) {
-                $data[$key][$xk[$val->subject_id]] = $val->defen*1;
-                $dfsum = $dfsum + $val->defen*1;
-                $sbjcnt ++;
-            }
+
+            $cjarr = $this->zzcj($value->ks_chengji);
+
+
+            // foreach ($xk as $k => $val) {
+            //     if(array_key_exists($k,$cjarr))
+            //     {
+            //         $data[$key][$val]=$cjarr[$k];
+            //     }else{
+            //         $data[$key][$val]='';
+            //     }
+            // }
+
+
             $data[$key]['sum'] = $dfsum;
             if($sbjcnt>0){
                 $data[$key]['avg'] = round($dfsum/$sbjcnt,1);
@@ -195,7 +206,7 @@ class Kaohao extends Base
 
         // 按条件排序
         if(count($data)>0){
-            $data = arraySequence($data,$src['field'],$src['type']); //排序
+            // $data = arraySequence($data,$src['field'],$src['type']); //排序
         }
 
 
@@ -245,5 +256,16 @@ class Kaohao extends Base
     public function ksChengji()
     {
         return $this->hasMany('\app\chengji\model\Chengji','kaohao_id','id');
+    }
+
+    // 转置成绩数组
+    private function zzcj($array = array())
+    {
+        
+        $arr = array();
+        foreach ($array as $key => $value) {
+            $arr[$value['subject_id']] = $value['defen'];
+        }
+        return $arr;
     }
 }

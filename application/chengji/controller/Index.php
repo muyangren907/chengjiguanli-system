@@ -328,10 +328,6 @@ class Index extends Base
                     ->column('id');
         }
 
-        $CJ = new Chengji;
-        $cjlist = $CJ->srcChengji(); 
-
-
         
         // 实例化
         $kaohao = new Kaohao;

@@ -316,6 +316,22 @@ function arraySequence($array, $field = 'id', $sort = 'desc') {
 }
 
 
+
+/**
+ * 数组重新排序
+ * $array 要排序的数组
+ * $field 排序字段
+ * $sort 排序方式 SORT_DESC 降序；SORT_ASC 升序
+ * */
+// function arraySequence($array, $field = 'id', $sort = 'desc') {
+// 	$array = array();
+	
+// 	return $array;
+// }
+
+
+
+
 /**
  * 根据键值，用数组2的值替换数组1的值
  * $cover 覆盖数组，存储新值的数组
