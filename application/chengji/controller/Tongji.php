@@ -120,7 +120,7 @@ class Tongji extends Base
             ];
         }
 
-        $cnt = count($data) + 1 ;
+        $cnt = count($data);
 
         $data = array_slice($data,($src['page']-1)*$src['limit'],$src['limit']);
 
@@ -415,7 +415,7 @@ class Tongji extends Base
             ];
         }
 
-         $cnt = count($data) + 1;
+        $cnt = count($data);
 
         $data = array_slice($data,($src['page']-1)*$src['limit'],$src['limit']);
 
