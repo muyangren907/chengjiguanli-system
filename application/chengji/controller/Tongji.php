@@ -120,7 +120,6 @@ class Tongji extends Base
             ];
         }
 
-        $cnt = count($data);
 
         $data = array_slice($data,($src['page']-1)*$src['limit'],$src['limit']);
 
@@ -131,6 +130,8 @@ class Tongji extends Base
             'school'=>'合计',
             'chengji'=>$temp
         ];
+
+        $cnt = count($data);
 
         // 重组返回内容
         $data = [
