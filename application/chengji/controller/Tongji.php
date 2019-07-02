@@ -120,6 +120,7 @@ class Tongji extends Base
             ];
         }
 
+        $cnt = count($data) + 1 ;
 
         $data = array_slice($data,($src['page']-1)*$src['limit'],$src['limit']);
 
@@ -130,8 +131,6 @@ class Tongji extends Base
             'school'=>'合计',
             'chengji'=>$temp
         ];
-
-        $cnt = count($data);
 
         // 重组返回内容
         $data = [
@@ -416,14 +415,17 @@ class Tongji extends Base
             ];
         }
 
+         $cnt = count($data) + 1;
+
+        $data = array_slice($data,($src['page']-1)*$src['limit'],$src['limit']);
+
         // 获取年级成绩
         $temp = $tj->tongji($allcj,$src['kaoshi']);
         $data[] = [
             'school'=>'合计',
             'chengji'=>$temp
         ];
-
-        $cnt = count($data);
+       
 
         // 重组返回内容
         $data = [
