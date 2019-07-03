@@ -169,7 +169,7 @@ class Tongji extends Model
         {
             return round($jige/count($cj)*100,2);
         }else{
-            return '';
+            return 0;
         }
     }
 
