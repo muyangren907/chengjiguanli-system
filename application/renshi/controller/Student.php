@@ -351,7 +351,6 @@ class Student extends Base
 
         // 保存或更新信息
         $data = $student->saveAll($students);
-        // $cnt = $data->count();
 
         $data ? $data = ['msg'=>'数据同步成功','val'=>1] : ['msg'=>'数据同步失败','val'=>0];
         
