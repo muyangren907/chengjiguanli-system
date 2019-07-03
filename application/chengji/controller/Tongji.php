@@ -26,17 +26,18 @@ class Tongji extends Base
             ])
             ->field('id')
             ->find();
-        if($ksinfo->ks_nianji[0])
-        {
 
-            $list['nianji'] = $ksinfo->ks_nianji[0]->nianjiname;
+        if(count($ksinfo->ks_nianji)>0)
+        {
+            $list['nianji'] = $ksinfo->ks_nianji[0]->nianji;
         }else{
-            $list['nianji'] ='一年级';
+            $list['nianji'] = "一年级";
         }
-        $list['subject'] = $ksinfo->ks_subject;
+        $list['subject'] = $ksinfo->ks_subject->toArray();
         // 设置要给模板赋值的信息
         $list['webtitle'] = '各年级的班级成绩列表';
         $list['kaoshi'] = $kaoshi;
+
 
 
         // 模板赋值
@@ -56,81 +57,18 @@ class Tongji extends Base
                     'page'=>'1',
                     'limit'=>'10',
                     'kaoshi'=>'',
-                    'nianji'=>'一年级',
+                    'nianji'=>'',
                     'school'=>array(),
                     'paixu'=>array(),
                 ],'POST');
 
-        // 查询要统计成绩的班级
-        $kh = new \app\kaoshi\model\Kaohao;
-        $school = $src['school'];
-        $paixu = $src['paixu'];
-
-        $bj = $kh->where('nianji',$src['nianji'])
-                ->where('kaoshi',$src['kaoshi'])
-                ->when(count($school)>0,function($query) use($school){
-                    $query->where('school','in',$school);
-                })
-                ->when(count($paixu)>0,function($query) use($paixu){
-                    $query->where('banji','in',function($q)use($paixu){
-                        $q->name('banji')->where('paixu','in',$paixu)->field('id');
-                    });
-                })
-                ->with([
-                    'cjBanji'=>function($query){
-                        $query->field('id,paixu,ruxuenian')
-                            ->append(['numTitle','banjiTitle']);
-                    }
-                    ,'cjSchool'=>function($query){
-                        $query->field('id,jiancheng');
-                    }
-                ])
-                ->group('banji')
-                ->field('id,banji,school')
-                ->select();
-
-        if($bj->isEmpty()){
-            // 重组返回内容
-            $data = [
-                'code'=> 0 , // ajax请求次数，作为标识符
-                'msg'=>"",  // 获取到的结果数(每页显示数量)
-                'count'=>0, // 符合条件的总数据量
-                'data'=>array(), //获取到的数据结果
-            ];
-
-            return json($data);
-        }
-
-
-
-        // 获取并统计各班级成绩
+        // 统计成绩
         $tj = new TJ;
-        $data = array();
-        $allcj = array();
-        foreach ($bj as $key => $value) {
-            $banji=[$value->banji];
-            $nianji = array();
-            $temp = $tj->srcChengji($src['kaoshi'],$banji,$nianji);
-            $allcj = array_merge($allcj,  $temp);;
-            $temp = $tj->tongji($temp,$src['kaoshi']);
-            $data[] = [
-                'banji'=>$value->cj_banji->banjiTitle,
-                'school'=>$value->cj_school->jiancheng,
-                'chengji'=>$temp
-            ];
-        }
-
+        $data = $tj->tjBanji($src['kaoshi'],$src['nianji'],$src['school'],$src['paixu']);
+        // 获取记录总数
         $cnt = count($data);
-
+        // 截取当前页数据
         $data = array_slice($data,($src['page']-1)*$src['limit'],$src['limit']);
-
-        // 获取年级成绩
-        $temp = $tj->tongji($allcj,$src['kaoshi']);
-        $data[] = [
-            'banji'=>'',
-            'school'=>'合计',
-            'chengji'=>$temp
-        ];
 
         // 重组返回内容
         $data = [
@@ -139,7 +77,6 @@ class Tongji extends Base
             'count'=>$cnt, // 符合条件的总数据量
             'data'=>$data, //获取到的数据结果
         ];
-
 
         return json($data);
     }
@@ -173,67 +110,15 @@ class Tongji extends Base
                 ->only([
                     'kaoshi'=>'',
                     'nianji'=>'一年级',
-                    'school'=>'',
+                    'school'=>array(),
                 ],'POST');
 
-
-        // 查询要统计成绩的班级
-        $kh = new \app\kaoshi\model\Kaohao;
-
-        $bj = $kh->where('nianji',$src['nianji'])
-                ->where('kaoshi',$src['kaoshi'])
-                ->where('school',$src['school'])
-                ->with([
-                    'cjBanji'=>function($query){
-                        $query->field('id,paixu,ruxuenian')
-                            ->append(['numTitle','banjiTitle']);
-                    }
-                    ,'cjSchool'=>function($query){
-                        $query->field('id,jiancheng');
-                    }
-                ])
-                ->group('banji')
-                ->field('id,banji,school')
-                ->select();
-
-        if($bj->isEmpty()){
-            // 重组返回内容
-            $data = [
-                'code'=> 0 , // ajax请求次数，作为标识符
-                'msg'=>"",  // 获取到的结果数(每页显示数量)
-                'count'=>0, // 符合条件的总数据量
-                'data'=>array(), //获取到的数据结果
-            ];
-
-            return json($data);
-        }
+        $schools = [$src['school']];
 
 
-
-        // 获取并统计各班级成绩
+        // 统计成绩
         $tj = new TJ;
-        $data = array();
-        $allcj = array();
-        foreach ($bj as $key => $value) {
-            $banji=[$value->banji];
-            $nianji = array();
-            $temp = $tj->srcChengji($src['kaoshi'],$banji,$nianji);
-            $allcj = array_merge($allcj,  $temp);;
-            $temp = $tj->tongji($temp,$src['kaoshi']);
-            $data[] = [
-                'banji'=>$value->cj_banji->banjiTitle,
-                'school'=>$value->cj_school->jiancheng,
-                'chengji'=>$temp
-            ];
-        }
-
-        // 获取年级成绩
-        $temp = $tj->tongji($allcj,$src['kaoshi']);
-        $data[] = [
-            'banji'=>'合计',
-            'school'=>'',
-            'chengji'=>$temp
-        ];
+        $data = $tj->tjBanji($src['kaoshi'],$src['nianji'],$schools,array());
 
         
         // 获取参考学科
@@ -252,11 +137,11 @@ class Tongji extends Base
                     ->find();
         $xk = $ksinfo->ks_subject;
 
+
         // 获取要下载成绩的学校和年级信息
         $school = new \app\system\model\School;
         $schoolname = $school->where('id',$src['school'])->value('jiancheng');
         $tabletitle = $ksinfo->title.' '.$schoolname.' '.$src['nianji'].'各班级成绩汇总';
-
 
         // 创建表格
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -308,6 +193,7 @@ class Tongji extends Base
             $row++;
         }
 
+
         // 保存文件
         $filename = $tabletitle.date('ymdHis').'.xlsx';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -340,13 +226,14 @@ class Tongji extends Base
             ])
             ->field('id')
             ->find();
-        if($ksinfo->ks_nianji[0])
-        {
 
-            $list['nianji'] = $ksinfo->ks_nianji[0]->nianjiname;
+        if(count($ksinfo->ks_nianji)>0)
+        {
+            $list['nianji'] = $ksinfo->ks_nianji[0]->nianji;
         }else{
-            $list['nianji'] ='一年级';
+            $list['nianji'] = "一年级";
         }
+
         $list['subject'] = $ksinfo->ks_subject;
         // 设置要给模板赋值的信息
         $list['webtitle'] = '各学校的年级成绩统计表';
@@ -372,59 +259,13 @@ class Tongji extends Base
                     'kaoshi'=>'',
                     'nianji'=>'一年级',
                 ],'POST');
-
-        // 查询要统计成绩的班级
-        $kh = new \app\kaoshi\model\Kaohao;
-
-        $nianji = $kh->where('nianji',$src['nianji'])
-                ->where('kaoshi',$src['kaoshi'])
-                ->with(['cjSchool'=>function($query){
-                        $query->field('id,jiancheng');
-                    }
-                ])
-                ->group('school')
-                ->field('id,banji,school')
-                ->select();
-
-        if($nianji->isEmpty()){
-            // 重组返回内容
-            $data = [
-                'code'=> 0 , // ajax请求次数，作为标识符
-                'msg'=>"",  // 获取到的结果数(每页显示数量)
-                'count'=>0, // 符合条件的总数据量
-                'data'=>array(), //获取到的数据结果
-            ];
-
-            return json($data);
-        }
-
-
-        // 获取并统计各班级成绩
+        // 统计成绩
         $tj = new TJ;
-        $data = array();
-        $allcj = array();
-        foreach ($nianji as $key => $value) {
-            $school=[$value->cj_school->id];
-            $nianji = [$src['nianji']];
-            $temp = $tj->srcChengji($src['kaoshi'],array(),$nianji,$school);
-            $allcj = array_merge($allcj,  $temp);;
-            $temp = $tj->tongji($temp,$src['kaoshi']);
-            $data[] = [
-                'school'=>$value->cj_school->jiancheng,
-                'chengji'=>$temp
-            ];
-        }
-
+        $data = $tj->tjNianji($kaoshi=$src['kaoshi'],$nianji=$src['nianji']);
+        // 获取记录数
         $cnt = count($data);
-
+        // 截取当前页数据
         $data = array_slice($data,($src['page']-1)*$src['limit'],$src['limit']);
-
-        // 获取年级成绩
-        $temp = $tj->tongji($allcj,$src['kaoshi']);
-        $data[] = [
-            'school'=>'合计',
-            'chengji'=>$temp
-        ];
        
 
         // 重组返回内容
@@ -475,56 +316,9 @@ class Tongji extends Base
                     'nianji'=>'一年级',
                 ],'POST');
 
-        // 查询要统计成绩的班级
-        $kh = new \app\kaoshi\model\Kaohao;
-
-        $nianji = $kh->where('nianji',$src['nianji'])
-                ->where('kaoshi',$src['kaoshi'])
-                ->with(['cjSchool'=>function($query){
-                        $query->field('id,jiancheng');
-                    }
-                ])
-                ->group('school')
-                ->field('id,banji,school')
-                ->select();
-
-
-        if($nianji->isEmpty()){
-            // 重组返回内容
-            $data = [
-                'code'=> 0 , // ajax请求次数，作为标识符
-                'msg'=>"",  // 获取到的结果数(每页显示数量)
-                'count'=>0, // 符合条件的总数据量
-                'data'=>array(), //获取到的数据结果
-            ];
-
-            return json($data);
-        }
-
-
-        // 获取并统计各班级成绩
+        // 统计成绩
         $tj = new TJ;
-        $data = array();
-        $allcj = array();
-        foreach ($nianji as $key => $value) {
-            $school=[$value->cj_school->id];
-            $nianji = [$src['nianji']];
-            $temp = $tj->srcChengji($src['kaoshi'],array(),$nianji,$school);
-            $allcj = array_merge($allcj,  $temp);;
-            $temp = $tj->tongji($temp,$src['kaoshi']);
-            $data[] = [
-                'school'=>$value->cj_school->jiancheng,
-                'chengji'=>$temp
-            ];
-        }
-
-        // 获取年级成绩
-        $temp = $tj->tongji($allcj,$src['kaoshi']);
-        $data[] = [
-            'school'=>'合计',
-            'chengji'=>$temp
-        ];
-
+        $data = $tj->tjNianji($kaoshi=$src['kaoshi'],$nianji=$src['nianji']);
         
         // 获取参考学科
         $ks = new \app\kaoshi\model\Kaoshi;

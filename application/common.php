@@ -269,11 +269,11 @@ function upload($list,$file,$isSave=false)
  * */
 function arraySequence($data, $field = 'id', $sort = 'desc') {
 	// 排序方式
-	$sort == 'desc' ? $sort = 'SORT_DESC' : $sort = 'SORT_ASC';
+	$sort == 'desc' ? $sort = SORT_DESC : $sort = SORT_ASC;
 	// 获取参考列
 	$column = array_column($data, $field);
 	// 排序
-	array_multisort($column, SORT_ASC, $data);
+	array_multisort($column, $sort, $data);
 
 	return $data;
 }

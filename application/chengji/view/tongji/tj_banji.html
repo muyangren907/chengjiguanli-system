@@ -23,10 +23,17 @@
 	<div class="layui-form-item">
 	    <label for="nianji" class="layui-form-label" style="height: 100%">年级 </label>
 	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')" pane>
-	    	{php} $njlist = nianjiList();{/php}
-	    	{foreach $njlist as $key=>$vo}
-	    		<input type="radio" name="nianji" title="{$vo}" value="{$vo}" lay-skin="primary">
-	    	{/foreach}
+	    	{php}
+	            $nianji = new \app\kaoshi\model\KaoshiNianji;
+	            $njlist = $nianji
+	                  ->where('kaoshiid',$list['kaoshi'])
+	                  ->field('nianji,nianjiname')
+	                  ->select();
+	        {/php}
+			{foreach $njlist as $key=>$vo}
+	            <input type="radio" name="nianji" value="{$vo->nianji}" title="{$vo->nianjiname}" 
+	            {eq name="$list.nianji" value="$vo->nianji"} checked {/eq} >
+			{/foreach}
 	    </div>
 	</div>
 	<div class="layui-form-item" style="margin-bottom: 0;">
@@ -34,9 +41,9 @@
 	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
 	    	{php}
 	    		$banji = new \app\teach\model\Banji;
-	    		$ruxuenian = array_keys($njlist);
+	    		$njlist = array_column($njlist->toArray(),'nianji');
 	    		$paixu = $banji->where('status',1)
-	    				->where('ruxuenian','in',$ruxuenian)
+	    				->where('ruxuenian','in',$njlist)
 	    				->max('paixu');
 	    		$bjlist = banjinamelist();
 	    	{/php}

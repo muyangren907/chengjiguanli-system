@@ -40,7 +40,8 @@
                   ->select();
           {/php}
 		    	{foreach $njlist as $key=>$vo}
-		    		<input type="checkbox" name="nianji[]" title="{$vo->nianjiname}" value="{$vo->nianji}" lay-skin="primary">
+            <input type="radio" name="nianji" value="{$vo->nianji}" title="{$vo->nianjiname}" 
+            {eq name="$list.nianji" value="$vo->nianji"} checked {/eq} >
 		    	{/foreach}
 		    </div>
 		</div>
@@ -106,11 +107,12 @@
     }
     options.cols[0].push({field: 'avg', title: '平均分', minWidth:100,sort: true});
     options.cols[0].push({field: 'sum', title: '总分', minWidth:100,sort: true});
-	options.cols[0].push({field: 'id', title: '操作',toolbar: '#barDemo',minWidth:125});
+    options.cols[0].push({field: 'id', title: '操作',toolbar: '#barDemo',minWidth:125});
 
 	// 设置查询条件
 	options.where = {
 		kaoshi:"{$list.kaoshi}"
+    ,nianji:"{$list.nianji}"
 	}
 
 	// 设置每页显示条数

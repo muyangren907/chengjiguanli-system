@@ -34,9 +34,9 @@ class Chengji extends Migrator
         // 添加当前表字段
         $table
             ->addColumn('kaohao_id','integer',['limit'=>11,'null'=>false,'comment'=>'考试'])
-            ->addColumn('subject_id','integer',['limit'=>4,'null'=>false,'comment'=>'入学年'])
-            ->addColumn('user_id','string',['limit'=>4,'null'=>false,'comment'=>'年级'])
-            ->addColumn('defen','decimal',['precision'=>4,'scale'=>1,'default'=>Null,'null'=>false,'comment'=>'年级'])
+            ->addColumn('subject_id','integer',['limit'=>4,'null'=>false,'comment'=>'学科'])
+            ->addColumn('user_id','string',['limit'=>4,'null'=>false,'comment'=>'学生'])
+            ->addColumn('defen','decimal',['precision'=>4,'scale'=>1,'default'=>Null,'null'=>false,'comment'=>'得分'])
             ->addColumn('create_time','integer',['limit'=>11,'null'=>true,'comment'=>'创建时间'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
             ->addColumn('update_time','integer',['limit'=>11,'null'=>true,'comment'=>'更新时间'])

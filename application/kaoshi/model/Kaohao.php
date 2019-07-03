@@ -86,7 +86,7 @@ class Kaohao extends Base
             'type'=>'desc',
             'kaoshi'=>'',
             'school'=>array(),
-            'nianji'=>array(),
+            'nianji'=>'',
             'banji'=>array(),
             'searchval'=>''
         );
@@ -108,8 +108,8 @@ class Kaohao extends Base
                 ->when(count($banji)>0,function($query) use($banji){
                     $query->where('banji','in',$banji);
                 })
-                ->when(count($nianji)>0,function($query) use($nianji){
-                    $query->where('ruxuenian','in',$nianji);
+                ->when(strlen($nianji)>0,function($query) use($nianji){
+                    $query->where('ruxuenian',$nianji);
                 })
                 ->when(strlen($seachval)>0,function($query) use($seachval){
                     $query->where(function($w) use ($seachval){
@@ -274,4 +274,62 @@ class Kaohao extends Base
         }
         return $arr;
     }
+
+    /**  
+    * 获取参加考试的学校
+    * @access public 
+    * @param number $kaoshi 考试id
+    * @param number $ruxuenian 入学年
+    * @return array 返回类型
+    */
+    public function cySchool($kaoshi,$ruxuenian)
+    {
+        $data = $this->where('ruxuenian',$ruxuenian)
+                ->where('kaoshi',$kaoshi)
+                ->with(['cjSchool'=>function($query){
+                        $query->field('id,jiancheng');
+                    }
+                ])
+                ->group('school')
+                ->field('id,school')
+                ->select();
+        return $data;
+
+    }
+
+
+    /**  
+    * 获取参加考试的班级
+    * @access public 
+    * @param number $kaoshi 考试id
+    * @param number $ruxuenian 入学年
+    * @return array 返回类型
+    */
+    public function cyBanji($kaoshi,$ruxuenian,$school=array(),$paixu=array())
+    {
+        $data = $this->where('ruxuenian',$ruxuenian)
+                ->where('kaoshi',$kaoshi)
+                ->when(count($school)>0,function($query) use($school){
+                    $query->where('school','in',$school);
+                })
+                ->when(count($paixu)>0,function($query) use($paixu){
+                    $query->where('banji','in',function($q)use($paixu){
+                        $q->name('banji')->where('paixu','in',$paixu)->field('id');
+                    });
+                })
+                ->with([
+                    'cjBanji'=>function($query){
+                        $query->field('id,paixu,ruxuenian')
+                            ->append(['numTitle','banjiTitle']);
+                    }
+                    ,'cjSchool'=>function($query){
+                        $query->field('id,jiancheng');
+                    }
+                ])
+                ->group('banji')
+                ->field('id,banji,school')
+                ->select();
+        return $data;
+    }
+
 }

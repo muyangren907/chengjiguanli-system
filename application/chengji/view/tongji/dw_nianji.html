@@ -7,12 +7,18 @@
               <span class="x-red">*</span>年级
             </label>
             <div class="layui-input-block">
-              {php} $njlist = nianjiList();{/php}
+              {php}
+                $nianji = new \app\kaoshi\model\KaoshiNianji;
+                $njlist = $nianji
+                    ->where('kaoshiid',$list['set']['kaoshi'])
+                    ->field('nianji,nianjiname')
+                    ->select();
+              {/php}
               <select name="nianji" id="nianji" lay-verify="required" class="layui-form-label">
-                <option value=""></option>
-                {foreach $njlist as $key=>$vo}
-                	<option value="{$vo}">{$vo}</option>
-                {/foreach}
+                <option value="">请选择要下载的年级</option>
+              {foreach $njlist as $key=>$vo}
+                <option value="{$vo->nianji}">{$vo->nianjiname}</option>
+              {/foreach}
               </select>
             </div>
           </div>

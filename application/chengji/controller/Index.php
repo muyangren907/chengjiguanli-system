@@ -295,11 +295,20 @@ class Index extends Base
                                 }]
                             );
                         }
+                        ,'ksNianji'
                     ])
                     ->find();
 
+
+
         $list['subject'] = $ksinfo->ks_subject;
         $list['kaoshi'] = $kaoshi;
+        if(count($ksinfo->ks_nianji)>0)
+        {
+            $list['nianji'] = $ksinfo->ks_nianji[0]->nianji;
+        }else{
+            $list['nianji'] = "一年级";
+        }
 
         // 模板赋值
         $this->assign('list',$list);
@@ -317,7 +326,6 @@ class Index extends Base
         $src = $this->request
                 ->only(['page','limit','field','type','kaoshi','school','nianji','paixu','searchval'
                 ],'POST');
-
 
         // 根据班级排序获取班级id
         if(isset($src['paixu']))
