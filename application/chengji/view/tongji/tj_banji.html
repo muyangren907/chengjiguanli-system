@@ -92,7 +92,7 @@
 	// 获取学科
 	var xk = '<?php echo json_encode($list["subject"]);?>';
 	xk = eval(decodeURIComponent(xk));
-	var xiangmu = {cnt:'人数',avg:'平均分',youxiu:'优秀率%',jige:'及格率%'};		// 要显示哪些统计结果
+	var xiangmu = {cnt:'人数',avg:'平均分',jige:'及格率%',youxiu:'优秀率%'};		// 要显示哪些统计结果
 
     $.each(xk,function(index,value){
     	options.cols[0].push({title: xk[index].subject_name.title,colspan:4,align:'center'});
