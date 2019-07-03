@@ -95,7 +95,7 @@
 	var xiangmu = {cnt:'人数',avg:'平均分',jige:'及格率%',youxiu:'优秀率%'};		// 要显示哪些统计结果
 
     $.each(xk,function(index,value){
-    	options.cols[0].push({title: xk[index].subject_name.title,colspan:4,align:'center'});
+    	options.cols[0].push({title: xk[index].subject_name.title+'('+xk[index].manfen+')',colspan:4,align:'center'});
 	    $.each(xiangmu,function(i,val){
 		    var colname = xk[index].subject_name.lieming;
     		// console.log(colname + ' ' + i);

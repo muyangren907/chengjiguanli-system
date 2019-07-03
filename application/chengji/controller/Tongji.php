@@ -17,7 +17,7 @@ class Tongji extends Base
             ->with([
                 'KsNianji'
                 ,'ksSubject'=>function($query){
-                    $query->field('kaoshiid,subjectid')
+                    $query->field('kaoshiid,subjectid,manfen')
                         ->with(['subjectName'=>function($q){
                             $q->field('id,title,lieming');
                         }]
@@ -37,7 +37,6 @@ class Tongji extends Base
         // 设置要给模板赋值的信息
         $list['webtitle'] = '各年级的班级成绩列表';
         $list['kaoshi'] = $kaoshi;
-
 
 
         // 模板赋值
@@ -147,7 +146,7 @@ class Tongji extends Base
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
 
-        $sbjcol = ['cnt'=>'人数','avg'=>'平均分','jige'=>'及格率','youxiu'=>'优秀率'];
+        $sbjcol = ['cnt'=>'人数','avg'=>'平均分','jige'=>'及格率%','youxiu'=>'优秀率%'];
         $sbjcolcnt = count($sbjcol);
         $colname = excelLieming();
         $colcnt = $sbjcolcnt*count($xk)+3;
@@ -164,14 +163,14 @@ class Tongji extends Base
         foreach ($xk as $key => $value) {
             $colend = $col + $sbjcolcnt - 1;
             $sheet->mergeCells($colname[$col].'3:'.$colname[$colend].'3');
-            $sheet->setCellValue($colname[$col].'3', $value->subject_name->title.' '.$value->manfen);
+            $sheet->setCellValue($colname[$col].'3', $value->subject_name->title.' ('.$value->manfen.')');
             foreach ($sbjcol as $k => $val) {
                  $sheet->setCellValue($colname[$col].'4', $val);
                  $col++;
             }
         }
         $sheet->mergeCells($colname[$col].'3:'.$colname[$col].'4');
-        $sheet->setCellValue($colname[$col].'3', '全科及格');
+        $sheet->setCellValue($colname[$col].'3', '全科及格率%');
         $col++;
         $sheet->mergeCells($colname[$col].'3:'.$colname[$col].'4');
         $sheet->setCellValue($colname[$col].'3', '全科平均');
@@ -217,7 +216,7 @@ class Tongji extends Base
             ->with([
                 'KsNianji'
                 ,'ksSubject'=>function($query){
-                    $query->field('kaoshiid,subjectid')
+                    $query->field('kaoshiid,subjectid,manfen')
                         ->with(['subjectName'=>function($q){
                             $q->field('id,title,lieming');
                         }]
@@ -361,7 +360,7 @@ class Tongji extends Base
         foreach ($xk as $key => $value) {
             $colend = $col + $sbjcolcnt - 1;
             $sheet->mergeCells($colname[$col].'3:'.$colname[$colend].'3');
-            $sheet->setCellValue($colname[$col].'3', $value->subject_name->title.' '.$value->manfen);
+            $sheet->setCellValue($colname[$col].'3', $value->subject_name->title.' ('.$value->manfen.')');
             foreach ($sbjcol as $k => $val) {
                  $sheet->setCellValue($colname[$col].'4', $val);
                  $col++;
