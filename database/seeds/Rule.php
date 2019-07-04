@@ -53,7 +53,9 @@ class Rule extends Seeder
                 // 系统设置
                 ['id'=>701,'title'=>'类别管理','name'=>'system/Category/index','paixu'=>1,'ismenu' =>true,'pid' =>7,'url'=>'/category',],
                 ['id'=>702,'title'=>'单位管理','name'=>'system/School/index','paixu'=>2,'ismenu' =>true,'pid' =>7,'url'=>'/school',],
-                ['id'=>703,'title'=>'系统设置','name'=>'system/SystemBase/edit','paixu'=>3,'ismenu' =>true,'pid' =>7,'url'=>'/sysbase/1/edit',],
+                ['id'=>703,'title'=>'文件管理','name'=>'system/Fields/index','paixu'=>3,'ismenu' =>true,'pid' =>7,'url'=>'/fields',],
+                ['id'=>704,'title'=>'系统设置','name'=>'system/SystemBase/edit','paixu'=>10,'ismenu' =>true,'pid' =>7,'url'=>'/sysbase/1/edit',],
+                
 
 
                 // 荣誉管理
@@ -70,9 +72,6 @@ class Rule extends Seeder
                 
                     
                     // 三级-权限
-
-                    // 系统设计
-                    ['title'=>'更新','name'=>'system/SystemBase/update','paixu'=>1,'pid' =>703],
 
 
                     // 扫码录入
@@ -122,6 +121,8 @@ class Rule extends Seeder
                     ['title'=>'下载模板','name'=>'renshi/Student/download','paixu'=>8,'pid'=>401],
                     ['title'=>'批量上传','name'=>'renshi/Student/createAll','paixu'=>9,'pid'=>401],
                     ['title'=>'批量保存','name'=>'renshi/Student/saveAll','paixu'=>10,'pid'=>401],
+                    ['title'=>'校对','name'=>'renshi/Student/Jiaodui','paixu'=>11,'pid'=>401],
+                    ['title'=>'校对删除','name'=>'renshi/Student/Jiaoduidel','paixu'=>12,'pid'=>401],
 
                     // 教师管理权限
                     ['title'=>'添加','name'=>'renshi/Index/create','paixu' =>1,'pid'=>402],
@@ -206,6 +207,11 @@ class Rule extends Seeder
                     ['title'=>'更新','name'=>'system/School/update','paixu' =>5,'pid'=>702],
                     ['title'=>'查看','name'=>'system/School/read','paixu'=>6,'pid'=>702,],
                     ['title'=>'状态','name'=>'system/School/setStatus','paixu'=>7,'pid'=>702],
+                    // 文件管理权限
+                    ['title'=>'删除','name'=>'system/Fields/delete','paixu'=>1,'pid'=>703],
+                    ['title'=>'下载','name'=>'system/Fields/download','paixu'=>2,'pid'=>703,],
+                    // 系统设置
+                    ['title'=>'更新','name'=>'system/SystemBase/update','paixu'=>1,'pid' =>704],
 
                     // 荣誉管理
                     // 单位荣誉管理

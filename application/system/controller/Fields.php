@@ -2,10 +2,12 @@
 
 namespace app\system\controller;
 
-use think\Controller;
-use think\Request;
+// 引用控制器基类
+use app\common\controller\Base;
+// 引用单位数据模型类
+use app\system\model\Fields as FL;
 
-class Fields extends Controller
+class Fields extends Base
 {
     /**
      * 显示资源列表
@@ -14,7 +16,51 @@ class Fields extends Controller
      */
     public function index()
     {
-        //
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = '文件列表';
+
+        // 模板赋值
+        $this->assign('list',$list);
+
+        // 渲染模板
+        return $this->fetch();
+    }
+
+    //  获取单位列表数据
+    public function ajaxData()
+    {
+        // 获取参数
+        $src = $this->request
+                ->only([
+                    'page'=>'1',
+                    'limit'=>'10',
+                    'field'=>'id',
+                    'type'=>'desc',
+                ],'POST');
+
+
+        // 实例化
+        $fl = new FL;
+
+        // 查询要显示的数据
+        $data = $fl->search($src);
+        // 获取符合条件记录总数
+        $cnt = $data->count();
+        // 获取当前页数据
+        $limit_start = $src['page'] * $src['limit'] - $src['limit'];
+        $limit_length = $src['limit'];
+        $data = $data->slice($limit_start,$limit_length);
+       
+        // 重组返回内容
+        $data = [
+            'code'=> 0 , // ajax请求次数，作为标识符
+            'msg'=>"",  // 获取到的结果数(每页显示数量)
+            'count'=>$cnt, // 符合条件的总数据量
+            'data'=>$data, //获取到的数据结果
+        ];
+
+
+        return json($data);
     }
 
     /**

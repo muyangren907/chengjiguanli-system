@@ -74,6 +74,9 @@
 		<button class="layui-btn" lay-event="download">
 			<i class="iconfont">&#xe714;</i> 下载模板
 		</button>
+		<button class="layui-btn" lay-event="jdsc">
+			<i class="iconfont">&#xe714;</i> 校对删除
+		</button>
 	</div>
 </script>
 <!-- 记录操作按钮模板 -->
@@ -130,6 +133,9 @@
             break;
           case 'download':
           	window.open("/renshi/student/download");
+            break;
+          case 'jdsc': //校对删除
+          	window.open("/renshi/student/exceldel");
             break;
         };
       });

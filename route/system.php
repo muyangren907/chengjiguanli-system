@@ -13,3 +13,4 @@
 Route::resource('sysbase','system/SystemBase');
 Route::resource('category','system/Category');
 Route::resource('school','system/School');
+Route::resource('fields','system/Fields');

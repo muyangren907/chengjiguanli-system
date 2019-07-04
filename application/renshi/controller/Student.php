@@ -357,6 +357,14 @@ class Student extends Base
         return json($data);
     }
 
+
+
+    // 使用上传的表格进行校对，表格中不存在的数据删除
+    public function exceldel()
+    {
+        
+    }
+
     
 
     // 上传文件
@@ -379,18 +387,6 @@ class Student extends Base
     {
         $download =  new \think\response\Download('uploads\student\student_template.xlsx');
         return $download->name('student_template.xlsx');
-    }
-
-    // 查询参加考试学生名单
-    public function ckStudents()
-    {
-
-    }
-
-    // 导出数据
-    public function outCankao($data)
-    {
-        
     }
 
 

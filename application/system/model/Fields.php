@@ -23,4 +23,32 @@ class Fields extends Base
     	return $hasHash;
     }
 
+
+    // 查询所有单位
+    public function search($src)
+    {
+        // 查询数据
+        $data = $this
+            ->order([$src['field'] =>$src['type']])
+            ->with([
+                'flUser'=>function($query){
+                    $query->withField('id,xingming,school')
+                        ->with([
+                            'adSchool'=>function($q){
+                                $q->withField('id,jiancheng');
+                            }
+                        ]);
+                }
+            ])
+            ->select();
+
+        return $data;
+    }
+
+    // 上传人数据关联
+    public function  flUser()
+    {
+        return $this->belongsTo('\app\admin\model\Admin','userid','id');
+    }
+
 }

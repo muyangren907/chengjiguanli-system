@@ -70,9 +70,7 @@ class Tongji extends Base
         // 获取记录总数
         $cnt = count($data);
         // 截取当前页数据
-        if($cnt>$src['limit']){
-            $data = array_slice($data,($src['page']-1)*$src['limit'],$src['limit']);
-        }
+        $data = array_slice($data,($src['page']-1)*$src['limit'],$src['limit']);
 
         // 重组返回内容
         $data = [
@@ -270,11 +268,7 @@ class Tongji extends Base
         // 获取记录数
         $cnt = count($data);
         // 截取当前页数据
-        if($cnt>$src['limit']){
-            $data = array_slice($data,($src['page']-1)*$src['limit'],$src['limit']);
-        }
-        
-       
+        $data = array_slice($data,($src['page']-1)*$src['limit'],$src['limit']);
 
         // 重组返回内容
         $data = [
