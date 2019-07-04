@@ -24,7 +24,7 @@ class Tongji extends Base
                     );
                 }
             ])
-            ->field('id')
+            ->field('id,title')
             ->find();
 
         if(count($ksinfo->ks_nianji)>0)
@@ -37,6 +37,7 @@ class Tongji extends Base
         // 设置要给模板赋值的信息
         $list['webtitle'] = '各年级的班级成绩列表';
         $list['kaoshi'] = $kaoshi;
+        $list['kaoshititle'] = $ksinfo->title;
 
 
         // 模板赋值
@@ -64,10 +65,14 @@ class Tongji extends Base
         // 统计成绩
         $tj = new TJ;
         $data = $tj->tjBanji($src['kaoshi'],$src['nianji'],$src['school'],$src['paixu']);
+
+       
         // 获取记录总数
         $cnt = count($data);
         // 截取当前页数据
-        $data = array_slice($data,($src['page']-1)*$src['limit'],$src['limit']);
+        if($cnt>$src['limit']){
+            $data = array_slice($data,($src['page']-1)*$src['limit'],$src['limit']);
+        }
 
         // 重组返回内容
         $data = [
@@ -223,7 +228,7 @@ class Tongji extends Base
                     );
                 }
             ])
-            ->field('id')
+            ->field('id,title')
             ->find();
 
         if(count($ksinfo->ks_nianji)>0)
@@ -237,6 +242,7 @@ class Tongji extends Base
         // 设置要给模板赋值的信息
         $list['webtitle'] = '各学校的年级成绩统计表';
         $list['kaoshi'] = $kaoshi;
+        $list['kaoshititle'] = $ksinfo->title;
 
 
         // 模板赋值
@@ -264,7 +270,10 @@ class Tongji extends Base
         // 获取记录数
         $cnt = count($data);
         // 截取当前页数据
-        $data = array_slice($data,($src['page']-1)*$src['limit'],$src['limit']);
+        if($cnt>$src['limit']){
+            $data = array_slice($data,($src['page']-1)*$src['limit'],$src['limit']);
+        }
+        
        
 
         // 重组返回内容

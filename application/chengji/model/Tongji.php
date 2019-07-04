@@ -244,16 +244,9 @@ class Tongji extends Model
         $kh = new \app\kaoshi\model\Kaohao;
         $school = $kh->cySchool($kaoshi=$kaoshi,$ruxuenian=$nianji);
 
+        $data = array();
         if($school->isEmpty()){
-            // 重组返回内容
-            $data = [
-                'code'=> 0 , // ajax请求次数，作为标识符
-                'msg'=>"",  // 获取到的结果数(每页显示数量)
-                'count'=>0, // 符合条件的总数据量
-                'data'=>array(), //获取到的数据结果
-            ];
-
-            return json($data);
+            return $data;
         }
 
         // 获取并统计各班级成绩
@@ -293,16 +286,9 @@ class Tongji extends Model
         $kh = new \app\kaoshi\model\Kaohao;
         $bj = $kh->cyBanji($kaoshi=$kaoshi,$ruxuenian=$nianji,$school=$school,$paixu=$paixu);
 
+        $data = array();
         if($bj->isEmpty()){
-            // 重组返回内容
-            $data = [
-                'code'=> 0 , // ajax请求次数，作为标识符
-                'msg'=>"",  // 获取到的结果数(每页显示数量)
-                'count'=>0, // 符合条件的总数据量
-                'data'=>array(), //获取到的数据结果
-            ];
-
-            return json($data);
+            return $data;
         }
 
         // 获取并统计各班级成绩
@@ -320,6 +306,7 @@ class Tongji extends Model
             ];
         }
 
+
         // 获取年级成绩
         $allcj = $this->srcChengji($kaoshi=$kaoshi,$banji=$bjs,$nianji=$nianji,$school=array());
         $temp = $this->tongji($allcj,$kaoshi);
@@ -328,6 +315,7 @@ class Tongji extends Model
             'school'=>'',
             'chengji'=>$temp
         ];
+
 
         return $data;
     }
