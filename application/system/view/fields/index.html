@@ -49,9 +49,6 @@
 		<button class="layui-btn layui-btn-danger" lay-event="dels">
 			<i class="iconfont">&#xe69d;</i> 批量删除
 		</button>
-		<button class="layui-btn" lay-event="add">
-			<i class="iconfont">&#xe6b9;</i> 添加
-		</button>
 	</div>
 </script>
 <!-- 记录操作按钮模板 -->
@@ -93,10 +90,10 @@
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/school','mytable');
+            cjgl.delAll(checkStatus,'/fields','mytable');
             break;
           case 'add':
-            cjgl.add('添加单位','/school/create','650','500');
+            cjgl.add('添加文件','/fields/create','650','500');
             break;
         };
       });
@@ -111,7 +108,7 @@
           	cjgl.del(obj,"/fields");
           	break;
           case 'download':// 编辑
-          	cjgl.add('下载文件','/fields/dwonload/'+obj.data.id,'650','500');
+          	cjgl.add('下载文件','/system/Fields/download/id/'+obj.data.id,'650','500');
           	break;
         };
       });

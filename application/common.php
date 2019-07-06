@@ -202,7 +202,10 @@ function teacherNames($list = array())
 * @param mixed $list[''] 文件要存到哪儿 
 * @param mixed $file 文件 
 * @param array $isSave 是否将文件信息保存到数据库 
-* @return string 返回类型  文件在服务器地址
+* @return array 返回类型  数组
+* @return msg string  提示
+* @return val string  结果
+* @return url string  如果保存到数据库，返回完整路径，否则保存部分路径。
 */  
 function upload($list,$file,$isSave=false)
 {
@@ -257,7 +260,7 @@ function upload($list,$file,$isSave=false)
 		$data = array(
             'msg'=>'上传成功'
             ,'val'=>true
-            ,'url'=>$myrul.$list['serurl'].$info->getSaveName()
+            ,'url'=>$info->getSaveName()
         );
 	}
 

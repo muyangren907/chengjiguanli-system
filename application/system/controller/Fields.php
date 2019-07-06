@@ -73,9 +73,9 @@ class Fields extends Base
         $filist = $fl->where('id',$id)->find();
 
         // 下载文件
-        $download =  new \think\response\Download('\uploads\student\student_template.xlsx');
+        $download =  new \think\response\Download('uploads\\'.$filist->url);
 
-        return $download->name('student_template.xlsx');
+        return $download->name($filist->oldname);
 
     }
 
@@ -89,6 +89,17 @@ class Fields extends Base
      */
     public function delete($id)
     {
-        //
+        if($id == 'm')
+        {
+            $id = request()->delete('ids');
+        }
+
+        $data = FL::destroy($id);
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
     }
 }
