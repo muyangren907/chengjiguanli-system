@@ -55,13 +55,13 @@ layui.use('upload', function(){
     ,url: "{:url('upload')}" //上传接口
     ,done: function(res){
       if(res.val == 1){
-        $('#url').val('..\\public\\uploads\\teacher\\' + res.url);
+        $('#url').val(res.url);
       }
       layer.msg(res.msg);
     }
     ,data: {
       text: '教师信息'
-      ,serurl:'..\\public\\uploads\\teacher\\'
+      ,serurl:'teacher\\'
 
     }
     ,acceptMime:'.xls,.xlsx'
