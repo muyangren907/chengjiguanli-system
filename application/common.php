@@ -206,11 +206,15 @@ function teacherNames($list = array())
 */  
 function upload($list,$file,$isSave=false)
 {
+    // 声明默认目录
+    $myrul = '..\public\uploads\\';
+
     // 实例化文件数据模型
     $field = new \app\system\model\Fields;
 
     // 移动到框架应用根目录/uploads/ 目录下
-    $info = $file->move($list['serurl']);
+    $info = $file->move($myrul.$list['serurl']);
+
 
     // 如果上传成功
     if(!$info){
@@ -219,12 +223,16 @@ function upload($list,$file,$isSave=false)
         return $data;
     }
 
+
+
     // 成功上传后 获取上传信息
     $list['category'] = $info->getExtension();
-    $list['url'] = $info->getSaveName();
+    $list['url'] = $list['serurl'].$info->getSaveName();
     $list['newname'] = $info->getFilename(); 
     $list['hash'] = $info->hash('sha1');
     $list['userid'] = session('userid');
+    $list['oldname'] = $info->getInfo('name');
+    $list['fieldsize'] = $info->getInfo('size');
 
     
     // 如果需要保存文件 
@@ -237,7 +245,7 @@ function upload($list,$file,$isSave=false)
 	        $data = array(
 	            'msg'=>'上传成功'
 	            ,'val'=>true
-	            ,'url'=>$list['url']
+	            ,'url'=>$myrul.$list['serurl'].$info->getSaveName()
 	        );
 	    }else{
 	        $data = array(
@@ -249,7 +257,7 @@ function upload($list,$file,$isSave=false)
 		$data = array(
             'msg'=>'上传成功'
             ,'val'=>true
-            ,'url'=>$list['url']
+            ,'url'=>$myrul.$list['serurl'].$info->getSaveName()
         );
 	}
 

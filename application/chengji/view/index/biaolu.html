@@ -36,13 +36,13 @@ layui.use('upload', function(){
     ,url: "{:url('upload')}" //上传接口
     ,done: function(res){
       if(res.val == 1){
-        $('#url').val('..\\public\\uploads\\chengji\\' + res.url);
+        $('#url').val(res.url);
       }
       layer.msg(res.msg);
     }
     ,data: {
       text: '考试成绩'
-      ,serurl:'..\\public\\uploads\\chengji\\'
+      ,serurl:'chengji\\'
 
     }
     ,acceptMime:'.xls,.xlsx'

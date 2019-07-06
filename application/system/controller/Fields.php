@@ -63,60 +63,23 @@ class Fields extends Base
         return json($data);
     }
 
-    /**
-     * 显示创建资源表单页.
-     *
-     * @return \think\Response
-     */
-    public function create()
+
+    // 下载文件
+    public function download($id)
     {
-        //
+        // 实例化文件数据模型
+        $fl = new FL;
+        // 查询文件信息
+        $filist = $fl->where('id',$id)->find();
+
+        // 下载文件
+        $download =  new \think\response\Download('\uploads\student\student_template.xlsx');
+
+        return $download->name('student_template.xlsx');
+
     }
 
-    /**
-     * 保存新建的资源
-     *
-     * @param  \think\Request  $request
-     * @return \think\Response
-     */
-    public function save(Request $request)
-    {
-        //
-    }
 
-    /**
-     * 显示指定的资源
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function read($id)
-    {
-        //
-    }
-
-    /**
-     * 显示编辑资源表单页.
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * 保存更新的资源
-     *
-     * @param  \think\Request  $request
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
     /**
      * 删除指定资源

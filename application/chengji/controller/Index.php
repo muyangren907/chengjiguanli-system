@@ -270,7 +270,7 @@ class Index extends Base
 
         // 获取表单上传文件
         $file = request()->file('file');
-        halt($file);
+
         // 上传文件并返回结果
         $data = upload($list,$file,true);
 
