@@ -42,19 +42,11 @@
         return str;
       }},
 		{field: 'defen', title: '得分 ', minWidth:100,sort: true},
-		{title: '操作单位',templet:function(d){
+		{title: '成绩录入',templet:function(d){
         var str='';
         if(d.user_name)
         {
-          str = d.user_name.ad_school.jiancheng;
-        }
-        return str;
-      }},
-		{title: '操作人',sort: true, minWidth:100,templet:function(d){
-        var str='';
-        if(d.user_name)
-        {
-          str = d.user_name.xingming;
+          str = d.user_name.ad_school.jiancheng + '　' + d.user_name.xingming;
         }
         return str;
       }},
