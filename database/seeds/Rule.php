@@ -66,7 +66,7 @@ class Rule extends Seeder
 
                 // 荣誉管理
                 ['id'=>901,'title'=>'课题册','name'=>'keti/Index/index','paixu'=>1,'ismenu' =>true,'pid' =>9,'url'=>'/kt',],
-                ['id'=>902,'title'=>'课题列表','name'=>'ketiinfo/Index/index','paixu'=>2,'ismenu' =>true,'pid' =>9,'url'=>'/ktinfo',],
+                ['id'=>902,'title'=>'课题列表','name'=>'keti/KetiInfo/index','paixu'=>2,'ismenu' =>true,'pid' =>9,'url'=>'/ktinfo',],
                 
                 
                 
