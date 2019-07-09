@@ -149,7 +149,7 @@ class Tongji extends Base
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
 
-        $sbjcol = ['cnt'=>'人数','avg'=>'平均分','jige'=>'及格率%','youxiu'=>'优秀率%'];
+        $sbjcol = ['xkcnt'=>'人数','avg'=>'平均分','jige'=>'及格率%','youxiu'=>'优秀率%'];
         $sbjcolcnt = count($sbjcol);
         $colname = excelLieming();
         $colcnt = $sbjcolcnt*count($xk)+3;
@@ -346,7 +346,7 @@ class Tongji extends Base
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
 
-        $sbjcol = ['cnt'=>'人数','avg'=>'平均分','jige'=>'及格率%','youxiu'=>'优秀率%'];
+        $sbjcol = ['xkcnt'=>'人数','avg'=>'平均分','jige'=>'及格率%','youxiu'=>'优秀率%'];
         $sbjcolcnt = count($sbjcol);
         $colname = excelLieming();
         $colcnt = $sbjcolcnt*count($xk)+3;
@@ -402,5 +402,45 @@ class Tongji extends Base
         ob_flush();
         flush();
     }
+
+
+    // 统计已经录入成绩数量
+    public function yiluCnt($kaoshi)
+    {
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $ksinfo = $ks->where('id',$kaoshi)
+            ->with([
+                'KsNianji'
+                ,'ksSubject'=>function($query){
+                    $query->field('kaoshiid,subjectid,manfen')
+                        ->with(['subjectName'=>function($q){
+                            $q->field('id,title,lieming');
+                        }]
+                    );
+                }
+            ])
+            ->field('id,title')
+            ->find();
+
+        if(count($ksinfo->ks_nianji)>0)
+        {
+            $list['nianji'] = $ksinfo->ks_nianji[0]->nianji;
+        }else{
+            $list['nianji'] = "一年级";
+        }
+        $list['subject'] = $ksinfo->ks_subject->toArray();
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = '各年级的班级成绩列表';
+        $list['kaoshi'] = $kaoshi;
+        $list['kaoshititle'] = $ksinfo->title;
+
+
+        // 模板赋值
+        $this->assign('list',$list);
+
+        // 渲染模板
+        return $this->fetch();
+    }
+    
 
 }

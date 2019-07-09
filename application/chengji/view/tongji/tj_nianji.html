@@ -6,7 +6,8 @@
 {block name="nav"}
 	<span class="layui-breadcrumb">
 		<a href="">考试管理</a>
-		<a href="">成绩管理</a>
+		<a href="">更多操作</a>
+		<a href="">成绩查看</a>
 		<a href="">各年级成绩统计表</a>
 		<a><cite>{$list['kaoshititle']}</cite></a>
 	</span>
@@ -67,7 +68,7 @@
 	// 获取学科
 	var xk = '<?php echo json_encode($list["subject"]);?>';
 	xk = eval(decodeURIComponent(xk));
-	var xiangmu = {cnt:'人数',avg:'平均分',jige:'及格率%',youxiu:'优秀率%'};		// 要显示哪些统计结果
+	var xiangmu = {xkcnt:'参考人数',avg:'平均分',jige:'及格率%',youxiu:'优秀率%'};		// 要显示哪些统计结果
 
     $.each(xk,function(index,value){
     	options.cols[0].push({title: xk[index].subject_name.title+'('+xk[index].manfen+')',colspan:4,align:'center'});

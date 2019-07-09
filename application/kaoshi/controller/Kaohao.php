@@ -560,6 +560,5 @@ class Kaohao extends Base
         return json($data);
     }
 
-
     
 }

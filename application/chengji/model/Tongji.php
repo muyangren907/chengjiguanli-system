@@ -94,14 +94,14 @@ class Tongji extends Model
                 ->with('ksSubject')
                 ->find();
         $data = array();
-        $allcj = array();
+        // $allcj = array();
         foreach ($ksinfo->ks_subject as $key => $value) {
             $cjcol = array_column($cj,$value->lieming);
-            $allcj = array_merge($allcj,$cjcol);
+            // $allcj = array_merge($allcj,$cjcol);
             $temp = array();
-            $temp['cnt'] = count($cjcol);
+            $temp['xkcnt'] = count($cjcol);
             $temp['sum'] = array_sum($cjcol);
-            $temp['cnt']>0 ? $temp['avg'] = $temp['sum']/$temp['cnt'] : $temp['avg']=0;
+            $temp['xkcnt']>0 ? $temp['avg'] = $temp['sum']/$temp['xkcnt'] : $temp['avg']=0;
             $temp['biaozhuncha'] = round($this->getVariance($temp['avg'], $cjcol,true),2);
             $temp['avg'] = round($temp['avg'],2);
             $temp['youxiu'] = $this->rate($cjcol,$value->youxiu);
@@ -110,9 +110,9 @@ class Tongji extends Model
             $data[$value->lieming] = $temp;
         }
         $cjcol = array_column($cj,'sum');
-        $data['cnt'] = count($cjcol);
+        $data['bmcnt'] = count($cj);   # 报名人数
         $data['sum'] = array_sum($cjcol);
-        $data['cnt']>0 ? $data['avg'] = round($data['sum']/$data['cnt'],2) : $data['avg']=0;
+        $data['bmcnt']>0 ? $data['avg'] = round($data['sum']/$data['bmcnt'],2) : $data['avg']=0;
         foreach ($cj as $key => $value) {
             unset($cj[$key]['avg']);
             unset($cj[$key]['sum']);
@@ -319,9 +319,5 @@ class Tongji extends Model
 
         return $data;
     }
-
-
-
-
 
 }

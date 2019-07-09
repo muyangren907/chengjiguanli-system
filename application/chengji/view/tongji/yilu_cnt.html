@@ -7,8 +7,8 @@
 	<span class="layui-breadcrumb">
 		<a href="">考试管理</a>
 		<a href="">更多操作</a>
-		<a href="">成绩查看</a>
-		<a href="">各班级成绩统计表</a>
+		<a href="">前期操作</a>
+		<a href="">已录成绩数量</a>
 		<a><cite>{$list['kaoshititle']}</cite></a>
 	</span>
 {/block}
@@ -84,44 +84,35 @@
 	// 设置请求地址
 	options.url = "{:url('ajaxBianji')}";
 	// 设置列
-  	options.cols=[[ //表头
+    options.cols=[[ //表头
 			{type:'numbers',title:'序号',rowspan:2},
 			{field: 'school', title: '学校',sort: true,minWidth:80,rowspan:2},
 			{field: 'banji', title: '班级',sort: true,minWidth:100,rowspan:2},
-		]
-		,[]
-		];
+			{title: '班级人数',templet:function(d){
+				var str='';
+				if(d.chengji)
+				{
+					str = d.chengji.bmcnt
+				}
+				return str;
+			}},
+		]];
 	// 获取学科
 	var xk = '<?php echo json_encode($list["subject"]);?>';
 	xk = eval(decodeURIComponent(xk));
-	var xiangmu = {xkcnt:'人数',avg:'平均分',jige:'及格率%',youxiu:'优秀率%'};		// 要显示哪些统计结果
 
     $.each(xk,function(index,value){
-    	options.cols[0].push({title: xk[index].subject_name.title+'('+xk[index].manfen+')',colspan:4,align:'center'});
-	    $.each(xiangmu,function(i,val){
-		    var colname = xk[index].subject_name.lieming;
-    		// console.log(colname + ' ' + i);
-    		var colinfo = {
-	    		title:val
-	    		,minWidth:100
-	    		,templet:function(d){
-	    			var str = d.chengji[colname][i];
-					return str;
+    	var colname = xk[index].subject_name.lieming;
+    	console.log(colname);
+    	options.cols[0].push({title: xk[index].subject_name.title,align:'center',templet:function(d){
+				var str='';
+				if(d.chengji)
+				{
+					str = d.chengji[colname].xkcnt;
 				}
-	    	};
-	    	
-	    	options.cols[1].push(colinfo);
-		});
+				return str;
+			}});
 	});
-	options.cols[0].push({title: '全科及格率%',minWidth:100,rowspan:2,templet:function(d){
-	    			var str = d.chengji.rate;
-					return str;
-				}});
-	options.cols[0].push({ title: '总平均分',minWidth:100,rowspan:2,templet:function(d){
-	    			var str = d.chengji.avg;
-					return str;
-				}});
-
 
 	
 	// 设置查询条件

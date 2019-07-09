@@ -28,6 +28,7 @@ Route::get('readcjadd/:kaohao','chengji/Index/readAdd');  # 查看录入成绩�
 // 成绩统计表
 Route::get('cjtongji/:kaoshi/banji','chengji/Tongji/tjBanji');	# 班级成绩统计列表
 Route::get('cjtongji/:kaoshi/nianji','chengji/Tongji/tjNianji');	# 年级成绩统计列表
+Route::get('cjtongji/:kaoshi/yilucnt','chengji/Tongji/yiluCnt');	# 年级成绩统计列表
 
 // 下载学生成绩
 Route::get('chengji/:kaoshi/dwChengji','chengji/Index/dwChengji');
@@ -40,6 +41,7 @@ Route::post('cjtongji/dwBanji','chengji/Tongji/dwBanjixls');
 // 下载年级成绩统计表
 Route::get('cjtongji/:kaoshi/dwNianji','chengji/Tongji/dwNianji');	
 Route::post('cjtongji/dwNanji','chengji/Tongji/dwNianjixls');
+
 
 
 
