@@ -147,6 +147,7 @@ class Tongji extends Model
     public function rateAll($cj = array(), $sbj=array())
     {
         $jige = 0;  # 总及格人数
+        $sbjcnt = count($sbj);
         // 开始循环每个人的成绩
         foreach ($cj as $key => $value) {
             $temjige = 0; #记录学生及格的学科数
@@ -161,7 +162,7 @@ class Tongji extends Model
                 }
             }
             // 如果这个学生及格学科数等于学科总数，那么全科及格总数加1
-            $temjige == count($value) && $temjige>0 ? $jige++ : $jige ;
+            $temjige == $sbjcnt && $temjige>0 ? $jige++ : $jige ;
         }
 
 

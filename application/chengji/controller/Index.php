@@ -585,10 +585,10 @@ class Index extends Base
         $nianji = array();
         $chengjiinfo = $tj->srcChengji($list['kaoshi'],$list['banji']);
         $temp = $tj->tongji($chengjiinfo,$list['kaoshi']);
-        $colcnt = $colcnt+5;
+        isset($colcnt) ? $colcnt = $colcnt+5 : $colcnt = 12;
         // 循环写出统计结果
         foreach ($ks->ks_subject as $key => $value) {
-            $sheet->setCellValue($colname[$colcnt].'3', $temp[$value->subject_name->lieming]['cnt']);
+            $sheet->setCellValue($colname[$colcnt].'3', $temp[$value->subject_name->lieming]['xkcnt']);
             $sheet->setCellValue($colname[$colcnt].'4', $temp[$value->subject_name->lieming]['avg']);
             $sheet->setCellValue($colname[$colcnt].'5', $temp[$value->subject_name->lieming]['youxiu']);
             $sheet->setCellValue($colname[$colcnt].'6', $temp[$value->subject_name->lieming]['jige']);
