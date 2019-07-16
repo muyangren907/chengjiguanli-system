@@ -23,7 +23,7 @@
     <div class="layui-form-item">
 	    <label for="xingzhi" class="layui-form-label" style="height: 100%">荣誉类别</label>
 	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-	    	{php} $category = getCategory(112);{/php}
+	    	{php} $category = getCategory(114);{/php}
 	    	{volist name="category" id="vo"}
 	    		<input type="checkbox" name="category[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
