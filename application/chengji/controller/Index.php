@@ -281,7 +281,8 @@ class Index extends Base
     // 成绩列表
     public function index($kaoshi)
     {
-        // 设置要给模板赋值的信息
+        
+         // 设置要给模板赋值的信息
         $list['webtitle'] = '学生成绩列表';
 
         // 实例化考试数据模型

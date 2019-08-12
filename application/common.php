@@ -149,19 +149,34 @@ function excelLieming()
 
 
 // 单位列表
-function schlist($low='班级',$high='其它级')
+function schlist($low='班级',$high='其它级',$xueduan=array())
 {
 	// 实例化单位模型
 	$sch = new \app\system\model\School;
 	// 实例化类别数据模型
 	$cat = new \app\system\model\Category;
 	// 获取获取级别列表
-	$catlist = $cat->where('pid',102)->column('title,id');
+	$catlist = $cat->where('pid',102)
+		->where('status',1)
+		->column('title,id');
+
+	// 获取学段列表
+	if(count($xueduan)>0){
+		$xdlist = $cat->where('pid',103)
+			->where('status',1)
+			->where('title','in',$xueduan)
+			->column('id');
+	}else{
+		$xdlist = $cat->where('pid',103)
+			->where('status',1)
+			->column('id');
+	}
+
 
 	// 查询学校
 	$schlist = $sch->where('jibie','between',[$catlist[$low],$catlist[$high]])
 					->where('status',1)
-					// ->cache('schoollist',180)
+					->where('xueduan','in',$xdlist)
 					->order(['paixu'])
 					->column('id,title,jiancheng');
 
