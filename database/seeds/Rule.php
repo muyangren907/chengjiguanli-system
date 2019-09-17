@@ -17,56 +17,56 @@ class Rule extends Seeder
         // 初始化超级管理员
         $rows= [
             // 一级菜单 1
-            ['id'=>1,'title' =>'成绩采集','name'=>'chengji','paixu' =>1,'ismenu' =>true,'font'=>'&#xe6c9;'],
-            ['id'=>3,'title' =>'考试管理','name'=>'kaoshi','paixu' =>3,'ismenu' =>true,'font'=>'&#xe6ee;'],
-            ['id'=>4,'title' =>'师生名单','name'=>'renshi','paixu' =>4,'ismenu' =>true,'font'=>'&#xe699;'],
-            ['id'=>5,'title' =>'教务管理','name'=>'teach','paixu' =>5,'ismenu' =>true,'font'=>'&#xe6da;'],
-            ['id'=>6,'title' =>'管理员管理','name'=>'admin','paixu' =>8,'ismenu' =>true,'font'=>'&#xe6b8;'],
-            ['id'=>7,'title'=>'系统管理','name' =>'system','paixu' =>9,'ismenu'=>true,'font' =>'&#xe6ae;'],
-            ['id'=>8,'title'=>'荣誉管理','name' =>'rongyu','paixu' =>6,'ismenu'=>true,'font' =>'&#xe6e4;','status'=>false],
-            ['id'=>9,'title'=>'课题管理','name' =>'keti','paixu' =>7,'ismenu'=>true,'font' =>'&#xe6b3;','status'=>false],
+            ['id'=>1,'title' =>'成绩采集','name'=>'chengji','paixu' =>1,'ismenu' =>1,'font'=>'&#xe6c9;'],
+            ['id'=>3,'title' =>'考试管理','name'=>'kaoshi','paixu' =>3,'ismenu' =>1,'font'=>'&#xe6ee;'],
+            ['id'=>4,'title' =>'师生名单','name'=>'renshi','paixu' =>4,'ismenu' =>1,'font'=>'&#xe699;'],
+            ['id'=>5,'title' =>'教务管理','name'=>'teach','paixu' =>5,'ismenu' =>1,'font'=>'&#xe6da;'],
+            ['id'=>6,'title' =>'管理员管理','name'=>'admin','paixu' =>8,'ismenu' =>1,'font'=>'&#xe6b8;'],
+            ['id'=>7,'title'=>'系统管理','name' =>'system','paixu' =>9,'ismenu' =>1,'font' =>'&#xe6ae;'],
+            ['id'=>8,'title'=>'荣誉管理','name' =>'rongyu','paixu' =>6,'ismenu' =>1,'font' =>'&#xe6e4;','status'=>0],
+            ['id'=>9,'title'=>'课题管理','name' =>'keti','paixu' =>7,'ismenu' =>1,'font' =>'&#xe6b3;','status'=>0],
                 // 二级菜单
                 // 成绩采集
-                ['id'=>101,'title'=>'扫码录入','name'=>'chengji/Index/malu','paixu'=>1,'ismenu' =>true,'pid' =>1,'url'=>'/chengji/malu',],
-                ['id'=>102,'title'=>'表格录入','name'=>'chengji/Index/biaolu','paixu'=>2,'ismenu' =>true,'pid' =>1,'url'=>'/chengji/biaolu',],
+                ['id'=>101,'title'=>'扫码录入','name'=>'chengji/Index/malu','paixu'=>1,'ismenu' =>1,'pid' =>1,'url'=>'/chengji/malu',],
+                ['id'=>102,'title'=>'表格录入','name'=>'chengji/Index/biaolu','paixu'=>2,'ismenu' =>1,'pid' =>1,'url'=>'/chengji/biaolu',],
                 // 成绩统计
-                ['id'=>201,'title'=>'班级成绩','name'=>'tongji/Index/banji','paixu'=>1,'ismenu' =>true,'pid' =>2,'url'=>'/tongji',],
+                ['id'=>201,'title'=>'班级成绩','name'=>'tongji/Index/banji','paixu'=>1,'ismenu' =>1,'pid' =>2,'url'=>'/tongji',],
                 // 考试管理
-                ['id'=>301,'title'=>'考试列表','name'=>'kaoshi/Index/index','paixu'=>1,'ismenu' =>true,'pid' =>3,'url'=>'/kaoshi',],
-                ['id'=>302,'title'=>'考试操作','name'=>'Kaoshi/Index/MoreAction','paixu'=>2,'ismenu' =>false,'pid' =>3],
+                ['id'=>301,'title'=>'考试列表','name'=>'kaoshi/Index/index','paixu'=>1,'ismenu' =>1,'pid' =>3,'url'=>'/kaoshi',],
+                ['id'=>302,'title'=>'考试操作','name'=>'Kaoshi/Index/MoreAction','paixu'=>2,'ismenu' =>0,'pid' =>3],
 
                 // 师生名单
-                ['id'=>401,'title'=>'学生列表','name'=>'renshi/Student/index','paixu'=>1,'ismenu' =>true,'pid' =>4,'url'=>'/student',],
-                ['id'=>402,'title'=>'教师列表','name'=>'renshi/Index/index','paixu'=>2,'ismenu' =>true,'pid' =>4,'url'=>'/teacher',],
+                ['id'=>401,'title'=>'学生列表','name'=>'renshi/Student/index','paixu'=>1,'ismenu' =>1,'pid' =>4,'url'=>'/student',],
+                ['id'=>402,'title'=>'教师列表','name'=>'renshi/Index/index','paixu'=>2,'ismenu' =>1,'pid' =>4,'url'=>'/teacher',],
 
                 // 教务管理
-                ['id'=>501,'title'=>'学期列表','name'=>'teach/Xueqi/index','paixu'=>1,'ismenu' =>true,'pid' =>5,'url'=>'/xueqi',],
-                ['id'=>502,'title'=>'班级列表','name'=>'teach/Banji/index','paixu'=>2,'ismenu' =>true,'pid' =>5,'url'=>'/banji',],
-                ['id'=>503,'title'=>'学科列表','name'=>'teach/Subject/index','paixu'=>3,'ismenu' =>true,'pid' =>5,'url'=>'/subject',],
+                ['id'=>501,'title'=>'学期列表','name'=>'teach/Xueqi/index','paixu'=>1,'ismenu' =>1,'pid' =>5,'url'=>'/xueqi',],
+                ['id'=>502,'title'=>'班级列表','name'=>'teach/Banji/index','paixu'=>2,'ismenu' =>1,'pid' =>5,'url'=>'/banji',],
+                ['id'=>503,'title'=>'学科列表','name'=>'teach/Subject/index','paixu'=>3,'ismenu' =>1,'pid' =>5,'url'=>'/subject',],
                 
 
                 // 管理员管理
-                ['id'=>601,'title'=>'管理员列表','name'=>'admin/Index/index','paixu'=>1,'ismenu' =>true,'pid' =>6,'url'=>'/admin',],
-                ['id'=>602,'title'=>'权限列表','name'=>'admin/AuthRule/index','paixu'=>2,'ismenu' =>true,'pid' =>6,'url'=>'/authrule',],
-                ['id'=>603,'title'=>'角色列表','name'=>'admin/AuthGroup/index','paixu'=>3,'ismenu' =>true,'pid' =>6,'url'=>'/authgroup',],
+                ['id'=>601,'title'=>'管理员列表','name'=>'admin/Index/index','paixu'=>1,'ismenu' =>1,'pid' =>6,'url'=>'/admin',],
+                ['id'=>602,'title'=>'权限列表','name'=>'admin/AuthRule/index','paixu'=>2,'ismenu' =>1,'pid' =>6,'url'=>'/authrule',],
+                ['id'=>603,'title'=>'角色列表','name'=>'admin/AuthGroup/index','paixu'=>3,'ismenu' =>1,'pid' =>6,'url'=>'/authgroup',],
                 
                 // 系统设置
-                ['id'=>701,'title'=>'类别管理','name'=>'system/Category/index','paixu'=>1,'ismenu' =>true,'pid' =>7,'url'=>'/category',],
-                ['id'=>702,'title'=>'单位管理','name'=>'system/School/index','paixu'=>2,'ismenu' =>true,'pid' =>7,'url'=>'/school',],
-                ['id'=>703,'title'=>'文件管理','name'=>'system/Fields/index','paixu'=>3,'ismenu' =>true,'pid' =>7,'url'=>'/fields',],
-                ['id'=>704,'title'=>'系统设置','name'=>'system/SystemBase/edit','paixu'=>10,'ismenu' =>true,'pid' =>7,'url'=>'/sysbase/1/edit',],
+                ['id'=>701,'title'=>'类别管理','name'=>'system/Category/index','paixu'=>1,'ismenu' =>1,'pid' =>7,'url'=>'/category',],
+                ['id'=>702,'title'=>'单位管理','name'=>'system/School/index','paixu'=>2,'ismenu' =>1,'pid' =>7,'url'=>'/school',],
+                ['id'=>703,'title'=>'文件管理','name'=>'system/Fields/index','paixu'=>3,'ismenu' =>1,'pid' =>7,'url'=>'/fields',],
+                ['id'=>704,'title'=>'系统设置','name'=>'system/SystemBase/edit','paixu'=>10,'ismenu' =>1,'pid' =>7,'url'=>'/sysbase/1/edit',],
                 
 
 
                 // 荣誉管理
-                ['id'=>801,'title'=>'单位荣誉','name'=>'rongyu/DwRongyu/index','paixu'=>1,'ismenu' =>true,'pid' =>8,'url'=>'/dwry',],
-                ['id'=>802,'title'=>'教师荣誉册','name'=>'rongyu/JsRongyu/index','paixu'=>2,'ismenu' =>true,'pid' =>8,'url'=>'/jsry',],
-                ['id'=>803,'title'=>'教师荣誉信息','name'=>'rongyu/JsRongyuInfo/index','paixu'=>3,'ismenu' =>true,'pid' =>8,'url'=>'/jsryinfo',],
-                // ['id'=>804,'title'=>'学生荣誉','name'=>'rongyu/StuRongyu/index','paixu'=>7,'ismenu' =>true,'pid' =>8,'url'=>'/xsry','status'=>0],
+                ['id'=>801,'title'=>'单位荣誉','name'=>'rongyu/DwRongyu/index','paixu'=>1,'ismenu' =>1,'pid' =>8,'url'=>'/dwry',],
+                ['id'=>802,'title'=>'教师荣誉册','name'=>'rongyu/JsRongyu/index','paixu'=>2,'ismenu' =>1,'pid' =>8,'url'=>'/jsry',],
+                ['id'=>803,'title'=>'教师荣誉信息','name'=>'rongyu/JsRongyuInfo/index','paixu'=>3,'ismenu' =>1,'pid' =>8,'url'=>'/jsryinfo',],
+                // ['id'=>804,'title'=>'学生荣誉','name'=>'rongyu/StuRongyu/index','paixu'=>7,'ismenu' =>1,'pid' =>8,'url'=>'/xsry','status'=>0],
 
                 // 荣誉管理
-                ['id'=>901,'title'=>'课题册','name'=>'keti/Index/index','paixu'=>1,'ismenu' =>true,'pid' =>9,'url'=>'/kt',],
-                ['id'=>902,'title'=>'课题列表','name'=>'keti/KetiInfo/index','paixu'=>2,'ismenu' =>true,'pid' =>9,'url'=>'/ktinfo',],
+                ['id'=>901,'title'=>'课题册','name'=>'keti/Index/index','paixu'=>1,'ismenu' =>1,'pid' =>9,'url'=>'/kt',],
+                ['id'=>902,'title'=>'课题列表','name'=>'keti/KetiInfo/index','paixu'=>2,'ismenu' =>1,'pid' =>9,'url'=>'/ktinfo',],
                 
                 
                 
@@ -272,9 +272,6 @@ class Rule extends Seeder
                     ['title'=>'批量保存','name'=>'keti/ketiinfo/saveAll','paixu'=>9,'pid'=>902],
                     ['title'=>'结题','name'=>'keti/ketiinfo/jieTi','paixu'=>10,'pid'=>902],
                     ['title'=>'下载','name'=>'keti/KetiInfo/outXlsx','paixu'=>11,'pid'=>902],
-
-
-
             
         ];
         // 保存数据
