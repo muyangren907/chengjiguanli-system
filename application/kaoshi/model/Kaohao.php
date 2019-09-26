@@ -291,7 +291,7 @@ class Kaohao extends Base
                     }
                 ])
                 ->group('school')
-                ->field('id,school')
+                ->field('school')
                 ->select();
         return $data;
 
@@ -326,8 +326,8 @@ class Kaohao extends Base
                         $query->field('id,jiancheng');
                     }
                 ])
-                ->group('banji')
-                ->field('id,banji,school')
+                ->group('banji,school')
+                ->field('banji,school')
                 ->select();
         return $data;
     }

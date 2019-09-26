@@ -315,14 +315,17 @@ class Banji extends Base
         $bjnamelist = banjinamelist();
         $njlist = array_keys($njanmelist);
 
-
+        if(is_array($ruxuenian)==false)
+        {
+            $ruxuenian = array($ruxuenian);
+        }
 
         // 查询年级数据
         $list = BJ:: where('school',$school)
                 ->where('ruxuenian','in',$ruxuenian)
-                ->group('ruxuenian')
-                ->field('id,ruxuenian')
                 ->where('status',1)
+                ->group('ruxuenian')
+                ->field('ruxuenian')
                 ->with([
                     'njBanji'=>function($query)use($school){
                         $query->where('status',1)

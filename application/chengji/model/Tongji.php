@@ -305,6 +305,7 @@ class Tongji extends Model
                 'school'=>$value->cj_school->jiancheng,
                 'chengji'=>$temp
             ];
+            
         }
 
 

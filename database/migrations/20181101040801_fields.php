@@ -35,7 +35,7 @@ class Fields extends Migrator
         $table
             ->addColumn('text','string',['limit'=>100,'null'=>false,'comment'=>'文件内容'])
             ->addColumn('oldname','string',['limit'=>100,'null'=>false,'comment'=>'原文件名'])
-            ->addColumn('bianjitime','integer',['limit'=>11,'null'=>false,'comment'=>'最后编辑时间'])
+            ->addColumn('bianjitime','integer',['limit'=>11,'null'=>true,'comment'=>'最后编辑时间'])
             ->addColumn('newname','string',['limit'=>100,'null'=>false,'comment'=>'新文件名'])
             ->addColumn('category','string',['limit'=>100,'null'=>false,'comment'=>'文件类型'])
             ->addColumn('fieldsize','integer',['limit'=>11,'null'=>false,'comment'=>'文件大小'])

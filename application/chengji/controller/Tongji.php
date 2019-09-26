@@ -64,6 +64,7 @@ class Tongji extends Base
 
         // 统计成绩
         $tj = new TJ;
+
         $data = $tj->tjBanji($src['kaoshi'],$src['nianji'],$src['school'],$src['paixu']);
 
        
