@@ -123,8 +123,21 @@ class Student extends Base
 
         $list['shenfenzhenghao'] = strtolower($list['shenfenzhenghao']);
 
-        // 保存数据 
-        $data = STU::create($list);
+        // 查询数据是否重复
+        $chongfu = STU::withTrashed()->where('shenfenzhenghao',$list['shenfenzhenghao'])->find();
+        // 保存或更新数据
+        $stu = new STU;
+        if($chongfu == Null)
+        {
+            $stu::create($list);
+
+        }else{
+            if($chongfu->delete_time>0)
+            {
+                $chongfu->restore();
+            }
+            $data = $stu->save($list,['id'=>$chongfu->id]);
+        }
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];

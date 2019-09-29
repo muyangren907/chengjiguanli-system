@@ -33,6 +33,10 @@ Route::get('cjtongji/:kaoshi/yilucnt','chengji/Tongji/yiluCnt');	# 年级成绩�
 // 下载学生成绩
 Route::get('chengji/:kaoshi/dwChengji','chengji/Index/dwChengji');
 Route::post('chengji/dwChengji','chengji/Index/dwchengjixls'); 
+
+// 批量删除学生成绩
+Route::get('deletecjs/:kaoshi','chengji/Index/deletecjs');
+Route::post('deletecjmore','chengji/Index/deletecjmore');
  
 // 下载班级成绩统计表
 Route::get('cjtongji/:kaoshi/dwBanji','chengji/Tongji/dwBanji');	

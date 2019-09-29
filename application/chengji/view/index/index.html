@@ -74,10 +74,10 @@
 <script type="text/html" id="toolbarDemo">
   <div class="layui-btn-container">
     <button class="layui-btn layui-btn-danger" lay-event="dels">
-      <i class="iconfont">&#xe69d;</i> 批量删除
+      <i class="iconfont">&#xe69d;</i> 批量删除考号
     </button>
-    <button class="layui-btn" lay-event="add">
-      <i class="iconfont">&#xe6b9;</i> 添加
+    <button class="layui-btn" lay-event="delcj">
+      <i class="iconfont">&#xe69d;</i> 删除成绩
     </button>
     <button class="layui-btn" lay-event="download">
       <i class="layui-icon layui-icon-download-circle"></i> 下载
@@ -87,7 +87,7 @@
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
   <a class="layui-btn-xs" lay-event="detail" title="录入信息"><i class="layui-icon layui-icon-search"></i></a>
-  <a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
+  <a class="layui-btn-xs" lay-event="del" title="删除考号"><i class="layui-icon">&#xe640;</i></a>
 </script>
 <!-- 表格操作 -->
 <script>
@@ -134,12 +134,12 @@
 	      		var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
 	      		cjgl.delAll(checkStatus,'/kaohao','mytable');
       			break;
-      		case 'add':
-      			cjgl.add('添加单位','/kaohao/create','650','500');
-      			break;
       		case 'download':
       			cjgl.add('下载成绩','/chengji/{$list.kaoshi}/dwChengji','650','300');
       			break;
+          case 'delcj':
+            cjgl.add('删除成绩','/deletecjs/{$list.kaoshi}','650','350');
+            break;
       	};
       });
 

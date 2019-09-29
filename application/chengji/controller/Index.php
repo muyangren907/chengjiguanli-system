@@ -406,8 +406,75 @@ class Index extends Base
     }
 
 
+    // 下载成绩表格
+    public function deletecjs($kaoshi)
+    {
 
-    // 删除成绩
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'批量删除成绩',
+            'butname'=>'删除',
+            'formpost'=>'POST',
+            'url'=>'/deletecjmore',
+            'kaoshi'=>$kaoshi
+        );
+
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $subject = $ks
+                        ->where('id',$kaoshi)
+                        ->with([
+                            'ksSubject'=>function($query){
+                                $query->field('kaoshiid,subjectid')
+                                    ->with(['subjectName'=>function($q){
+                                        $q->field('id,title');
+                                    }]
+                                );
+                            }
+                        ])
+                        ->find()
+                        ->toArray();
+        $list['subject'] = $subject['ks_subject'];
+
+        // 模板赋值
+        $this->assign('list',$list);
+        // 渲染
+        return $this->fetch();
+    }
+
+
+    // 按条件删除成绩
+    public function deletecjmore()
+    {
+        // 获取参数
+        $src = $this->request
+                ->only(['kaoshi','banji','subject'],'POST');
+        $banji = $src['banji'];
+
+        // 获取要删除成绩的考号
+        $kaohao = new \app\kaoshi\model\Kaohao;
+        $kaohaolist = $kaohao::where('kaoshi',$src['kaoshi'])
+                            ->where('banji','in',$src['banji'])
+                            ->column('student');
+
+        // 查询成绩id
+        $chengjilist = Chengji::where('kaohao_id','in',$kaohaolist)
+                        ->where('subject_id','in',$src['subject'])
+                        ->column('id');
+        // 删除成绩
+        $data = Chengji::destroy($chengjilist);
+        
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'成绩删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
+
+
+
+    // 删除考号
     public function delete($id)
     {
 
@@ -424,6 +491,7 @@ class Index extends Base
         // 返回信息
         return json($data);
     }
+
 
 
 
@@ -448,6 +516,9 @@ class Index extends Base
 
 
 
+
+
+
     // 下载成绩表格
     public function dwChengji($kaoshi)
     {
@@ -466,6 +537,9 @@ class Index extends Base
         // 渲染
         return $this->fetch();
     }
+
+
+
 
 
     //生成学生表格
@@ -613,6 +687,9 @@ class Index extends Base
     }
 
 
+
+
+
     // 学生成绩录入信息
     public function readAdd($kaohao)
     {
@@ -626,6 +703,10 @@ class Index extends Base
         // 渲染模板
         return $this->fetch();
     }
+
+
+
+
 
     // ajax获取学生成绩录入信息
     public function ajaxaddinfo()
