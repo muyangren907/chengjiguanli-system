@@ -99,7 +99,7 @@ class Rule extends Seeder
                     ['title'=>'下载试卷标签信息','name'=>'kaoshi/Kaohao/biaoqian','paixu'=>5,'pid'=>302],
                     ['title'=>'下载成绩采集表','name'=>'kaoshi/Kaohao/caiji','paixu'=>6,'pid'=>302],
                     ['title'=>'成绩列表','name'=>'Chengji/Index/index','paixu'=>7,'pid'=>302],
-                         ['title'=>'录入人信息','name'=>'Chengji/Index/readAdd','paixu'=>8,'pid'=>302],
+                        ['title'=>'录入人信息','name'=>'Chengji/Index/readAdd','paixu'=>8,'pid'=>302],
                         ['title'=>'删除成绩','name'=>'Chengji/Index/delete','paixu'=>9,'pid'=>302],
                         ['title'=>'成绩状态','name'=>'Chengji/Index/setStatus','paixu'=>10,'pid'=>302],
                     ['title'=>'班级成绩统计','name'=>'Chengji/Tongji/tjBanji','paixu'=>11,'pid'=>302],
