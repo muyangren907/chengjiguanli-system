@@ -102,11 +102,14 @@ class Rule extends Seeder
                         ['title'=>'录入人信息','name'=>'Chengji/Index/readAdd','paixu'=>8,'pid'=>302],
                         ['title'=>'删除成绩','name'=>'Chengji/Index/delete','paixu'=>9,'pid'=>302],
                         ['title'=>'成绩状态','name'=>'Chengji/Index/setStatus','paixu'=>10,'pid'=>302],
-                    ['title'=>'班级成绩统计','name'=>'Chengji/Tongji/tjBanji','paixu'=>11,'pid'=>302],
-                    ['title'=>'年级成绩统计','name'=>'Chengji/Tongji/tjNianji','paixu'=>12,'pid'=>302],
-                    ['title'=>'下载学生成绩','name'=>'chengji/Index/dwChengji','paixu'=>13,'pid'=>302],
-                    ['title'=>'下载班级成绩统计表','name'=>'chengji/Tongji/dwBanji','paixu'=>14,'pid'=>302],
-                    ['title'=>'下载年级成绩统计表','name'=>'chengji/Tongji/dwNianji','paixu'=>15,'pid'=>302],
+                    // 学生成绩
+                    ['title'=>'下载学生成绩','name'=>'chengji/Index/dwChengji','paixu'=>21,'pid'=>302],
+                    // 班级成绩
+                    ['title'=>'班级成绩统计','name'=>'Chengji/Bjtongji/biaoge','paixu'=>41,'pid'=>302],
+                    ['title'=>'下载班级成绩统计表','name'=>'chengji/Bjtongji/dwBanji','paixu'=>42,'pid'=>302],
+                    // 年级成绩
+                    ['title'=>'年级成绩统计','name'=>'Chengji/Njtongji/biaoge','paixu'=>61,'pid'=>302],
+                    ['title'=>'下载年级成绩统计表','name'=>'chengji/Njtongji/dwNianji','paixu'=>62,'pid'=>302],
 
 
 
