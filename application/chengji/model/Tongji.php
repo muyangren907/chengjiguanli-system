@@ -2,9 +2,10 @@
 
 namespace app\chengji\model;
 
-use think\Model;
+// 引用基类
+use app\common\model\Base;
 
-class Tongji extends Model
+class Tongji extends Base
 {
 
     /**  
@@ -229,97 +230,5 @@ class Tongji extends Model
         return $result;
     }
 
-
-
-    /**  
-    * 统计各学校的指定个年级的成绩
-    * 统计项目参考tongji方法
-    * @access public 
-    * @param number $kaoshi 考试id
-    * @param number $ruxuenian 入学年
-    * @return array 返回类型
-    */
-    public function tjNianji($kaoshi,$nianji)
-    {
-        // 查询要统计成绩的学校
-        $kh = new \app\kaoshi\model\Kaohao;
-        $school = $kh->cySchool($kaoshi=$kaoshi,$ruxuenian=$nianji);
-
-        $data = array();
-        if($school->isEmpty()){
-            return $data;
-        }
-
-        // 获取并统计各班级成绩
-        $data = array();
-        foreach ($school as $key => $value) {
-            $schools=[$value->cj_school->id];
-            $temp = $this->srcChengji($kaoshi=$kaoshi,$banji=array(),$nianji=$nianji,$schools=$schools);
-            $temp = $this->tongji($temp,$kaoshi);
-            $data[] = [
-                'school'=>$value->cj_school->jiancheng,
-                'chengji'=>$temp
-            ];
-        }
-        
-        // 获取年级成绩
-        $allcj = $this->srcChengji($kaoshi=$kaoshi,$banji=array(),$nianji=$nianji,$school=array());
-        $temp = $this->tongji($allcj,$kaoshi);
-        $data[] = [
-            'school'=>'合计',
-            'chengji'=>$temp
-        ];
-        return $data;
-    }
-
-
-    /**  
-    * 统计指定个年级的各班级成绩
-    * 统计项目参考tongji方法
-    * @access public 
-    * @param number $kaoshi 考试id
-    * @param number $ruxuenian 入学年
-    * @return array 返回类型
-    */
-    public function tjBanji($kaoshi,$nianji,$school=array(),$paixu=array())
-    {
-        // 查询要统计成绩的班级
-        $kh = new \app\kaoshi\model\Kaohao;
-        $bj = $kh->cyBanji($kaoshi=$kaoshi,$ruxuenian=$nianji,$school=$school,$paixu=$paixu);
-
-        $data = array();
-        if($bj->isEmpty()){
-            return $data;
-        }
-
-        // 获取并统计各班级成绩
-        $data = array();
-        $bjs = array();
-        foreach ($bj as $key => $value) {
-            $bjs[] = $value->banji;
-            $banji=[$value->banji];
-            $temp = $this->srcChengji($kaoshi=$kaoshi,$banji=$banji,$nianji=$nianji,$school=array());
-            $temp = $this->tongji($temp,$kaoshi);
-            $data[] = [
-                'banji'=>$value->cj_banji->banjiTitle,
-                'school'=>$value->cj_school->jiancheng,
-                'chengji'=>$temp
-            ];
-            
-        }
-
-
-        // 获取年级成绩
-        $allcj = $this->srcChengji($kaoshi=$kaoshi,$banji=$bjs,$nianji=$nianji,$school=array());
-        $temp = $this->tongji($allcj,$kaoshi);
-        $data[] = [
-            'banji'=>'合计',
-            'school'=>'',
-            'chengji'=>$temp
-        ];
-
-
-        return $data;
-    }
-
+    
 }

@@ -8,11 +8,20 @@
 		<a href="">考试管理</a>
 		<a href="">更多操作</a>
 		<a href="">成绩查看</a>
-		<a href="">各年级成绩统计表</a>
+		<a href="">各班级成绩统计表</a>
 		<a><cite>{$list['kaoshititle']}</cite></a>
 	</span>
 {/block}
 {block name="search"}
+	<div class="layui-form-item">
+	    <label for="school" class="layui-form-label" style="height: 100%">学校</label>
+	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+	    	{php} $schoollist = schlist('校级','校级',['小学','中小学']);{/php}
+	    	{volist name="schoollist" id="vo"}
+	    		<input type="checkbox" name="school[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+	    	{/volist}
+	    </div>
+	</div>
 	<div class="layui-form-item">
 	    <label for="nianji" class="layui-form-label" style="height: 100%">年级 </label>
 	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')" pane>
@@ -29,6 +38,22 @@
 			{/foreach}
 	    </div>
 	</div>
+	<div class="layui-form-item" style="margin-bottom: 0;">
+	    <label for="paixu" class="layui-form-label" style="height: 100%">班级</label>
+	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+	    	{php}
+	    		$banji = new \app\teach\model\Banji;
+	    		$njlist = array_column($njlist->toArray(),'nianji');
+	    		$paixu = $banji->where('status',1)
+	    				->where('ruxuenian','in',$njlist)
+	    				->max('paixu');
+	    		$bjlist = banjinamelist();
+	    	{/php}
+	    	{for start="1" end="$paixu+1" }
+	    		<input type="checkbox" name="paixu[]" title="{$bjlist[$i]}" value="{$i}" lay-skin="primary">
+	    	{/for}
+	    </div>
+	</div>
 	<input type="hidden" name="kaoshi" value="{$list.kaoshi}">
 {/block}
 {block name="table"}
@@ -40,9 +65,6 @@
 	<div class="layui-btn-container">
 		<button class="layui-btn layui-btn-danger" lay-event="dels">
 			<i class="iconfont">&#xe69d;</i> 批量删除
-		</button>
-		<button class="layui-btn" lay-event="add">
-			<i class="iconfont">&#xe6b9;</i> 添加
 		</button>
 		<button class="layui-btn" lay-event="download">
 	      <i class="layui-icon layui-icon-download-circle"></i> 下载
@@ -57,18 +79,19 @@
 <!-- 表格操作 -->
 <script>
 	// 设置请求地址
-	options.url = "{:url('ajaxNianji')}";
+	options.url = "{:url('ajaxBianji')}";
 	// 设置列
   	options.cols=[[ //表头
 			{type:'numbers',title:'序号',rowspan:2},
-			{field: 'school', title: '学校',minWidth:80,rowspan:2},
+			{field: 'school', title: '学校',sort: true,minWidth:80,rowspan:2},
+			{field: 'banji', title: '班级',sort: true,minWidth:100,rowspan:2},
 		]
 		,[]
 		];
 	// 获取学科
 	var xk = '<?php echo json_encode($list["subject"]);?>';
 	xk = eval(decodeURIComponent(xk));
-	var xiangmu = {xkcnt:'参考人数',avg:'平均分',jige:'及格率%',youxiu:'优秀率%'};		// 要显示哪些统计结果
+	var xiangmu = {xkcnt:'人数',avg:'平均分',jige:'及格率%',youxiu:'优秀率%'};		// 要显示哪些统计结果
 
     $.each(xk,function(index,value){
     	options.cols[0].push({title: xk[index].subject_name.title+'('+xk[index].manfen+')',colspan:4,align:'center'});
@@ -87,7 +110,7 @@
 	    	options.cols[1].push(colinfo);
 		});
 	});
-	options.cols[0].push({title: '全科及格率%',minWidth:120,rowspan:2,templet:function(d){
+	options.cols[0].push({title: '全科及格率%',minWidth:100,rowspan:2,templet:function(d){
 	    			var str = d.chengji.rate;
 					return str;
 				}});
@@ -122,10 +145,10 @@
           case 'add':
             cjgl.add('添加单位','/school/create','650','500');
             break;
-          case 'download':
-  			cjgl.add('下载成绩','/cjtongji/{$list.kaoshi}/dwNianji','650','300');
+       	  case 'download':
+  			cjgl.add('下载成绩','/bjtongji/{$list.kaoshi}/dwBanji','650','300');
   			break;
-        };
+    	};
       });
 
       //监听行工具条
