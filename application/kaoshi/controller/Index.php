@@ -242,6 +242,7 @@ class Index extends Base
             'butname'=>'设置',
             'formpost'=>'PUT',
             'url'=>'/kaoshiset/'.$id,
+            'kaoshi'=>$id,
         );
 
 

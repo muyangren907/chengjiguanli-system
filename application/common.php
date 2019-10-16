@@ -40,15 +40,20 @@ function getCategoryTitle($id)
 }
 
 
-function nianjiList()
+function nianjiList($riqi=0)
 {
 	// 定义学年时间节点日期为每年的8月10日
 	// $yd = '8-10';
-	$jiedian = strtotime(date('Y').'-8-1');
-
 	$time = new think\helper\Time();
+	if($riqi == 0)
+	{
+		$jiedian = strtotime(date('Y').'-8-1');
+		$thisday = $time->today();
+	}else{
+		$jiedian = strtotime(date('Y',$riqi).'-8-1');
+		$thisday = $riqi;
+	}
 
-	$thisday = $time->today();
 
 	if($thisday[0]<=$jiedian)
 	{

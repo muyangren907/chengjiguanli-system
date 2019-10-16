@@ -7,7 +7,14 @@
               <label for="nianji" class="layui-form-label">
                 <span class="x-red">*</span>参考年级
               </label>
-              {php}$njlist = nianjiList();{/php}
+              {php}
+                  
+                  $ks = new \app\kaoshi\model\Kaoshi;
+                  $shijian = $ks
+                        ->where('id',$list['set']['kaoshi'])
+                        ->value('bfdate');
+                  $njlist = nianjiList($shijian);
+              {/php}
               {foreach $njlist as $key=>$vo}
                 <div class="layui-inline">
                   <input type="checkbox" name="nianji[{$key}]" title="{$vo}" value="{$key}" lay-skin="primary" 
