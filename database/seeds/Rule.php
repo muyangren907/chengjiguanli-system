@@ -125,8 +125,8 @@ class Rule extends Seeder
                     ['title'=>'下载模板','name'=>'renshi/Student/download','paixu'=>8,'pid'=>401],
                     ['title'=>'批量上传','name'=>'renshi/Student/createAll','paixu'=>9,'pid'=>401],
                     ['title'=>'批量保存','name'=>'renshi/Student/saveAll','paixu'=>10,'pid'=>401],
-                    ['title'=>'校对','name'=>'renshi/Student/Jiaodui','paixu'=>11,'pid'=>401],
-                    ['title'=>'校对删除','name'=>'renshi/Student/Jiaoduidel','paixu'=>12,'pid'=>401],
+                    ['title'=>'校对','name'=>'renshi/Student/jiaodui','paixu'=>11,'pid'=>401],
+                    ['title'=>'校对删除','name'=>'renshi/Student/jiaoduiDel','paixu'=>12,'pid'=>401],
 
                     // 教师管理权限
                     ['title'=>'添加','name'=>'renshi/Index/create','paixu' =>1,'pid'=>402],

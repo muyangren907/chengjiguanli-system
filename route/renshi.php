@@ -23,4 +23,7 @@ Route::resource('student','renshi/Student');
 Route::get('student/createall','renshi/Student/createAll'); // 定义GET请求路由规则
 Route::post('student/createall','renshi/Student/saveAll'); // 定义POST请求路由规则
 
+Route::get('student/jiaodui','renshi/Student/jiaodui'); // 定义GET请求路由规则
+Route::post('student/jiaodui','renshi/Student/JiaoduiDel'); // 定义POST请求路由规则
+
 // Route::post('student/download','renshi/Student/download'); // 定义POST请求路由规则

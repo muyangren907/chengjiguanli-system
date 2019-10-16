@@ -325,13 +325,13 @@ class Student extends Base
                     ->where('ruxuenian',$ruxuenian)
                     ->where('paixu',$paixu)
                     ->value('id');
+                // 如果班级ID为空，删除数据并跳出当前循环
+                if( empty($bj) )
+                {
+                    continue;
+                }
             }
             $bfbanji = $value[3];
-            // 如果班级ID为空，删除数据并跳出当前循环
-            if( empty($bj) )
-            {
-                continue;
-            }
 
             // 各变量赋值
             $students[$i]['banji'] = $bj;
@@ -373,9 +373,118 @@ class Student extends Base
 
 
     // 使用上传的表格进行校对，表格中不存在的数据删除
-    public function exceldel()
+    public function Jiaodui()
     {
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'校对并删除学生信息',
+            'butname'=>'校对删除',
+            'formpost'=>'POST',
+            'url'=>'/student/jiaodui',
+        );
+
+        // 模板赋值
+        $this->assign('list',$list);
+        // 渲染
+        return $this->fetch('create_all');
+    }
+
+
+    // 使用上传的表格进行校对，表格中不存在的数据删除
+    public function JiaoduiDel()
+    {
+        // 获取表单数据
+        $list = request()->only(['school','url'],'post');
+
+        // 实例化操作表格类
+        $excel = new Myexcel();
+
+        // 读取表格数据
+        $stuinfo = $excel->readXls($list['url']);
+
+        // 判断表格是否正确
+        if($stuinfo[0][0] != "学生信息上传模板" )
+        {
+            $data = array('msg'=>'请使用模板上传','val'=>0,'url'=>null);
+            return json($data);
+        }
         
+        // 删除标题行
+        array_splice($stuinfo,0,3);
+
+        // 实例化班级数据模型
+        $banji = new \app\teach\model\Banji;
+        $njlist = nianjilist();
+        $bjlist = banjinamelist();
+
+
+        $i = 0;
+        $bfbanji = ''; #前一个班级名
+        $bj = '';  #当前班级名
+        $students = array(); #存储整理后学生信息
+        $bjarr = array(); #储存电子表格中包含的班级
+        // 重新计算组合数据，如果存在数据则更新数据
+        foreach ($stuinfo as $key => $value) {
+            //  如果姓名、身份证号为空则跳过
+            if(empty($value[1]) || empty($value[2]))
+            {
+                continue;
+            }
+            // 判断本行班级与上行班级数据是否相等，如果不相等则从数据库查询班级ID
+            if($bfbanji != $value[3])
+            {
+                // 获取入学年与排序
+                $paixu = array_search(substr($value[3],9),$bjlist);
+                $ruxuenian = array_search(substr($value[3],0,9),$njlist);
+                // 查询班级ID
+                $bj = $banji::where('school',$list['school'])
+                    ->where('ruxuenian',$ruxuenian)
+                    ->where('paixu',$paixu)
+                    ->value('id');
+                // 如果班级ID为空，删除数据并跳出当前循环
+                if( empty($bj) )
+                {
+                    continue;
+                }
+                array_push($bjarr, $bj);
+            }
+            $bfbanji = $value[3];
+            
+
+            // 各变量赋值
+            $students[strtolower($value[2])] = $bj;
+            
+            // 销毁无用变量
+            $i++;
+        }
+
+        // 查询数据库中学生的信息
+        // $student = new STU();
+
+        $stulist = STU::where('banji','in',$bjarr)
+                        ->where('school',$list['school'])
+                        ->field('banji')
+                        ->column('id,shenfenzhenghao,school,banji');
+        // 声明要删除学生的ID数组
+        $stuidarr = array();
+
+        // 循环数据库中的学生信息，与电子表格中的信息对比，如果电子表格中不存在，则放数数组中。
+        foreach ($stulist as $key => $value) {
+            if(array_key_exists($value['shenfenzhenghao'],$students)==false){
+                array_push($stuidarr, $value['id']);
+            }else{
+                if($value['banji']!=$students[$value['shenfenzhenghao']])
+                {
+                    array_push($stuidarr, $value['id']);
+                }
+            }
+        }
+        // 删除学生信息
+        $data = STU::destroy($stuidarr);
+
+        $data ? $data = ['msg'=>'数据同步成功','val'=>1] : ['msg'=>'数据同步失败','val'=>0];
+        
+        return json($data);
     }
 
     
@@ -395,12 +504,16 @@ class Student extends Base
         return json($data);
     }
 
+
+
     // 下载表格模板
     public function download()
     {
         $download =  new \think\response\Download('uploads\student\student_template.xlsx');
         return $download->name('student_template.xlsx');
     }
+
+
 
 
 }
