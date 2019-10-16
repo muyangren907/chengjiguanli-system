@@ -548,13 +548,23 @@ class Kaohao extends Base
         {
             $id = request()->delete('ids');// 获取delete请求方式传送过来的数据并转换成数据
         }
-        
-        $kh = new KH;
-        $list = $kh->where('id','in',$id)->field('id')->find();
-        $data = $list->together('ksChengji')->delete();
+
+        // 删除成绩
+        $db = new \think\Db;
+        $db::startTrans(); # 启动事务
+        try {
+            KH::destroy($id);
+            $chengji = new \app\chengji\model\Chengji;
+            $chengji->where('kaohaoid','in',$id)->delete();
+            $data = true;
+        } catch (\Exception $e) {
+            $data = false;
+            // 回滚事务
+            $db::rollback();
+        }
 
         // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data==true ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);

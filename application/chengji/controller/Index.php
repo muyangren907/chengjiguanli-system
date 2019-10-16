@@ -406,7 +406,7 @@ class Index extends Base
     }
 
 
-    // 下载成绩表格
+    // 批量删除成绩
     public function deletecjs($kaoshi)
     {
 
@@ -474,23 +474,23 @@ class Index extends Base
 
 
 
-    // 删除考号
-    public function delete($id)
-    {
+    // // 删除考号
+    // public function delete($id)
+    // {
 
-        if($id == 'm')
-        {
-            $id = request()->delete('ids');// 获取delete请求方式传送过来的数据并转换成数据
-        }
+    //     if($id == 'm')
+    //     {
+    //         $id = request()->delete('ids');// 获取delete请求方式传送过来的数据并转换成数据
+    //     }
 
-        $data = Chengji::destroy($id);
+    //     $data = Chengji::destroy($id);
 
-        // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+    //     // 根据更新结果设置返回提示信息
+    //     $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
-        // 返回信息
-        return json($data);
-    }
+    //     // 返回信息
+    //     return json($data);
+    // }
 
 
 
