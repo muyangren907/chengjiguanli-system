@@ -557,7 +557,9 @@ class Kaohao extends Base
             $chengji = new \app\chengji\model\Chengji;
             $chengji->where('kaohaoid','in',$id)->delete();
             $data = true;
+            dump('成功');
         } catch (\Exception $e) {
+            dump('失败');
             $data = false;
             // 回滚事务
             $db::rollback();

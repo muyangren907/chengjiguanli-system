@@ -67,7 +67,13 @@ class Banji extends Base
 
         $numnj = array_flip(array_keys($njname));
 
-        $numname = ($numnj[$nj] + 1).'.'.$bj;
+        if(array_key_exists($nj,$numnj))
+        {
+            $numname = ($numnj[$nj] + 1).'级'.$bj.'班';
+        }else{
+            $numname = $nj.'级'.$bj.'班';
+        }
+        
 
     	return $numname;
     }
