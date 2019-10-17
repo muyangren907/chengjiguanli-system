@@ -48,10 +48,6 @@
     <script type="text/html" id="status">
       <input type="checkbox" {{d.status == 1 ? "checked" :""}} id="{{d.id}}" lay-skin="switch" lay-filter="status" lay-text="启用|禁用">
     </script>
-
-    <script type="text/html" id="status1">
-      <span class="layui-btn {{ d.status == 1 ? 'layui-btn-normal' : 'layui-btn-disabled' }} layui-btn-mini" lay-event="status">{{ d.status == 1 ? '启用' : '禁用' }}</span>
-    </script>
     <script type="text/javascript">
         //config的设置是全局的
         layui.config({
