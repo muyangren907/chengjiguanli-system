@@ -130,9 +130,6 @@
 	        case 'set':// 编辑
 	          cjgl.add('设置考试','/kaoshiset/'+obj.data.id,'','',true);
 	          break;
-	        case 'status':// 状态
-	          cjgl.status(obj,"{:url('setstatus')}");
-	          break;
 	        case 'more':// 状态
 	        parent.x_admin_add_to_tab(obj.data.title + ' 操作','kaoshi/'+obj.data.id+'/more',true);
 	          break;
