@@ -33,7 +33,7 @@
 	// 设置列
 	options.cols=[[ //表头
 		{type:'checkbox', fixed: 'left'},
-		{title: '学科', minWidth:100,sort: true,templet:function(d){
+		{title: '学科', minWidth:100,sort:false,templet:function(d){
         var str='';
         if(d.subject_name)
         {
@@ -41,7 +41,7 @@
         }
         return str;
       }},
-		{field: 'defen', title: '得分 ', minWidth:100,sort: true},
+		{field: 'defen', title: '得分 ', minWidth:100,sort:false},
 		{title: '成绩录入',templet:function(d){
         var str='';
         if(d.user_name)
@@ -50,6 +50,7 @@
         }
         return str;
       }},
+    {field: 'update_time', title: '录入时间 ', minWidth:100,sort:false},
     {field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
 	]];
   options.url = "{:url('ajaxaddinfo')}";
@@ -79,7 +80,6 @@
       	var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
       	var tr = obj.tr; //获得当前行 tr 的DOM对象
       	switch(layEvent){
-      		case 'detail':// 查看
       		case 'del':// 删除
 	      		cjgl.del(obj,"/chengji");
 	      		break;

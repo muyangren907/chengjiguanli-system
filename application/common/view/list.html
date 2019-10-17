@@ -46,6 +46,10 @@
     </div>
     <!-- 状态按钮 -->
     <script type="text/html" id="status">
+      <input type="checkbox" {{d.status == 1 ? "checked" :""}} id="{{d.id}}" lay-skin="switch" lay-filter="status" lay-text="启用|禁用">
+    </script>
+
+    <script type="text/html" id="status1">
       <span class="layui-btn {{ d.status == 1 ? 'layui-btn-normal' : 'layui-btn-disabled' }} layui-btn-mini" lay-event="status">{{ d.status == 1 ? '启用' : '禁用' }}</span>
     </script>
     <script type="text/javascript">
@@ -77,7 +81,9 @@
     <script type="text/javascript">
         // 实例化表格
         layui.use('table',function(){
-          var lTable = layui.table;
+          var lTable = layui.table
+              lForm = layui.form
+              cjgl = layui.cjgl;
           userTable = lTable.render(options);  //获取数据并渲染
 
           // 监听排序
@@ -86,6 +92,10 @@
             formval.field = obj.field;
             formval.type = obj.type; 
             tablereload(formval);
+          });
+          //监听指定开关
+          lForm.on('switch(status)', function(data){
+            cjgl.status(data,"{:url('setstatus')}");
           });
         });
 
@@ -124,6 +134,8 @@
                 tablereload(formval);
             }
         })
+
+        
     </script>
   </body>
 </html>

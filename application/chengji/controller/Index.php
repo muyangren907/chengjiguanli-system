@@ -716,7 +716,7 @@ class Index extends Base
                 ->only([
                     'page'=>'1',
                     'limit'=>'10',
-                    'field'=>'banji',
+                    'field'=>'subject_id',
                     'type'=>'desc',
                     'kaohao'=>''
                 ],'POST');
@@ -726,7 +726,7 @@ class Index extends Base
         $data = $chengji
                 ->where('kaohao_id',$src['kaohao'])
                 ->field('id,kaohao_id,subject_id,user_id,defen,update_time')
-                ->order('subject_id')
+                ->order([$src['field']=>$src['type']])
                 ->with([
                     'subjectName'=>function($query){
                         $query->field('id,title');

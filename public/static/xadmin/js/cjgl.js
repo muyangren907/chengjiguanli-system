@@ -73,37 +73,49 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
     },
     status:function(obj,url){
         // 判断是禁用操作还是启用操作后赋值标题。
-        obj.data.status == 1 ? title='禁用' : title='启用' ;
+
+        var statusval;
+        var title;
+        if(obj.elem.checked ==true){
+            statusval=1;
+            title='启用';
+        }else{
+            statusval=0;
+            title='禁用';
+        }
+        console.log(url);
+        // console.log(obj.elem);
         // 设置修改后的状态值
-        var statusval = -(obj.data.status-1);
         layer.confirm('确认要'+title+'吗？',function(index){
             $.ajax({
                 url:url,
                 type:'POST',
                 data:{
-                    id:obj.data.id,
+                    id:obj.elem.id,
                     value: statusval,
                 },
                 success:function(result){
                     if(result.val == 1){
-                        // 获取状态栏元素
-                        var myspan = $(obj.tr).find("span");
-                        // 获取状操作按钮元素
-                        var mya = $(obj.tr).find("[title='启用'],[title='禁用']");
-                        // 状态栏重新赋值
-                        myspan.text(title);
-                        // 重新设置状态栏class和状态操作按钮图标
-                        if(statusval == 1){
-                            myspan.attr('class','layui-btn layui-btn-normal layui-btn-mini');
-                            mya.attr("title",'启用');
-                        }else{
-                            myspan.attr('class','layui-btn layui-btn-disabled layui-btn-mini');
-                            mya.attr("title",'禁用');
-                        }
+                        // // 获取状态栏元素
+                        // var myspan = $(obj.tr).find("span");
+                        // // 获取状操作按钮元素
+                        // var mya = $(obj.tr).find("[title='启用'],[title='禁用']");
+                        // // 状态栏重新赋值
+                        // myspan.text(title);
+                        // // 重新设置状态栏class和状态操作按钮图标
+                        // if(statusval == 1){
+                        //     myspan.attr('class','layui-btn layui-btn-normal layui-btn-mini');
+                        //     mya.attr("title",'启用');
+                        // }else{
+                        //     myspan.attr('class','layui-btn layui-btn-disabled layui-btn-mini');
+                        //     mya.attr("title",'禁用');
+                        // }
                         // 更新缓存值，否则下次操作会报错。
-                        obj.update({
-                            status: statusval
-                        });
+                        // obj.update({
+                        //     status: 
+                        // });
+                        // obj.elem.prop('value','off');
+                        // obj.elem.prop('checked',true);
                         // 操作提示
                         layer.msg('已'+title);
                     }else{
