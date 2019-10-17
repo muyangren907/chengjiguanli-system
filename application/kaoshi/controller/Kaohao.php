@@ -547,6 +547,8 @@ class Kaohao extends Base
         if($id == 'm')
         {
             $id = request()->delete('ids');// 获取delete请求方式传送过来的数据并转换成数据
+        }else{
+            $id = array($id);
         }
 
         // 删除成绩
@@ -555,11 +557,11 @@ class Kaohao extends Base
         try {
             KH::destroy($id);
             $chengji = new \app\chengji\model\Chengji;
-            $chengji->where('kaohaoid','in',$id)->delete();
+            $cjids = $chengji::where('kaohao_id','in',$id)->column('id');
+            $chengji::destroy($cjids);
             $data = true;
-            dump('成功');
+            $db::commit();
         } catch (\Exception $e) {
-            dump('失败');
             $data = false;
             // 回滚事务
             $db::rollback();
