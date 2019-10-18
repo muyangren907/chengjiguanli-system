@@ -31,6 +31,7 @@
 	                  ->where('kaoshiid',$list['kaoshi'])
 	                  ->field('nianji,nianjiname')
 	                  ->select();
+	            dump($njlist);
 	        {/php}
 			{foreach $njlist as $key=>$vo}
 	            <input type="radio" name="nianji" value="{$vo->nianji}" title="{$vo->nianjiname}" 

@@ -40,7 +40,7 @@ class Bjtongji extends Base
             $temp = $tj->srcChengji($kaoshi=$kaoshi,$banji=$banji,$nianji=$nianji,$school=array());
             $temp = $tj->tongji($temp,$kaoshi);
             $data[] = [
-                'banji'=>$value->cj_banji->banjiTitle,
+                'banji'=>$value->bjtitle,
                 'school'=>$value->cj_school->jiancheng,
                 'chengji'=>$temp
             ];

@@ -124,8 +124,7 @@ class Kaohao extends Base
                         $query->field('kaohao_id,subject_id,defen');
                     }
                     ,'cjBanji'=>function($query){
-                        $query->field('id,paixu,ruxuenian')
-                            ->append(['numTitle','banjiTitle']);
+                        $query->field('id,paixu,ruxuenian');
                     }
                     ,'cjSchool'=>function($query){
                         $query->field('id,jiancheng');
@@ -135,6 +134,7 @@ class Kaohao extends Base
                     }
                 ])
                 ->select();
+
         if($khlist->isEmpty())
         {
             return $data = array();
@@ -161,6 +161,8 @@ class Kaohao extends Base
             $xk[$value->subjectid] = $value->lieming;
         }
 
+        $bjlist = banjinamelist();
+
         // 整理数据
         $data = array();
         foreach ($khlist as $key => $value) {
@@ -178,7 +180,7 @@ class Kaohao extends Base
                 $data[$key]['sex'] = $stuinfo->sex;
             }
             $data[$key]['nianji'] = $value->nianji;
-            $data[$key]['banji'] = $value->cj_banji->num_title;
+            $data[$key]['banji'] = $value->nianji.$bjlist[$value->cj_banji->paixu];
             $dfsum = 0;
             $sbjcnt = 0;
 
@@ -214,7 +216,6 @@ class Kaohao extends Base
         if(count($data)>0){
             $data = arraySequence($data,$src['field'],$src['type']); //排序
         }
-
 
         return $data;
     }
@@ -307,6 +308,12 @@ class Kaohao extends Base
     */
     public function cyBanji($kaoshi,$ruxuenian,$school=array(),$paixu=array())
     {
+        // 获取考试时间
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $kssj = $ks::where('id',$kaoshi)->value('bfdate');
+        $year = date('Y',$kssj);
+
+
         $data = $this->where('ruxuenian',$ruxuenian)
                 ->where('kaoshi',$kaoshi)
                 ->when(count($school)>0,function($query) use($school){
@@ -319,8 +326,7 @@ class Kaohao extends Base
                 })
                 ->with([
                     'cjBanji'=>function($query){
-                        $query->field('id,paixu,ruxuenian')
-                            ->append(['numTitle','banjiTitle']);
+                        $query->field('id,paixu,ruxuenian');
                     }
                     ,'cjSchool'=>function($query){
                         $query->field('id,jiancheng');
@@ -329,6 +335,15 @@ class Kaohao extends Base
                 ->group('banji,school')
                 ->field('banji,school')
                 ->select();
+        $njlist = nianjiList($year);
+        $bjlist = banjinamelist();
+
+
+        foreach ($data as $key => $value) {
+            # code...
+            $data[$key]['bjtitle'] = $njlist[$value->cjBanji->ruxuenian].$bjlist[$value->cjBanji->paixu];
+        }
+
         return $data;
     }
 
