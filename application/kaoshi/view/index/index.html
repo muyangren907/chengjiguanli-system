@@ -53,14 +53,14 @@
   options.cols=[[ //表头
 			{type:'checkbox', fixed: 'left'},
 			{field: 'title', title: '单位名称',sort: true, minWidth:240},
-			{field: 'category', title: '考试分类', minWidth:100,sort: true,templet:function(d){
-				var str='';
-				if(d.ks_category)
-				{
-					str = d.ks_category.title;
-				}
-				return str;
-			}},
+			// {field: 'category', title: '考试分类', minWidth:100,sort: true,templet:function(d){
+			// 	var str='';
+			// 	if(d.ks_category)
+			// 	{
+			// 		str = d.ks_category.title;
+			// 	}
+			// 	return str;
+			// }},
 			{field: "",title: '参考年级', minWidth:160,templet:function(d){
 				var str='';
 				if(d.ks_nianji.length>0)

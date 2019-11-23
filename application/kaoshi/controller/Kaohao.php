@@ -14,6 +14,9 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 // 引用二维码生成类
 use \Endroid\QrCode\QrCode;
 
+// 调用验证类 
+use think\Validate;
+
 
 class Kaohao extends Base
 {
@@ -58,6 +61,7 @@ class Kaohao extends Base
     // 保存考号
     public function save()
     {
+
         // 实例化验证模型
         $validate = new \app\kaoshi\validate\Kaohao;
 
@@ -73,6 +77,13 @@ class Kaohao extends Base
         if(!$result){
             return ['msg'=>$msg,'val'=>0];
         }
+
+        if(enddate($list['kaoshi'])==false)
+        {
+            return ['msg'=>'考试已经结束，不能分配考号','val'=>0];
+        }
+
+        
 
         // 将班级转换成数组
         $list['banjiids'] = implode(',',$list['banjiids']);
