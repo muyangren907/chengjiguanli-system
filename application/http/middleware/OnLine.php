@@ -8,7 +8,7 @@ use think\Controller;
 use \php4world\Auth;
 
 
-class YanZheng  extends Controller
+class OnLine  extends Controller
 {
     public function handle($request, \Closure $next)
     {

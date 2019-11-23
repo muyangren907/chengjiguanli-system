@@ -78,7 +78,7 @@ class Kaohao extends Base
             return ['msg'=>$msg,'val'=>0];
         }
 
-        if(enddate($list['kaoshi'])==false)
+        if(enddate($list['kaoshi']))
         {
             return ['msg'=>'考试已经结束，不能分配考号','val'=>0];
         }

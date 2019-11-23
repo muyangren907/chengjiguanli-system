@@ -13,7 +13,7 @@ class Base extends Controller
 
     // 调用Auth中间件进行用户权限验证
     protected $middleware = [
-    	'YanZheng'=>[
+    	'OnLine'=>[
     		'except'=>[
                 'exit',
     		],
