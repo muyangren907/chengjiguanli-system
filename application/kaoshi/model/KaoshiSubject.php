@@ -2,10 +2,10 @@
 
 namespace app\kaoshi\model;
 
-// 引用模型类
-use think\Model;
+// 引用数据模型基类
+use app\common\model\Base;
 
-class KaoshiSubject extends Model
+class KaoshiSubject extends Base
 {
     // 关联学科
     public function subjectName()

@@ -2,10 +2,10 @@
 
 namespace app\kaoshi\model;
 
-// 引用模型类
-use think\Model;
+// 引用数据模型基类
+use app\common\model\Base;
 
-class KaoshiNianji extends Model
+class KaoshiNianji extends Base
 {
     //
 }
