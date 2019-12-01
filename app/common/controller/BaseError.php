@@ -12,15 +12,20 @@ class BaseError extends BaseController
      *
      * @return \think\Response
      */
-    public function index()
-    {
-        // 跳转页面
-        $this->error('不好意思，您访问的页面不存在~');
-    }
+    // public function index()
+    // {
+    //     // 跳转页面
+    //     $this->error('不好意思，您访问的页面不存在~');
+    // }
 
-     public function _empty()
+    //  public function _empty()
+    // {
+    //     $this->error('不好意思，您访问的页面不存在~');
+    // }
+    
+    public function __call($method, $args)
     {
-        $this->error('不好意思，您访问的页面不存在~');
+        return 'error request!';
     }
     
 }

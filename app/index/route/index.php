@@ -12,4 +12,4 @@
 use think\facade\Route;
 
 Route::rule('/','login/index');		//主页
-// Route::get('welcome','index/welcome');			//欢迎页
+Route::get('welcome','index/welcome');			//欢迎页

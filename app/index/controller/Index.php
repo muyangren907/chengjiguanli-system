@@ -6,6 +6,8 @@ namespace app\index\controller;
 use app\BaseController;
 // 引用与此控制器同名的数据模型
 use app\system\model\SystemBase as  sysbasemod;
+// 引用视图功能类
+use think\facade\View;
 
 
 
@@ -141,11 +143,11 @@ class Index extends BaseController
 
 
         // 模版赋值
-        $this->assign('list',$list);
+        View::assign('list',$list);
 
         
         // 渲染输出
-        return $this->fetch();
+        return View::fetch('welcome');
     }
 
 
