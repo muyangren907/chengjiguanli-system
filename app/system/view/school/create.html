@@ -1,0 +1,111 @@
+{extend name="common@create" /}
+
+{block name="form"}
+    <form class="layui-form layui-form-pane" lay-filter="myform">
+          <div class="layui-form-item">
+              <label for="title" class="layui-form-label">
+                  <span class="x-red">*</span>单位名称
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="title" name="title" lay-verify="required"
+                  autocomplete="off" class="layui-input " value="{$list.data.title|default=''}" placeholder="中文2-25个字符">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="jiancheng" class="layui-form-label">
+                  <span class="x-red">*</span>单位简称
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="jiancheng" name="jiancheng" lay-verify="required"
+                  autocomplete="off" class="layui-input" value="{$list.data.jiancheng|default=''}" placeholder="中文1-6个字符">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="biaoshi" class="layui-form-label">
+                  单位标识
+              </label>
+              <div class="layui-input-block">
+                  <input type="input" id="biaoshi" name="biaoshi" lay-verify=""
+                  autocomplete="off" class="layui-input" value="{$list.data.biaoshi|default=''}" placeholder="数字">
+              </div>
+          </div>
+          <div class="layui-form-item">
+    		    <label for="xingzhi" class="layui-form-label"><span class="x-red">*</span>单位性质</label>
+    		    <div class="layui-input-block">
+    		    	{php} $category = getCategory(101);{/php}
+    		      <select name="xingzhi" lay-verify="required">
+    		      	<option value=""></option>
+    		      	{volist name="category" id="vo"}
+                  <option value="{$vo.id}"
+                  {present name="$list.data.xingzhi"}
+                    {eq name="$list.data.xingzhi" value="$vo.id" }
+                      selected
+                    {/eq}
+                  {/present}>
+                    {$vo.title}
+                  </option>
+    		        {/volist}
+    		      </select>
+    		    </div>
+    		  </div>
+          <div class="layui-form-item">
+            <label for="jibie" class="layui-form-label"><span class="x-red">*</span>单位级别</label>
+            <div class="layui-input-block">
+              {php} $category = getCategory(102);{/php}
+              <select name="jibie" lay-verify="required">
+                <option value=""></option>
+                {volist name="category" id="vo"}
+                  <option value="{$vo.id}"
+                  {present name="$list.data.jibie"}
+                    {eq name="$list.data.jibie" value="$vo.id" }
+                      selected
+                    {/eq}
+                  {/present}>
+                    {$vo.title}
+                  </option>
+                {/volist}
+              </select>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label for="xueduan" class="layui-form-label">
+              <span class="x-red">*</span>学段
+            </label>
+            <div class="layui-input-block">
+              {php} $category = getCategory(103);{/php}
+              <select name="xueduan" lay-verify="required">
+                <option value=""></option>
+                {volist name="category" id="vo"}
+                  <option value="{$vo.id}"
+                  {present name="$list.data.xueduan"}
+                    {eq name="$list.data.xueduan" value="$vo.id" }
+                      selected
+                    {/eq}
+                  {/present}>
+                    {$vo.title}
+                  </option>
+                {/volist}
+              </select>
+            </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="paixu" class="layui-form-label">
+                  排序
+              </label>
+              <div class="layui-input-block">
+                  <input type="input" id="paixu" name="paixu" lay-verify=""
+                  autocomplete="off" class="layui-input" value="{$list.data.paixu|default='999'}" placeholder="数字1-999">
+              </div>
+          </div>
+          <div class="layui-form-item" style="text-align: right;">
+              <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
+                  {$list.set.butname}
+              </button>
+          </div>
+      </form>
+{/block}
+
+{block name="myjs"}
+    
+{/block}
+

@@ -1,0 +1,122 @@
+
+{extend name="common@list" /}
+{block name="jsset"}
+
+{/block}
+{block name="nav"}
+	<span class="layui-breadcrumb">
+		<a href="">成绩管理</a>
+		<a>成绩列表</a>
+    <a><cite>录入信息</cite></a>
+	</span>
+{/block}
+{block name="search"}
+{/block}
+{block name="table"}
+	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
+{/block}
+{block name="myjs"}
+<!-- 表格上面按钮模板 -->
+<script type="text/html" id="toolbarDemo">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-danger" lay-event="dels">
+      <i class="iconfont">&#xe69d;</i> 批量删除
+    </button>
+  </div>
+</script>
+<!-- 记录操作按钮模板 -->
+<script type="text/html" id="barDemo">
+  <a class="layui-btn-xs" lay-event="del" title="删除成绩"><i class="layui-icon">&#xe640;</i></a>
+</script>
+<!-- 表格操作 -->
+<script>
+	// 设置列
+	options.cols=[[ //表头
+		{type:'checkbox', fixed: 'left'},
+		{title: '学科', minWidth:100,sort:false,templet:function(d){
+        var str='';
+        if(d.subject_name)
+        {
+          str = d.subject_name.title;
+        }
+        return str;
+      }},
+		{field: 'defen', title: '得分 ', minWidth:100,sort:false},
+		{title: '成绩录入',templet:function(d){
+        var str='';
+        if(d.user_name)
+        {
+          str = d.user_name.ad_school.jiancheng + '　' + d.user_name.xingming;
+        }
+        return str;
+      }},
+    {field: 'update_time', title: '录入时间 ', minWidth:100,sort:false},
+    {field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
+	]];
+  options.url = "{:url('ajaxaddinfo')}";
+  // 设置查询条件
+  options.where = {
+    kaohao:"{$list.kaohao}"
+  }
+	
+
+	// 提交搜索条件后重载表格
+    layui.use(['table','cjgl'],function(){
+      var table = layui.table
+      		cjgl = layui.cjgl;
+      //表头工具栏事件
+      table.on('toolbar(mytable)', function(obj){
+      	switch(obj.event){
+      		case 'dels':
+	      		var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
+	      		cjgl.delAll(checkStatus,'/chengji','mytable');
+      			break;
+      	};
+      });
+
+      //监听行工具条
+      table.on('tool(mytable)', function(obj){
+      	var data = obj.data; //获得当前行数据
+      	var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+      	var tr = obj.tr; //获得当前行 tr 的DOM对象
+      	switch(layEvent){
+      		case 'del':// 删除
+	      		cjgl.del(obj,"/chengji");
+	      		break;
+      	};
+      });
+
+      // 单元格编辑
+      table.on('edit(mytable)',function(obj){
+      	// 声明变量
+      	var newdefen = obj.value
+      		,colname = obj.field
+      		,rowdata = obj.data;
+
+      	// 修改服务器数据 
+        $.ajax({
+                url:"/chengji/"+rowdata.id,
+                type:'PUT',
+                data:{
+                    "colname":colname,
+                    "newdefen":newdefen
+                },
+                success:function(result){
+                    if(result.val == 0)
+                    {
+                        layer.msg(result.msg,{icon:5});
+                    }else{
+                    	// 这个地方重新赋值平均分和总分
+                    }
+                },
+                error:function(result){
+                    layer.msg('数据扔半道啦。',function(){});
+                },
+            });
+      }) 
+
+
+
+    });
+</script>
+{/block}

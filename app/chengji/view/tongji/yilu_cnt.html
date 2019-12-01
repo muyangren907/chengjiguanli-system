@@ -1,0 +1,171 @@
+
+{extend name="common@list" /}
+{block name="jsset"}
+
+{/block}
+{block name="nav"}
+	<span class="layui-breadcrumb">
+		<a href="">考试管理</a>
+		<a href="">更多操作</a>
+		<a href="">前期操作</a>
+		<a href="">已录成绩数量</a>
+		<a><cite>{$list['kaoshititle']}</cite></a>
+	</span>
+{/block}
+{block name="search"}
+	<div class="layui-form-item">
+	    <label for="school" class="layui-form-label" style="height: 100%">学校</label>
+	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+	    	{php} $schoollist = schlist('校级','校级',['小学','中小学']);{/php}
+	    	{volist name="schoollist" id="vo"}
+	    		<input type="checkbox" name="school[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+	    	{/volist}
+	    </div>
+	</div>
+	<div class="layui-form-item">
+	    <label for="nianji" class="layui-form-label" style="height: 100%">年级 </label>
+	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')" pane>
+	    	{php}
+	            $nianji = new \app\kaoshi\model\KaoshiNianji;
+	            $njlist = $nianji
+	                  ->where('kaoshiid',$list['kaoshi'])
+	                  ->field('nianji,nianjiname')
+	                  ->select();
+	        {/php}
+			{foreach $njlist as $key=>$vo}
+	            <input type="radio" name="nianji" value="{$vo->nianji}" title="{$vo->nianjiname}" 
+	            {eq name="$list.nianji" value="$vo->nianji"} checked {/eq} >
+			{/foreach}
+	    </div>
+	</div>
+	<div class="layui-form-item" style="margin-bottom: 0;">
+	    <label for="paixu" class="layui-form-label" style="height: 100%">班级</label>
+	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+	    	{php}
+	    		$banji = new \app\teach\model\Banji;
+	    		$njlist = array_column($njlist->toArray(),'nianji');
+	    		$paixu = $banji->where('status',1)
+	    				->where('ruxuenian','in',$njlist)
+	    				->max('paixu');
+	    		$bjlist = banjinamelist();
+	    	{/php}
+	    	{for start="1" end="$paixu+1" }
+	    		<input type="checkbox" name="paixu[]" title="{$bjlist[$i]}" value="{$i}" lay-skin="primary">
+	    	{/for}
+	    </div>
+	</div>
+	<input type="hidden" name="kaoshi" value="{$list.kaoshi}">
+{/block}
+{block name="table"}
+	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
+{/block}
+{block name="myjs"}
+	<!-- 表格上面按钮模板 -->
+<script type="text/html" id="toolbarDemo">
+	<div class="layui-btn-container">
+		<button class="layui-btn layui-btn-danger" lay-event="dels">
+			<i class="iconfont">&#xe69d;</i> 批量删除
+		</button>
+		<button class="layui-btn" lay-event="add">
+			<i class="iconfont">&#xe6b9;</i> 添加
+		</button>
+		<button class="layui-btn" lay-event="download">
+	      <i class="layui-icon layui-icon-download-circle"></i> 下载
+	    </button>
+	</div>
+</script>
+<!-- 记录操作按钮模板 -->
+<script type="text/html" id="barDemo">
+	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
+	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
+</script>
+<!-- 表格操作 -->
+<script>
+	// 设置请求地址
+	options.url = "{:url('ajaxBianji')}";
+	// 设置列
+    options.cols=[[ //表头
+			{type:'numbers',title:'序号',rowspan:2},
+			{field: 'school', title: '学校',sort: true,minWidth:80,rowspan:2},
+			{field: 'banji', title: '班级',sort: true,minWidth:100,rowspan:2},
+			{title: '班级人数',templet:function(d){
+				var str='';
+				if(d.chengji)
+				{
+					str = d.chengji.bmcnt
+				}
+				return str;
+			}},
+		]];
+	// 获取学科
+	var xk = '<?php echo json_encode($list["subject"]);?>';
+	xk = eval(decodeURIComponent(xk));
+
+    $.each(xk,function(index,value){
+    	var colname = xk[index].subject_name.lieming;
+    	console.log(colname);
+    	options.cols[0].push({title: xk[index].subject_name.title,align:'center',templet:function(d){
+				var str='';
+				if(d.chengji)
+				{
+					str = d.chengji[colname].xkcnt;
+				}
+				return str;
+			}});
+	});
+
+	
+	// 设置查询条件
+	options.where = {
+		kaoshi:"{$list.kaoshi}"
+		,nianji:"{$list.nianji}"
+	}
+
+	options.autoSort=true;
+	// options.height=null ;
+
+	
+
+  // 提交搜索条件后重载表格
+    layui.use(['table','cjgl'],function(){
+      var table = layui.table
+          cjgl = layui.cjgl;
+      //表头工具栏事件
+      table.on('toolbar(mytable)', function(obj){
+        switch(obj.event){
+          case 'dels':
+            var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
+            cjgl.delAll(checkStatus,'/school','mytable');
+            break;
+          case 'add':
+            cjgl.add('添加单位','/school/create','650','500');
+            break;
+       	  case 'download':
+  			cjgl.add('下载成绩','/cjtongji/{$list.kaoshi}/dwBanji','650','300');
+  			break;
+    	};
+      });
+
+      //监听行工具条
+      table.on('tool(mytable)', function(obj){
+        var data = obj.data; //获得当前行数据
+        var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+        var tr = obj.tr; //获得当前行 tr 的DOM对象
+        switch(layEvent){
+          case 'detail':// 查看
+          	layer.msg('查看' + data.id);
+          	break;
+          case 'del':// 删除
+          	cjgl.del(obj,"/school");
+          	break;
+          case 'edit':// 编辑
+          	cjgl.add('编辑单位','/school/'+obj.data.id+'/edit','650','500');
+          	break;
+          case 'status':// 状态
+          	cjgl.status(obj,"{:url('setstatus')}");
+          	break;
+        };
+      });
+    });
+</script>
+{/block}

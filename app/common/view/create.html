@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>{$list.set.webtitle}</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    {load href="__STATIC__/xadmin/css/font.css" /}
+    {load href="__STATIC__/xadmin/css/xadmin.css" /}
+    {load href="__STATIC__/xadmin/js/jquery.min.js" /}
+    {load href="__STATIC__/xadmin/lib/layui/layui.js" /}
+    {load href="__STATIC__/xadmin/js/xadmin.js" /}
+    {load href="__STATIC__/xadmin/js/cookie.js" /}
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    {block name="jscss"}{/block}
+  </head>
+  <body>
+    <div class="x-body">
+    	{block name="form"}{/block}
+    </div>
+    <script>
+      //config的设置是全局的
+        layui.config({
+            base: "__STATIC__/xadmin/js/" //假设这是你存放拓展模块的根目录
+        });
+        
+      layui.use(['form'], function(){
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(mysubmit)', function(data){
+          $.ajax({
+            url:"{$list.set.url}",
+            type:"{$list.set.formpost}",
+            data:data.field,
+            dataType:'json',
+            success:function(result){
+              if(result.val == 1)
+              {
+                layer.msg(result.msg);
+                //先得到当前iframe层的索引
+                var index = parent.layer.getFrameIndex(window.name); 
+                //再执行关闭 
+                parent.layui.table.reload('mytable');
+                parent.layer.close(index); 
+                parent.layer.msg(result.msg);
+              }else{
+                layer.msg(result.msg);
+              }
+            },
+            error:function(xhr,status,error) {
+              layer.msg('数据处理错误',{
+                  icon: 2,
+                  time: 2000 //2秒关闭（如果不配置，默认是3秒）
+              });
+            }
+          });
+          return false;
+        });        
+
+      });
+
+  </script>
+  {block name="myjs"}{/block}
+  </body>
+</html>

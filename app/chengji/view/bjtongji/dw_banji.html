@@ -1,0 +1,61 @@
+{extend name="common@create" /}
+
+{block name="form"}
+    <form action="{$list.set.url}" method="{$list.set.formpost}" class="layui-form layui-form-pane" lay-filter="myform">
+
+          <div class="layui-form-item">
+            <label for="school" class="layui-form-label"><span class="x-red">*</span>学校</label>
+            <div class="layui-input-block">
+              {php} $schoollist = schlist('校级','校级',['小学','中小学']);{/php}
+              <select name="school" id="school" lay-verify="required">
+                <option value=""></option>
+                {volist name="schoollist" id="vo"}
+                  <option value="{$vo.id}"
+                  {present name="$list.data.school"}
+                    {eq name="$list.data.school" value="$vo.id" }
+                      selected
+                    {/eq}
+                  {/present}>
+                    {$vo.title}
+                  </option>
+                {/volist}
+              </select>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label for="nianji" class="layui-form-label">
+              <span class="x-red">*</span>年级
+            </label>
+            <div class="layui-input-block">
+              {php}
+                $nianji = new \app\kaoshi\model\KaoshiNianji;
+                $njlist = $nianji
+                    ->where('kaoshiid',$list['set']['kaoshi'])
+                    ->field('nianji,nianjiname')
+                    ->select();
+              {/php}
+              <select name="nianji" id="nianji" lay-verify="required" class="layui-form-label">
+                <option value="">请选择要下载的年级</option>
+              {foreach $njlist as $key=>$vo}
+                <option value="{$vo->nianji}">{$vo->nianjiname}</option>
+              {/foreach}
+              </select>
+            </div>
+          </div>
+          <input type="hidden" id="kaoshi" name="kaoshi" value="{$list.set.kaoshi}">
+          <div class="layui-form-item" style="text-align: right;">
+              <button  class="layui-btn" lay-filter="" lay-submit="">
+                  {$list.set.butname}
+              </button>
+          </div>
+      </form>
+{/block}
+
+{block name="myjs"}
+<script>
+layui.use(['form'], function(){
+	var form = layui.form;
+});
+</script>
+{/block}
+

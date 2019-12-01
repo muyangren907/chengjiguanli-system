@@ -1,0 +1,161 @@
+{extend name="common@createhref" /}
+
+{block name="form"}
+    <form action="{$list.set.url}" method="{$list.set.formpost}" class="layui-form layui-form-pane" lay-filter="myform">
+          <div class="layui-form-item">
+            <label for="mysubject" class="layui-form-label">
+              <span class="x-red">*</span>学科
+            </label>
+            <div class="layui-input-block">
+              <input type="checkbox" title="全选" lay-skin="primary" action="parent" id="subject">
+              {volist name="$list.data.subject" id="vo"}
+                <input type="checkbox" title="{$vo.title}" value="{$vo.id}" lay-skin="primary" name="subject[]" action="children" pid="subject">
+              {/volist}
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label for="school" class="layui-form-label"><span class="x-red">*</span>学校</label>
+            <div class="layui-input-block">
+              {php} $schoollist = schlist('校级','校级',['小学','中小学']);{/php}
+              <select name="school" id="school" lay-verify="required">
+                <option value=""></option>
+                {volist name="schoollist" id="vo"}
+                  <option value="{$vo.id}"
+                  {present name="$list.data.school"}
+                    {eq name="$list.data.school" value="$vo.id" }
+                      selected
+                    {/eq}
+                  {/present}>
+                    {$vo.title}
+                  </option>
+                {/volist}
+              </select>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label for="ruxuenian" class="layui-form-label">
+              <span class="x-red">*</span>年级
+            </label>
+            <div class="layui-input-block">
+              <select name="ruxuenian" id="ruxuenian" lay-verify="required" class="layui-form-label">
+                <option value=""></option>
+                {foreach $list.data.nianji as $key=>$vo}
+                	<option value="{$vo.id}">{$vo.title}</option>
+                {/foreach}
+              </select>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label for="banji" class="layui-form-label">
+              <span class="x-red">*</span>班级
+            </label>
+            <div class="layui-input-block" id="banji">
+            </div>
+          </div>
+          
+
+          <input type="hidden" name="kaoshi" id="kaoshi" value="{$list.set.kaoshi}">
+          <div class="layui-form-item" style="text-align: right;">
+              <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
+                  {$list.set.butname}
+              </button>
+          </div>
+      </form>
+{/block}
+
+{block name="myjs"}
+<script>
+  layui.use('form', function(){
+    var form = layui.form;
+
+    // 监听选择按钮
+	form.on('select', function(data){
+	  var myselectname = $(data.elem).attr('name');
+	  if(myselectname == 'school' || myselectname == 'ruxuenian'){
+	  	mybanji();
+	  }
+	});
+
+	//获取班级列表并更新
+	function mybanji(){
+		// 获取表单值
+		var school = $('#school').val()
+		,ruxuenian = $('#ruxuenian').val();
+		
+		// 获取节点
+		var bj = $("#banji");
+
+		// 删除原来已有值
+		$(bj).children().remove();
+
+		// 获取班级列表
+		$.ajax({
+		    url:"/banji/njbanji",
+		    type:"POST",
+		    data:{
+		    	school:school
+		    	,ruxuenian:ruxuenian
+		    },
+		    dataType:'json',
+		    success:function(result){
+		    	if(result.length > 0){
+		    		$(bj).append('<input id="first" type="checkbox" title="全选" lay-skin="primary" action="parent">');
+		    		result.forEach(function(val,index){
+		    			$(bj).append('<input type="checkbox" title="'+val['banTitle']+'" value="'+val['id']+'" lay-skin="primary" name="banjiids[]" action="children" pid="first">');
+		    		})
+		    	}
+		    	form.render('checkbox'); //刷新select选择框渲染
+		    },
+		    error:function(xhr,status,error) {
+		      layer.msg('数据处理错误',{
+		          icon: 2,
+		          time: 2000 //2秒关闭（如果不配置，默认是3秒）
+		      });
+		    }
+		});
+  }
+
+	form.on('checkbox()', function(data){
+      var myelem = data.elem
+        ,ischecked = data.elem.checked
+        ,action = $(myelem).attr('action')
+        ,pid = $(myelem).attr('pid')
+        ,id = $(myelem).attr('id');
+      switch(action){
+        case 'children':
+          selectChildren(pid,ischecked);
+          break;
+        case 'parent':
+          selectParent(id,ischecked);
+          break;
+      };
+    });  
+
+	// 更改子选项
+	function selectChildren(pid,checked)
+	{
+		if(checked==true)
+		{
+			$('#'+pid).prop('checked',true);
+			form.render('checkbox');
+		}
+	}
+	// 更改父选项
+	function selectParent(id,checked)
+	{
+		if(checked == true)
+		{
+			$("input[pid='"+id+"']").prop('checked',true);
+		}else{
+			$("input[pid='"+id+"']").prop('checked',false);
+		}
+		form.render('checkbox');
+
+	}
+     
+
+  });
+
+</script>
+{/block}
+

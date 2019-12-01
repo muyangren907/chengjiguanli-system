@@ -1,0 +1,146 @@
+
+{extend name="common@list" /}
+{block name="jsset"}
+
+{/block}
+{block name="nav"}
+	<span class="layui-breadcrumb">
+		<a href="">考试管理</a>
+		<a><cite>考试列表</cite></a>
+	</span>
+{/block}
+{block name="search"}
+	<div class="layui-form-item">
+      <label for="searchval" class="layui-form-label">
+          关键字
+      </label>
+      <div class="layui-input-block">
+          <input type="text" id="searchval" name="searchval"
+          autocomplete="off" class="layui-input">
+      </div>
+    </div>
+{/block}
+{block name="table"}
+	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
+{/block}
+{block name="myjs"}
+	<!-- 表格上面按钮模板 -->
+<script type="text/html" id="toolbarDemo">
+	<div class="layui-btn-container">
+		<button class="layui-btn layui-btn-danger" lay-event="dels">
+			<i class="iconfont">&#xe69d;</i> 批量删除
+		</button>
+		<button class="layui-btn" lay-event="add">
+			<i class="iconfont">&#xe6b9;</i> 新建
+		</button>
+	</div>
+</script>
+<!-- 记录操作按钮模板 -->
+<script type="text/html" id="barDemo">
+<!-- 	<a class="layui-btn-xs" lay-event="status" title="{{ d.status == 1 ? '禁用' : '启用' }}">
+		<i class="layui-icon {{ d.status == 1 ? 'layui-icon-close' : 'layui-icon-ok' }}"></i>
+	</a> -->
+	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon layui-icon-edit"></i></a>
+	<a class="layui-btn-xs" lay-event="set" title="设置"><i class="layui-icon layui-icon-set-sm"></i></a>
+	<a class="layui-btn-xs" lay-event="more" title="更多操作"><i class="layui-icon layui-icon-more-vertical"></i></a>
+	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
+	
+</script>
+<!-- 表格操作 -->
+<script>
+
+  // 设置列
+  options.cols=[[ //表头
+			{type:'checkbox', fixed: 'left'},
+			{field: 'title', title: '单位名称',sort: true, minWidth:240},
+			// {field: 'category', title: '考试分类', minWidth:100,sort: true,templet:function(d){
+			// 	var str='';
+			// 	if(d.ks_category)
+			// 	{
+			// 		str = d.ks_category.title;
+			// 	}
+			// 	return str;
+			// }},
+			{field: "",title: '参考年级', minWidth:180,templet:function(d){
+				var str='';
+				if(d.ks_nianji.length>0)
+				{
+					for (var k = 0, length = d.ks_nianji.length; k < length; k++) {
+						if(k == 0){
+							str = d.ks_nianji[k].nianjiname;
+						}else{
+							str =str+'、'+d.ks_nianji[k].nianjiname;
+						}
+					}
+				}
+				return str;
+			}},
+			{field: '', title: '参考学科', minWidth:100,templet:function(d){
+				var str='';
+				if(d.ks_subject.length>0)
+				{
+					for (var k = 0, length = d.ks_subject.length; k < length; k++) {
+						if(k == 0){
+							str = d.ks_subject[k].subject_name.jiancheng;
+						}else{
+							str =str+'、'+d.ks_subject[k].subject_name.jiancheng;
+						}
+					}
+				}
+				return str;
+			}} ,
+			{field: 'bfdate', title: '考试时间', minWidth:150,sort: true,templet:function(d){
+				var date;
+				date = d.enddate.split('-');
+
+				endate = date[1] + '-' + date[2];
+				endate = d.bfdate + '～' + endate;
+				return endate;
+			}},
+			{field: 'status', title: '状态', minWidth:80,templet:'#status', sort: true},
+			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:175}
+		]];
+
+  // 提交搜索条件后重载表格
+    layui.use(['table','cjgl'],function(){
+      var table = layui.table
+          cjgl = layui.cjgl;
+      //表头工具栏事件
+      table.on('toolbar(mytable)', function(obj){
+        switch(obj.event){
+          case 'dels':
+            var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
+            cjgl.delAll(checkStatus,'/kaoshi','mytable');
+            break;
+          case 'add':
+            cjgl.add('新建考试','/kaoshi/create','','',true);
+            break;
+        };
+      });
+
+      //监听行工具条
+      table.on('tool(mytable)', function(obj){
+        var data = obj.data; //获得当前行数据
+        var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+        var tr = obj.tr; //获得当前行 tr 的DOM对象
+        switch(layEvent){
+          	case 'detail':// 查看
+	          layer.msg('查看' + data.id);
+	          break;
+	        case 'del':// 删除
+	          cjgl.del(obj,"/kaoshi");
+	          break;
+	        case 'edit':// 编辑
+	          cjgl.add('编辑考试','/kaoshi/'+obj.data.id+'/edit','','',true);
+	          break;
+	        case 'set':// 编辑
+	          cjgl.add('设置考试','/kaoshiset/'+obj.data.id,'','',true);
+	          break;
+	        case 'more':// 状态
+	        parent.x_admin_add_to_tab(obj.data.title + ' 操作','kaoshi/'+obj.data.id+'/more',true);
+	          break;
+        };
+      });
+    });
+</script>
+{/block}
