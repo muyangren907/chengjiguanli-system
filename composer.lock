@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5867a37e2dfac8abed05338ba1d7fe2b",
+    "content-hash": "53b1c190ba753cbb19c2f75a63b4695e",
     "packages": [
         {
             "name": "league/flysystem",
@@ -834,6 +834,59 @@
                 "apr1"
             ],
             "time": "2015-02-11T11:06:42+00:00"
+        },
+        {
+            "name": "zzstudio/think-auth",
+            "version": "v2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zz-studio/think-auth.git",
+                "reference": "6a060e9a668affe5dd50e72f8e4a3606df518aed"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zz-studio/think-auth/zipball/6a060e9a668affe5dd50e72f8e4a3606df518aed",
+                "reference": "6a060e9a668affe5dd50e72f8e4a3606df518aed",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">=7.1.0",
+                "topthink/framework": "^6.0"
+            },
+            "type": "library",
+            "extra": {
+                "think": {
+                    "config": {
+                        "auth": "src/config.php"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "think\\": "src/"
+                },
+                "files": [
+                    "src/helper.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "byron",
+                    "email": "xiaobo.sun@qq.com"
+                }
+            ],
+            "description": "The ThinkPHP6+ Auth Package",
+            "time": "2019-11-22T02:48:30+00:00"
         }
     ],
     "packages-dev": [

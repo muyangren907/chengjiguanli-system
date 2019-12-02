@@ -6,6 +6,8 @@ namespace app;
 use think\App;
 use think\exception\ValidateException;
 use think\Validate;
+use app\middleware\UserLogin;
+use app\middleware\Auth;
 
 /**
  * 控制器基础类
@@ -34,7 +36,10 @@ abstract class BaseController
      * 控制器中间件
      * @var array
      */
-    protected $middleware = [];
+    protected $middleware = [
+        UserLogin::class,
+        Auth::class,
+    ];
 
     /**
      * 构造方法
