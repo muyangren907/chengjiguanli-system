@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "53b1c190ba753cbb19c2f75a63b4695e",
+    "content-hash": "d15adfd9d274710f1470356968422175",
     "packages": [
         {
             "name": "league/flysystem",
@@ -150,17 +150,136 @@
             "time": "2018-07-09T20:51:04+00:00"
         },
         {
-            "name": "opis/closure",
-            "version": "3.4.2",
+            "name": "liliuwei/thinkphp-auth",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/opis/closure.git",
-                "reference": "27fdc275b7963492d0bf0852525da57ff2be67a0"
+                "url": "https://github.com/liliuwei/thinkphp-auth.git",
+                "reference": "b24138c726ba726859023c9336399a1a82493001"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opis/closure/zipball/27fdc275b7963492d0bf0852525da57ff2be67a0",
-                "reference": "27fdc275b7963492d0bf0852525da57ff2be67a0",
+                "url": "https://api.github.com/repos/liliuwei/thinkphp-auth/zipball/b24138c726ba726859023c9336399a1a82493001",
+                "reference": "b24138c726ba726859023c9336399a1a82493001",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": "^5.6 || ^7.1",
+                "topthink/framework": "^5.1 || ^6.0",
+                "topthink/think-installer": "^2.0"
+            },
+            "type": "think-extend",
+            "extra": {
+                "think-config": {
+                    "auth": "src/config/auth.php"
+                },
+                "think": {
+                    "config": {
+                        "auth": "src/config/auth.php"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "liliuwei\\think\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "liliuwei",
+                    "email": "974829947@qq.com"
+                }
+            ],
+            "description": "适用于thinkphp5.1和6.0的Auth权限扩展",
+            "keywords": [
+                "think-auth",
+                "thinkphp",
+                "thinkphp5.1",
+                "thinkphp6.0"
+            ],
+            "time": "2019-10-07T01:39:32+00:00"
+        },
+        {
+            "name": "liliuwei/thinkphp-jump",
+            "version": "v1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/liliuwei/thinkphp-jump.git",
+                "reference": "7520a695e09f71e2fbe486d52eeb44f6262b0595"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/liliuwei/thinkphp-jump/zipball/7520a695e09f71e2fbe486d52eeb44f6262b0595",
+                "reference": "7520a695e09f71e2fbe486d52eeb44f6262b0595",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">=7.1.0",
+                "topthink/framework": "^6.0",
+                "topthink/think-view": "^1.0"
+            },
+            "type": "think-extend",
+            "extra": {
+                "think": {
+                    "config": {
+                        "jump": "src/config/jump.php"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "liliuwei\\think\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "liliuwei",
+                    "email": "974829947@qq.com"
+                }
+            ],
+            "description": "适用于thinkphp6.0的跳转扩展",
+            "keywords": [
+                "error",
+                "redirect",
+                "result",
+                "success",
+                "think-jump",
+                "thinkphp"
+            ],
+            "time": "2019-11-07T06:24:55+00:00"
+        },
+        {
+            "name": "opis/closure",
+            "version": "3.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/opis/closure.git",
+                "reference": "93ebc5712cdad8d5f489b500c59d122df2e53969"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/opis/closure/zipball/93ebc5712cdad8d5f489b500c59d122df2e53969",
+                "reference": "93ebc5712cdad8d5f489b500c59d122df2e53969",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -179,7 +298,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.4.x-dev"
+                    "dev-master": "3.5.x-dev"
                 }
             },
             "autoload": {
@@ -214,7 +333,7 @@
                 "serialization",
                 "serialize"
             ],
-            "time": "2019-11-29T11:33:32+00:00"
+            "time": "2019-11-29T22:36:02+00:00"
         },
         {
             "name": "psr/cache",
@@ -599,6 +718,53 @@
             "time": "2019-09-30T02:36:48+00:00"
         },
         {
+            "name": "topthink/think-installer",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/top-think/think-installer.git",
+                "reference": "f5400a12c60e513911aef41fe443fa6920952675"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/top-think/think-installer/zipball/f5400a12c60e513911aef41fe443fa6920952675",
+                "reference": "f5400a12c60e513911aef41fe443fa6920952675",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "composer-plugin-api": "^1.0"
+            },
+            "require-dev": {
+                "composer/composer": "1.0.*@dev"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "think\\composer\\Plugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "think\\composer\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "yunwuxin",
+                    "email": "448901948@qq.com"
+                }
+            ],
+            "time": "2018-05-11T06:45:42+00:00"
+        },
+        {
             "name": "topthink/think-multi-app",
             "version": "v1.0.11",
             "source": {
@@ -834,65 +1000,12 @@
                 "apr1"
             ],
             "time": "2015-02-11T11:06:42+00:00"
-        },
-        {
-            "name": "zzstudio/think-auth",
-            "version": "v2.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zz-studio/think-auth.git",
-                "reference": "6a060e9a668affe5dd50e72f8e4a3606df518aed"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zz-studio/think-auth/zipball/6a060e9a668affe5dd50e72f8e4a3606df518aed",
-                "reference": "6a060e9a668affe5dd50e72f8e4a3606df518aed",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "php": ">=7.1.0",
-                "topthink/framework": "^6.0"
-            },
-            "type": "library",
-            "extra": {
-                "think": {
-                    "config": {
-                        "auth": "src/config.php"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "think\\": "src/"
-                },
-                "files": [
-                    "src/helper.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "byron",
-                    "email": "xiaobo.sun@qq.com"
-                }
-            ],
-            "description": "The ThinkPHP6+ Auth Package",
-            "time": "2019-11-22T02:48:30+00:00"
         }
     ],
     "packages-dev": [
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.13.0",
+            "version": "v1.13.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
@@ -957,7 +1070,7 @@
         },
         {
             "name": "symfony/polyfill-php72",
-            "version": "v1.13.0",
+            "version": "v1.13.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php72.git",
@@ -1018,16 +1131,16 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v4.4.0",
+            "version": "v4.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "eade2890f8b0eeb279b6cf41b50a10007294490f"
+                "reference": "0a89a1dbbedd9fb2cfb2336556dec8305273c19a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/eade2890f8b0eeb279b6cf41b50a10007294490f",
-                "reference": "eade2890f8b0eeb279b6cf41b50a10007294490f",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/0a89a1dbbedd9fb2cfb2336556dec8305273c19a",
+                "reference": "0a89a1dbbedd9fb2cfb2336556dec8305273c19a",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -1096,7 +1209,7 @@
                 "debug",
                 "dump"
             ],
-            "time": "2019-11-12T14:51:11+00:00"
+            "time": "2019-11-28T13:33:56+00:00"
         },
         {
             "name": "topthink/think-trace",

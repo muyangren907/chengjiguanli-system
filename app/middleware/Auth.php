@@ -4,12 +4,12 @@ declare (strict_types = 1);
 namespace app\middleware;
 
 use think\exception\HttpResponseException;
-use think\Auth AS AuthHandle;
-use traits\controller\Jump;
+use \liliuwei\think\Auth AS AuthHandle;
+// use \liliuwei\think\Jump; 
 
 class Auth
 {
-    use Jump;
+    use \liliuwei\think\Jump; 
     /**
      * 处理请求
      *
@@ -19,18 +19,51 @@ class Auth
      */
     public function handle($request, \Closure $next)
     {
-        // 白名单
-        $allow = ['user/login'];
+        // 获取当前地址
+        $mod = strtolower(app('http')->getName());
+        $con = strtolower($request->controller());
+        $act = strtolower($request->action());
+        $url = $mod.'/'.$con.'/'.$act;
 
-        $rule = strtolower("{$request->controller()}/{$request->action()}");
-        
-        // 初始化 user_id
-        $user_id = is_login();
+        // 排除模块
+        $uneed_m = array('home');
+        // 排除控制器
+        $uneed_c = array();     # 荣誉器名首字母要大写
+        // 排除方法
+        $uneed_a = array(
+            'welcome','upload','myinfo',
+            'mybanji','banjilist',
+            'editpassword','updatepassword',
+            // 教师信息查询
+            'srcteacher','srcry','srckt',
+            // 查询班级成绩、查询年级成绩、查询录入成绩人员信息
+            'ajaxbianji','ajaxnianji','ajaxaddinfo',
+            // 批量保存
+            // 'saveall',
+            // 下载成绩表、下载成绩统计表
+            'dwchengjixls','dwbanjixls','dwnianjixls',
+            //保存考号、下载试卷标签、下载成绩采集表
+            'updateset','kaohaosave','biaoqianxls','dwcaiji',
+            //课题结题图片上传和更新
+            'jtupload','jtupdate','ajaxdata'
+        );
+        // 排除指定模块下的指定方法
+        $uneed_u = array('index/Index/index');
 
-        // 权限检查
-        $check = AuthHandle::check($rule, $user_id);
-        if (false === $check) {
-            $this->error('[403] 未授权访问');
+        // 验证是否是排除方法
+        if(in_array($mod,$uneed_m) || in_array($con,$uneed_c) || in_array($act,$uneed_a) || in_array($url,$uneed_u))
+        {
+            $except = true;
+        }else{
+            $except = false;
+        }
+
+        $auth = new AuthHandle;
+        // $jump = new Jump;
+
+        // 验证方法
+        if( !$auth->check($url, session('userid')) && $except == false ){// 第一个参数是规则名称,第二个参数是用户UID
+            $this->error('哎哟~  因为权限不足');
         }
 
         return $next($request);
