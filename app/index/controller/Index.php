@@ -2,7 +2,6 @@
 namespace app\index\controller;
 
 // 引用控制器基类
-// use app\common\controller\Base;
 use app\BaseController;
 // 引用与此控制器同名的数据模型
 use app\system\model\SystemBase as  sysbasemod;
@@ -24,7 +23,7 @@ class Index extends BaseController
     // 主页
     public function index()
     {
-        //实例化数据模型
+        //实例化系统数据模型
         $sysbasemod = new sysbasemod();
 
         // 查询系统信息
@@ -41,10 +40,8 @@ class Index extends BaseController
         // 获取用户姓名
         $ad = new \app\admin\model\Admin;
         $list->xingming = $ad->where('id',session('userid'))->value('xingming');
-
         // 查询用户拥有的权限
-        $admin = new \app\admin\model\Admin;
-        $admininfo = $admin->where('id',session('userid'))
+        $admininfo = $ad->where('id',session('userid'))
                         ->field('id')
                         ->with([
                             'glGroup'=>function($query){
@@ -64,7 +61,7 @@ class Index extends BaseController
 
         // 实例化权限数据模型
         $authrule = new \app\admin\model\AuthRule;
-
+        // 获取用户拥有权限的菜单
         $list['menu'] = $authrule
                         ->where('pid',0)
                         ->where('status&ismenu',1)
@@ -85,15 +82,14 @@ class Index extends BaseController
                         ->order(['paixu'])
                         ->select();
 
-        
-
 
         // 模版赋值
-        $this->assign('list',$list);
-
+        View::assign('list',$list);
         // 渲染输出
-        return $this->fetch();
+        return View::fetch();
     }
+
+
 
     public function welcome()
     {

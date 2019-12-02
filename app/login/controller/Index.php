@@ -31,10 +31,8 @@ class Index
         // 清除session（当前作用域）
         session(null);
 
-
         // 获取系统版本号
         $list['version'] = Config::get('app.chengji.version');
-
 
         View::assign('list',$list);
 
@@ -128,6 +126,7 @@ class Index
             session('userid', $userinfo->id);
             session('username', $username);
             session('password', $password);
+
             $data=['msg'=>'验证成功','status'=>1];
         }else{
              // 清除cookie
