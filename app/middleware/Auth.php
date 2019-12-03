@@ -25,13 +25,13 @@ class Auth
         $act = strtolower($request->action());
         $url = $mod.'/'.$con.'/'.$act;
 
-        // 排除模块
-        $uneed_m = array('home');
+        // 排除应用
+        $uneed_m = array('index');
         // 排除控制器
         $uneed_c = array();     # 荣誉器名首字母要大写
         // 排除方法
         $uneed_a = array(
-            'welcome','upload','myinfo',
+            'upload','myinfo',
             'mybanji','banjilist',
             'editpassword','updatepassword',
             // 教师信息查询
@@ -57,6 +57,7 @@ class Auth
         }else{
             $except = false;
         }
+
 
         $auth = new AuthHandle;
         // $jump = new Jump;
