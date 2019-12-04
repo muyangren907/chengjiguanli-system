@@ -20,7 +20,7 @@ class Auth
      */
     public function handle($request, \Closure $next)
     {
-
+        
         $admins = Config::get('auth.auth_config.administrator');
         // 如果当前用户ID在配置排除的列表中，愚昧取消验证
         if(in_array(session('userid'),$admins)){
@@ -61,6 +61,7 @@ class Auth
         // 排除指定模块下的指定方法
         $uneed_u = array('index/Index/index');
 
+
         // 验证是否是排除方法
         if(in_array($mod,$uneed_m) || in_array($con,$uneed_c) || in_array($act,$uneed_a) || in_array($url,$uneed_u))
         {
@@ -76,6 +77,7 @@ class Auth
         if( $auth->check($url, session('userid')) == false && $except == false && $admin == false ){// 第一个参数是规则名称,第二个参数是用户UID
             $this->error('哎哟~  因为权限不足');
         }
+
 
         return $next($request);
     }

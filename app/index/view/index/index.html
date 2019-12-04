@@ -93,7 +93,7 @@
                             <li>
                                 <a onclick="xadmin.add_tab('{$vo['title']}','{php}echo(url($vo['url'])){/php}')">
                                     <i class="iconfont">&#xe6a7;</i>
-                                    <cite>{$vo['title']}</cite></a>
+                                    <cite>{$vo['title']}{php}echo(url($vo['url'])){/php}</cite></a>
                             </li>
                             {/volist}
                         </ul>
