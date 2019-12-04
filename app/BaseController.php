@@ -8,6 +8,7 @@ use think\exception\ValidateException;
 use think\Validate;
 use app\middleware\UserLogin;
 use app\middleware\Auth;
+use think\View;
 
 
 /**
@@ -27,6 +28,7 @@ abstract class BaseController
      * @var \think\App
      */
     protected $app;
+
 
     /**
      * 是否批量验证
@@ -99,6 +101,7 @@ abstract class BaseController
 
         return $v->failException(true)->check($data);
     }
+
 
 
 }
