@@ -5,6 +5,8 @@ namespace app\middleware;
 
 use think\exception\HttpResponseException;
 use \liliuwei\think\Auth AS AuthHandle;
+use think\facade\Config;
+
 
 class Auth
 {
@@ -18,14 +20,19 @@ class Auth
      */
     public function handle($request, \Closure $next)
     {
+
+        $admins = Config::get('auth.auth_config.administrator');
+        // 如果当前用户ID在配置排除的列表中，愚昧取消验证
+        if(in_array(session('userid'),$admins)){
+            $admin = true;
+        }else{
+            $admin = false;
+        }
+
         // 获取当前地址
         $mod = strtolower(app('http')->getName());
         $con = strtolower($request->controller());
         $act = strtolower($request->action());
-        
-        $mod = app('http')->getName();
-        $con = $request->controller();
-        $act = $request->action();
 
         $url = $mod.'/'.$con.'/'.$act;
 
@@ -62,13 +69,11 @@ class Auth
             $except = false;
         }
 
-
         $auth = new AuthHandle;
 
-        dump($url);
 
         // 验证方法
-        if( !$auth->check($url, session('userid')) && $except == false ){// 第一个参数是规则名称,第二个参数是用户UID
+        if( $auth->check($url, session('userid')) == false && $except == false && $admin == false ){// 第一个参数是规则名称,第二个参数是用户UID
             $this->error('哎哟~  因为权限不足');
         }
 
