@@ -35,38 +35,21 @@
             </div>
             <ul class="layui-nav left fast-add" lay-filter="">
                 <li class="layui-nav-item">
-                    <a href="javascript:;">+新增</a>
-                    <dl class="layui-nav-child">
-                        <!-- 二级菜单 -->
-                        <dd>
-                            <a onclick="xadmin.open('最大化','http://www.baidu.com','','',true)">
-                                <i class="iconfont">&#xe6a2;</i>弹出最大化</a></dd>
-                        <dd>
-                            <a onclick="xadmin.open('弹出自动宽高','http://www.baidu.com')">
-                                <i class="iconfont">&#xe6a8;</i>弹出自动宽高</a></dd>
-                        <dd>
-                            <a onclick="xadmin.open('弹出指定宽高','http://www.baidu.com',500,300)">
-                                <i class="iconfont">&#xe6a8;</i>弹出指定宽高</a></dd>
-                        <dd>
-                            <a onclick="xadmin.add_tab('在tab打开','member-list.html')">
-                                <i class="iconfont">&#xe6b8;</i>在tab打开</a></dd>
-                        <dd>
-                            <a onclick="xadmin.add_tab('在tab打开刷新','member-del.html',true)">
-                                <i class="iconfont">&#xe6b8;</i>在tab打开刷新</a></dd>
-                    </dl>
+                    <a href="javascript:;">快捷操作</a>
                     <dl class="layui-nav-child">
                       <!-- 二级菜单 -->
                       <dd>
-                        <a onclick="x_admin_show('扫码录入','/chengji/malu')">
-                          <i class="layui-icon layui-icon-search"></i>扫码录入</a></dd>
+                        <a onclick="xadmin.open('扫码录入','/chengji/malu','','',true)">
+                            <i class="layui-icon layui-icon-search"></i>扫码录入</a></dd>
                       <dd>
-                        <a onclick="x_admin_show('表格录入','/chengji/biaolu')"><i class="layui-icon layui-icon-table"></i>表格录入</a></dd>
+                        <a onclick="xadmin.open('表格录入','/chengji/biaolu')">
+                            <i class="layui-icon layui-icon-table"></i>表格录入</a></dd>
                       <dd>
-                        <a onclick="x_admin_show('创建考试','/kaoshi/create')"><i class="layui-icon layui-icon-chart"></i>创建考试</a></dd>
+                        <a onclick="xadmin.open('添加学生','/student/create')">
+                            <i class="layui-icon layui-icon-chart"></i>添加学生</a></dd>
                       <dd>
-                        <a onclick="x_admin_show('添加学生','/student/create')"><i class="layui-icon layui-icon-username"></i>添加学生</a></dd>
-                      <dd>
-                        <a onclick="x_admin_show('系统帮助','https://www.kancloud.cn/llblax/abcd/789222')"><i class="layui-icon layui-icon-help"></i>系统帮助</a></dd>
+                        <a onclick="xadmin.open('系统帮助','https://www.kancloud.cn/llblax/abcd/789222')">
+                            <i class="layui-icon layui-icon-username"></i>系统帮助</a></dd>
                     </dl>
                 </li>
             </ul>
@@ -76,9 +59,11 @@
                     <dl class="layui-nav-child">
                       <!-- 二级菜单 -->
                       <dd>
-                        <a onclick="x_admin_show('个人信息','/myinfo')">个人信息</a></dd>
+                        <a onclick="xadmin.open('个人信息','/myinfo')">
+                            个人信息</a></dd>
                       <dd>
-                        <a onclick="x_admin_show('修改密码','/editpassword/edit','400','300')">修改密码</a></dd>
+                        <a onclick="xadmin.open('修改密码','/editpassword/edit','400','300')">
+                            修改密码</a></dd>
                       <dd>
                         <a href="/login">切换帐号</a></dd>
                     </dl>
@@ -145,13 +130,6 @@
         <style id="theme_style"></style>
         <!-- 右侧主体结束 -->
         <!-- 中部结束 -->
-        <script>//百度统计可去掉
-            var _hmt = _hmt || []; (function() {
-                var hm = document.createElement("script");
-                hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-                var s = document.getElementsByTagName("script")[0];
-                s.parentNode.insertBefore(hm, s);
-            })();</script>
     </body>
 
 </html>

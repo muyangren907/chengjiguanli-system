@@ -23,7 +23,8 @@
                     <div class="layui-card">
                         <div class="layui-card-body ">
                             <blockquote class="layui-elem-quote">欢迎『{$list.group}』：
-                                <span class="x-red">{$list['xingming']}</span>！当前时间:{php} echo date('Y-m-d h:m:s'){/php}
+                                <span class="x-red">{$list['xingming']}</span>！当前时间:<span id="current-time"></span>
+                                <span id="show"></span>
                             </blockquote>
                         </div>
                     </div>
@@ -158,5 +159,18 @@
             </div>
         </div>
         </div>
+    <script type="text/javascript">
+        window.onload = function() {
+            var show = document.getElementById("show");
+            setInterval(function() {
+                var time = new Date();   // 程序计时的月从0开始取值后+1
+                var m = time.getMonth() + 1;
+                var t = time.getFullYear() + "-" + m + "-"
+                + time.getDate() + " " + time.getHours() + ":"
+                + time.getMinutes() + ":" + time.getSeconds();
+                show.innerHTML = t;
+            }, 1000);
+        };
+    </script>
     </body>
 </html>
