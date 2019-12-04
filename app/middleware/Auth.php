@@ -5,7 +5,6 @@ namespace app\middleware;
 
 use think\exception\HttpResponseException;
 use \liliuwei\think\Auth AS AuthHandle;
-// use \liliuwei\think\Jump; 
 
 class Auth
 {
@@ -23,6 +22,11 @@ class Auth
         $mod = strtolower(app('http')->getName());
         $con = strtolower($request->controller());
         $act = strtolower($request->action());
+        
+        $mod = app('http')->getName();
+        $con = $request->controller();
+        $act = $request->action();
+
         $url = $mod.'/'.$con.'/'.$act;
 
         // 排除应用
@@ -60,7 +64,8 @@ class Auth
 
 
         $auth = new AuthHandle;
-        // $jump = new Jump;
+
+        dump($url);
 
         // 验证方法
         if( !$auth->check($url, session('userid')) && $except == false ){// 第一个参数是规则名称,第二个参数是用户UID

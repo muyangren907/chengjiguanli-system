@@ -9,11 +9,13 @@ use think\Validate;
 use app\middleware\UserLogin;
 use app\middleware\Auth;
 
+
 /**
  * 控制器基础类
  */
 abstract class BaseController
 {
+
     /**
      * Request实例
      * @var \think\Request
@@ -57,7 +59,9 @@ abstract class BaseController
 
     // 初始化
     protected function initialize()
-    {}
+    {
+
+    }
 
     /**
      * 验证数据
@@ -95,5 +99,6 @@ abstract class BaseController
 
         return $v->failException(true)->check($data);
     }
+
 
 }

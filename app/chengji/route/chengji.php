@@ -12,7 +12,7 @@ use think\facade\Route;
 
 
 //系统设置路由
-Route::resource('chengji','Chengji/Index');
+Route::resource('/','chengji/Index');
 
 
 // 扫码录入成绩

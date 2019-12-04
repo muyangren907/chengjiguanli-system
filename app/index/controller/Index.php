@@ -5,9 +5,8 @@ namespace app\index\controller;
 use app\BaseController;
 // 引用与此控制器同名的数据模型
 use app\system\model\SystemBase as  sysbasemod;
-// 引用视图功能类
+// 引用视图类
 use think\facade\View;
-
 
 
 class Index extends BaseController
@@ -81,6 +80,7 @@ class Index extends BaseController
                         ])
                         ->order(['paixu'])
                         ->select()->toArray();
+        // return view('list', $list);
 
 
         // 模版赋值
