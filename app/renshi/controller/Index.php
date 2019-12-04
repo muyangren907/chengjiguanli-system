@@ -3,12 +3,12 @@
 namespace app\renshi\controller;
 
 // 引用控制器基类
-use app\common\controller\Base;
+use app\BaseController;
 // 引用教师数据模型类
 use app\renshi\model\Teacher;
 
 
-class Index extends Base
+class Index extends BaseController
 {
     // 显示教师列表
     public function index()

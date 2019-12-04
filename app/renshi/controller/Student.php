@@ -3,13 +3,13 @@
 namespace app\renshi\controller;
 
 // 引用控制器基类
-use app\common\controller\Base;
+use app\BaseController;
 // 引用学生数据模型类
 use app\renshi\model\Student as STU;
 // 引用phpspreadsheet类
 use app\renshi\controller\Myexcel;
 
-class Student extends Base
+class Student extends BaseController
 {
     // 显示学生列表
     public function index()

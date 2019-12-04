@@ -37,7 +37,7 @@ return [
     'show_error_msg'   => true,
     // 版本号
     'chengji'               => [
-        'version'       =>      '1.5',
+        'version'       =>      '1.3',
     ],
     
 ];

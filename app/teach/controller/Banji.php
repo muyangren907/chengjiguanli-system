@@ -3,11 +3,11 @@
 namespace app\teach\controller;
 
 // 引用控制器基类
-use app\common\controller\Base;
+use app\BaseController;
 // 引用班级数据模型类
 use app\teach\model\Banji as BJ;
 
-class Banji extends Base
+class Banji extends BaseController
 {
     // 显示班级列表
     public function index()

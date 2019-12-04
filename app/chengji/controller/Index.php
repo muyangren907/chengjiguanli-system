@@ -2,7 +2,7 @@
 namespace app\chengji\controller;
 
 // 引用控制器基类
-use app\common\controller\Base;
+use app\BaseController;
 // 引用成绩数据模型
 use app\chengji\model\Chengji;
 // 引用考号数据模型
@@ -11,7 +11,7 @@ use \app\kaoshi\model\Kaohao;
 use \app\teach\model\Subject;
 
 
-class Index extends Base
+class Index extends BaseController
 {
     // 使用二维码录入成绩
     public function malu()

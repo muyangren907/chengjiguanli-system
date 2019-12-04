@@ -3,12 +3,12 @@
 namespace app\keti\controller;
 
 // 引用控制器基类
-use app\common\controller\Base;
+use app\BaseController;
 // 引用课题信息数据模型类
 use app\keti\model\KetiInfo as ktinfo;
 
 
-class KetiInfo extends Base
+class KetiInfo extends BaseController
 {
     /**
      * 显示资源列表

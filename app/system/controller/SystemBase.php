@@ -3,12 +3,12 @@
 namespace app\system\controller;
 
 // 引用控制器基类
-use app\common\controller\Base;
+use app\BaseController;
 // 引用与此控制器同名的数据模型
 use app\system\model\SystemBase as  sysbasemod;
 
 
-class SystemBase extends Base
+class SystemBase extends BaseController
 {
     // 系统设置
     public function edit()

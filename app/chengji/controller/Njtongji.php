@@ -3,11 +3,11 @@
 namespace app\chengji\controller;
 
 // 引用控制器基类
-use app\common\controller\Base;
+use app\BaseController;
 // 引用成绩统计数据模型
 use app\chengji\model\Njtongji as NTJ;
 
-class Njtongji extends Base
+class Njtongji extends BaseController
 {
     // 获取各学校、各年级考试成绩
     public function Biaoge($kaoshi)

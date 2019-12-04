@@ -3,13 +3,13 @@
 namespace app\rongyu\controller;
 
 // 引用控制器基类
-use app\common\controller\Base;
+use app\BaseController;
 // 引用教师数据模型类
 use app\rongyu\model\JsRongyu as jsry;
 // 引用教师数据模型类
 use app\rongyu\model\JsRongyuInfo as jsryinfo;
 
-class JsRongyu extends Base
+class JsRongyu extends BaseController
 {
     /**
      * 显示教师荣誉册列表

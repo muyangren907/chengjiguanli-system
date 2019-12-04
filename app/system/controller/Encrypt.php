@@ -3,9 +3,9 @@
 namespace app\system\controller;
 
 // 引用控制器基类
-use app\common\controller\Base;
+use app\BaseController;
 
-class Encrypt extends Base
+class Encrypt extends BaseController
 {
     // 类别列表
     public function encrypt($data, $key)

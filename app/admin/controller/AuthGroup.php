@@ -3,12 +3,12 @@
 namespace app\admin\controller;
 
 // 引用控制器基类
-use app\common\controller\Base;
+use app\BaseController;
 // 引用角色数据模型类
 use app\admin\model\AuthGroup as AG;
 
 
-class AuthGroup extends Base
+class AuthGroup extends BaseController
 {
     // 角色列表
     public function index()

@@ -3,7 +3,7 @@
 namespace app\kaoshi\controller;
 
 // 引用控制器基类
-use app\common\controller\Base;
+use app\BaseController;
 // 引用考试数据模型类
 use app\kaoshi\model\Kaoshi as KS;
 // 引用考号数据模型类
@@ -18,7 +18,7 @@ use \Endroid\QrCode\QrCode;
 use think\Validate;
 
 
-class Kaohao extends Base
+class Kaohao extends BaseController
 {
     // 生成考号
     public function index($kaoshi)

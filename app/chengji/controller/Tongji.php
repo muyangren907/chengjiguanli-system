@@ -3,11 +3,11 @@
 namespace app\chengji\controller;
 
 // 引用控制器基类
-use app\common\controller\Base;
+use app\BaseController;
 // 引用成绩统计数据模型
 use app\chengji\model\Tongji as TJ;
 
-class Tongji extends Base
+class Tongji extends BaseController
 {
 
     // 统计已经录入成绩数量

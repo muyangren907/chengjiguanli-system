@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d15adfd9d274710f1470356968422175",
+    "content-hash": "4dad7fdd425faa332e65cf96ce41ea02",
     "packages": [
         {
             "name": "league/flysystem",
@@ -151,16 +151,16 @@
         },
         {
             "name": "liliuwei/thinkphp-auth",
-            "version": "v1.0.0",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liliuwei/thinkphp-auth.git",
-                "reference": "b24138c726ba726859023c9336399a1a82493001"
+                "reference": "09e18238b1bf65fe654ae75a0a4720accd4cf0b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liliuwei/thinkphp-auth/zipball/b24138c726ba726859023c9336399a1a82493001",
-                "reference": "b24138c726ba726859023c9336399a1a82493001",
+                "url": "https://api.github.com/repos/liliuwei/thinkphp-auth/zipball/09e18238b1bf65fe654ae75a0a4720accd4cf0b8",
+                "reference": "09e18238b1bf65fe654ae75a0a4720accd4cf0b8",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -170,15 +170,11 @@
                 ]
             },
             "require": {
-                "php": "^5.6 || ^7.1",
-                "topthink/framework": "^5.1 || ^6.0",
-                "topthink/think-installer": "^2.0"
+                "php": "^7.1",
+                "topthink/framework": "^6.0"
             },
             "type": "think-extend",
             "extra": {
-                "think-config": {
-                    "auth": "src/config/auth.php"
-                },
                 "think": {
                     "config": {
                         "auth": "src/config/auth.php"
@@ -207,7 +203,7 @@
                 "thinkphp5.1",
                 "thinkphp6.0"
             ],
-            "time": "2019-10-07T01:39:32+00:00"
+            "time": "2019-12-04T04:49:15+00:00"
         },
         {
             "name": "liliuwei/thinkphp-jump",
@@ -716,53 +712,6 @@
             ],
             "description": "The ThinkPHP6 Helper Package",
             "time": "2019-09-30T02:36:48+00:00"
-        },
-        {
-            "name": "topthink/think-installer",
-            "version": "v2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/top-think/think-installer.git",
-                "reference": "f5400a12c60e513911aef41fe443fa6920952675"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/top-think/think-installer/zipball/f5400a12c60e513911aef41fe443fa6920952675",
-                "reference": "f5400a12c60e513911aef41fe443fa6920952675",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
-            },
-            "require": {
-                "composer-plugin-api": "^1.0"
-            },
-            "require-dev": {
-                "composer/composer": "1.0.*@dev"
-            },
-            "type": "composer-plugin",
-            "extra": {
-                "class": "think\\composer\\Plugin"
-            },
-            "autoload": {
-                "psr-4": {
-                    "think\\composer\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "yunwuxin",
-                    "email": "448901948@qq.com"
-                }
-            ],
-            "time": "2018-05-11T06:45:42+00:00"
         },
         {
             "name": "topthink/think-multi-app",

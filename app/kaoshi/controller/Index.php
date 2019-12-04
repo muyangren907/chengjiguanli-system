@@ -3,13 +3,13 @@
 namespace app\kaoshi\controller;
 
 // 引用控制器基类
-use app\common\controller\Base;
+use app\BaseController;
 // 引用考试数据模型类
 use app\kaoshi\model\Kaoshi as KS;
 
 
 
-class Index extends Base
+class Index extends BaseController
 {
     // 显示考试列表
     public function index()

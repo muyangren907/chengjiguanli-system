@@ -3,11 +3,11 @@
 namespace app\rongyu\controller;
 
 // 引用控制器基类
-use app\common\controller\Base;
+use app\BaseController;
 // 引用教师数据模型类
 use app\rongyu\model\DwRongyu as dwry;
 
-class DwRongyu extends Base
+class DwRongyu extends BaseController
 {
     /**
      * 显示单位荣誉列表
