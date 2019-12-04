@@ -80,7 +80,7 @@ class Index extends BaseController
                             },
                         ])
                         ->order(['paixu'])
-                        ->select();
+                        ->select()->toArray();
 
 
         // 模版赋值

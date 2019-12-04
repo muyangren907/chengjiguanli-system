@@ -29,7 +29,7 @@ return [
     'tpl_replace_string'  =>  [
         '__STATIC__'=>'/static',
         '__UPLOAD__'=>'/uploads',
-        '__XADMIN__'=>'/static/xadmin',
+        '__XADMIN__'=>'/static/x-admin2.2',
     ]
 
 ];
