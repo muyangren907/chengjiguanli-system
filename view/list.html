@@ -57,7 +57,7 @@
             <button class = "layui-btn layui-btn-sm" lay-event = "isAll" > 验证是否全选</button>
         </div > 
     </script>
-    
+
     <!-- 状态按钮 -->
     <script type="text/html" id="status">
       <input type="checkbox" {{d.status == 1 ? "checked" :""}} id="{{d.id}}" lay-skin="switch" lay-filter="status" lay-text="启用|禁用">
@@ -107,6 +107,32 @@
           lForm.on('switch(status)', function(data){
             cjgl.status(data,"{:url('setstatus')}");
           });
+
+
+          //头工具栏事件
+            lTable.on('toolbar(mytable)',
+            function(obj) {
+                var checkStatus = lTable.checkStatus(obj.config.id);
+                switch (obj.event) {
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                    break;
+                case 'getCheckLength':
+                    var data = checkStatus.data;
+                    layer.msg('选中了：' + data.length + ' 个');
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选': '未全选');
+                    break;
+                };
+            });
+
+
+
+
+
+
         });
 
         // 提交搜索条件后重载表格
