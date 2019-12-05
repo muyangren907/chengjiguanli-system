@@ -22,8 +22,8 @@
                 <div class="layui-col-md12">
                     <div class="layui-card">
                         <div class="layui-card-body ">
-                            <blockquote class="layui-elem-quote">欢迎『{$list.group}』：
-                                <span class="x-red">{$list['xingming']}</span>！当前时间:<span id="current-time"></span>
+                            <blockquote class="layui-elem-quote">欢迎『<span class="x-red">{$list.group}</span>』：
+                                {$list['xingming']}！当前时间:<span id="current-time"></span>
                                 <span id="show"></span>
                             </blockquote>
                         </div>
@@ -110,25 +110,31 @@
                                         <td>{$list.server.SERVER_ADDR}</td></tr>
                                     <tr>
                                         <th>操作系统</th>
-                                        <td>WINNT</td></tr>
+                                        <td>{$list.xitong}</td></tr>
                                     <tr>
                                         <th>运行环境</th>
                                         <td>{$list.server.SERVER_SOFTWARE}</td></tr>
                                     <tr>
+                                        <th>PHP版本</th>
+                                        <td>{$list.php}</td></tr>
+                                    <tr>
+                                        <th>mysql版本</th>
+                                        <td>{$list.sql}</td></tr>
+                                    <tr>
                                         <th>ThinkPHP</th>
-                                        <td>{$Think.version}</td></tr>
+                                        <td>{$list.thinkphp}</td></tr>
                                     <tr>
                                         <th>X-admin版本</th>
-                                        <td>2.1</td></tr>
+                                        <td>2.2</td></tr>
                                     <tr>
                                         <th>上传附件限制</th>
                                         <td>2M</td></tr>
                                     <tr>
                                         <th>执行时间限制</th>
-                                        <td>30s</td></tr>
+                                        <td>{$list.session}</td></tr>
                                     <tr>
                                         <th>剩余空间</th>
-                                        <td>86015.2M</td></tr>
+                                        <td>{$list.kongjian}</td></tr>
                                 </tbody>
                             </table>
                         </div>

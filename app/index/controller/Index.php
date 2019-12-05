@@ -112,6 +112,20 @@ class Index extends BaseController
         $list['server'] = request()->server();
         // 获取版本号
         $list->version = config('app.chengji.version');
+        // 获取php版本号
+        $list->php = phpversion();
+        // 获取数据库版本号
+        $list->sql = \think\facade\Db::query("select VERSION()");
+        $list->sql = $list->sql[0]['VERSION()'];
+
+        // 获取服务器操作系统
+        $list->xitong = php_uname('s');
+        // 获取磁盘空间
+        $list->kongjian = round(disk_free_space('/')*1/1024/1024/1024,2).'GB';
+        // 获取Session过期时间
+        $list->session = \think\facade\Config::get('session.expire').'s';
+        // 获取thinkphp版本
+        $list->thinkphp = \think\facade\App::version();
 
 
         // 考试数
