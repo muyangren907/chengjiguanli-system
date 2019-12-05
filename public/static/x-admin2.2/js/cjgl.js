@@ -7,7 +7,7 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
     var obj = {
     // 新建弹窗
     add: function(title,url,width,height,max=false){
-        x_admin_show(title,url,width,height,max);
+        xadmin.open(title,url,width,height,max);
     },
     del:function(obj,url){
         layer.confirm('确认要删除吗？',function(index){

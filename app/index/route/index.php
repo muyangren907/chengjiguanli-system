@@ -11,5 +11,5 @@
 
 use think\facade\Route;
 
-Route::rule('/','index/index');		//主页
-Route::get('welcome','index/welcome');			//欢迎页
+Route::rule('/','index/index','get');		//主页
+Route::rule('welcome','index/welcome','get');			//欢迎页

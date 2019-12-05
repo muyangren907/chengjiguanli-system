@@ -48,7 +48,7 @@
           elem: '#slider',
           onOk: function(){
             //当验证通过回调
-            layer.msg("滑块验证通过");
+            // layer.msg("滑块验证通过");
           },
         })
         //监听提交
@@ -60,7 +60,8 @@
                     layer.msg('数据传输错误');
                     $('#captchaimg').onclick();
                     $('#captcha').val('');
-                     $('#password').val('');
+                    $('#password').val('');
+                    slider.reset();
                   }
                   if(data.status == 1)
                   {
@@ -70,6 +71,7 @@
                     $('#captchaimg').click();
                     $('#captcha').val('');
                     $('#password').val('');
+                    slider.reset();
                   }
                 });
                 return false;

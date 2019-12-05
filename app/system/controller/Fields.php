@@ -75,6 +75,13 @@ class Fields extends BaseController
         // 查询文件信息
         $filist = $fl->where('id',$id)->find();
 
+        $url = 'uploads\\'.$filist->url;
+        $name = $filist->oldname;
+
+        return download('uploads\\chengji\\20190906\\fa3d00866ee52fcc5ae94b178a37de1a.xls', "$name");
+
+        // return download('uploads\\'.$filist->url, $filist->oldname)->expire(300);
+
         // 下载文件
         $download =  new \think\response\Download('uploads\\'.$filist->url);
 
@@ -96,6 +103,8 @@ class Fields extends BaseController
         {
             $id = request()->delete('ids');
         }
+
+        $id = explode(',',$id);
 
         $data = FL::destroy($id);
 

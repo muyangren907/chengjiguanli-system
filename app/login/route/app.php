@@ -10,5 +10,5 @@
 // +----------------------------------------------------------------------
 use think\facade\Route;
 
-Route::get('/','index/index');
-Route::post('/','index/yanzheng');
+Route::rule('/','index/index','get');
+Route::rule('/','index/yanzheng','post');

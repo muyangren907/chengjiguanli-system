@@ -97,7 +97,6 @@
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            console.log(checkStatus.data)
             cjgl.delAll(checkStatus,'/system/file','mytable');
             break;
           case 'add':
@@ -116,10 +115,11 @@
           	cjgl.del(obj,"/system/file");
           	break;
           case 'download':// 编辑
-          	cjgl.add('下载文件','/system/Fields/download/id/'+obj.data.id,'650','500');
+          	cjgl.add('下载文件','/system/filedownload/'+obj.data.id,'350','150');
           	break;
         };
       });
+
     });
 </script>
 {/block}

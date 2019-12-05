@@ -7,17 +7,13 @@
         <meta name="renderer" content="webkit">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
-        <link rel="stylesheet" href="./css/font.css">
-        <link rel="stylesheet" href="./css/xadmin.css">
-        <script src="./lib/layui/layui.js" charset="utf-8"></script>
-        <script type="text/javascript" src="./js/xadmin.js"></script>
         {load href="__XADMIN__/css/font.css" /}
         {load href="__XADMIN__/css/xadmin.css" /}
         {load href="__XADMIN__/js/jquery.min.js" /}
         {load href="__XADMIN__/lib/layui/layui.js" /}
         {load href="__XADMIN__/js/xadmin.js" /}
-        {load href="__XADMIN__/js/cookie.js" /}
-        {load href="__XADMIN__/js/md5.min.js" /}
+        {load href="__XADMIN__/js/cookie1.js" /}
+        {load href="__XADMIN__/js/md51.min.js" /}
         {block name="jsset"}{/block}
         <!--[if lt IE 9]>
           <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -50,14 +46,7 @@
           </div>
           {block name="table"}{/block}
     </body>
-    <script type="text/html" id="toolbarDemo">
-        <div class = "layui-btn-container" > 
-            <button class = "layui-btn layui-btn-sm" lay-event = "getCheckData" > 获取选中行数据 </button>
-            <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button > 
-            <button class = "layui-btn layui-btn-sm" lay-event = "isAll" > 验证是否全选</button>
-        </div > 
-    </script>
-
+    
     <!-- 状态按钮 -->
     <script type="text/html" id="status">
       <input type="checkbox" {{d.status == 1 ? "checked" :""}} id="{{d.id}}" lay-skin="switch" lay-filter="status" lay-text="启用|禁用">
@@ -79,7 +68,7 @@
           page: true, //开启分页
           loading:true,
           autoSort:false,
-          // id:'mytable',
+          id:'mytable',
           defaultToolbar:'',
           where:{},
           limits:[10,25,50,75,100],
@@ -94,6 +83,7 @@
           var lTable = layui.table
               lForm = layui.form
               cjgl = layui.cjgl;
+
           userTable = lTable.render(options);  //获取数据并渲染
 
           // 监听排序
@@ -103,6 +93,7 @@
             formval.type = obj.type; 
             tablereload(formval);
           });
+
           //监听指定开关
           lForm.on('switch(status)', function(data){
             cjgl.status(data,"{:url('setstatus')}");
@@ -110,7 +101,7 @@
 
 
           //头工具栏事件
-            lTable.on('toolbar(mytable)',
+          lTable.on('toolbar(mytable)',
             function(obj) {
                 var checkStatus = lTable.checkStatus(obj.config.id);
                 switch (obj.event) {
@@ -128,32 +119,6 @@
                 };
             });
 
-
-
-
-
-
-        });
-
-        // 提交搜索条件后重载表格
-        layui.use('form',function(){
-          var form = layui.form;
-          // 监听表单提交
-          form.on('submit(srcsubmit)', function(data){
-            formval = data.field;
-            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
-          });
-          // 监听全选
-          form.on('checkbox(checkall)', function(data){
-
-            if(data.elem.checked){
-              $('tbody input').prop('checked',true);
-            }else{
-              $('tbody input').prop('checked',false);
-            }
-            form.render('checkbox');
-          });
-        
         });
 
         // 表格重载
@@ -181,8 +146,6 @@
                 tablereload(formval);
             }
         })
-
         
     </script>
-
 </html>

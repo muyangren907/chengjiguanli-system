@@ -30,4 +30,6 @@ Route::rule('/<id>','systembase/update','put');
 Route::rule('file','fields/index','get');
 Route::rule('file','fields/ajaxdata','ajax');
 Route::rule('file/<id>','fields/delete','delete');
+Route::rule('filedownload/<id>','fields/download','get');
+
 
