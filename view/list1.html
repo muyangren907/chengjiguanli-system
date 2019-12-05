@@ -51,7 +51,7 @@
     <script type="text/javascript">
         //config的设置是全局的
         layui.config({
-            base: "__STATIC__/xadmin/js/" //假设这是你存放拓展模块的根目录
+            base: "__XADMIN__/js/" //假设这是你存放拓展模块的根目录
         });
 
         // 声明表格,和表格参数变量
@@ -60,12 +60,12 @@
         options = {
           elem: '#tabledemo',
           toolbar: '#toolbarDemo',
-          url:"{:url('ajaxdata')}",
-          method:"POST",   //数据接口
+          url:"{$list['dataurl']}",
+          method:"ajax",   //数据接口
           page: true, //开启分页
           loading:true,
           autoSort:false,
-          id:'mytable',
+          // id:'mytable',
           defaultToolbar:'',
           where:{},
           limits:[10,25,50,75,100],
@@ -103,6 +103,17 @@
             formval = data.field;
             return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
           });
+          // 监听全选
+          form.on('checkbox(checkall)', function(data){
+
+            if(data.elem.checked){
+              $('tbody input').prop('checked',true);
+            }else{
+              $('tbody input').prop('checked',false);
+            }
+            form.render('checkbox');
+          });
+        
         });
 
         // 表格重载

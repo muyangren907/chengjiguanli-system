@@ -18,7 +18,7 @@ class Fields extends BaseController
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = '文件列表';
-        $list['dataurl'] = '/system/file/data';
+        $list['dataurl'] = '/system/file';
 
         // 模板赋值
         $this->view->assign('list',$list);
@@ -59,6 +59,8 @@ class Fields extends BaseController
             'count'=>$cnt, // 符合条件的总数据量
             'data'=>$data, //获取到的数据结果
         ];
+
+
 
 
         return json($data);

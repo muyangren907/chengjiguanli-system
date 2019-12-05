@@ -32,10 +32,11 @@ class Fields extends Base
             ->order([$src['field'] =>$src['type']])
             ->with([
                 'flUser'=>function($query){
-                    $query->withField('id,xingming,school')
+                    $query
+                    ->field('id,xingming,school')
                         ->with([
                             'adSchool'=>function($q){
-                                $q->withField('id,jiancheng');
+                                $q->field('id,jiancheng');
                             }
                         ]);
                 }

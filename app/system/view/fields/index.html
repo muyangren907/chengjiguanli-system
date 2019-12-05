@@ -1,5 +1,5 @@
 
-{extend name="list.html" /}
+{extend name=".././view/list.html" /}
 {block name="jsset"}
 
 {/block}
@@ -8,7 +8,7 @@
 		<a href="">系统管理</a>
 		<a href="">文件管理</a>
 		<a><cite>文件列表</cite></a>
-	</span>{$list['dataurl']}
+	</span>
 {/block}
 {block name="search"}
 	<div class="layui-form-item">
@@ -64,15 +64,22 @@
 			{field: 'text', title: '文件内容',sort: true, minWidth:100},
 			{field: 'oldname', title: '原文件名', minWidth:100,sort: true},
 			{field: "newname",title: '存储文件名', minWidth:280,sort: true},
-			{field: 'fieldsize', title: '文件大小', minWidth:100,sort: true},
+			{field: 'fieldsize', title: '文件大小', minWidth:100,sort: true,templet:function(d){
+		        var str=0;
+		        if(d.fieldsize)
+		        {
+		          str = Math.round(d.fieldsize * 1 / 1024 * 100) / 100 + 'KB';
+		        }
+		        return str;
+		      }},
 			{field: 'userid', title: '上传人', minWidth:150,sort: true,templet:function(d){
 		        var str='';
-		        if(d.fl_user)
+		        if(d.flUser)
 		        {
-		          str = d.fl_user.xingming;
-		          if(d.fl_user.ad_school)
+		          str = d.flUser.xingming;
+		          if(d.flUser.adSchool)
 		          {
-		          	str = d.fl_user.ad_school.jiancheng + ' ' + d.fl_user.xingming;
+		          	str = d.flUser.adSchool.jiancheng + ' ' + d.flUser.xingming;
 		          }
 		        }
 		        return str;
@@ -90,7 +97,8 @@
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/fields','mytable');
+            console.log(checkStatus.data)
+            cjgl.delAll(checkStatus,'/system/file','mytable');
             break;
           case 'add':
             cjgl.add('添加文件','/fields/create','650','500');
@@ -105,7 +113,7 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
           case 'del':// 删除
-          	cjgl.del(obj,"/fields");
+          	cjgl.del(obj,"/system/file");
           	break;
           case 'download':// 编辑
           	cjgl.add('下载文件','/system/Fields/download/id/'+obj.data.id,'650','500');
