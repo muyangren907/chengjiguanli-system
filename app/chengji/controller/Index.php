@@ -24,6 +24,9 @@ class Index extends BaseController
             'url'=>'/chengji/malu',
         );
 
+        dump('aa');
+        halt('aa');
+
 
         // 模板赋值
         $this->assign('list',$list);

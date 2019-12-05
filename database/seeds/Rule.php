@@ -53,8 +53,8 @@ class Rule extends Seeder
                 // 系统设置
                 ['id'=>701,'title'=>'类别管理','name'=>'system/Category/index','paixu'=>1,'ismenu' =>1,'pid' =>7,'url'=>'/category',],
                 ['id'=>702,'title'=>'单位管理','name'=>'system/School/index','paixu'=>2,'ismenu' =>1,'pid' =>7,'url'=>'/school',],
-                ['id'=>703,'title'=>'文件管理','name'=>'system/Fields/index','paixu'=>3,'ismenu' =>1,'pid' =>7,'url'=>'/fields',],
-                ['id'=>704,'title'=>'系统设置','name'=>'system/SystemBase/edit','paixu'=>10,'ismenu' =>1,'pid' =>7,'url'=>'/sysbase/1/edit',],
+                ['id'=>703,'title'=>'文件管理','name'=>'system/Fields/index','paixu'=>3,'ismenu' =>1,'pid' =>7,'url'=>'/system/file',],
+                ['id'=>704,'title'=>'系统设置','name'=>'system/SystemBase/edit','paixu'=>10,'ismenu' =>1,'pid' =>7,'url'=>'/sysbase/',],
                 
 
 

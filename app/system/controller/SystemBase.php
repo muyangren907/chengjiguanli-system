@@ -22,15 +22,15 @@ class SystemBase extends BaseController
             'webtitle'=>'设置系统信息',
             'butname'=>'设置',
             'formpost'=>'PUT',
-            'url'=>'/sysbase/'.$list['data']['id'],
+            'url'=>'system/id/'.$list['data']['id'],
         );
 
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 

@@ -91,9 +91,9 @@
                             {volist name="$value.authCid" id="vo"}
 
                             <li>
-                                <a onclick="xadmin.add_tab('{$vo['title']}','{php}echo(url($vo['url'])){/php}')">
+                                <a onclick="xadmin.add_tab('{$vo['title']}','{$vo['url']}')">
                                     <i class="iconfont">&#xe6a7;</i>
-                                    <cite>{$vo['title']}{php}echo(url($vo['url'])){/php}</cite></a>
+                                    <cite>{$vo['title']}</cite></a>
                             </li>
                             {/volist}
                         </ul>

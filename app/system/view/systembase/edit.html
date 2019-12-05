@@ -87,15 +87,11 @@
             dataType:'json',
             success:function(result){
               // 弹出提示
-              parent.layer.msg(result.msg,
-                {
-                  icon:1,
-                  time:2000
-                });
+              layer.msg(result.msg);
             },
             error:function(xhr,status,error) {
               layer.msg('数据处理错误',{
-                  icon: 1,
+                  icon: 2,
                   time: 2000 //2秒关闭（如果不配置，默认是3秒）
               });
             }

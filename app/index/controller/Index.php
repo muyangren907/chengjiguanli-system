@@ -80,11 +80,11 @@ class Index extends BaseController
                         ->order(['paixu'])
                         ->select()->toArray();
 
-        $view = app('view');
+        // $view = app('view');
         // 模版赋值
-        $view->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染输出
-        return $view->fetch();
+        return $this->view->fetch();
     }
 
 

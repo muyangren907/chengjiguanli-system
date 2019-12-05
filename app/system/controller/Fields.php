@@ -18,12 +18,13 @@ class Fields extends BaseController
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = '文件列表';
+        $list['dataurl'] = '/system/file/data';
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
     //  获取单位列表数据

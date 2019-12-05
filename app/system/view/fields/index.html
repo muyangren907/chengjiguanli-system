@@ -1,5 +1,5 @@
 
-{extend name="common@list" /}
+{extend name="list.html" /}
 {block name="jsset"}
 
 {/block}
@@ -8,7 +8,7 @@
 		<a href="">系统管理</a>
 		<a href="">文件管理</a>
 		<a><cite>文件列表</cite></a>
-	</span>
+	</span>{$list['dataurl']}
 {/block}
 {block name="search"}
 	<div class="layui-form-item">
