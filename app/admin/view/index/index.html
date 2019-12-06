@@ -1,5 +1,5 @@
 
-{extend name="common@list" /}
+{extend name=".././view/list.html" /}
 {block name="jsset"}
 
 {/block}
@@ -52,27 +52,27 @@
 			{field: "shengri",title: '生日', minWidth:100,sort: true},
 			{field: 'username', title: '帐号',sort: true} ,
 			{field: 'school', title: '所在单位', minWidth:100,sort: true ,templet:function(d){
-				if(d.ad_school){
-					return d.ad_school.jiancheng;
+				if(d.adSchool){
+					return d.adSchool.jiancheng;
 				}
 			}},
-			{title: '用户组', minWidth:140,templet:function(d){
+			{title: '用户组', minWidth:130,templet:function(d){
 				var str = '';
-				if(d.gl_group.length>0){
-					for (var k = 0, length = d.gl_group.length; k < length; k++) {
+				if(d.glGroup.length>0){
+					for (var k = 0, length = d.glGroup.length; k < length; k++) {
 						if(k == 0){
-							str = d.gl_group[k].title;
+							str = d.glGroup[k].title;
 						}else{
-							str =str+'、'+d.gl_group[k].title;
+							str =str+'、'+d.glGroup[k].title;
 						}
 					}
 				}
 				return str;
 			}},
-			{field: 'phone', title: '联系电话', minWidth:130, sort: true},
+			{field: 'phone', title: '联系电话', minWidth:120, sort: true},
 			{field: 'denglucishu', title: '登录次数', minWidth:100, sort: true},
 			{field: 'thistime', title: '最后登录时间', minWidth:180, sort: true},
-			{field: 'ip', title: '最后登录地址', minWidth:150, sort: true},
+			{field: 'ip', title: '最后登录地址', minWidth:130, sort: true},
 			{field: 'status', title: '状态',templet:'#status', sort: true},
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
 		]];
@@ -86,10 +86,10 @@
         switch(obj.event){
            case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/admin','mytable');
+            cjgl.delAll(checkStatus,'index/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加管理员','/admin/create','','',true);
+            cjgl.add('添加管理员','index/create','','',true);
             break;
         };
       });
@@ -101,16 +101,16 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
           case 'detail':// 查看
-	          cjgl.add(obj.data.xingming+'信息','/admin/'+obj.data.id,'','',true);
+	          cjgl.add(obj.data.xingming+'信息','index/read/'+obj.data.id,'','',true);
 	          break;
 	      case 'del':// 删除
-	          cjgl.del(obj,"/admin");
+	          cjgl.del(obj,"index/delete");
 	          break;
 	      case 'edit':// 编辑
-	          cjgl.add('编辑管理员','/admin/'+obj.data.id+'/edit','','',true);
+	          cjgl.add('编辑管理员','index/edit/'+obj.data.id,'','',true);
 	          break;
 	      case 'reset':// 编辑
-	          cjgl.resetpassword(obj.data.xingming,"/resetpassword/"+obj.data.id);
+	          cjgl.resetpassword(obj.data.xingming,"index/resetpassword/"+obj.data.id);
 	          break;
         };
       });

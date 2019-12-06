@@ -46,11 +46,10 @@ function nianjiList($riqi=0)
 {
 	// 定义学年时间节点日期为每年的8月10日
 	// $yd = '8-10';
-	$time = new think\helper\Time();
 	if($riqi == 0)
 	{
 		$jiedian = strtotime(date('Y').'-8-1');
-		$thisday = $time->today();
+		$thisday = time();
 	}else{
 		$jiedian = strtotime(date('Y',$riqi).'-8-1');
 		$thisday = $riqi;
@@ -158,6 +157,7 @@ function excelLieming()
 // 单位列表
 function schlist($low='班级',$high='其它级',$xueduan=array())
 {
+
 	// 实例化单位模型
 	$sch = new \app\system\model\School;
 	// 实例化类别数据模型
@@ -165,7 +165,7 @@ function schlist($low='班级',$high='其它级',$xueduan=array())
 	// 获取获取级别列表
 	$catlist = $cat->where('pid',102)
 		->where('status',1)
-		->column('title,id');
+		->column('id','title');
 
 	// 获取学段列表
 	if(count($xueduan)>0){

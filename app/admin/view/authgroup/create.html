@@ -1,10 +1,10 @@
-{extend name="common@create" /}
+{extend name=".././view/create.html" /}
 
 {block name="form"}
     <form class="layui-form layui-form-pane" lay-filter="myform">
           <div class="layui-form-item">
               <label for="title" class="layui-form-label">
-                  <span class="x-red">*</span>权限名称
+                  <span class="x-red">*</span>角色名称
               </label>
               <div class="layui-input-block">
                   <input type="text" id="title" name="title" lay-verify="required"
@@ -12,109 +12,47 @@
               </div>
           </div>
           <div class="layui-form-item">
-              <label for="name" class="layui-form-label">
-                  <span class="x-red">*</span>权限规则
+              <label for="miaoshu" class="layui-form-label">
+                  <span class="x-red">*</span>角色描述
               </label>
               <div class="layui-input-block">
-                  <input type="text" id="name" name="name" lay-verify="required"
-                  autocomplete="off" class="layui-input " value="{$list.data.name|default=''}" placeholder="中文2-25个字符">
+                  <input type="text" id="miaoshu" name="miaoshu" lay-verify="required"
+                  autocomplete="off" class="layui-input " value="{$list.data.miaoshu|default=''}" placeholder="中文2-25个字符">
               </div>
           </div>
+          {php}
+            $authrule = new \app\admin\model\AuthRule;
+            $authrulelist = $authrule->where('status',1)->where('pid',0)->select();
+          {/php}
           <div class="layui-form-item">
-            <label for="pid" class="layui-form-label">父级权限</label>
-            <div class="layui-input-block">
-              {php}
-                  $authrule = new \app\admin\model\AuthRule;
-                  $authrulelist = $authrule
-                              ->where('pid',0)
-                              ->where('status',1)
-                              ->with(['authCid'=>function($query){
-                                $query->field('id,title,pid');
-                                }
-                              ])
-                              ->field('pid,id,title')
-                              ->select();
-                {/php}
-              <select name="pid">
-                <option value="">顶级权限</option>
-                {volist name="authrulelist" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.pid"}
-                    {eq name="$list.data.pid" value="$vo.id" }
-                      selected
-                    {/eq}
+              {volist name="authrulelist" id="vo"}
+                <div style="background: #eeeeee">
+                  <input type="checkbox" name="rules[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary" id ="{$vo.id}" pid="0" action="topOnclick" {present name="$list.data.rules"}
+                    {in name="vo.id" value="$list['data']['rules']"}
+                     checked
+                    {/in}
                   {/present}>
-                    {$vo.title}
-                  </option>
-
-                  {volist name="vo.auth_cid" id="va"}
-                    <option value="{$va.id}"
-                    {present name="$list.data.pid"}
-                      {eq name="$list.data.pid" value="$va.id" }
-                        selected
-                      {/eq}
-                    {/present}>
-                      &nbsp;&nbsp;├{$va.title}
-                    </option>
+                </div>
+                <div class="layui-form-item" id="{$vo.id}" style="padding-left: 10px;padding-right: 10px;">
+                  {volist name="vo.auth_cid" id="vc"}
+                    <div>
+                      <input type="checkbox" name="rules[]" title="{$vc.title}" value="{$vc.id}" lay-skin="primary" id ="{$vc.id}" pid="{$vo.id}" action="midOnclick" {present name="$list.data.rules"}
+                        {in name="vc.id" value="$list['data']['rules']"}
+                          checked
+                        {/in}
+                      {/present}>
+                      {volist name="vc.auth_cid" id="vd"}
+                        <input type="checkbox" name="rules[]" title="{$vd.title}" value="{$vd.id}" lay-skin="primary" id ="{$vd.id}" pid="{$vc.id}" action="btmOnclick" {present name="$list.data.rules"}
+                          {in name="vd.id" value="$list['data']['rules']"}
+                            checked
+                          {/in}
+                        {/present}>
+                      {/volist}
+                    </div>
                   {/volist}
-                {/volist}
-              </select>
-            </div>
-          </div>
-          <div class="layui-form-item">
-              <label for="condition" class="layui-form-label">
-                  权限表达式
-              </label>
-              <div class="layui-input-block">
-                  <input type="text" id="condition" name="condition" autocomplete="off" class="layui-input " value="{$list.data.condition|default=''}" placeholder="">
-              </div>
-          </div>
-          <div class="layui-form-item">
-              <label for="paixu" class="layui-form-label">
-                  排序
-              </label>
-              <div class="layui-input-block">
-                  <input type="text" id="paixu" name="paixu" autocomplete="off" class="layui-input " value="{$list.data.paixu|default=''}" placeholder="">
-              </div>
-          </div>
-          <div class="layui-form-item" pane>
-            <label for="ismenu" class="layui-form-label"><span class="x-red">*</span>是否是菜单</label>
-            <div class="layui-input-block">
-              <input type="radio" name="ismenu" value="1" title="是" 
-                {present name="$list.data.ismenu"}
-                {$list.data.ismenu}
-                    {eq name="$list.data.ismenu" value="1" }
-                     checked
-                    {/eq}
-                {/present}>
-              <input type="radio" name="ismenu" value="0" title="否" 
-                {present name="$list.data.ismenu"}
-                    {eq name="list.data.ismenu" value="0" }
-                     checked
-                    {/eq}
-                {/present}
-                {notpresent name="$list.data.ismenu"}
-                 checked
-                {/notpresent}
-                >
-            </div>
-          </div>
-          <div class="layui-form-item">
-              <label for="font" class="layui-form-label">
-                  菜单字体
-              </label>
-              <div class="layui-input-block">
-                  <input type="text" id="font" name="font" autocomplete="off" class="layui-input " value="{$list.data.font|default=''}" placeholder="">
-              </div>
-          </div>
-          <div class="layui-form-item">
-              <label for="url" class="layui-form-label">
-                  地址
-              </label>
-              <div class="layui-input-block">
-                  <input type="text" id="url" name="url" autocomplete="off" class="layui-input " value="{$list.data.url|default=''}" placeholder="">
-              </div>
-          </div>
+                </div>
+              {/volist}
+          </div>  
           <div class="layui-form-item" style="text-align: right;">
               <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
                   {$list.set.butname}

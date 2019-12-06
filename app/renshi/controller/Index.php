@@ -16,6 +16,7 @@ class Index extends BaseController
 
         // 设置要给模板赋值的信息
         $list['webtitle'] = '教师列表';
+        $list['dataurl'] = 'category/data';
 
         // 模板赋值
         $this->assign('list',$list);

@@ -14,12 +14,13 @@ class Subject extends BaseController
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = '学科列表';
+        $list['dataurl'] = 'subject/data';
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();       
+        return $this->view->fetch();       
     }
 
 
@@ -71,13 +72,13 @@ class Subject extends BaseController
             'webtitle'=>'添加学科',
             'butname'=>'添加',
             'formpost'=>'POST',
-            'url'=>'/subject',
+            'url'=>'save',
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
     
@@ -135,13 +136,13 @@ class Subject extends BaseController
             'webtitle'=>'编辑学科',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'/subject/'.$id,
+            'url'=>'/teach/subject/'.$id,
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
 
@@ -188,6 +189,8 @@ class Subject extends BaseController
         {
             $id = request()->delete('ids');// 获取delete请求方式传送过来的数据并转换成数据
         }
+
+        $id = explode(',', $id);
 
         $data = SJ::destroy($id);
 

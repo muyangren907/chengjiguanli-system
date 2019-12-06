@@ -1,5 +1,5 @@
 
-{extend name="common@list" /}
+{extend name=".././view/list.html" /}
 {block name="jsset"}
 
 {/block}
@@ -51,9 +51,9 @@
       {field: 'xuenian', title: '学年',sort: true},
       {field: "category",title: '分类',sort: true,templet:function(d){
         var str='';
-        if(d.gl_category)
+        if(d.glCategory)
         {
-          str = d.gl_category.title;
+          str = d.glCategory.title;
         }
         return str;
       }},
@@ -72,10 +72,10 @@
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/xueqi','mytable');
+            cjgl.delAll(checkStatus,'xueqi/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加学期','/xueqi/create','','',true);
+            cjgl.add('添加学期','xueqi/create','','',true);
             break;
         };
       });
@@ -90,10 +90,10 @@
             layer.msg('查看' + data.id);
             break;
           case 'del':// 删除
-            cjgl.del(obj,"/xueqi");
+            cjgl.del(obj,"xueqi/delete");
             break;
           case 'edit':// 编辑
-            cjgl.add('编辑学期','/xueqi/'+obj.data.id+'/edit','','',true);
+            cjgl.add('编辑学期','xueqi/edit/'+obj.data.id,'','',true);
             break;
         };
       });

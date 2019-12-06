@@ -14,12 +14,13 @@ class AuthRule extends BaseController
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = '权限列表';
+        $list['dataurl'] = 'authrule/data';
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -69,14 +70,14 @@ class AuthRule extends BaseController
             'webtitle'=>'添加权限',
             'butname'=>'添加',
             'formpost'=>'POST',
-            'url'=>'/authrule',
+            'url'=>'save',
         );
 
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
     
@@ -112,13 +113,6 @@ class AuthRule extends BaseController
         return json($data);
     }
 
-    //
-    public function read($id)
-    {
-        //
-    }
-
-
 
 
     // 修改权限信息
@@ -134,14 +128,14 @@ class AuthRule extends BaseController
             'webtitle'=>'编辑权限',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'/authrule/'.$id,
+            'url'=>'/admin/authrule/update/'.$id,
         );
 
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
 

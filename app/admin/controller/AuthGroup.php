@@ -15,12 +15,13 @@ class AuthGroup extends BaseController
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = '角色列表';
+        $list['dataurl'] = 'authgroup/data';
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -75,10 +76,10 @@ class AuthGroup extends BaseController
 
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染
-        return $this->fetch();
+        return $this->view->fetch();
     }
     
 
@@ -142,13 +143,13 @@ class AuthGroup extends BaseController
             'webtitle'=>'编辑角色',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'/authgroup/'.$id,
+            'url'=>'/admin/authgroup/update/'.$id,
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
 

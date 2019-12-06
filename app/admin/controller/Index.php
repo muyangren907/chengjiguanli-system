@@ -16,12 +16,13 @@ class Index extends BaseController
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = '管理员列表';
+        $list['dataurl'] = 'index/data';
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -71,14 +72,14 @@ class Index extends BaseController
             'webtitle'=>'添加管理员',
             'butname'=>'添加',
             'formpost'=>'POST',
-            'url'=>'/admin',
+            'url'=>'save',
         );
 
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
     
@@ -146,10 +147,10 @@ class Index extends BaseController
         $list->groupnames = $ad->getGroupnames($id);
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -173,11 +174,11 @@ class Index extends BaseController
         $list['webtitle'] = '我的信息';
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
 
         // 渲染模板
-        return $this->fetch('read');
+        return $this->view->fetch('read');
     }
 
     
@@ -205,14 +206,14 @@ class Index extends BaseController
             'webtitle'=>'编辑管理员',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'/admin/'.$id,
+            'url'=>'/admin/index/update/'.$id,
         );
 
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
 
     }
 
@@ -325,14 +326,14 @@ class Index extends BaseController
             'webtitle'=>'修改密码',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'/editpassword/'.session('userid'),
+            'url'=>'/admin/index/updatepassword/'.session('userid'),
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 

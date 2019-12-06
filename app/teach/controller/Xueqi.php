@@ -14,12 +14,13 @@ class Xueqi extends BaseController
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = '学期列表';
+        $list['dataurl'] = 'xueqi/data';
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -71,13 +72,13 @@ class Xueqi extends BaseController
             'webtitle'=>'添加学期',
             'butname'=>'添加',
             'formpost'=>'POST',
-            'url'=>'/xueqi',
+            'url'=>'save',
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
     
@@ -128,20 +129,20 @@ class Xueqi extends BaseController
 
         // 获取学期信息
         $list['data'] = XQ::field('id,title,xuenian,category,bfdate,enddate')
-            ->get($id);
+            ->find($id);
 
        // 设置页面标题
         $list['set'] = array(
             'webtitle'=>'编辑学期',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'/xueqi/'.$id,
+            'url'=>'/teach/xueqi/'.$id,
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
 
@@ -167,9 +168,14 @@ class Xueqi extends BaseController
 
 
         // 更新数据
-        $xq = new XQ();
-        $data = $xq->save($list,['id'=>$id]);
-        // $data = XQ::where('id',$id)->update($list);
+        $xueqilist = XQ::find($id);
+        $xueqilist->title = $list['title'];
+        $xueqilist->xuenian = $list['xuenian'];
+        $xueqilist->category = $list['category'];
+        $xueqilist->bfdate = $list['bfdate'];
+        $xueqilist->enddate = $list['enddate'];
+        $data = $xueqilist->save();
+
 
         // 根据更新结果设置返回提示信息
         $data>=0 ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -190,6 +196,8 @@ class Xueqi extends BaseController
         {
             $id = request()->delete('ids');// 获取delete请求方式传送过来的数据并转换成数据
         }
+
+        $id = explode(',', $id);
 
         $data = XQ::destroy($id);
 

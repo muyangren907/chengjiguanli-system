@@ -1,5 +1,5 @@
 
-{extend name="common@list" /}
+{extend name=".././view/list.html" /}
 {block name="jsset"}
 
 {/block}
@@ -72,9 +72,9 @@
 			{field: 'banjiTitle', title: '班级名称', minWidth:100},
 			{field: 'school', title: '单位名称',sort: true, minWidth:240,templet:function(d){
 				var str='';
-				if(d.gl_school)
+				if(d.glSchool)
 				{
-					str = d.gl_school.title;
+					str = d.glSchool.title;
 				}
 				return str;
 			}},
@@ -94,10 +94,10 @@
       	switch(obj.event){
       		case 'dels':
       			var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-      			cjgl.delAll(checkStatus,'/banji','mytable');
+      			cjgl.delAll(checkStatus,'banji/delete','mytable');
       			break;
       		case 'add':
-      			cjgl.add('添加班级','/banji/create','600','300');
+      			cjgl.add('添加班级','banji/create','600','300');
       			break;
       		};
       });
@@ -108,23 +108,56 @@
       	var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
       	var tr = obj.tr; //获得当前行 tr 的DOM对象
       	switch(layEvent){
-      		case 'detail':// 查看
-	          layer.msg('查看' + data.id);
-	          break;
 	        case 'befo':// 前移
-	          yidong(this,'/banji/'+data.id+'/yidong',-1);
+	          yidong(this,'banji/yidong/'+data.id,-1);
 	          break;
 	        case 'end':// 后移
-	          yidong(this,'/banji/'+data.id+'/yidong',1);
+	          yidong(this,'banji/yidong/'+data.id,1);
 	          break;
 	        case 'del':// 删除
-	          cjgl.del(obj,"/banji");
+	          cjgl.del(obj,"banji/delete");
 	          break;
 	        case 'edit':// 编辑
-	          cjgl.add('编辑班级','/banji/'+obj.data.id+'/edit','600','300');
+	          cjgl.add('编辑班级','banji/edit/'+obj.data.id,'600','300');
 	          break;
       	};
       });
     });
+
+      	/*班级移动*/
+	function yidong(obj,url,caozuo){
+		layer.confirm('确认要移动班级位置吗？',function(index){
+			$.ajax({
+				type: 'POST',
+				url: url,
+				data: {
+					cz:caozuo,
+				},
+				dataType: 'json',
+				success: function(data){
+					
+					if(data.val == false){
+						layer.alert(data.msg);
+						return true;
+					}
+					var yd = $(obj).parents("tr").html();
+					// if( caozuo === 1)
+					// {
+					// 	$(obj).parents("tr").prev().before('<tr role="row">' + yd + '</tr>');
+						
+					// } else {
+					// 	$(obj).parents("tr").next().after('<tr role="row">' + yd + '</tr>');
+					// }
+					$(obj).parents("tr").remove();
+					layer.alert(data.msg);
+					return true;
+				},
+				error:function(data) {
+					layer.alert('移动失败');
+				},
+			});		
+		});
+	}
+
 </script>
 {/block}

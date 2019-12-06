@@ -14,12 +14,13 @@ class Banji extends BaseController
     {
        // 设置要给模板赋值的信息
         $list['webtitle'] = '班级列表';
+        $list['dataurl'] = 'banji/data';
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -32,7 +33,7 @@ class Banji extends BaseController
                 ->only([
                     'page'=>'1',
                     'limit'=>'10',
-                    'field'=>'update_time',
+                    'field'=>'school',
                     'type'=>'asc',
                     'school'=>'',
                     'ruxuenian'=>'',
@@ -73,13 +74,13 @@ class Banji extends BaseController
             'webtitle'=>'添加班级',
             'butname'=>'添加',
             'formpost'=>'POST',
-            'url'=>'/banji',
+            'url'=>'save',
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
     
@@ -152,12 +153,12 @@ class Banji extends BaseController
 
         // 获取班级信息
         $list = BJ::field('id,school,ruxuenian,paixu')
-            ->get($id);
+            ->find($id);
 
 
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -207,6 +208,8 @@ class Banji extends BaseController
             $id = request()->delete('ids');// 获取delete请求方式传送过来的数据并转换成数据
         }
 
+        $id = explode(',', $id);
+
         $data = BJ::destroy($id);
 
         // 根据更新结果设置返回提示信息
@@ -243,7 +246,8 @@ class Banji extends BaseController
         $caozuo = input('post.cz');
 
         // 获取当前班级信息
-        $thisbj = BJ::get($id);
+        $thisbj = BJ::find($id);
+
 
         // 获取别一个班级信息
         if( $caozuo > 0 )
