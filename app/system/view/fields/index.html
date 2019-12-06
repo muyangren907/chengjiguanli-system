@@ -97,10 +97,7 @@
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/system/file','mytable');
-            break;
-          case 'add':
-            cjgl.add('添加文件','/fields/create','650','500');
+            cjgl.delAll(checkStatus,'file/delete','mytable');
             break;
         };
       });
@@ -112,10 +109,10 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
           case 'del':// 删除
-          	cjgl.del(obj,"/system/file");
+          	cjgl.del(obj,"file/delete");
           	break;
           case 'download':// 编辑
-          	cjgl.add('下载文件','/system/filedownload/'+obj.data.id,'350','150');
+          	cjgl.add('下载文件','file/download/'+obj.data.id,'350','150');
           	break;
         };
       });

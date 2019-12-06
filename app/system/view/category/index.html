@@ -1,5 +1,5 @@
 
-{extend name="common@list" /}
+{extend name=".././view/list.html" /}
 {block name="jsset"}
 
 {/block}
@@ -78,10 +78,10 @@
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/category','mytable');
+            cjgl.delAll(checkStatus,'category/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加类别','/category/create','450','300','');
+            cjgl.add('添加类别','category/create','450','230','');
             break;
         };
       });
@@ -96,10 +96,10 @@
             layer.msg('查看' + data.id);
             break;
           case 'del':// 删除
-            cjgl.del(obj,"/category");
+            cjgl.del(obj,"category/delete");
             break;
           case 'edit':// 编辑
-            cjgl.add('编辑类别','/category/'+obj.data.id+'/edit','650','300','');
+            cjgl.add('编辑类别','category/edit/'+obj.data.id,'450','230','');
             break;
         };
       });

@@ -22,7 +22,7 @@ class SystemBase extends BaseController
             'webtitle'=>'设置系统信息',
             'butname'=>'设置',
             'formpost'=>'PUT',
-            'url'=>'system/id/'.$list['data']['id'],
+            'url'=>'update/'.$list['data']['id'],
         );
 
 

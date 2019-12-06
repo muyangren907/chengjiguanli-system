@@ -407,6 +407,8 @@ class JsRongyuInfo extends BaseController
             $id = request()->delete('ids');// 获取delete请求方式传送过来的数据并转换成数据
         }
 
+        $id = explode(',', $id);
+
         $data = ryinfo::destroy($id);
 
         // 根据更新结果设置返回提示信息

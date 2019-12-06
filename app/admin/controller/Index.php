@@ -265,6 +265,7 @@ class Index extends BaseController
         if($id == 'm'){
             $id = request()->delete('ids');
         }
+        $id = explode(',', $id);
 
         $data = AD::destroy($id);
 

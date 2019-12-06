@@ -12,8 +12,8 @@
         {load href="__XADMIN__/js/jquery.min.js" /}
         {load href="__XADMIN__/lib/layui/layui.js" /}
         {load href="__XADMIN__/js/xadmin.js" /}
-        {load href="__XADMIN__/js/cookie1.js" /}
-        {load href="__XADMIN__/js/md51.min.js" /}
+        {load href="__XADMIN__/js/cookie.js" /}
+        {load href="__XADMIN__/js/md5.min.js" /}
         {block name="jsset"}{/block}
         <!--[if lt IE 9]>
           <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -64,7 +64,7 @@
           elem: '#tabledemo',
           toolbar: '#toolbarDemo',
           url:"{$list['dataurl']}",
-          method:"ajax",   //数据接口
+          method:"POST",   //数据接口
           page: true, //开启分页
           loading:true,
           autoSort:false,
@@ -96,30 +96,22 @@
 
           //监听指定开关
           lForm.on('switch(status)', function(data){
-            cjgl.status(data,"{:url('setstatus')}");
+            cjgl.status(data,"{:url('status')}");
           });
 
-
-          //头工具栏事件
-          lTable.on('toolbar(mytable)',
-            function(obj) {
-                var checkStatus = lTable.checkStatus(obj.config.id);
-                switch (obj.event) {
-                case 'getCheckData':
-                    var data = checkStatus.data;
-                    layer.alert(JSON.stringify(data));
-                    break;
-                case 'getCheckLength':
-                    var data = checkStatus.data;
-                    layer.msg('选中了：' + data.length + ' 个');
-                    break;
-                case 'isAll':
-                    layer.msg(checkStatus.isAll ? '全选': '未全选');
-                    break;
-                };
-            });
-
         });
+        
+
+        // 提交搜索条件后重载表格
+        layui.use('form',function(){
+          var form = layui.form;
+          // 监听表单提交
+          form.on('submit(srcsubmit)', function(data){
+            formval = data.field;
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+          });
+        });
+
 
         // 表格重载
         function tablereload(val)

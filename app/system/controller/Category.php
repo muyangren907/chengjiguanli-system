@@ -17,12 +17,13 @@ class Category extends BaseController
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = '类别列表';
+        $list['dataurl'] = 'category/data';
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -76,15 +77,15 @@ class Category extends BaseController
             'webtitle'=>'添加类别',
             'butname'=>'添加',
             'formpost'=>'POST',
-            'url'=>'/category',
+            'url'=>'save',
         );
 
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
     
@@ -136,13 +137,13 @@ class Category extends BaseController
             'webtitle'=>'编辑类别',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'/category/'.$id,
+            'url'=>'/system/category/update/'.$id,
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
     // 更新类别信息
@@ -180,6 +181,8 @@ class Category extends BaseController
         {
             $id = request()->delete('ids');
         }
+
+        $id = explode(',', $id);
 
         $data = CG::destroy($id);
 

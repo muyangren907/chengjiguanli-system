@@ -18,7 +18,7 @@ class Fields extends BaseController
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = '文件列表';
-        $list['dataurl'] = '/system/file';
+        $list['dataurl'] = 'file/data';
 
         // 模板赋值
         $this->view->assign('list',$list);
@@ -78,14 +78,18 @@ class Fields extends BaseController
         $url = 'uploads\\'.$filist->url;
         $name = $filist->oldname;
 
-        return download('uploads\\chengji\\20190906\\fa3d00866ee52fcc5ae94b178a37de1a.xls', "$name");
+        $a = $this->request->root();
+
+        return download('favicon.ico','aa.ico');
+
+        // return download('.\\uploads\\chengji\\20190906\\fa3d00866ee52fcc5ae94b178a37de1a.xls', "$name");
 
         // return download('uploads\\'.$filist->url, $filist->oldname)->expire(300);
 
         // 下载文件
-        $download =  new \think\response\Download('uploads\\'.$filist->url);
+        // $download =  new \think\Download('uploads\\'.$filist->url,'aa.xls');
 
-        return $download->name($filist->oldname);
+        // return $download->name($filist->oldname);
 
     }
 

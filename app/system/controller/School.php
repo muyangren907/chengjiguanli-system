@@ -14,12 +14,13 @@ class School extends BaseController
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = '单位列表';
+        $list['dataurl'] = 'school/data';
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -73,15 +74,15 @@ class School extends BaseController
             'webtitle'=>'添加单位',
             'butname'=>'添加',
             'formpost'=>'POST',
-            'url'=>'/school',
+            'url'=>'save',
         );
 
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
     
@@ -125,23 +126,24 @@ class School extends BaseController
     // 编辑单位
     public function edit($id)
     {
+        
         // 获取单位信息
         $list['data'] = sch::field('id,title,jiancheng,biaoshi,xingzhi,jibie,status,xueduan,paixu')
-            ->get($id);
+            ->find($id);
 
         // 设置页面标题
         $list['set'] = array(
             'webtitle'=>'编辑单位',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'/school/'.$id,
+            'url'=>'/system/school/update/'.$id,
         );
 
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
     // 更新单位信息
@@ -152,6 +154,7 @@ class School extends BaseController
         // 获取表单数据
         $list = request()
                 ->only(['title','jiancheng','biaoshi','xingzhi','jibie','xueduan','paixu'=>999],'put');
+
 
         // 验证表单数据
         $result = $validate->check($list);
@@ -180,6 +183,8 @@ class School extends BaseController
         {
             $id = request()->delete('ids');
         }
+
+        $id = explode(',', $id);
 
         $data = sch::destroy($id);
 

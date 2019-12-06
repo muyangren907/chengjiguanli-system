@@ -45,14 +45,13 @@ class Index
     public function yanzheng()
     {
 
-        // 实例化验证模型
-        $validate = new \app\login\validate\Yanzheng;
-
         // 获取表单数据
         $data = request()->only(['username','password','captcha']);
 
         // 验证表单数据
         try {
+            // 实例化验证模型
+            $validate = new \app\login\validate\Yanzheng;
             validate(Yanzheng::class)->check($data);
         } catch (ValidateException $e) {
             // 验证失败 输出错误信息

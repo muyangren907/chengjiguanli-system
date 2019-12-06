@@ -1,5 +1,5 @@
 
-{extend name="common@list" /}
+{extend name=".././view/list.html" /}
 {block name="jsset"}
 
 {/block}
@@ -68,25 +68,25 @@
 			{field: 'jiancheng', title: '单位简称', minWidth:100,sort: true},
 			{field: "xingzhi",title: '性质',sort: true,templet:function(d){
 				var str='';
-				if(d.dw_xingzhi)
+				if(d.dwXingzhi)
 				{
-					str = d.dw_xingzhi.title;
+					str = d.dwXingzhi.title;
 				}
 				return str;
 			}},
 			{field: 'jibie', title: '级别',sort: true,templet:function(d){
 				var str='';
-				if(d.dw_jibie)
+				if(d.dwJibie)
 				{
-					str = d.dw_jibie.title;
+					str = d.dwJibie.title;
 				}
 				return str;
 			}} ,
 			{field: 'xueduan', title: '学段',sort: true,templet:function(d){
 				var str='';
-				if(d.dw_xueduan)
+				if(d.dwXueduan)
 				{
-					str = d.dw_xueduan.title;
+					str = d.dwXueduan.title;
 				}
 				return str;
 			}},
@@ -105,10 +105,10 @@
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/school','mytable');
+            cjgl.delAll(checkStatus,'school/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加单位','/school/create','650','500');
+            cjgl.add('添加单位','school/create','500','450');
             break;
         };
       });
@@ -123,10 +123,10 @@
           	layer.msg('查看' + data.id);
           	break;
           case 'del':// 删除
-          	cjgl.del(obj,"/school");
+          	cjgl.del(obj,"school/delete");
           	break;
           case 'edit':// 编辑
-          	cjgl.add('编辑单位','/school/'+obj.data.id+'/edit','650','500');
+          	cjgl.add('编辑单位','school/edit/'+obj.data.id,'650','500');
           	break;
         };
       });
