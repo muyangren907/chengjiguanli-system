@@ -82,7 +82,7 @@
           var ry =table.render({
             elem: '#rongyu'
             ,method:"POST"   //数据接口
-            ,url: '/srcry/'+"{$list.id}" //数据接口
+            ,url: '/renshi/teacher/srcry/'+"{$list.id}" //数据接口
             ,page: false //开启分页
             ,width:1050
             ,cols: [[ //表头
@@ -90,21 +90,21 @@
               ,{field: 'title',sort:true, title: '荣誉标题', minWidth:250}
               ,{title: '所属荣誉册',sort:true,width:250,templet:function(d){
                     var str='';
-                    if(d.ry_tuce)
+                    if(d.ryTuce)
                     {
-                        str = d.ry_tuce.title;
+                        str = d.ryTuce.title;
                     }
                     return str;
                 }}
               ,{title: '获奖人',templet:function(d){
                     var str='';
-                    if(d.hj_jsry)
+                    if(d.hjJsry)
                     {
-                        for (var k = 0, length = d.hj_jsry.length; k < length; k++) {
+                        for (var k = 0, length = d.hjJsry.length; k < length; k++) {
                             if(k == 0){
-                                str = d.hj_jsry[k].teacher.xingming;
+                                str = d.hjJsry[k].teacher.xingming;
                             }else{
-                                str =str+'、'+d.hj_jsry[k].teacher.xingming;
+                                str =str+'、'+d.hjJsry[k].teacher.xingming;
                             }
                         }
                     }
@@ -112,9 +112,9 @@
                 }}
               ,{title: '级别',sort:true,width:100,templet:function(d){
                     var str='';
-                    if(d.ry_tuce)
+                    if(d.ryTuce)
                     {
-                        str = d.ry_tuce.fz_school.dw_jibie.title;
+                        str = d.ryTuce.fzSchool.dwJibie.title;
                     }
                     return str;
                 }}
@@ -122,16 +122,16 @@
                     var str='';
                     if(d.jx_category)
                     {
-                        str = d.jx_category.title;
+                        str = d.jxCategory.title;
                     }
                     return str;
                 }}
               ,{field: 'hjshijian',sort:true,width:120, title: '获奖时间'} 
               ,{title: '发证单位',sort:true, minWidth: 177,templet:function(d){
                     var str='';
-                    if(d.ry_tuce)
+                    if(d.ryTuce)
                     {
-                        str = d.ry_tuce.fz_school.jiancheng;
+                        str = d.ryTuce.fzSchool.jiancheng;
                     }
                     return str;
                 }}
@@ -142,7 +142,7 @@
           var kt =table.render({
             elem: '#keti'
             ,method:"POST"   //数据接口
-            ,url: '/srckt/'+"{$list.id}" //数据接口
+            ,url: '/renshi/teacher/srckt/'+"{$list.id}" //数据接口
             ,page: false //开启分页
             ,width:1050
             ,cols: [[ //表头
@@ -151,13 +151,13 @@
               ,{field: 'bianhao',sort:true, title: '课题编号'}
               ,{title: '主持人',templet:function(d){
                 var str='';
-                if(d.kt_zcr)
+                if(d.ktZcr)
                 {
-                    for (var k = 0, length = d.kt_zcr.length; k < length; k++) {
+                    for (var k = 0, length = d.ktZcr.length; k < length; k++) {
                         if(k == 0){
                             str = d.kt_zcr[k].teacher.xingming;
                         }else{
-                            str =str+'、'+d.kt_zcr[k].teacher.xingming;
+                            str =str+'、'+d.kt_Zcr[k].teacher.xingming;
                         }
                     }
                 }
@@ -165,9 +165,9 @@
             }}
               ,{title: '立项单位',sort:true, minWidth: 177,templet:function(d){
                     var str='';
-                    if(d.fz_school)
+                    if(d.fzSchool)
                     {
-                        str = d.fz_school.jiancheng;
+                        str = d.fzSchool.jiancheng;
                     }
                     return str;
                 }}
@@ -175,7 +175,7 @@
                     var str='';
                     if(d.fz_school)
                     {
-                        str = d.fz_school.dw_jibie.title;
+                        str = d.fzSchool.dwJibie.title;
                     }
                     return str;
                 }}

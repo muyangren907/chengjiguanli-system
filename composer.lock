@@ -155,12 +155,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/liliuwei/thinkphp-auth.git",
-                "reference": "09e18238b1bf65fe654ae75a0a4720accd4cf0b8"
+                "reference": "1eddf9fe6c549c11f1b3a212aaaf7a50165412c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liliuwei/thinkphp-auth/zipball/09e18238b1bf65fe654ae75a0a4720accd4cf0b8",
-                "reference": "09e18238b1bf65fe654ae75a0a4720accd4cf0b8",
+                "url": "https://api.github.com/repos/liliuwei/thinkphp-auth/zipball/1eddf9fe6c549c11f1b3a212aaaf7a50165412c9",
+                "reference": "1eddf9fe6c549c11f1b3a212aaaf7a50165412c9",
                 "shasum": "",
                 "mirrors": [
                     {

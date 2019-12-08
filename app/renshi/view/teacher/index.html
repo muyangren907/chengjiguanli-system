@@ -1,5 +1,5 @@
 
-{extend name="common@list" /}
+{extend name=".././view/list.html" /}
 {block name="jsset"}
 
 {/block}
@@ -90,9 +90,9 @@
 			}},
 			{field: 'xueli', title: '学历',sort: true,templet:function(d){
 				var str='';
-				if(d.js_xueli)
+				if(d.jsXueli)
 				{
-					str = d.js_xueli.title;
+					str = d.jsXueli.title;
 				}
 				return str;
 			}} ,
@@ -103,9 +103,9 @@
 			{field: 'zhuanye', title: '专业', sort: true},
 			{field: 'danwei', title: '单位', sort: true,templet:function(d){
 				var str='';
-				if(d.js_danwei)
+				if(d.jsDanwei)
 				{
-					str = d.js_danwei.jiancheng;
+					str = d.jsDanwei.jiancheng;
 				}
 				return str;
 			}},
@@ -122,19 +122,19 @@
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/teacher','mytable');
+            cjgl.delAll(checkStatus,'teacher/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加教师','/teacher/create','','',true);
+            cjgl.add('添加教师','teacher/create','','',true);
             break;
           case 'upload':
-            cjgl.add('导入教师','/teacher/createall','','',true);
+            cjgl.add('导入教师','teacher/createall','','',true);
             break;
           case 'download':
-          	window.open("/renshi/index/download");
+          	window.open("teacher/downloadxls");
             break;
           case 'downloadvba':
-          	window.open("/renshi/index/downloadVba");
+          	window.open("teacher/downloadvba");
             break;
         };
       });
@@ -146,13 +146,13 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
           	case 'detail':// 查看
-	          cjgl.add(obj.data.xingming+'信息','/teacher/'+obj.data.id,'','',true);
+	          cjgl.add(obj.data.xingming+'信息','teacher/read/'+obj.data.id,'','',true);
 	          break;
 	        case 'del':// 删除
-	          cjgl.del(obj,"/teacher");
+	          cjgl.del(obj,"teacher/delete");
 	          break;
 	        case 'edit':// 编辑
-	          cjgl.add('编辑教师','/teacher/'+obj.data.id+'/edit','','',true);
+	          cjgl.add('编辑教师','teacher/edit/'+obj.data.id,'','',true);
 	          break;
         };
       });

@@ -5,10 +5,10 @@ namespace app\renshi\controller;
 // 引用控制器基类
 use app\BaseController;
 // 引用教师数据模型类
-use app\renshi\model\Teacher;
+use app\renshi\model\Teacher as TC;
 
 
-class Index extends BaseController
+class Teacher extends BaseController
 {
     // 显示教师列表
     public function index()
@@ -16,13 +16,13 @@ class Index extends BaseController
 
         // 设置要给模板赋值的信息
         $list['webtitle'] = '教师列表';
-        $list['dataurl'] = 'category/data';
+        $list['dataurl'] = 'teacher/data';
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -48,7 +48,7 @@ class Index extends BaseController
 
 
         // 实例化
-        $teacher = new Teacher;
+        $teacher = new TC;
 
         // 查询要显示的数据
         $data = $teacher->search($src);
@@ -81,13 +81,13 @@ class Index extends BaseController
             'webtitle'=>'添加教师',
             'butname'=>'添加',
             'formpost'=>'POST',
-            'url'=>'/teacher',
+            'url'=>'save',
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
     
@@ -117,7 +117,7 @@ class Index extends BaseController
         }
 
         // 保存数据 
-        $data = Teacher::create($list);
+        $data = TC::create($list);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -131,7 +131,7 @@ class Index extends BaseController
     {
         
         // 查询教师信息
-        $myInfo = Teacher::where('id',$id)
+        $myInfo = TC::where('id',$id)
             ->with(
                 [
                     'jsDanwei'=>function($query){
@@ -159,9 +159,9 @@ class Index extends BaseController
         $myInfo['webtitle'] = $myInfo->xingming.'信息';
 
         // 模板赋值
-        $this->assign('list',$myInfo);
+        $this->view->assign('list',$myInfo);
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -172,7 +172,7 @@ class Index extends BaseController
     {
 
         // 获取教师信息
-        $list['data'] = Teacher::field('id,xingming,sex,quanpin,shoupin,shengri,zhiwu,zhicheng,xueli,biye,worktime,zhuanye,danwei')
+        $list['data'] = TC::field('id,xingming,sex,quanpin,shoupin,shengri,zhiwu,zhicheng,xueli,biye,worktime,zhuanye,danwei')
             ->find($id);
 
         // 设置页面标题
@@ -180,13 +180,13 @@ class Index extends BaseController
             'webtitle'=>'编辑教师',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'/teacher/'.$id,
+            'url'=>'/renshi/teacher/update/'.$id,
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
 
@@ -213,9 +213,23 @@ class Index extends BaseController
         $list['quanpin'] = strtolower(str_replace(' ', '', $list['quanpin']));
         $list['shoupin'] = strtolower($list['shoupin']);
         // 更新数据
-        $teacher = new Teacher();
-        $data = $teacher->save($list,['id'=>$id]);
-        // $data = Teacher::where('id',$id)->update($list);
+        $teacher = new TC();
+        $teacherlist = $teacher->find($id);
+        $teacherlist->xingming = $list['xingming'];
+        $teacherlist->sex = $list['sex'];
+        $teacherlist->quanpin = $list['quanpin'];
+        $teacherlist->shoupin = $list['shoupin'];
+        $teacherlist->shengri = $list['shengri'];
+        $teacherlist->zhiwu = $list['zhiwu'];
+        $teacherlist->zhicheng = $list['zhicheng'];
+        $teacherlist->xueli = $list['xueli'];
+        $teacherlist->biye = $list['biye'];
+        $teacherlist->worktime = $list['worktime'];
+        $teacherlist->zhuanye = $list['zhuanye'];
+        $teacherlist->danwei = $list['danwei'];
+
+        $data = $teacher->save();
+        // $data = TC::where('id',$id)->update($list);
 
         // 根据更新结果设置返回提示信息
         $data>=0 ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -238,7 +252,7 @@ class Index extends BaseController
 
         $id = explode(',', $id);
 
-        $data = Teacher::destroy($id);
+        $data = TC::destroy($id);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -258,7 +272,7 @@ class Index extends BaseController
         $value = request()->post('value');
 
         // 获取教师信息
-        $data = Teacher::where('id',$id)->update(['status'=>$value]);
+        $data = TC::where('id',$id)->update(['status'=>$value]);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -275,13 +289,13 @@ class Index extends BaseController
             'webtitle'=>'批量上传教师信息',
             'butname'=>'批传',
             'formpost'=>'POST',
-            'url'=>'/teacher/createall',
+            'url'=>'saveall',
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
     // 批量保存
@@ -289,6 +303,7 @@ class Index extends BaseController
     {
         // 获取表单数据
         $list = request()->only(['school','url'],'post');
+
 
         // 实例化操作表格类
         $excel = new \app\renshi\controller\Myexcel;;
@@ -336,7 +351,7 @@ class Index extends BaseController
         }
 
         // 实例化学生信息数据模型
-        $teacher = new Teacher();
+        $teacher = new TC();
 
         // dump($teacherinfo[0]);
 
@@ -361,7 +376,7 @@ class Index extends BaseController
         }
 
         // 如果有数据则查询教师信息
-        $list = Teacher::field('id,xingming,danwei,shengri,sex')
+        $list = TC::field('id,xingming,danwei,shengri,sex')
                     ->whereOr('xingming|quanpin|shoupin','like','%'.$str.'%')
                     ->with(
                         [
@@ -384,6 +399,14 @@ class Index extends BaseController
 
         // 获取表单上传文件
         $file = request()->file('file');
+        $savename = \think\facade\Filesystem::putFile($list['serurl'], $file);
+
+        $list['oldname'] = $_FILES['file']['name'];
+
+        $data = saveFileInfo($file,$list);
+        halt($data);
+
+
         // 上传文件并返回结果
         $data = upload($list,$file,true); 
 
@@ -392,7 +415,7 @@ class Index extends BaseController
 
 
     // 下载表格模板
-    public function download()
+    public function downloadXls()
     {
         $download =  new \think\response\Download('uploads\teacher\TeacherInfo.xlsx');
         return $download->name('TeacherInfo.xlsx');

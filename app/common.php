@@ -215,6 +215,51 @@ function teacherNames($list = array())
 
 
 
+
+/**
+     * 获取文件信息并保存
+     *
+     * @param  file对象  $file
+     * @param  array()
+     *         str      $list['text']    文件分类标识
+     *         str      $list['serurl']  文件存储位置
+     *		   str      $list['oldname']  文件存储位置
+     * @return \think\Response
+     */
+    function saveFileInfo($file,$list)
+    {
+
+    	
+
+    	// 上传文件到本地服务器
+        $savename = \think\facade\Filesystem::putFile($list['serurl'], $file);
+        // 重新组合文件路径
+        $savename = str_replace("/","\\",$savename);
+        $savename = str_replace($list['serurl'].'\\', "", $savename);
+
+        $a = config('filesystem.disks.public.root');
+        $b = app()->getRootPath();
+        dump($a);
+
+        dump($file);
+
+        // 获取文件信息
+	    // $list['category'] = $file->fileExt();
+	    $list['url'] = $savename;
+	    $list['newname'] = $file->getFilename(); 
+	    $list['hash'] = $file->hash('sha1');
+	    $list['userid'] = session('userid');
+	    $list['oldname'] = $list['oldname'];
+	    $list['fieldsize'] = $file->getSize();
+	    $list['text'] = $list['text'];
+	    $list['bianjitime'] = $file->getMTime();
+	    halt($list);
+
+	    return $list;
+    }
+
+
+
 /**  
 * 上传文件，并返回文件存储地址 
 * 
