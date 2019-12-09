@@ -201,7 +201,7 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
 
         // 获取数据
         $.post(
-            "/srcteacher",
+            "/renshi/teacher/srcteacher",
             {
                 "str":val,
             },
@@ -213,7 +213,7 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
                 }
 
                 for (var i = data.length - 1; i >= 0; i--) {
-                    mydl.append('<dd id="'+data[i].id+'" onclick="cjgl.addTeacher(this)" addname='+addname+' teachername="'+data[i].xingming+'">'+data[i].xingming+'　'+data[i].js_danwei.jiancheng+'　'+data[i].shengri+'</dd>');
+                    mydl.append('<dd id="'+data[i].id+'" onclick="cjgl.addTeacher(this)" addname='+addname+' teachername="'+data[i].xingming+'">'+data[i].xingming+'　'+data[i].jsDanwei.jiancheng+'　'+data[i].shengri+'</dd>');
                 }
                 
             }

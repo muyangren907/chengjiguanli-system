@@ -370,10 +370,12 @@ class Teacher extends BaseController
 
 
     // 根据教师姓名、首拼、全拼搜索教师信息
-    public function srcTeacher($str="")
+    public function srcTeacher()
     {
         // 声明结果数组
         $data = array();
+
+        $str = input("post.str");
 
         // 判断是否存在数据，如果没有数据则返回。
         if(strlen($str) <= 0){
@@ -391,7 +393,7 @@ class Teacher extends BaseController
                         ]
                     )
                     ->append(['age'])
-                    ->all();
+                    ->select();
         return json($list);
     }
 
@@ -405,9 +407,8 @@ class Teacher extends BaseController
 
         // 获取表单上传文件
         $file = request()->file('file');
-        $savename = \think\facade\Filesystem::putFile($list['serurl'], $file);
 
-        $data = saveFileInfo($file,$list);
+        $data = saveFileInfo($file,$list,true);
 
         return json($data);
     }

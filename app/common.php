@@ -237,30 +237,25 @@ function teacherNames($list = array())
         // 重新组合文件路径
         $savename = str_replace("/","\\",$savename);
 
-	    $list['url'] = $savename;
-	    $list['newname'] = substr($savename,strripos($savename,'\\')+1,strlen($savename)-strripos($savename,'\\')); 
-	    $list['hash'] = $file->hash('sha1');
-	    $list['userid'] = session('userid');
-	    $list['oldname'] = $file->getOriginalName();
-	    $list['fieldsize'] = $file->getSize();
-	    $list['text'] = $list['text'];
-	    $list['bianjitime'] = $file->getMTime();
-	    $list['category'] = $file->getOriginalExtension();
-
-	    $f = new \app\system\model\Fields;
-	    $saveinfo = $f::create($list);
-
-	    if($saveinfo)
-	    {
-	    	$data['msg'] = '上传成功';
-	    	$data['val'] = true;
-	    	$data['url'] = $savename;
-	    }else{
-	    	$data['msg'] = '上传失败';
-	    	$data['val'] = false;
-	    	$data['url'] = '';
+	    if($isSave==true){
+	    	$list['url'] = $savename;
+		    $list['newname'] = substr($savename,strripos($savename,'\\')+1,strlen($savename)-strripos($savename,'\\')); 
+		    $list['hash'] = $file->hash('sha1');
+		    $list['userid'] = session('userid');
+		    $list['oldname'] = $file->getOriginalName();
+		    $list['fieldsize'] = $file->getSize();
+		    $list['text'] = $list['text'];
+		    $list['bianjitime'] = $file->getMTime();
+		    $list['category'] = $file->getOriginalExtension();
+		    $f = new \app\system\model\Fields;
+	    	$saveinfo = $f::create($list);
 	    }
+	    
 
+		$data['msg'] = '上传成功';
+    	$data['val'] = true;
+    	$data['url'] = $savename;
+	    
 	    return $data;
     }
 

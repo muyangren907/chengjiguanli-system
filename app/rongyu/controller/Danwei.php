@@ -5,9 +5,9 @@ namespace app\rongyu\controller;
 // 引用控制器基类
 use app\BaseController;
 // 引用教师数据模型类
-use app\rongyu\model\DwRongyu as dwry;
+use app\rongyu\model\DwRongyu as DW;
 
-class DwRongyu extends BaseController
+class Danwei extends BaseController
 {
     /**
      * 显示单位荣誉列表
@@ -18,7 +18,7 @@ class DwRongyu extends BaseController
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = '单位荣誉列表';
-        $list['dataurl'] = 'dwry/data';
+        $list['dataurl'] = 'danwei/data';
 
         // 模板赋值
         $this->view->assign('list',$list);
@@ -49,10 +49,10 @@ class DwRongyu extends BaseController
 
 
         // 实例化
-        $dwry = new dwry;
+        $DW = new DW;
 
         // 查询要显示的数据
-        $data = $dwry->search($src);
+        $data = $DW->search($src);
         // 获取符合条件记录总数
         $cnt = $data->count();
         // 获取当前页数据
@@ -116,7 +116,7 @@ class DwRongyu extends BaseController
         }
 
         // 保存数据 
-        $data = dwry::create($list);
+        $data = DW::create($list);
 
 
         // 重组教师id
@@ -160,7 +160,7 @@ class DwRongyu extends BaseController
     }
 
     // 保存批传
-    public function saveall()
+    public function saveAll()
     {
         // 获取文件信息
         $list['text'] = $this->request->post('text');
@@ -169,14 +169,15 @@ class DwRongyu extends BaseController
         // 获取表单上传文件
         $file = request()->file('file');
         // 上传文件并返回结果
-        $data = upload($list,$file);
+        $data = saveFileInfo($file,$list,false);
 
-        if($data['val'] != 1)
+        if($data['val'] != true)
         {
             $data=['msg'=>'添加失败','val'=>0];
         }
 
-        $data = dwry::create([
+
+        $data = DW::create([
             'url'=>$data['url']
             ,'title'=>'批传单位荣誉图片'
         ]);
@@ -202,9 +203,10 @@ class DwRongyu extends BaseController
         // 获取表单上传文件
         $file = request()->file('file');
         // 上传文件并返回结果
-        $data = upload($list,$file);
+        $data = saveFileInfo($file,$list,false);
 
         return json($data);
+
     }
 
     /**
@@ -227,7 +229,7 @@ class DwRongyu extends BaseController
     public function edit($id)
     {
         // 获取学生信息
-        $list['data'] = dwry::where('id',$id)
+        $list['data'] = DW::where('id',$id)
                 ->field('id,title,project,category,hjschool,fzshijian,fzschool,jiangxiang,url')
                 ->with([
                     'cyDwry'=>function($query){
@@ -244,7 +246,7 @@ class DwRongyu extends BaseController
             'webtitle'=>'编辑单位荣誉',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'dwry/update/'.$id,
+            'url'=>'/rongyu/danwei/update/'.$id,
         );
 
         // 模板赋值
@@ -281,8 +283,8 @@ class DwRongyu extends BaseController
 
 
         // 更新数据
-        $dwry = new dwry();
-        $data = dwry::update($list);
+        $DW = new DW();
+        $data = DW::update($list);
 
         // 删除原来的参与教师
         $data->cyDwry()->where('rongyuid',$id)->delete(true);
@@ -321,7 +323,7 @@ class DwRongyu extends BaseController
 
         $id = explode(',', $id);
 
-        $data = dwry::destroy($id);
+        $data = DW::destroy($id);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -341,7 +343,7 @@ class DwRongyu extends BaseController
         $value = request()->post('value');
 
         // 获取学生信息
-        $data = dwry::where('id',$id)->update(['status'=>$value]);
+        $data = DW::where('id',$id)->update(['status'=>$value]);
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];

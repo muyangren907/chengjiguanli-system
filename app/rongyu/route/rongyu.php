@@ -28,31 +28,34 @@ use think\facade\Route;
 
 
 // 单位荣誉管理
-Route::group('dwry', function () {
-	    Route::rule('','DwRongyu/index','get');						# 信息列表
-	    Route::rule('data','DwRongyu/ajaxdata','post');				# 获取数据
-	    Route::rule('create','DwRongyu/create','get');				# 添加信息
-	    Route::rule('save','DwRongyu/save','post');					# 保存信息
-	    // Route::rule('read/<id>','DwRongyu/read','get');				# 读取信息
-	    Route::rule('edit/<id>','DwRongyu/edit','get');				# 修改信息
-	    Route::rule('update/<id>','DwRongyu/update','put');			# 更新信息
-	    Route::rule('delete/<id>','DwRongyu/delete','delete');		# 删除信息
-	    Route::rule('status','DwRongyu/setStatus','post');		# 删除信息
+Route::group('danwei', function () {
+	    Route::rule('','Danwei/index','get');						# 信息列表
+	    Route::rule('data','Danwei/ajaxdata','post');				# 获取数据
+	    Route::rule('create','Danwei/create','get');				# 添加信息
+	    Route::rule('save','Danwei/save','post');					# 保存信息
+	    // Route::rule('read/<id>','Danwei/read','get');				# 读取信息
+	    Route::rule('edit/<id>','Danwei/edit','get');				# 修改信息
+	    Route::rule('update/<id>','Danwei/update','put');			# 更新信息
+	    Route::rule('delete/<id>','Danwei/delete','delete');		# 删除信息
+	    Route::rule('status','Danwei/setStatus','post');		# 删除信息
+	    Route::rule('upload','Danwei/upload','post');		# 上传图片
+	    Route::rule('createall','Danwei/createAll','get');				# 批量导入
+	    Route::rule('saveall','Danwei/saveAll','post');					# 批量保存
 	});
 
 
 
 // 老师荣誉册管理
-Route::group('jsry', function () {
-	    Route::rule('','jsry/index','get');						# 信息列表
-	    Route::rule('data','jsry/ajaxdata','post');				# 获取数据
-	    Route::rule('create','jsry/create','get');				# 添加信息
-	    Route::rule('save','jsry/save','post');					# 保存信息
-	    // Route::rule('read/<id>','jsry/read','get');				# 读取信息
-	    Route::rule('edit/<id>','jsry/edit','get');				# 修改信息
-	    Route::rule('update/<id>','jsry/update','put');			# 更新信息
-	    Route::rule('delete/<id>','jsry/delete','delete');		# 删除信息
-	    Route::rule('status','jsry/setStatus','post');		# 删除信息
+Route::group('jiaoshi', function () {
+	    Route::rule('','Jiaoshi/index','get');						# 信息列表
+	    Route::rule('data','Jiaoshi/ajaxdata','post');				# 获取数据
+	    Route::rule('create','Jiaoshi/create','get');				# 添加信息
+	    Route::rule('save','Jiaoshi/save','post');					# 保存信息
+	    // Route::rule('read/<id>','Jiaoshi/read','get');				# 读取信息
+	    Route::rule('edit/<id>','Jiaoshi/edit','get');				# 修改信息
+	    Route::rule('update/<id>','Jiaoshi/update','put');			# 更新信息
+	    Route::rule('delete/<id>','Jiaoshi/delete','delete');		# 删除信息
+	    Route::rule('status','Jiaoshi/setStatus','post');		# 删除信息
 	});
 
 

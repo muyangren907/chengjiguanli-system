@@ -509,20 +509,20 @@ class Student extends BaseController
 
     
 
-    // 上传文件
-    public function upload()
-    {
-        // 获取文件信息
-        $list['text'] = $this->request->post('text');
-        $list['serurl'] = $this->request->post('serurl');
+    // // 上传文件
+    // public function upload()
+    // {
+    //     // 获取文件信息
+    //     $list['text'] = $this->request->post('text');
+    //     $list['serurl'] = $this->request->post('serurl');
 
-        // 获取表单上传文件
-        $file = request()->file('file');
-        // 上传文件并返回结果
-        $data = upload($list,$file,true);
+    //     // 获取表单上传文件
+    //     $file = request()->file('file');
+    //     // 上传文件并返回结果
+    //     $data = upload($list,$file,true);
 
-        return json($data);
-    }
+    //     return json($data);
+    // }
 
 
 

@@ -43,7 +43,7 @@ Route::group('teacher', function () {
 	    Route::rule('createall','teacher/createAll','get');				# 批量导入
 	    Route::rule('saveall','teacher/saveAll','post');					# 批量保存
 	    Route::rule('upload','teacher/upload','post');				# 批量导入
-	    Route::rule('srcteacher/<str>','teacher/srcTeacher','post');		# 查询教师
+	    Route::rule('srcteacher','teacher/srcTeacher','post');		# 查询教师
 	    Route::rule('downloadxls','teacher/downloadXls','get');		# 下载模板
 	    Route::rule('downloadvba','teacher/downloadVba','get');		# 下载模板
 	    Route::rule('srcry/<teacherid>','teacher/srcRy','post');		# 查询荣誉

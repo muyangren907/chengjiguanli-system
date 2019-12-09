@@ -131,13 +131,13 @@
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'dwry/delete','mytable');
+            cjgl.delAll(checkStatus,'danwei/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加单位荣誉','dwry/create','','',true);
+            cjgl.add('添加单位荣誉','danwei/create','','',true);
             break;
           case 'more':
-            cjgl.add('批传','dwry/createall','300','200');
+            cjgl.add('批传','danwei/createall','300','200');
             break;
         };
       });
@@ -152,10 +152,10 @@
 	          layer.msg('查看' + data.id);
 	          break;
 	        case 'del':// 删除
-	          cjgl.del(obj,"dwry/delete");
+	          cjgl.del(obj,"danwei/delete");
 	          break;
 	        case 'edit':// 编辑
-	          cjgl.add('编辑单位荣誉','dwry/edit/'+obj.data.id,'','',true);
+	          cjgl.add('编辑单位荣誉','danwei/edit/'+obj.data.id,'','',true);
 	          break;
         };
       });

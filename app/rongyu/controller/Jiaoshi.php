@@ -9,7 +9,7 @@ use app\rongyu\model\JsRongyu as jsry;
 // 引用教师数据模型类
 use app\rongyu\model\JsRongyuInfo as jsryinfo;
 
-class JsRongyu extends BaseController
+class Jiaoshi extends BaseController
 {
     /**
      * 显示教师荣誉册列表
