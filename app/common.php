@@ -185,7 +185,8 @@ function schlist($low='班级',$high='其它级',$xueduan=array())
 					->where('status',1)
 					->where('xueduan','in',$xdlist)
 					->order(['paixu'])
-					->column('id,title,jiancheng');
+					->field('id,title,jiancheng')
+					->select();
 
 	return $schlist;
 }
@@ -220,123 +221,52 @@ function teacherNames($list = array())
      * 获取文件信息并保存
      *
      * @param  file对象  $file
-     * @param  array()
+     * @param  array()  $list 文件信息
      *         str      $list['text']    文件分类标识
      *         str      $list['serurl']  文件存储位置
-     *		   str      $list['oldname']  文件存储位置
-     * @return \think\Response
+     *         file     $file  文件对象
+     * @return array  $data
+     *         str      $data['msg']  返回信息提示
+     *         str      $data['val']  返回信息
+     *         str      $data['url']  文件路径
      */
-    function saveFileInfo($file,$list)
+    function saveFileInfo($file,$list,$isSave=false)
     {
-
-    	
-
     	// 上传文件到本地服务器
         $savename = \think\facade\Filesystem::putFile($list['serurl'], $file);
         // 重新组合文件路径
         $savename = str_replace("/","\\",$savename);
+        $url = $savename;
         $savename = str_replace($list['serurl'].'\\', "", $savename);
 
-        $a = config('filesystem.disks.public.root');
-        $b = app()->getRootPath();
-        dump($a);
-
-        dump($file);
-
-        // 获取文件信息
-	    // $list['category'] = $file->fileExt();
 	    $list['url'] = $savename;
-	    $list['newname'] = $file->getFilename(); 
+	    $list['newname'] = substr($savename,9,strlen($savename)-9); 
 	    $list['hash'] = $file->hash('sha1');
 	    $list['userid'] = session('userid');
-	    $list['oldname'] = $list['oldname'];
+	    $list['oldname'] = $file->getOriginalName();
 	    $list['fieldsize'] = $file->getSize();
 	    $list['text'] = $list['text'];
 	    $list['bianjitime'] = $file->getMTime();
-	    halt($list);
+	    $list['category'] = $file->getOriginalExtension();
 
-	    return $list;
-    }
+	    $f = new \app\system\model\Fields;
+	    $saveinfo = $f::create($list);
 
-
-
-/**  
-* 上传文件，并返回文件存储地址 
-* 
-* @access public 
-* @param array $list 文件信息
-* @param mixed $list['serurl'] 文件要存到哪儿  
-* @param mixed $list[''] 文件要存到哪儿 
-* @param mixed $file 文件 
-* @param array $isSave 是否将文件信息保存到数据库 
-* @return array 返回类型  数组
-* @return msg string  提示
-* @return val string  结果
-* @return url string  如果保存到数据库，返回完整路径，否则保存部分路径。
-*/  
-function upload($list,$file,$isSave=false)
-{
-    // 声明默认目录
-    $myrul = '..\public\uploads\\';
-
-    // 实例化文件数据模型
-    $field = new \app\system\model\Fields;
-
-
-    // 移动到框架应用根目录/uploads/ 目录下
-    $info = $file->move($myrul.$list['serurl']);
-
-
-    // 如果上传成功
-    if(!$info){
-    	// 上传失败获取错误信息
-        $data = array('msg'=>$file->getError(),'val'=>false,'url'=>null);
-        return $data;
-    }
-
-
-    // 成功上传后 获取上传信息
-    $list['category'] = $info->getExtension();
-    $list['url'] = $list['serurl'].$info->getSaveName();
-    $list['newname'] = $info->getFilename(); 
-    $list['hash'] = $info->hash('sha1');
-    $list['userid'] = session('userid');
-    $list['oldname'] = $info->getInfo('name');
-    $list['fieldsize'] = $info->getInfo('size');
-    // $list['bianjitime'] = Null;
-
-    
-    // 如果需要保存文件 
-    if($isSave == true){
-
-	    //将文件信息保存
-		$data = $field->create($list);
-
-		if($data){
-	        $data = array(
-	            'msg'=>'上传成功'
-	            ,'val'=>true
-	            ,'url'=>$myrul.$list['serurl'].$info->getSaveName()
-	        );
+	    if($saveinfo)
+	    {
+	    	$data['msg'] = '上传成功';
+	    	$data['val'] = true;
+	    	$data['url'] = $url;
 	    }else{
-	        $data = array(
-	            'msg'=>'保存文件信息失败'
-	            ,'val'=>false
-	        );
+	    	$data['msg'] = '上传失败';
+	    	$data['val'] = false;
+	    	$data['url'] = '';
 	    }
-	}else{
-		$data = array(
-            'msg'=>'上传成功'
-            ,'val'=>true
-            ,'url'=>$info->getSaveName()
-        );
-	}
 
-    
+	    return $data;
+    }
 
-    // 返回信息
-    return $data;
-}
+
 
 
 

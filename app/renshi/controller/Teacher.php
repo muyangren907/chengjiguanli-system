@@ -298,18 +298,18 @@ class Teacher extends BaseController
         return $this->view->fetch();
     }
 
+
     // 批量保存
     public function saveAll()
     {
         // 获取表单数据
         $list = request()->only(['school','url'],'post');
 
-
         // 实例化操作表格类
         $excel = new \app\renshi\controller\Myexcel;;
 
         // 读取表格数据
-        $teacherinfo = $excel->readXls($list['url']);
+        $teacherinfo = $excel->readXls(public_path().'public\\uploads\\'.$list['url']);
 
         // 判断表格是否正确
         if($teacherinfo[0][1] != "教师基本情况表" )
@@ -317,6 +317,7 @@ class Teacher extends BaseController
             $data = array('msg'=>'请使用模板上传','val'=>0,'url'=>null);
             return json($data);
         }
+
 
         // 删除标题行
         array_splice($teacherinfo,0,4 );
@@ -364,6 +365,10 @@ class Teacher extends BaseController
         return json($data);
     }
 
+
+
+
+
     // 根据教师姓名、首拼、全拼搜索教师信息
     public function srcTeacher($str="")
     {
@@ -390,6 +395,7 @@ class Teacher extends BaseController
         return json($list);
     }
 
+
     // 上传文件
     public function upload()
     {
@@ -401,14 +407,7 @@ class Teacher extends BaseController
         $file = request()->file('file');
         $savename = \think\facade\Filesystem::putFile($list['serurl'], $file);
 
-        $list['oldname'] = $_FILES['file']['name'];
-
         $data = saveFileInfo($file,$list);
-        halt($data);
-
-
-        // 上传文件并返回结果
-        $data = upload($list,$file,true); 
 
         return json($data);
     }

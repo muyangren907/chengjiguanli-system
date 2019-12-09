@@ -26,7 +26,8 @@
         "whitehat101/apr1-md5": "^1.0",
         "liliuwei/thinkphp-jump": "^1.3",
         "liliuwei/thinkphp-auth": "2.0.*",
-        "topthink/think-migration": "^3.0"
+        "topthink/think-migration": "^3.0",
+        "phpoffice/phpspreadsheet": "^1.10"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2",
