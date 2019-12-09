@@ -11,26 +11,6 @@
 use think\facade\Route;
 
 
-//系统设置路由
-// Route::resource('teacher','renshi/Index');
-// Route::get('teacher/createall','renshi/Index/createAll'); // 定义GET请求路由规则
-// Route::post('teacher/createall','renshi/Index/saveAll'); // 定义POST请求路由规则
-// Route::post('srcteacher','renshi/Index/srcTeacher'); // 定义POST请求路由规则
-// Route::post('srcry/:teacherid','renshi/Index/srcRy'); // 定义POST请求路由规则
-// Route::post('srckt/:teacherid','renshi/Index/srcKt'); // 定义POST请求路由规则
-
-
-
-// Route::resource('student','renshi/Student');
-// Route::get('student/createall','renshi/Student/createAll'); // 定义GET请求路由规则
-// Route::post('student/createall','renshi/Student/saveAll'); // 定义POST请求路由规则
-
-// Route::get('student/jiaodui','renshi/Student/jiaodui'); // 定义GET请求路由规则
-// Route::post('student/jiaodui','renshi/Student/JiaoduiDel'); // 定义POST请求路由规则
-
-// Route::post('student/download','renshi/Student/download'); // 定义POST请求路由规则
-
-
 // 学生管理
 Route::group('student', function () {
 	    Route::rule('','student/index','get');						# 信息列表
@@ -42,6 +22,10 @@ Route::group('student', function () {
 	    Route::rule('update/<id>','student/update','put');			# 更新信息
 	    Route::rule('delete/<id>','student/delete','delete');		# 删除信息
 	    Route::rule('status','student/setStatus','post');		# 删除信息
+	    Route::rule('createall','student/createAll','get');				# 批量导入
+	    Route::rule('saveall','student/saveAll','post');				# 批量保存
+		Route::rule('jiaodui','student/jiaoDui','get');					# 批量保存
+		Route::rule('jiaoduidel','student/jiaoduiDel','post');				# 批量保存
 	});
 
 

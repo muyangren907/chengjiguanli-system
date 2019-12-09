@@ -46,7 +46,7 @@ class Index
     {
 
         // 获取表单数据
-        $data = request()->only(['username','password','captcha']);
+        $data = request()->only(['username','password','captcha','online']);
 
         // 验证表单数据
         try {

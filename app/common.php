@@ -236,11 +236,9 @@ function teacherNames($list = array())
         $savename = \think\facade\Filesystem::putFile($list['serurl'], $file);
         // 重新组合文件路径
         $savename = str_replace("/","\\",$savename);
-        $url = $savename;
-        $savename = str_replace($list['serurl'].'\\', "", $savename);
 
 	    $list['url'] = $savename;
-	    $list['newname'] = substr($savename,9,strlen($savename)-9); 
+	    $list['newname'] = substr($savename,strripos($savename,'\\')+1,strlen($savename)-strripos($savename,'\\')); 
 	    $list['hash'] = $file->hash('sha1');
 	    $list['userid'] = session('userid');
 	    $list['oldname'] = $file->getOriginalName();
@@ -256,7 +254,7 @@ function teacherNames($list = array())
 	    {
 	    	$data['msg'] = '上传成功';
 	    	$data['val'] = true;
-	    	$data['url'] = $url;
+	    	$data['url'] = $savename;
 	    }else{
 	    	$data['msg'] = '上传失败';
 	    	$data['val'] = false;

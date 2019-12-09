@@ -22,8 +22,8 @@ class UserLogin
         // 尝试从cookie中获取用户名和密码
         if( strlen($username)<1 )
         {
-            $username = cookie('?username') ? $username = cookie('username') : $username = '';
-            $password = cookie('?password') ? $password = cookie('password') : $password = '';
+            // $username = cookie('?username') ? $username = cookie('username') : $username = '';
+            // $password = cookie('?password') ? $password = cookie('password') : $password = '';
         }
         // 如果没有获取到用户名和密码，则跳转到登录页面
         if( strlen($username)<1 )

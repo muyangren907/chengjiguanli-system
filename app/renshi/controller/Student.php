@@ -17,13 +17,13 @@ class Student extends BaseController
 
         // 设置要给模板赋值的信息
         $list['webtitle'] = '学生列表';
-        $list['dataurl'] = 'category/data';
+        $list['dataurl'] = 'student/data';
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -91,13 +91,13 @@ class Student extends BaseController
             'webtitle'=>'添加学生',
             'butname'=>'添加',
             'formpost'=>'POST',
-            'url'=>'/student',
+            'url'=>'save',
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
     
@@ -137,7 +137,7 @@ class Student extends BaseController
             {
                 $chongfu->restore();
             }
-            $data = $stu->save($list,['id'=>$chongfu->id]);
+            $data = $stu::update($list,['id'=>$chongfu->id]);
         }
 
         // 根据更新结果设置返回提示信息
@@ -174,14 +174,14 @@ class Student extends BaseController
             'webtitle'=>'编辑学生',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'/student/'.$id,
+            'url'=>'/renshi/student/update/'.$id,
         );
 
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
 
@@ -205,13 +205,30 @@ class Student extends BaseController
             return json(['msg'=>$msg,'val'=>0]);;
         }
 
+        $stu = new STU();
+
+        $stuinof = $stu::withTrashed()
+                    ->where('shenfenzhenghao',$list['shenfenzhenghao'])
+                    ->where('id','<>',$id)
+                    ->with([
+                        'stuSchool'=>function($query){
+                            $query->field('title,jiancheng,id');
+                        },
+                        'stuBanji'
+                    ])
+                    ->find();
+
+
+        if($stuinof){
+            return json(['msg'=>'此身份证号与　'.$stuinof->stuSchool->jiancheng.':'.$stuinof->xingming.'　重复。','val'=>0]);
+        }
 
         // 更新数据
         $stu = new STU();
-        $data = $stu->save($list,['id'=>$id]);
+        $data = $stu::update($list,['id'=>$id]);
 
         // 根据更新结果设置返回提示信息
-        $data>=0 ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);
@@ -269,13 +286,13 @@ class Student extends BaseController
             'webtitle'=>'批量上传学生信息',
             'butname'=>'批传',
             'formpost'=>'POST',
-            'url'=>'/student/createall',
+            'url'=>'saveall',
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
     // 批量保存
@@ -288,7 +305,7 @@ class Student extends BaseController
         $excel = new Myexcel();
 
         // 读取表格数据
-        $stuinfo = $excel->readXls($list['url']);
+        $stuinfo = $excel->readXls(public_path().'public\\uploads\\'.$list['url']);
 
         // 判断表格是否正确
         if($stuinfo[0][0] != "学生信息上传模板" )
@@ -376,25 +393,25 @@ class Student extends BaseController
 
 
     // 使用上传的表格进行校对，表格中不存在的数据删除
-    public function Jiaodui()
+    public function jiaoDui()
     {
         // 设置页面标题
         $list['set'] = array(
             'webtitle'=>'校对并删除学生信息',
             'butname'=>'校对删除',
             'formpost'=>'POST',
-            'url'=>'/student/jiaodui',
+            'url'=>'/renshi/student/jiaoduidel',
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create_all');
+        return $this->view->fetch('create_all');
     }
 
 
     // 使用上传的表格进行校对，表格中不存在的数据删除
-    public function JiaoduiDel()
+    public function jiaoduiDel()
     {
         // 获取表单数据
         $list = request()->only(['school','url'],'post');
@@ -403,7 +420,7 @@ class Student extends BaseController
         $excel = new Myexcel();
 
         // 读取表格数据
-        $stuinfo = $excel->readXls($list['url']);
+        $stuinfo = $excel->readXls(public_path().'public\\uploads\\'.$list['url']);
 
         // 判断表格是否正确
         if($stuinfo[0][0] != "学生信息上传模板" )

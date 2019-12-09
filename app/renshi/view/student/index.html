@@ -96,17 +96,17 @@
 			}},
 			{field: 'school', title: '学校',minWidth:200,sort: true,templet:function(d){
 				var str='';
-				if(d.stu_school)
+				if(d.stuSchool)
 				{
-					str = d.stu_school.title;
+					str = d.stuSchool.title;
 				}
 				return str;
 			}} ,
 			{field: 'banji', title: '班级',sort: true,templet:function(d){
 				var str='';
-				if(d.stu_banji)
+				if(d.stuBanji)
 				{
-					str = d.stu_banji.banjiTitle;
+					str = d.stuBanji.banjiTitle;
 				}
 				return str;
 			}},
@@ -123,19 +123,21 @@
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/student','mytable');
+            cjgl.delAll(checkStatus,'student/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加学生','/student/create','','',true);
+            cjgl.add('添加学生','student/create','','',true);
             break;
           case 'upload':
-            cjgl.add('导入学生','/student/createall','','',true);
+            cjgl.add('导入学生','student/createall','','',true);
             break;
           case 'download':
-          	window.open("/renshi/student/download");
+          	window.open("renshi/student/download");
             break;
           case 'jdsc':
-            cjgl.add('校对删除','/student/jiaodui');
+          	layer.msg('这个操作很危险，暂时不开放');
+          	break;
+            cjgl.add('校对删除','student/jiaodui');
             break;
         };
       });
@@ -150,10 +152,10 @@
 	          layer.msg('查看' + data.id);
 	          break;
 	        case 'del':// 删除
-	          cjgl.del(obj,"/student");
+	          cjgl.del(obj,"student/delete");
 	          break;
 	        case 'edit':// 编辑
-	          cjgl.add('编辑学生','/student/'+obj.data.id+'/edit','','',true);
+	          cjgl.add('编辑学生','student/edit/'+obj.data.id,'','',true);
 	          break;
 	        case 'status':// 状态
 	          cjgl.status(obj,"{:url('setstatus')}");

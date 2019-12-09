@@ -18,12 +18,13 @@ class DwRongyu extends BaseController
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = '单位荣誉列表';
+        $list['dataurl'] = 'dwry/data';
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
     /**
@@ -83,14 +84,14 @@ class DwRongyu extends BaseController
             'webtitle'=>'添加单位荣誉',
             'butname'=>'添加',
             'formpost'=>'POST',
-            'url'=>'/dwry',
+            'url'=>'save',
         );
 
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
     /**
@@ -149,13 +150,13 @@ class DwRongyu extends BaseController
             'webtitle'=>'批量上传荣誉图片',
             'butname'=>'批传',
             'formpost'=>'POST',
-            'url'=>'/dwry/createall',
+            'url'=>'saveall',
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
     // 保存批传
@@ -243,13 +244,13 @@ class DwRongyu extends BaseController
             'webtitle'=>'编辑单位荣誉',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'/dwry/'.$id,
+            'url'=>'dwry/update/'.$id,
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
 
     }
 

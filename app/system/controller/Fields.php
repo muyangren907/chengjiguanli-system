@@ -75,22 +75,29 @@ class Fields extends BaseController
         // 查询文件信息
         $filist = $fl->where('id',$id)->find();
 
-        $url = 'uploads\\'.$filist->url;
+        $url = public_path().'public\\uploads\\'.$filist->url;
         $name = $filist->oldname;
 
-        $a = $this->request->root();
+        // 临时代替代码
+        if(!file_exists($url))
+        {
+            echo "文件找不到";
+            return true;
+        }else{
+            header('content-type:text/html;charset=utf8');
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename='.basename($url));
+            header('Content-Transfer-Encoding: binary');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+            header('Content-Length:'.filesize($url));
+            readfile($url);
+        }
+        $data = ['msg'=>'数据上传成功','val'=>1];
 
-        return download('favicon.ico','aa.ico');
-
-        // return download('.\\uploads\\chengji\\20190906\\fa3d00866ee52fcc5ae94b178a37de1a.xls', "$name");
-
-        // return download('uploads\\'.$filist->url, $filist->oldname)->expire(300);
-
-        // 下载文件
-        // $download =  new \think\Download('uploads\\'.$filist->url,'aa.xls');
-
-        // return $download->name($filist->oldname);
-
+        // return download($url,$name);
     }
 
 

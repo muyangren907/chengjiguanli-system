@@ -1,5 +1,5 @@
 
-{extend name="common@list" /}
+{extend name=".././view/list.html" /}
 {block name="jsset"}
 
 {/block}
@@ -79,41 +79,41 @@
 			{field: 'title', title: '荣誉名称',sort: true, minWidth:240},
 			{field: 'hjschool', title: '获奖单位', minWidth:100,sort: true,templet:function(d){
 				var str='';
-				if(d.hj_school)
+				if(d.hjSchool)
 				{
-					str = d.hj_school.jiancheng;
+					str = d.hjSchool.jiancheng;
 				}
 				return str;
 			}},
 			{field: "category",title: '荣誉类别', minWidth:100,sort: true,templet:function(d){
 				var str='';
-				if(d.lx_category)
+				if(d.lxCategory)
 				{
-					str = d.lx_category.title;
+					str = d.lxCategory.title;
 				}
 				return str;
 			}},
 			{field: 'jiangxiang', title: '奖项', minWidth:130,sort: true,templet:function(d){
 				var str='';
-				if(d.jx_category)
+				if(d.jxCategory)
 				{
-					str = d.jx_category.title;
+					str = d.jxCategory.title;
 				}
 				return str;
 			}} ,
 			{field: 'fzschool', title: '发证单位', minWidth:100,sort: true,templet:function(d){
 				var str='';
-				if(d.fz_school)
+				if(d.fzSchool)
 				{
-					str = d.fz_school.jiancheng;
+					str = d.fzSchool.jiancheng;
 				}
 				return str;
 			}},
 			{title: '级别', minWidth:100,templet:function(d){
 				var str='';
-				if(d.fz_school)
+				if(d.fzSchool)
 				{
-					str = d.fz_school.dw_jibie.title;
+					str = d.fzSchool.dwJibie.title;
 				}
 				return str;
 			}},
@@ -131,10 +131,10 @@
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/dwry','mytable');
+            cjgl.delAll(checkStatus,'dwry/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加单位荣誉','/dwry/create','','',true);
+            cjgl.add('添加单位荣誉','dwry/create','','',true);
             break;
           case 'more':
             cjgl.add('批传','dwry/createall','300','200');
@@ -152,10 +152,10 @@
 	          layer.msg('查看' + data.id);
 	          break;
 	        case 'del':// 删除
-	          cjgl.del(obj,"/dwry");
+	          cjgl.del(obj,"dwry/delete");
 	          break;
 	        case 'edit':// 编辑
-	          cjgl.add('编辑单位荣誉','/dwry/'+obj.data.id+'/edit','','',true);
+	          cjgl.add('编辑单位荣誉','dwry/edit/'+obj.data.id,'','',true);
 	          break;
         };
       });

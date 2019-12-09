@@ -292,8 +292,14 @@ class Banji extends BaseController
     }
 
 
-    // 根据单位年级获取班级列表
-    public function mybanji($school,$ruxuenian)
+    /**
+     * 获取文件信息并保存
+     *
+     * @param  str      $school    单位id
+     *         str      $ruxuenian  入学年
+     * @return array  $data
+     */
+    public function mybanji()
     {
         // 获取变量
         $school = input('post.school');
@@ -305,7 +311,7 @@ class Banji extends BaseController
                 ->field('id,ruxuenian,paixu')
                 ->where('status',1)
                 ->append(['banTitle'])
-                ->select();
+                ->select()->toArray();
 
         return json($list);
     }

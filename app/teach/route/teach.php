@@ -12,18 +12,18 @@ use think\facade\Route;
 
 
 //系统设置路由
-Route::resource('xueqi','teach/Xueqi');
-Route::resource('kaoshi','teach/Kaoshi');
-Route::resource('subject','teach/Subject');
-Route::resource('banji','teach/Banji');
-Route::post('banji/:id/yidong','teach/Banji/yidong'); // 定义班级移动post规则
-Route::post('banji/njbanji','teach/Banji/mybanji'); // 定义GET请求路由规则
-Route::post('banji/schbanji','teach/Banji/banjilist'); // 定义GET请求路由规则
-Route::get('kaoshi/:id/kaohao','teach/Kaoshi/kaohao');
-Route::post('kaoshi/kaohao','teach/Kaoshi/kaohaosave');
-Route::get('kaoshi/:id/biaoqian','teach/Kaoshi/biaoqian');
-Route::get('kaoshi/:id/caiji','teach/Kaoshi/caiji');
-Route::post('kaoshi/caiji','teach/Kaoshi/cankaomingdan');
+// Route::resource('xueqi','teach/Xueqi');
+// Route::resource('kaoshi','teach/Kaoshi');
+// Route::resource('subject','teach/Subject');
+// Route::resource('banji','teach/Banji');
+// Route::post('banji/:id/yidong','teach/Banji/yidong'); // 定义班级移动post规则
+// Route::post('banji/njbanji','teach/Banji/mybanji'); // 定义GET请求路由规则
+// Route::post('banji/schbanji','teach/Banji/banjilist'); // 定义GET请求路由规则
+// Route::get('kaoshi/:id/kaohao','teach/Kaoshi/kaohao');
+// Route::post('kaoshi/kaohao','teach/Kaoshi/kaohaosave');
+// Route::get('kaoshi/:id/biaoqian','teach/Kaoshi/biaoqian');
+// Route::get('kaoshi/:id/caiji','teach/Kaoshi/caiji');
+// Route::post('kaoshi/caiji','teach/Kaoshi/cankaomingdan');
 
 // 学期管理
 Route::group('xueqi', function () {
@@ -50,6 +50,7 @@ Route::group('banji', function () {
 	    Route::rule('delete/<id>','banji/delete','delete');		# 删除信息
 	    Route::rule('status','banji/setStatus','post');		# 删除信息
 	    Route::rule('yidong/<id>','banji/yidong','post');		# 删除信息
+	    Route::rule('mybanji','banji/mybanji','post');		# 删除信息
 	});
 
 

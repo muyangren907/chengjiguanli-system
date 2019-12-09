@@ -20,6 +20,7 @@ class JsRongyu extends BaseController
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = '教师荣誉册列表';
+        $list['dataurl'] = 'jsry/data';
 
         // 模板赋值
         $this->assign('list',$list);
@@ -85,7 +86,7 @@ class JsRongyu extends BaseController
             'webtitle'=>'添加荣誉册',
             'butname'=>'添加',
             'formpost'=>'POST',
-            'url'=>'/jsry',
+            'url'=>'save',
         );
 
         // 模板赋值
@@ -156,7 +157,7 @@ class JsRongyu extends BaseController
             'webtitle'=>'编辑荣誉册',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'/jsry/'.$id,
+            'url'=>'/jsry/update/'.$id,
         );
 
         // 模板赋值
