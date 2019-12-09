@@ -20,7 +20,7 @@ class Jiaoshi extends BaseController
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = '教师荣誉册列表';
-        $list['dataurl'] = 'jsry/data';
+        $list['dataurl'] = 'jiaoshi/data';
 
         // 模板赋值
         $this->assign('list',$list);
@@ -157,7 +157,7 @@ class Jiaoshi extends BaseController
             'webtitle'=>'编辑荣誉册',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'/jsry/update/'.$id,
+            'url'=>'/jiaoshi/update/'.$id,
         );
 
         // 模板赋值

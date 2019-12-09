@@ -59,8 +59,8 @@ class Rule extends Seeder
 
 
                 // 荣誉管理
-                ['id'=>801,'title'=>'单位荣誉','name'=>'rongyu/DwRongyu/index','paixu'=>1,'ismenu' =>1,'pid' =>8,'url'=>'/dwry',],
-                ['id'=>802,'title'=>'教师荣誉册','name'=>'rongyu/JsRongyu/index','paixu'=>2,'ismenu' =>1,'pid' =>8,'url'=>'/jsry',],
+                ['id'=>801,'title'=>'单位荣誉','name'=>'rongyu/Danwei/index','paixu'=>1,'ismenu' =>1,'pid' =>8,'url'=>'/danwei',],
+                ['id'=>802,'title'=>'教师荣誉册','name'=>'rongyu/Jiaoshi/index','paixu'=>2,'ismenu' =>1,'pid' =>8,'url'=>'/jiaoshi',],
                 ['id'=>803,'title'=>'教师荣誉信息','name'=>'rongyu/JsRongyuInfo/index','paixu'=>3,'ismenu' =>1,'pid' =>8,'url'=>'/jsryinfo',],
                 // ['id'=>804,'title'=>'学生荣誉','name'=>'rongyu/StuRongyu/index','paixu'=>7,'ismenu' =>1,'pid' =>8,'url'=>'/xsry','status'=>0],
 
@@ -219,23 +219,23 @@ class Rule extends Seeder
 
                     // 荣誉管理
                     // 单位荣誉管理
-                    ['title'=>'添加','name'=>'rongyu/DwRongyu/create','paixu' =>1,'pid'=>801],
-                    ['title'=>'保存','name'=>'rongyu/DwRongyu/save','paixu' =>2,'pid'=>801],
-                    ['title'=>'删除','name'=>'rongyu/DwRongyu/delete','paixu'=>3,'pid'=>801],
-                    ['title'=>'编辑','name'=>'rongyu/DwRongyu/edit','paixu'=>4,'pid'=>801,],
-                    ['title'=>'更新','name'=>'rongyu/DwRongyu/update','paixu' =>5,'pid'=>801],
-                    ['title'=>'查看','name'=>'rongyu/DwRongyu/read','paixu'=>6,'pid'=>801,],
-                    ['title'=>'状态','name'=>'rongyu/DwRongyu/setStatus','paixu'=>7,'pid'=>801],
-                    ['title'=>'批量上传','name'=>'rongyu/DwRongyu/createAll','paixu'=>8,'pid'=>801],
-                    ['title'=>'批量保存','name'=>'rongyu/DwRongyu/saveAll','paixu'=>9,'pid'=>801],
+                    ['title'=>'添加','name'=>'rongyu/Danwei/create','paixu' =>1,'pid'=>801],
+                    ['title'=>'保存','name'=>'rongyu/Danwei/save','paixu' =>2,'pid'=>801],
+                    ['title'=>'删除','name'=>'rongyu/Danwei/delete','paixu'=>3,'pid'=>801],
+                    ['title'=>'编辑','name'=>'rongyu/Danwei/edit','paixu'=>4,'pid'=>801,],
+                    ['title'=>'更新','name'=>'rongyu/Danwei/update','paixu' =>5,'pid'=>801],
+                    ['title'=>'查看','name'=>'rongyu/Danwei/read','paixu'=>6,'pid'=>801,],
+                    ['title'=>'状态','name'=>'rongyu/Danwei/setStatus','paixu'=>7,'pid'=>801],
+                    ['title'=>'批量上传','name'=>'rongyu/Danwei/createAll','paixu'=>8,'pid'=>801],
+                    ['title'=>'批量保存','name'=>'rongyu/Danwei/saveAll','paixu'=>9,'pid'=>801],
                     // 教师荣誉册管理
-                    ['title'=>'添加','name'=>'rongyu/JsRongyu/create','paixu' =>1,'pid'=>802],
-                    ['title'=>'保存','name'=>'rongyu/JsRongyu/save','paixu' =>2,'pid'=>802],
-                    ['title'=>'删除','name'=>'rongyu/JsRongyu/delete','paixu'=>3,'pid'=>802],
-                    ['title'=>'编辑','name'=>'rongyu/JsRongyu/edit','paixu'=>7,'pid'=>802,],
-                    ['title'=>'更新','name'=>'rongyu/JsRongyu/update','paixu' =>8,'pid'=>802],
-                    ['title'=>'查看','name'=>'rongyu/JsRongyu/read','paixu'=>6,'pid'=>802,],
-                    ['title'=>'状态','name'=>'rongyu/JsRongyu/setStatus','paixu'=>7,'pid'=>802],
+                    ['title'=>'添加','name'=>'rongyu/Jiaoshi/create','paixu' =>1,'pid'=>802],
+                    ['title'=>'保存','name'=>'rongyu/Jiaoshi/save','paixu' =>2,'pid'=>802],
+                    ['title'=>'删除','name'=>'rongyu/Jiaoshi/delete','paixu'=>3,'pid'=>802],
+                    ['title'=>'编辑','name'=>'rongyu/Jiaoshi/edit','paixu'=>7,'pid'=>802,],
+                    ['title'=>'更新','name'=>'rongyu/Jiaoshi/update','paixu' =>8,'pid'=>802],
+                    ['title'=>'查看','name'=>'rongyu/Jiaoshi/read','paixu'=>6,'pid'=>802,],
+                    ['title'=>'状态','name'=>'rongyu/Jiaoshi/setStatus','paixu'=>7,'pid'=>802],
                     ['title'=>'查看荣誉信息','name'=>'rongyu/JsRongyuInfo/rongyuList','paixu'=>6,'pid'=>802],
                     ['title'=>'下载表格','name'=>'rongyu/JsRongyuInfo/outXlsx','paixu'=>8,'pid'=>802],
 
