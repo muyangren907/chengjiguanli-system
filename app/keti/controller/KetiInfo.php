@@ -10,6 +10,7 @@ use app\keti\model\KetiInfo as ktinfo;
 
 class KetiInfo extends BaseController
 {
+    // use \liliuwei\think\Jump;
     /**
      * 显示资源列表
      *
@@ -199,7 +200,7 @@ class KetiInfo extends BaseController
     }
 
     // 批量保存图片
-    public function saveall($ketice)
+    public function saveAll($ketice)
     {
         // 获取文件信息
         $list['text'] = $this->request->post('text');
@@ -514,8 +515,8 @@ class KetiInfo extends BaseController
 
         if($list->isEmpty())
         {
-            $this->error('兄弟，没有要下载的信息呀~');
-            return '';
+            // $this->error('兄弟，没有要下载的信息呀~');
+            return '没有找到记录，下载失败';
         }else{
             $filename = $list[0]['ryTuce']['title'];
             $fzschool = $list[0]['ryTuce']['fz_school']['title'];
@@ -524,7 +525,7 @@ class KetiInfo extends BaseController
         }
 
         //通过工厂模式创建内容
-        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('uploads/rongyu_teacher/js_rongyu.xlsx');
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('uploads/keti/keti.xlsx');
         $worksheet = $spreadsheet->getActiveSheet();
 
         $worksheet->getCell('A1')->setValue($filename);
