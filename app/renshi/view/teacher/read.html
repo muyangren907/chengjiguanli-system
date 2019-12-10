@@ -120,7 +120,7 @@
                 }}
               ,{title: '奖项',sort:true,width:100,templet:function(d){
                     var str='';
-                    if(d.jx_category)
+                    if(d.jxCategory)
                     {
                         str = d.jxCategory.title;
                     }
@@ -155,9 +155,9 @@
                 {
                     for (var k = 0, length = d.ktZcr.length; k < length; k++) {
                         if(k == 0){
-                            str = d.kt_zcr[k].teacher.xingming;
+                            str = d.ktZcr[k].teacher.xingming;
                         }else{
-                            str =str+'、'+d.kt_Zcr[k].teacher.xingming;
+                            str =str+'、'+d.ktZcr[k].teacher.xingming;
                         }
                     }
                 }
@@ -173,7 +173,7 @@
                 }}
               ,{title: '级别',sort:true, minWidth: 177,templet:function(d){
                     var str='';
-                    if(d.fz_school)
+                    if(d.fzSchool)
                     {
                         str = d.fzSchool.dwJibie.title;
                     }

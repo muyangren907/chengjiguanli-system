@@ -97,10 +97,10 @@ class KetiInfo extends Base
 
 
     //搜索课题册
-    public function srcketi($ketice)
+    public function srcKeti($ketice)
     {
         $data = $this
-            ->order([$src['field'] =>$src['type']])
+            // ->order([$src['field'] =>$src['type']])
             ->where('ketice',$ketice)
             ->with(
                 [

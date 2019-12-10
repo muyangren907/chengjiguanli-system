@@ -1,4 +1,4 @@
-{extend name="common@create" /}
+{extend name=".././view/create.html" /}
 
 {block name="form"}
     <div class="layui-form-item">
@@ -17,13 +17,13 @@ layui.use('upload', function(){
   //执行实例
   var uploadInst = upload.render({
     elem: '#upload' //绑定元素
-    ,url: "{$list.set.url}" //上传接口
+    ,url: "/rongyu/danwei/upload" //上传接口
     ,done: function(res){
       layer.msg(res.msg);
     }
     ,data: {
       text: '立项图片'
-      ,serurl:'..\\public\\uploads\\keti\\lixiang\\'
+      ,serurl:'keti\\lixiang'
 
     }
     ,multiple:true

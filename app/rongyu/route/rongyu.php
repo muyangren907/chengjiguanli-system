@@ -45,7 +45,7 @@ Route::group('danwei', function () {
 
 
 
-// 老师荣誉册管理
+// 教师荣誉册管理
 Route::group('jiaoshi', function () {
 	    Route::rule('','Jiaoshi/index','get');						# 信息列表
 	    Route::rule('data','Jiaoshi/ajaxdata','post');				# 获取数据
@@ -75,6 +75,7 @@ Route::group('jsryinfo', function () {
 	    Route::rule('createall/<rongyuce>','JsRongyuInfo/createAll','get');				# 批量导入
 	    Route::rule('saveall','JsRongyuInfo/saveAll','post');					# 批量保存
 	    Route::rule('list/<rongyuce>','JsRongyuInfo/rongyuList','get');					# 批量保存
+	    Route::rule('outxlsx/<rongyuce>','JsRongyuInfo/outXlsx','get');					# 批量保存
 
 
 	});

@@ -1,5 +1,5 @@
 
-{extend name="common@list" /}
+{extend name=".././view/list.html" /}
 {block name="jsset"}
 
 {/block}
@@ -68,17 +68,17 @@
 			{field: 'title', title: '课题名称',sort: true, minWidth:240},
 			{field: 'lxdanweiid', title: '立项单位',sort: true,templet:function(d){
 				var str='';
-				if(d.kt_lxdanwei)
+				if(d.ktLxdanwei)
 				{
-					str = d.kt_lxdanwei.title;
+					str = d.ktLxdanwei.title;
 				}
 				return str;
 			}},
 			{field: "category",title: '课题类别',sort: true,templet:function(d){
 				var str='';
-				if(d.kt_category)
+				if(d.ktCategory)
 				{
-					str = d.kt_category.title;
+					str = d.ktCategory.title;
 				}
 				return str;
 			}},
@@ -98,10 +98,10 @@
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/kt','mytable');
+            cjgl.delAll(checkStatus,'ketice/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加荣誉册','/kt/create','500','350');
+            cjgl.add('添加荣誉册','ketice/create','500','300');
             break;
         };
       });
@@ -113,16 +113,16 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
           	case 'detail':// 查看
-	          parent.x_admin_add_to_tab(obj.data.title + ' 列表','/ktlist/'+obj.data.id,true);
+	          parent.xadmin.add_tab(obj.data.title + ' 列表','/keti/ketiinfo/list/'+obj.data.id,true);
 	          break;
 	        case 'del':// 删除
-	          cjgl.del(obj,"/kt");
+	          cjgl.del(obj,"ketice/delete");
 	          break;
 	        case 'edit':// 编辑
-	          cjgl.add('编辑荣誉册','/kt/'+obj.data.id+'/edit','500','350');
+	          cjgl.add('编辑荣誉册','ketice/edit/'+obj.data.id,'500','300');
 	          break;
 	        case 'more':// 状态
-	          cjgl.add('批传','/ktinfoaddall/'+obj.data.id,'300','200');
+	          cjgl.add('批传','/keti/ketiinfo/createall/'+obj.data.id,'300','200');
 	          break;
         };
       });

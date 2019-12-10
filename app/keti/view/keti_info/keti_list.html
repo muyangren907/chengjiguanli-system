@@ -1,5 +1,5 @@
 
-{extend name="common@list" /}
+{extend name=".././view/list.html" /}
 {block name="jsset"}
 
 {/block}
@@ -109,13 +109,13 @@
 			{field: 'bianhao', title: '课题编号 ',sort: true},
 			{title: '主持人',templet:function(d){
 				var str='';
-				if(d.kt_zcr)
+				if(d.ktZcr)
 				{
-					for (var k = 0, length = d.kt_zcr.length; k < length; k++) {
+					for (var k = 0, length = d.ktZcr.length; k < length; k++) {
 						if(k == 0){
-							str = d.kt_zcr[k].teacher.xingming;
+							str = d.ktZcr[k].teacher.xingming;
 						}else{
-							str =str+'、'+d.kt_zcr[k].teacher.xingming;
+							str =str+'、'+d.ktZcr[k].teacher.xingming;
 						}
 					}
 				}
@@ -123,13 +123,16 @@
 			}},
 			{title: '参与人',templet:function(d){
 				var str='';
-				if(d.kt_cy)
+				if(d.ktCy)
 				{
-					for (var k = 0, length = d.kt_cy.length; k < length; k++) {
-						if(k == 0){
-							str = d.kt_cy[k].teacher.xingming;
-						}else{
-							str =str+'、'+d.kt_cy[k].teacher.xingming;
+					for (var k = 0, length = d.ktCy.length; k < length; k++) {
+						if(d.ktCy[k].teacher)
+						{
+							if(k == 0){
+								str = d.ktCy[k].teacher.xingming;
+							}else{
+								str =str+'、'+d.ktCy[k].teacher.xingming;
+							}
 						}
 					}
 				}
@@ -137,17 +140,17 @@
 			}},
 			{field: "subject",title: '所属学科',sort: true,templet:function(d){
 				var str='';
-				if(d.kt_subject)
+				if(d.ktSubject)
 				{
-					str = d.kt_subject.title;
+					str = d.ktSubject.title;
 				}
 				return str;
 			}},
 			{field: "category",title: '奖研究类型',sort: true,templet:function(d){
 				var str='';
-				if(d.kt_category)
+				if(d.ktCategory)
 				{
-					str = d.kt_category.title;
+					str = d.ktCategory.title;
 				}
 				return str;
 			}},
@@ -170,13 +173,13 @@
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/ktinfo','mytable');
+            cjgl.delAll(checkStatus,'/keti/ketiinfo/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加课题','/ktinfoadd/'+"{$list.ketice}",'','',true);
+            cjgl.add('添加课题','/keti/ketiinfo/create/'+"{$list.ketice}",'','',true);
             break;
           case 'download':
-            cjgl.add('下载课题信息','/ktout/'+"{$list.ketice}",'300','200',false);
+            cjgl.add('下载课题信息','/keti/ketiinfo/download/'+"{$list.ketice}",'300','200',false);
             break;
         };
       });
@@ -188,13 +191,13 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
           	case 'del':// 删除
-	          cjgl.del(obj,"/ktinfo");
+	          cjgl.del(obj,"/keti/ketiinfo/delete");
 	          break;
 	        case 'edit':// 编辑
-	          cjgl.add('编辑课题','/ktinfo/'+obj.data.id+'/edit','','',true);
+	          cjgl.add('编辑课题','/keti/ketiinfo/edit/'+obj.data.id,'','',true);
 	          break;
 	        case 'jieti':// 结题
-	          cjgl.add('结题','/ktjt/'+obj.data.id+'/edit','','',true);
+	          cjgl.add('结题','/keti/ketiinfo/jieti/'+obj.data.id,'','',true);
 	          break;
         };
       });

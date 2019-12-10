@@ -121,7 +121,6 @@ class JsRongyuInfo extends BaseController
             'rongyuce'=>$rongyuce
         );
 
-        dump($list);
 
         // 模板赋值
         $this->view->assign('list',$list);

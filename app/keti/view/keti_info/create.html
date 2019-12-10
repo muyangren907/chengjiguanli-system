@@ -1,4 +1,4 @@
-{extend name="common@create" /}
+{extend name=".././view/create.html" /}
 {block name="jscss"}
 <style type="text/css">
   .srcSelectStyly{
@@ -29,7 +29,7 @@
     <div class="layui-form-item" align="center">
       {eq name="$list.set.formpost" value="PUT" }
         {if strlen($list.data.lxpic)>0}
-          <img style="max-height: 300px;max-width: 500px" src="__UPLOAD__/keti/lixiang/{$list.data.lxpic}" onclick="imgMax(this,true)">
+          <img style="max-height: 300px;max-width: 500px" src="__UPLOAD__/{$list.data.lxpic}" onclick="imgMax(this,true)">
         {else /}
           <img style="max-height: 300px;max-width: 500px" src="__UPLOAD__/rongyu_teacher/404.png" onclick="imgMax(this,true)">
         {/if}
@@ -180,7 +180,7 @@
     //执行实例
     var uploadInst = upload.render({
       elem: '#upload' //绑定元素
-      ,url: "{:url('upload')}" //上传接口
+      ,url: "/rongyu/danwei/upload" //上传接口
       ,done: function(res){
         if(res.val == 1){
           $('#lxpic').val(res.url);
@@ -189,7 +189,7 @@
       }
       ,data: {
         text: '课题'
-        ,serurl:'..\\public\\uploads\\keti\\lixiang\\'
+        ,serurl:'keti\\lixiang'
 
       }
       ,acceptMime:'.jpg,.jpeg,.png'
@@ -217,7 +217,6 @@
     keyup:function(){
       var val = $.trim($(this).val());
       if(val.length>0){
-        layer.msg('bb');
         cjgl.selectOnfocus(this,val,'hjteachers[]');
       }
     },

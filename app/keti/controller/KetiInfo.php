@@ -19,12 +19,13 @@ class KetiInfo extends BaseController
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = '课题列表';
+        $list['dataurl'] = 'ketiinfo/data';
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -41,12 +42,13 @@ class KetiInfo extends BaseController
         // 设置要给模板赋值的信息
         $list['webtitle'] = $kt->where('id',$ketice)->value('title').' 列表';
         $list['ketice'] = $ketice;
+        $list['dataurl'] = '/keti/ketiinfo/data';
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -115,14 +117,14 @@ class KetiInfo extends BaseController
             'webtitle'=>'添加课题册',
             'butname'=>'添加',
             'formpost'=>'POST',
-            'url'=>'/ktinfo', 
+            'url'=>'/keti/ketiinfo/save', 
             'ketice'=>$ketice
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
     /**
@@ -134,7 +136,7 @@ class KetiInfo extends BaseController
     public function save()
     {
         // 获取表单数据
-        $list = request()->only(['ketice','title','bianhao','fzdanweiid','subject','category','jhjtshijian','hjteachers'],'POST');
+        $list = request()->only(['ketice','title','bianhao','fzdanweiid','subject','category','jhjtshijian','hjteachers','lxpic'],'POST');
 
 
         // 实例化验证类
@@ -187,13 +189,13 @@ class KetiInfo extends BaseController
             'webtitle'=>'批量添加课题信息',
             'butname'=>'批传',
             'formpost'=>'POST',
-            'url'=>'/ktinfoaddall/'.$ketice,
+            'url'=>'saveall/'.$ketice,
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
     // 批量保存图片
@@ -231,19 +233,19 @@ class KetiInfo extends BaseController
      * @param  \think\Request  $request
      * @return \think\Response
      */
-    public function upload()
-    {
-        // 获取文件信息
-        $list['text'] = $this->request->post('text');
-        $list['serurl'] = $this->request->post('serurl');
+    // public function upload()
+    // {
+    //     // 获取文件信息
+    //     $list['text'] = $this->request->post('text');
+    //     $list['serurl'] = $this->request->post('serurl');
 
-        // 获取表单上传文件
-        $file = request()->file('file');
-        // 上传文件并返回结果
-        $data = upload($list,$file);
+    //     // 获取表单上传文件
+    //     $file = request()->file('file');
+    //     // 上传文件并返回结果
+    //     $data = upload($list,$file);
 
-        return json($data);
-    }
+    //     return json($data);
+    // }
 
 
     /**
@@ -286,13 +288,13 @@ class KetiInfo extends BaseController
             'webtitle'=>'编辑课题',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'/ktinfo/'.$id,
+            'url'=>'/keti/ketiinfo/update/'.$id,
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
     /**
@@ -414,13 +416,13 @@ class KetiInfo extends BaseController
             'webtitle'=>'编辑结题',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'/ktjt/'.$id,
+            'url'=>'/keti/ketiinfo/jietiupdate/'.$id,
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -506,10 +508,9 @@ class KetiInfo extends BaseController
     // 下载课题信息表
     public function outXlsx($ketice)
     {
-        $ketiinfo = new ketiinfo();
-        $list = $ketiinfo->srcTuceRy($ketice);
+        $ketiinfo = new ktinfo();
+        $list = $ketiinfo->srcKeti($ketice);
 
-        halt($list);
 
         if($list->isEmpty())
         {
@@ -523,7 +524,7 @@ class KetiInfo extends BaseController
         }
 
         //通过工厂模式创建内容
-        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('jsRongyu.xlsx');
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('uploads/rongyu_teacher/js_rongyu.xlsx');
         $worksheet = $spreadsheet->getActiveSheet();
 
         $worksheet->getCell('A1')->setValue($filename);

@@ -8,7 +8,7 @@ use app\BaseController;
 // 引用课题数据模型
 use app\keti\model\Keti as keti;
 
-class Index extends BaseController
+class Ketice extends BaseController
 {
     /**
      * 显示资源列表
@@ -19,12 +19,13 @@ class Index extends BaseController
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = '课题册列表';
+        $list['dataurl'] = 'ketice/data';
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -41,7 +42,7 @@ class Index extends BaseController
                 ->only([
                     'page'=>'1',
                     'limit'=>'10',
-                    'field'=>'update_time',
+                    'field'=>'lxshijian',
                     'type'=>'desc',
                     'lxdanweiid'=>array(),
                     'category'=>array(),
@@ -87,13 +88,13 @@ class Index extends BaseController
             'webtitle'=>'添加课题册',
             'butname'=>'添加',
             'formpost'=>'POST',
-            'url'=>'/kt',
+            'url'=>'save',
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
     /**
@@ -156,13 +157,13 @@ class Index extends BaseController
             'webtitle'=>'编辑课题册',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'/kt/'.$id,
+            'url'=>'/keti/ketice/update/'.$id,
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
     /**
