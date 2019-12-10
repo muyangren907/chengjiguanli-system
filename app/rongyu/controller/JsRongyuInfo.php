@@ -209,7 +209,7 @@ class JsRongyuInfo extends BaseController
             'webtitle'=>'批量上传教师荣誉册图片',
             'butname'=>'批传',
             'formpost'=>'POST',
-            'url'=>'saveall/'.$rongyuce,
+            'url'=>'/rongyu/jsryinfo/saveall/'.$rongyuce,
         );
 
         // 模板赋值

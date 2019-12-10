@@ -73,7 +73,7 @@ Route::group('jsryinfo', function () {
 	    Route::rule('delete/<id>','JsRongyuInfo/delete','delete');		# 删除信息
 	    Route::rule('status','JsRongyuInfo/setStatus','post');		# 删除信息
 	    Route::rule('createall/<rongyuce>','JsRongyuInfo/createAll','get');				# 批量导入
-	    Route::rule('saveall','JsRongyuInfo/saveAll','post');					# 批量保存
+	    Route::rule('saveall/<rongyuce>','JsRongyuInfo/saveAll','post');					# 批量保存
 	    Route::rule('list/<rongyuce>','JsRongyuInfo/rongyuList','get');					# 批量保存
 	    Route::rule('outxlsx/<rongyuce>','JsRongyuInfo/outXlsx','get');					# 批量保存
 

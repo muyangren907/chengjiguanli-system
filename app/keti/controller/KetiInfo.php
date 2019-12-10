@@ -190,7 +190,7 @@ class KetiInfo extends BaseController
             'webtitle'=>'批量添加课题信息',
             'butname'=>'批传',
             'formpost'=>'POST',
-            'url'=>'saveall/'.$ketice,
+            'url'=>'/keti/ketiinfo/saveall/'.$ketice,
         );
 
         // 模板赋值
@@ -209,7 +209,7 @@ class KetiInfo extends BaseController
         // 获取表单上传文件
         $file = request()->file('file');
         // 上传文件并返回结果
-        $data = upload($list,$file);
+        $data = saveFileInfo($file,$list,false);
 
         if($data['val'] != 1)
         {
@@ -476,34 +476,34 @@ class KetiInfo extends BaseController
     }
 
 
-    /**
-     * 上传荣誉图片并保存
-     *
-     * @param  \think\Request  $request
-     * @return \think\Response
-     */
-    public function jtupload()
-    {
+    // /**
+    //  * 上传荣誉图片并保存
+    //  *
+    //  * @param  \think\Request  $request
+    //  * @return \think\Response
+    //  */
+    // public function jtupload()
+    // {
 
-        // 获取表单上传文件 例如上传了001.jpg
-        $file = request()->file('file');
-        // 移动到框架应用根目录/uploads/ 目录下
-        $info = $file->validate(['size'=>2*1024*1024,'ext'=>'jpg,png,gif,jpeg'])->move('uploads\keti\jieti');
+    //     // 获取表单上传文件 例如上传了001.jpg
+    //     $file = request()->file('file');
+    //     // 移动到框架应用根目录/uploads/ 目录下
+    //     $info = $file->validate(['size'=>2*1024*1024,'ext'=>'jpg,png,gif,jpeg'])->move('uploads\keti\jieti');
 
-        if($info){
-            // 成功上传后 获取上传信息
-            $list['url'] = $info->getSaveName();
-            $list['url'] = str_replace('\\','/',$list['url']);
-            // 如果图片上传成功，则返回
-            $data = array('msg'=>'上传成功','val'=>true,'url'=>$list['url']);
-        }else{
-            // 上传失败获取错误信息
-            $data = array('msg'=>$file->getError(),'val'=>false,'url'=>null);
-        }
+    //     if($info){
+    //         // 成功上传后 获取上传信息
+    //         $list['url'] = $info->getSaveName();
+    //         $list['url'] = str_replace('\\','/',$list['url']);
+    //         // 如果图片上传成功，则返回
+    //         $data = array('msg'=>'上传成功','val'=>true,'url'=>$list['url']);
+    //     }else{
+    //         // 上传失败获取错误信息
+    //         $data = array('msg'=>$file->getError(),'val'=>false,'url'=>null);
+    //     }
 
-        // 返回信息
-        return json($data);
-    }
+    //     // 返回信息
+    //     return json($data);
+    // }
 
 
     // 下载课题信息表

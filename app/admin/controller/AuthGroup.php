@@ -71,7 +71,7 @@ class AuthGroup extends BaseController
             'webtitle'=>'添加角色',
             'butname'=>'添加',
             'formpost'=>'POST',
-            'url'=>'/authgroup',
+            'url'=>'save',
         );
 
 

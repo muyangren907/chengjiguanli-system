@@ -46,7 +46,7 @@ class Rule extends Seeder
                 
 
                 // 管理员管理
-                ['id'=>601,'title'=>'管理员列表','name'=>'admin/Index/index','paixu'=>1,'ismenu' =>1,'pid' =>6,'url'=>'/admin/',],
+                ['id'=>601,'title'=>'管理员列表','name'=>'admin/Index/index','paixu'=>1,'ismenu' =>1,'pid' =>6,'url'=>'/admin/index',],
                 ['id'=>602,'title'=>'权限列表','name'=>'admin/AuthRule/index','paixu'=>2,'ismenu' =>1,'pid' =>6,'url'=>'/admin/authrule',],
                 ['id'=>603,'title'=>'角色列表','name'=>'admin/AuthGroup/index','paixu'=>3,'ismenu' =>1,'pid' =>6,'url'=>'/admin/authgroup',],
                 
@@ -65,8 +65,8 @@ class Rule extends Seeder
                 // ['id'=>804,'title'=>'学生荣誉','name'=>'rongyu/StuRongyu/index','paixu'=>7,'ismenu' =>1,'pid' =>8,'url'=>'/xsry','status'=>0],
 
                 // 荣誉管理
-                ['id'=>901,'title'=>'课题册','name'=>'keti/Index/index','paixu'=>1,'ismenu' =>1,'pid' =>9,'url'=>'/kt',],
-                ['id'=>902,'title'=>'课题列表','name'=>'keti/KetiInfo/index','paixu'=>2,'ismenu' =>1,'pid' =>9,'url'=>'/ktinfo',],
+                ['id'=>901,'title'=>'课题册','name'=>'keti/Ketice/index','paixu'=>1,'ismenu' =>1,'pid' =>9,'url'=>'/keti/ketice',],
+                ['id'=>902,'title'=>'课题列表','name'=>'keti/KetiInfo/index','paixu'=>2,'ismenu' =>1,'pid' =>9,'url'=>'/keti/ketiinfo',],
                 
                 
                 
@@ -254,14 +254,14 @@ class Rule extends Seeder
 
                     // 课题管理
                     // 课题册
-                    ['title'=>'添加','name'=>'keti/index/create','paixu' =>1,'pid'=>901],
-                    ['title'=>'保存','name'=>'keti/index/save','paixu' =>2,'pid'=>901],
-                    ['title'=>'删除','name'=>'keti/index/delete','paixu'=>3,'pid'=>901],
-                    ['title'=>'编辑','name'=>'keti/index/edit','paixu'=>4,'pid'=>901,],
-                    ['title'=>'更新','name'=>'keti/index/update','paixu' =>5,'pid'=>901],
-                    ['title'=>'课题信息','name'=>'keti/ketiinfo/KetiCe','paixu'=>6,'pid'=>901,],
-                    ['title'=>'查看','name'=>'keti/index/read','paixu'=>7,'pid'=>901,],
-                    ['title'=>'状态','name'=>'keti/index/setStatus','paixu'=>8,'pid'=>901],
+                    ['title'=>'添加','name'=>'keti/Ketice/create','paixu' =>1,'pid'=>901],
+                    ['title'=>'保存','name'=>'keti/Ketice/save','paixu' =>2,'pid'=>901],
+                    ['title'=>'删除','name'=>'keti/Ketice/delete','paixu'=>3,'pid'=>901],
+                    ['title'=>'编辑','name'=>'keti/Ketice/edit','paixu'=>4,'pid'=>901,],
+                    ['title'=>'更新','name'=>'keti/Ketice/update','paixu' =>5,'pid'=>901],
+                    // ['title'=>'课题信息','name'=>'keti/ketiinfo/KetiCe','paixu'=>6,'pid'=>901,],
+                    ['title'=>'查看','name'=>'keti/Ketice/read','paixu'=>7,'pid'=>901,],
+                    ['title'=>'状态','name'=>'keti/Ketice/setStatus','paixu'=>8,'pid'=>901],
                     ['title'=>'查看课题信息','name'=>'keti/ketiinfo/ketiList','paixu'=>9,'pid'=>901],
                     // 课题信息
                     ['title'=>'添加','name'=>'keti/ketiinfo/create','paixu' =>1,'pid'=>902],
