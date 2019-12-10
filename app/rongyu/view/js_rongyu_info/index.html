@@ -72,9 +72,9 @@
 			{type:'checkbox', fixed: 'left'},
 			{title: '荣誉册',minWidth:180,templet:function(d){
 				var str='';
-				if(d.ry_tuce)
+				if(d.ryTuce)
 				{
-					str = d.ry_tuce.title;
+					str = d.ryTuce.title;
 				}
 				return str;
 			}},
@@ -82,13 +82,13 @@
 			{field: 'title', title: '荣誉名称',minWidth:180,sort: true},
 			{title: '获奖人',minWidth:100,templet:function(d){
 				var str='';
-				if(d.hj_jsry)
+				if(d.hjJsry)
 				{
-					for (var k = 0, length = d.hj_jsry.length; k < length; k++) {
+					for (var k = 0, length = d.hjJsry.length; k < length; k++) {
 						if(k == 0){
-							str = d.hj_jsry[k].teacher.xingming;
+							str = d.hjJsry[k].teacher.xingming;
 						}else{
-							str =str+'、'+d.hj_jsry[k].teacher.xingming;
+							str =str+'、'+d.hjJsry[k].teacher.xingming;
 						}
 					}
 				}
@@ -96,17 +96,17 @@
 			}},
 			{field: "jiangxiang",title: '奖项',minWidth:100,sort: true,templet:function(d){
 				var str='';
-				if(d.jx_category)
+				if(d.jxCategory)
 				{
-					str = d.jx_category.title;
+					str = d.jxCategory.title;
 				}
 				return str;
 			}},
 			{title: '颁奖单位项',minWidth:260,sort: true,templet:function(d){
 				var str='';
-				if(d.ry_tuce)
+				if(d.ryTuce)
 				{
-					str = d.ry_tuce.fz_school.title;
+					str = d.ryTuce.fzSchool.title;
 				}
 				return str;
 			}},
@@ -124,10 +124,10 @@
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/jsryinfo','mytable');
+            cjgl.delAll(checkStatus,'jsryinfo/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加荣誉','/jsryinfo/create','','',true);
+            cjgl.add('添加荣誉','jsryinfo/create','','',true);
             break;
         };
       });
@@ -139,10 +139,10 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
 	        case 'del':// 删除
-	          cjgl.del(obj,"/jsryinfo");
+	          cjgl.del(obj,"jsryinfo/delete");
 	          break;
 	        case 'edit':// 编辑
-	          cjgl.add('编辑荣誉','/jsryinfo/'+obj.data.id+'/edit','','',true);
+	          cjgl.add('编辑荣誉','jsryinfo/edit/'+obj.data.id,'','',true);
 	          break;
         };
       });

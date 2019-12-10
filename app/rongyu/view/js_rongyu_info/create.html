@@ -29,7 +29,7 @@
     <div class="layui-form-item" align="center">
       {eq name="$list.set.formpost" value="PUT" }
         {if strlen($list.data.pic)>0}
-          <img style="max-height: 300px;max-width: 500px" src="__UPLOAD__/rongyu_teacher/{$list.data.pic}" onclick="imgMax(this,true)">
+          <img style="max-height: 300px;max-width: 500px" src="__UPLOAD__/{$list.data.pic}" onclick="imgMax(this,true)">
         {else /}
           <img style="max-height: 300px;max-width: 500px" src="__UPLOAD__/rongyu_teacher/404.png" onclick="imgMax(this,true)">
         {/if}
@@ -201,7 +201,7 @@
     //执行实例
     var uploadInst = upload.render({
       elem: '#upload' //绑定元素
-      ,url: "{:url('upload')}" //上传接口
+      ,url: "/rongyu/danwei/upload" //上传接口
       ,done: function(res){
         if(res.val == 1){
           $('#pic').val(res.url);
@@ -210,7 +210,7 @@
       }
       ,data: {
         text: '教师荣誉'
-        ,serurl:'rongyu_teacher\\'
+        ,serurl:'rongyu_teacher'
 
       }
       ,acceptMime:'.jpg,.jpeg,.png'

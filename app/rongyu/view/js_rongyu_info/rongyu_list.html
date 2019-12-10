@@ -1,5 +1,5 @@
 
-{extend name="common@list" /}
+{extend name=".././view/list.html" /}
 {block name="jsset"}
 
 {/block}
@@ -75,13 +75,13 @@
 			{field: 'bianhao', title: '获奖编号', minWidth:140,sort: true},
 			{title: '获奖人', minWidth:120,templet:function(d){
 				var str='';
-				if(d.hj_jsry)
+				if(d.hjJsry)
 				{
-					for (var k = 0, length = d.hj_jsry.length; k < length; k++) {
+					for (var k = 0, length = d.hjJsry.length; k < length; k++) {
 						if(k == 0){
-							str = d.hj_jsry[k].teacher.xingming;
+							str = d.hjJsry[k].teacher.xingming;
 						}else{
-							str =str+'、'+d.hj_jsry[k].teacher.xingming;
+							str =str+'、'+d.hjJsry[k].teacher.xingming;
 						}
 					}
 				}
@@ -89,13 +89,15 @@
 			}},
 			{title: '参与人', minWidth:120,templet:function(d){
 				var str='';
-				if(d.cy_jsry)
+				if(d.cyJsry)
 				{
-					for (var k = 0, length = d.cy_jsry.length; k < length; k++) {
-						if(k == 0){
-							str = d.cy_jsry[k].teacher.xingming;
-						}else{
-							str =str+'、'+d.cy_jsry[k].teacher.xingming;
+					for (var k = 0; k < d.cyJsry.length; k++) {
+						if(d.cyJsry[k].teacher){
+							if(k == 0){
+								str = d.cyJsry[k].teacher.xingming;
+							}else{
+								str =str+'、'+d.cyJsry[k].teacher.xingming;
+							}
 						}
 					}
 				}
@@ -103,17 +105,17 @@
 			}},
 			{field: "subject",title: '所属学科',minWidth:120,sort: true,templet:function(d){
 				var str='';
-				if(d.ry_subject)
+				if(d.rySubject)
 				{
-					str = d.ry_subject.title;
+					str = d.rySubject.title;
 				}
 				return str;
 			}},
 			{field: "jiangxiang",title: '奖项', minWidth:120,sort: true,templet:function(d){
 				var str='';
-				if(d.jx_category)
+				if(d.jxCategory)
 				{
-					str = d.jx_category.title;
+					str = d.jxCategory.title;
 				}
 				return str;
 			}},
@@ -134,13 +136,13 @@
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/jsryinfo','mytable');
+            cjgl.delAll(checkStatus,'/rongyu/jsryinfo/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加荣誉','/jsryinfoadd/'+"{$list.rongyuce}",'','',true);
+            cjgl.add('添加荣誉','/rongyu/jsryinfo/create/'+"{$list.rongyuce}",'','',true);
             break;
           case 'download':
-            cjgl.add('下载荣誉信息','/ryout/'+"{$list.rongyuce}",'300','200',false);
+            cjgl.add('下载荣誉信息','/rongyu/jsryinfo/ryout/'+"{$list.rongyuce}",'300','200',false);
             break;
         };
       });
@@ -152,10 +154,10 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
           	case 'del':// 删除
-	          cjgl.del(obj,"/jsryinfo");
+	          cjgl.del(obj,"/rongyu/jsryinfo/delete");
 	          break;
 	        case 'edit':// 编辑
-	          cjgl.add('编辑荣誉','/jsryinfo/'+obj.data.id+'/edit','','',true);
+	          cjgl.add('编辑荣誉','/rongyu/jsryinfo/edit/'+obj.data.id,'','',true);
 	          break;
         };
       });

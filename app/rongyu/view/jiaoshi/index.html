@@ -68,7 +68,7 @@
 			{field: 'title', title: '荣誉名称',sort: true, minWidth:240},
 			{field: 'fzschool', title: '颁奖单位',sort: true,templet:function(d){
 				var str='';
-				if(d.fz_school)
+				if(d.fzSchool)
 				{
 					str = d.fzSchool.jiancheng;
 				}
@@ -84,7 +84,7 @@
 			}},
 			{field: "category",title: '级别',templet:function(d){
 				var str='';
-				if(d.fz_school)
+				if(d.fzSchool)
 				{
 					str = d.fzSchool.dwJibie.title;
 				}
@@ -108,7 +108,7 @@
             cjgl.delAll(checkStatus,'jiaoshi/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加荣誉册','jiaoshi/create','600','400');
+            cjgl.add('添加荣誉册','jiaoshi/create','600','300');
             break;
         };
       });
@@ -120,16 +120,16 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
           	case 'detail':// 查看
-	          parent.x_admin_add_to_tab(obj.data.title + ' 列表','rylist/'+obj.data.id,true);
+	          parent.xadmin.add_tab(obj.data.title + ' 列表','/rongyu/jsryinfo/list/'+obj.data.id,true);
 	          break;
 	        case 'del':// 删除
 	          cjgl.del(obj,"jiaoshi/delete");
 	          break;
 	        case 'edit':// 编辑
-	          cjgl.add('编辑荣誉册','jiaoshi/edit/'+obj.data.id,'600','400');
+	          cjgl.add('编辑荣誉册','jiaoshi/edit/'+obj.data.id,'600','300');
 	          break;
 	        case 'more':// 状态
-	          cjgl.add('批传','jsryinfoaddall/'+obj.data.id,'300','200');
+	          cjgl.add('批传','/rongyu/jsryinfocreateall/'+obj.data.id,'300','200');
 	          break;
         };
       });

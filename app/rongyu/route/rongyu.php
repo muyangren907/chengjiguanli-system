@@ -56,19 +56,25 @@ Route::group('jiaoshi', function () {
 	    Route::rule('update/<id>','Jiaoshi/update','put');			# 更新信息
 	    Route::rule('delete/<id>','Jiaoshi/delete','delete');		# 删除信息
 	    Route::rule('status','Jiaoshi/setStatus','post');		# 删除信息
+
 	});
 
 
 
 // 教师荣誉信息
 Route::group('jsryinfo', function () {
-	    Route::rule('','jsryinfo/index','get');						# 信息列表
-	    Route::rule('data','jsryinfo/ajaxdata','post');				# 获取数据
-	    Route::rule('create','jsryinfo/create','get');				# 添加信息
-	    Route::rule('save','jsryinfo/save','post');					# 保存信息
-	    // Route::rule('read/<id>','jsryinfo/read','get');				# 读取信息
-	    Route::rule('edit/<id>','jsryinfo/edit','get');				# 修改信息
-	    Route::rule('update/<id>','jsryinfo/update','put');			# 更新信息
-	    Route::rule('delete/<id>','jsryinfo/delete','delete');		# 删除信息
-	    Route::rule('status','jsryinfo/setStatus','post');		# 删除信息
+	    Route::rule('','JsRongyuInfo/index','get');						# 信息列表
+	    Route::rule('data','JsRongyuInfo/ajaxdata','post');				# 获取数据
+	    Route::rule('create/<rongyuce>','JsRongyuInfo/create','get');				# 添加信息
+	    Route::rule('save','JsRongyuInfo/save','post');					# 保存信息
+	    // Route::rule('read/<id>','JsRongyuInfo/read','get');				# 读取信息
+	    Route::rule('edit/<id>','JsRongyuInfo/edit','get');				# 修改信息
+	    Route::rule('update/<id>','JsRongyuInfo/update','put');			# 更新信息
+	    Route::rule('delete/<id>','JsRongyuInfo/delete','delete');		# 删除信息
+	    Route::rule('status','JsRongyuInfo/setStatus','post');		# 删除信息
+	    Route::rule('createall/<rongyuce>','JsRongyuInfo/createAll','get');				# 批量导入
+	    Route::rule('saveall','JsRongyuInfo/saveAll','post');					# 批量保存
+	    Route::rule('list/<rongyuce>','JsRongyuInfo/rongyuList','get');					# 批量保存
+
+
 	});

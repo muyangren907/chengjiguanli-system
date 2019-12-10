@@ -23,10 +23,10 @@ class Jiaoshi extends BaseController
         $list['dataurl'] = 'jiaoshi/data';
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
     /**
@@ -90,9 +90,9 @@ class Jiaoshi extends BaseController
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
     /**
@@ -157,13 +157,13 @@ class Jiaoshi extends BaseController
             'webtitle'=>'编辑荣誉册',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'/jiaoshi/update/'.$id,
+            'url'=>'/rongyu/jiaoshi/update/'.$id,
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
     /**

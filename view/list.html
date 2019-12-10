@@ -96,7 +96,12 @@
 
           //监听指定开关
           lForm.on('switch(status)', function(data){
-            cjgl.status(data,"{:url('status')}");
+            var status = "{$list.status ? $list.status : ''}";
+            if(typeof status == "undefined" || status == null || status == "")
+            {
+              status = "{:url('status')}";
+            }
+            cjgl.status(data,status);
           });
 
         });

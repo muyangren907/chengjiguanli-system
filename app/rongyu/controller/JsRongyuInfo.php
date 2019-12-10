@@ -25,12 +25,13 @@ class JsRongyuInfo extends BaseController
         // 设置要给模板赋值的信息
         $list['webtitle'] = '荣誉列表';
         $list['dataurl'] = 'jsryinfo/data';
+        $list['status'] = 'jsryinfo/status';
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 /**
@@ -45,12 +46,14 @@ class JsRongyuInfo extends BaseController
         // 设置要给模板赋值的信息
         $list['webtitle'] = $ry->where('id',$rongyuce)->value('title') . ' 荣誉';
         $list['rongyuce'] = $rongyuce;
+        $list['dataurl'] = '/rongyu/jsryinfo/data';
+        $list['status'] = '/rongyu/jsryinfo/status';
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -114,14 +117,16 @@ class JsRongyuInfo extends BaseController
             'webtitle'=>'添加荣誉',
             'butname'=>'添加',
             'formpost'=>'POST',
-            'url'=>'save',
+            'url'=>'/rongyu/jsryinfo/save',
             'rongyuce'=>$rongyuce
         );
 
+        dump($list);
+
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
     /**留备用
@@ -205,13 +210,13 @@ class JsRongyuInfo extends BaseController
             'webtitle'=>'批量上传教师荣誉册图片',
             'butname'=>'批传',
             'formpost'=>'POST',
-            'url'=>'/jsryinfoaddall/'.$rongyuce,
+            'url'=>'saveall/'.$rongyuce,
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
     // 保存批传
@@ -224,7 +229,7 @@ class JsRongyuInfo extends BaseController
         // 获取表单上传文件
         $file = request()->file('file');
         // 上传文件并返回结果
-        $data = upload($list,$file);
+        $data = saveFileInfo($file,$list,false);
 
         if($data['val'] != 1)
         {
@@ -244,25 +249,25 @@ class JsRongyuInfo extends BaseController
 
 
 
-     /**
-     * 上传荣誉图片并保存
-     *
-     * @param  \think\Request  $request
-     * @return \think\Response
-     */
-    public function upload()
-    {
-        // 获取文件信息
-        $list['text'] = $this->request->post('text');
-        $list['serurl'] = $this->request->post('serurl');
+    //  /**
+    //  * 上传荣誉图片并保存
+    //  *
+    //  * @param  \think\Request  $request
+    //  * @return \think\Response
+    //  */
+    // public function upload()
+    // {
+    //     // 获取文件信息
+    //     $list['text'] = $this->request->post('text');
+    //     $list['serurl'] = $this->request->post('serurl');
 
-        // 获取表单上传文件
-        $file = request()->file('file');
-        // 上传文件并返回结果
-        $data = upload($list,$file);
+    //     // 获取表单上传文件
+    //     $file = request()->file('file');
+    //     // 上传文件并返回结果
+    //     $data = upload($list,$file);
 
-        return json($data);
-    }
+    //     return json($data);
+    // }
 
     /**
      * 荣誉册中荣誉信息列表
@@ -310,14 +315,14 @@ class JsRongyuInfo extends BaseController
             'webtitle'=>'编辑荣誉',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'/jsryinfo/update/'.$id,
+            'url'=>'/rongyu/jsryinfo/update/'.$id,
             'rongyuce'=>$id
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
     /**
