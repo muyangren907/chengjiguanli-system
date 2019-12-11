@@ -108,13 +108,13 @@ class KetiInfo extends Base
                         $query->field('id,jiancheng');
                     },
                     'KtCe'=>function($query){
-                        $query->field('id,lxdanweiid,category,lxshijian')
+                        $query->field('id,title,lxdanweiid,category,lxshijian')
                             ->with([
                                 'ktCategory' => function($q){
                                     $q->field('id,title');
                                 },
                                 'ktLxdanwei' => function($q){
-                                    $q->field('id,jiancheng');
+                                    $q->field('id,jiancheng,title');
                                 }
                             ]);
                     },
@@ -237,7 +237,6 @@ class KetiInfo extends Base
         }
         return $value;
     }
-
 
 
 

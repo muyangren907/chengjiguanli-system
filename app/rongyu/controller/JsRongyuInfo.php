@@ -10,7 +10,7 @@ use app\rongyu\model\JsRongyuInfo as ryinfo;
 // 引用PhpSpreadsheet类
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use PhpOffice\PhpSpreadsheet\IOFactory;
+// use PhpOffice\PhpSpreadsheet\IOFactory;
 
 
 class JsRongyuInfo extends BaseController

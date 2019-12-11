@@ -6,6 +6,9 @@ namespace app\keti\controller;
 use app\BaseController;
 // 引用课题信息数据模型类
 use app\keti\model\KetiInfo as ktinfo;
+// 引用PhpSpreadsheet类
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 
 class KetiInfo extends BaseController
@@ -511,6 +514,7 @@ class KetiInfo extends BaseController
     {
         $ketiinfo = new ktinfo();
         $list = $ketiinfo->srcKeti($ketice);
+        // halt($list);
 
 
         if($list->isEmpty())
@@ -518,36 +522,52 @@ class KetiInfo extends BaseController
             // $this->error('兄弟，没有要下载的信息呀~');
             return '没有找到记录，下载失败';
         }else{
-            $filename = $list[0]['ryTuce']['title'];
-            $fzschool = $list[0]['ryTuce']['fz_school']['title'];
-            $fzshijian = strtotime($list[0]['ryTuce']['fzshijian']);
-            $fzshijian = date('Ym',$fzshijian);
+           $keticename = $list[0]['KtCe']['title'];
+           $lxdanwei = $list[0]['KtCe']['ktLxdanwei']['title'];
+           $lxshijian = strtotime($list[0]['KtCe']['lxshijian']);
+           $lxshijian = date('Ym',$lxshijian);
         }
 
         //通过工厂模式创建内容
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('uploads/keti/keti.xlsx');
         $worksheet = $spreadsheet->getActiveSheet();
 
-        $worksheet->getCell('A1')->setValue($filename);
-        $worksheet->getCell('A2')->setValue('发证单位:'.$fzschool);
-        $worksheet->getCell('G2')->setValue('发证时间:'.$list[0]['ryTuce']['fzshijian']);
+        $worksheet->getCell('A1')->setValue($keticename);
+        $worksheet->getCell('A2')->setValue('发证单位:'.$lxdanwei);
+        $worksheet->getCell('G2')->setValue('发证时间:'.$list[0]['KtCe']['lxshijian']);
         // 循环为excel每行赋值
         foreach ($list as $key => $value) {
             $myrowid = $key + 4;
             $worksheet->getCell('A'.$myrowid)->setValue($key+1);
             $worksheet->getCell('B'.$myrowid)->setValue($value->title);
-            $worksheet->getCell('C'.$myrowid)->setValue($value->hjJsName);
-            if($value->hj_school){
-                $worksheet->getCell('D'.$myrowid)->setValue($value->hj_school->jiancheng);
+            $worksheet->getCell('C'.$myrowid)->setValue($value->bianhao);
+            if($value->ktZcr){
+                foreach ($value->ktZcr as $k => $val) {
+                    if($k==0)
+                    {
+                        $str = $val->teacher->xingming;
+                    }else{
+                        $str = $str.'、'.$val->teacher->xingming;
+                    }
+                }
+                $worksheet->getCell('D'.$myrowid)->setValue($str);
             }
-            if($value->ry_subject){
-                $worksheet->getCell('E'.$myrowid)->setValue($value->ry_subject->title);
+            // 课题负责单位
+            if($value->fzSchool){
+                $worksheet->getCell('E'.$myrowid)->setValue($value->fzSchool->jiancheng);
             }
-            $worksheet->getCell('F'.$myrowid)->setValue($value->cyJsName);
-            if($value->jx_category){
-                $worksheet->getCell('G'.$myrowid)->setValue($value->jx_category->title);
+            if($value->ktCy){
+                foreach ($value->ktCy as $k => $val) {
+                    if($k==0)
+                    {
+                        $str = $val->teacher->xingming;
+                    }else{
+                        $str = $str.'、'.$val->teacher->xingming;
+                    }
+                }
+                $worksheet->getCell('F'.$myrowid)->setValue($str);
             }
-            $worksheet->getCell('H'.$myrowid)->setValue($value->bianhao);
+            $worksheet->getCell('G'.$myrowid)->setValue($value->jddengji);
         }
 
         // 给单元格加边框
@@ -563,7 +583,7 @@ class KetiInfo extends BaseController
         if($key+4>9)
         {
             
-            $worksheet->getStyle('A10:I'.($key+4))->applyFromArray($styleArray);
+            $worksheet->getStyle('A10:H'.($key+4))->applyFromArray($styleArray);
             // 设置行高
             for($i = 10;  $i<=($key+4); $i++){
                 $worksheet->getRowDimension($i)->setRowHeight(30);
@@ -573,22 +593,16 @@ class KetiInfo extends BaseController
 
         $worksheet->getStyle('A4')->applyFromArray($styleArray);
 
-
         //告诉浏览器输出07Excel文件
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         //告诉浏览器输出浏览器名称
-        header('Content-Disposition: attachment;filename="'. $filename .$fzshijian.'.xlsx"');
+        header('Content-Disposition: attachment;filename="'.$keticename .$lxshijian.'.xlsx"');
         //禁止缓存
         header('Cache-Control: max-age=0');
         $writer = new Xlsx($spreadsheet);
         $writer->save('php://output');
-        // ob_end_clean();
-        // ob_start();
-        // 释放内存
-        $spreadsheet->disconnectWorksheets();
-        unset($spreadsheet);
 
-        // return '下载后请关闭窗口';
+
     }
 
 
