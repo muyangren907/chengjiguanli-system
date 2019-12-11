@@ -514,7 +514,6 @@ class KetiInfo extends BaseController
     {
         $ketiinfo = new ktinfo();
         $list = $ketiinfo->srcKeti($ketice);
-        // halt($list);
 
 
         if($list->isEmpty())
@@ -541,7 +540,9 @@ class KetiInfo extends BaseController
             $worksheet->getCell('A'.$myrowid)->setValue($key+1);
             $worksheet->getCell('B'.$myrowid)->setValue($value->title);
             $worksheet->getCell('C'.$myrowid)->setValue($value->bianhao);
+            // 课题主持人
             if($value->ktZcr){
+                $str = '';
                 foreach ($value->ktZcr as $k => $val) {
                     if($k==0)
                     {
@@ -556,7 +557,9 @@ class KetiInfo extends BaseController
             if($value->fzSchool){
                 $worksheet->getCell('E'.$myrowid)->setValue($value->fzSchool->jiancheng);
             }
+            // 课题参与人
             if($value->ktCy){
+                $str = '';
                 foreach ($value->ktCy as $k => $val) {
                     if($k==0)
                     {
