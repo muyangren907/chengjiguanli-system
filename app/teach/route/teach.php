@@ -65,6 +65,7 @@ Route::group('subject', function () {
 	    Route::rule('update/<id>','subject/update','put');			# 更新信息
 	    Route::rule('delete/<id>','subject/delete','delete');		# 删除信息
 	    Route::rule('status','subject/setStatus','post');		# 删除信息
+	    Route::rule('kaoshi','subject/kaoshi','post');		# 删除信息
 	});
 
 

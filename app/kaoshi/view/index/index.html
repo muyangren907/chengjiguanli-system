@@ -1,5 +1,5 @@
 
-{extend name="common@list" /}
+{extend name=".././view/list.html" /}
 {block name="jsset"}
 
 {/block}
@@ -37,13 +37,10 @@
 </script>
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
-<!-- 	<a class="layui-btn-xs" lay-event="status" title="{{ d.status == 1 ? '禁用' : '启用' }}">
-		<i class="layui-icon {{ d.status == 1 ? 'layui-icon-close' : 'layui-icon-ok' }}"></i>
-	</a> -->
+	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
 	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon layui-icon-edit"></i></a>
 	<a class="layui-btn-xs" lay-event="set" title="设置"><i class="layui-icon layui-icon-set-sm"></i></a>
 	<a class="layui-btn-xs" lay-event="more" title="更多操作"><i class="layui-icon layui-icon-more-vertical"></i></a>
-	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
 	
 </script>
 <!-- 表格操作 -->
@@ -52,7 +49,8 @@
   // 设置列
   options.cols=[[ //表头
 			{type:'checkbox', fixed: 'left'},
-			{field: 'title', title: '单位名称',sort: true, minWidth:240},
+			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:130},
+			{field: 'title', title: '考试名称',sort: true, minWidth:240},
 			// {field: 'category', title: '考试分类', minWidth:100,sort: true,templet:function(d){
 			// 	var str='';
 			// 	if(d.ks_category)
@@ -63,13 +61,13 @@
 			// }},
 			{field: "",title: '参考年级', minWidth:180,templet:function(d){
 				var str='';
-				if(d.ks_nianji.length>0)
+				if(d.ksNianji.length>0)
 				{
-					for (var k = 0, length = d.ks_nianji.length; k < length; k++) {
+					for (var k = 0, length = d.ksNianji.length; k < length; k++) {
 						if(k == 0){
-							str = d.ks_nianji[k].nianjiname;
+							str = d.ksNianji[k].nianjiname;
 						}else{
-							str =str+'、'+d.ks_nianji[k].nianjiname;
+							str =str+'、'+d.ksNianji[k].nianjiname;
 						}
 					}
 				}
@@ -77,13 +75,13 @@
 			}},
 			{field: '', title: '参考学科', minWidth:100,templet:function(d){
 				var str='';
-				if(d.ks_subject.length>0)
+				if(d.ksSubject.length>0)
 				{
-					for (var k = 0, length = d.ks_subject.length; k < length; k++) {
+					for (var k = 0, length = d.ksSubject.length; k < length; k++) {
 						if(k == 0){
-							str = d.ks_subject[k].subject_name.jiancheng;
+							str = d.ksSubject[k].subjectName.jiancheng;
 						}else{
-							str =str+'、'+d.ks_subject[k].subject_name.jiancheng;
+							str =str+'、'+d.ksSubject[k].subjectName.jiancheng;
 						}
 					}
 				}
@@ -98,7 +96,7 @@
 				return endate;
 			}},
 			{field: 'status', title: '状态', minWidth:80,templet:'#status', sort: true},
-			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:175}
+			
 		]];
 
   // 提交搜索条件后重载表格
@@ -110,10 +108,10 @@
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/kaoshi','mytable');
+            cjgl.delAll(checkStatus,'index/delete','mytable');
             break;
           case 'add':
-            cjgl.add('新建考试','/kaoshi/create','','',true);
+            cjgl.add('新建考试','index/create','','',true);
             break;
         };
       });
@@ -124,20 +122,17 @@
         var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
-          	case 'detail':// 查看
-	          layer.msg('查看' + data.id);
-	          break;
 	        case 'del':// 删除
-	          cjgl.del(obj,"/kaoshi");
+	          cjgl.del(obj,"kaoshi");
 	          break;
 	        case 'edit':// 编辑
-	          cjgl.add('编辑考试','/kaoshi/'+obj.data.id+'/edit','','',true);
+	          cjgl.add('编辑考试','index/edit/'+obj.data.id,'','',true);
 	          break;
 	        case 'set':// 编辑
-	          cjgl.add('设置考试','/kaoshiset/'+obj.data.id,'','',true);
+	          cjgl.add('设置考试','index/set/'+obj.data.id,'','',true);
 	          break;
 	        case 'more':// 状态
-	        parent.x_admin_add_to_tab(obj.data.title + ' 操作','kaoshi/'+obj.data.id+'/more',true);
+	        parent.xadmin.add_tab(obj.data.title + ' 操作','/kaoshi/index/more/'+obj.data.id,true);
 	          break;
         };
       });

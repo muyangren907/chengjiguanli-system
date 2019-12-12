@@ -29,17 +29,17 @@ function getCategory($id = '0')
 }
 
 
-// 获取类别名称
-function getCategoryTitle($id)
-{
-	$category = new \app\system\model\Category;
-	// 根据id查询类别名
-	$value = $category
-		->where('id',$id)
-		->vlaue('title');
-	// 返回类别名
-	return $value;
-}
+// // 获取类别名称
+// function getCategoryTitle($id)
+// {
+// 	$category = new \app\system\model\Category;
+// 	// 根据id查询类别名
+// 	$value = $category
+// 		->where('id',$id)
+// 		->vlaue('title');
+// 	// 返回类别名
+// 	return $value;
+// }
 
 
 function nianjiList($riqi=0)
@@ -322,3 +322,24 @@ function enddate($kaoshiid)
     return $data;
 
 }
+
+
+
+/**
+ * 获取参加考试的学科
+ * 返回 $data 
+ * */ 
+function subjectList()
+{
+	$sbj = new \app\teach\model\Subject;
+	$data = $sbj::where('status',1)
+                    ->where('kaoshi',1)
+                    ->field('id,title,jiancheng,lieming')
+                    ->select();
+    return $data;
+}
+
+
+
+
+

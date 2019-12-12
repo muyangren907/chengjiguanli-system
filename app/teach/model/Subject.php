@@ -34,9 +34,9 @@ class Subject extends Base
 	}
 
 
-    // 是否参加考试获取器
-    public function getKaoshiAttr($value){
-        $kaoshi = array(0=>'否',1=>'是');
-        return $kaoshi[$value];
-    }	
+    // // 是否参加考试获取器
+    // public function getKaoshiAttr($value){
+    //     $kaoshi = array(0=>'否',1=>'是');
+    //     return $kaoshi[$value];
+    // }	
 }

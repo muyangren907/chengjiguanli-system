@@ -17,13 +17,13 @@ class Index extends BaseController
 
         // 设置要给模板赋值的信息
         $list['webtitle'] = '考试列表';
-        $list['dataurl'] = 'category/data';
+        $list['dataurl'] = 'index/data';
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -76,14 +76,14 @@ class Index extends BaseController
             'webtitle'=>'新建考试',
             'butname'=>'创建',
             'formpost'=>'POST',
-            'url'=>'/kaoshi',
+            'url'=>'save',
         );
 
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
     }
 
     
@@ -146,14 +146,14 @@ class Index extends BaseController
             'webtitle'=>'编辑考试',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'/kaoshi/'.$id,
+            'url'=>'/kaoshi/index/update/'.$id,
         );
 
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch('create');
+        return $this->view->fetch('create');
 
     }
 
@@ -197,7 +197,7 @@ class Index extends BaseController
 
 
     // 设置考试信息
-    public function kaoshiset($id)
+    public function kaoshiSet($id)
     {
 
         // 获取考试信息
@@ -242,15 +242,15 @@ class Index extends BaseController
             'webtitle'=>'设置考试',
             'butname'=>'设置',
             'formpost'=>'PUT',
-            'url'=>'/kaoshiset/'.$id,
+            'url'=>'/kaoshi/index/updateset/'.$id,
             'kaoshi'=>$id,
         );
 
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch();
+        return $this->view->fetch();
 
     }
 
@@ -259,7 +259,7 @@ class Index extends BaseController
 
 
     // 更新考试信息
-    public function updateset($id)
+    public function updateSet($id)
     {
         $validate = new \app\kaoshi\validate\Kaoshiset;
 
@@ -378,8 +378,8 @@ class Index extends BaseController
         $list['kaoshiid'] = $kaoshi['id'];
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch();
+        return $this->view->fetch();
     }
 }

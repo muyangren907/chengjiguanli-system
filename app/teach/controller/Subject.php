@@ -223,13 +223,33 @@ class Subject extends BaseController
 
 
 
-    // 学科列表
-    public function subjectlist(){
-        $data = SJ::where('status',1)
-                    ->where('kaoshi',1)
-                    ->field('id,title,jiancheng,lieming')
-                    ->select();
-        return $data;
+    // 设置学期状态
+    public function kaoshi()
+    {
+
+        //  获取id变量
+        $id = request()->post('id');
+        $value = request()->post('value');
+
+        // 获取学期信息
+        $data = SJ::where('id',$id)->update(['kaoshi'=>$value]);
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
     }
+
+
+
+    // // 学科列表
+    // public function subjectlist(){
+    //     $data = SJ::where('status',1)
+    //                 ->where('kaoshi',1)
+    //                 ->field('id,title,jiancheng,lieming')
+    //                 ->select();
+    //     return $data;
+    // }
 
 }

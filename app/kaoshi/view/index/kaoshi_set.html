@@ -1,4 +1,4 @@
-{extend name="common@create" /}
+{extend name=".././view/create.html" /}
 
 {block name="form"}
     <form class="layui-form layui-form-pane" lay-filter="myform">
@@ -50,7 +50,8 @@
             </div>
            
           {php}
-              $subject = action('teach/Subject/subjectlist');
+
+              $subject = subjectList();
           {/php}
               
 

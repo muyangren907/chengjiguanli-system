@@ -83,7 +83,7 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
             statusval=0;
             title='禁用';
         }
-        console.log(url);
+        // console.log(url);
         // console.log(obj.elem);
         // 设置修改后的状态值
         layer.confirm('确认要'+title+'吗？',function(index){

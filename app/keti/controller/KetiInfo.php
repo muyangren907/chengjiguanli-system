@@ -518,8 +518,8 @@ class KetiInfo extends BaseController
 
         if($list->isEmpty())
         {
-            // $this->error('兄弟，没有要下载的信息呀~');
-            return '没有找到记录，下载失败';
+            $this->error('兄弟，没有要下载的信息呀~');
+            // return '没有找到记录，下载失败';
         }else{
            $keticename = $list[0]['KtCe']['title'];
            $lxdanwei = $list[0]['KtCe']['ktLxdanwei']['title'];
