@@ -56,12 +56,13 @@ function nianjiList($riqi=0)
 	}
 
 
-	if($thisday[0]<=$jiedian)
+	if($thisday<=$jiedian)
 	{
 		$str = 1;
 	}else{
 		$str = 0;
 	}
+
 
 	$nian = date('Y') - $str;
 

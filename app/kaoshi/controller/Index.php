@@ -293,9 +293,17 @@ class Index extends BaseController
             $i++;
         }
 
+
         // 更新数据
+
+        // 删除原来的数据
         $subject = new \app\kaoshi\model\KaoshiSubject;
-        $subject->where('kaoshiid',$id)->delete();
+
+        $subject::destroy(function($query) use ($id){
+            $query->where('kaoshiid',$id);
+        });
+
+        // 添加新的数据
         $subjectdata = $subject->saveAll($data);
 
         // 整理数据
@@ -310,7 +318,9 @@ class Index extends BaseController
 
         // 更新数据
         $nianji = new \app\kaoshi\model\KaoshiNianji;
-        $nianji->where('kaoshiid',$id)->delete();
+        $nianji::destroy(function($query) use ($id){
+            $query->where('kaoshiid',$id);
+        });
         $nianjidata = $nianji->saveAll($data);
 
 
