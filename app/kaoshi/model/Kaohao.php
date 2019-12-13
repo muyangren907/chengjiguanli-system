@@ -20,7 +20,7 @@ class Kaohao extends Base
         // 获取考试标签
         $data = $this->where('kaoshi',$kaoshi)
                     ->where('banji','in',$banji)
-                    ->field('id,banji,school')
+                    ->field('banji')
                     ->order(['banji'])
                     ->group('banji')
                     ->with([
@@ -44,17 +44,18 @@ class Kaohao extends Base
                     ])
                     ->select();
 
+
         $stu = new \app\renshi\model\Student;
         // 找出已经被删除学生，并添加该学生信息
         foreach ($data as $key => $value) {
-            foreach ($value->banji_kaohao as $k => $val) {
-                if($val->cj_student == Null)
+            foreach ($value->banjiKaohao as $k => $val) {
+                if($val->cjStudent == Null)
                 {
                     $stuinof = $stu::withTrashed()
                             ->where('id',$val->student)
                             ->field('id,xingming')
                             ->find();
-                    $data[$key]->banji_kaohao[$key]->cj_student = array('id'=>$stuinof->id,'xingming'=>$stuinof->xingming);
+                    $data[$key]->banjiKaohao[$key]->cjStudent = array('id'=>$stuinof->id,'xingming'=>$stuinof->xingming);
                 }
             }
         }
@@ -126,7 +127,7 @@ class Kaohao extends Base
                     ,'cjBanji'=>function($query){
                         $query->field('id,paixu,ruxuenian');
                     }
-                    ,'cjSchool'=>function($query){
+                    ,'cySchool'=>function($query){
                         $query->field('id,jiancheng');
                     }
                     ,'cjStudent'=>function($query){

@@ -1,4 +1,4 @@
-{extend name=".././view/create.html" /}
+{extend name=".././view/createhref.html" /}
 
 {block name="form"}
     <form action="{$list.set.url}" method="{$list.set.formpost}" class="layui-form layui-form-pane" lay-filter="myform">
@@ -90,7 +90,7 @@
 
 		// 获取班级列表
 		$.ajax({
-		    url:"/banji/njbanji",
+		    url:"/teach/banji/mybanji",
 		    type:"POST",
 		    data:{
 		    	school:school

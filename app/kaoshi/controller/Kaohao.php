@@ -84,12 +84,6 @@ class Kaohao extends BaseController
             return ['msg'=>'考试已经结束，不能分配考号','val'=>0];
         }
 
-        
-
-        // 将班级转换成数组
-        $list['banjiids'] = implode(',',$list['banjiids']);
-        $ksid = $list['kaoshi'];
-
         // 获取实例化学生数据模型
         $stu = new \app\renshi\model\Student;
         // 获取参加考试学生名单
@@ -103,6 +97,7 @@ class Kaohao extends BaseController
                             }
                         ])
                         ->select();
+
         $njlist = nianjiList();
         // 重新组合学生信息
         $kaohao = array();
@@ -298,7 +293,7 @@ class Kaohao extends BaseController
             'webtitle'=>'下载考号',
             'butname'=>'下载',
             'formpost'=>'POST',
-            'url'=>'/kaoshi/'.$kaoshi.'/biaoqianXls',
+            'url'=>'/kaoshi/kaohao/biaoqianxls',
             'kaoshi'=>$kaoshi
         );
 
@@ -348,6 +343,7 @@ class Kaohao extends BaseController
                     ])
                     ->find();
 
+
         $kh = new KH();
         // 获取考试信息
         $kaohao = $kh->srcKaohao($kaoshi,$banji);
@@ -366,21 +362,33 @@ class Kaohao extends BaseController
         $sheet->setCellValue('F1', '姓名');
 
 
+        // 实例化系统设置类
+        $md5 = new \app\system\controller\Encrypt; 
+
+
+
         // 循环写出信息
         $i = 2;
         foreach ($kaohao as $key=>$bj)
         {
-            foreach ($kslist->ks_subject as $ksbj => $sbj)
+
+            foreach ($kslist->ksSubject as $ksbj => $sbj)
             {
-                foreach ($bj->banji_kaohao as $kkh => $kh)
+
+                // halt($obj);
+
+
+                foreach ($bj->banjiKaohao as $kkh => $kh)
                 {
                     // 表格赋值
                     $sheet->setCellValue('A'.$i, $i-1);
-                    $sheet->setCellValue('B'.$i, action('system/Encrypt/encrypt',['data'=>$kh->id.'|'.$sbj->subject_name->id,'key'=>'dlbz']));
-                    $sheet->setCellValue('C'.$i, $bj->cj_school->jiancheng);
-                    $sheet->setCellValue('D'.$i, $bj->cj_banji->numTitle);
+                    $stuKaohao = '';
+                    $stuKaohao = $md5->encrypt($kh->id.'|'.$sbj->subject_name->id,'dlbz');
+                    $sheet->setCellValue('C'.$i, $bj->cjSchool->jiancheng);
+                    $sheet->setCellValue('B'.$i, $stuKaohao);
+                    $sheet->setCellValue('D'.$i, $bj->cjBanji->numTitle);
                     $sheet->setCellValue('E'.$i, $sbj->subject_name->jiancheng);
-                    $sheet->setCellValue('F'.$i, $kh->cj_student['xingming']);
+                    $sheet->setCellValue('F'.$i, $kh->cjStudent['xingming']);
                     $i++;
                 }
             }
@@ -393,8 +401,8 @@ class Kaohao extends BaseController
         header('Cache-Control: max-age=0');
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
         $writer->save('php://output');
-        ob_flush();
-        flush();
+        // ob_flush();
+        // flush();
     }
 
 
