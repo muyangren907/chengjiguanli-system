@@ -8,7 +8,6 @@ use think\exception\ValidateException;
 use think\Validate;
 use app\middleware\UserLogin;
 use app\middleware\Auth;
-use think\View;
 
 
 /**
@@ -55,6 +54,7 @@ abstract class BaseController
         $this->app     = $app;
         $this->request = $this->app->request;
         $this->view = $this->app->view;
+        // $this->error = $this->app->Jump;
 
         // 控制器初始化
         $this->initialize();
@@ -103,6 +103,6 @@ abstract class BaseController
         return $v->failException(true)->check($data);
     }
 
-
+    use \liliuwei\think\Jump;
 
 }

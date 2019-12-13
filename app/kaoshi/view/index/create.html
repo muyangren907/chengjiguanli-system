@@ -5,7 +5,7 @@
           <div class="layui-form-item">
             <label for="zuzhi" class="layui-form-label"><span class="x-red">*</span>组织单位</label>
             <div class="layui-input-block">
-              {php} $schoollist = schlist('校级','区级');{/php}
+              {php} $schoollist = schlist('校级','区级',['小学','初中','中小学','其他学段']);{/php}
               <select name="zuzhi" lay-verify="required">
                 <option value=""></option>
                 {volist name="schoollist" id="vo"}

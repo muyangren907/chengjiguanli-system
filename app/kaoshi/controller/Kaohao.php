@@ -21,7 +21,7 @@ use think\Validate;
 class Kaohao extends BaseController
 {
     // 生成考号
-    public function index($kaoshi)
+    public function create($kaoshi)
     {
 
         // 获取参考年级
@@ -48,7 +48,7 @@ class Kaohao extends BaseController
             'webtitle'=>'生成考号',
             'butname'=>'生成',
             'formpost'=>'POST',
-            'url'=>'/kaoshi/kaohao',
+            'url'=>'/kaoshi/kaohao/save',
             'kaoshi'=>$kaoshi
         );
 
@@ -79,7 +79,7 @@ class Kaohao extends BaseController
             return ['msg'=>$msg,'val'=>0];
         }
 
-        if(enddate($list['kaoshi']))
+        if(kaoshiDate($list['kaoshi'],'bfdate'))
         {
             return ['msg'=>'考试已经结束，不能分配考号','val'=>0];
         }

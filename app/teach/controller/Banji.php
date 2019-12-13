@@ -318,12 +318,17 @@ class Banji extends BaseController
 
 
     // 获取该学校各年级的班级名和id
-    public function banjilist($school,$ruxuenian)
+    public function banjiList()
     {
         // 获取年级名对应的入学年
         $njanmelist = nianjiList();
         $bjnamelist = banjinamelist();
         $njlist = array_keys($njanmelist);
+
+        // 获取变量
+        $school = input('post.school');
+        $ruxuenian = explode(',',input('post.ruxuenian'));
+
 
         if(is_array($ruxuenian)==false)
         {

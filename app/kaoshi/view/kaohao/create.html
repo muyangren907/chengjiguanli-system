@@ -73,10 +73,11 @@
                 {
                     return true;
                 }
+                console.log(data);
                 for (var i in data) {
                   // $('#'+data[i]['ruxuenian']).nextAll().remove();
-                	for(x in data[i]['nj_banji']){
-                		$('#'+data[i]['ruxuenian']).parent().append('<input type="checkbox" name="banjiids[]" value="'+data[i]['nj_banji'][x]['id']+'" title="'+data[i]['nj_banji'][x]['banTitle']+'" lay-skin="primary" pid="'+data[i]['ruxuenian']+'" action="children">');
+                	for(x in data[i]['njBanji']){
+                		$('#'+data[i]['ruxuenian']).parent().append('<input type="checkbox" name="banjiids[]" value="'+data[i]['njBanji'][x]['id']+'" title="'+data[i]['njBanji'][x]['banTitle']+'" lay-skin="primary" pid="'+data[i]['ruxuenian']+'" action="children">');
                 	}
                 }
                 form.render('checkbox');
