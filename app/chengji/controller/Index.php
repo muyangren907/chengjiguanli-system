@@ -24,9 +24,6 @@ class Index extends BaseController
             'url'=>'/chengji/malu',
         );
 
-        dump('aa');
-        halt('aa');
-
 
         // 模板赋值
         $this->assign('list',$list);
@@ -126,10 +123,12 @@ class Index extends BaseController
     // 根据考号获取学生信息
     public function read()
     {
-        // 获取表单数据 
         // 获取表单数据
         $val = input('post.val');
-        $val = action('system/Encrypt/decrypt',[$val,'key'=>'dlbz']);
+        // 实例化系统设置类
+        $md5 = new \app\system\controller\Encrypt; 
+
+        $val = $md5->decrypt($val,'dlbz');
         $list = explode('|',$val);
         $sbj = $list[1];
 

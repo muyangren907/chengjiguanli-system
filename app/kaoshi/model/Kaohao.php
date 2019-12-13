@@ -20,18 +20,20 @@ class Kaohao extends Base
         // 获取考试标签
         $data = $this->where('kaoshi',$kaoshi)
                     ->where('banji','in',$banji)
-                    ->field('banji')
+                    ->field('banji,school')
                     ->order(['banji'])
-                    ->group('banji')
+                    ->group('banji,school')
                     ->with([
                         'cjBanji'=>function($query){
                             $query->field('id,paixu,ruxuenian')
                                 ->append(['numTitle','banjiTitle']);
                         }
-                        ,'cjSchool'=>function($query){
+                        ,
+                        'cjSchool'=>function($query){
                             $query->field('id,jiancheng');
                         }
-                        ,'banjiKaohao'=>function($query) use($kaoshi){
+                        ,
+                        'banjiKaohao'=>function($query) use($kaoshi){
                             $query->field('id,banji,student,kaoshi,school')
                                 ->where('kaoshi',$kaoshi)
                                 ->order(['banji','id'])

@@ -384,9 +384,11 @@ class Index extends BaseController
             ->field('id,title,bfdate,enddate')
             ->find();
 
+
         // 设置页面标题
         $list['webtitle'] = $kaoshi['title'] .'（'. $kaoshi['bfdate'].'~'.$kaoshi['enddate'].'）';
         $list['kaoshiid'] = $kaoshi['id'];
+
 
         // 模板赋值
         $this->view->assign('list',$list);

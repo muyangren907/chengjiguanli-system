@@ -79,7 +79,7 @@ class Kaohao extends BaseController
             return ['msg'=>$msg,'val'=>0];
         }
 
-        if(kaoshiDate($list['kaoshi'],'bfdate'))
+        if(kaoshiDate($list['kaoshi'],'enddate'))
         {
             return ['msg'=>'考试已经结束，不能分配考号','val'=>0];
         }
@@ -371,13 +371,8 @@ class Kaohao extends BaseController
         $i = 2;
         foreach ($kaohao as $key=>$bj)
         {
-
             foreach ($kslist->ksSubject as $ksbj => $sbj)
             {
-
-                // halt($obj);
-
-
                 foreach ($bj->banjiKaohao as $kkh => $kh)
                 {
                     // 表格赋值
