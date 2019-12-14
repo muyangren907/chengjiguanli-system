@@ -26,9 +26,9 @@ class Index extends BaseController
 
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
     // 保存使用二维码录入的成绩
@@ -182,9 +182,9 @@ class Index extends BaseController
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
     
@@ -305,8 +305,9 @@ class Index extends BaseController
 
 
 
-        $list['subject'] = $ksinfo->ks_subject;
+        $list['subject'] = $ksinfo->ksSubject->toArray();
         $list['kaoshi'] = $kaoshi;
+        $list['dataurl'] = '/chengji/index/data';
         if(count($ksinfo->ks_nianji)>0)
         {
             $list['nianji'] = $ksinfo->ks_nianji[0]->nianji;
@@ -314,11 +315,12 @@ class Index extends BaseController
             $list['nianji'] = "一年级";
         }
 
+
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -340,12 +342,15 @@ class Index extends BaseController
                     ->column('id');
         }
 
-        
+        $src['school'] = [$src['school']];
+
+       
         // 实例化
         $kaohao = new Kaohao;
 
         // 查询要显示的数据
         $data = $kaohao->srcChengji($src);
+
 
 
         // 获取符合条件记录总数
@@ -438,9 +443,9 @@ class Index extends BaseController
         $list['subject'] = $subject['ks_subject'];
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -537,9 +542,9 @@ class Index extends BaseController
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -697,15 +702,17 @@ class Index extends BaseController
     // 学生成绩录入信息
     public function readAdd($kaohao)
     {
+
         // 设置要给模板赋值的信息
         $list['webtitle'] = '查看成绩录入信息';
         $list['kaohao'] = $kaohao;
+        $list['dataurl'] = '/chengji/index/dataadd';
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -745,6 +752,7 @@ class Index extends BaseController
                     }
                 ])
                 ->select();
+
 
         $cnt = count($data);
 

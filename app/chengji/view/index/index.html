@@ -1,5 +1,5 @@
 
-{extend name="common@list" /}
+{extend name=".././view/list.html" /}
 {block name="jsset"}
 
 {/block}
@@ -27,7 +27,8 @@
 		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
 		    	{php} $schoollist = schlist('校级','校级',['小学','中小学']);{/php}
 		    	{volist name="schoollist" id="vo"}
-		    		<input type="checkbox" name="school[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+		    		<input type="radio" name="school" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" 
+            {eq name="key" value="0"} checked {/eq} >
 		    	{/volist}
 		    </div>
 		</div>
@@ -105,7 +106,7 @@
 	xk = eval(decodeURIComponent(xk));
 	for(x in xk)
     {
-      options.cols[0].push({field: xk[x].subject_name.lieming, title: xk[x].subject_name.title , minWidth:100,sort: true,edit:'text'});
+      options.cols[0].push({field: xk[x].subjectName.lieming, title: xk[x].subjectName.title , minWidth:100,sort: true,edit:'text'});
     }
     options.cols[0].push({field: 'avg', title: '平均分', minWidth:100,sort: true});
     options.cols[0].push({field: 'sum', title: '总分', minWidth:100,sort: true});
@@ -115,12 +116,12 @@
 	options.where = {
 		kaoshi:"{$list.kaoshi}"
     ,nianji:"{$list.nianji}"
+    ,school:$("input[name='school']:checked").val()
 	}
 
 	// 设置每页显示条数
 	options.limit = 10;
 	options.limits = [10,20,30];
-  options.height=390;
 
 
 	// 提交搜索条件后重载表格
@@ -148,16 +149,15 @@
       	var data = obj.data; //获得当前行数据
       	var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
       	var tr = obj.tr; //获得当前行 tr 的DOM对象
-        console.log(data);
       	switch(layEvent){
       		case 'detail':// 查看
-            cjgl.add(obj.data.student+' 成绩录入信息','/readcjadd/'+obj.data.id,'','',true);
+            cjgl.add(obj.data.student+' 成绩录入信息','/chengji/index/readcjadd/'+obj.data.id,'','',true);
             break;
       		case 'del':// 删除
-	      		cjgl.del(obj,"/kaohao");
+	      		cjgl.del(obj,"/kaoshi/kaohao/delete");
 	      		break;
       		case 'edit':// 编辑
-	      		cjgl.add('编辑单位','/kaohao/'+obj.data.id+'/edit','650','500');
+	      		cjgl.add('编辑成绩','/kaohao/'+obj.data.id+'/edit','650','500');
 	      		break;
       	};
       });

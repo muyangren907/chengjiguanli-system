@@ -445,7 +445,7 @@ class Kaohao extends BaseController
             'webtitle'=>'下载成绩采集表',
             'butname'=>'下载',
             'formpost'=>'POST',
-            'url'=>'/kaoshi/caiji',
+            'url'=>'/kaoshi/kaohao/dwcaiji',
             'kaoshi'=>$kaoshi
         );
 

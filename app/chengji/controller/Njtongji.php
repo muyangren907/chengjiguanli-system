@@ -10,7 +10,7 @@ use app\chengji\model\Njtongji as NTJ;
 class Njtongji extends BaseController
 {
     // 获取各学校、各年级考试成绩
-    public function Biaoge($kaoshi)
+    public function biaoge($kaoshi)
     {
 
         $ks = new \app\kaoshi\model\Kaoshi;
@@ -51,7 +51,7 @@ class Njtongji extends BaseController
 
 
     // 获取年级成绩统计结果
-    public function ajaxNianji()
+    public function ajaxData()
     {
         // 获取参数
         $src = $this->request
@@ -84,7 +84,7 @@ class Njtongji extends BaseController
 
 
     // 年级、班级学生成绩统计结果下载界面
-    public function dwNianji($kaoshi)
+    public function dwBiaoge($kaoshi)
     {
 
         // 设置页面标题

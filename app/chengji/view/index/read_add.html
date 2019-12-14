@@ -1,5 +1,5 @@
 
-{extend name="common@list" /}
+{extend name=".././view/list.html" /}
 {block name="jsset"}
 
 {/block}
@@ -35,25 +35,25 @@
 		{type:'checkbox', fixed: 'left'},
 		{title: '学科', minWidth:100,sort:false,templet:function(d){
         var str='';
-        if(d.subject_name)
+        if(d.subjectName)
         {
-          str = d.subject_name.title;
+          str = d.subjectName.title;
         }
         return str;
       }},
 		{field: 'defen', title: '得分 ', minWidth:100,sort:false},
 		{title: '成绩录入',templet:function(d){
         var str='';
-        if(d.user_name)
+        if(d.userName)
         {
-          str = d.user_name.ad_school.jiancheng + '　' + d.user_name.xingming;
+          str = d.userName.adSchool.jiancheng + '　' + d.userName.xingming;
         }
         return str;
       }},
     {field: 'update_time', title: '录入时间 ', minWidth:100,sort:false},
     {field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
 	]];
-  options.url = "{:url('ajaxaddinfo')}";
+  // options.url = "{:url('ajaxaddinfo')}";
   // 设置查询条件
   options.where = {
     kaohao:"{$list.kaohao}"

@@ -10,25 +10,6 @@
 // +----------------------------------------------------------------------
 use think\facade\Route;
 
-
-// //系统设置路由
-// Route::resource('kaoshi','kaoshi/Index');
-// Route::resource('kaohao','kaoshi/Kaohao');
-// // 考试更多操作
-// Route::get('kaoshi/:kaoshi/more','kaoshi/Index/moreAction');
-// // 考试设置保存
-// Route::get('kaoshiset/:id','kaoshi/Index/kaoshiset');
-// Route::put('kaoshiset/:id','kaoshi/Index/updateset');
-// // 考号保存
-// Route::get('kaoshi/:kaoshi/kaohao','kaoshi/Kaohao/index');
-// Route::post('kaoshi/kaohao','kaoshi/Kaohao/save');
-// // 下载成绩采集表
-// Route::get('kaoshi/:kaoshi/caiji','kaoshi/Kaohao/caiji');
-// Route::post('kaoshi/caiji','kaoshi/Kaohao/dwcaiji');
-// // 下载试卷标签
-// Route::get('kaoshi/:kaoshi/biaoqian','kaoshi/Kaohao/biaoqian');
-// Route::post('kaoshi/:kaoshi/biaoqianXls','kaoshi/Kaohao/biaoqianXls');
-
 // 考试管理
 Route::group('index', function () {
 	    Route::rule('','Index/index','get');						# 信息列表
@@ -52,11 +33,8 @@ Route::group('kaohao', function () {
 	    Route::rule('save','Kaohao/save','post');					# 保存信息
 	    Route::rule('biaoqian/<kaoshi>','Kaohao/biaoqian','get');						# 信息列表
 	    Route::rule('biaoqianxls','Kaohao/biaoqianXls','post');						# 信息列表
-	    // Route::rule('read/<id>','Kaohao/read','get');				# 读取信息
-	    // Route::rule('edit/<id>','Kaohao/edit','get');				# 修改信息
-	    // Route::rule('update/<id>','Kaohao/update','put');			# 更新信息
-	    // Route::rule('delete/<id>','Kaohao/delete','delete');		# 删除信息
-	    // Route::rule('status','Kaohao/setStatus','post');		# 删除信息
+	    Route::rule('caiji/<kaoshi>','Kaohao/caiji','get');						# 成绩采集下载页面
+	    Route::rule('dwcaiji','Kaohao/dwcaiji','post');						# 成绩采集下载
 	});
 
 

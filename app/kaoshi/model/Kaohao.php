@@ -96,6 +96,7 @@ class Kaohao extends Base
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
 
+
         // 重新定义变量
         $school = $src['school'];
         $nianji = $src['nianji'];
@@ -116,7 +117,8 @@ class Kaohao extends Base
                 })
                 ->when(strlen($seachval)>0,function($query) use($seachval){
                     $query->where(function($w) use ($seachval){
-                        $w->whereOr('id',$seachval)
+                        $w
+                        // ->whereOr('id',$seachval)
                         ->whereOr('student','in',function($q)use($seachval){
                             $q->name('student')->where('xingming','like','%'.$seachval.'%')->field('id');
                         });
@@ -129,7 +131,7 @@ class Kaohao extends Base
                     ,'cjBanji'=>function($query){
                         $query->field('id,paixu,ruxuenian');
                     }
-                    ,'cySchool'=>function($query){
+                    ,'cjSchool'=>function($query){
                         $query->field('id,jiancheng');
                     }
                     ,'cjStudent'=>function($query){
@@ -137,6 +139,8 @@ class Kaohao extends Base
                     }
                 ])
                 ->select();
+
+        // halt($khlist->toArray());
 
         if($khlist->isEmpty())
         {

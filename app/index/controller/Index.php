@@ -34,7 +34,7 @@ class Index extends BaseController
         session('webtitle',$list->webtitle);
 
         // 获取版本号
-        $list->version = config('app.chengji.version');
+        $list->version = config('shangma.version');
         // 获取用户姓名
         $ad = new \app\admin\model\Admin;
         $list->xingming = $ad->where('id',session('userid'))->value('xingming');
@@ -111,7 +111,7 @@ class Index extends BaseController
 
         $list['server'] = request()->server();
         // 获取版本号
-        $list->version = config('app.chengji.version');
+        $list->version = config('shangma.version');
         // 获取php版本号
         $list->php = phpversion();
         // 获取数据库版本号

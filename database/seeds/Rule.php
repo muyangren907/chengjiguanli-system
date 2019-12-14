@@ -32,7 +32,7 @@ class Rule extends Seeder
                 // 成绩统计
                 ['id'=>201,'title'=>'班级成绩','name'=>'tongji/Index/banji','paixu'=>1,'ismenu' =>1,'pid' =>2,'url'=>'/tongji',],
                 // 考试管理
-                ['id'=>301,'title'=>'考试列表','name'=>'kaoshi/Index/index','paixu'=>1,'ismenu' =>1,'pid' =>3,'url'=>'/kaoshi',],
+                ['id'=>301,'title'=>'考试列表','name'=>'kaoshi/Index/index','paixu'=>1,'ismenu' =>1,'pid' =>3,'url'=>'/kaoshi/index',],
                 ['id'=>302,'title'=>'考试操作','name'=>'Kaoshi/Index/MoreAction','paixu'=>2,'ismenu' =>0,'pid' =>3],
 
                 // 师生名单
@@ -106,10 +106,10 @@ class Rule extends Seeder
                     ['title'=>'下载学生成绩','name'=>'chengji/Index/dwChengji','paixu'=>21,'pid'=>302],
                     // 班级成绩
                     ['title'=>'班级成绩统计','name'=>'Chengji/Bjtongji/biaoge','paixu'=>41,'pid'=>302],
-                    ['title'=>'下载班级成绩统计表','name'=>'chengji/Bjtongji/dwBanji','paixu'=>42,'pid'=>302],
+                    ['title'=>'下载班级成绩统计表','name'=>'chengji/Bjtongji/dwBiaoge','paixu'=>42,'pid'=>302],
                     // 年级成绩
                     ['title'=>'年级成绩统计','name'=>'Chengji/Njtongji/biaoge','paixu'=>61,'pid'=>302],
-                    ['title'=>'下载年级成绩统计表','name'=>'chengji/Njtongji/dwNianji','paixu'=>62,'pid'=>302],
+                    ['title'=>'下载年级成绩统计表','name'=>'chengji/Njtongji/dwBiaoge','paixu'=>62,'pid'=>302],
 
 
 

@@ -32,7 +32,7 @@ class Index
         session(null);
 
         // 获取系统版本号
-        $list['version'] = Config::get('app.chengji.version');
+        $list['version'] = Config::get('shangma.version');
 
         View::assign('list',$list);
 

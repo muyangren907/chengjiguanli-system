@@ -10,7 +10,7 @@ use app\chengji\model\Bjtongji as BTJ;
 class Bjtongji extends BaseController
 {
     // 年级成绩汇总
-    public function Biaoge($kaoshi)
+    public function biaoge($kaoshi)
     {
         $ks = new \app\kaoshi\model\Kaoshi;
         $ksinfo = $ks->where('id',$kaoshi)
@@ -49,7 +49,7 @@ class Bjtongji extends BaseController
 
 
     // 获取年级成绩统计结果
-    public function ajaxBianji()
+    public function ajaxData()
     {
         // 获取参数
         $src = $this->request
@@ -58,14 +58,14 @@ class Bjtongji extends BaseController
                     'limit'=>'10',
                     'kaoshi'=>'',
                     'nianji'=>'',
-                    'school'=>array(),
+                    'school'=>'',
                     'paixu'=>array(),
                 ],'POST');
 
         // 统计成绩
         $btj = new BTJ;
 
-        $data = $btj->tjBanji($src['kaoshi'],$src['nianji'],$src['school'],$src['paixu']);
+        $data = $btj->tjBanji($src['kaoshi'],$src['nianji'],[$src['school']],$src['paixu']);
 
        
         // 获取记录总数
@@ -85,7 +85,7 @@ class Bjtongji extends BaseController
     }
 
     // 年级、班级学生成绩统计结果下载界面
-    public function dwBanji($kaoshi)
+    public function dwBiaoge($kaoshi)
     {
         // 设置页面标题
         $list['set'] = array(
