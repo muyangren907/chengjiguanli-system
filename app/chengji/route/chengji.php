@@ -39,10 +39,10 @@ Route::group('tongji', function () {
 
 // 班级统计
 Route::group('bjtj', function () {
-	    Route::rule('biaoge','Bjtongji/biaoge','get');			# 班级表格
+	    Route::rule('biaoge/<kaoshi>','Bjtongji/biaoge','get');			# 班级表格
 	    Route::rule('data','Bjtongji/ajaxData','post');			# 扫码界面
 	    Route::rule('dwbiaoge','Bjtongji/dwBiaoge','post');		# 扫码保存
-	    Route::rule('read','Index/read','post');		# 成绩读取
+	    Route::rule('read','Bjtongji/read','post');		# 成绩读取
 	    Route::rule('biaolu','Index/biaolu','get');					# 保存信息
 	    Route::rule('saveall','Index/saveAll','post');				# 读取信息
 	    Route::rule('edit/<id>','Index/edit','get');				# 修改信息

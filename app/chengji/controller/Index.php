@@ -456,19 +456,19 @@ class Index extends BaseController
         $src = $this->request
                 ->only(['kaoshi','banji','subject'],'POST');
         $banji = $src['banji'];
+        $subject = $src['subject'];
 
         // 获取要删除成绩的考号
         $kaohao = new \app\kaoshi\model\Kaohao;
         $kaohaolist = $kaohao::where('kaoshi',$src['kaoshi'])
                             ->where('banji','in',$src['banji'])
-                            ->column('student');
+                            ->column('id');
 
-        // 查询成绩id
-        $chengjilist = Chengji::where('kaohao_id','in',$kaohaolist)
-                        ->where('subject_id','in',$src['subject'])
-                        ->column('id');
         // 删除成绩
-        $data = Chengji::destroy($chengjilist);
+        $data = Chengji::destroy(function($query) use ($kaohaolist,$subject){
+            $query->where('kaohao_id','in',$kaohaolist)
+                  ->where('subject_id','in',$subject);
+        });
 
         if($data){
             $this->success($msg = '删除成功',  $url = '/chengji/index/deletecjs/'.$src['kaoshi'], $data = '',  $wait = 3,  $header = []);

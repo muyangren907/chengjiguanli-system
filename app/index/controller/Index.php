@@ -110,7 +110,7 @@ class Index extends BaseController
         $list['group'] = $admin->getGroupnames(session('userid'));
 
         $list['server'] = request()->server();
-        // 获取版本号
+        // 获取系统版本号
         $list->version = config('shangma.version');
         // 获取php版本号
         $list->php = phpversion();

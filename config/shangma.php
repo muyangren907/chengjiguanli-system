@@ -7,5 +7,5 @@ use think\facade\Env;
 
 return [
     // 版本号
-    'version'         => '1.3',
+    'version'         => 'v1.3',
 ];

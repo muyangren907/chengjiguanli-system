@@ -29,22 +29,23 @@ class Bjtongji extends BaseController
 
         if(count($ksinfo->ks_nianji)>0)
         {
-            $list['nianji'] = $ksinfo->ks_nianji[0]->nianji;
+            $list['nianji'] = $ksinfo->ksNianji[0]->nianji;
         }else{
             $list['nianji'] = "一年级";
         }
-        $list['subject'] = $ksinfo->ks_subject->toArray();
+        $list['subject'] = $ksinfo->ksSubject->toArray();
         // 设置要给模板赋值的信息
         $list['webtitle'] = '各年级的班级成绩列表';
         $list['kaoshi'] = $kaoshi;
         $list['kaoshititle'] = $ksinfo->title;
+        $list['dataurl'] = '/chengji/bjtj/data';
 
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -62,10 +63,15 @@ class Bjtongji extends BaseController
                     'paixu'=>array(),
                 ],'POST');
 
+
         // 统计成绩
         $btj = new BTJ;
 
         $data = $btj->tjBanji($src['kaoshi'],$src['nianji'],[$src['school']],$src['paixu']);
+
+        dump($data);
+
+        halt('aa');
 
        
         // 获取记录总数
@@ -97,9 +103,9 @@ class Bjtongji extends BaseController
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch();
+        return $this->view->fetch();
 
     }
 
