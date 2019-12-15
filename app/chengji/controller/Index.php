@@ -472,10 +472,8 @@ class Index extends BaseController
 
         if($data){
             $this->success($msg = '删除成功',  $url = '/chengji/index/deletecjs/'.$src['kaoshi'], $data = '',  $wait = 3,  $header = []);
-            $this->error('成绩删除失败');
-            $this->success('成绩删除成功','/chengji/index/deletecjs/'.$src['kaoshi']);
         }else{
-            $this->error('成绩删除失败');
+            $this->error($msg = '删除失败',  $url = '/chengji/index/deletecjs/'.$src['kaoshi'], $wait = 3);
         }
         
         // 根据更新结果设置返回提示信息
