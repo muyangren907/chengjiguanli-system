@@ -69,7 +69,7 @@
       	switch(obj.event){
       		case 'dels':
 	      		var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-	      		cjgl.delAll(checkStatus,'/chengji','mytable');
+	      		cjgl.delAll(checkStatus,'/chengji/index/delete','mytable');
       			break;
       	};
       });
@@ -81,7 +81,7 @@
       	var tr = obj.tr; //获得当前行 tr 的DOM对象
       	switch(layEvent){
       		case 'del':// 删除
-	      		cjgl.del(obj,"/chengji");
+	      		cjgl.del(obj,"/chengji/index/delete");
 	      		break;
       	};
       });

@@ -375,42 +375,42 @@ class Index extends BaseController
 
 
 
-    // 删除成绩
-    public function deletecj($id)
-    {
+    // // 删除成绩
+    // public function deletecj($id)
+    // {
 
-        // 声明要删除成绩数组
-        $data = array();
+    //     // 声明要删除成绩数组
+    //     $data = array();
 
-        if($id == 'm')
-        {
-            $id = request()->delete('ids/a');// 获取delete请求方式传送过来的数据并转换成数据
-            $i=0;
-            foreach ($id as $key => $value) {
-                $data[$i]['id'] = $value;
-                $data[$i]['yuwen'] = Null;
-                $data[$i]['shuxue'] = Null;
-                $data[$i]['wanyu'] = Null;
-            }
-        }else{
-            $data[0]['id'] = $id; 
-            $data[0]['yuwen'] = Null;
-            $data[0]['shuxue'] = Null;
-            $data[0]['waiyu'] = Null;
-            $data[0]['stuSum'] = Null;
-            $data[0]['stuAvg'] = Null;
-        }
+    //     if($id == 'm')
+    //     {
+    //         $id = request()->delete('ids/a');// 获取delete请求方式传送过来的数据并转换成数据
+    //         $i=0;
+    //         foreach ($id as $key => $value) {
+    //             $data[$i]['id'] = $value;
+    //             $data[$i]['yuwen'] = Null;
+    //             $data[$i]['shuxue'] = Null;
+    //             $data[$i]['wanyu'] = Null;
+    //         }
+    //     }else{
+    //         $data[0]['id'] = $id; 
+    //         $data[0]['yuwen'] = Null;
+    //         $data[0]['shuxue'] = Null;
+    //         $data[0]['waiyu'] = Null;
+    //         $data[0]['stuSum'] = Null;
+    //         $data[0]['stuAvg'] = Null;
+    //     }
 
 
-        $cj = new Chengji();
-        $data = $cj->saveAll($data);
+    //     $cj = new Chengji();
+    //     $data = $cj->saveAll($data);
 
-        // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'成绩删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+    //     // 根据更新结果设置返回提示信息
+    //     $data ? $data=['msg'=>'成绩删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
-        // 返回信息
-        return json($data);
-    }
+    //     // 返回信息
+    //     return json($data);
+    // }
 
 
     // 批量删除成绩
@@ -422,7 +422,7 @@ class Index extends BaseController
             'webtitle'=>'批量删除成绩',
             'butname'=>'删除',
             'formpost'=>'POST',
-            'url'=>'/deletecjmore',
+            'url'=>'/chengji/index/deletecjmore',
             'kaoshi'=>$kaoshi
         );
 
@@ -440,7 +440,7 @@ class Index extends BaseController
                         ])
                         ->find()
                         ->toArray();
-        $list['subject'] = $subject['ks_subject'];
+        $list['subject'] = $subject['ksSubject'];
 
         // 模板赋值
         $this->view->assign('list',$list);
@@ -469,6 +469,14 @@ class Index extends BaseController
                         ->column('id');
         // 删除成绩
         $data = Chengji::destroy($chengjilist);
+
+        if($data){
+            $this->success($msg = '删除成功',  $url = '/chengji/index/deletecjs/'.$src['kaoshi'], $data = '',  $wait = 3,  $header = []);
+            $this->error('成绩删除失败');
+            $this->success('成绩删除成功','/chengji/index/deletecjs/'.$src['kaoshi']);
+        }else{
+            $this->error('成绩删除失败');
+        }
         
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'成绩删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];

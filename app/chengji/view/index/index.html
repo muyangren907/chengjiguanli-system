@@ -96,7 +96,7 @@
 	options.cols=[[ //表头
 		{type:'checkbox', fixed: 'left'},
 		{field: 'school', title: '学校', minWidth:100,sort: true},
-		{field: 'nianji', title: '年级 ', minWidth:100,sort: true},
+		// {field: 'nianji', title: '年级 ', minWidth:100,sort: true},
 		{field: "banji",title: '班级',sort: true},
 		{field: "student",title: '学生姓名',sort: true, minWidth:100},
 	]];
@@ -133,13 +133,13 @@
       	switch(obj.event){
       		case 'dels':
 	      		var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-	      		cjgl.delAll(checkStatus,'/kaohao','mytable');
+	      		cjgl.delAll(checkStatus,'/kaoshi/kaohao/delete','mytable');
       			break;
       		case 'download':
       			cjgl.add('下载成绩','/chengji/{$list.kaoshi}/dwChengji','650','300');
       			break;
           case 'delcj':
-            cjgl.add('删除成绩','/deletecjs/{$list.kaoshi}','650','350');
+            parent.xadmin.add_tab('删除成绩','/chengji/index/deletecjs/{$list.kaoshi}',true);
             break;
       	};
       });

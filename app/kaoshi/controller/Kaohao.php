@@ -567,7 +567,7 @@ class Kaohao extends BaseController
         $id = explode(',', $id);
 
         // 删除成绩
-        $db = new \think\Db;
+        $db = new \think\facade\Db;
         $db::startTrans(); # 启动事务
         try {
             KH::destroy($id);

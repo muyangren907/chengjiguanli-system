@@ -35,6 +35,7 @@ Route::group('kaohao', function () {
 	    Route::rule('biaoqianxls','Kaohao/biaoqianXls','post');						# 信息列表
 	    Route::rule('caiji/<kaoshi>','Kaohao/caiji','get');						# 成绩采集下载页面
 	    Route::rule('dwcaiji','Kaohao/dwcaiji','post');						# 成绩采集下载
+	    Route::rule('delete/<id>','Kaohao/delete','delete');						# 成绩采集下载
 	});
 
 
