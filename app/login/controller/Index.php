@@ -138,5 +138,13 @@ class Index
         }
         return $data;        
     }
+
+
+    // 系统更新日志
+    public function shangmaLog()
+    {
+        // 渲染模板
+        return View::fetch();
+    }
     
 }

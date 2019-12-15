@@ -14,6 +14,7 @@ use think\facade\Route;
 Route::group('/', function () {
 	    Route::rule('','systembase/edit','get');		# 系统配置页面
 	    Route::rule('update/<id>','systembase/update','put');		# 配置更新
+	    
 	});
 
 // 文件管理
