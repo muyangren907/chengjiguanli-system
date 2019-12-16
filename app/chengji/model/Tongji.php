@@ -18,84 +18,84 @@ class Tongji extends Base
     * @param array $school 学校 
     * @return array 返回类型
     */
-    public function srcChengji1($srcfrom)
-    {
+    // public function srcChengji1($srcfrom)
+    // {
 
-        // 初始化参数 
-        $src = array(
-            'kaoshi'=>'',
-            'banji'=>array('0'),
-            'nianji'=>'',
-            'school'=>array(),
-        );
+    //     // 初始化参数 
+    //     $src = array(
+    //         'kaoshi'=>'',
+    //         'banji'=>array('0'),
+    //         'nianji'=>'',
+    //         'school'=>array(),
+    //     );
 
-        // 用新值替换初始值
-        $src = array_cover( $srcfrom , $src ) ;
-        $banji = $src['banji'];
-        $school = $src['school'];
-        $nianji = $src['nianji'];
+    //     // 用新值替换初始值
+    //     $src = array_cover( $srcfrom , $src ) ;
+    //     $banji = $src['banji'];
+    //     $school = $src['school'];
+    //     $nianji = $src['nianji'];
 
-        $kh = new \app\kaoshi\model\Kaohao;
+    //     $kh = new \app\kaoshi\model\Kaohao;
 
-        $khlist = $kh->where('kaoshi',$src['kaoshi'])
-                ->field('id,nianji,banji')
-                ->when(count($school)>0,function($query) use($school){
-                    $query->where('school','in',$school);
-                })
-                ->when(strlen($nianji)>0,function($query) use($nianji){
-                    $query->where('ruxuenian',$nianji);
-                })
-                ->when(count($banji)>0,function($query) use($banji){
-                    $query->where('banji','in',$banji);
-                })
-                ->with([
-                    'ksChengji'=>function($query){
-                        $query->field('kaohao_id,subject_id,defen');
-                    }
-                ])
-                ->select();
-        if($khlist->isEmpty())
-        {
-            return $data = array();
-        }
+    //     $khlist = $kh->where('kaoshi',$src['kaoshi'])
+    //             ->field('id,nianji,banji')
+    //             ->when(count($school)>0,function($query) use($school){
+    //                 $query->where('school','in',$school);
+    //             })
+    //             ->when(strlen($nianji)>0,function($query) use($nianji){
+    //                 $query->where('ruxuenian',$nianji);
+    //             })
+    //             ->when(count($banji)>0,function($query) use($banji){
+    //                 $query->where('banji','in',$banji);
+    //             })
+    //             ->with([
+    //                 'ksChengji'=>function($query){
+    //                     $query->field('kaohao_id,subject_id,defen');
+    //                 }
+    //             ])
+    //             ->select();
+    //     if($khlist->isEmpty())
+    //     {
+    //         return $data = array();
+    //     }
 
-        // 获取参考学科
-        $ks = new \app\kaoshi\model\Kaoshi;
-        $ksinfo = $ks->where('id',$kaoshi)
-                    ->with([
-                        'ksSubject'=>function($query){
-                            $query->field('kaoshiid,subjectid,lieming');
-                        }
-                    ])
-                    ->find();
-        if($ksinfo->ks_subject->isEmpty())
-        {
-            return $data = array();
-        }
-        $xk = array();
-        foreach ($ksinfo->ks_subject as $key => $value) {
-            $xk[$value->subjectid] = $value->lieming;
-        }
+    //     // 获取参考学科
+    //     $ks = new \app\kaoshi\model\Kaoshi;
+    //     $ksinfo = $ks->where('id',$kaoshi)
+    //                 ->with([
+    //                     'ksSubject'=>function($query){
+    //                         $query->field('kaoshiid,subjectid,lieming');
+    //                     }
+    //                 ])
+    //                 ->find();
+    //     if($ksinfo->ks_subject->isEmpty())
+    //     {
+    //         return $data = array();
+    //     }
+    //     $xk = array();
+    //     foreach ($ksinfo->ks_subject as $key => $value) {
+    //         $xk[$value->subjectid] = $value->lieming;
+    //     }
 
-        // 整理数据
-        $data = array();
-        foreach ($khlist as $key => $value) {
-            if(count($value->ks_chengji)== 0)
-            {
-                continue;
-            }
-            $data[$key]['sum'] = 0;
-            $sbjcnt = 0;
-            foreach ($value->ks_chengji as $k => $val) {
-                $data[$key][$xk[$val->subject_id]] = $val->defen*1;
-                $data[$key]['sum'] = ($data[$key]['sum'] + $val->defen) * 1;
-                $sbjcnt ++ ;
-            }
-            $data[$key]['sum'] == 0 ? $data[$key]['avg'] = 0 :  $data[$key]['sum'] / $sbjcnt;
-        }
+    //     // 整理数据
+    //     $data = array();
+    //     foreach ($khlist as $key => $value) {
+    //         if(count($value->ks_chengji)== 0)
+    //         {
+    //             continue;
+    //         }
+    //         $data[$key]['sum'] = 0;
+    //         $sbjcnt = 0;
+    //         foreach ($value->ks_chengji as $k => $val) {
+    //             $data[$key][$xk[$val->subject_id]] = $val->defen*1;
+    //             $data[$key]['sum'] = ($data[$key]['sum'] + $val->defen) * 1;
+    //             $sbjcnt ++ ;
+    //         }
+    //         $data[$key]['sum'] == 0 ? $data[$key]['avg'] = 0 :  $data[$key]['sum'] / $sbjcnt;
+    //     }
 
-        return $data;
-    }
+    //     return $data;
+    // }
 
 
 
@@ -112,12 +112,13 @@ class Tongji extends Base
         // $allcj = array();
         foreach ($ksinfo->ks_subject as $key => $value) {
             $cjcol = array_column($cj,$value->lieming);
+
             // $allcj = array_merge($allcj,$cjcol);
             $temp = array();
             $temp['xkcnt'] = count($cjcol);
             $temp['sum'] = array_sum($cjcol);
             $temp['xkcnt']>0 ? $temp['avg'] = $temp['sum']/$temp['xkcnt'] : $temp['avg']=0;
-            $temp['biaozhuncha'] = round($this->getVariance($temp['avg'], $cjcol,true),2);
+            // $temp['biaozhuncha'] = round($this->getVariance($temp['avg'], $cjcol,true),2);
             $temp['avg'] = round($temp['avg'],2);
             $temp['youxiu'] = $this->rate($cjcol,$value->youxiu);
             $temp['jige'] = $this->rate($cjcol,$value->jige);

@@ -480,6 +480,11 @@ class Kaohao extends BaseController
         $banji = $list['banjiids'];
         $subject = $list['subject'];
 
+        if(kaoshiDate($kaoshi,'enddate'))
+        {
+            $this->error('考试已经结束，不能下载','/kaoshi/kaohao/biaoqian/'.$kaoshi);
+        }
+
         // 验证表单数据
         $result = $validate->check($list);
         $msg = $validate->getError();

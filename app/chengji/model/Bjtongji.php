@@ -6,6 +6,7 @@ namespace app\chengji\model;
 use app\common\model\Base;
 // 引用学生成绩统计类
 use app\chengji\model\Tongji as TJ;
+use app\chengji\model\Chengji;
 
 class Bjtongji extends Base
 {
@@ -19,14 +20,15 @@ class Bjtongji extends Base
     */
     public function tjBanji($srcfrom)
     {
+
         // 查询要统计成绩的班级
         $kh = new \app\kaoshi\model\Kaohao;
-
         $bj = $kh->cyBanji($srcfrom);
 
         $srcfrom['nianji'] = $srcfrom['ruxuenian'];
         $srcfrom['banji'] = $srcfrom['paixu'];
         unset($srcfrom['ruxuenian'],$srcfrom['paixu']);
+
 
 
         $data = array();
@@ -36,6 +38,7 @@ class Bjtongji extends Base
 
         // 实例化学生成绩统计类
         $tj = new TJ;
+        $cj = new Chengji;
 
         // 获取并统计各班级成绩
         $data = array();
@@ -43,8 +46,8 @@ class Bjtongji extends Base
         foreach ($bj as $key => $value) {
             $bjs[] = $value->banji;
             $banji=[$value->banji];
-            $temp = $tj->srcChengji($srcfrom);
-            $temp = $tj->tongji($temp,$kaoshi);
+            $temp = $cj->search($srcfrom);
+            $temp = $tj->tongji($temp,$srcfrom['kaoshi']);
             $data[] = [
                 'banji'=>$value->bjtitle,
                 'school'=>$value->cj_school->jiancheng,
@@ -53,10 +56,11 @@ class Bjtongji extends Base
             
         }
 
-
+        $srcfrom['banji'] = $bjs;
         // 获取年级成绩
-        $allcj = $tj->srcChengji($kaoshi=$kaoshi,$banji=$bjs,$nianji=$nianji,$school=array());
-        $temp = $tj->tongji($allcj,$kaoshi);
+        // $allcj = $tj->srcChengji($kaoshi=$kaoshi,$banji=$bjs,$nianji=$nianji,$school=array());
+        $allcj = $cj->search($srcfrom);
+        $temp = $tj->tongji($allcj,$srcfrom['kaoshi']);
         $data[] = [
             'banji'=>'合计',
             'school'=>'',

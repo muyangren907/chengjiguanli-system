@@ -75,6 +75,8 @@ class Bjtongji extends BaseController
             'paixu'=>$src['paixu'],
         ];
 
+        is_array($src['school']) ? $srcfrom['school'] = $src['school'] : $srcfrom['school'] = explode(',', $src['school']);
+
 
         $data = $btj->tjBanji($srcfrom);
 
