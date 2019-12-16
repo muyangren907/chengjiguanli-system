@@ -251,6 +251,7 @@ class Kaohao extends BaseController
     // 标签下载
     public function biaoqian($kaoshi)
     {
+
         // 获取参考年级
         $kaoshilist = KS::where('id',$kaoshi)
                 ->with([
@@ -308,6 +309,7 @@ class Kaohao extends BaseController
     //生成标签信息
     public function biaoqianXls()
     {
+
         set_time_limit(0);
         // 获取表单数据
         $list = request()->only(['banjiids','kaoshi','subject'],'post');
@@ -315,6 +317,11 @@ class Kaohao extends BaseController
         $kaoshi = $list['kaoshi'];
         $banji = $list['banjiids'];
         $subject = $list['subject'];
+
+        if(kaoshiDate($kaoshi,'enddate'))
+        {
+            $this->error('考试已经结束，不能下载','/kaoshi/kaohao/biaoqian/'.$kaoshi);
+        }
 
         // 实例化验证模型
         $validate = new \app\kaoshi\validate\Biaoqian;

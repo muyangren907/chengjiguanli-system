@@ -94,7 +94,7 @@ class Index extends BaseController
 
 
         // 获取表单数据
-        $list = request()->only(['xingming','school','username','sex','shengri','phone','beizhu','group_id'],'post');
+        $list = request()->only(['xingming','school','username','teacher_id','sex','shengri','phone','beizhu','group_id'],'post');
 
 
         // 设置密码，默认为123456
@@ -136,7 +136,7 @@ class Index extends BaseController
         // 获取管理员信息
         $ad = new AD;
         $list = AD::where('id',$id)
-                ->field('id,xingming,sex,shengri,username,school,phone,denglucishu,lastip,ip,lasttime,thistime,create_time,update_time')
+                ->field('id,xingming,sex,shengri,username,teacher_id,school,phone,denglucishu,lastip,ip,lasttime,thistime,create_time,update_time')
                 ->with([
                     'adSchool'=>function($query){
                         $query->field('id,title');
@@ -190,7 +190,7 @@ class Index extends BaseController
 
         // 获取用户信息
        $list['data'] = AD::where('id',$id)
-            ->field('id,school,username,xingming,sex,shengri,phone,beizhu')
+            ->field('id,school,username,xingming,teacher_id,sex,shengri,phone,beizhu')
             ->with([
                 'adSchool'=>function($query){
                     $query->field('id,jiancheng');
@@ -225,7 +225,7 @@ class Index extends BaseController
         $validate = new \app\admin\validate\Admin;
 
         // 获取表单数据
-        $list = request()->only(['xingming','school','username','sex','shengri','phone','beizhu','group_id'],'put');
+        $list = request()->only(['xingming','school','username','teacher_id','sex','shengri','phone','beizhu','group_id'],'put');
 
         $list['group_id'] = array_values($list['group_id']);
 

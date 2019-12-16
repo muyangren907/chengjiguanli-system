@@ -18,12 +18,26 @@ class Tongji extends Base
     * @param array $school 学校 
     * @return array 返回类型
     */
-    public function srcChengji($kaoshi,$banji=array(),$nianji='',$school=array())
+    public function srcChengji1($srcfrom)
     {
+
+        // 初始化参数 
+        $src = array(
+            'kaoshi'=>'',
+            'banji'=>array('0'),
+            'nianji'=>'',
+            'school'=>array(),
+        );
+
+        // 用新值替换初始值
+        $src = array_cover( $srcfrom , $src ) ;
+        $banji = $src['banji'];
+        $school = $src['school'];
+        $nianji = $src['nianji'];
 
         $kh = new \app\kaoshi\model\Kaohao;
 
-        $khlist = $kh->where('kaoshi',$kaoshi)
+        $khlist = $kh->where('kaoshi',$src['kaoshi'])
                 ->field('id,nianji,banji')
                 ->when(count($school)>0,function($query) use($school){
                     $query->where('school','in',$school);

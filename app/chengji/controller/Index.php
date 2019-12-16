@@ -347,9 +347,10 @@ class Index extends BaseController
        
         // 实例化
         $kaohao = new Kaohao;
+        $cj = new Chengji;
 
         // 查询要显示的数据
-        $data = $kaohao->srcChengji($src);
+        $data = $cj->search($src);
 
 
 

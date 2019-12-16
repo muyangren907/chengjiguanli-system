@@ -67,7 +67,7 @@ class Kaohao extends Base
 
 
     /**  
-    * 以考号为基础查询学生成绩信息并排序 
+    * 以考号为基础查询学生成绩信息并排序，计划在网页上显示成绩列表中使用 
     * 信息包括：学校、年级、班级、姓名、性别、各学科成绩、平均分、总分
     * @access public 
     * @param array $src 参数数组 
@@ -85,12 +85,12 @@ class Kaohao extends Base
         $src = array(
             'page'=>'1',
             'limit'=>'10',
-            'field'=>'banji',
-            'type'=>'desc',
+            // 'field'=>'banji',
+            // 'type'=>'desc',
             'kaoshi'=>'',
             'school'=>array(),
             'nianji'=>'',
-            'banji'=>array(),
+            'banji'=>array('0'),
             'searchval'=>''
         );
         // 用新值替换初始值
@@ -140,91 +140,7 @@ class Kaohao extends Base
                 ])
                 ->select();
 
-        // halt($khlist->toArray());
-
-        if($khlist->isEmpty())
-        {
-            return $data = array();
-        }
-
-
-        // 获取参考学科
-        $kaoshi = new \app\kaoshi\model\Kaoshi;
-        $ksinfo = $kaoshi->where('id',$src['kaoshi'])
-                    ->with([
-                        'ksSubject'=>function($query){
-                            $query->field('kaoshiid,subjectid,lieming');
-                        }
-                    ])
-                    ->find();
-
-        if($ksinfo->ks_subject->isEmpty())
-        {
-            return $data = array();
-        }
-
-        $xk = array();
-        foreach ($ksinfo->ks_subject as $key => $value) {
-            $xk[$value->subjectid] = $value->lieming;
-        }
-
-        $bjlist = banjinamelist();
-
-        // 整理数据
-        $data = array();
-        foreach ($khlist as $key => $value) {
-            $data[$key]['id'] = $value->id;
-            $data[$key]['school'] = $value->cj_school->jiancheng;
-            if($value->cj_student != Null){
-                $data[$key]['student'] = $value->cj_student->xingming;
-                $data[$key]['sex'] = $value->cj_student->sex;
-            }else{
-                $stuinfo = $stu::withTrashed()
-                        ->where('id',$value->student)
-                        ->field('id,xingming,sex')
-                        ->find();
-                $data[$key]['student'] = $stuinfo->xingming;
-                $data[$key]['sex'] = $stuinfo->sex;
-            }
-            $data[$key]['nianji'] = $value->nianji;
-            $data[$key]['banji'] = $value->nianji.$bjlist[$value->cj_banji->paixu];
-            $dfsum = 0;
-            $sbjcnt = 0;
-
-            $cjarr = $this->zzcj($value->ks_chengji);
-
-             // 初始化参数
-            $dfsum = 0;
-            $sbjcnt = 0;
-
-            foreach ($xk as $k => $val) {
-                // 为每个学科赋值并记录学科数
-                if(array_key_exists($k,$cjarr))
-                {
-                    $data[$key][$val]=$cjarr[$k] * 1;
-                    $sbjcnt++;
-                    $dfsum = $dfsum + $data[$key][$val];
-                }else{
-                    $data[$key][$val]='';
-                }
-            }
-
-
-            $data[$key]['sum'] = $dfsum;
-            if($sbjcnt>0){
-                $data[$key]['avg'] = round($dfsum/$sbjcnt,1);
-            }else{
-                $data[$key]['avg'] = 0;
-            }
-        }
-
-
-        // 按条件排序
-        if(count($data)>0){
-            $data = arraySequence($data,$src['field'],$src['type']); //排序
-        }
-
-        return $data;
+        return $khlist;
     }
 
     
@@ -272,16 +188,7 @@ class Kaohao extends Base
         return $this->hasMany('\app\chengji\model\Chengji','kaohao_id','id');
     }
 
-    // 转置成绩数组
-    private function zzcj($array = array())
-    {
-        
-        $arr = array();
-        foreach ($array as $key => $value) {
-            $arr[$value['subject_id']] = $value['defen'];
-        }
-        return $arr;
-    }
+    
 
     /**  
     * 获取参加考试的学校
@@ -313,16 +220,32 @@ class Kaohao extends Base
     * @param number $ruxuenian 入学年
     * @return array 返回类型
     */
-    public function cyBanji($kaoshi,$ruxuenian,$school=array(),$paixu=array())
+    public function cyBanji($srcfrom)
     {
+        
+        // 初始化参数 
+        $src = array(
+            'kaoshi'=>'',
+            'ruxuenian'=>'',
+            'school'=>array(),
+            'paixu'=>array(),
+        );
+
+
+        // 用新值替换初始值
+        $src = array_cover( $srcfrom , $src ) ;
+        $school = $src['school'];
+        $paixu = $src['paixu'];
+
+
         // 获取考试时间
         $ks = new \app\kaoshi\model\Kaoshi;
-        $kssj = $ks::where('id',$kaoshi)->value('bfdate');
+        $kssj = $ks::where('id',$src['ruxuenian'])->value('bfdate');
         $year = date('Y',$kssj);
 
 
-        $data = $this->where('ruxuenian',$ruxuenian)
-                ->where('kaoshi',$kaoshi)
+        $data = $this->where('ruxuenian',$src['ruxuenian'])
+                ->where('kaoshi',$src['kaoshi'])
                 ->when(count($school)>0,function($query) use($school){
                     $query->where('school','in',$school);
                 })

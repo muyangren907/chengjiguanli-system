@@ -17,11 +17,17 @@ class Bjtongji extends Base
     * @param number $ruxuenian 入学年
     * @return array 返回类型
     */
-    public function tjBanji($kaoshi,$nianji,$school=array(),$paixu=array())
+    public function tjBanji($srcfrom)
     {
         // 查询要统计成绩的班级
         $kh = new \app\kaoshi\model\Kaohao;
-        $bj = $kh->cyBanji($kaoshi=$kaoshi,$ruxuenian=$nianji,$school=$school,$paixu=$paixu);
+
+        $bj = $kh->cyBanji($srcfrom);
+
+        $srcfrom['nianji'] = $srcfrom['ruxuenian'];
+        $srcfrom['banji'] = $srcfrom['paixu'];
+        unset($srcfrom['ruxuenian'],$srcfrom['paixu']);
+
 
         $data = array();
         if($bj->isEmpty()){
@@ -37,7 +43,7 @@ class Bjtongji extends Base
         foreach ($bj as $key => $value) {
             $bjs[] = $value->banji;
             $banji=[$value->banji];
-            $temp = $tj->srcChengji($kaoshi=$kaoshi,$banji=$banji,$nianji=$nianji,$school=array());
+            $temp = $tj->srcChengji($srcfrom);
             $temp = $tj->tongji($temp,$kaoshi);
             $data[] = [
                 'banji'=>$value->bjtitle,

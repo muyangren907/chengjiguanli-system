@@ -1,5 +1,30 @@
 {extend name=".././view/create.html" /}
-
+{block name="jscss"}
+<style type="text/css">
+  .srcSelectStyly{
+    /*margin-top:20px;*/
+    border-width: 1px;
+    border-color:#e2e2e2;
+    border-style:solid;
+    background-color:#ffffff;
+    position:absolute;
+    left:0;
+    right:0;
+    z-index:100;
+  }
+  .srcSelectStyly dl{
+    padding-top: 3px;
+    padding-left: 6px;
+    background-color:#ffffff;
+  }
+  .srcSelectStyly dd{
+    /*margin-bottom: 3px;*/
+    /*background-color:#f2f2f2;*/
+    height: 30px;
+    padding-top: 10px;
+  }
+</style>
+{/block}
 {block name="form"}
     <form class="layui-form layui-form-pane" lay-filter="myform">
           <div class="layui-form-item">
@@ -21,6 +46,15 @@
                   {eq name="$list.set.formpost" value="PUT" }
                      disabled
                   {/eq}>
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="username" class="layui-form-label">
+                  教师编号
+              </label>
+              <div class="layui-input-block">
+                  <input style="max-width: 300px;" type="text" id="teacher_id" name="teacher_id" lay-verify="required"
+                  autocomplete="off" class="layui-input" value="{$list.data.teacher_id|default=''}" placeholder="请输入姓名、姓名的全拼或简拼查询教师" >
               </div>
           </div>
           <div class="layui-form-item">
@@ -127,6 +161,15 @@
         ,format: 'yyyy-M-d' //可任意组合
       });
     });
-</script>
+
+    var cjgl = parent.layui.cjgl;
+    // 搜索教师
+    $('#teacher_id').bind({
+      keyup:function(){
+        var val = $.trim($(this).val());
+        cjgl.selectOnfocus1(this,val,'teacher_id');
+      },
+    });
+</script>  
 {/block}
 

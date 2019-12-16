@@ -384,7 +384,8 @@ class Teacher extends BaseController
 
         // 如果有数据则查询教师信息
         $list = TC::field('id,xingming,danwei,shengri,sex')
-                    ->whereOr('xingming|quanpin|shoupin','like','%'.$str.'%')
+                    ->whereOr('xingming','like','%'.$str.'%')
+                    ->whereOr('shoupin','like',$str.'%')
                     ->with(
                         [
                             'jsDanwei'=>function($query){

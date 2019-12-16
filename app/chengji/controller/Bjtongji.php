@@ -59,7 +59,7 @@ class Bjtongji extends BaseController
                     'limit'=>'10',
                     'kaoshi'=>'',
                     'nianji'=>'',
-                    'school'=>'',
+                    'school'=>array(),
                     'paixu'=>array(),
                 ],'POST');
 
@@ -67,11 +67,16 @@ class Bjtongji extends BaseController
         // 统计成绩
         $btj = new BTJ;
 
-        $data = $btj->tjBanji($src['kaoshi'],$src['nianji'],[$src['school']],$src['paixu']);
+        $srcfrom = [
+            'kaoshi'=>$src['kaoshi'],
+            'ruxuenian'=>$src['nianji'],
+            // 'school'=>explode(',', $src['school']),
+            'school'=>$src['school'],
+            'paixu'=>$src['paixu'],
+        ];
 
-        dump($data);
 
-        halt('aa');
+        $data = $btj->tjBanji($srcfrom);
 
        
         // 获取记录总数

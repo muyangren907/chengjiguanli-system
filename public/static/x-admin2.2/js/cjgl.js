@@ -237,6 +237,52 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
         $(myList).prev().val('');
         $(myList).remove();
       },
+      // Select获取焦点
+      selectOnfocus1:function(myobj,val,addname){
+        // 声明变量
+        var srcInput = $(myobj);
+        // 删除原来列表
+        srcInput.next().remove();
+
+        // 添加列表div
+        srcInput.after('<div class="srcSelectStyly"><dl><dd onclick="cjgl.addTeacher1(this)">请选择</dd></dl></div>');
+        // 声明变量
+        var mydl = srcInput.next().children('dl');
+
+        // 获取数据
+        $.post(
+            "/renshi/teacher/srcteacher",
+            {
+                "str":val,
+            },
+            function(data,status){
+                
+                if($.isEmptyObject(data))
+                {
+                    return true;
+                }
+
+                for (var i = data.length - 1; i >= 0; i--) {
+                    mydl.append('<dd id="'+data[i].id+'" onclick="cjgl.addTeacher1(this)" addname='+addname+' teachername="'+data[i].xingming+'">'+data[i].xingming+'　'+data[i].jsDanwei.jiancheng+'　'+data[i].shengri+'</dd>');
+                }
+                
+            }
+        );
+
+          
+      }, 
+      // 添加教师
+      addTeacher1:function(myobj){
+        var myId = $(myobj).attr('id')
+            ,teachername = $(myobj).attr('teachername')
+            ,addname = $(myobj).attr('addname')
+            ,myTitle = $(myobj).text()
+            ,myList = $(myobj).parent().parent()
+            ,myBut = $(myList).parent().parent();
+
+        $(myList).prev().val(myId);
+        $(myList).remove();
+      },
       // 删除教师
       delTeacher:function(myobj){
         $(myobj).parent().remove();
