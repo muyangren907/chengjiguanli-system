@@ -16,14 +16,15 @@
 	<div class="layui-form-item">
 	    <label for="school" class="layui-form-label" style="height: 100%">学校</label>
 	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+	    	<input type="radio" name="school" title="无" value="" checked="true" lay-skin="primary" >
 	    	{php} $schoollist = schlist('校级','校级',['小学','中小学']);{/php}
 	    	{volist name="schoollist" id="vo"}
-	    		<input type="checkbox" name="school[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="radio" name="school" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" >
 	    	{/volist}
 	    </div>
 	</div>
 	<div class="layui-form-item">
-	    <label for="nianji" class="layui-form-label" style="height: 100%">年级 </label>
+	    <label for="ruxuenian" class="layui-form-label" style="height: 100%">年级 </label>
 	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')" pane>
 	    	{php}
 	            $nianji = new \app\kaoshi\model\KaoshiNianji;
@@ -33,7 +34,7 @@
 	                  ->select();
 	        {/php}
 			{foreach $njlist as $key=>$vo}
-	            <input type="radio" name="nianji" value="{$vo->nianji}" title="{$vo->nianjiname}" 
+	            <input type="radio" name="ruxuenian" value="{$vo->nianji}" title="{$vo->nianjiname}" 
 	            {eq name="$list.nianji" value="$vo->nianji"} checked {/eq} >
 			{/foreach}
 	    </div>
@@ -124,7 +125,8 @@
 	// 设置查询条件
 	options.where = {
 		kaoshi:"{$list.kaoshi}"
-		,nianji:"{$list.nianji}"
+		,ruxuenian:$("input[name='ruxuenian']:checked").val()
+		,school:$("input[name='school']:checked").val()
 	}
 
 	options.autoSort=true;
@@ -146,7 +148,7 @@
             cjgl.add('添加单位','/school/create','650','500');
             break;
        	  case 'download':
-  			cjgl.add('下载成绩','/bjtongji/{$list.kaoshi}/dwBanji','650','300');
+  			cjgl.add('下载成绩','/chengji/bjtj/dwbiaoge/{$list.kaoshi}','650','300');
   			break;
     	};
       });

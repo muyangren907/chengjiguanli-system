@@ -226,6 +226,8 @@ class Kaohao extends Base
         );
 
 
+
+
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
         $school = $src['school'];
@@ -272,12 +274,13 @@ class Kaohao extends Base
                         $query->field('id,title,jiancheng');
                     },
                 ])
-                ->select();
+                ->select()
+                ->toArray();
         foreach ($data as $key => $value) {
-            $data[$key]->banjiTitle = $bj->myBanjiTitle($value->id,$kssj);
+            $data[$key]['banjiTitle'] = $bj->myBanjiTitle($value['id'],$kssj);
         }
 
-        return $data->toArray();
+        return $data;
     }
 
 

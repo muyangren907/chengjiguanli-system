@@ -21,11 +21,28 @@ class Bjtongji extends Base
     public function tjBanji($srcfrom)
     {
 
+        // 初始化参数 
+        $src = array(
+            'page'=>'1',
+            'limit'=>'10',
+            'kaoshi'=>'',
+            'ruxuenian'=>'',
+            'school'=>array(),
+            'paixu'=>array(),
+        );
+
+        dump($srcfrom);
+
+        // 用新值替换初始值
+        $src = array_cover( $srcfrom , $src ) ;
+
         // 查询要统计成绩的班级
         $kh = new \app\kaoshi\model\Kaohao;
 
 
-        $bj = $kh->cyBanji($srcfrom);
+        $bj = $kh->cyBanji($src);
+
+        halt($bj->toArray());
 
         $srcfrom['nianji'] = $srcfrom['ruxuenian'];
         $srcfrom['banji'] = $srcfrom['paixu'];
@@ -40,6 +57,7 @@ class Bjtongji extends Base
         // 实例化学生成绩统计类
         $tj = new TJ;
         $cj = new Chengji;
+
 
         // 获取并统计各班级成绩
         $data = array();

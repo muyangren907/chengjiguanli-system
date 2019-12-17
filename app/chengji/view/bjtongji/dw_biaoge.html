@@ -1,4 +1,4 @@
-{extend name="common@create" /}
+{extend name=".././view/createhref.html" /}
 
 {block name="form"}
     <form action="{$list.set.url}" method="{$list.set.formpost}" class="layui-form layui-form-pane" lay-filter="myform">
@@ -34,7 +34,7 @@
                     ->field('nianji,nianjiname')
                     ->select();
               {/php}
-              <select name="nianji" id="nianji" lay-verify="required" class="layui-form-label">
+              <select name="ruxuenian" id="nianji" lay-verify="required" class="layui-form-label">
                 <option value="">请选择要下载的年级</option>
               {foreach $njlist as $key=>$vo}
                 <option value="{$vo->nianji}">{$vo->nianjiname}</option>

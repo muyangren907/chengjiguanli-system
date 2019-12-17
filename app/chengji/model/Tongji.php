@@ -114,17 +114,10 @@ class Tongji extends Base
         // $allcj = array();
         foreach ($ksinfo->ks_subject as $key => $value) {
             $cjcol = array_column($cj,$value->lieming);
-
-            $filtered = array_filter($data, function($item){ 
-
-                 return $item['cate'] !== '摄影美图'; 
-
-            });
             $cjcol = array_filter($cjcol,function($item){
                 return $item !== null; 
             });
 
-            halt($cjcol);
 
             // $allcj = array_merge($allcj,$cjcol);
             $temp = array();

@@ -58,7 +58,7 @@ class Bjtongji extends BaseController
                     'page'=>'1',
                     'limit'=>'10',
                     'kaoshi'=>'',
-                    'nianji'=>'',
+                    'ruxuenian'=>'',
                     'school'=>array(),
                     'paixu'=>array(),
                 ],'POST');
@@ -69,7 +69,7 @@ class Bjtongji extends BaseController
 
         $srcfrom = [
             'kaoshi'=>$src['kaoshi'],
-            'ruxuenian'=>$src['nianji'],
+            'ruxuenian'=>$src['ruxuenian'],
             'paixu'=>$src['paixu'],
         ];
         // 如果获取到的school是字符串，将它转换成数组
@@ -102,7 +102,7 @@ class Bjtongji extends BaseController
             'webtitle'=>'各班级成绩汇总表下载',
             'butname'=>'下载',
             'formpost'=>'POST',
-            'url'=>'/bjtongji/dwBanji',
+            'url'=>'/chengji/bjtj/dwxlsx',
             'kaoshi'=>$kaoshi
         );
 
@@ -115,22 +115,26 @@ class Bjtongji extends BaseController
 
 
     // 年级、班级学生成绩统计下载表格
-    public function dwBanjixls($kaoshi)
+    public function dwBanjixls()
     {
         // 获取表单参数
         $src = $this->request
                 ->only([
                     'kaoshi'=>'',
-                    'nianji'=>'一年级',
+                    'ruxuenian'=>'',
                     'school'=>array(),
                 ],'POST');
 
-        $schools = [$src['school']];
+
+        // 如果获取到的school是字符串，将它转换成数组
+        $src['school'] = strToarray($src['school']);
 
 
         // 统计成绩
         $btj = new BTJ;
-        $data = $btj->tjBanji($src['kaoshi'],$src['nianji'],$schools,array());
+        $data = $btj->tjBanji($src);
+
+        halt($data);
 
         
         // 获取参考学科

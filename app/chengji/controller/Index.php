@@ -350,7 +350,7 @@ class Index extends BaseController
         $cj = new Chengji;
 
         // 查询要显示的数据
-        $data = $cj->list($src);
+        $data = $cj->search($src);
 
 
 
