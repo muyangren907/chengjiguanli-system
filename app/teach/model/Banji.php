@@ -18,7 +18,7 @@ class Banji extends Base
 
         // 查询数据
         $data = $this
-            ->order('school','ruxuenian','paixu')
+            // ->order('school','ruxuenian','paixu')
             ->order([$src['field'] =>$src['type']])
             ->when(strlen($school)>0,function($query) use($school){
                     $query->where('school',$school);
@@ -43,6 +43,7 @@ class Banji extends Base
             ])
             ->append(['banjiTitle'])
             ->select();
+
         return $data;
     }
 
@@ -70,9 +71,9 @@ class Banji extends Base
 
         if(array_key_exists($nj,$numnj))
         {
-            $numname = ($numnj[$nj] + 1).'级'.$bj.'班';
+            $numname = ($numnj[$nj] + 1).'.'.$bj;
         }else{
-            $numname = $nj.'级'.$bj.'班';
+            $numname = $nj.'.'.$bj;
         }
         
 
@@ -84,21 +85,12 @@ class Banji extends Base
     // 班级名获取器
     public function getBanjiTitleAttr()
     {
-        $njname = nianjilist();
-        $bjname = banjinamelist();
-        $nj = $this->getAttr('ruxuenian');
-        $bj = $this->getAttr('paixu');
-
-        $njkeys = array_keys($njname);
-        $bjkeys = array_keys($bjname);
-
-        in_array($nj,$njkeys) ? $title = $njname[$nj] : $title = $nj.'届';
-        in_array($bj,$bjkeys) ? $title = $title.$bjname[$bj] : $title = $title.$bj.'班';
-
+        // 获取班级名
+        $title = $this->myBanjiTitle($this->getAttr('id'));
         return $title;
     }
 
-    // 班级名获取器
+    // 班名获取器
     public function getBanTitleAttr()
     {
         $bjname = banjinamelist();
@@ -116,6 +108,43 @@ class Banji extends Base
     public function njBanji()
     {
         return $this->hasMany('Banji','ruxuenian','ruxuenian');
+    }
+
+
+    /**
+     * 获取考试时的班级名称
+     * $jdshijian 考试开始时间
+     * $ruxuenian 年级
+     * $paixu 班级
+     * 返回 $str 班级名称 
+     * */ 
+    public function myBanjiTitle($bjid,$jdshijian=0)
+    {
+        // 查询班级信息
+        $bjinfo = $this::withTrashed()
+            ->where('id',$bjid)
+            ->field('id,ruxuenian,paixu,delete_time')
+            ->find();
+
+
+        //获取班级、年级列表
+        $njlist = nianjiList($jdshijian);
+        $bjlist = banjinamelist();
+
+        if(array_key_exists($bjinfo->ruxuenian,$njlist))
+        {
+            $bjtitle = $njlist[$bjinfo->ruxuenian].$bjlist[$bjinfo->paixu];
+        }else{
+            $bjtitle = $bjinfo->ruxuenian.'界'.$bjinfo->paixu.'班';
+        }
+
+        // 如果该班级被删除，则瓢删除
+        if($bjinfo->delete_time != null)
+        {
+            $bjtitle = $bjtitle.'(删)';
+        }
+
+        return $bjtitle;
     }
 
 }

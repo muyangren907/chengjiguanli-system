@@ -529,14 +529,14 @@ class Kaohao extends BaseController
         $sheet->setCellValue('C3', '班级');
         $sheet->setCellValue('D3', '姓名');
         // 获取列数并合并和一行
-        $col = $lieming[count($kslist->ks_subject)+3];
+        $col = $lieming[count($kslist->ksSubject)+3];
         $sheet->mergeCells('A1:'.$col.'1');
 
 
          // 写入列名
-        foreach ($kslist->ks_subject as $key => $value) {
-            $sheet->setCellValue($lieming[$key + 4].'3', $value->subject_name->title);
-            $sheet->setCellValue($lieming[$key + 4].'2', $value->subject_name->id);
+        foreach ($kslist->ksSubject as $key => $value) {
+            $sheet->setCellValue($lieming[$key + 4].'3', $value->subjectName->title);
+            $sheet->setCellValue($lieming[$key + 4].'2', $value->subjectName->id);
         }
         // 隐藏第二行和第二列
         $sheet->getRowDimension('2')->setRowHeight('0');
@@ -547,11 +547,11 @@ class Kaohao extends BaseController
         $i = 4;
         foreach ($kaohao as $key=>$bj)
         {
-            foreach ($bj->banji_kaohao as $k => $kh) {
+            foreach ($bj->banjiKaohao as $k => $kh) {
                 $sheet->setCellValue('A'.$i, $i-3);
                 $sheet->setCellValue('B'.$i, $kh->id);
-                $sheet->setCellValue('C'.$i, $bj->cj_banji->banjiTitle);
-                $sheet->setCellValue('D'.$i, $kh->cj_student->xingming);
+                $sheet->setCellValue('C'.$i, $bj->cjBanji->banjiTitle);
+                $sheet->setCellValue('D'.$i, $kh->cjStudent->xingming);
                 $i++;
             }
         }

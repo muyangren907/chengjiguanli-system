@@ -23,6 +23,8 @@ class Bjtongji extends Base
 
         // 查询要统计成绩的班级
         $kh = new \app\kaoshi\model\Kaohao;
+
+
         $bj = $kh->cyBanji($srcfrom);
 
         $srcfrom['nianji'] = $srcfrom['ruxuenian'];
@@ -30,9 +32,8 @@ class Bjtongji extends Base
         unset($srcfrom['ruxuenian'],$srcfrom['paixu']);
 
 
-
         $data = array();
-        if($bj->isEmpty()){
+        if(count($bj) == 0){
             return $data;
         }
 
@@ -44,16 +45,15 @@ class Bjtongji extends Base
         $data = array();
         $bjs = array();
         foreach ($bj as $key => $value) {
-            $bjs[] = $value->banji;
-            $banji=[$value->banji];
+            $bjs[] = $value['id'];  # 记录班级数组，为统计所有班级成绩做准备
+            $srcfrom['banji']=[$value['id']];
             $temp = $cj->search($srcfrom);
             $temp = $tj->tongji($temp,$srcfrom['kaoshi']);
             $data[] = [
-                'banji'=>$value->bjtitle,
-                'school'=>$value->cj_school->jiancheng,
+                'banji'=>$value['banjiTitle'],
+                'school'=>$value['glSchool']['jiancheng'],
                 'chengji'=>$temp
             ];
-            
         }
 
         $srcfrom['banji'] = $bjs;

@@ -70,13 +70,10 @@ class Bjtongji extends BaseController
         $srcfrom = [
             'kaoshi'=>$src['kaoshi'],
             'ruxuenian'=>$src['nianji'],
-            // 'school'=>explode(',', $src['school']),
-            'school'=>$src['school'],
             'paixu'=>$src['paixu'],
         ];
-
-        is_array($src['school']) ? $srcfrom['school'] = $src['school'] : $srcfrom['school'] = explode(',', $src['school']);
-
+        // 如果获取到的school是字符串，将它转换成数组
+        $srcfrom['school'] = strToarray($src['school']);
 
         $data = $btj->tjBanji($srcfrom);
 

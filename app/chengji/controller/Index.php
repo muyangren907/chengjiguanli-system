@@ -330,7 +330,7 @@ class Index extends BaseController
     {
         // 获取参数
         $src = $this->request
-                ->only(['page','limit','field','type','kaoshi','school','nianji','paixu','searchval'
+                ->only(['page','limit','field','type','kaoshi','school','ruxuenian','paixu','searchval'
                 ],'POST');
 
         // 根据班级排序获取班级id
@@ -350,7 +350,7 @@ class Index extends BaseController
         $cj = new Chengji;
 
         // 查询要显示的数据
-        $data = $cj->search($src);
+        $data = $cj->list($src);
 
 
 

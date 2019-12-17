@@ -24,10 +24,7 @@ class Kaohao extends Base
                     ->order(['banji'])
                     ->group('banji,school')
                     ->with([
-                        'cjBanji'=>function($query){
-                            $query->field('id,paixu,ruxuenian')
-                                ->append(['numTitle','banjiTitle']);
-                        }
+                        'cjBanji'
                         ,
                         'cjSchool'=>function($query){
                             $query->field('id,jiancheng');
@@ -67,6 +64,7 @@ class Kaohao extends Base
 
 
     /**  
+    * 列出适合显示的学生成绩，
     * 以考号为基础查询学生成绩信息并排序，计划在网页上显示成绩列表中使用 
     * 信息包括：学校、年级、班级、姓名、性别、各学科成绩、平均分、总分
     * @access public 
@@ -83,37 +81,35 @@ class Kaohao extends Base
     {
         // 初始化参数 
         $src = array(
-            'page'=>'1',
-            'limit'=>'10',
-            // 'field'=>'banji',
-            // 'type'=>'desc',
             'kaoshi'=>'',
-            'school'=>array(),
-            'nianji'=>'',
+            'school'=>array('0'),
+            'ruxuenian'=>'',
             'banji'=>array('0'),
             'searchval'=>''
         );
+
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
 
 
         // 重新定义变量
         $school = $src['school'];
-        $nianji = $src['nianji'];
+        $ruxuenian = $src['ruxuenian'];
         $banji = $src['banji'];
         $seachval = $src['searchval'];
 
+
         // 查询成绩
         $khlist = $this->where('kaoshi',$src['kaoshi'])
-                ->field('id,school,student,nianji,banji')
+                ->field('id,school,student,banji,kaoshi')
                 ->when(count($school)>0,function($query) use($school){
                     $query->where('school','in',$school);
                 })
                 ->when(count($banji)>0,function($query) use($banji){
                     $query->where('banji','in',$banji);
                 })
-                ->when(strlen($nianji)>0,function($query) use($nianji){
-                    $query->where('ruxuenian',$nianji);
+                ->when(strlen($ruxuenian)>0,function($query) use($ruxuenian){
+                    $query->where('ruxuenian',$ruxuenian);
                 })
                 ->when(strlen($seachval)>0,function($query) use($seachval){
                     $query->where(function($w) use ($seachval){
@@ -128,9 +124,6 @@ class Kaohao extends Base
                     'ksChengji'=>function($query){
                         $query->field('kaohao_id,subject_id,defen');
                     }
-                    ,'cjBanji'=>function($query){
-                        $query->field('id,paixu,ruxuenian');
-                    }
                     ,'cjSchool'=>function($query){
                         $query->field('id,jiancheng');
                     }
@@ -138,6 +131,7 @@ class Kaohao extends Base
                         $query->field('id,xingming,sex');
                     }
                 ])
+                ->append(['banjiTitle'])
                 ->select();
 
         return $khlist;
@@ -218,7 +212,7 @@ class Kaohao extends Base
     * @access public 
     * @param number $kaoshi 考试id
     * @param number $ruxuenian 入学年
-    * @return array 返回类型
+    * @return array 返回班级数据模型
     */
     public function cyBanji($srcfrom)
     {
@@ -240,11 +234,10 @@ class Kaohao extends Base
 
         // 获取考试时间
         $ks = new \app\kaoshi\model\Kaoshi;
-        $kssj = $ks::where('id',$src['ruxuenian'])->value('bfdate');
-        $year = date('Y',$kssj);
+        $kssj = $ks::where('id',$src['kaoshi'])->value('bfdate');
 
-
-        $data = $this->where('ruxuenian',$src['ruxuenian'])
+        $bjids = $this
+                ->where('ruxuenian',$src['ruxuenian'])
                 ->where('kaoshi',$src['kaoshi'])
                 ->when(count($school)>0,function($query) use($school){
                     $query->where('school','in',$school);
@@ -255,26 +248,61 @@ class Kaohao extends Base
                     });
                 })
                 ->with([
-                    'cjBanji'=>function($query){
-                        $query->field('id,paixu,ruxuenian');
-                    }
-                    ,'cjSchool'=>function($query){
+                    'cjSchool'=>function($query){
                         $query->field('id,jiancheng');
                     }
                 ])
-                ->group('banji,school')
-                ->field('banji,school')
-                ->select();
-        $njlist = nianjiList($year);
-        $bjlist = banjinamelist();
+                ->group('banji')
+                ->field(['banji'])
+                ->select()
+                ->toArray();
 
-
-        foreach ($data as $key => $value) {
-            # code...
-            $data[$key]['bjtitle'] = $njlist[$value->cjBanji->ruxuenian].$bjlist[$value->cjBanji->paixu];
+        foreach ($bjids as $key => $value) {
+            // halt($key);
+            $bjids[$key] = $value['banji'];
         }
 
-        return $data;
+
+        $bj = new \app\teach\model\Banji;
+
+        $data  = $bj->where('id','in',$bjids)
+                ->field('id,school')
+                ->with([
+                    'glSchool'=>function($query){
+                        $query->field('id,title,jiancheng');
+                    },
+                ])
+                ->select();
+        foreach ($data as $key => $value) {
+            $data[$key]->banjiTitle = $bj->myBanjiTitle($value->id,$kssj);
+        }
+
+        return $data->toArray();
+    }
+
+
+    /**  
+    * 获取参加考试的班级
+    * @access public 
+    * @param number $kaoshi 考试id
+    * @param number $ruxuenian 入学年
+    * @return array 返回类型
+    */
+    public function getBanjiTitleAttr()
+    {
+        $ks = $this->where('id',$this->id)
+                ->with([
+                    'cjKaoshi'=>function($query){
+                        $query->field('id,bfdate');
+                    }
+                ])
+                ->find();
+        $bfdate = $ks->cjKaoshi->getData('bfdate');
+
+        $bj = new \app\teach\model\Banji;
+        $title = $bj->myBanjiTitle($this->getAttr('banji'),$bfdate);
+
+        return $title;
     }
 
 }

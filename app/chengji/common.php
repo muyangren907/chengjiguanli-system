@@ -51,3 +51,6 @@ function manfenvalidate($defen,$manfen)
 	return $data;
 }
 
+
+
+

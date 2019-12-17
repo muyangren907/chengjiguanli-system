@@ -16,10 +16,10 @@
 	<div class="layui-form-item">
 	    <label for="school" class="layui-form-label" style="height: 100%">学校</label>
 	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+	    	<input type="radio" name="school" title="无" value="" checked="true" lay-skin="primary" >
 	    	{php} $schoollist = schlist('校级','校级',['小学','中小学']);{/php}
 	    	{volist name="schoollist" id="vo"}
-	    		<input type="radio" name="school" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary"
-	            {eq name="key" value="0"} checked {/eq}>
+	    		<input type="radio" name="school" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" >
 	    	{/volist}
 	    </div>
 	</div>

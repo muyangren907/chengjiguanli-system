@@ -33,7 +33,7 @@
 		    </div>
 		</div>
 		<div class="layui-form-item">
-		    <label for="nianji" class="layui-form-label" style="height: 100%">年级 </label>
+		    <label for="ruxuenian" class="layui-form-label" style="height: 100%">年级 </label>
 		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
 		    	{php}
             $nianji = new \app\kaoshi\model\KaoshiNianji;
@@ -43,7 +43,7 @@
                   ->select();
           {/php}
 		    	{foreach $njlist as $key=>$vo}
-            <input type="radio" name="nianji" value="{$vo->nianji}" title="{$vo->nianjiname}" 
+            <input type="radio" name="ruxuenian" value="{$vo->nianji}" title="{$vo->nianjiname}" 
             {eq name="$list.nianji" value="$vo->nianji"} checked {/eq} >
 		    	{/foreach}
 		    </div>
@@ -117,6 +117,7 @@
 		kaoshi:"{$list.kaoshi}"
     ,nianji:"{$list.nianji}"
     ,school:$("input[name='school']:checked").val()
+    ,ruxuenian:$("input[name='ruxuenian']:checked").val()
 	}
 
 	// 设置每页显示条数

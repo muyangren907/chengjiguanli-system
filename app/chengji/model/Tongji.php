@@ -9,8 +9,9 @@ class Tongji extends Base
 {
 
     /**  
-    * 以考号为基础查询学生成绩 
+    * 取出学生原始成绩 
     * 信息包括：各学科成绩、平均分、总分
+    * 用于学生成绩统计
     * @access public 
     * @param number $kaoshi 考试id
     * @param array $banji 班级
@@ -18,7 +19,7 @@ class Tongji extends Base
     * @param array $school 学校 
     * @return array 返回类型
     */
-    // public function srcChengji1($srcfrom)
+    // public function srcChengji($srcfrom)
     // {
 
     //     // 初始化参数 
@@ -58,6 +59,8 @@ class Tongji extends Base
     //     {
     //         return $data = array();
     //     }
+
+    //     halt($khlist->toArray());
 
     //     // 获取参考学科
     //     $ks = new \app\kaoshi\model\Kaoshi;
@@ -102,7 +105,6 @@ class Tongji extends Base
     // 统计成绩
     public function tongji($cj=array(),$kaoshi)
     {   
-        
         $ks = new \app\kaoshi\model\Kaoshi;
         $ksinfo = $ks->where('id',$kaoshi)
                 ->field('id')
@@ -112,6 +114,17 @@ class Tongji extends Base
         // $allcj = array();
         foreach ($ksinfo->ks_subject as $key => $value) {
             $cjcol = array_column($cj,$value->lieming);
+
+            $filtered = array_filter($data, function($item){ 
+
+                 return $item['cate'] !== '摄影美图'; 
+
+            });
+            $cjcol = array_filter($cjcol,function($item){
+                return $item !== null; 
+            });
+
+            halt($cjcol);
 
             // $allcj = array_merge($allcj,$cjcol);
             $temp = array();
