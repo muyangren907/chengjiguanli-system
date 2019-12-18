@@ -78,9 +78,12 @@ class Index extends BaseController
             'newdefen']
             ,'post');
         $list['kaohao_id'] = $id;
-        // 获取学科信息
+
+
+        // 获取学科id
         $subject = new \app\teach\model\Subject;
         $subject_id = $subject->where('lieming',$list['colname'])->value('id');
+
 
         // 成绩验证
         $manfen =  getmanfen($list['kaohao_id'],$subject_id);
@@ -90,32 +93,34 @@ class Index extends BaseController
             return json($mfyz);
         }
 
+
+
         // 更新成绩 
         $cj = new Chengji;
         $cjinfo = Chengji::withTrashed()
                     ->where('kaohao_id',$list['kaohao_id'])
                     ->where('subject_id',$subject_id)
                     ->find();
+
         // 如果存在成绩则更新，不存在则添加
         if($cjinfo){
             $cjinfo->restore();
             $cjinfo->defen = $list['newdefen'];
-            $cjinfo->user_id = session('userid');
+            $cjinfo->userId = session('userid');
             $data = $cjinfo->save();
         }else{
             $cj->defen = $list['newdefen'];
-            $cj->kaohao_id = $list['kaohao_id'];
-            $cj->subject_id = $subject_id;
-            $cj->user_id = session('userid');
+            $cj->kaohaoId = $list['kaohao_id'];
+            $cj->subjectId = $subject_id;
+            $cj->userId = session('userid');
             $data = $cj->save();
         }
-                    // update(['defen'=>$list['newdefen']]);
 
         // 判断返回内容
         $data ? $data=['msg'=>'录入成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回更新结果
-        return $data;
+        return json($data);
     }
 
 

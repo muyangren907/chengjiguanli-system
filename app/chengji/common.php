@@ -3,13 +3,16 @@
 // 获取学科满分
 function getmanfen($kaohaoid,$subjectid)
 {
+
 	// 获取考试号
 	$kh = new app\kaoshi\model\Kaohao;
 	$kaoshiid = $kh->where('id',$kaohaoid)->value('kaoshi');
 
+
 	// 根据考试号和学科名获取满分
 	$KSXK = new app\kaoshi\model\KaoshiSubject;
-	$manfen = $KSXK->where('kaoshiid',$kaoshiid)->where('subjectid','in',$subjectid)->value('manfen');
+	$manfen = $KSXK->where('kaoshiid',$kaoshiid)->where('subjectid',$subjectid)->value('manfen');
+
 	$manfen = floatval($manfen);
 	return $manfen;
 }
