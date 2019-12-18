@@ -35,18 +35,20 @@ class Njtongji extends BaseController
             $list['nianji'] = "一年级";
         }
 
-        $list['subject'] = $ksinfo->ks_subject;
+        $list['subject'] = $ksinfo->ksSubject;
+
         // 设置要给模板赋值的信息
         $list['webtitle'] = '各学校的年级成绩统计表';
         $list['kaoshi'] = $kaoshi;
         $list['kaoshititle'] = $ksinfo->title;
+        $list['dataurl'] = '/chengji/njtj/data';
 
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -59,11 +61,14 @@ class Njtongji extends BaseController
                     'page'=>'1',
                     'limit'=>'10',
                     'kaoshi'=>'',
-                    'nianji'=>'一年级',
+                    'ruxuenian'=>'',
                 ],'POST');
+
+
         // 统计成绩
         $ntj = new NTJ;
-        $data = $ntj->tjNianji($kaoshi=$src['kaoshi'],$nianji=$src['nianji']);
+        $data = $ntj->tjNianji($src);
+
         // 获取记录数
         $cnt = count($data);
         // 截取当前页数据
@@ -92,20 +97,20 @@ class Njtongji extends BaseController
             'webtitle'=>'各年级成绩汇总表下载',
             'butname'=>'下载',
             'formpost'=>'POST',
-            'url'=>'/njtongji/dwNanji',
+            'url'=>'/chengji/njtj/dwxlsx',
             'kaoshi'=>$kaoshi
         );
 
         // 模板赋值
-        $this->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->fetch();
+        return $this->view->fetch();
 
     }
 
 
     // 年级、班级学生成绩统计下载表格
-    public function dwNianjixls($kaoshi)
+    public function dwNianjixlsx()
     {
 
         // 获取参数
@@ -114,17 +119,17 @@ class Njtongji extends BaseController
                     'page'=>'1',
                     'limit'=>'10',
                     'kaoshi'=>'',
-                    'nianji'=>'一年级',
+                    'ruxuenian'=>'',
                 ],'POST');
 
         // 统计成绩
         $ntj = new NTJ;
-        $data = $ntj->tjNianji($kaoshi=$src['kaoshi'],$nianji=$src['nianji']);
+        $data = $ntj->tjNianji($src);
         
         // 获取参考学科
         $ks = new \app\kaoshi\model\Kaoshi;
         $ksinfo = $ks->where('id',$src['kaoshi'])
-                    ->field('id,title')
+                    ->field('id,title,bfdate')
                     ->with([
                         'ksSubject'=>function($query){
                             $query->field('kaoshiid,subjectid,manfen')
@@ -137,8 +142,12 @@ class Njtongji extends BaseController
                     ->find();
         $xk = $ksinfo->ks_subject;
 
+        // 获取考试年级名称
+        $njlist = nianjiList($ksinfo->getData('bfdate'));
+        $nianji = $njlist[$src['ruxuenian']];
+
         // 获取要下载成绩的学校和年级信息
-        $tabletitle = $ksinfo->title.' '.$src['nianji'].'各学校成绩汇总';
+        $tabletitle = $ksinfo->title.' '.$nianji.'各学校成绩汇总';
 
 
         // 创建表格

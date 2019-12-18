@@ -27,7 +27,8 @@ Route::group('index', function () {
 	    Route::rule('delete/<id>','Index/delete','delete');				# 成绩删除
 	    Route::rule('deletecjs/<kaoshi>','Index/deletecjs','get');				# 成绩删除
 	    Route::rule('deletecjmore','Index/deletecjmore','post');				# 成绩删除
-
+		Route::rule('dwchengji/<kaoshi>','Index/dwChengji','get');				# 成绩删除
+		Route::rule('dwxlsx','Index/dwchengjixlsx','post');				# 成绩删除
 	});
 
 
@@ -43,6 +44,15 @@ Route::group('bjtj', function () {
 	    Route::rule('data','Bjtongji/ajaxData','post');			# 扫码界面
 	    Route::rule('dwbiaoge/<kaoshi>','Bjtongji/dwBiaoge','get');		# 扫码保存
 	    Route::rule('dwxlsx','Bjtongji/dwBanjixls','post');		# 扫码保存
+	});
+
+
+// 年级统计
+Route::group('njtj', function () {
+	    Route::rule('biaoge/<kaoshi>','Njtongji/biaoge','get');			# 班级表格
+	    Route::rule('data','Njtongji/ajaxData','post');			# 扫码界面
+	    Route::rule('dwbiaoge/<kaoshi>','Njtongji/dwBiaoge','get');		# 扫码保存
+	    Route::rule('dwxlsx','Njtongji/dwNianjixlsx','post');		# 扫码保存
 	});
 
 

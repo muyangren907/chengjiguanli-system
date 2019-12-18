@@ -6,7 +6,7 @@ namespace app\chengji\model;
 use app\common\model\Base;
 // 引用学生成绩统计类
 use app\chengji\model\Tongji as TJ;
-use app\chengji\model\Chengji;
+// use app\chengji\model\Chengji;
 
 class Bjtongji extends Base
 {
@@ -26,32 +26,15 @@ class Bjtongji extends Base
             'page'=>'1',
             'limit'=>'10',
             'kaoshi'=>'',
-            'ruxuenian'=>'',
-            'school'=>array(),
-            'paixu'=>array(),
+            'banji'=>array(),
         );
 
-        dump($srcfrom);
 
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
 
-        // 查询要统计成绩的班级
-        $kh = new \app\kaoshi\model\Kaohao;
-
-
-        $bj = $kh->cyBanji($src);
-
-        halt($bj->toArray());
-
-        $srcfrom['nianji'] = $srcfrom['ruxuenian'];
-        $srcfrom['banji'] = $srcfrom['paixu'];
-        unset($srcfrom['ruxuenian'],$srcfrom['paixu']);
-
-
-        $data = array();
-        if(count($bj) == 0){
-            return $data;
+        if(count($src['banji']) == 0){
+            return array();
         }
 
         // 实例化学生成绩统计类
@@ -61,10 +44,11 @@ class Bjtongji extends Base
 
         // 获取并统计各班级成绩
         $data = array();
-        $bjs = array();
-        foreach ($bj as $key => $value) {
-            $bjs[] = $value['id'];  # 记录班级数组，为统计所有班级成绩做准备
-            $srcfrom['banji']=[$value['id']];
+        foreach ($src['banji'] as $key => $value) {
+            $srcfrom = [
+                'kaoshi'=>$src['kaoshi'],
+                'banji'=>[$value['id']]
+            ];
             $temp = $cj->search($srcfrom);
             $temp = $tj->tongji($temp,$srcfrom['kaoshi']);
             $data[] = [
@@ -74,14 +58,14 @@ class Bjtongji extends Base
             ];
         }
 
-        $srcfrom['banji'] = $bjs;
+        $srcfrom['banji'] = array_column($src['banji'], 'id');
         // 获取年级成绩
         // $allcj = $tj->srcChengji($kaoshi=$kaoshi,$banji=$bjs,$nianji=$nianji,$school=array());
         $allcj = $cj->search($srcfrom);
         $temp = $tj->tongji($allcj,$srcfrom['kaoshi']);
         $data[] = [
             'banji'=>'合计',
-            'school'=>'',
+            'school'=>'合计',
             'chengji'=>$temp
         ];
 

@@ -64,18 +64,18 @@ class Bjtongji extends BaseController
                 ],'POST');
 
 
+        $src['school'] = strToarray($src['school']);
+
+        // 获取参与考试的班级
+        $kh = new \app\kaoshi\model\Kaohao;
+        // $src['banji']= array_column($kh->cyBanji($src), 'id');
+        $src['banji']= $kh->cyBanji($src);
+
+
         // 统计成绩
         $btj = new BTJ;
 
-        $srcfrom = [
-            'kaoshi'=>$src['kaoshi'],
-            'ruxuenian'=>$src['ruxuenian'],
-            'paixu'=>$src['paixu'],
-        ];
-        // 如果获取到的school是字符串，将它转换成数组
-        $srcfrom['school'] = strToarray($src['school']);
-
-        $data = $btj->tjBanji($srcfrom);
+        $data = $btj->tjBanji($src);
 
        
         // 获取记录总数
@@ -129,18 +129,20 @@ class Bjtongji extends BaseController
         // 如果获取到的school是字符串，将它转换成数组
         $src['school'] = strToarray($src['school']);
 
+        // 获取参与考试的班级
+        $kh = new \app\kaoshi\model\Kaohao;
+        // $src['banji']= array_column($kh->cyBanji($src), 'id');
+        $src['banji']= $kh->cyBanji($src);
 
         // 统计成绩
         $btj = new BTJ;
         $data = $btj->tjBanji($src);
 
-        halt($data);
-
         
         // 获取参考学科
         $ks = new \app\kaoshi\model\Kaoshi;
         $ksinfo = $ks->where('id',$src['kaoshi'])
-                    ->field('id,title')
+                    ->field('id,title,bfdate')
                     ->with([
                         'ksSubject'=>function($query){
                             $query->field('kaoshiid,subjectid,manfen')
@@ -151,13 +153,20 @@ class Bjtongji extends BaseController
                         }
                     ])
                     ->find();
-        $xk = $ksinfo->ks_subject;
+        $xk = $ksinfo->ksSubject;
+
+        // 获取考试年级名称
+        $njlist = nianjiList($ksinfo->getData('bfdate'));
+        $nianji = $njlist[$src['ruxuenian']];
 
 
         // 获取要下载成绩的学校和年级信息
         $school = new \app\system\model\School;
-        $schoolname = $school->where('id',$src['school'])->value('jiancheng');
-        $tabletitle = $ksinfo->title.' '.$schoolname.' '.$src['nianji'].'各班级成绩汇总';
+        $schoolname = $school->where('id','in',$src['school'])->value('jiancheng');
+
+
+        $tabletitle = $ksinfo->title.' '.$schoolname.' '. $nianji.'各班级成绩汇总';
+
 
         // 创建表格
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -191,6 +200,7 @@ class Bjtongji extends BaseController
         $col++;
         $sheet->mergeCells($colname[$col].'3:'.$colname[$col].'4');
         $sheet->setCellValue($colname[$col].'3', '全科平均');
+
 
         $row = 5;
         foreach ($data as $key => $value) {

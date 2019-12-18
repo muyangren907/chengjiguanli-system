@@ -333,20 +333,14 @@ class Index extends BaseController
                 ->only(['page','limit','field','type','kaoshi','school','ruxuenian','paixu','searchval'
                 ],'POST');
 
-        // 根据班级排序获取班级id
-        if(isset($src['paixu']))
-        {
-            $banji = new \app\teach\model\Banji;
-            $src['banji'] = $banji
-                    ->where('paixu','in',$src['paixu'])
-                    ->column('id');
-        }
+        $src['school'] = strToarray($src['school']);
 
-        $src['school'] = [$src['school']];
+        // 获取参与考试的班级
+        $kh = new \app\kaoshi\model\Kaohao;
+        $src['banji']= array_column($kh->cyBanji($src), 'id');
 
        
         // 实例化
-        $kaohao = new Kaohao;
         $cj = new Chengji;
 
         // 查询要显示的数据
@@ -544,7 +538,7 @@ class Index extends BaseController
             'webtitle'=>'成绩下载',
             'butname'=>'下载',
             'formpost'=>'POST',
-            'url'=>'/chengji/dwChengji',
+            'url'=>'/chengji/index/dwxlsx',
             'kaoshi'=>$kaoshi
         );
 
@@ -559,10 +553,10 @@ class Index extends BaseController
 
 
     //生成学生表格
-    public function dwchengjixls()
+    public function dwchengjixlsx()
     {
         // 获取参数
-        $list = $this->request
+        $src = $this->request
                 ->only([
                     'kaoshi'=>'1',
                     'banji'=>array(),
@@ -570,37 +564,42 @@ class Index extends BaseController
                     'ruxuenian'
                 ],'POST');
 
+
         // 获取要下载成绩的学校和年级信息
         $school = new \app\system\model\School;
-        $schoolname = $school->where('id',$list['school'])->value('jiancheng');
-        $nianji = nianjiList();
-
+        $schoolname = $school->where('id',$src['school'])->value('jiancheng');
 
         // 实例化验证模型
         $validate = new \app\chengji\validate\Cjdownload;
         // 验证表单数据
-        $result = $validate->check($list);
+        $result = $validate->check($src);
         $msg = $validate->getError();
 
         // 如果验证不通过则停止保存
         if(!$result){
             $this->error($msg);
         }
-        
+
+        $src['school'] = strToarray($src['school']);
+
+        // 获取参与考试的班级
+        $kh = new \app\kaoshi\model\Kaohao;
+        $src['banji']= array_column($kh->cyBanji($src), 'id');
+
 
         // 获取数据库信息
         $kh = new Kaohao();
-        $src = [
-            'kaoshi'=>$list['kaoshi'],
-            'banji'=>$list['banji'],
-        ];
+        // $src = [
+        //     'kaoshi'=>$list['kaoshi'],
+        //     'banji'=>$list['banji'],
+        // ];
         $chengjiinfo = $kh->srcChengji($src);
 
 
         // 获取考试标题
         $ks = new \app\kaoshi\model\Kaoshi;
-        $ks = $ks->where('id',$list['kaoshi'])
-                ->field('id,title')
+        $ks = $ks->where('id',$src['kaoshi'])
+                ->field('id,title,bfdate')
                 ->with([
                     'ksSubject'=>function($query){
                         $query->field('kaoshiid,subjectid')
@@ -611,8 +610,11 @@ class Index extends BaseController
                     }
                 ])
                 ->find();
+        // 获取考试年级名称
+        $njlist = nianjiList($ks->getData('bfdate'));
+        $nianji = $njlist[$src['ruxuenian']];
 
-        $tabletitle =$ks->title.' '.$schoolname.' '.$nianji[$list['ruxuenian']].' '.'学生成绩详细列表';
+        $tabletitle =$ks->title.' '.$schoolname.' '.$nianji.' '.'学生成绩详细列表';
 
         $colname = excelLieming();
 
@@ -674,8 +676,8 @@ class Index extends BaseController
 
         $tj = new \app\chengji\model\Tongji;
         $nianji = array();
-        $chengjiinfo = $tj->srcChengji($list['kaoshi'],$list['banji']);
-        $temp = $tj->tongji($chengjiinfo,$list['kaoshi']);
+        $chengjiinfo = $kh->srcChengji($src);
+        $temp = $tj->tongji($chengjiinfo,$src['kaoshi']);
         isset($colcnt) ? $colcnt = $colcnt+5 : $colcnt = 12;
         // 循环写出统计结果
         foreach ($ks->ks_subject as $key => $value) {

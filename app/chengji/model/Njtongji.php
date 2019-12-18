@@ -17,35 +17,61 @@ class Njtongji extends Base
     * @param number $ruxuenian 入学年
     * @return array 返回类型
     */
-    public function tjNianji($kaoshi,$nianji)
+    public function tjNianji($srcfrom)
     {
-        // 查询要统计成绩的学校
-        $kh = new \app\kaoshi\model\Kaohao;
-        $school = $kh->cySchool($kaoshi=$kaoshi,$ruxuenian=$nianji);
+        // 初始化参数 
+        $src = array(
+            'page'=>'1',
+            'limit'=>'10',
+            'kaoshi'=>'',
+            'ruxuenian'=>'',
+        );
+
+
+        // 用新值替换初始值
+        $src = array_cover( $srcfrom , $src ) ;
 
         $data = array();
-        if($school->isEmpty()){
+        if(strlen($src['ruxuenian']) == 0){
             return $data;
+        }
+
+        // 查询要统计成绩的学校
+        $kh = new \app\kaoshi\model\Kaohao;
+        $school = $kh->cySchool($src);
+
+        if(count($school) == 0){
+            return array();
         }
 
         // 实例化学生成绩统计类
         $tj = new TJ;
 
+
         // 获取并统计各班级成绩
         $data = array();
+        $srcfrom = [
+            'kaoshi'=>$src['kaoshi']
+            ,'ruxuenian'=>$src['ruxuenian']
+        ];
+
         foreach ($school as $key => $value) {
-            $schools=[$value->cj_school->id];
-            $temp = $tj->srcChengji($kaoshi=$kaoshi,$banji=array(),$nianji=$nianji,$schools=$schools);
-            $temp = $tj->tongji($temp,$kaoshi);
+            $srcfrom['school'] = [$value['school']];
+            $srcfrom['banji'] = array_column($kh->cyBanji($srcfrom), 'id');
+            $temp = $kh->srcChengji($srcfrom);
+            $temp = $tj->tongji($temp,$src['kaoshi']);
             $data[] = [
-                'school'=>$value->cj_school->jiancheng,
+                'school'=>$value['cjSchool']['jiancheng'],
                 'chengji'=>$temp
             ];
         }
-        
+
+
         // 获取年级成绩
-        $allcj = $tj->srcChengji($kaoshi=$kaoshi,$banji=array(),$nianji=$nianji,$school=array());
-        $temp = $tj->tongji($allcj,$kaoshi);
+        $srcfrom['school'] = array_column($school, 'school');;
+        $srcfrom['banji'] = array_column($kh->cyBanji($srcfrom), 'id');
+        $allcj = $kh->srcChengji($srcfrom);
+        $temp = $tj->tongji($allcj,$src['kaoshi']);
         $data[] = [
             'school'=>'合计',
             'chengji'=>$temp

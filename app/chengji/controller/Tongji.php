@@ -42,7 +42,6 @@ class Tongji extends BaseController
         $list['dataurl'] = '/chengji/bjtj/data';
 
 
-
         // 模板赋值
         $this->view->assign('list',$list);
 

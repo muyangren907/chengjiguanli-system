@@ -8,7 +8,7 @@
 		<a href="">考试管理</a>
 		<a href="">更多操作</a>
 		<a href="">成绩查看</a>
-		<a href="">各年级成绩统计表</a>
+		<a href="">学校成绩统计表</a>
 		<a><cite>{$list['kaoshititle']}</cite></a>
 	</span>
 {/block}
@@ -24,7 +24,7 @@
 	                  ->select();
 	        {/php}
 			{foreach $njlist as $key=>$vo}
-	            <input type="radio" name="nianji" value="{$vo->nianji}" title="{$vo->nianjiname}" 
+	            <input type="radio" name="ruxuenian" value="{$vo->nianji}" title="{$vo->nianjiname}" 
 	            {eq name="$list.nianji" value="$vo->nianji"} checked {/eq} >
 			{/foreach}
 	    </div>
@@ -53,8 +53,6 @@
 </script>
 <!-- 表格操作 -->
 <script>
-	// 设置请求地址
-	options.url = "{:url('ajaxNianji')}";
 	// 设置列
   	options.cols=[[ //表头
 			{type:'numbers',title:'序号',rowspan:2},
@@ -68,9 +66,9 @@
 	var xiangmu = {xkcnt:'参考人数',avg:'平均分',jige:'及格率%',youxiu:'优秀率%'};		// 要显示哪些统计结果
 
     $.each(xk,function(index,value){
-    	options.cols[0].push({title: xk[index].subject_name.title+'('+xk[index].manfen+')',colspan:4,align:'center'});
+    	options.cols[0].push({title: xk[index].subjectName.title+'('+xk[index].manfen+')',colspan:4,align:'center'});
 	    $.each(xiangmu,function(i,val){
-		    var colname = xk[index].subject_name.lieming;
+		    var colname = xk[index].subjectName.lieming;
     		// console.log(colname + ' ' + i);
     		var colinfo = {
 	    		title:val
@@ -98,12 +96,12 @@
 	// 设置查询条件
 	options.where = {
 		kaoshi:"{$list.kaoshi}"
-		,nianji:"{$list.nianji}"
+		,ruxuenian:$("input[name='ruxuenian']:checked").val()
 	}
+
 
 	options.autoSort=true;
 
-	
 
   // 提交搜索条件后重载表格
     layui.use(['table','cjgl'],function(){
@@ -120,7 +118,7 @@
             cjgl.add('添加单位','/school/create','650','500');
             break;
           case 'download':
-  			cjgl.add('下载成绩','/njtongji/{$list.kaoshi}/dwNianji','650','300');
+  			cjgl.add('下载成绩','/chengji/njtj/dwbiaoge/{$list.kaoshi}','650','300');
   			break;
         };
       });

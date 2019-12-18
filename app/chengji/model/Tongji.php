@@ -124,7 +124,7 @@ class Tongji extends Base
             $temp['xkcnt'] = count($cjcol);
             $temp['sum'] = array_sum($cjcol);
             $temp['xkcnt']>0 ? $temp['avg'] = $temp['sum']/$temp['xkcnt'] : $temp['avg']=0;
-            // $temp['biaozhuncha'] = round($this->getVariance($temp['avg'], $cjcol,true),2);
+            $temp['biaozhuncha'] = round($this->getVariance($temp['avg'], $cjcol,true),2);
             $temp['avg'] = round($temp['avg'],2);
             $temp['youxiu'] = $this->rate($cjcol,$value->youxiu);
             $temp['jige'] = $this->rate($cjcol,$value->jige);

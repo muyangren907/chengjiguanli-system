@@ -137,7 +137,7 @@
 	      		cjgl.delAll(checkStatus,'/kaoshi/kaohao/delete','mytable');
       			break;
       		case 'download':
-      			cjgl.add('下载成绩','/chengji/{$list.kaoshi}/dwChengji','650','300');
+      			cjgl.add('下载成绩','/chengji/index/dwchengji/{$list.kaoshi}','650','300');
       			break;
           case 'delcj':
             parent.xadmin.add_tab('删除成绩','/chengji/index/deletecjs/{$list.kaoshi}',true);

@@ -59,6 +59,8 @@ class Kaohao extends Base
             }
         }
 
+        halt($data->toArray());
+
         return $data;
     }
 
@@ -81,9 +83,7 @@ class Kaohao extends Base
     {
         // 初始化参数 
         $src = array(
-            'kaoshi'=>'',
-            'school'=>array('0'),
-            'ruxuenian'=>'',
+            'kaoshi'=>'0',
             'banji'=>array('0'),
             'searchval'=>''
         );
@@ -93,8 +93,8 @@ class Kaohao extends Base
 
 
         // 重新定义变量
-        $school = $src['school'];
-        $ruxuenian = $src['ruxuenian'];
+        // $school = $src['school'];
+        // $ruxuenian = $src['ruxuenian'];
         $banji = $src['banji'];
         $seachval = $src['searchval'];
 
@@ -102,15 +102,13 @@ class Kaohao extends Base
         // 查询成绩
         $khlist = $this->where('kaoshi',$src['kaoshi'])
                 ->field('id,school,student,banji,kaoshi')
-                ->when(count($school)>0,function($query) use($school){
-                    $query->where('school','in',$school);
-                })
-                ->when(count($banji)>0,function($query) use($banji){
-                    $query->where('banji','in',$banji);
-                })
-                ->when(strlen($ruxuenian)>0,function($query) use($ruxuenian){
-                    $query->where('ruxuenian',$ruxuenian);
-                })
+                // ->when(count($school)>0,function($query) use($school){
+                //     $query->where('school','in',$school);
+                // })
+                ->where('banji','in',$banji)
+                // ->when(strlen($ruxuenian)>0,function($query) use($ruxuenian){
+                //     $query->where('ruxuenian',$ruxuenian);
+                // })
                 ->when(strlen($seachval)>0,function($query) use($seachval){
                     $query->where(function($w) use ($seachval){
                         $w
@@ -134,7 +132,88 @@ class Kaohao extends Base
                 ->append(['banjiTitle'])
                 ->select();
 
-        return $khlist;
+
+        // 成绩整理
+        if($khlist->isEmpty())
+        {
+            return $data = array();
+        }
+
+
+        // 获取参考学科
+        $kaoshi = new \app\kaoshi\model\Kaoshi;
+        $ksinfo = $kaoshi->where('id',$src['kaoshi'])
+                    ->with([
+                        'ksSubject'=>function($query){
+                            $query->field('kaoshiid,subjectid,lieming');
+                        }
+                    ])
+                    ->find();
+
+        if($ksinfo->ks_subject->isEmpty())
+        {
+            return $data = array();
+        }
+
+        $xk = array();
+        foreach ($ksinfo->ks_subject as $key => $value) {
+            $xk[$value->subjectid] = $value->lieming;
+        }
+
+        $bjlist = banjinamelist();
+
+        // 实例化学生数据模型
+        $stu = new \app\renshi\model\Student;
+
+
+        // 整理数据
+        $data = array();
+        foreach ($khlist as $key => $value) {
+            $data[$key]['id'] = $value->id;
+            $data[$key]['school'] = $value->cj_school->jiancheng;
+            if($value->cj_student != Null){
+                $data[$key]['student'] = $value->cj_student->xingming;
+                $data[$key]['sex'] = $value->cj_student->sex;
+            }else{
+                $stuinfo = $stu::withTrashed()
+                        ->where('id',$value->student)
+                        ->field('id,xingming,sex')
+                        ->find();
+                $data[$key]['student'] = $stuinfo->xingming;
+                $data[$key]['sex'] = $stuinfo->sex;
+            }
+            // $data[$key]['nianji'] = $value->nianji;
+            $data[$key]['banji'] = $value->banjiTitle;
+            $dfsum = 0;
+            $sbjcnt = 0;
+
+            $cjarr = $this->zzcj($value->ks_chengji);
+
+             // 初始化参数
+            $sbjcnt = 0;  #记录拥有成绩的学科数
+
+            foreach ($xk as $k => $val) {
+                if(array_key_exists($k,$cjarr))
+                {
+                    $data[$key][$val]=$cjarr[$k] * 1;
+                    $sbjcnt++;
+                    // $dfsum = $dfsum + $data[$key][$val];
+                }else{
+                    $data[$key][$val]= null;
+                }
+            }
+
+
+
+            $data[$key]['sum'] = array_sum($cjarr);
+            if($sbjcnt>0){
+                $data[$key]['avg'] = round($data[$key]['sum']/$sbjcnt,1);
+            }else{
+                $data[$key]['avg'] = null;
+            }
+        }
+
+        return $data;
     }
 
     
@@ -191,17 +270,27 @@ class Kaohao extends Base
     * @param number $ruxuenian 入学年
     * @return array 返回类型
     */
-    public function cySchool($kaoshi,$ruxuenian)
+    public function cySchool($srcfrom)
     {
-        $data = $this->where('ruxuenian',$ruxuenian)
-                ->where('kaoshi',$kaoshi)
+        // 初始化参数 
+        $src = array(
+            'kaoshi'=>'',
+            'ruxuenian'=>'',
+        );
+        // 用新值替换初始值
+        $src = array_cover( $srcfrom , $src ) ;
+
+        $data = $this->where('ruxuenian',$src['ruxuenian'])
+                ->where('kaoshi',$src['kaoshi'])
                 ->with(['cjSchool'=>function($query){
                         $query->field('id,jiancheng');
                     }
                 ])
                 ->group('school')
                 ->field('school')
-                ->select();
+                ->select()
+                ->toArray();
+
         return $data;
 
     }
@@ -224,9 +313,6 @@ class Kaohao extends Base
             'school'=>array(),
             'paixu'=>array(),
         );
-
-
-
 
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
@@ -308,4 +394,23 @@ class Kaohao extends Base
         return $title;
     }
 
+
+
+
+    // 转置成绩数组
+    private function zzcj($array = array())
+    {
+        
+        $arr = array();
+        foreach ($array as $key => $value) {
+            $arr[$value['subject_id']] = $value['defen'];
+        }
+        return $arr;
+    }
+
 }
+
+
+
+
+
