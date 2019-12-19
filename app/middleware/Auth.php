@@ -36,6 +36,7 @@ class Auth
 
         $url = $mod.'/'.$con.'/'.$act;
 
+
         // 排除应用
         $uneed_m = array('index');
         // 排除控制器
@@ -74,7 +75,7 @@ class Auth
 
         // 验证方法
         if( $auth->check($url, session('userid')) == false && $except == false && $admin == false ){// 第一个参数是规则名称,第二个参数是用户UID
-            $this->error('哎哟~  因为权限不足');
+            $this->error('哎哟~  因为权限不足','/login/err');
         }
 
         return $next($request);

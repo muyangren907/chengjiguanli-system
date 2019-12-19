@@ -12,18 +12,27 @@
 // 应用公共文件
 
 // 获取类别列表
-function getCategory($id = '0')
+function getCategory($id = '0',$title='')
 {
-	
+
+	dump($id);
+	dump($title);
+
 	$category = new \app\system\model\Category;
 
 	// 根据父级id查询类别列表
 	$list = $category
-		->where('pid',$id)
+		->when(strlen($title)>0,function($q) use($title){
+			$q->where('title',$title);
+		},function($q) use($id){
+			$q->where('pid',$id);
+		})
 		->where('status',1)
 		->field('id,title')
+		->fetchSql(true)
 		->select();
-		
+halt($list);
+	
 	// 返回类别列表
 	return $list;
 }

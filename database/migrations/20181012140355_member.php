@@ -38,7 +38,7 @@ class Member extends Migrator
             ->addColumn('shengri','integer',['limit'=>11,'null'=>true,'comment'=>'出生日期'])
             ->addColumn('username','string',['limit'=>20,'null'=>false,'comment'=>'用户帐号'])
             ->addColumn('password','string',['limit'=>37,'null'=>false,'comment'=>'登录密码'])
-            ->addColumn('teacher_id','string',['limit'=>11,'null'=>false,'comment'=>'教师编号'])
+            ->addColumn('teacher_id','string',['limit'=>11,'null'=>true,'comment'=>'教师编号'])
             ->addColumn('school','integer',['limit'=>11,'null'=>false,'comment'=>'所在单位'])
             ->addColumn('phone','string',['limit'=>11,'null'=>true,'comment'=>'联系方式'])
             ->addColumn('denglucishu','integer',['limit'=>5,'default'=>0,'null'=>false,'comment'=>'登录次数'])

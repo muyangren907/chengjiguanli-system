@@ -27,14 +27,13 @@ class Index extends BaseController
         // 查询系统信息
         $list = $sysbasemod
             ->order(['id'=>'desc'])
-            ->field('id,webtitle,keywords,description')
+            ->field('id,keywords,description')
             ->find();
 
-        // 存储网站名
-        session('webtitle',$list->webtitle);
 
-        // 获取版本号
-        $list->version = config('shangma.version');
+        // 获取系统名称和版本号
+        $list['webtitle'] = config('shangma.webtitle');
+        $list['version'] = config('shangma.version');
         // 获取用户姓名
         $ad = new \app\admin\model\Admin;
         $list->xingming = $ad->where('id',session('userid'))->value('xingming');
@@ -98,11 +97,12 @@ class Index extends BaseController
         // 查询系统设置
         $list = $sysbasemod
             ->order(['id'=>'desc'])
-            ->field('webtitle,thinks,danwei')
+            ->field('thinks,danwei')
             ->find();
 
         // 查询用户登信息
         $list['username'] = session('username');
+        $list['webtitle'] = config('shangma.webtitle');
 
         // 查询用户姓名及用户拥有的权限
         $admin = new \app\admin\model\Admin;

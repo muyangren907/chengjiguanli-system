@@ -21,6 +21,13 @@ class Ketice extends BaseController
         $list['webtitle'] = '课题册列表';
         $list['dataurl'] = 'ketice/data';
 
+
+        $category = getCategory($title='课题立项类型');
+                    halt($category->toArray());
+
+
+
+
         // 模板赋值
         $this->view->assign('list',$list);
 
