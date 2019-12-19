@@ -10,8 +10,21 @@ class Teacher extends Base
     
 
     //搜索单位获奖荣誉
-    public function search($src)
+    public function search($srcfrom)
     {
+        $src = [
+            'field'=>'update_time',
+            'type'=>'desc',
+            'zhiwu'=>array(),
+            'danwei'=>array(),
+            'xueli'=>array(),
+            'searchval'=>''
+        ];
+        // 用新值替换初始值
+        $src = array_cover( $srcfrom , $src ) ;
+
+
+
         // 获取参数
         $zhiwu = $src['zhiwu'];
         $danwei = $src['danwei'];

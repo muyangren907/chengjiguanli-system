@@ -8,9 +8,24 @@ use app\common\model\Base;
 class KetiInfo extends Base
 {
     //搜索课题册
-    public function search($src)
+    public function search($srcfrom)
     {
-    	// 获取参数
+    	$src = [
+            'field'=>'update_time',
+            'type'=>'desc',
+            'lxdanweiid'=>array(),
+            'lxcategory'=>array(),
+            'fzdanweiid'=>array(),
+            'subject'=>array(),
+            'category'=>array(),
+            'jddengji'=>array(),
+            'ketice'=>'',
+            'searchval'=>''
+        ];
+        // 用新值替换初始值
+        $src = array_cover( $srcfrom , $src ) ;
+
+        // 获取参数
     	$lxdanweiid = $src['lxdanweiid'];
     	$lxcategory = $src['lxcategory'];
     	$fzdanweiid = $src['fzdanweiid'];

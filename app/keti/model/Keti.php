@@ -9,9 +9,22 @@ use app\common\model\Base;
 class Keti extends Base
 {
     //搜索课题册
-    public function search($src)
+    public function search($srcfrom)
     {
-    	// 整理参数
+    	$src = [
+            'field'=>'lxshijian',
+            'type'=>'desc',
+            'lxdanweiid'=>array(),
+            'category'=>array(),
+            'searchval'=>''
+        ];
+        
+        // 用新值替换初始值
+        $src = array_cover( $srcfrom , $src ) ;
+
+
+
+        // 整理参数
         $lxdanweiid = $src['lxdanweiid'];
         $category = $src['category'];
         $searchval = $src['searchval'];

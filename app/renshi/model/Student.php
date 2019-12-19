@@ -52,8 +52,22 @@ class Student extends Base
 
 
     // 数据筛选
-    public function search($src)
+    public function search($srcfrom)
     {
+        
+        $src = [
+            'field'=>'update_time',
+            'type'=>'desc',
+            'school'=>array(),
+            'ruxuenian'=>array(),
+            'paixu'=>array(),
+            'searchval'=>''
+        ];
+        // 用新值替换初始值
+        $src = array_cover( $srcfrom , $src ) ;
+
+
+        
         // 获取参数
         $school = $src['school'];
         $banji = $src['banji'];

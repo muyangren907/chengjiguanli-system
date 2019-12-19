@@ -8,8 +8,23 @@ use app\common\model\Base;
 class JsRongyuInfo extends Base
 {
     //搜索单位获奖荣誉
-    public function search($src)
+    public function search($srcfrom)
     {
+        $src = [
+            'field'=>'update_time',
+            'type'=>'desc',
+            'fzschool'=>array(),
+            'hjschool'=>array(),
+            'category'=>array(),
+            'rongyuce'=>'',
+            'subject'=>array(),
+            'searchval'=>''
+        ];
+        // 用新值替换初始值
+        $src = array_cover( $srcfrom , $src ) ;
+
+
+
         // 整理参数
         $hjschool = $src['hjschool'];
         $fzschool = $src['fzschool'];

@@ -24,8 +24,18 @@ class Category extends Base
 
 
     // 查询所有类别
-    public function search($src)
+    public function search($srcfrom)
     {
+        $src = [
+            'field'=>'id',
+            'type'=>'asc',
+            'pid'=>'',
+            'searchval'=>''
+        ];
+
+        // 用新值替换初始值
+        $src = array_cover( $srcfrom , $src ) ;
+
         // 整理变量
         $pid = $src['pid'];
         $searchval = $src['searchval'];

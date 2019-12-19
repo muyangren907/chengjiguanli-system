@@ -11,6 +11,16 @@ class Kaoshi extends Base
     // 查询所有单位
     public function search($src)
     {
+        $src = [
+            'field'=>'id',
+            'order'=>'desc',
+            'searchval'=>''
+        ];
+        // 用新值替换初始值
+        $src = array_cover( $srcfrom , $src ) ;
+
+
+
         // 整理变量
         // $xingzhi = $src['xingzhi'];
         $searchval = $src['searchval'];

@@ -28,8 +28,6 @@ class Fields extends Base
     public function search($srcfrom)
     {
         $src = [
-            'page'=>'1',
-            'limit'=>'10',
             'field'=>'id',
             'type'=>'desc',
             'searchval'=>''
