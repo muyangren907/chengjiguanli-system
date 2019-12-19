@@ -32,7 +32,7 @@
     <div class="layui-form-item">
 	    <label for="lxcategory" class="layui-form-label" style="height: 100%">立项类别</label>
 	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-	    	{php} $category = getCategory(115);{/php}
+	    	{php} $category = getCategory('课题立项类型');{/php}
 	    	{volist name="category" id="vo"}
 	    		<input type="checkbox" name="lxcategory[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
@@ -50,7 +50,7 @@
 	<div class="layui-form-item">
 	    <label for="subject" class="layui-form-label" style="height: 100%">所属学科</label>
 	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-	    	{php} $category = getCategory(116);{/php}
+	    	{php} $category = getCategory('课题研究所属学科分类');{/php}
 	    	{volist name="category" id="vo"}
 	    		<input type="checkbox" name="subject[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
@@ -59,7 +59,7 @@
 	<div class="layui-form-item">
 	    <label for="category" class="layui-form-label" style="height: 100%">研究类别</label>
 	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-	    	{php} $category = getCategory(117);{/php}
+	    	{php} $category = getCategory('研究类型');{/php}
 	    	{volist name="category" id="vo"}
 	    		<input type="checkbox" name="category[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
