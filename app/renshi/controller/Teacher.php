@@ -403,7 +403,7 @@ class Teacher extends BaseController
     public function upload()
     {
         // 获取文件信息
-        $list['text'] = $this->request->post('text');
+        $list['category'] = $this->request->post('category');
         $list['serurl'] = $this->request->post('serurl');
 
         // 获取表单上传文件

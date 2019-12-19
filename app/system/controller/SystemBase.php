@@ -14,7 +14,7 @@ class SystemBase extends BaseController
     public function edit()
     {
         // 获取用户信息
-        $list['data'] = sysbasemod::field('id,webtitle,keywords,description,thinks,danwei')
+        $list['data'] = sysbasemod::field('id,keywords,description,thinks,danwei')
             ->order(['id'=>'desc'])
             ->find();
 
@@ -40,7 +40,7 @@ class SystemBase extends BaseController
         $validate = new \app\system\validate\SystemBase;
 
         // 获取表单数据
-        $list = request()->only(['webtitle','keywords','description','thinks','danwei'],'put');
+        $list = request()->only(['keywords','description','thinks','danwei'],'put');
         $list['id'] = $id;
 
         // 验证表单数据

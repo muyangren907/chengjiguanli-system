@@ -10,15 +10,17 @@
 // +----------------------------------------------------------------------
 use think\facade\Route;
 
-Route::rule('/','index/index','get');
-Route::rule('/','index/yanzheng','post');
-Route::rule('log','index/shangmaLog','get');		# 配置更新
+// Route::rule('/','index/index','get');
+// Route::rule('/','index/yanzheng','post');
+// Route::rule('log','index/shangmaLog','get');		# 配置更新
+// Route::rule('myerror','index/myerror','get');			//错误页
 
 // 系统设置systembase
-Route::group('login', function () {
-
+Route::group('', function () {
 		Route::rule('','index/index','get');
 		Route::rule('','index/yanzheng','post');
 		Route::rule('log','index/shangmaLog','get');		# 配置更新
+		Route::rule('err','index/myerror','get');			//错误页
+
 });
 

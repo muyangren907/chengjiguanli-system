@@ -31,7 +31,8 @@ class Index
         // 清除session（当前作用域）
         session(null);
 
-        // 获取系统版本号
+        // 获取系统名称和版本号
+        $list['webtitle'] = Config::get('shangma.webtitle');
         $list['version'] = Config::get('shangma.version');
 
         View::assign('list',$list);
@@ -144,6 +145,21 @@ class Index
     public function shangmaLog()
     {
         // 渲染模板
+        return View::fetch();
+    }
+
+
+    // 错误页面
+    public function myerror()
+    {
+        
+        // 获取系统名称和版本号
+        $list['webtitle'] = Config::get('shangma.webtitle');
+        $list['version'] = Config::get('shangma.version');
+
+        View::assign('list',$list);
+
+        // 渲染输出
         return View::fetch();
     }
     

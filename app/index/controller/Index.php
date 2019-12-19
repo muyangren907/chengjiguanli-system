@@ -158,5 +158,4 @@ class Index extends BaseController
         return $view->fetch('welcome');
     }
 
-
 }

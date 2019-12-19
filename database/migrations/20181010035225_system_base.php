@@ -35,7 +35,6 @@ class SystemBase extends Migrator
         $table
             ->addColumn('create_time','integer',['limit'=>11,'null'=>false,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'null'=>false,'comment'=>'更新时间'])
-            ->addColumn('webtitle','string',['limit'=>50,'null'=>false,'comment'=>'网站名称'])
             ->addColumn('keywords','string',['limit'=>60,'null'=>false,'comment'=>'关键词'])
             ->addColumn('description','string',['limit'=>100,'null'=>false,'comment'=>'网站说明'])
             ->addColumn('thinks','string',['limit'=>80,'null'=>false,'comment'=>'网站感谢'])
