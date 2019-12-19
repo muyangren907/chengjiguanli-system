@@ -25,11 +25,27 @@ class Fields extends Base
 
 
     // 查询所有单位
-    public function search($src)
+    public function search($srcfrom)
     {
+        $src = [
+            'page'=>'1',
+            'limit'=>'10',
+            'field'=>'id',
+            'type'=>'desc',
+            'searchval'=>''
+        ];
+
+        // 用新值替换初始值
+        $src = array_cover( $srcfrom , $src ) ;
+
+        $searchval = $src['searchval'];
+
         // 查询数据
         $data = $this
             ->order([$src['field'] =>$src['type']])
+            ->when(strlen($searchval)>0,function($query) use($searchval){
+                    $query->where('oldname','like','%'.$searchval.'%');
+                })
             ->with([
                 'flUser'=>function($query){
                     $query
@@ -44,6 +60,7 @@ class Fields extends Base
                     $query
                     ->field('id,title');
                 }
+
             ])
             ->select();
 

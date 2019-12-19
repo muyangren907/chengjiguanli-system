@@ -37,6 +37,7 @@ class Fields extends BaseController
                     'limit'=>'10',
                     'field'=>'id',
                     'type'=>'desc',
+                    'searchval'=>''
                 ],'POST');
 
 

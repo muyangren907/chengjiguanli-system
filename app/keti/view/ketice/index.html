@@ -22,10 +22,7 @@
     <div class="layui-form-item">
 	    <label for="xingzhi" class="layui-form-label" style="height: 100%">课题类别</label>
 	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-	    	{php} $category = getCategory($title='课题立项类型');
-	    			halt($category);
-
-	    	{/php}
+	    	{php} $category = getCategory('课题立项类型');{/php}
 
 
 	    	{volist name="category" id="vo"}

@@ -12,26 +12,32 @@
 // 应用公共文件
 
 // 获取类别列表
-function getCategory($id = '0',$title='')
+function getCategory($str = 0)
 {
-
-	dump($id);
-	dump($title);
 
 	$category = new \app\system\model\Category;
 
+	// 如果参数格式不为数字的时候查询$pid
+	if(is_numeric($str) == false)
+	{
+		// 根据父级id查询类别列表
+		$str = $category
+			->where('title',$str)
+			->value('id');
+	}
+
+
+	$str == '' || $str == null ? $str=0 :$str=$str;
+
+
 	// 根据父级id查询类别列表
 	$list = $category
-		->when(strlen($title)>0,function($q) use($title){
-			$q->where('title',$title);
-		},function($q) use($id){
-			$q->where('pid',$id);
-		})
+		->where('pid',$str)
 		->where('status',1)
 		->field('id,title')
-		->fetchSql(true)
+		// ->fetchSql(true)
 		->select();
-halt($list);
+
 	
 	// 返回类别列表
 	return $list;
