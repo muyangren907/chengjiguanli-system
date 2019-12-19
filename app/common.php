@@ -245,9 +245,9 @@ function teacherNames($list = array())
 		    $list['userid'] = session('userid');
 		    $list['oldname'] = $file->getOriginalName();
 		    $list['fieldsize'] = $file->getSize();
-		    $list['text'] = $list['text'];
+		    $list['category'] = $list['category'];
 		    $list['bianjitime'] = $file->getMTime();
-		    $list['category'] = $file->getOriginalExtension();
+		    $list['extension'] = $file->getOriginalExtension();
 		    $f = new \app\system\model\Fields;
 	    	$saveinfo = $f::create($list);
 	    }

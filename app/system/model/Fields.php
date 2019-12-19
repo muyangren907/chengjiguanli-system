@@ -40,6 +40,10 @@ class Fields extends Base
                             }
                         ]);
                 }
+                ,'flCategory'=>function($query){
+                    $query
+                    ->field('id,title');
+                }
             ])
             ->select();
 
@@ -50,6 +54,12 @@ class Fields extends Base
     public function  flUser()
     {
         return $this->belongsTo('\app\admin\model\Admin','userid','id');
+    }
+
+    // 文件种类数模型关联
+    public function  flCategory()
+    {
+        return $this->belongsTo('\app\system\model\Category','category','id');
     }
 
 }

@@ -33,11 +33,11 @@ class Fields extends Migrator
 
         // 添加当前表字段
         $table
-            ->addColumn('text','string',['limit'=>100,'null'=>false,'comment'=>'文件内容'])
+            ->addColumn('category','string',['limit'=>100,'null'=>false,'comment'=>'文件分类'])
             ->addColumn('oldname','string',['limit'=>100,'null'=>false,'comment'=>'原文件名'])
             ->addColumn('bianjitime','integer',['limit'=>11,'null'=>true,'comment'=>'最后编辑时间'])
             ->addColumn('newname','string',['limit'=>100,'null'=>false,'comment'=>'新文件名'])
-            ->addColumn('category','string',['limit'=>100,'null'=>false,'comment'=>'文件类型'])
+            ->addColumn('extension','string',['limit'=>100,'null'=>false,'comment'=>'文件扩展名'])
             ->addColumn('fieldsize','integer',['limit'=>11,'null'=>false,'comment'=>'文件大小'])
             ->addColumn('hash','string',['limit'=>100,'null'=>false,'comment'=>'散列值'])
             ->addColumn('userid','integer',['limit'=>11,'null'=>false,'comment'=>'用户ID'])

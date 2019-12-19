@@ -61,7 +61,14 @@
 	// 设置列
   options.cols=[[ //表头
 			{type:'checkbox', fixed: 'left'},
-			{field: 'text', title: '文件内容',sort: true, minWidth:100},
+			{field: 'category', title: '文件种类',sort: true, minWidth:100,templet:function(d){
+				var str='';
+				if(d.flCategory)
+				{
+					str = d.flCategory.title;
+				}
+				return str;
+			}},
 			{field: 'oldname', title: '原文件名', minWidth:100,sort: true},
 			{field: "newname",title: '存储文件名', minWidth:280,sort: true},
 			{field: 'fieldsize', title: '文件大小', minWidth:100,sort: true,templet:function(d){
