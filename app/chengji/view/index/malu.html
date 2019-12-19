@@ -49,21 +49,21 @@
       // 查询并显示学生信息
       $.ajax({
         type: 'POST',
-        url: "/chengji/read",
+        url: "/chengji/index/read",
         data:{
           val:$('#saoma').val()
         },
         dataType: 'json',
         success: function(data){
-         $('#xsschool').text(data.cj_school.jiancheng);
-         $('#xsbanji').text(data.cj_banji.banjiTitle);
-         $('#xsxingming').text(data.cj_student['xingming']);
+         $('#xsschool').text(data.cjSchool.jiancheng);
+         $('#xsbanji').text(data.cjBanji.banjiTitle);
+         $('#xsxingming').text(data.cjStudent['xingming']);
          $('#xsxueke').text(data.sbj.title);
 
          $('#kaohao_id').val(data.id);
          $('#subject_id').val(data.sbj.id);
          if(data.ks_chengji[0]){
-          $('#defen').val(data.ks_chengji[0].defen);
+          $('#defen').val(data.ksChengji[0].defen);
          }
          $('#saoma').val('');
          // $('#xianshi').append(school + banji + student + subject);
@@ -82,7 +82,7 @@
       // 查询并显示学生信息
       $.ajax({
         type: 'PUT',
-        url: "/chengji/malu",
+        url: "/chengji/index/malusave",
         data:{
           subject_id:$('#subject_id').val()
           ,kaohao_id:$('#kaohao_id').val()
@@ -98,6 +98,7 @@
            $('#xsbanji').text('');
            $('#xsxingming').text('');
            $('#xsxueke').text('');
+           $('#saoma').val('');
            $('#saoma').focus();
          }else{
           layer.msg(data.msg);

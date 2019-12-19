@@ -59,8 +59,6 @@ class Kaohao extends Base
             }
         }
 
-        halt($data->toArray());
-
         return $data;
     }
 

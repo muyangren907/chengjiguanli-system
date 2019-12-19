@@ -14,7 +14,7 @@ use think\facade\Route;
 // 成绩管理
 Route::group('index', function () {
 	    Route::rule('malu','Index/malu','get');			# 扫码界面
-	    Route::rule('malusave','Index/malusave','post');		# 扫码保存
+	    Route::rule('malusave','Index/malusave','put');		# 扫码保存
 	    Route::rule('read','Index/read','post');		# 成绩读取
 	    Route::rule('biaolu','Index/biaolu','get');					# 保存信息
 	    Route::rule('saveall','Index/saveAll','post');				# 读取信息

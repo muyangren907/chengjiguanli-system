@@ -110,9 +110,9 @@ class Index extends BaseController
             $data = $cjinfo->save();
         }else{
             $cj->defen = $list['newdefen'];
-            $cj->kaohaoId = $list['kaohao_id'];
-            $cj->subjectId = $subject_id;
-            $cj->userId = session('userid');
+            $cj->kaohao_id = $list['kaohao_id'];
+            $cj->subject_id = $subject_id;
+            $cj->user_id = session('userid');
             $data = $cj->save();
         }
 
@@ -183,7 +183,7 @@ class Index extends BaseController
             'webtitle'=>'表格录入成绩',
             'butname'=>'批传',
             'formpost'=>'POST',
-            'url'=>'/chengji/biaolu',
+            'url'=>'/chengji/index/saveall',
         );
 
         // 模板赋值
@@ -205,12 +205,13 @@ class Index extends BaseController
         $excel = new \app\renshi\controller\Myexcel;
 
         // 读取表格数据
-        $cjinfo = $excel->readXls($url);
+        // 读取表格数据
+        $cjinfo = $excel->readXls(public_path().'public\\uploads\\'.$url);
 
         // 删除空单元格得到学科列名数组
         array_splice($cjinfo[1],0,4);
         $xk = $cjinfo[1];
-      
+
         // 删除成绩采集表无用的标题行得到成绩数组
         array_splice($cjinfo,0,3);
 
@@ -218,12 +219,13 @@ class Index extends BaseController
         $kh = new Kaohao;
         $ks = new \app\kaoshi\model\Kaoshi;
 
+
         $user_id = session('userid');
         // 重新组合成绩信息
         foreach ($cjinfo as $key => $value) {
             foreach ($xk as $k => $val) {
 
-                $thissbj = $val;    # 当前学科
+                // $thissbj = $val;    # 当前学科
                 $defen = $value[$k+4];    # 当前学科
 
                 // 如果不存在值，跳过这次循环
@@ -245,10 +247,12 @@ class Index extends BaseController
                             ->where('kaohao_id',$value[1])
                             ->where('subject_id',$val)
                             ->find();
+
                 // 如果存在则删除
                 if($cj){
-                    $cj->delete(true);
+                    $cj->force()->delete();
                 }
+
                 $data = Chengji::create([
                     'kaohao_id'=>$value[1],
                     'subject_id'=>$val,

@@ -33,7 +33,7 @@ layui.use('upload', function(){
   //执行实例
   var uploadInst = upload.render({
     elem: '#upload' //绑定元素
-    ,url: "{:url('upload')}" //上传接口
+    ,url: "/renshi/teacher/upload" //上传接口
     ,done: function(res){
       if(res.val == 1){
         $('#url').val(res.url);
@@ -42,7 +42,7 @@ layui.use('upload', function(){
     }
     ,data: {
       text: '考试成绩'
-      ,serurl:'chengji\\'
+      ,serurl:'chengji'
 
     }
     ,acceptMime:'.xls,.xlsx'

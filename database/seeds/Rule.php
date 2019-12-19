@@ -27,8 +27,8 @@ class Rule extends Seeder
             ['id'=>9,'title'=>'课题管理','name' =>'keti','paixu' =>7,'ismenu' =>1,'font' =>'&#xe6b3;','status'=>0],
                 // 二级菜单
                 // 成绩采集
-                ['id'=>101,'title'=>'扫码录入','name'=>'chengji/Index/malu','paixu'=>1,'ismenu' =>1,'pid' =>1,'url'=>'/chengji/malu',],
-                ['id'=>102,'title'=>'表格录入','name'=>'chengji/Index/biaolu','paixu'=>2,'ismenu' =>1,'pid' =>1,'url'=>'/chengji/biaolu',],
+                ['id'=>101,'title'=>'扫码录入','name'=>'chengji/Index/malu','paixu'=>1,'ismenu' =>1,'pid' =>1,'url'=>'/chengji/index/malu',],
+                ['id'=>102,'title'=>'表格录入','name'=>'chengji/Index/biaolu','paixu'=>2,'ismenu' =>1,'pid' =>1,'url'=>'/chengji/index/biaolu',],
                 // 成绩统计
                 ['id'=>201,'title'=>'班级成绩','name'=>'tongji/Index/banji','paixu'=>1,'ismenu' =>1,'pid' =>2,'url'=>'/tongji',],
                 // 考试管理
