@@ -397,10 +397,10 @@ class Student extends BaseController
     {
         // 设置页面标题
         $list['set'] = array(
-            'webtitle'=>'校对并删除学生信息',
-            'butname'=>'校对删除',
+            'webtitle'=>'校对学生名单',
+            'butname'=>'校对',
             'formpost'=>'POST',
-            'url'=>'/renshi/student/jiaoduidel',
+            'url'=>'/renshi/student/jiaoduixlsx',
         );
 
         // 模板赋值
@@ -411,7 +411,7 @@ class Student extends BaseController
 
 
     // 使用上传的表格进行校对，表格中不存在的数据删除
-    public function jiaoduiDel()
+    public function jiaoduiXlsx()
     {
         // 获取表单数据
         $list = request()->only(['school','url'],'post');
@@ -423,7 +423,7 @@ class Student extends BaseController
         $stuinfo = $excel->readXls(public_path().'public\\uploads\\'.$list['url']);
 
         // 判断表格是否正确
-        if($stuinfo[0][0] != "学生信息上传模板" )
+        if($stuinfo[0][2] != "序号" && $stuinfo[1][2] != "姓名" && $stuinfo[2][2] != "身份证号")
         {
             $data = array('msg'=>'请使用模板上传','val'=>0,'url'=>null);
             return json($data);
@@ -432,10 +432,44 @@ class Student extends BaseController
         // 删除标题行
         array_splice($stuinfo,0,3);
 
+        $bj = array_column($stuinfo, 3);
+        $bj = array_unique($bj);
+        foreach ($bj as $key => $value) {
+            if($value==null)
+            {
+                unset($bj[$key]);
+            }else{
+                $bj[$key] = strBjmArray($value);
+            }
+        }
+
         // 实例化班级数据模型
         $banji = new \app\teach\model\Banji;
-        $njlist = nianjilist();
-        $bjlist = banjinamelist();
+
+        $djdata=array();
+        foreach ($bj as $key => $value) {
+            $bjid = '';
+            foreach ($stuinfo as $k => $val) {
+                //  如果姓名、身份证号为空则跳过
+                if(empty($value[1]) || empty($value[2]))
+                {
+                    $djdata[] = [
+                        'row'=>$k,
+                        'msg'=>'缺少信息'
+                    ];
+                }
+            }
+
+
+
+
+
+
+
+        }
+
+        halt('aa');
+
 
 
         $i = 0;

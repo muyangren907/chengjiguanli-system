@@ -89,6 +89,35 @@ function smDownload($url,$newname='')
 		flush(); 
 		readfile($file); 
 		exit;
-	} 
+	}
 }
 
+
+
+/**
+* 将“一年级一班”格式的班级名转换成入学年和班级排序
+* $str是原文件格式
+* $data['ruxuenian'=>'',paixu=>'']
+*/
+function strBjmArray($str)
+{
+	
+	if(stristr($str,'年级',true)==false  || stristr($str,'班',true)==false)
+	{
+		$data = array('ruxuenian'=>'','paixu'=>'');
+		return $data;
+	}
+
+
+	// 获取年级、班级列表
+	$njlist = nianjiList();
+	$bjlist = banjinamelist();
+
+	$nj = substr($str,0,9);
+	$bj = substr($str,9,strlen($str)-9);
+
+	$data['ruxuenian'] = array_search($nj,$njlist);
+	$data['paixu'] = array_search($bj, $bjlist);
+
+	return $data;
+}

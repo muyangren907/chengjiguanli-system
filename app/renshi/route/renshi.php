@@ -25,7 +25,7 @@ Route::group('student', function () {
 	    Route::rule('createall','student/createAll','get');				# 批量导入
 	    Route::rule('saveall','student/saveAll','post');				# 批量保存
 		Route::rule('jiaodui','student/jiaoDui','get');					# 批量保存
-		Route::rule('jiaoduidel','student/jiaoduiDel','post');				# 批量保存
+		Route::rule('jiaoduixlsx','student/jiaoduiXlsx','post');				# 批量保存
 		Route::rule('download','student/download','get');				# 批量保存
 	});
 
