@@ -44,19 +44,6 @@ function getCategory($str = 0)
 }
 
 
-// // 获取类别名称
-// function getCategoryTitle($id)
-// {
-// 	$category = new \app\system\model\Category;
-// 	// 根据id查询类别名
-// 	$value = $category
-// 		->where('id',$id)
-// 		->vlaue('title');
-// 	// 返回类别名
-// 	return $value;
-// }
-
-
 function nianjiList($riqi=0)
 {
 	// 定义学年时间节点日期为每年的8月1日

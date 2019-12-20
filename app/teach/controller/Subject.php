@@ -136,7 +136,7 @@ class Subject extends BaseController
             'webtitle'=>'编辑学科',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'/teach/subject/'.$id,
+            'url'=>'/teach/subject/update/'.$id,
         );
 
         // 模板赋值

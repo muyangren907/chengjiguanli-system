@@ -58,9 +58,9 @@
       {field: 'title', title: '名称',sort: true, minWidth:240},
       {field: "pid",title: '父级类别',sort: true,templet:function(d){
         var str='';
-        if(d.gl_pid)
+        if(d.glPid)
         {
-          str = d.gl_pid.title;
+          str = d.glPid.title;
         }
         return str;
       }},

@@ -529,8 +529,8 @@ class Student extends BaseController
     // 下载表格模板
     public function download()
     {
-        $download =  new \think\response\Download('uploads\student\student_template.xlsx');
-        return $download->name('student_template.xlsx');
+        $url = public_path().'public\\uploads\\student\\student_template.xlsx';
+        return smDownload($url,'学生名单模板.xlsx');
     }
 
 

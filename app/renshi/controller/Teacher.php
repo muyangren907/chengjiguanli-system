@@ -418,17 +418,15 @@ class Teacher extends BaseController
     // 下载表格模板
     public function downloadXls()
     {
-        // $download =  new \think\response\Download('uploads\teacher\TeacherInfo.xlsx');
-        // return $download->name('TeacherInfo.xlsx');
-        $url = public_path().'public\\uploads\\teacher\TeacherInfo.xlsx';
-        return download($url,'TeacherInfo.xlsx');
+        $url = public_path().'public\\uploads\\teacher\\TeacherInfo.xlsx';
+        return smDownload($url,'教师名单模板.xlsx');
     }
 
     // 下载表格VBA代码
     public function downloadVba()
     {
         $url = public_path().'public\\uploads\\teacher\jiaoShiXingMingVBA.bas';
-        return download($url,'jiaoShiXingMingVBA.bas');
+        return smDownload($url,'jiaoShiXingMingVBA.bas');
     }
 
 

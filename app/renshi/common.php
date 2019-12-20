@@ -64,3 +64,31 @@ function srcZc($str)
 	return $categoryId;
 }
 
+
+// 下载文件
+function smDownload($url,$newname='')
+{
+	$file = $url;
+
+	if(strlen($newname)==0)
+	{
+		$newname = filesize($file);
+	}
+
+
+	if (file_exists($file)) { 
+		header('Content-Description: File Transfer'); 
+		header('Content-Type: application/octet-stream'); 
+		header('Content-Disposition: attachment; filename='.$newname); 
+		header('Content-Transfer-Encoding: binary'); 
+		header('Expires: 0'); 
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0'); 
+		header('Pragma: public'); 
+		header('Content-Length: ' . filesize($file)); 
+		ob_clean(); 
+		flush(); 
+		readfile($file); 
+		exit;
+	} 
+}
+

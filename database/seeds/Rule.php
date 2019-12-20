@@ -139,7 +139,7 @@ class Rule extends Seeder
                     ['title'=>'查询教师','name'=>'renshi/Teacher/srcTeacher','paixu'=>8,'pid'=>402],
                     ['title'=>'批量上传','name'=>'renshi/Teacher/createAll','paixu'=>9,'pid'=>402],
                     ['title'=>'批量保存','name'=>'renshi/Teacher/saveAll','paixu'=>10,'pid'=>402],
-                    ['title'=>'表格模板下载','name'=>'renshi/Teacher/download','paixu'=>11,'pid'=>402],
+                    ['title'=>'表格模板下载','name'=>'renshi/Teacher/downloadXls','paixu'=>11,'pid'=>402],
                     ['title'=>'姓名转换VBA下载','name'=>'renshi/Teacher/downloadVba','paixu'=>12,'pid'=>402],
 
 
@@ -165,6 +165,7 @@ class Rule extends Seeder
                     ['title'=>'更新','name'=>'teach/Subject/update','paixu' =>5,'pid'=>503],
                     ['title'=>'查看','name'=>'teach/Subject/read','paixu'=>6,'pid'=>503,],
                     ['title'=>'状态','name'=>'teach/Subject/setStatus','paixu'=>7,'pid'=>503],
+                    ['title'=>'参加考试','name'=>'teach/subject/kaoshi','paixu'=>8,'pid'=>503],
 
 
                     //管理员管理
