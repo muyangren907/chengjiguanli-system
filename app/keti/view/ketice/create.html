@@ -15,7 +15,7 @@
           <div class="layui-form-item">
     		    <label for="category" class="layui-form-label"><span class="x-red">*</span>课题类型</label>
     		    <div class="layui-input-block">
-    		    	{php} $category = getCategory(115);{/php}
+    		    	{php} $category = getCategory('课题立项类型');{/php}
     		      <select name="category" lay-verify="required">
     		      	<option value=""></option>
     		      	{volist name="category" id="vo"}

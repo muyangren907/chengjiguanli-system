@@ -60,7 +60,7 @@ class Student extends Base
             'type'=>'desc',
             'school'=>array(),
             'ruxuenian'=>array(),
-            'paixu'=>array(),
+            'banji'=>array(),
             'searchval'=>''
         ];
         // 用新值替换初始值

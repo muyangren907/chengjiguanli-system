@@ -9,7 +9,7 @@ use app\common\model\Base;
 class Kaoshi extends Base
 {
     // 查询所有单位
-    public function search($src)
+    public function search($srcfrom)
     {
         $src = [
             'field'=>'id',

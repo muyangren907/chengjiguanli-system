@@ -93,7 +93,7 @@
           <div class="layui-form-item">
     		    <label for="category" class="layui-form-label"><span class="x-red">*</span>荣誉类型</label>
     		    <div class="layui-input-block">
-    		    	{php} $category = getCategory(112);{/php}
+    		    	{php} $category = getCategory('单位荣誉类型');{/php}
     		      <select name="category" lay-verify="required">
     		      	<option value=""></option>
     		      	{volist name="category" id="vo"}
@@ -161,7 +161,7 @@
               <span class="x-red">*</span>奖项
             </label>
             <div class="layui-input-block">
-              {php} $category = getCategory(113);{/php}
+              {php} $category = getCategory('荣誉奖项');{/php}
               <select name="jiangxiang" lay-verify="required">
                 <option value=""></option>
                 {volist name="category" id="vo"}

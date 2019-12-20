@@ -10,23 +10,6 @@
 // +----------------------------------------------------------------------
 use think\facade\Route;
 
-
-//系统设置路由
-// Route::resource('dwry','rongyu/DwRongyu');
-// Route::resource('jsry','rongyu/JsRongyu');
-// Route::resource('jsryinfo','rongyu/JsRongyuInfo');
-// Route::get('dwry/createall','rongyu/DwRongyu/createAll');
-// Route::post('dwry/createall','rongyu/DwRongyu/saveall');
-// // 荣誉册中荣誉信息列表
-// Route::get('rylist/:rongyuce','rongyu/JsRongyuInfo/rongyuList');
-// Route::get('ryout/:rongyuce','rongyu/JsRongyuInfo/outXlsx');
-
-// Route::get('jsryinfoadd/:rongyuce','rongyu/JsRongyuInfo/create');
-// Route::get('jsryinfoaddall/:rongyuce','rongyu/JsRongyuInfo/createAll');
-// Route::post('jsryinfoaddall/:rongyuce','rongyu/JsRongyuInfo/saveall');
-
-
-
 // 单位荣誉管理
 Route::group('danwei', function () {
 	    Route::rule('','Danwei/index','get');						# 信息列表

@@ -111,7 +111,7 @@
           <div class="layui-form-item">
     		    <label for="subject" class="layui-form-label"><span class="x-red">*</span>所属学科 </label>
     		    <div class="layui-input-block">
-    		    	{php}$subject = getCategory(116);{/php}
+    		    	{php}$subject = getCategory('课题研究所属学科分类');{/php}
     		      <select name="subject" lay-verify="required">
     		      	<option value=""></option>
     		      	{volist name="subject" id="vo"}
@@ -130,7 +130,7 @@
           <div class="layui-form-item">
             <label for="category" class="layui-form-label"><span class="x-red">*</span>研究类型 </label>
             <div class="layui-input-block">
-              {php} $category = getCategory(117);{/php}
+              {php} $category = getCategory('研究类型');{/php}
               <select name="category" lay-verify="required">
                 <option value=""></option>
                 {volist name="category" id="vo"}

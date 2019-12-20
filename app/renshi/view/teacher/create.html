@@ -78,7 +78,7 @@
               职务
             </label>
             <div class="layui-input-block">
-              {php} $category = getCategory(107);{/php}
+              {php} $category = getCategory('职务');{/php}
               <select name="zhiwu">
                 <option value=""></option>
                 {volist name="category" id="vo"}
@@ -99,7 +99,7 @@
               职称
             </label>
             <div class="layui-input-block">
-              {php} $category = getCategory(106);{/php}
+              {php} $category = getCategory('职称');{/php}
               <select name="zhicheng">
                 <option value=""></option>
                 {volist name="category" id="vo"}
@@ -120,7 +120,7 @@
               学历
             </label>
             <div class="layui-input-block">
-              {php} $category = getCategory(105);{/php}
+              {php} $category = getCategory('学历');{/php}
               <select name="xueli">
                 <option value=""></option>
                 {volist name="category" id="vo"}
