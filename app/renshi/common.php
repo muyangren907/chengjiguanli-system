@@ -99,7 +99,7 @@ function smDownload($url,$newname='')
 * $str是原文件格式
 * $data['ruxuenian'=>'',paixu=>'']
 */
-function strBjmArray($str)
+function strBjmArray($str,$school)
 {
 	
 	if(stristr($str,'年级',true)==false  || stristr($str,'班',true)==false)
@@ -116,8 +116,16 @@ function strBjmArray($str)
 	$nj = substr($str,0,9);
 	$bj = substr($str,9,strlen($str)-9);
 
-	$data['ruxuenian'] = array_search($nj,$njlist);
-	$data['paixu'] = array_search($bj, $bjlist);
+	$nj = array_search($nj,$njlist);
+	$bj = array_search($bj, $bjlist);
 
-	return $data;
+
+	// 查询班级id
+	$banji = new \app\teach\model\Banji;
+	$id = $banji->where('ruxuenian',$nj)
+			->where('paixu',$bj)
+			->where('school',$school)
+			->value('id');
+
+	return $id;
 }

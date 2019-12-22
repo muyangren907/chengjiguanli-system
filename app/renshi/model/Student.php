@@ -63,16 +63,14 @@ class Student extends Base
             'banji'=>array(),
             'searchval'=>''
         ];
+
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
 
-
-        
         // 获取参数
         $school = $src['school'];
         $banji = $src['banji'];
         $searchval = $src['searchval'];
-
 
         $data = $this
                 ->order([$src['field'] =>$src['type']])

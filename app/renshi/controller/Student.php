@@ -422,6 +422,7 @@ class Student extends BaseController
         // 读取表格数据
         $stuinfo = $excel->readXls(public_path().'public\\uploads\\'.$list['url']);
 
+
         // 判断表格是否正确
         if($stuinfo[0][2] != "序号" && $stuinfo[1][2] != "姓名" && $stuinfo[2][2] != "身份证号")
         {
@@ -432,41 +433,84 @@ class Student extends BaseController
         // 删除标题行
         array_splice($stuinfo,0,3);
 
+        $stuinfo = array_filter($stuinfo,function($q){
+            return $q[1] != null && $q[2] != null && $q[3] != null;
+        });
+
+
+        // 获取班级对应的入学年和排序 
         $bj = array_column($stuinfo, 3);
-        $bj = array_unique($bj);
-        foreach ($bj as $key => $value) {
-            if($value==null)
-            {
-                unset($bj[$key]);
-            }else{
-                $bj[$key] = strBjmArray($value);
-            }
+
+        // 获取班级名
+        $bjStrName = array_unique($bj);
+
+
+        // 循环班级数组，查询数据，进行对比，并返回结果。
+        foreach ($bjStrName as $key => $value) {
+            $myStuList = array();
+            // 获取电子表格中本班级学生名单
+            $myStuList = array_filter($stuinfo,function($q) use ($value){
+                return $q[3] == $value;
+            });
+
+            $xlsStuList = array_column($myStuList, 2,0);
+
+
+            $bjid = strBjmArray($value,$list['school']);
+
+            $serStulist = STU::withTrashed()
+                        ->where('banji',$bjid)
+                        ->field('id,xingming,shenfenzhenghao')
+                        ->select();
+            $sfzh = $serStulist->column('shenfenzhenghao','id');
+
+            // 返回数据对比结果 
+            $jiaoji = array_intersect($xlsStuList, $sfzh);  #返回交集
+            $add = array_diff($xlsStuList, $sfzh);
+            $del = array_diff($sfzh, $xlsStuList);
+
+            dump($jiaoji);
+            dump($add);
+            halt($del);
+
+
+            halt($sfzh);
+
+
+
+
+
+            halt($serStulist);
+
         }
+
+
+        foreach ($stuinfo as $key => $value) {
+            
+        }
+
+        $sfzh = array_column($stuinfo, 2);
+# code...
+        
+
 
         // 实例化班级数据模型
-        $banji = new \app\teach\model\Banji;
+        // $banji = new \app\teach\model\Banji;
 
-        $djdata=array();
-        foreach ($bj as $key => $value) {
-            $bjid = '';
-            foreach ($stuinfo as $k => $val) {
-                //  如果姓名、身份证号为空则跳过
-                if(empty($value[1]) || empty($value[2]))
-                {
-                    $djdata[] = [
-                        'row'=>$k,
-                        'msg'=>'缺少信息'
-                    ];
-                }
-            }
-
-
-
-
-
-
-
-        }
+        // $djdata=array();
+        // foreach ($bj as $key => $value) {
+        //     $bjid = '';
+        //     foreach ($stuinfo as $k => $val) {
+        //         //  如果姓名、身份证号为空则跳过
+        //         if(empty($value[1]) || empty($value[2]))
+        //         {
+        //             $djdata[] = [
+        //                 'row'=>$k,
+        //                 'msg'=>'缺少信息'
+        //             ];
+        //         }
+        //     }
+        // }
 
         halt('aa');
 
