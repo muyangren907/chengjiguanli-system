@@ -69,13 +69,13 @@
 			<i class="iconfont">&#xe6b9;</i> 添加
 		</button>
 		<button class="layui-btn" lay-event="upload">
-			<i class="iconfont">&#xe71d;</i> 导入数据
+			<i class="iconfont">&#xe71d;</i> 校对导入
 		</button>
 		<button class="layui-btn" lay-event="download">
 			<i class="iconfont">&#xe714;</i> 下载模板
 		</button>
 		<button class="layui-btn" lay-event="jdsc">
-			<i class="iconfont">&#xe714;</i> 校对删除
+			<i class="iconfont">&#xe714;</i> 表格删除
 		</button>
 	</div>
 </script>
@@ -129,15 +129,13 @@
             cjgl.add('添加学生','student/create','','',true);
             break;
           case 'upload':
-            cjgl.add('导入学生','student/createall','','',true);
+            cjgl.add('校对导入','student/createall','','',true);
             break;
           case 'download':
           	window.open("/renshi/student/download");
             break;
           case 'jdsc':
-          	// layer.msg('这个操作很危险，暂时不开放');
-          	// break;
-            cjgl.add('校对删除','student/jiaodui');
+            cjgl.add('表格删除','student/deletes');
             break;
         };
       });

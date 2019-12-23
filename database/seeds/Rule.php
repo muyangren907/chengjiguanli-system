@@ -123,10 +123,10 @@ class Rule extends Seeder
                     ['title'=>'查看','name'=>'renshi/Student/read','paixu'=>6,'pid'=>401,],
                     ['title'=>'状态','name'=>'renshi/Student/setStatus','paixu'=>7,'pid'=>401],
                     ['title'=>'下载模板','name'=>'renshi/Student/download','paixu'=>8,'pid'=>401],
-                    ['title'=>'批量上传','name'=>'renshi/Student/createAll','paixu'=>9,'pid'=>401],
+                    ['title'=>'校对导入','name'=>'renshi/Student/createAll','paixu'=>9,'pid'=>401],
                     ['title'=>'批量保存','name'=>'renshi/Student/saveAll','paixu'=>10,'pid'=>401],
-                    ['title'=>'校对','name'=>'renshi/Student/jiaodui','paixu'=>11,'pid'=>401],
-                    ['title'=>'校对删除','name'=>'renshi/Student/jiaoduiXlsx','paixu'=>12,'pid'=>401],
+                    ['title'=>'表格删除页面','name'=>'renshi/Student/deletes','paixu'=>11,'pid'=>401],
+                    ['title'=>'表格删除数据','name'=>'renshi/Student/deleteXlsx','paixu'=>12,'pid'=>401],
 
                     // 教师管理权限
                     ['title'=>'添加','name'=>'renshi/Teacher/create','paixu' =>1,'pid'=>402],
