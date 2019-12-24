@@ -68,7 +68,8 @@ class Njtongji extends Base
 
 
         // 获取年级成绩
-        $srcfrom['school'] = array_column($school, 'school');;
+        $srcfrom['school'] = array_column($school, 'school');
+        halt($srcfrom);
         $srcfrom['banji'] = array_column($kh->cyBanji($srcfrom), 'id');
         $allcj = $kh->srcChengji($srcfrom);
         $temp = $tj->tongji($allcj,$src['kaoshi']);

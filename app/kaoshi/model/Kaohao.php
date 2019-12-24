@@ -281,13 +281,15 @@ class Kaohao extends Base
         $data = $this->where('ruxuenian',$src['ruxuenian'])
                 ->where('kaoshi',$src['kaoshi'])
                 ->with(['cjSchool'=>function($query){
-                        $query->field('id,jiancheng');
+                        $query->field('id,jiancheng,paixu')->order(['paixu'=>'asc']);
                     }
                 ])
                 ->group('school')
                 ->field('school')
                 ->select()
                 ->toArray();
+
+        halt($data);
 
         return $data;
 
