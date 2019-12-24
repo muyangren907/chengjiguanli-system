@@ -426,7 +426,7 @@ class Student extends BaseController
         // 判断表格是否正确
         if($stuinfo[0][2] != "序号" && $stuinfo[1][2] != "姓名" && $stuinfo[2][2] != "身份证号")
         {
-            $data = array('msg'=>'请使用模板上传','val'=>0,'url'=>null);
+            $this->error('请使用模板上传','/login/err');
             return json($data);
         }
         

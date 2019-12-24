@@ -314,7 +314,7 @@ class Teacher extends BaseController
         // 判断表格是否正确
         if($teacherinfo[0][1] != "教师基本情况表" )
         {
-            $data = array('msg'=>'请使用模板上传','val'=>0,'url'=>null);
+            $this->error('请使用模板上传','/login/err');
             return json($data);
         }
 
