@@ -128,6 +128,12 @@ class Category extends BaseController
     // 编辑类别
     public function edit($id)
     {
+        $isupdate = CG::where('id',$id)->value('isupdate');
+        if($isupdate == 0)
+        {
+            $this->error('系统默认分类不允许修改','/login/err');
+        }
+
         // 获取单位信息
         $list['data'] = CG::field('id,title,pid,paixu')
             ->find($id);

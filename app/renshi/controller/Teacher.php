@@ -407,7 +407,7 @@ class Teacher extends BaseController
         $list['serurl'] = $this->request->post('serurl');
 
         // 获取表单上传文件
-        $file = request()->file('file');
+        $file = request()->file('file'); 
 
         $data = saveFileInfo($file,$list,true);
 
@@ -425,7 +425,7 @@ class Teacher extends BaseController
     // 下载表格VBA代码
     public function downloadVba()
     {
-        $url = public_path().'public\\uploads\\teacher\jiaoShiXingMingVBA.bas';
+        $url = public_path().'public\\uploads\\teacher\\jiaoShiXingMingVBA.bas';
         return smDownload($url,'jiaoShiXingMingVBA.bas');
     }
 

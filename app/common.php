@@ -236,7 +236,7 @@ function teacherNames($list = array())
     function saveFileInfo($file,$list,$isSave=false)
     {
     	// 上传文件到本地服务器
-        $savename = \think\facade\Filesystem::putFile($list['serurl'], $file);
+        $savename = \think\facade\Filesystem::disk('public')->putFile($list['serurl'], $file);
         // 重新组合文件路径
         $savename = str_replace("/","\\",$savename);
 
