@@ -289,7 +289,13 @@ class Kaohao extends Base
                 ->select()
                 ->toArray();
 
-        halt($data);
+        // 将cjSchool中排序向上层移动，为后面的排序做准备
+        foreach ($data as $key => $value) {
+            $data[$key]['paixu'] = $value['cjSchool']['paixu'];
+            unset($data[$key]['cjSchool']['paixu']);
+        }
+
+        $data = arraySequence($data,'paixu','asc');
 
         return $data;
 
