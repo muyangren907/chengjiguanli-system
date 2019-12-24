@@ -49,15 +49,15 @@ class Auth
             // 教师信息查询
             'srcteacher','srcry','srckt',
             // 查询班级成绩、查询年级成绩、查询录入成绩人员信息
-            'ajaxbianji','ajaxnianji','ajaxaddinfo',
+            // 'ajaxbianji','ajaxnianji','ajaxaddinfo',
             // 批量保存
-            // 'saveall',
+            'saveall',
             // 下载成绩表、下载成绩统计表
             'dwchengjixls','dwbanjixls','dwnianjixls',
             //保存考号、下载试卷标签、下载成绩采集表
-            'updateset','kaohaosave','biaoqianxls','dwcaiji',
+            'updateset','biaoqianxls','dwcaiji',
             //课题结题图片上传和更新
-            'jtupload','jtupdate','ajaxdata'
+            'jtupdate','ajaxdata'
         );
         // 排除指定模块下的指定方法
         $uneed_u = array('index/Index/index');
