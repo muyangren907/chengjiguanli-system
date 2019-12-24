@@ -49,7 +49,7 @@ class Auth
             // 教师信息查询
             'srcteacher','srcry','srckt',
             // 查询班级成绩、查询年级成绩、查询录入成绩人员信息
-            // 'ajaxbianji','ajaxnianji','ajaxaddinfo',
+            'ajaxaddinfo',
             // 批量保存
             'saveall',
             // 下载成绩表、下载成绩统计表
