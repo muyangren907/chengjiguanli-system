@@ -447,7 +447,7 @@ class Student extends BaseController
 
         // 实例化学生数据模型
         $stu = new STU;
-
+        // 声明数据，记录要删除学生ID
         $delarr = array();
 
 
@@ -511,9 +511,6 @@ class Student extends BaseController
             }
 
 
-
-
-
             // 新增数据
             $data = array();
             foreach ($add as $key => $val) {
@@ -531,23 +528,26 @@ class Student extends BaseController
 
 
 
-            // 记录要删除的数据
-            $data = array();
+            // 记录要删除的学生ID数据
             foreach ($del as $key => $val){
-                $data[] = [
-                    'id' => $serStulist[$key]->id,
-                    'banji'=> $value,
-                    'xingming' => $serStulist[$key]->xingming,
-                    'sex' => $serStulist[$key]->sex
-                ];
+                array_push($delarr,$serStulist[$key]->id);
             }
-
-            $delarr = array_merge($delarr,$data);
         }
+
 
         // 获取学校名称
         $sch = new \app\system\model\school;
         $sch = $sch::where('id',$list['school'])->value('jiancheng');
+
+        // 查询要删除的学生信息
+        $del = $stu::where('id','in',$delarr)
+                ->field('id,xingming,banji,sex')
+                ->with([
+                    'stuBanji'=>function($query){
+                        $query->field('id,ruxuenian,paixu')->append(['banjiTitle']);
+                    }
+                ])
+                ->select();
 
 
         // 导出要删除的信息
@@ -567,13 +567,13 @@ class Student extends BaseController
         // 定义数据起始行号
         $i = 4;
 
-        foreach ($delarr as $key => $val) {
+        foreach ($del as $key => $val) {
             $j = $i+$key;
             $sheet->setCellValue('A'.$j, $key+1);
-            $sheet->setCellValue('B'.$j, $val['id']);
-            $sheet->setCellValue('C'.$j, $val['banji']);
-            $sheet->setCellValue('D'.$j, $val['xingming']);
-            $sheet->setCellValue('E'.$j, $val['sex']);
+            $sheet->setCellValue('B'.$j, $val->id);
+            $sheet->setCellValue('C'.$j, $val->stuBanji->banjiTitle);
+            $sheet->setCellValue('D'.$j, $val->xingming);
+            $sheet->setCellValue('E'.$j, $val->sex);
         }
 
 
