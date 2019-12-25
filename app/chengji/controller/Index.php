@@ -262,8 +262,9 @@ class Index extends BaseController
             }
         }
 
+
         // 判断成绩更新结果
-        empty($data) ? $data=['msg'=>'表格录入成绩失败','val'=>0] : $data=['msg'=>'表格录入成绩成功','val'=>1];
+        $data=['msg'=>'成绩导入成功','val'=>1];
 
         ob_flush();
         flush();
