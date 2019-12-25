@@ -207,7 +207,7 @@ class Student extends BaseController
 
         $stu = new STU();
 
-        $stuinof = $stu::withTrashed()
+        $stuinfo = $stu::withTrashed()
                     ->where('shenfenzhenghao',$list['shenfenzhenghao'])
                     ->where('id','<>',$id)
                     ->with([
@@ -219,8 +219,8 @@ class Student extends BaseController
                     ->find();
 
 
-        if($stuinof){
-            return json(['msg'=>'此身份证号与　'.$stuinof->stuSchool->jiancheng.':'.$stuinof->xingming.'　重复。','val'=>0]);
+        if($stuinfo){
+            return json(['msg'=>'此身份证号与　'.$stuinfo->stuSchool->jiancheng.':'.$stuinfo->xingming.'　重复。','val'=>0]);
         }
 
         // 更新数据
@@ -432,6 +432,7 @@ class Student extends BaseController
         
         // 删除标题行
         array_splice($stuinfo,0,3);
+
 
         $stuinfo = array_filter($stuinfo,function($q){
             return $q[1] != null && $q[2] != null && $q[3] != null;
