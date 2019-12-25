@@ -97,7 +97,7 @@ function smDownload($url,$newname='')
 /**
 * 将“一年级一班”格式的班级名转换成入学年和班级排序
 * $str是原文件格式
-* $data['ruxuenian'=>'',paixu=>'']
+* 返回班级ID
 */
 function strBjmArray($str,$school)
 {

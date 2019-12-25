@@ -459,11 +459,16 @@ class Student extends BaseController
                 return $q[3] == $value;
             });
 
+
             $xlsStuList = array_column($myStuList, 2,0);
             $xlsStuList = array_map('strtolower', $xlsStuList);  # 将大写字母转换成小写字母
 
 
             $bjid = strBjmArray($value,$list['school']);
+            if($bjid == null)
+            {
+                continue;
+            }
 
             $serStulist = $stu::withTrashed()
                         ->where('banji',$bjid)
@@ -489,17 +494,24 @@ class Student extends BaseController
             }
             $add = array_diff($add, $add_temp);
 
+
             // 针对不同数据进行不同操作
             // 更新数据
             foreach ($jiaoji as $key => $val) {
                 $oneStu = $stu::withTrashed()
                     ->where('shenfenzhenghao',$val)
-                    ->field('id,xingming,banji,delete_time')
+                    ->field('id,xingming,banji,school,delete_time')
                     ->find();
+
                 $oneStu->xingming = $myStuList[$key-1][1];
                 $oneStu->delete_time = null;
+                $oneStu->school = $list['school'];
+                $oneStu->banji = $bjid;
                 $oneStu->save();
             }
+
+
+
 
 
             // 新增数据
@@ -508,7 +520,7 @@ class Student extends BaseController
                 intval(substr($myStuList[$key-1][2],16,1) )% 2 ? $sex = 1 :$sex = 0 ;
                 $data[] = [
                     'xingming'=>$myStuList[$key-1][1],
-                    'shenfenzhenghao'=>$myStuList[$key-1][2],
+                    'shenfenzhenghao'=>strtolower($myStuList[$key-1][2]),
                     'banji'=>$bjid,
                     'school'=>$list['school'],
                     'shengri' => substr($myStuList[$key-1][2],6,4).'-'.substr($myStuList[$key-1][2],10,2).'-'.substr($myStuList[$key-1][2],12,2),
@@ -536,7 +548,6 @@ class Student extends BaseController
         // 获取学校名称
         $sch = new \app\system\model\school;
         $sch = $sch::where('id',$list['school'])->value('jiancheng');
-
 
 
         // 导出要删除的信息
