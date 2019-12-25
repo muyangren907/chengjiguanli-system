@@ -533,6 +533,10 @@ class Student extends BaseController
             $delarr = array_merge($delarr,$data);
         }
 
+        // 获取学校名称
+        $sch = new \app\system\model\school;
+        $sch = $sch::where('id',$list['school'])->value('jiancheng');
+
 
 
         // 导出要删除的信息
@@ -541,8 +545,8 @@ class Student extends BaseController
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
         // 设置表头信息
-        $sheet->setCellValue('A1', '需要删除学生名单');
-        $sheet->setCellValue('A2', '此表中学生是系统中比上传表中多的数据，是否删除请结合实际情况');
+        $sheet->setCellValue('A1', $sch.'需要删除学生名单');
+        $sheet->setCellValue('A2', '此表中学生名单是系统中比上传名单中多的数据，是否删除请结合实际情况');
         $sheet->setCellValue('A3', '序号');
         $sheet->setCellValue('B3', 'ID');
         $sheet->setCellValue('C3', '班级');
@@ -563,7 +567,7 @@ class Student extends BaseController
 
 
         // 保存文件
-        $filename = '与数据库不相符的学生信息'.date('ymdHis').'.xlsx';
+        $filename = $sch.'删除学生名单'.date('ymdHis').'.xlsx';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
