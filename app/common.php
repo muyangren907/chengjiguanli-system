@@ -363,6 +363,44 @@ function strToarray($str)
 		}
 	}
 	return $str;
+}
+
+
+
+/**  
+    * 下载文件 
+    * 
+    * @access public 
+    * @param $url  文件地址 
+    * @param $newname    新文件名 
+    * @return array 返回类型
+    */ 
+function smDownload($url,$newname='')
+{
+	$file = $url;
+
+	if(strlen($newname)==0)
+	{
+		$newname = filesize($file);
+	}
+
+
+	if (file_exists($file)) { 
+		header('Content-Description: File Transfer'); 
+		header('Content-Type: application/octet-stream'); 
+		header('Content-Disposition: attachment; filename='.$newname); 
+		header('Content-Transfer-Encoding: binary'); 
+		header('Expires: 0'); 
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0'); 
+		header('Pragma: public'); 
+		header('Content-Length: ' . filesize($file)); 
+		ob_clean(); 
+		flush(); 
+		readfile($file); 
+		exit;
+	}
+
+	return true;
 } 
 
 
