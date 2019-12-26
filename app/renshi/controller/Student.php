@@ -395,6 +395,7 @@ class Student extends BaseController
     // 使用上传的表格进行校对，表格中不存在的数据删除
     public function createAll()
     {
+
         // 设置页面标题
         $list['set'] = array(
             'webtitle'=>'校对学生名单',
@@ -506,8 +507,8 @@ class Student extends BaseController
                     ->field('id,xingming,banji,school,delete_time')
                     ->find();
 
+                $oneStu->restore();
                 $oneStu->xingming = $myStuList[$key-1][1];
-                $oneStu->delete_time = null;
                 $oneStu->school = $list['school'];
                 $oneStu->banji = $bjid;
                 $oneStu->save();

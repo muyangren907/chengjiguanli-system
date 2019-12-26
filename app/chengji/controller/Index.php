@@ -58,8 +58,8 @@ class Index extends BaseController
             // 如果存在则更新记录
             if($cjone->defen != $list['defen'] || $cjone->delete_time > 1)
             {
+                $cjone->restore();
                 $cjone->defen = $list['defen'];
-                $cjone->delete_time = null;
                 $data = $cjone->save();
             }
         }else{
@@ -269,8 +269,8 @@ class Index extends BaseController
                     // 如果存在则更新记录
                     if($cjone->defen != $defen || $cjone->delete_time > 1)
                     {
+                        $cjone->restore();
                         $cjone->defen = $defen;
-                        $cjone->delete_time = null;
                         $cjone->save();
                     }
                 }else{
