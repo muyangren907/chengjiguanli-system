@@ -520,15 +520,27 @@ class Student extends BaseController
             $data = array();
             foreach ($add as $key => $val) {
                 $sfzhval = strtoupper(trim($myStuList[$key-1][2]));
-                intval(substr($sfzhval,16,1) )% 2 ? $sex = 1 :$sex = 0 ;
-                $data[] = [
-                    'xingming'=>$myStuList[$key-1][1],
-                    'shenfenzhenghao'=>strtoupper(trim($sfzhval)),
-                    'banji'=>$bjid,
-                    'school'=>$list['school'],
-                    'shengri' => substr($sfzhval,6,4).'-'.substr($sfzhval,10,2).'-'.substr($sfzhval,12,2),
-                    'sex' =>$sex,
-                ];
+                if(strlen($sfzhval) == 18)
+                {
+                    intval(substr($sfzhval,16,1) )% 2 ? $sex = 1 :$sex = 0 ;
+                    $data[] = [
+                        'xingming'=>$myStuList[$key-1][1],
+                        'shenfenzhenghao'=>$sfzhval,
+                        'banji'=>$bjid,
+                        'school'=>$list['school'],
+                        'shengri' => substr($sfzhval,6,4).'-'.substr($sfzhval,10,2).'-'.substr($sfzhval,12,2),
+                        'sex' =>$sex,
+                    ];
+                }else{
+                    $data[] = [
+                        'xingming'=>$myStuList[$key-1][1],
+                        'shenfenzhenghao'=>$sfzhval,
+                        'banji'=>$bjid,
+                        'school'=>$list['school'],
+                        'shengri' => '1970-1-1',
+                        'sex' =>2,
+                    ];
+                }
             }
             $stu->saveAll($data);
 
