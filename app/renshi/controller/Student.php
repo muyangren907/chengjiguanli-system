@@ -122,7 +122,7 @@ class Student extends BaseController
             return json(['msg'=>$msg,'val'=>0]);;
         }
 
-        $list['shenfenzhenghao'] = strtolower($list['shenfenzhenghao']);
+        $list['shenfenzhenghao'] = strtoupper($list['shenfenzhenghao']);
 
         // 查询数据是否重复
         $chongfu = STU::withTrashed()->where('shenfenzhenghao',$list['shenfenzhenghao'])->find();
@@ -356,7 +356,7 @@ class Student extends BaseController
     //         // 各变量赋值
     //         $students[$i]['banji'] = $bj;
     //         $students[$i]['xingming'] = $value[1];
-    //         $students[$i]['shenfenzhenghao'] = strtolower($value[2]);
+    //         $students[$i]['shenfenzhenghao'] = strtoupper($value[2]);
     //         intval(substr($value[2],16,1) )% 2 ? $students[$i]['sex'] = 1 :$students[$i]['sex'] = 0 ;
     //         $students[$i]['shengri'] = substr($value[2],6,4).'-'.substr($value[2],10,2).'-'.substr($value[2],12,2);
     //         $students[$i]['school'] = $list['school'];
@@ -461,7 +461,7 @@ class Student extends BaseController
 
 
             $xlsStuList = array_column($myStuList, 2,0);
-            $xlsStuList = array_map('strtolower', $xlsStuList);  # 将大写字母转换成小写字母
+            $xlsStuList = array_map('strtoupper', $xlsStuList);  # 将大写字母转换成小写字母
 
 
             $bjid = strBjmArray($value,$list['school']);
@@ -517,7 +517,7 @@ class Student extends BaseController
                 intval(substr($myStuList[$key-1][2],16,1) )% 2 ? $sex = 1 :$sex = 0 ;
                 $data[] = [
                     'xingming'=>$myStuList[$key-1][1],
-                    'shenfenzhenghao'=>strtolower($myStuList[$key-1][2]),
+                    'shenfenzhenghao'=>strtoupper($myStuList[$key-1][2]),
                     'banji'=>$bjid,
                     'school'=>$list['school'],
                     'shengri' => substr($myStuList[$key-1][2],6,4).'-'.substr($myStuList[$key-1][2],10,2).'-'.substr($myStuList[$key-1][2],12,2),
@@ -533,6 +533,7 @@ class Student extends BaseController
                 array_push($delarr,$serStulist[$key]->id);
             }
         }
+
 
 
         // 获取学校名称
