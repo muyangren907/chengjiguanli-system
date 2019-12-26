@@ -453,6 +453,7 @@ class Student extends BaseController
 
         // 循环班级数组，查询数据，进行对比，并返回结果。
         foreach ($bjStrName as $key => $value) {
+
             $myStuList = array();
             // 获取电子表格中本班级学生名单
             $myStuList = array_filter($stuinfo,function($q) use ($value){
@@ -462,6 +463,7 @@ class Student extends BaseController
 
             $xlsStuList = array_column($myStuList, 2,0);
             $xlsStuList = array_map('strtoupper', $xlsStuList);  # 将大写字母转换成小写字母
+            $xlsStuList = array_map('trim', $xlsStuList);  # 将大写字母转换成小写字母
 
 
             $bjid = strBjmArray($value,$list['school']);
@@ -495,6 +497,7 @@ class Student extends BaseController
             $add = array_diff($add, $add_temp);
 
 
+
             // 针对不同数据进行不同操作
             // 更新数据
             foreach ($jiaoji as $key => $val) {
@@ -511,21 +514,22 @@ class Student extends BaseController
             }
 
 
+
             // 新增数据
             $data = array();
             foreach ($add as $key => $val) {
-                intval(substr($myStuList[$key-1][2],16,1) )% 2 ? $sex = 1 :$sex = 0 ;
+                $sfzhval = strtoupper(trim($myStuList[$key-1][2]));
+                intval(substr($sfzhval,16,1) )% 2 ? $sex = 1 :$sex = 0 ;
                 $data[] = [
                     'xingming'=>$myStuList[$key-1][1],
-                    'shenfenzhenghao'=>strtoupper($myStuList[$key-1][2]),
+                    'shenfenzhenghao'=>strtoupper(trim($sfzhval)),
                     'banji'=>$bjid,
                     'school'=>$list['school'],
-                    'shengri' => substr($myStuList[$key-1][2],6,4).'-'.substr($myStuList[$key-1][2],10,2).'-'.substr($myStuList[$key-1][2],12,2),
+                    'shengri' => substr($sfzhval,6,4).'-'.substr($sfzhval,10,2).'-'.substr($sfzhval,12,2),
                     'sex' =>$sex,
                 ];
             }
             $stu->saveAll($data);
-
 
 
             // 记录要删除的学生ID数据
@@ -533,6 +537,7 @@ class Student extends BaseController
                 array_push($delarr,$serStulist[$key]->id);
             }
         }
+
 
 
 
