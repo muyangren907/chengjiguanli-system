@@ -7,7 +7,7 @@ use app\BaseController;
 use app\chengji\model\Chengji;
 // 引用考号数据模型
 use \app\kaoshi\model\Kaohao;
-// // 引用学科数据模型
+// 引用学科数据模型
 use \app\teach\model\Subject;
 
 
@@ -37,31 +37,41 @@ class Index extends BaseController
         // 获取表单数据
         $list = $this->request->only(['kaohao_id','subject_id','defen'],'post');
 
+        $kaoshiid = Kaohao::where('id',$list['kaohao_id'])->value('kaoshi');
+
         // 成绩验证
-        $manfen =  getmanfen($list['kaohao_id'],$list['subject_id']);
+        $manfen =  getmanfen($kaoshiid,$list['subject_id']);
         $mfyz = manfenvalidate($list['defen'],$manfen);
         if($mfyz['val'] == 0)
         {
             return json($mfyz);
         }
 
-        $cj = new Chengji();
         // 更新成绩
-        $data = Chengji::withTrashed()
+        $cjone = Chengji::withTrashed()
                 ->where('subject_id',$list['subject_id'])
                 ->where('kaohao_id',$list['kaohao_id'])
                 ->find();
 
-        if($data)
+        if($cjone)
         {
-            $data->delete(true);
+            // 如果存在则更新记录
+            if($cjone->defen != $list['defen'] || $cjone->delete_time > 1)
+            {
+                $cjone->defen = $list['defen'];
+                $cjone->delete_time = null;
+                $data = $cjone->save();
+            }
+        }else{
+            $data = [
+                'kaohao_id'=>$list['kaohao_id'],
+                'subject_id'=>$list['subject_id'],
+                'user_id'=>session('userid'),
+                'defen'=>$list['defen']
+            ];
+            $data = Chengji::create($data);
         }
 
-        $cj->kaohao_id = $list['kaohao_id'];
-        $cj->subject_id = $list['subject_id'];
-        $cj->defen = $list['defen'];
-        $cj->user_id = session('userid');
-        $data = $cj->save();
 
         $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
@@ -84,9 +94,11 @@ class Index extends BaseController
         $subject = new \app\teach\model\Subject;
         $subject_id = $subject->where('lieming',$list['colname'])->value('id');
 
+        // 获取考试ID
+        $kaoshiid = Kaohao::where('id',$list['kaohao_id'])->value('kaoshi');
 
         // 成绩验证
-        $manfen =  getmanfen($list['kaohao_id'],$subject_id);
+        $manfen =  getmanfen($kaoshiid,$subject_id);
         $mfyz = manfenvalidate($list['newdefen'],$manfen);
         if($mfyz['val'] == 0)
         {
@@ -96,7 +108,6 @@ class Index extends BaseController
 
 
         // 更新成绩 
-        $cj = new Chengji;
         $cjinfo = Chengji::withTrashed()
                     ->where('kaohao_id',$list['kaohao_id'])
                     ->where('subject_id',$subject_id)
@@ -104,20 +115,24 @@ class Index extends BaseController
 
         // 如果存在成绩则更新，不存在则添加
         if($cjinfo){
-            $cjinfo->restore();
-            $cjinfo->defen = $list['newdefen'];
-            $cjinfo->userId = session('userid');
-            $data = $cjinfo->save();
+            if($cjinfo->defen != $list['newdefen'] || $cjinfo->delete_time > 1)
+            {
+                $cjinfo->defen = $list['newdefen'];
+                $cjinfo->delete_time = null;
+                $data = $cjinfo->save();
+            }
         }else{
-            $cj->defen = $list['newdefen'];
-            $cj->kaohao_id = $list['kaohao_id'];
-            $cj->subject_id = $subject_id;
-            $cj->user_id = session('userid');
-            $data = $cj->save();
+            $data = [
+                'kaohao_id'=>$list['kaohao_id'],
+                'subject_id'=>$subject_id,
+                'user_id'=>session('userid'),
+                'defen'=>$list['newdefen']
+            ];
+            $data = Chengji::create($data);
         }
 
         // 判断返回内容
-        $data ? $data=['msg'=>'录入成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data || $cjinfo ? $data=['msg'=>'录入成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回更新结果
         return json($data);
@@ -156,14 +171,14 @@ class Index extends BaseController
                     }
                 ])
                 ->find();
-        if($cjlist->cj_student == Null)
+        if($cjlist->cjStudent == Null)
         {
             $stu = new \app\renshi\model\Student;
             $stuinfo = $stu::withTrashed()
                             ->where('id',$cjlist->student)
                             ->field('id,xingming,sex')
                             ->find();
-            $cjlist->cj_student = array(
+            $cjlist->cjStudent = array(
                 'id'=>$stuinfo->id,
                 'xingming'=>$stuinfo->xingming
             );
@@ -224,8 +239,6 @@ class Index extends BaseController
         $user_id = session('userid');   # 获取用户id
         $data = array();
 
-        $cj = new Chengji; #实例化成绩数据模型
-
 
         // 重新组合数组
         foreach ($xk as $key => $value) {
@@ -246,7 +259,7 @@ class Index extends BaseController
                 }
 
                 // 添加或更新数据
-                $cjone = $cj::withTrashed()
+                $cjone = Chengji::withTrashed()
                         ->where('kaohao_id',$val[1])
                         ->where('subject_id',$value)
                         ->find();
@@ -254,7 +267,7 @@ class Index extends BaseController
                 if($cjone)
                 {
                     // 如果存在则更新记录
-                    if($cj->defen != $defen)
+                    if($cjone->defen != $defen || $cjone->delete_time > 1)
                     {
                         $cjone->defen = $defen;
                         $cjone->delete_time = null;
@@ -268,7 +281,7 @@ class Index extends BaseController
                         'user_id'=>$user_id,
                         'defen'=>$defen
                     ];
-                    $cj::create($data);
+                    Chengji::create($data);
                 }
             }
         }
