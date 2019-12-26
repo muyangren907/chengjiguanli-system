@@ -205,8 +205,9 @@ class Index extends BaseController
         $excel = new \app\renshi\controller\Myexcel;
 
         // 读取表格数据
-        // 读取表格数据
         $cjinfo = $excel->readXls(public_path().'public\\uploads\\'.$url);
+
+        $kaoshiid = $cjinfo[1][0];  #获取考号
 
         // 删除空单元格得到学科列名数组
         array_splice($cjinfo[1],0,4);
@@ -217,48 +218,58 @@ class Index extends BaseController
 
         // 查询考试信息
         $kh = new Kaohao;
-        $ks = new \app\kaoshi\model\Kaoshi;
+        // $ks = new \app\kaoshi\model\Kaoshi;
 
 
-        $user_id = session('userid');
-        // 重新组合成绩信息
-        foreach ($cjinfo as $key => $value) {
-            foreach ($xk as $k => $val) {
+        $user_id = session('userid');   # 获取用户id
+        $data = array();
 
-                // $thissbj = $val;    # 当前学科
-                $defen = $value[$k+4];    # 当前学科
+        $cj = new Chengji; #实例化成绩数据模型
 
+
+        // 重新组合数组
+        foreach ($xk as $key => $value) {
+            // 获取成绩满分
+            $manfen =  getmanfen($kaoshiid,$value);
+            # code...
+            foreach ($cjinfo as $k => $val) {
+                $defen = $val[$key+4];    # 当前学生当前学科成绩
                 // 如果不存在值，跳过这次循环
                 if($defen === null){
                     continue;
                 }
-
-                // 成绩验证
-                $manfen =  getmanfen($value[1],$val);
+                // 验证成绩格式，如果不对则跳过
                 $mfyz = manfenvalidate($defen,$manfen);
                 if($mfyz['val'] == 0)
                 {
                     continue;
                 }
 
-
-                // 查询是否存在这个成绩
-                $cj = Chengji::withTrashed()
-                            ->where('kaohao_id',$value[1])
-                            ->where('subject_id',$val)
-                            ->find();
-
-                // 如果存在则删除
-                if($cj){
-                    $cj->force()->delete();
+                // 添加或更新数据
+                $cjone = $cj::withTrashed()
+                        ->where('kaohao_id',$val[1])
+                        ->where('subject_id',$value)
+                        ->find();
+                // 判断成绩是否存在
+                if($cjone)
+                {
+                    // 如果存在则更新记录
+                    if($cj->defen != $defen)
+                    {
+                        $cjone->defen = $defen;
+                        $cjone->delete_time = null;
+                        $cjone->save();
+                    }
+                }else{
+                    // 如果不存在则新增记录
+                    $data = [
+                        'kaohao_id'=>$val[1],
+                        'subject_id'=>$value,
+                        'user_id'=>$user_id,
+                        'defen'=>$defen
+                    ];
+                    $cj::create($data);
                 }
-
-                $data = Chengji::create([
-                    'kaohao_id'=>$value[1],
-                    'subject_id'=>$val,
-                    'user_id'=>$user_id,
-                    'defen'=>$defen
-                ]);
             }
         }
 

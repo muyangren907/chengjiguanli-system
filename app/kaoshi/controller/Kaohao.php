@@ -524,6 +524,7 @@ class Kaohao extends BaseController
         // 设置表格标题与表头信息
         $sheet->setCellValue('A1',$kslist->title.' 成绩采集表');
 
+        $sheet->setCellValue('A2', $kaoshi);
         $sheet->setCellValue('A3', '序号');
         $sheet->setCellValue('B3', '考号');
         $sheet->setCellValue('C3', '班级');
