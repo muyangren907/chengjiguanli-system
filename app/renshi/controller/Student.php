@@ -436,7 +436,7 @@ class Student extends BaseController
 
 
         $stuinfo = array_filter($stuinfo,function($q){
-            return $q[1] != null && $q[2] != null && $q[3] != null;
+            return $q[1] != null && strlen($q[2]) >=6 && $q[3] != null;
         });
 
 
@@ -492,6 +492,7 @@ class Student extends BaseController
                         ->column('shenfenzhenghao','id');
 
             foreach ($add_temp as $key => $val) {
+                // 这个地方在大小写不一致的时候容易出错，需要将小写转换成大写
                 $k = array_search($val, $xlsStuList);
                 $jiaoji[$k]=$val;
             }
