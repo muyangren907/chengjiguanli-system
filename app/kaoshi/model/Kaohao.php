@@ -338,7 +338,9 @@ class Kaohao extends Base
                 })
                 ->when(count($paixu)>0,function($query) use($paixu){
                     $query->where('banji','in',function($q)use($paixu){
-                        $q->name('banji')->where('paixu','in',$paixu)->field('id');
+                        $q->name('banji')
+                        ->where('paixu','in',$paixu)
+                        ->field('id');
                     });
                 })
                 ->with([
@@ -350,6 +352,7 @@ class Kaohao extends Base
                 ->field(['banji'])
                 ->select()
                 ->toArray();
+
 
         foreach ($bjids as $key => $value) {
             // halt($key);
@@ -366,9 +369,12 @@ class Kaohao extends Base
                         $query->field('id,title,jiancheng');
                     },
                 ])
+                ->append(['numTitle'])
                 ->select()
                 ->toArray();
+        
         foreach ($data as $key => $value) {
+            $data[$key]['banjiNum'] = $bj->myBanjiNum($value['id'],$kssj);
             $data[$key]['banjiTitle'] = $bj->myBanjiTitle($value['id'],$kssj);
         }
 

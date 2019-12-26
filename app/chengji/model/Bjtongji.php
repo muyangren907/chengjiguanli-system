@@ -53,6 +53,7 @@ class Bjtongji extends Base
             $temp = $tj->tongji($temp,$srcfrom['kaoshi']);
             $data[] = [
                 'banji'=>$value['banjiTitle'],
+                'banjinum'=>$value['banjiNum'],
                 'school'=>$value['glSchool']['jiancheng'],
                 'chengji'=>$temp
             ];
@@ -65,6 +66,7 @@ class Bjtongji extends Base
         $temp = $tj->tongji($allcj,$srcfrom['kaoshi']);
         $data[] = [
             'banji'=>'合计',
+            'banjinum'=>'合计',
             'school'=>'合计',
             'chengji'=>$temp
         ];

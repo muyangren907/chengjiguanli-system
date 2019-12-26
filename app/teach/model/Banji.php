@@ -112,7 +112,7 @@ class Banji extends Base
 
 
     /**
-     * 获取考试时的班级名称
+     * 获取考试时的班级名称(文本格式-一年级十一班)
      * $jdshijian 考试开始时间
      * $ruxuenian 年级
      * $paixu 班级
@@ -143,6 +143,30 @@ class Banji extends Base
         {
             $bjtitle = $bjtitle.'(删)';
         }
+
+        return $bjtitle;
+    }
+
+    /**
+     * 获取考试时的班级名称(数字格式5.1)
+     * $jdshijian 考试开始时间
+     * $ruxuenian 年级
+     * $paixu 班级
+     * 返回 $str 班级名称 
+     * */ 
+    public function myBanjiNum($bjid,$jdshijian=0)
+    {
+        // 查询班级信息
+        $bjinfo = $this::withTrashed()
+            ->where('id',$bjid)
+            ->field('id,ruxuenian,paixu,delete_time')
+            ->find();
+
+
+        //获取班级、年级列表
+        $njlist = array_keys(nianjiList($jdshijian));
+        $nj = array_search($bjinfo->ruxuenian,$njlist)+1;
+        $bjtitle = $nj.'.'.$bjinfo->paixu;
 
         return $bjtitle;
     }

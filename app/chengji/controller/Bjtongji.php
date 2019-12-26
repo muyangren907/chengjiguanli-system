@@ -134,6 +134,7 @@ class Bjtongji extends BaseController
         // $src['banji']= array_column($kh->cyBanji($src), 'id');
         $src['banji']= $kh->cyBanji($src);
 
+
         // 统计成绩
         $btj = new BTJ;
         $data = $btj->tjBanji($src);
@@ -189,7 +190,7 @@ class Bjtongji extends BaseController
         foreach ($xk as $key => $value) {
             $colend = $col + $sbjcolcnt - 1;
             $sheet->mergeCells($colname[$col].'3:'.$colname[$colend].'3');
-            $sheet->setCellValue($colname[$col].'3', $value->subject_name->title.' ('.$value->manfen.')');
+            $sheet->setCellValue($colname[$col].'3', $value->subjectName->title.' ('.$value->manfen.')');
             foreach ($sbjcol as $k => $val) {
                  $sheet->setCellValue($colname[$col].'4', $val);
                  $col++;
@@ -206,7 +207,7 @@ class Bjtongji extends BaseController
         foreach ($data as $key => $value) {
             $col = 2;
             $sheet->setCellValue('A'.$row, $row-4);
-            $sheet->setCellValue('B'.$row, $value['banji']);
+            $sheet->setCellValue('B'.$row, $value['banjinum']);
             foreach ($xk as $ke => $val) {
                 foreach ($sbjcol as $k => $v) {
                      $sheet->setCellValue($colname[$col].$row, $value['chengji'][$val->subject_name->lieming][$k]);
