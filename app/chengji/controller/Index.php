@@ -38,6 +38,13 @@ class Index extends BaseController
         $list = $this->request->only(['kaohao_id','subject_id','defen'],'post');
 
         $kaoshiid = Kaohao::where('id',$list['kaohao_id'])->value('kaoshi');
+        // 判断考试结束时间是否已过
+        $enddate = kaoshiDate($kaoshiid,'enddate');
+        if($enddate === true)
+        {
+            $data=['msg'=>'考试时间已过，不能录入成绩','val'=>0];
+            return json($data);
+        }
 
         // 成绩验证
         $manfen =  getmanfen($kaoshiid,$list['subject_id']);
@@ -89,13 +96,21 @@ class Index extends BaseController
             ,'post');
         $list['kaohao_id'] = $id;
 
+        // 判断考试结束时间是否已过
+        $kaoshiid = Kaohao::where('id',$list['kaohao_id'])->value('kaoshi');
+        $enddate = kaoshiDate($kaoshiid,'enddate');
+        if($enddate === true)
+        {
+            $data=['msg'=>'考试时间已过，不能录入成绩','val'=>0];
+            return json($data);
+        }
+
 
         // 获取学科id
         $subject = new \app\teach\model\Subject;
         $subject_id = $subject->where('lieming',$list['colname'])->value('id');
 
-        // 获取考试ID
-        $kaoshiid = Kaohao::where('id',$list['kaohao_id'])->value('kaoshi');
+
 
         // 成绩验证
         $manfen =  getmanfen($kaoshiid,$subject_id);
@@ -223,6 +238,20 @@ class Index extends BaseController
         $cjinfo = $excel->readXls(public_path().'public\\uploads\\'.$url);
 
         $kaoshiid = $cjinfo[1][0];  #获取考号
+
+
+        if($kaoshiid == null || $cjinfo[2][0] != '序号' || $cjinfo[2][1] != '考号' || $cjinfo[2][2] != '班级' || $cjinfo[2][3] != '姓名')
+        {
+            $data=['msg'=>'请使用模板上传','val'=>0];
+            return json($data);
+        }
+        // 判断考试结束时间是否已过
+        $enddate = kaoshiDate($kaoshiid,'enddate');
+        if($enddate === true)
+        {
+            $data=['msg'=>'考试时间已过，不能录入成绩','val'=>0];
+            return json($data);
+        }
 
         // 删除空单元格得到学科列名数组
         array_splice($cjinfo[1],0,4);

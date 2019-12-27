@@ -579,24 +579,23 @@ class Kaohao extends BaseController
 
         $id = explode(',', $id);
 
-        // 删除成绩
-        $db = new \think\facade\Db;
-        $db::startTrans(); # 启动事务
-        try {
-            KH::destroy($id);
-            $chengji = new \app\chengji\model\Chengji;
-            $cjids = $chengji::where('kaohao_id','in',$id)->column('id');
-            $chengji::destroy($cjids);
-            $data = true;
-            $db::commit();
-        } catch (\Exception $e) {
-            $data = false;
-            // 回滚事务
-            $db::rollback();
+        // 判断考试结束时间是否已过
+        $ksid = KH::where('id',$id[0])->value('kaoshi');
+        $enddate = kaoshiDate($ksid,'enddate');
+        
+
+        if( $enddate === true )
+        {
+            $data=['msg'=>'考试时间已过，不能删除','val'=>0];
+        }else{
+            $data = KH::destroy($id);
+            // 根据更新结果设置返回提示信息
+            $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
         }
 
-        // 根据更新结果设置返回提示信息
-        $data==true ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        
+
+        
 
         // 返回信息
         return json($data);

@@ -305,18 +305,18 @@ function array_cover( $cover = array(), $covered = array() )
 
 
 /**
- * 根据考试ID值，判断考试是否已经结束
+ * 根据考试ID值，判断考试开始或者结束时间是否已过
  * $kaoshiid 考试ID
  * $str      统计项目
  * 返回 $data 
  * */ 
-function kaoshiDate($kaoshiid,$str)
+function kaoshiDate($kaoshiid,$str='enddate')
 {
 	$ks = new app\kaoshi\model\Kaoshi;
-    $enddate = $ks->where('id',$kaoshiid)->value($str);
+    $enddate = $ks->where('id',$kaoshiid)->value('enddate');
 
     $thistime = time();
-    if($enddate<time())
+    if( $thistime > $enddate )
     {
         $data = true;
     }else{

@@ -71,7 +71,7 @@ class Kaoshi extends Base
     public function setEnddateAttr($value)
     {
         // 设置结束时间为当年的最后1秒
-        $sj = date('Y-m-d').' 23:59:59';
+        $sj = $value.' 23:59:59';
         return strtotime($sj);
     }
 

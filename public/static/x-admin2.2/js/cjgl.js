@@ -21,9 +21,9 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
                     if(result.val == 1)
                     {
                         obj.del();
-                        layer.msg('已删除!');
+                        layer.msg(result.msg);
                     }else{
-                        layer.msg('数据处理错误!',function(){});
+                        layer.msg(result.msg,function(){});
                     }
                 },
                 error:function(result){
@@ -60,9 +60,9 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
                     if(result.val == 1)
                     {
                         table.reload(tableid, {});
-                        layer.msg('已删除!');
+                        layer.msg(result.msg);
                     }else{
-                        layer.msg('数据处理错误!',function(){});
+                        layer.msg(result.msg,function(){});
                     }
                 },
                 error:function(result){
