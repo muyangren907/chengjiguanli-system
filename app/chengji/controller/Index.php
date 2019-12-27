@@ -475,6 +475,13 @@ class Index extends BaseController
     public function deletecjs($kaoshi)
     {
 
+        // 判断考试结束时间是否已过
+        $enddate = kaoshiDate($kaoshi,'enddate');
+        if($enddate === true)
+        {
+            $this->error('考试时间已过，不能删除成绩','/login/err');
+        }
+
         // 设置页面标题
         $list['set'] = array(
             'webtitle'=>'批量删除成绩',
@@ -555,6 +562,16 @@ class Index extends BaseController
         }
 
         $id = explode(',', $id);
+
+        $khid = Chengji::where('id',$id['0'])->value('kaohao_id');
+        $kaoshiid = Kaohao:: where('id',$khid)->value('Kaoshi');
+
+        // 判断考试结束时间是否已过
+        $enddate = kaoshiDate($kaoshiid,'enddate');
+        if($enddate === true)
+        {
+            $this->error('考试时间已过，不能删除成绩','/login/err');
+        }
 
         $data = Chengji::destroy($id);
 

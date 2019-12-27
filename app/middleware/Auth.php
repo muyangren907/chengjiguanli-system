@@ -57,7 +57,7 @@ class Auth
             //保存考号、下载试卷标签、下载成绩采集表
             'updateset','biaoqianxls','dwcaiji',
             //课题结题图片上传和更新
-            'jtupdate','ajaxdata'
+            'jtupdate','ajaxdata',
         );
         // 排除指定模块下的指定方法
         $uneed_u = array('index/Index/index');

@@ -102,6 +102,9 @@ class Rule extends Seeder
                         ['title'=>'录入人信息','name'=>'Chengji/Index/readAdd','paixu'=>8,'pid'=>302],
                         ['title'=>'删除成绩','name'=>'Chengji/Index/delete','paixu'=>9,'pid'=>302],
                         ['title'=>'成绩状态','name'=>'Chengji/Index/setStatus','paixu'=>10,'pid'=>302],
+                        ['title'=>'批量删除界面','name'=>'Chengji/Index/deletecjs','paixu'=>11,'pid'=>302],
+                        ['title'=>'批量删除','name'=>'Chengji/Index/deletecjmore','paixu'=>12,'pid'=>302],
+
                     // 学生成绩
                     ['title'=>'下载学生成绩','name'=>'chengji/Index/dwChengji','paixu'=>21,'pid'=>302],
                     // 班级成绩
