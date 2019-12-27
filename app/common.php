@@ -235,6 +235,17 @@ function teacherNames($list = array())
      */
     function saveFileInfo($file,$list,$isSave=false)
     {
+    	$hash = $file->hash('sha1');
+    	$f = new \app\system\model\Fields;
+    	$serFile = $f::where('hash',$hash)->find();
+    	if($serFile)
+    	{
+    		$data['msg'] = '文件已经存在';
+    		$data['val'] = true;
+    		$data['url'] = $serFile->url;
+    		return $data;
+    	}
+
     	// 上传文件到本地服务器
         $savename = \think\facade\Filesystem::disk('public')->putFile($list['serurl'], $file);
         // 重新组合文件路径
@@ -250,7 +261,7 @@ function teacherNames($list = array())
 		    $list['category'] = $list['category'];
 		    $list['bianjitime'] = $file->getMTime();
 		    $list['extension'] = $file->getOriginalExtension();
-		    $f = new \app\system\model\Fields;
+		    
 	    	$saveinfo = $f::create($list);
 	    }
 	    

@@ -159,7 +159,8 @@ class Rule extends Seeder
                     ['title'=>'添加','name'=>'teach/Banji/create','paixu' =>1,'pid'=>502],
                     ['title'=>'保存','name'=>'teach/Banji/save','paixu' =>2,'pid'=>502],
                     ['title'=>'移动','name'=>'teach/Banji/yidong','paixu'=>3,'pid'=>502],
-                    ['title'=>'状态','name'=>'teach/Banji/setStatus','paixu'=>4,'pid'=>502],
+                    ['title'=>'删除','name'=>'teach/Banji/delete','paixu'=>4,'pid'=>502],
+                    ['title'=>'状态','name'=>'teach/Banji/setStatus','paixu'=>5,'pid'=>502],
                     // 学科列表权限
                     ['title'=>'添加','name'=>'teach/Subject/create','paixu' =>1,'pid'=>503],
                     ['title'=>'保存','name'=>'teach/Subject/save','paixu' =>2,'pid'=>503],
