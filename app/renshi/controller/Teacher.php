@@ -107,8 +107,8 @@ class Teacher extends BaseController
         $result = $validate->check($list);
         $msg = $validate->getError();
 
-        $list['quanpin'] = strtolower(str_replace(' ', '', $list['quanpin']));
-        $list['shoupin'] = strtolower($list['shoupin']);
+        $list['quanpin'] = trim(strtolower(str_replace(' ', '', $list['quanpin'])));
+        $list['shoupin'] = trim(strtolower($list['shoupin']));
 
 
         // 如果验证不通过则停止保存
@@ -210,11 +210,12 @@ class Teacher extends BaseController
             return json(['msg'=>$msg,'val'=>0]);;
         }
 
-        $list['quanpin'] = strtolower(str_replace(' ', '', $list['quanpin']));
-        $list['shoupin'] = strtolower($list['shoupin']);
+        $list['quanpin'] = trim(strtolower(str_replace(' ', '', $list['quanpin'])));
+        $list['shoupin'] = trim(strtolower($list['shoupin']));
         // 更新数据
         $teacher = new TC();
         $teacherlist = $teacher->find($id);
+
         $teacherlist->xingming = $list['xingming'];
         $teacherlist->sex = $list['sex'];
         $teacherlist->quanpin = $list['quanpin'];
@@ -228,7 +229,7 @@ class Teacher extends BaseController
         $teacherlist->zhuanye = $list['zhuanye'];
         $teacherlist->danwei = $list['danwei'];
 
-        $data = $teacher->save();
+        $data = $teacherlist->save();
         // $data = TC::where('id',$id)->update($list);
 
         // 根据更新结果设置返回提示信息
@@ -345,8 +346,8 @@ class Teacher extends BaseController
             $teacherlist[$i]['subject'] = srcSubject($value[7]);
             $teacherlist[$i]['zhuanye'] = $value[9];
             $teacherlist[$i]['xueli'] = srcXl($value[10]);
-            $teacherlist[$i]['quanpin'] = strtolower(str_replace(' ', '', $value[11]));
-            $teacherlist[$i]['shoupin'] = strtolower($value[12]);
+            $teacherlist[$i]['quanpin'] = trim(strtolower(str_replace(' ', '', $value[11])));
+            $teacherlist[$i]['shoupin'] = trim(strtolower($value[12]));
 
             $i++;
         }

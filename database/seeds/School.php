@@ -18,8 +18,8 @@ class School extends Seeder
         $rows= [
             [
                 'id'=>1,
-                'title'=>'大连长兴岛经济区教研科研培训中心',
-                'jiancheng'=>'教科培中心',
+                'title'=>'大连长兴岛经济区文教中心',
+                'jiancheng'=>'文教中心',
                 'biaoshi'=>'',
                 'jibie'=>'3',
             ],
