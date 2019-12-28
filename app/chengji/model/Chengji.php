@@ -52,9 +52,12 @@ class Chengji extends Base
         // 以考号为基础查询成绩
         $chengjilist = $kh->srcChengji($src);
 
+
+        $src['type'] == 'desc' ? $src['type'] =SORT_DESC :$src['type'] = SORT_ASC;
+
         // 按条件排序
         if(count($chengjilist)>0){
-            $chengjilist = arraySequence($chengjilist,$src['field'],$src['type']); //排序
+            $chengjilist = sortArrByManyField($chengjilist,$src['field'],$src['type']);
         }
 
         return $chengjilist;

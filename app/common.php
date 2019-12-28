@@ -283,15 +283,49 @@ function teacherNames($list = array())
  * $field 排序字段
  * $sort 排序方式 SORT_DESC 降序；SORT_ASC 升序
  * */
-function arraySequence($data, $field = 'id', $sort = 'desc') {
-	// 排序方式
-	$sort == 'desc' ? $sort = SORT_DESC : $sort = SORT_ASC;
-	// 获取参考列
-	$column = array_column($data, $field);
-	// 排序
-	array_multisort($column, $sort, $data);
+// function arraySequence($data, $field = 'id', $sort = 'desc') {
 
-	return $data;
+// 	// // 获取当前地址
+//  //        $mod = strtolower(app('http')->getName());
+//  //        $con = strtolower(request()->controller());
+//  //        $act = strtolower(request()->action());
+
+//  //        $url = $mod.'/'.$con.'/'.$act;
+
+//  //        halt($url);
+// 	// 排序方式
+// 	$sort == 'desc' ? $sort = 'SORT_DESC' : $sort = 'SORT_ASC';
+// 	// 获取参考列
+// 	$column = array_column($data, $field);
+// 	// 排序
+// 	array_multisort($column, $sort, $data);
+
+
+
+// 	return $data;
+// }
+
+function sortArrByManyField(){
+  $args = func_get_args();
+  if(empty($args)){
+    return null;
+  }
+  $arr = array_shift($args);
+  if(!is_array($arr)){
+    throw new Exception("第一个参数不为数组");
+  }
+  foreach($args as $key => $field){
+    if(is_string($field)){
+      $temp = array();
+      foreach($arr as $index=> $val){
+        $temp[$index] = $val[$field];
+      }
+      $args[$key] = $temp;
+    }
+  }
+  $args[] = &$arr;//引用值
+  call_user_func_array('array_multisort',$args);
+  return array_pop($args);
 }
 
 

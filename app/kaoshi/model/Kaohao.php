@@ -295,7 +295,7 @@ class Kaohao extends Base
             unset($data[$key]['cjSchool']['paixu']);
         }
 
-        $data = arraySequence($data,'paixu','asc');
+        $data = sortArrByManyField($data,'paixu',SORT_ASC);
 
         return $data;
 
@@ -337,10 +337,11 @@ class Kaohao extends Base
                     $query->where('school','in',$school);
                 })
                 ->when(count($paixu)>0,function($query) use($paixu){
-                    $query->where('banji','in',function($q)use($paixu){
-                        $q->name('banji')
-                        ->where('paixu','in',$paixu)
-                        ->field('id');
+                    $query->withTrashed()
+                        ->where('banji','in',function($q)use($paixu){
+                            $q->name('banji')
+                            ->where('paixu','in',$paixu)
+                            ->field('id');
                     });
                 })
                 ->with([
@@ -362,21 +363,25 @@ class Kaohao extends Base
 
         $bj = new \app\teach\model\Banji;
 
-        $data  = $bj->where('id','in',$bjids)
-                ->field('id,school')
+        $data  = $bj->withTrashed()
+                ->where('id','in',$bjids)
+                ->field('id,school,paixu')
                 ->with([
                     'glSchool'=>function($query){
-                        $query->field('id,title,jiancheng');
+                        $query->field('id,title,jiancheng,paixu');
                     },
                 ])
-                ->append(['numTitle'])
                 ->select()
                 ->toArray();
         
         foreach ($data as $key => $value) {
             $data[$key]['banjiNum'] = $bj->myBanjiNum($value['id'],$kssj);
             $data[$key]['banjiTitle'] = $bj->myBanjiTitle($value['id'],$kssj);
+            $data[$key]['schOrd'] = $value['glSchool']['paixu'];
+            unset($data[$key]['glSchool']['paixu']);
         }
+
+        $data = sortArrByManyField($data,'schOrd',SORT_ASC,'paixu',SORT_ASC);
 
         return $data;
     }
