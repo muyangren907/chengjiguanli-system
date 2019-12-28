@@ -252,7 +252,8 @@ class Banji extends BaseController
         // 获取别一个班级信息
         if( $caozuo > 0 )
         {
-            $bjinfo = BJ::where('school',$thisbj->getData('school'))
+            $bjinfo = BJ::withTrashed()
+                    ->where('school',$thisbj->getData('school'))
                     ->where('ruxuenian',$thisbj->ruxuenian)
                     ->where('paixu','>=',$thisbj->paixu)
                     ->order(['paixu'])
@@ -260,7 +261,8 @@ class Banji extends BaseController
                     ->field('id,paixu')
                     ->select();
         }else{
-            $bjinfo = BJ::where('school',$thisbj->getData('school'))
+            $bjinfo = BJ::withTrashed()
+                    ->where('school',$thisbj->getData('school'))
                     ->where('ruxuenian',$thisbj->ruxuenian)
                     ->where('paixu','<=',$thisbj->paixu)
                     ->order(['paixu'=>'desc'])
@@ -270,18 +272,22 @@ class Banji extends BaseController
         }
         if($bjinfo->count() == 2)
         {
-            // 更改班级位置
-            foreach ($bjinfo as $key => $value) {
-                $value->paixu = $value->paixu + $caozuo;
-                $caozuo = $caozuo * -1;
-            }
             $bjinfo = $bjinfo->toArray();
 
-            // 实例化班级数据模型
-            $bj = new BJ();
-            // 更新数据
-            $data = $bj->saveAll($bjinfo);
-            $data ? $data = ['msg'=>'移动成功','val'=>1] : $data = ['msg'=>'数据处理错误','val'=>0];
+            $temp = $bjinfo[0]['paixu'];
+            $bjinfo[0]['paixu'] = $bjinfo[1]['paixu'];
+            $bjinfo[1]['paixu'] = $temp;
+
+            // 实例化Db类
+            $db = new \think\facade\Db;
+            $yz = 0;
+            foreach ($bjinfo as $key => $value) {
+                $data = $db::name('banji')->update($value);
+                $data ? $yz = $yz : $yz = $yz+1;
+            }
+            
+
+            $yz==0 ? $data = ['msg'=>'移动成功','val'=>1] : $data = ['msg'=>'数据处理错误','val'=>0];
         }else{
             $data = ['msg'=>'已经到头啦~','val'=>0];
         }
