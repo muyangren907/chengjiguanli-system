@@ -136,7 +136,7 @@ class Xueqi extends BaseController
             'webtitle'=>'编辑学期',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'/teach/xueqi/'.$id,
+            'url'=>'/teach/xueqi/update/'.$id,
         );
 
         // 模板赋值

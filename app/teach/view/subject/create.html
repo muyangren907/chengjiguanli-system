@@ -54,13 +54,13 @@
               <input type="radio" name="kaoshi" value="1" title="参与" 
                 {present name="$list.data.kaoshi"}
                 {$list.data.kaoshi}
-                    {eq name="$list.data.kaoshi" value="是" }
+                    {eq name="$list.data.kaoshi" value="1" }
                      checked
                     {/eq}
                 {/present}>
               <input type="radio" name="kaoshi" value="0" title="不参与" 
                 {present name="$list.data.kaoshi"}
-                    {eq name="list.data.kaoshi" value="否" }
+                    {eq name="list.data.kaoshi" value="0" }
                      checked
                     {/eq}
                 {/present}

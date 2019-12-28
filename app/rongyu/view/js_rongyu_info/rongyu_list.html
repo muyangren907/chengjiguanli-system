@@ -142,7 +142,7 @@
             cjgl.add('添加荣誉','/rongyu/jsryinfo/create/'+"{$list.rongyuce}",'','',true);
             break;
           case 'download':
-            cjgl.add('下载荣誉信息','/rongyu/jsryinfo/outxlsx/'+"{$list.rongyuce}",'300','200',false);
+          	window.open('/rongyu/jsryinfo/outxlsx/'+"{$list.rongyuce}");
             break;
         };
       });
