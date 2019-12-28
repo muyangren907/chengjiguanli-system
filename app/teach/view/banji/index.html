@@ -136,19 +136,17 @@
 				dataType: 'json',
 				success: function(data){
 					
-					if(data.val == false){
+					if(data.val == 0){
 						layer.alert(data.msg);
 						return true;
 					}
-					var yd = $(obj).parents("tr").html();
-					// if( caozuo === 1)
-					// {
-					// 	$(obj).parents("tr").prev().before('<tr role="row">' + yd + '</tr>');
-						
-					// } else {
-					// 	$(obj).parents("tr").next().after('<tr role="row">' + yd + '</tr>');
-					// }
-					$(obj).parents("tr").remove();
+
+					var yd = $(obj).parents("tr");
+					var mytitle = $(yd).find('td[data-field="banjiTitle"]').children('div');
+					var paixu = $(yd).find('td[data-field="paixu"]').children('div');
+					mytitle.text(data.title);
+					paixu.text(data.paixu);
+
 					layer.alert(data.msg);
 					return true;
 				},

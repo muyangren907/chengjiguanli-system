@@ -285,9 +285,12 @@ class Banji extends BaseController
                 $data = $db::name('banji')->update($value);
                 $data ? $yz = $yz : $yz = $yz+1;
             }
+
+            $bj = new BJ;
+            $bjtitle = $bj->myBanjiTitle($bjinfo[0]['id']);
             
 
-            $yz==0 ? $data = ['msg'=>'移动成功','val'=>1] : $data = ['msg'=>'数据处理错误','val'=>0];
+            $yz==0 ? $data = ['msg'=>'移动成功','val'=>1,'title'=>$bjtitle,'paixu'=>$bjinfo[0]['paixu']] : $data = ['msg'=>'数据处理错误','val'=>0];
         }else{
             $data = ['msg'=>'已经到头啦~','val'=>0];
         }
