@@ -395,4 +395,22 @@ class Index extends BaseController
         // 渲染
         return $this->view->fetch();
     }
+
+
+    // 根据考试ID和年级获取参加考试班级
+    public function cyBanji()
+    {
+        // 获取变量
+        $src['school'] = input('post.school');
+        $src['ruxuenian'] = input('post.ruxuenian');
+        $src['kaoshi'] = input('post.kaoshi');
+
+        $src['school'] = strToarray($src['school']);
+
+        $kh = new \app\kaoshi\model\Kaohao;
+        $bj = $kh->cyBanji($src);
+
+        return $bj;
+
+    }
 }

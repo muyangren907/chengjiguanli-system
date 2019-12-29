@@ -24,6 +24,7 @@ Route::group('index', function () {
 	    Route::rule('set/<id>','Index/kaoshiSet','get');				# 修改信息
 	    Route::rule('updateset/<id>','Index/updateSet','put');			# 更新信息
 	    Route::rule('more/<kaoshi>','Index/moreAction','get');				# 修改信息
+	    Route::rule('cybanji','Index/cyBanji','post');				# 修改信息
 	});
 
 

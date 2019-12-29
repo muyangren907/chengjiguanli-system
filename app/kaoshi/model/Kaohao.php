@@ -363,6 +363,7 @@ class Kaohao extends Base
                         $query->field('id,title,jiancheng,paixu');
                     },
                 ])
+                ->append(['banTitle'])
                 ->select()
                 ->toArray();
         foreach ($data as $key => $value) {

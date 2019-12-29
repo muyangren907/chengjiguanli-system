@@ -103,12 +103,13 @@ layui.use(['form'], function(){
 		$(bj).children().remove();
 		// 获取班级列表
 		$.ajax({
-		    url:"/teach/banji/mybanji",
-		    type:"POST",
-		    data:{
-		    	school:school
-		    	,ruxuenian:ruxuenian
-		    },
+		    url:"/kaoshi/index/cybanji",
+        type:"POST",
+        data:{
+          school:$('#school').val()
+          ,ruxuenian:$('#ruxuenian').val()
+          ,kaoshi:"{$list.set.kaoshi}"
+        },
 		    dataType:'json',
 		    success:function(result){
           console.log(result);

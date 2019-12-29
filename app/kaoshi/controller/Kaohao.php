@@ -127,7 +127,7 @@ class Kaohao extends BaseController
             $kaohao[$key]['ruxuenian']= $value->stuBanji->ruxuenian;
             $kaohao[$key]['nianji']= $njlist[$kaohao[$key]['ruxuenian']];
             $kaohao[$key]['banji']= $value->stuBanji->id;
-            $kaohao[$key]['paixu']= $value->stuBanji->id;
+            $kaohao[$key]['paixu']= $value->stuBanji->paixu;
             $kaohao[$key]['kaoshi']= $list['kaoshi'];
         }
 
