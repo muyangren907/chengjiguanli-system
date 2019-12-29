@@ -59,6 +59,7 @@ class Bjtongji extends Base
             ];
         }
 
+
         $srcfrom['banji'] = array_column($src['banji'], 'id');
         // 获取年级成绩
         // $allcj = $tj->srcChengji($kaoshi=$kaoshi,$banji=$bjs,$nianji=$nianji,$school=array());

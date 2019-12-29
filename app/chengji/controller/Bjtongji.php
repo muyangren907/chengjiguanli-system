@@ -27,7 +27,7 @@ class Bjtongji extends BaseController
             ->field('id,title')
             ->find();
 
-        if(count($ksinfo->ks_nianji)>0)
+        if(count($ksinfo->ksNianji)>0)
         {
             $list['nianji'] = $ksinfo->ksNianji[0]->nianji;
         }else{
@@ -68,7 +68,6 @@ class Bjtongji extends BaseController
 
         // 获取参与考试的班级
         $kh = new \app\kaoshi\model\Kaohao;
-        // $src['banji']= array_column($kh->cyBanji($src), 'id');
         $src['banji']= $kh->cyBanji($src);
 
 
@@ -210,7 +209,7 @@ class Bjtongji extends BaseController
             $sheet->setCellValue('B'.$row, $value['banjinum']);
             foreach ($xk as $ke => $val) {
                 foreach ($sbjcol as $k => $v) {
-                     $sheet->setCellValue($colname[$col].$row, $value['chengji'][$val->subject_name->lieming][$k]);
+                     $sheet->setCellValue($colname[$col].$row, $value['chengji'][$val->subjectName->lieming][$k]);
                      $col++;
                 }
             }

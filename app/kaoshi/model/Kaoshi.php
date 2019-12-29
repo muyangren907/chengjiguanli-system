@@ -28,9 +28,6 @@ class Kaoshi extends Base
         // 查询数据
         $data = $this
             ->order([$src['field'] =>$src['order']])
-            // ->when(count($xingzhi)>0,function($query) use($xingzhi){
-            //         $query->where('xingzhi','in',$xingzhi);
-            //     })
             ->when(strlen($searchval)>0,function($query) use($searchval){
                     $query->where('title','like','%'.$searchval.'%');
                 })

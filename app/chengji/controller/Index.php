@@ -227,7 +227,7 @@ class Index extends BaseController
     // 保存表格批量上传的成绩 
     public function saveAll()
     {
-        set_time_limit(0);
+        // set_time_limit(0);
         // 获以电子表格存储位置
         $url = input('post.url');
 
@@ -240,7 +240,7 @@ class Index extends BaseController
         $kaoshiid = $cjinfo[1][0];  #获取考号
 
 
-        if($kaoshiid == null || $cjinfo[2][0] != '序号' || $cjinfo[2][1] != '考号' || $cjinfo[2][2] != '班级' || $cjinfo[2][3] != '姓名')
+        if($kaoshiid == null || $cjinfo[2][0] != '序号' || $cjinfo[2][1] != '编号' || $cjinfo[2][2] != '班级' || $cjinfo[2][3] != '姓名')
         {
             $data=['msg'=>'请使用模板上传','val'=>0];
             return json($data);
@@ -319,8 +319,8 @@ class Index extends BaseController
         // 判断成绩更新结果
         $data=['msg'=>'成绩导入成功','val'=>1];
 
-        ob_flush();
-        flush();
+        // ob_flush();
+        // flush();
         // 返回成绩结果
         return json($data);
     }
@@ -401,14 +401,13 @@ class Index extends BaseController
         // 获取参与考试的班级
         $kh = new \app\kaoshi\model\Kaohao;
         $src['banji']= array_column($kh->cyBanji($src), 'id');
-       
+
+
         // 实例化
         $cj = new Chengji;
 
         // 查询要显示的数据
         $data = $cj->search($src);
-
-
 
         // 获取符合条件记录总数
         $cnt = count($data);

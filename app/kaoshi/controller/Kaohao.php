@@ -529,7 +529,7 @@ class Kaohao extends BaseController
 
         $sheet->setCellValue('A2', $kaoshi);
         $sheet->setCellValue('A3', '序号');
-        $sheet->setCellValue('B3', '考号');
+        $sheet->setCellValue('B3', '编号');
         $sheet->setCellValue('C3', '班级');
         $sheet->setCellValue('D3', '姓名');
         // 获取列数并合并和一行

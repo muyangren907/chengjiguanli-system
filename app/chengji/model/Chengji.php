@@ -43,8 +43,10 @@ class Chengji extends Base
             'searchval'=>''
         );
 
+
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
+
 
         // 实例化考号数据模型
         $kh = new \app\kaoshi\model\Kaohao;

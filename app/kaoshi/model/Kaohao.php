@@ -34,12 +34,12 @@ class Kaohao extends Base
                         }
                         ,
                         'banjiKaohao'=>function($query) use($kaoshi){
-                            $query->field('id,student')
+                            $query->field('id,student,banji')
                                 ->where('kaoshi',$kaoshi)
                                 ->order(['banji','id'])
                                 ->with([
                                     'cjStudent'=>function($q){
-                                        $q->field('id,xingming');
+                                        $q->field('id,xingming,sex');
                                     }
                             ]);
                         }
@@ -61,8 +61,6 @@ class Kaohao extends Base
                 }
             }
         }
-
-        halt($data->toArray());
 
         return $data;
     }
@@ -96,26 +94,17 @@ class Kaohao extends Base
 
 
         // 重新定义变量
-        // $school = $src['school'];
-        // $ruxuenian = $src['ruxuenian'];
         $banji = $src['banji'];
         $seachval = $src['searchval'];
 
 
         // 查询成绩
         $khlist = $this->where('kaoshi',$src['kaoshi'])
-                ->field('id,school,student,banji,kaoshi')
-                // ->when(count($school)>0,function($query) use($school){
-                //     $query->where('school','in',$school);
-                // })
+                ->field('id,school,student,ruxuenian,paixu,kaoshi')
                 ->where('banji','in',$banji)
-                // ->when(strlen($ruxuenian)>0,function($query) use($ruxuenian){
-                //     $query->where('ruxuenian',$ruxuenian);
-                // })
                 ->when(strlen($seachval)>0,function($query) use($seachval){
                     $query->where(function($w) use ($seachval){
                         $w
-                        // ->whereOr('id',$seachval)
                         ->whereOr('student','in',function($q)use($seachval){
                             $q->name('student')->where('xingming','like','%'.$seachval.'%')->field('id');
                         });
@@ -136,6 +125,7 @@ class Kaohao extends Base
                 ->select();
 
 
+
         // 成绩整理
         if($khlist->isEmpty())
         {
@@ -153,13 +143,13 @@ class Kaohao extends Base
                     ])
                     ->find();
 
-        if($ksinfo->ks_subject->isEmpty())
+        if($ksinfo->ksSubject->isEmpty())
         {
             return $data = array();
         }
 
         $xk = array();
-        foreach ($ksinfo->ks_subject as $key => $value) {
+        foreach ($ksinfo->ksSubject as $key => $value) {
             $xk[$value->subjectid] = $value->lieming;
         }
 
@@ -173,10 +163,10 @@ class Kaohao extends Base
         $data = array();
         foreach ($khlist as $key => $value) {
             $data[$key]['id'] = $value->id;
-            $data[$key]['school'] = $value->cj_school->jiancheng;
-            if($value->cj_student != Null){
-                $data[$key]['student'] = $value->cj_student->xingming;
-                $data[$key]['sex'] = $value->cj_student->sex;
+            $data[$key]['school'] = $value->cjSchool->jiancheng;
+            if($value->cjStudent != Null){
+                $data[$key]['student'] = $value->cjStudent->xingming;
+                $data[$key]['sex'] = $value->cjStudent->sex;
             }else{
                 $stuinfo = $stu::withTrashed()
                         ->where('id',$value->student)
@@ -190,6 +180,7 @@ class Kaohao extends Base
             $dfsum = 0;
             $sbjcnt = 0;
 
+            // 整理当前学生成绩
             $cjarr = $this->zzcj($value->ks_chengji);
 
              // 初始化参数
@@ -207,11 +198,11 @@ class Kaohao extends Base
             }
 
 
-
-            $data[$key]['sum'] = array_sum($cjarr);
             if($sbjcnt>0){
+                $data[$key]['sum'] = array_sum($cjarr);
                 $data[$key]['avg'] = round($data[$key]['sum']/$sbjcnt,1);
             }else{
+                $data[$key]['sum'] = null;
                 $data[$key]['avg'] = null;
             }
         }
@@ -335,21 +326,16 @@ class Kaohao extends Base
         $ks = new \app\kaoshi\model\Kaoshi;
         $kssj = $ks::where('id',$src['kaoshi'])->value('bfdate');
 
-
+        // 通过给定参数，从考号表中获取参加考试的班级
         $bjids = $this
-                // ->where('ruxuenian',$src['ruxuenian'])
+                ->where('ruxuenian',$src['ruxuenian'])
                 ->where('kaoshi',$src['kaoshi'])
-                // ->when(count($school)>0,function($query) use($school){
-                //     $query->where('school','in',$school);
-                // })
-                // ->when(count($paixu)>0,function($query) use($paixu){
-                //     $query->withTrashed()
-                //         ->where('banji','in',function($q)use($paixu){
-                //             $q->name('banji')
-                //             ->where('paixu','in',$paixu)
-                //             ->field('id');
-                //     });
-                // })
+                ->when(count($school)>0,function($query) use($school){
+                    $query->where('school','in',$school);
+                })
+                ->when(count($paixu)>0,function($query) use($paixu){
+                    $query->where('paixu','in',$paixu);
+                })
                 ->with([
                     'cjSchool'=>function($query){
                         $query->field('id,jiancheng');
@@ -360,17 +346,15 @@ class Kaohao extends Base
                 ->select()
                 ->toArray();
 
-        halt($bjids);
-
-
+        // 将二维数组的班级转换成一维数组
         foreach ($bjids as $key => $value) {
             // halt($key);
             $bjids[$key] = $value['banji'];
         }
 
 
+        // 查询班级信息并赋值
         $bj = new \app\teach\model\Banji;
-
         $data  = $bj->withTrashed()
                 ->where('id','in',$bjids)
                 ->field('id,school,paixu')
@@ -381,14 +365,12 @@ class Kaohao extends Base
                 ])
                 ->select()
                 ->toArray();
-        
         foreach ($data as $key => $value) {
             $data[$key]['banjiNum'] = $bj->myBanjiNum($value['id'],$kssj);
             $data[$key]['banjiTitle'] = $bj->myBanjiTitle($value['id'],$kssj);
             $data[$key]['schOrd'] = $value['glSchool']['paixu'];
             unset($data[$key]['glSchool']['paixu']);
         }
-
         $data = sortArrByManyField($data,'schOrd',SORT_ASC,'paixu',SORT_ASC);
 
         return $data;
@@ -413,8 +395,11 @@ class Kaohao extends Base
                 ->find();
         $bfdate = $ks->cjKaoshi->getData('bfdate');
 
-        $bj = new \app\teach\model\Banji;
-        $title = $bj->myBanjiTitle($this->getAttr('banji'),$bfdate);
+        $nj = nianjiList($bfdate);
+        $bj = banjinamelist();
+
+        $title = $nj[$this->getAttr('ruxuenian')] . $bj[$this->getAttr('paixu')];
+
 
         return $title;
     }
