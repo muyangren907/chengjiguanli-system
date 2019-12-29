@@ -31,16 +31,17 @@ class Kaohao extends BaseController
                 ])
                 ->find();
 
-        if(count($kaoshilist->ks_nianji)>0)
+
+        if(count($kaoshilist->ksNianji)>0)
         {
-            foreach ($kaoshilist->ks_nianji as $key => $value) {
+            foreach ($kaoshilist->ksNianji as $key => $value) {
                 $list['data']['nianji'][$key]['id']=$value->nianji;
                 $list['data']['nianji'][$key]['title']=$value->nianjiname;
             }
         }else{
             $list['data']['nianji']= array();
         }
-        
+
 
 
         // 设置页面标题
@@ -93,10 +94,11 @@ class Kaohao extends BaseController
                         ->field('id,school,banji')
                         ->with([
                             'stuBanji'=>function($query){
-                                $query->field('id,ruxuenian');
+                                $query->field('id,ruxuenian,paixu');
                             }
                         ])
                         ->select();
+
 
         $njlist = nianjiList();
         // 重新组合学生信息
@@ -122,9 +124,10 @@ class Kaohao extends BaseController
             }
             $kaohao[$key]['student']= $value->id;
             $kaohao[$key]['school']= $list['school'];
-            $kaohao[$key]['ruxuenian']= $value->stu_banji->ruxuenian;
+            $kaohao[$key]['ruxuenian']= $value->stuBanji->ruxuenian;
             $kaohao[$key]['nianji']= $njlist[$kaohao[$key]['ruxuenian']];
-            $kaohao[$key]['banji']= $value->stu_banji->id;
+            $kaohao[$key]['banji']= $value->stuBanji->id;
+            $kaohao[$key]['paixu']= $value->stuBanji->id;
             $kaohao[$key]['kaoshi']= $list['kaoshi'];
         }
 
@@ -132,7 +135,7 @@ class Kaohao extends BaseController
         $kh = new \app\kaoshi\model\Kaohao;
 
         $data = $kh
-            ->allowField(['id','kaoshi','student','school','ruxuenian','nianji','banji','create_time','update_time'])
+            ->allowField(['id','kaoshi','student','school','ruxuenian','nianji','banji','paixu','create_time','update_time'])
             ->saveAll($kaohao);
         
 

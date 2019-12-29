@@ -401,7 +401,6 @@ class Index extends BaseController
         // 获取参与考试的班级
         $kh = new \app\kaoshi\model\Kaohao;
         $src['banji']= array_column($kh->cyBanji($src), 'id');
-
        
         // 实例化
         $cj = new Chengji;
@@ -664,15 +663,7 @@ class Index extends BaseController
 
         // 获取参与考试的班级
         $kh = new \app\kaoshi\model\Kaohao;
-        $src['banji']= array_column($kh->cyBanji($src), 'id');
-
-
-        // 获取数据库信息
-        $kh = new Kaohao();
-        // $src = [
-        //     'kaoshi'=>$list['kaoshi'],
-        //     'banji'=>$list['banji'],
-        // ];
+  
         $chengjiinfo = $kh->srcChengji($src);
 
 
@@ -771,6 +762,185 @@ class Index extends BaseController
 
         $sheet->setCellValue($colname[$colcnt+1].'3', $temp['avg']);
         $sheet->setCellValue($colname[$colcnt+2].'3', $temp['rate']);
+
+
+        // 保存文件
+        $filename = $tabletitle.date('ymdHis').'.xlsx';
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+        ob_flush();
+        flush();
+    }
+
+
+
+
+
+    // 下载成绩表格
+    public function dwChengjitiao($kaoshi)
+    {
+
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'成绩下载',
+            'butname'=>'下载',
+            'formpost'=>'POST',
+            'url'=>'/chengji/index/dwcjtiaoxlsx',
+            'kaoshi'=>$kaoshi
+        );
+
+        // 模板赋值
+        $this->view->assign('list',$list);
+        // 渲染
+        return $this->view->fetch();
+    }
+
+
+
+
+
+    //生成学生表格
+    public function dwchengjitiaoxlsx()
+    {
+        // 获取参数
+        $src = $this->request
+                ->only([
+                    'kaoshi'=>'1',
+                    'banji'=>array(),
+                    'school',
+                    'ruxuenian'
+                ],'POST');
+
+
+        // 获取要下载成绩的学校和年级信息
+        $school = new \app\system\model\School;
+        $schoolname = $school->where('id',$src['school'])->value('jiancheng');
+
+        // 实例化验证模型
+        $validate = new \app\chengji\validate\Cjdownload;
+        // 验证表单数据
+        $result = $validate->check($src);
+        $msg = $validate->getError();
+
+        // 如果验证不通过则停止保存
+        if(!$result){
+            $this->error($msg);
+        }
+
+        $src['school'] = strToarray($src['school']);
+
+        // 获取当前年级成绩统计结果
+        $kh = new Kaohao;
+        $tj = new \app\chengji\model\Tongji;
+        $srcAll = [
+            'kaoshi'=>$src['kaoshi'],
+            'ruxuenian'=>$src['ruxuenian']
+        ];
+        $srcAll['banji']= array_column($kh->cyBanji($srcAll), 'id');
+        $chengjiinfo = $kh->srcChengji($src);
+
+        $njtj = $tj->tongji($chengjiinfo,$src['kaoshi']);
+
+        // 获取部分学生成绩
+        $chengjiinfo = $kh->srcChengji($src);
+
+
+        // 获取考试标题
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $ks = $ks->where('id',$src['kaoshi'])
+                ->field('id,title,bfdate')
+                ->with([
+                    'ksSubject'=>function($query){
+                        $query->field('kaoshiid,subjectid')
+                            ->with(['subjectName'=>function($q){
+                                $q->field('id,title,lieming');
+                            }]
+                        );
+                    }
+                ])
+                ->find();
+        // 获取考试年级名称
+        $njlist = nianjiList($ks->getData('bfdate'));
+        $nianji = $njlist[$src['ruxuenian']];
+
+        $tabletitle =$ks->title.' '.$schoolname.' '.$nianji.' '.'学生成绩条';
+
+        $colname = excelLieming();
+
+        set_time_limit(0);
+        // 创建表格
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet;
+        $sheet = $spreadsheet->getActiveSheet();
+        
+       
+        $row = 1;   # 定义从 $row 行开始写入数据
+        $rows = count($ks->ks_subject);  # 定义学生信息列要合并的行数
+
+        // 给单元格加边框
+        $styleArray = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => '00000000'],
+                ],
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, //垂直居中
+            ],
+        ];
+
+        // 从这里开始循环写入学生成绩
+        foreach ($chengjiinfo as $key => $value) {
+
+            // 写入学生信息
+            $sheet->setCellValue('A'.$row, '学校');
+            $sheet->mergeCells('A'.($row+1).':'.'A'.($row+$rows)); # 输入学科名
+            $sheet->setCellValue('A'.($row+1), $schoolname);
+            $sheet->setCellValue('B'.$row, '班级');
+            $sheet->mergeCells('B'.($row+1).':'.'B'.($row+$rows)); # 输入学科名
+            $sheet->getStyle('B'.($row+1))->getAlignment()->setWrapText(true);
+            $sheet->setCellValue('B'.($row+1), $value['banji']);
+            $sheet->setCellValue('C'.$row, '姓名');
+            $sheet->mergeCells('C'.($row+1).':'.'C'.($row+$rows)); # 输入学科名
+            $sheet->setCellValue('C'.($row+1), $value['student']);
+            $sheet->setCellValue('D'.$row, '学科');
+            $sheet->setCellValue('E'.$row, '得分');
+            $sheet->setCellValue('F'.$row, '平均分');
+            $sheet->setCellValue('G'.$row, '优秀率%');
+            $sheet->setCellValue('H'.$row, '及格率%');
+            $sheet->setCellValue('I'.$row, '最高分');
+            $sheet->setCellValue('J'.$row, '%75');
+            $sheet->setCellValue('K'.$row, '%50');
+            $sheet->setCellValue('L'.$row, '%25');
+            $row = $row + 1 ;
+
+
+            // 写入成绩
+            foreach ($ks->ks_subject as $k => $val) {
+                $sheet->setCellValue('D'.($row+$k), $val->subjectName->title);
+                $sheet->setCellValue('E'.($row+$k), $value[$val->subject_name->lieming]);   # 得分
+                $sheet->setCellValue('F'.($row+$k), $njtj[$val->subject_name->lieming]['avg']);
+                $sheet->setCellValue('G'.($row+$k), $njtj[$val->subject_name->lieming]['max']);
+                $sheet->setCellValue('H'.($row+$k), $njtj[$val->subject_name->lieming]['youxiu']);
+                $sheet->setCellValue('I'.($row+$k), $njtj[$val->subject_name->lieming]['jige']);
+                $sheet->setCellValue('J'.($row+$k), $njtj[$val->subject_name->lieming]['sifenwei'][0]);
+                $sheet->setCellValue('K'.($row+$k), $njtj[$val->subject_name->lieming]['sifenwei'][1]);
+                $sheet->setCellValue('L'.($row+$k), $njtj[$val->subject_name->lieming]['sifenwei'][2]);
+            }
+
+            // 设置格式
+            $sheet->getStyle('A'.($row-1).':L'.($row+$rows-1))->applyFromArray($styleArray);
+
+
+            $row = $row + $rows +1 ;
+
+            
+
+        }
 
 
         // 保存文件

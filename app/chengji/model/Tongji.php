@@ -128,6 +128,8 @@ class Tongji extends Base
             $temp['avg'] = round($temp['avg'],2);
             $temp['youxiu'] = $this->rate($cjcol,$value->youxiu);
             $temp['jige'] = $this->rate($cjcol,$value->jige);
+            $temp['max'] = max($cjcol);
+            $temp['min'] = min($cjcol);
             $temp['sifenwei'] = $this->quartile($cjcol);
             $data[$value->lieming] = $temp;
         }

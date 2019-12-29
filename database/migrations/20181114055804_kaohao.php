@@ -38,6 +38,7 @@ class Kaohao extends Migrator
             ->addColumn('ruxuenian','integer',['limit'=>4,'null'=>false,'comment'=>'入学年'])
             ->addColumn('nianji','string',['limit'=>4,'null'=>false,'comment'=>'年级'])
             ->addColumn('banji','integer',['limit'=>11,'null'=>false,'comment'=>'班级'])
+            ->addColumn('paixu','integer',['limit'=>11,'null'=>false,'comment'=>'班级排序'])
             ->addColumn('student','integer',['limit'=>11,'null'=>false,'comment'=>'学生'])
             ->addColumn('create_time','integer',['limit'=>11,'null'=>true,'comment'=>'创建时间'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])

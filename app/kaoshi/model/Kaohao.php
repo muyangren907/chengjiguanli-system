@@ -24,14 +24,17 @@ class Kaohao extends Base
                     ->order(['banji'])
                     ->group('banji,school')
                     ->with([
-                        'cjBanji'
+                        'cjBanji'=>function($query){
+                            $query->field('id,school,ruxuenian,paixu')
+                                    ->append(['banjiTitle','numTitle']);
+                        }
                         ,
                         'cjSchool'=>function($query){
                             $query->field('id,jiancheng');
                         }
                         ,
                         'banjiKaohao'=>function($query) use($kaoshi){
-                            $query->field('id,banji,student,kaoshi,school')
+                            $query->field('id,student')
                                 ->where('kaoshi',$kaoshi)
                                 ->order(['banji','id'])
                                 ->with([
@@ -58,6 +61,8 @@ class Kaohao extends Base
                 }
             }
         }
+
+        halt($data->toArray());
 
         return $data;
     }
@@ -330,20 +335,21 @@ class Kaohao extends Base
         $ks = new \app\kaoshi\model\Kaoshi;
         $kssj = $ks::where('id',$src['kaoshi'])->value('bfdate');
 
+
         $bjids = $this
-                ->where('ruxuenian',$src['ruxuenian'])
+                // ->where('ruxuenian',$src['ruxuenian'])
                 ->where('kaoshi',$src['kaoshi'])
-                ->when(count($school)>0,function($query) use($school){
-                    $query->where('school','in',$school);
-                })
-                ->when(count($paixu)>0,function($query) use($paixu){
-                    $query->withTrashed()
-                        ->where('banji','in',function($q)use($paixu){
-                            $q->name('banji')
-                            ->where('paixu','in',$paixu)
-                            ->field('id');
-                    });
-                })
+                // ->when(count($school)>0,function($query) use($school){
+                //     $query->where('school','in',$school);
+                // })
+                // ->when(count($paixu)>0,function($query) use($paixu){
+                //     $query->withTrashed()
+                //         ->where('banji','in',function($q)use($paixu){
+                //             $q->name('banji')
+                //             ->where('paixu','in',$paixu)
+                //             ->field('id');
+                //     });
+                // })
                 ->with([
                     'cjSchool'=>function($query){
                         $query->field('id,jiancheng');
@@ -353,6 +359,8 @@ class Kaohao extends Base
                 ->field(['banji'])
                 ->select()
                 ->toArray();
+
+        halt($bjids);
 
 
         foreach ($bjids as $key => $value) {

@@ -29,6 +29,8 @@ Route::group('index', function () {
 	    Route::rule('deletecjmore','Index/deletecjmore','post');				# 成绩删除
 		Route::rule('dwchengji/<kaoshi>','Index/dwChengji','get');				# 成绩删除
 		Route::rule('dwxlsx','Index/dwchengjixlsx','post');				# 成绩删除
+		Route::rule('dwchengjitiao/<kaoshi>','Index/dwChengjitiao','get');				# 成绩删除
+		Route::rule('dwcjtiaoxlsx','Index/dwchengjitiaoxlsx','post');				# 成绩删除
 	});
 
 

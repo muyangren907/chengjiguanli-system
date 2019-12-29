@@ -100,6 +100,9 @@ class Banji extends Base
 
         in_array($bj,$bjkeys) ? $title = $bjname[$bj] : $title = $bj.'班';
 
+        $del = $this->getAttr('delete_time');
+        $del==null ?  $title : $title=$title&'(删)' ;
+
         return $title;
     }
 
@@ -138,7 +141,7 @@ class Banji extends Base
             $bjtitle = $bjinfo->ruxuenian.'界'.$bjinfo->paixu.'班';
         }
 
-        // 如果该班级被删除，则瓢删除
+        // 如果该班级被删除，则标删除
         if($bjinfo->delete_time != null)
         {
             $bjtitle = $bjtitle.'(删)';
