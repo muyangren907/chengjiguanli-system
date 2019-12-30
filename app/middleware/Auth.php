@@ -55,7 +55,7 @@ class Auth
             // 考试
             'cybanji',
             // 下载成绩表、下载成绩统计表
-            'dwchengjixlsx','dwbanjixls','dwnianjixlsx','dwcjtiaoxlsx',
+            'dwchengjixlsx','dwbanjixls','dwnianjixlsx','dwchengjitiaoxlsx',
             //保存考号、下载试卷标签、下载成绩采集表
             'updateset','biaoqianxls','dwcaiji',
             //课题结题图片上传和更新

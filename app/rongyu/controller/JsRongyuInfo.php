@@ -526,8 +526,8 @@ class JsRongyuInfo extends BaseController
         // ob_end_clean();
         // ob_start();
         // 释放内存
-        $spreadsheet->disconnectWorksheets();
-        unset($spreadsheet);
+        // $spreadsheet->disconnectWorksheets();
+        // unset($spreadsheet);
 
     }
 

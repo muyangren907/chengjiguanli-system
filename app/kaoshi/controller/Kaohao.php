@@ -165,7 +165,6 @@ class Kaohao extends BaseController
     public function biaoqiandoc($id)
     {
 
-        set_time_limit(0);
         // 获取数据库信息
         $chengjiinfo = Chengji::where('kaoshi',$id)
                         ->where('ruxuenian',2017)
@@ -244,8 +243,6 @@ class Kaohao extends BaseController
         header('Cache-Control: max-age=0');
         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
         $objWriter->save('php://output');
-        ob_flush();
-        flush();
 
     }
 
@@ -313,7 +310,7 @@ class Kaohao extends BaseController
     public function biaoqianXls()
     {
 
-        set_time_limit(0);
+        // set_time_limit(0);
         // 获取表单数据
         $list = request()->only(['banjiids','kaoshi','subject'],'post');
 
@@ -359,9 +356,19 @@ class Kaohao extends BaseController
         $kaohao = $kh->srcKaohao($kaoshi,$banji);
 
 
+        $thistime = date("Y-m-d h:i:sa");
         // 创建表格
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
+        $thistime = date("Y-m-d h:i:sa");
+        // 设置文档属性
+        $spreadsheet->getProperties()
+            ->setCreator("尚码成绩管理系统")    //作者
+            ->setTitle("尚码成绩管理")  //标题
+            ->setLastModifiedBy(session('username')) //最后修改者
+            ->setDescription("该表格由".session('username').session('id')."于".$thistime."在尚码成绩管理系统中下载，只作为内部交流材料,不允许外泄。")  //描述
+            ->setKeywords("尚码 成绩管理") //关键字
+            ->setCategory("成绩管理"); //分类
 
         // 设置表头信息
         $sheet->setCellValue('A1', '序号');
@@ -406,8 +413,6 @@ class Kaohao extends BaseController
         header('Cache-Control: max-age=0');
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
         $writer->save('php://output');
-        // ob_flush();
-        // flush();
     }
 
 
@@ -416,6 +421,12 @@ class Kaohao extends BaseController
     // 下载考试成绩采集表
     public function caiji($kaoshi)
     {
+        
+        if(kaoshiDate($kaoshi,'enddate'))
+        {
+            $this->error('考试已经结束，不能下载','/kaoshi/kaohao/biaoqian/'.$kaoshi);
+        }
+
         // 获取参考年级
         $kaoshilist = KS::where('id',$kaoshi)
                 ->with([
@@ -483,10 +494,6 @@ class Kaohao extends BaseController
         $banji = $list['banjiids'];
         $subject = $list['subject'];
 
-        if(kaoshiDate($kaoshi,'enddate'))
-        {
-            $this->error('考试已经结束，不能下载','/kaoshi/kaohao/biaoqian/'.$kaoshi);
-        }
 
         // 验证表单数据
         $result = $validate->check($list);
@@ -523,42 +530,51 @@ class Kaohao extends BaseController
         // 创建表格
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
+        $thistime = date("Y-m-d h:i:sa");
+        // 设置文档属性
+        $spreadsheet->getProperties()
+            ->setCreator("尚码成绩管理系统")    //作者
+            ->setTitle("尚码成绩管理")  //标题
+            ->setLastModifiedBy(session('username')) //最后修改者
+            ->setDescription("该表格由".session('username').session('id')."于".$thistime."在尚码成绩管理系统中下载，只作为内部交流材料,不允许外泄。")  //描述
+            ->setKeywords("尚码 成绩管理") //关键字
+            ->setCategory("成绩管理"); //分类
 
-        // 设置表格标题与表头信息
-        $sheet->setCellValue('A1',$kslist->title.' 成绩采集表');
+        // // 设置表格标题与表头信息
+        // $sheet->setCellValue('A1',$kslist->title.' 成绩采集表');
 
-        $sheet->setCellValue('A2', $kaoshi);
-        $sheet->setCellValue('A3', '序号');
-        $sheet->setCellValue('B3', '编号');
-        $sheet->setCellValue('C3', '班级');
-        $sheet->setCellValue('D3', '姓名');
-        // 获取列数并合并和一行
-        $col = $lieming[count($kslist->ksSubject)+3];
-        $sheet->mergeCells('A1:'.$col.'1');
-
-
-         // 写入列名
-        foreach ($kslist->ksSubject as $key => $value) {
-            $sheet->setCellValue($lieming[$key + 4].'3', $value->subjectName->title);
-            $sheet->setCellValue($lieming[$key + 4].'2', $value->subjectName->id);
-        }
-        // 隐藏第二行和第二列
-        $sheet->getRowDimension('2')->setRowHeight('0');
-        $sheet->getColumnDimension('B')->setWidth('0');
+        // $sheet->setCellValue('A2', $kaoshi);
+        // $sheet->setCellValue('A3', '序号');
+        // $sheet->setCellValue('B3', '编号');
+        // $sheet->setCellValue('C3', '班级');
+        // $sheet->setCellValue('D3', '姓名');
+        // // 获取列数并合并和一行
+        // $col = $lieming[count($kslist->ksSubject)+3];
+        // $sheet->mergeCells('A1:'.$col.'1');
 
 
-        // 将学生信息循环写入表中
-        $i = 4;
-        foreach ($kaohao as $key=>$bj)
-        {
-            foreach ($bj->banjiKaohao as $k => $kh) {
-                $sheet->setCellValue('A'.$i, $i-3);
-                $sheet->setCellValue('B'.$i, $kh->id);
-                $sheet->setCellValue('C'.$i, $bj->cjBanji->banjiTitle);
-                $sheet->setCellValue('D'.$i, $kh->cjStudent->xingming);
-                $i++;
-            }
-        }
+        //  // 写入列名
+        // foreach ($kslist->ksSubject as $key => $value) {
+        //     $sheet->setCellValue($lieming[$key + 4].'3', $value->subjectName->title);
+        //     $sheet->setCellValue($lieming[$key + 4].'2', $value->subjectName->id);
+        // }
+        // // 隐藏第二行和第二列
+        // $sheet->getRowDimension('2')->setRowHeight('0');
+        // $sheet->getColumnDimension('B')->setWidth('0');
+
+
+        // // 将学生信息循环写入表中
+        // $i = 4;
+        // foreach ($kaohao as $key=>$bj)
+        // {
+        //     foreach ($bj->banjiKaohao as $k => $kh) {
+        //         $sheet->setCellValue('A'.$i, $i-3);
+        //         $sheet->setCellValue('B'.$i, $kh->id);
+        //         $sheet->setCellValue('C'.$i, $bj->cjBanji->banjiTitle);
+        //         $sheet->setCellValue('D'.$i, $kh->cjStudent->xingming);
+        //         $i++;
+        //     }
+        // }
 
 
         // 保存文件
@@ -568,6 +584,7 @@ class Kaohao extends BaseController
         header('Cache-Control: max-age=0');
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
         $writer->save('php://output');
+
     }
 
 

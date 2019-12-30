@@ -154,6 +154,17 @@ class Njtongji extends BaseController
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
 
+        $thistime = date("Y-m-d h:i:sa");
+
+        // 设置文档属性
+        $spreadsheet->getProperties()
+            ->setCreator("尚码成绩管理系统")    //作者
+            ->setTitle("尚码成绩管理")  //标题
+            ->setLastModifiedBy(session('username')) //最后修改者
+            ->setDescription("该表格由".session('username').session('id')."于".$thistime."在尚码成绩管理系统中下载，只作为内部交流材料,不允许外泄。")  //描述
+            ->setKeywords("尚码 成绩管理") //关键字
+            ->setCategory("成绩管理"); //分类
+
         $sbjcol = ['xkcnt'=>'人数','avg'=>'平均分','jige'=>'及格率%','youxiu'=>'优秀率%'];
         $sbjcolcnt = count($sbjcol);
         $colname = excelLieming();
@@ -166,7 +177,7 @@ class Njtongji extends BaseController
         $sheet->mergeCells('A3:A4');
         $sheet->setCellValue('A3', '序号');
         $sheet->mergeCells('B3:B4');
-        $sheet->setCellValue('B3', '班级');
+        $sheet->setCellValue('B3', '学校');
         $col = 2;
         foreach ($xk as $key => $value) {
             $colend = $col + $sbjcolcnt - 1;
@@ -179,6 +190,7 @@ class Njtongji extends BaseController
         }
         $sheet->mergeCells($colname[$col].'3:'.$colname[$col].'4');
         $sheet->setCellValue($colname[$col].'3', '全科及格率%');
+        $sheet->getStyle($colname[$col].'3')->getAlignment()->setWrapText(true);
         $col++;
         $sheet->mergeCells($colname[$col].'3:'.$colname[$col].'4');
         $sheet->setCellValue($colname[$col].'3', '总平均分');
@@ -199,6 +211,33 @@ class Njtongji extends BaseController
             $sheet->setCellValue($colname[$col].$row, $value['chengji']['avg']);
             $row++;
         }
+
+        // 居中
+        $styleArray = [
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, //垂直居中
+            ],
+        ];
+        $sheet->getStyle('A1:'.$colname[$col].($row-1))->applyFromArray($styleArray);
+
+        // 加边框
+        $styleArray = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => '00000000'],
+                ],
+            ],
+        ];
+        $sheet->getStyle('A3:'.$colname[$col].($row-1))->applyFromArray($styleArray);
+        // 修改标题字号
+        $spreadsheet->getActiveSheet()->getStyle('A1')->getFont()->setBold(true)->setName('宋体')->setSize(20);
+        // 设置行高
+        $spreadsheet->getActiveSheet()->getDefaultRowDimension()->setRowHeight(35);
+        $spreadsheet->getActiveSheet()->getRowDimension('3:4')->setRowHeight(25);
+
+
 
         // 保存文件
         $filename = $tabletitle.date('ymdHis').'.xlsx';

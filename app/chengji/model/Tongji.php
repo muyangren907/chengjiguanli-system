@@ -110,7 +110,7 @@ class Tongji extends Base
         $ksinfo = $ks->where('id',$kaoshi)
                 ->field('id')
                 ->with(['ksSubject'=>function($query){
-                    $query->field('id,kaoshiid,subjectid,lieming');
+                    $query->field('id,kaoshiid,subjectid,lieming,youxiu,jige');
                 }])
                 ->find();
         $data = array();
@@ -138,6 +138,8 @@ class Tongji extends Base
                         '1'=>'',
                         '2'=>''
                     ],
+                    'max'=>'',
+                    'min'=>''
                 ];
             }else{
                 $temp['xkcnt'] = count($cjcol);
@@ -200,32 +202,38 @@ class Tongji extends Base
     // 全科及格率
     public function rateAll($cj = array(), $sbj=array())
     {
+
         $jige = 0;  # 总及格人数
+        $row = 0; #记录有成绩的学生数
         $sbjcnt = count($sbj);
         // 开始循环每个人的成绩
         foreach ($cj as $key => $value) {
             $temjige = 0; #记录学生及格的学科数
+            $col = 0; #记录这个学生是不是有成绩
             // 开始循环这个学生的每个学科成绩
             foreach ($sbj as $k => $val) {
                 if(isset($value[$val->lieming]))
                 {
-                    if($value[$val->lieming]>=$val->jige)
-                    {
-                       $temjige++; 
-                    }
+                       if($value[$val->lieming]>=$val->jige){
+                            $temjige++;
+                       }
+                       if($value[$val->lieming] !== null)
+                       {
+                            $col++;
+                       }
                 }
             }
+
+            $col>0 ? $row++ : $row;
+
             // 如果这个学生及格学科数等于学科总数，那么全科及格总数加1
             $temjige == $sbjcnt && $temjige>0 ? $jige++ : $jige ;
         }
 
+        $row>0 ? $rate = round($jige/count($cj)*100,2) : $rate='';
+        return $rate;
 
-        if(count($cj)>0)
-        {
-            return round($jige/count($cj)*100,2);
-        }else{
-            return 0;
-        }
+
     }
 
 

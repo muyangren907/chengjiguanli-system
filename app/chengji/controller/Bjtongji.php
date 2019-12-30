@@ -171,6 +171,15 @@ class Bjtongji extends BaseController
         // 创建表格
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
+        $thistime = date("Y-m-d h:i:sa");
+        // 设置文档属性
+        $spreadsheet->getProperties()
+            ->setCreator("尚码成绩管理系统")    //作者
+            ->setTitle("尚码成绩管理")  //标题
+            ->setLastModifiedBy(session('username')) //最后修改者
+            ->setDescription("该表格由".session('username').session('id')."于".$thistime."在尚码成绩管理系统中下载，只作为内部交流材料,不允许外泄。")  //描述
+            ->setKeywords("尚码 成绩管理") //关键字
+            ->setCategory("成绩管理"); //分类
 
         $sbjcol = ['xkcnt'=>'人数','avg'=>'平均分','jige'=>'及格率%','youxiu'=>'优秀率%'];
         $sbjcolcnt = count($sbjcol);
@@ -227,8 +236,7 @@ class Bjtongji extends BaseController
         header('Cache-Control: max-age=0');
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save('php://output');
-        ob_flush();
-        flush();
+
 
     }
 
