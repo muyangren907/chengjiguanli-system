@@ -51,9 +51,11 @@ function nianjiList($riqi=0)
 	{
 		$jiedian = strtotime(date('Y').'-8-1');
 		$thisday = time();
+		$nian = date('Y');
 	}else{
 		$jiedian = strtotime(date('Y',$riqi).'-8-1');
 		$thisday = $riqi;
+		$nian = date('Y',$riqi);
 	}
 
 
@@ -65,7 +67,7 @@ function nianjiList($riqi=0)
 	}
 
 
-	$nian = date('Y') - $str;
+	$nian = $nian - $str;
 
 	$njlist = array();
 

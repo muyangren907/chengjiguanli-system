@@ -399,6 +399,8 @@ class Kaohao extends Base
         $nj = nianjiList($bfdate);
         $bj = banjinamelist();
 
+
+
         $title = $nj[$this->getAttr('ruxuenian')] . $bj[$this->getAttr('paixu')];
 
 

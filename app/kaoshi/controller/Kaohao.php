@@ -383,7 +383,6 @@ class Kaohao extends BaseController
         $md5 = new \app\system\controller\Encrypt; 
 
 
-
         // 循环写出信息
         $i = 2;
         foreach ($kaohao as $key=>$bj)
@@ -399,7 +398,7 @@ class Kaohao extends BaseController
                     $sheet->setCellValue('C'.$i, $bj->cjSchool->jiancheng);
                     $sheet->setCellValue('B'.$i, $stuKaohao);
                     $sheet->setCellValue('D'.$i, $bj->cjBanji->numTitle);
-                    $sheet->setCellValue('E'.$i, $sbj->subject_name->jiancheng);
+                    $sheet->setCellValue('E'.$i, $sbj->subjectName->jiancheng);
                     $sheet->setCellValue('F'.$i, $kh->cjStudent['xingming']);
                     $i++;
                 }
@@ -455,7 +454,7 @@ class Kaohao extends BaseController
         {
             foreach ($kaoshilist->ks_subject as $key => $value) {
                 $list['data']['subject'][$key]['id']=$value->subjectid;
-                $list['data']['subject'][$key]['title']=$value->subject_name->title;
+                $list['data']['subject'][$key]['title']=$value->subjectName->title;
             }
         }else{
             $list['data']['subject']= array();
