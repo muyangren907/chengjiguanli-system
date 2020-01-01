@@ -46,6 +46,13 @@ class Student extends BaseController
         $ruxuenian = $src['ruxuenian'];
         $paixu = $src['paixu'];
 
+        if(count($ruxuenian)==0)
+        {
+            $njlist = nianjilist();
+            $ruxuenian = array_keys($njlist);
+        }
+
+
         // 实例化班级数据模型
         $banji = new  \app\teach\model\Banji;
         $src['banji'] = $banji->where('status',1)
