@@ -540,41 +540,41 @@ class Kaohao extends BaseController
             ->setKeywords("尚码 成绩管理") //关键字
             ->setCategory("成绩管理"); //分类
 
-        // // 设置表格标题与表头信息
-        // $sheet->setCellValue('A1',$kslist->title.' 成绩采集表');
+        // 设置表格标题与表头信息
+        $sheet->setCellValue('A1',$kslist->title.' 成绩采集表');
 
-        // $sheet->setCellValue('A2', $kaoshi);
-        // $sheet->setCellValue('A3', '序号');
-        // $sheet->setCellValue('B3', '编号');
-        // $sheet->setCellValue('C3', '班级');
-        // $sheet->setCellValue('D3', '姓名');
-        // // 获取列数并合并和一行
-        // $col = $lieming[count($kslist->ksSubject)+3];
-        // $sheet->mergeCells('A1:'.$col.'1');
-
-
-        //  // 写入列名
-        // foreach ($kslist->ksSubject as $key => $value) {
-        //     $sheet->setCellValue($lieming[$key + 4].'3', $value->subjectName->title);
-        //     $sheet->setCellValue($lieming[$key + 4].'2', $value->subjectName->id);
-        // }
-        // // 隐藏第二行和第二列
-        // $sheet->getRowDimension('2')->setRowHeight('0');
-        // $sheet->getColumnDimension('B')->setWidth('0');
+        $sheet->setCellValue('A2', $kaoshi);
+        $sheet->setCellValue('A3', '序号');
+        $sheet->setCellValue('B3', '编号');
+        $sheet->setCellValue('C3', '班级');
+        $sheet->setCellValue('D3', '姓名');
+        // 获取列数并合并和一行
+        $col = $lieming[count($kslist->ksSubject)+3];
+        $sheet->mergeCells('A1:'.$col.'1');
 
 
-        // // 将学生信息循环写入表中
-        // $i = 4;
-        // foreach ($kaohao as $key=>$bj)
-        // {
-        //     foreach ($bj->banjiKaohao as $k => $kh) {
-        //         $sheet->setCellValue('A'.$i, $i-3);
-        //         $sheet->setCellValue('B'.$i, $kh->id);
-        //         $sheet->setCellValue('C'.$i, $bj->cjBanji->banjiTitle);
-        //         $sheet->setCellValue('D'.$i, $kh->cjStudent->xingming);
-        //         $i++;
-        //     }
-        // }
+         // 写入列名
+        foreach ($kslist->ksSubject as $key => $value) {
+            $sheet->setCellValue($lieming[$key + 4].'3', $value->subjectName->title);
+            $sheet->setCellValue($lieming[$key + 4].'2', $value->subjectName->id);
+        }
+        // 隐藏第二行和第二列
+        $sheet->getRowDimension('2')->setRowHeight('0');
+        $sheet->getColumnDimension('B')->setWidth('0');
+
+
+        // 将学生信息循环写入表中
+        $i = 4;
+        foreach ($kaohao as $key=>$bj)
+        {
+            foreach ($bj->banjiKaohao as $k => $kh) {
+                $sheet->setCellValue('A'.$i, $i-3);
+                $sheet->setCellValue('B'.$i, $kh->id);
+                $sheet->setCellValue('C'.$i, $bj->cjBanji->banjiTitle);
+                $sheet->setCellValue('D'.$i, $kh->cjStudent->xingming);
+                $i++;
+            }
+        }
 
 
         // 保存文件
