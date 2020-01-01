@@ -35,9 +35,9 @@
     <div class="layui-form-item" style="margin-bottom: 0;">
 	    <label for="ruxuenian" class="layui-form-label" style="height: 100%">年级</label>
 	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-	    	<input type="radio" name="ruxuenian" value="" title="无">
 	    	{foreach :nianjiList() as $key=>$vo }
-	    		<input type="radio" name="ruxuenian" title="{$vo}" value="{$key}" lay-skin="primary">
+	    		<input type="radio" name="ruxuenian" title="{$vo}" value="{$key}" lay-skin="primary" {eq name="vo" value="一年级"}checked{/eq}
+>
 	    	{/foreach}
 	    </div>
 	</div>
@@ -84,6 +84,10 @@
 			{field: 'status', title: '状态',templet:'#status', sort: true},
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:160}
 		]];
+	// 设置查询条件
+	options.where = {
+		ruxuenian:$("input[name='ruxuenian']:checked").val()
+	}
 
 	// 提交搜索条件后重载表格
     layui.use(['table','cjgl'],function(){
