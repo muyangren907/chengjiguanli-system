@@ -206,6 +206,7 @@ class Bjtongji extends BaseController
         }
         $sheet->mergeCells($colname[$col].'3:'.$colname[$col].'4');
         $sheet->setCellValue($colname[$col].'3', '全科及格率%');
+        $sheet->getStyle($colname[$col].'3')->getAlignment()->setWrapText(true);
         $col++;
         $sheet->mergeCells($colname[$col].'3:'.$colname[$col].'4');
         $sheet->setCellValue($colname[$col].'3', '全科平均');
@@ -227,6 +228,35 @@ class Bjtongji extends BaseController
             $sheet->setCellValue($colname[$col].$row, $value['chengji']['avg']);
             $row++;
         }
+
+
+        // 居中
+        $styleArray = [
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, //垂直居中
+            ],
+        ];
+        $sheet->getStyle('A1:'.$colname[$col].($row-1))->applyFromArray($styleArray);
+
+        // 加边框
+        $styleArray = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => '00000000'],
+                ],
+            ],
+        ];
+        $sheet->getStyle('A3:'.$colname[$col].($row-1))->applyFromArray($styleArray);
+        // 修改标题字号
+        $spreadsheet->getActiveSheet()->getStyle('A1')->getFont()->setBold(true)->setName('宋体')->setSize(20);
+        // 设置行高
+        $spreadsheet->getActiveSheet()->getDefaultRowDimension()->setRowHeight(35);
+        $spreadsheet->getActiveSheet()->getRowDimension('3:4')->setRowHeight(25);
+
+
+
 
 
         // 保存文件
