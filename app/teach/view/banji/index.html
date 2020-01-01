@@ -24,7 +24,7 @@
 	    <label for="school" class="layui-form-label" style="height: 100%">学校</label>
 	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
 	    	{php}
-	    		$schoollist = schlist('校级','校级');
+	    		$schoollist = schlist('校级','校级',$xueduan=['小学','中小学']);
 	    	{/php}
 	    	<input type="radio" name="school" value="" title="无">
 	    	{volist name="schoollist" id="vo"}
