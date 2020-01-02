@@ -46,6 +46,8 @@ class Auth
             'upload','myinfo',
             'mybanji','banjilist',
             'editpassword','updatepassword',
+            // 学生信息查询
+            'ajaxdatachengji',
             // 教师信息查询
             'srcteacher','srcry','srckt',
             // 查询班级成绩、查询年级成绩、查询录入成绩人员信息

@@ -17,7 +17,7 @@ Route::group('student', function () {
 	    Route::rule('data','student/ajaxdata','post');				# 获取数据
 	    Route::rule('create','student/create','get');				# 添加信息
 	    Route::rule('save','student/save','post');					# 保存信息
-	    // Route::rule('read/<id>','student/read','get');				# 读取信息
+	    Route::rule('read/<id>','student/read','get');				# 读取信息
 	    Route::rule('edit/<id>','student/edit','get');				# 修改信息
 	    Route::rule('update/<id>','student/update','put');			# 更新信息
 	    Route::rule('delete/<id>','student/delete','delete');		# 删除信息
@@ -27,6 +27,7 @@ Route::group('student', function () {
 		Route::rule('deletes','student/deletes','get');					# 批量保存
 		Route::rule('deleteall','student/deleteXlsx','post');				# 批量保存
 		Route::rule('download','student/download','get');				# 批量保存
+		Route::rule('chengji','student/ajaxDatachengji','post');		# 获取学生成绩
 	});
 
 

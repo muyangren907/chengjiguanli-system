@@ -157,7 +157,89 @@ class Student extends BaseController
     //
     public function read($id)
     {
-        //
+        // 查询教师信息
+        $myInfo = STU::where('id',$id)
+            ->with([
+                'stuBanji'=>function($query)
+                {
+                    $query->field('id,school,ruxuenian,paixu')->append(['banjiTitle']);
+                },
+                'stuSchool'=>function($query)
+                {
+                    $query->field('id,title');
+                }
+            ])
+            ->find();
+        // 设置页面标题
+        $myInfo['webtitle'] = $myInfo->xingming.' 信息';
+
+
+        // 模板赋值
+        $this->view->assign('list',$myInfo);
+        // 渲染模板
+        return $this->view->fetch();
+    }
+
+
+
+    // 获取考试成绩
+    public function ajaxDatachengji()
+    {
+        // 获取表单参数
+        // 获取参数
+        $src = $this->request
+                ->only([
+                    'page'=>'1',
+                    'limit'=>'10',
+                    'field'=>'update_time',
+                    'type'=>'desc',
+                    'studentid'=>'',
+                ],'POST');
+
+        // 获取学生成绩
+        $kh = new \app\kaoshi\model\Kaohao;
+        $khList = $kh
+                    ->where('student',$src['studentid'])
+                    ->field('id,kaoshi,school,ruxuenian,banji,paixu,student')
+                    ->with([
+                        'cjSchool'=>function($query){
+                            $query->field('id,jiancheng');
+                        }
+                        ,'cjKaoshi'=>function($query)
+                        {
+                            $query->field('id,title,category,zuzhi,bfdate,enddate')
+                                ->with([
+                                    'ksCategory'=>function($query){
+                                        $query->field('id,title');
+                                    }
+                                    ,'ksZuzhi'=>function($query)
+                                    {
+                                        $query->field('id,title,jiancheng');
+                                    }
+                                ]);
+                        }
+                        ,'ksChengji'
+                    ])
+                    ->append(['banjiTitle'])
+                    ->select();
+
+        // 获取符合条件记录总数
+        $cnt = $khList->count();
+        // 获取当前页数据
+        $limit_start = $src['page'] * $src['limit'] - $src['limit'];
+        $limit_length = $src['limit'];
+        $khList = $khList->slice($limit_start,$limit_length);
+
+        // 重组返回内容
+        $data = [
+            'code'=> 0 , // ajax请求次数，作为标识符
+            'msg'=>"",  // 获取到的结果数(每页显示数量)
+            'count'=>$cnt, // 符合条件的总数据量
+            'data'=>$khList, //获取到的数据结果
+        ];
+
+
+        return json($data);
     }
 
 

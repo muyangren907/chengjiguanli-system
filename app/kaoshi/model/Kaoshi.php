@@ -19,8 +19,6 @@ class Kaoshi extends Base
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
 
-
-
         // 整理变量
         // $xingzhi = $src['xingzhi'];
         $searchval = $src['searchval'];
@@ -44,6 +42,10 @@ class Kaoshi extends Base
                         );
                     }
                     ,'ksNianji'
+                    ,'ksZuzhi'=>function($q)
+                    {
+                        $q->field('id,title,jiancheng');
+                    }
                 ]
             )
             ->select();
@@ -89,7 +91,7 @@ class Kaoshi extends Base
     {
         return $this->hasMany('KaoshiSubject','kaoshiid','id');
     }
-    // 参考学科关联表
+    // 参考类别关联表
     public function ksCategory()
     {
         return $this->belongsTo('\app\system\model\Category','category','id');
@@ -99,6 +101,12 @@ class Kaoshi extends Base
     public function ksChengji()
     {
         return $this->hasMany('\app\chengji\model\Chengji','kaoshi','id');
+    }
+
+    // 考试组织单位关联表
+    public function ksZuzhi()
+    {
+        return $this->belongsTo('\app\system\model\School','zuzhi','id');
     }
 
 
