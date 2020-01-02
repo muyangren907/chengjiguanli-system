@@ -118,6 +118,7 @@ class Tongji extends Base
         // 循环统计各学科成绩
         foreach ($ksinfo->ksSubject as $key => $value) {
             $cjcol = array_column($cj,$value->lieming);
+            $stucnt = count($cjcol);
             $cjcol = array_filter($cjcol,function($item){
                 return $item !== null; 
             });
@@ -159,6 +160,7 @@ class Tongji extends Base
         $cjcol = array_filter($cjcol,function($item){
                 return $item !== null; 
             });
+        $data['stucnt'] = count($cj);
         $data['bmcnt'] = count($cjcol);   # 报名人数
         $data['sum'] = array_sum($cjcol);
         if($data['bmcnt']>0)
