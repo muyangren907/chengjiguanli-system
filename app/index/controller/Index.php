@@ -79,7 +79,6 @@ class Index extends BaseController
                         ->order(['paixu'])
                         ->select()->toArray();
 
-        // $view = app('view');
         // 模版赋值
         $this->view->assign('list',$list);
         // 渲染输出
@@ -135,8 +134,12 @@ class Index extends BaseController
         $con = new \app\renshi\model\Teacher;
         $list['teacher'] =  $con->count();
         // 学生数
+        $njlist = nianjiList();
+        $njlist = array_keys($njlist);
+        $con = new \app\teach\model\Banji;
+        $bjids = $con->where('ruxuenian','in',$njlist)->column('id');
         $con = new \app\renshi\model\Student;
-        $list['student'] =  $con->count();
+        $list['student'] =  $con->where('banji','in',$bjids)->count();
         // 管理员数
         $con = new \app\admin\model\Admin;
         $list['admin'] =  $con->count();
