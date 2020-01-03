@@ -1,5 +1,8 @@
 {extend name=".././view/create.html" /}
-
+<script src="Convert_Pinyin.js"></script>
+{block name="jscss"}
+  {load href="__STATIC__/Convert_Pinyin.js" /}
+{/block}
 {block name="form"}
     <form class="layui-form layui-form-pane" lay-filter="myform">
           <div class="layui-form-item">
@@ -8,7 +11,7 @@
               </label>
               <div class="layui-input-block">
                   <input type="text" id="xingming" name="xingming" lay-verify="required"
-                  autocomplete="off" class="layui-input " value="{$list.data.xingming|default=''}" placeholder="中文2-25个字符">
+                  autocomplete="off" class="layui-input " value="{$list.data.xingming|default=''}" placeholder="中文2-25个字符" onBlur="ConvertName()">
               </div>
           </div>
           <div class="layui-form-item">
@@ -17,10 +20,10 @@
                   <span class="x-red">*</span>姓名拼音
               </label>
               <div class="layui-input-inline" style="width: 35%; margin-right: 20px">
-                <input type="text" name="quanpin" placeholder="全拼" autocomplete="off" class="layui-input" lay-verify="required" value="{$list.data.quanpin|default=''}">
+                <input type="text" id="quanpin" name="quanpin" placeholder="全拼" autocomplete="off" class="layui-input" lay-verify="required" value="{$list.data.quanpin|default=''}">
               </div>
               <div class="layui-input-inline" style="width: 25%;">
-                <input type="text" name="shoupin" placeholder="简拼" autocomplete="off" class="layui-input" lay-verify="required" value="{$list.data.shoupin|default=''}">
+                <input type="text" id="shoupin" name="shoupin" placeholder="简拼" autocomplete="off" class="layui-input" lay-verify="required" value="{$list.data.shoupin|default=''}">
               </div>
             </div>
           </div>
@@ -187,6 +190,18 @@
           ,trigger: 'click' //采用click弹出
         });
       });
+
+  var ConvertName = function(){    
+        var xingming = $('#xingming').val();    
+        console.log(xingming);
+        //获取全写拼音（调用js中方法）        
+        var quanpin = pinyin.getFullChars(xingming);
+        //获取简写拼音（调用js中方法）
+        var shoupin = pinyin.getCamelChars(xingming);    
+        //给两个文本框赋值    
+        $('#quanpin').val(quanpin);
+        $('#shoupin').val(shoupin);
+    }
 
 </script>
 {/block}

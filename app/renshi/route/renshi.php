@@ -47,7 +47,6 @@ Route::group('teacher', function () {
 	    Route::rule('upload','teacher/upload','post');				# 批量导入
 	    Route::rule('srcteacher','teacher/srcTeacher','post');		# 查询教师
 	    Route::rule('downloadxls','teacher/downloadXls','get');		# 下载模板
-	    Route::rule('downloadvba','teacher/downloadVba','get');		# 下载模板
 	    Route::rule('srcry/<teacherid>','teacher/srcRy','post');		# 查询荣誉
 	    Route::rule('srckt/<teacherid>','teacher/srcKt','post');		# 查询课题
 	});

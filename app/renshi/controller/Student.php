@@ -784,7 +784,7 @@ class Student extends BaseController
     public function download()
     {
         $url = public_path().'public\\uploads\\student\\student_template.xlsx';
-        return smDownload($url,'学生名单模板.xlsx');
+        return download($url,'学生名单模板.xlsx');
     }
 
 

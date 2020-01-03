@@ -319,20 +319,24 @@ class Teacher extends BaseController
             return json($data);
         }
 
+        $pinyin = new \Overtrue\Pinyin\Pinyin;
+
+        $aa = $pinyin->abbr('带着希望去旅行'); 
+
 
         // 删除标题行
         array_splice($teacherinfo,0,4 );
+
+        $teacherinfo = array_filter($teacherinfo,function($item){
+                return $item[1] !== null && $item[2] !== null && $item[3] !== null ; 
+            });
+
 
         // 整理数据
         $i = 0;
         $teacherlist = array();
 
         foreach ($teacherinfo as $key => $value) {
-            //  如果姓名、性别、出生日期、全拼、首拼为空则跳过
-            if(empty($value[1]) || empty($value[2]) || empty($value[3]) || empty($value[11]) || empty($value[12]))
-            {
-                continue;
-            }
 
             // 整理数据
             $teacherlist[$i]['xingming'] = $value[1];
@@ -346,8 +350,10 @@ class Teacher extends BaseController
             $teacherlist[$i]['subject'] = srcSubject($value[7]);
             $teacherlist[$i]['zhuanye'] = $value[9];
             $teacherlist[$i]['xueli'] = srcXl($value[10]);
-            $teacherlist[$i]['quanpin'] = trim(strtolower(str_replace(' ', '', $value[11])));
-            $teacherlist[$i]['shoupin'] = trim(strtolower($value[12]));
+            $quanpin = $pinyin->sentence($value[1]);
+            $jianpin = $pinyin->abbr($value[1]);
+            $teacherlist[$i]['quanpin'] = trim(strtolower(str_replace(' ', '', $quanpin)));
+            $teacherlist[$i]['shoupin'] = trim(strtolower($jianpin));
 
             $i++;
         }
@@ -420,15 +426,9 @@ class Teacher extends BaseController
     public function downloadXls()
     {
         $url = public_path().'public\\uploads\\teacher\\TeacherInfo.xlsx';
-        return smDownload($url,'教师名单模板.xlsx');
+        return download($url,'教师名单模板.xlsx');
     }
 
-    // 下载表格VBA代码
-    public function downloadVba()
-    {
-        $url = public_path().'public\\uploads\\teacher\\jiaoShiXingMingVBA.bas';
-        return smDownload($url,'jiaoShiXingMingVBA.bas');
-    }
 
 
     // 查询教师荣誉

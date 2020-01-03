@@ -83,7 +83,7 @@ class Fields extends BaseController
         }
 
         $url = public_path().'public\\uploads\\'.$filist->url;
-        return smDownload($url,$oldname);
+        return download($url,$oldname);
         
     }
 

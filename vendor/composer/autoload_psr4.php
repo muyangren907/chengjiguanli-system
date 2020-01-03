@@ -24,6 +24,7 @@ return array(
     'Psr\\Cache\\' => array($vendorDir . '/psr/cache/src'),
     'PhpOffice\\PhpSpreadsheet\\' => array($vendorDir . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet'),
     'Phinx\\' => array($vendorDir . '/topthink/think-migration/phinx/src/Phinx'),
+    'Overtrue\\Pinyin\\' => array($vendorDir . '/overtrue/pinyin/src'),
     'Opis\\Closure\\' => array($vendorDir . '/opis/closure/src'),
     'Matrix\\' => array($vendorDir . '/markbaker/matrix/classes/src'),
     'League\\Flysystem\\Cached\\' => array($vendorDir . '/league/flysystem-cached-adapter/src'),
