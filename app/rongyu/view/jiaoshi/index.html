@@ -108,7 +108,7 @@
             cjgl.delAll(checkStatus,'jiaoshi/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加荣誉册','jiaoshi/create','600','300');
+            cjgl.add('添加荣誉册','jiaoshi/create','600','400');
             break;
         };
       });
@@ -126,7 +126,7 @@
 	          cjgl.del(obj,"jiaoshi/delete");
 	          break;
 	        case 'edit':// 编辑
-	          cjgl.add('编辑荣誉册','jiaoshi/edit/'+obj.data.id,'600','300');
+	          cjgl.add('编辑荣誉册','jiaoshi/edit/'+obj.data.id,'600','400');
 	          break;
 	        case 'more':// 状态
 	          cjgl.add('批传','/rongyu/jsryinfo/createall/'+obj.data.id,'300','200');
