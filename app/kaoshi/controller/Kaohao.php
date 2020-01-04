@@ -412,6 +412,17 @@ class Kaohao extends BaseController
         header('Cache-Control: max-age=0');
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
         $writer->save('php://output');
+
+        // 保存文件
+        $filename = $kslist->title.' 标签数据'.date('ymdHis').'.xlsx';
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+        ob_flush();
+        flush();
+        
     }
 
 
@@ -598,20 +609,21 @@ class Kaohao extends BaseController
         // 修改标题字号
         $spreadsheet->getActiveSheet()->getStyle('A1')->getFont()->setBold(true)->setName('宋体')->setSize(11);
         // 设置行高
-        $spreadsheet->getActiveSheet()->getDefaultRowDimension()->setRowHeight(18);
+        $spreadsheet->getActiveSheet()->getDefaultRowDimension()->setRowHeight(20);
         $spreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(25);
-        $spreadsheet->getActiveSheet()->getRowDimension('3')->setRowHeight(20);
         // 设置筛选
         $sheet->setAutoFilter('A3:'.$col.($i-1));
 
 
         // 保存文件
-        $filename = $kslist->title.'成绩采集表'.date('ymdHis').'.xls';
+        $filename = $kslist->title.'成绩采集表'.date('ymdHis').'.xlsx';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
-        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save('php://output');
+        ob_flush();
+        flush();
 
     }
 

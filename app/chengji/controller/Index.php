@@ -952,10 +952,7 @@ class Index extends BaseController
             // 设置格式
             $sheet->getStyle('A'.($row-1).':L'.($row+$rows-1))->applyFromArray($styleArray);
 
-
             $row = $row + $rows +1 ;
-
-            
 
         }
 

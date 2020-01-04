@@ -56,11 +56,14 @@
       
       // 获取数据
         $.post(
-            "/teach/banji/mybanjis",
+            "/kaoshi/index/cybanji",
             {
-                "school":school
-                ,"ruxuenian":"{$nianji}"
+                school:school
+                ,ruxuenian:"{$nianji}"
+                ,kaoshi:"{$list.set.kaoshi}"
             },
+            url:"/kaoshi/index/cybanji",
+
             function(data,status){
                 if($.isEmptyObject(data))
                 {
