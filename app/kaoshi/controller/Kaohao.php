@@ -560,6 +560,7 @@ class Kaohao extends BaseController
         // 隐藏第二行和第二列
         $sheet->getRowDimension('2')->setRowHeight('0');
         $sheet->getColumnDimension('B')->setWidth('0');
+        $sheet->getColumnDimension('C')->setWidth('13');
 
 
         // 将学生信息循环写入表中
@@ -574,6 +575,34 @@ class Kaohao extends BaseController
                 $i++;
             }
         }
+
+        // 居中
+        $styleArray = [
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, //垂直居中
+            ],
+        ];
+        $sheet->getStyle('A1:'.$col.($i-1))->applyFromArray($styleArray);
+
+        // 加边框
+        $styleArray = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => '00000000'],
+                ],
+            ],
+        ];
+        $sheet->getStyle('A3:'.$col.($i-1))->applyFromArray($styleArray);
+        // 修改标题字号
+        $spreadsheet->getActiveSheet()->getStyle('A1')->getFont()->setBold(true)->setName('宋体')->setSize(11);
+        // 设置行高
+        $spreadsheet->getActiveSheet()->getDefaultRowDimension()->setRowHeight(18);
+        $spreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(25);
+        $spreadsheet->getActiveSheet()->getRowDimension('3')->setRowHeight(20);
+        // 设置筛选
+        $sheet->setAutoFilter('A3:'.$col.($i-1));
 
 
         // 保存文件
