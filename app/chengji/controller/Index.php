@@ -54,21 +54,30 @@ class Index extends BaseController
             return json($mfyz);
         }
 
-        // 更新成绩
+        // 保存成绩
         $cjone = Chengji::withTrashed()
                 ->where('subject_id',$list['subject_id'])
                 ->where('kaohao_id',$list['kaohao_id'])
                 ->find();
 
+        // 如果存在成绩则更新，不存在则添加
         if($cjone)
         {
-            // 如果存在则更新记录
-            if($cjone->defen != $list['defen'] || $cjone->delete_time > 1)
+            // 判断记录是否被删除 
+            if($cjone->delete_time > 1)
             {
                 $cjone->restore();
-                $cjone->defen = $list['defen'];
-                $data = $cjone->save();
             }
+
+            if($cjone->defen == $list['defen'])
+            {
+                $data=['msg'=>'与原成绩相同，不需要修改。','val'=>1];
+                return json($data);
+            }
+
+            $cjone->defen = $list['defen'];
+            $data = $cjone->save();
+
         }else{
             $data = [
                 'kaohao_id'=>$list['kaohao_id'],
@@ -123,19 +132,30 @@ class Index extends BaseController
 
 
         // 更新成绩 
-        $cjinfo = Chengji::withTrashed()
+        $cjone = Chengji::withTrashed()
                     ->where('kaohao_id',$list['kaohao_id'])
                     ->where('subject_id',$subject_id)
                     ->find();
+        
 
         // 如果存在成绩则更新，不存在则添加
-        if($cjinfo){
-            if($cjinfo->defen != $list['newdefen'] || $cjinfo->delete_time > 1)
+        if($cjone)
+        {
+            // 判断记录是否被删除 
+            if($cjone->delete_time > 1)
             {
-                $cjinfo->defen = $list['newdefen'];
-                $cjinfo->delete_time = null;
-                $data = $cjinfo->save();
+                $cjone->restore();
             }
+
+            if($cjone->defen == $list['newdefen'])
+            {
+                $data=['msg'=>'与原成绩相同，不需要修改。','val'=>1];
+                return json($data);
+            }
+
+            $cjone->defen = $list['newdefen'];
+            $data = $cjone->save();
+
         }else{
             $data = [
                 'kaohao_id'=>$list['kaohao_id'],
@@ -147,7 +167,7 @@ class Index extends BaseController
         }
 
         // 判断返回内容
-        $data || $cjinfo ? $data=['msg'=>'录入成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data  ? $data=['msg'=>'录入成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回更新结果
         return json($data);
