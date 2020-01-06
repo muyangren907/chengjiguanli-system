@@ -5,7 +5,7 @@ namespace app\chengji\controller;
 // 引用控制器基类
 use app\BaseController;
 // 引用成绩统计数据模型
-use app\chengji\model\Bjtongji as BTJ;
+use app\chengji\model\TongjiBj as BTJ;
 
 class Bjtongji extends BaseController
 {
