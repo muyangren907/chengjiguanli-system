@@ -260,7 +260,7 @@ class Njtongji extends BaseController
         $ntj = new NTJ;
         $data = $ntj->tjNianji($kaoshi);
 
-        $data == true ? $data=['msg'=>'统计成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data == true ? $data=['msg'=>'各学校年级统计完成','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         return json($data);
     }

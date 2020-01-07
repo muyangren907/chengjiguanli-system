@@ -44,7 +44,7 @@ class TongjiBj extends Base
             $temp = $kh->srcChengji($srcfrom);
             $temp = $tj->tongjiSubject($temp,$srcfrom['kaoshi']);
 
-            foreach ($temp as $k => $cj) {
+            foreach ($temp['cj'] as $k => $cj) {
                 // 查询该班级该学科成绩是否存在
                 $tongjiJg = $this->where('kaoshi_id',$src['kaoshi'])
                                 ->where('banji_id',$banji['id'])
@@ -94,6 +94,8 @@ class TongjiBj extends Base
                 }
             }
         }
+
+
 
         return true;
     }

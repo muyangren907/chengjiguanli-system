@@ -17,7 +17,7 @@ class Schtongji
         $schtj = new SCHTJ;
         $data = $schtj->tjSchool($kaoshi);
 
-        $data == true ? $data=['msg'=>'统计成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data == true ? $data=['msg'=>'全区年级统计完成','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         return json($data);
     }

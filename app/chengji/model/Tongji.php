@@ -118,19 +118,19 @@ class Tongji extends Base
                     'stucnt'=>$stucnt,
                     'id'=>$value->subjectid,
                     'xkcnt'=>0,
-                    'sum'=>'',
-                    'biaozhuncha'=>'',
-                    'avg'=>'',
-                    'youxiu'=>'',
-                    'jige'=>'',
+                    'sum'=>null,
+                    'biaozhuncha'=>null,
+                    'avg'=>null,
+                    'youxiu'=>null,
+                    'jige'=>null,
                     'sifenwei'=>[
-                        '0'=>'',
-                        '1'=>'',
-                        '2'=>''
+                        '0'=>null,
+                        '1'=>null,
+                        '2'=>null
                     ],
-                    'max'=>'',
-                    'min'=>'',
-                    'zhongshu'=>'',
+                    'max'=>null,
+                    'min'=>null,
+                    'zhongshu'=>null,
                 ];
             }else{
                 $temp['stucnt'] = $stucnt;
@@ -147,8 +147,50 @@ class Tongji extends Base
                 $temp['sifenwei'] = $this->quartile($cjcol);
                 $temp['zhongshu'] = '';
             }
-            $data[$value->lieming] = $temp;
+            $data['cj'][$value->lieming] = $temp;
         }
+
+
+        $temp = array();
+        $cjcol = array_column($cj,'sum');
+        $temp['stucnt'] = count($cjcol);
+        $cjcol = array_filter($cjcol,function($item){
+                return $item !== null; 
+            });
+        $temp['id'] = 0;
+        $temp['xkcnt'] = count($cjcol);   # 报名人数
+        $temp['sum'] = array_sum($cjcol);
+        $temp['sum'] = array_sum($cjcol);
+        $temp['xkcnt']>0 ? $temp['avg'] = $temp['sum']/$temp['xkcnt'] : $temp['avg']=0;
+        $temp['biaozhuncha'] = round($this->getVariance($temp['avg'], $cjcol,true),2);
+        $temp['avg'] = round($temp['avg'],2);
+        $temp['max'] = max($cjcol);
+        $temp['min'] = min($cjcol);
+        $temp['youxiu'] = null;
+        $temp['jige'] = null;
+        $temp['sifenwei'] = $this->quartile($cjcol);
+        $temp['zhongshu'] = '';
+        $temp['rate'] = $this->rateAll($cj,$ksinfo->ks_subject); #全科及格率
+        $data['cj']['all'] = $temp;
+
+
+
+
+
+        // if($data['bmcnt']>0)
+        // {
+        //     $data['sum'] = array_sum($cjcol);
+        //     $data['avg'] = round($data['sum']/$data['bmcnt'],2);
+        // }else{
+        //     $data['sum'] = '';
+        //     $data['avg'] = '';
+        // }
+        // foreach ($cj as $key => $value) {
+        //     unset($cj[$key]['avg']);
+        //     unset($cj[$key]['sum']);
+        // }
+        // $data['rate'] = $this->rateAll($cj,$ksinfo->ks_subject); #全科及格率
+        halt($data);
                 
         return $data;
     }
