@@ -48,6 +48,5 @@ class Tongji extends BaseController
         // 渲染模板
         return $this->view->fetch();
     }
-    
 
 }

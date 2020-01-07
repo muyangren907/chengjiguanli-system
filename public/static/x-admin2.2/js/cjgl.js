@@ -5,10 +5,13 @@
 layui.define(['table'],function(exports){ //提示：模块也可以依赖其它模块，如：layui.define('layer', callback);
     var table = layui.table;
     var obj = {
+
     // 新建弹窗
     add: function(title,url,width='',height='',max=false){
         xadmin.open(title,url,width,height,max);
     },
+
+    // 删除单条记录
     del:function(obj,url){
         layer.confirm('确认要删除吗？',function(index){
             $.ajax({
@@ -32,6 +35,8 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
             });
         });
     },
+
+    // 删除全部
     delAll:function(obj,url,tableid){
         //判断是否选择数据
         if(obj.data.length==0){
@@ -71,6 +76,8 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
             });
         });
     },
+
+    // 设置状态
     status:function(obj,url){
         // 判断是禁用操作还是启用操作后赋值标题。
 
@@ -128,6 +135,8 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
             });
         });
     },
+
+    // 重置密码
     resetpassword:function(xingming,url){
         layer.confirm('确认要重置'+xingming+'的密码为“123456”吗？',function(index){
             $.ajax({
@@ -171,6 +180,7 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
     //     });
     //     return obj;
     //   },
+
     // 表格重载
     reLoadTable:function(formname,tableID,mydata={}){
         var formval = this.getSearchVal(formname);
@@ -187,8 +197,9 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
             }
         });
     },
-      // Select获取焦点
-      selectOnfocus:function(myobj,val,addname){
+
+    // Select获取焦点
+    selectOnfocus:function(myobj,val,addname){
         // 声明变量
         var srcInput = $(myobj);
         // 删除原来列表
@@ -218,11 +229,10 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
                 
             }
         );
+    }, 
 
-          
-      }, 
-      // 添加教师
-      addTeacher:function(myobj){
+    // 添加教师
+    addTeacher:function(myobj){
         var myId = $(myobj).attr('id')
             ,teachername = $(myobj).attr('teachername')
             ,addname = $(myobj).attr('addname')
@@ -236,9 +246,10 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
 
         $(myList).prev().val('');
         $(myList).remove();
-      },
-      // Select获取焦点
-      selectOnfocus1:function(myobj,val,addname){
+    },
+
+    // Select获取焦点
+    selectOnfocus1:function(myobj,val,addname){
         // 声明变量
         var srcInput = $(myobj);
         // 删除原来列表
@@ -270,9 +281,10 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
         );
 
           
-      }, 
-      // 添加教师
-      addTeacher1:function(myobj){
+    }, 
+
+    // 添加教师
+    addTeacher1:function(myobj){
         var myId = $(myobj).attr('id')
             ,teachername = $(myobj).attr('teachername')
             ,addname = $(myobj).attr('addname')
@@ -282,13 +294,13 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
 
         $(myList).prev().val(myId);
         $(myList).remove();
-      },
-      // 删除教师
-      delTeacher:function(myobj){
-        $(myobj).parent().remove();
-      }
-  };
+    },
 
+    // 删除教师
+    delTeacher:function(myobj){
+        $(myobj).parent().remove();
+    },
+  };
   //输出test接口
   exports('cjgl', obj);
 });

@@ -73,7 +73,6 @@ class Bjtongji extends BaseController
 
         // 统计成绩
         $btj = new BTJ;
-
         $data = $btj->tjBanji($src);
 
        
@@ -266,6 +265,26 @@ class Bjtongji extends BaseController
         header('Cache-Control: max-age=0');
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save('php://output');
+
+
+    }
+
+
+
+    // 统计各班级成绩
+    public function tongji()
+    {
+        // 获取变量
+        $kaoshi = input('post.kaoshi');        
+
+        // 统计成绩
+        $btj = new BTJ;
+        $data = $btj->tjBanji($kaoshi);
+
+        $data == true ? $data=['msg'=>'统计成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        return json($data);
+
 
 
     }

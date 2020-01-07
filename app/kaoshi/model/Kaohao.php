@@ -85,7 +85,9 @@ class Kaohao extends Base
         // 初始化参数 
         $src = array(
             'kaoshi'=>'0',
-            'banji'=>array('0'),
+            'school'=>array(),
+            'ruxuenian'=>array(),
+            'banji'=>array(),
             'searchval'=>''
         );
 
@@ -94,14 +96,24 @@ class Kaohao extends Base
 
 
         // 重新定义变量
-        $banji = $src['banji'];
+        $school = strToarray($src['school']);
+        $ruxuenian = strToarray($src['ruxuenian']);
+        $banji = strToarray($src['banji']);
         $seachval = $src['searchval'];
 
 
         // 查询成绩
         $khlist = $this->where('kaoshi',$src['kaoshi'])
                 ->field('id,school,student,ruxuenian,paixu,kaoshi')
-                ->where('banji','in',$banji)
+                ->when(count($school)>0,function($query) use($school){
+                    $query->where('school','in',$school);
+                })
+                ->when(count($ruxuenian)>0,function($query) use($ruxuenian){
+                    $query->where('ruxuenian','in',$ruxuenian);
+                })
+                ->when(count($banji)>0,function($query) use($banji){
+                    $query->where('banji','in',$banji);
+                })
                 ->when(strlen($seachval)>0,function($query) use($seachval){
                     $query->where(function($w) use ($seachval){
                         $w
@@ -138,7 +150,7 @@ class Kaohao extends Base
         $ksinfo = $kaoshi->where('id',$src['kaoshi'])
                     ->with([
                         'ksSubject'=>function($query){
-                            $query->field('kaoshiid,subjectid,lieming');
+                            $query->field('kaoshiid,subjectid,lieming,youxiu,jige');
                         }
                     ])
                     ->find();
@@ -151,6 +163,9 @@ class Kaohao extends Base
         $xk = array();
         foreach ($ksinfo->ksSubject as $key => $value) {
             $xk[$value->subjectid] = $value->lieming;
+            // $xk[$value->subjectid]['lieming'] = $value->lieming;
+            // $xk[$value->subjectid]['youxiu'] = $value->youxiu;
+            // $xk[$value->subjectid]['jige'] = $value->jige;
         }
 
         $bjlist = banjinamelist();
@@ -273,8 +288,11 @@ class Kaohao extends Base
         );
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
+        $ruxuenian = strToarray($src['ruxuenian']);
 
-        $data = $this->where('ruxuenian',$src['ruxuenian'])
+        $data = $this->when(count($ruxuenian)>0,function($query) use($ruxuenian){
+                    $query->where('ruxuenian','in',$ruxuenian);
+                })
                 ->where('kaoshi',$src['kaoshi'])
                 ->with(['cjSchool'=>function($query){
                         $query->field('id,jiancheng,paixu')->order(['paixu'=>'asc']);
@@ -311,15 +329,16 @@ class Kaohao extends Base
         // 初始化参数 
         $src = array(
             'kaoshi'=>'',
-            'ruxuenian'=>'',
+            'ruxuenian'=>array(),
             'school'=>array(),
             'paixu'=>array(),
         );
 
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
-        $school = $src['school'];
+        $school = strToarray($src['school']);
         $paixu = $src['paixu'];
+        $ruxuenian = strToarray($src['ruxuenian']);
 
 
         // 获取考试时间
@@ -328,7 +347,9 @@ class Kaohao extends Base
 
         // 通过给定参数，从考号表中获取参加考试的班级
         $bjids = $this
-                ->where('ruxuenian',$src['ruxuenian'])
+                ->when(count($ruxuenian)>0,function($query) use($ruxuenian){
+                    $query->where('ruxuenian','in',$ruxuenian);
+                })
                 ->where('kaoshi',$src['kaoshi'])
                 ->when(count($school)>0,function($query) use($school){
                     $query->where('school','in',$school);
@@ -418,6 +439,7 @@ class Kaohao extends Base
         foreach ($array as $key => $value) {
             $arr[$value['subject_id']] = $value['defen'];
         }
+
         return $arr;
     }
 

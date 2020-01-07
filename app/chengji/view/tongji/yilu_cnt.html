@@ -130,10 +130,14 @@
       table.on('toolbar(mytable)', function(obj){
         switch(obj.event){
           case 'dels':
+          	layer.msg('这个别动！');
+          	break;
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
             cjgl.delAll(checkStatus,'/school','mytable');
             break;
           case 'add':
+            layer.msg('这个别动！');
+          	break;
             cjgl.add('添加单位','/school/create','650','500');
             break;
     	};

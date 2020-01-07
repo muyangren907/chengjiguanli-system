@@ -15,6 +15,7 @@ class Category extends BaseController
     // 类别列表
     public function index()
     {
+
         // 设置要给模板赋值的信息
         $list['webtitle'] = '类别列表';
         $list['dataurl'] = 'category/data';
@@ -169,8 +170,11 @@ class Category extends BaseController
             return json(['msg'=>$msg,'val'=>0]);;
         }
 
+        $list['id'] = $id;
 
-        $data = CG::where('id',$id)->update($list);
+
+        // $data = CG::cache(true)->where('id',$id)->update($list);
+        $data = CG::cache(true)->update($list);
 
         // 根据更新结果设置返回提示信息
         $data>=0 ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];

@@ -8,100 +8,6 @@ use app\common\model\Base;
 class Tongji extends Base
 {
 
-    /**  
-    * 取出学生原始成绩 
-    * 信息包括：各学科成绩、平均分、总分
-    * 用于学生成绩统计
-    * @access public 
-    * @param number $kaoshi 考试id
-    * @param array $banji 班级
-    * @param number $nianji 年级 
-    * @param array $school 学校 
-    * @return array 返回类型
-    */
-    // public function srcChengji($srcfrom)
-    // {
-
-    //     // 初始化参数 
-    //     $src = array(
-    //         'kaoshi'=>'',
-    //         'banji'=>array('0'),
-    //         'nianji'=>'',
-    //         'school'=>array(),
-    //     );
-
-    //     // 用新值替换初始值
-    //     $src = array_cover( $srcfrom , $src ) ;
-    //     $banji = $src['banji'];
-    //     $school = $src['school'];
-    //     $nianji = $src['nianji'];
-
-    //     $kh = new \app\kaoshi\model\Kaohao;
-
-    //     $khlist = $kh->where('kaoshi',$src['kaoshi'])
-    //             ->field('id,nianji,banji')
-    //             ->when(count($school)>0,function($query) use($school){
-    //                 $query->where('school','in',$school);
-    //             })
-    //             ->when(strlen($nianji)>0,function($query) use($nianji){
-    //                 $query->where('ruxuenian',$nianji);
-    //             })
-    //             ->when(count($banji)>0,function($query) use($banji){
-    //                 $query->where('banji','in',$banji);
-    //             })
-    //             ->with([
-    //                 'ksChengji'=>function($query){
-    //                     $query->field('kaohao_id,subject_id,defen');
-    //                 }
-    //             ])
-    //             ->select();
-    //     if($khlist->isEmpty())
-    //     {
-    //         return $data = array();
-    //     }
-
-    //     halt($khlist->toArray());
-
-    //     // 获取参考学科
-    //     $ks = new \app\kaoshi\model\Kaoshi;
-    //     $ksinfo = $ks->where('id',$kaoshi)
-    //                 ->with([
-    //                     'ksSubject'=>function($query){
-    //                         $query->field('kaoshiid,subjectid,lieming');
-    //                     }
-    //                 ])
-    //                 ->find();
-    //     if($ksinfo->ks_subject->isEmpty())
-    //     {
-    //         return $data = array();
-    //     }
-    //     $xk = array();
-    //     foreach ($ksinfo->ks_subject as $key => $value) {
-    //         $xk[$value->subjectid] = $value->lieming;
-    //     }
-
-    //     // 整理数据
-    //     $data = array();
-    //     foreach ($khlist as $key => $value) {
-    //         if(count($value->ks_chengji)== 0)
-    //         {
-    //             continue;
-    //         }
-    //         $data[$key]['sum'] = 0;
-    //         $sbjcnt = 0;
-    //         foreach ($value->ks_chengji as $k => $val) {
-    //             $data[$key][$xk[$val->subject_id]] = $val->defen*1;
-    //             $data[$key]['sum'] = ($data[$key]['sum'] + $val->defen) * 1;
-    //             $sbjcnt ++ ;
-    //         }
-    //         $data[$key]['sum'] == 0 ? $data[$key]['avg'] = 0 :  $data[$key]['sum'] / $sbjcnt;
-    //     }
-
-    //     return $data;
-    // }
-
-
-
     // 统计成绩
     public function tongji($cj=array(),$kaoshi)
     {   
@@ -128,6 +34,7 @@ class Tongji extends Base
             if($cjcol==null)
             {
                 $temp = [
+                    'id'=>$value->subjectid,
                     'xkcnt'=>0,
                     'sum'=>'',
                     'biaozhuncha'=>'',
@@ -177,6 +84,72 @@ class Tongji extends Base
         }
         $data['rate'] = $this->rateAll($cj,$ksinfo->ks_subject); #全科及格率
         
+        return $data;
+    }
+
+
+
+    // 统计成绩
+    public function tongjiSubject($cj=array(),$kaoshi)
+    {   
+        // 获取考试信息
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $ksinfo = $ks->where('id',$kaoshi)
+                ->field('id')
+                ->with(['ksSubject'=>function($query){
+                    $query->field('id,kaoshiid,subjectid,lieming,youxiu,jige');
+                }])
+                ->find();
+        $data = array();
+
+        // 循环统计各学科成绩
+        foreach ($ksinfo->ksSubject as $key => $value) {
+            $cjcol = array_column($cj,$value->lieming);
+            $stucnt = count($cjcol);
+            $cjcol = array_filter($cjcol,function($item){
+                return $item !== null; 
+            });
+
+            $temp = array();
+
+            if($cjcol==null)
+            {
+                $temp = [
+                    'stucnt'=>$stucnt,
+                    'id'=>$value->subjectid,
+                    'xkcnt'=>0,
+                    'sum'=>'',
+                    'biaozhuncha'=>'',
+                    'avg'=>'',
+                    'youxiu'=>'',
+                    'jige'=>'',
+                    'sifenwei'=>[
+                        '0'=>'',
+                        '1'=>'',
+                        '2'=>''
+                    ],
+                    'max'=>'',
+                    'min'=>'',
+                    'zhongshu'=>'',
+                ];
+            }else{
+                $temp['stucnt'] = $stucnt;
+                $temp['id'] = $value->subjectid;
+                $temp['xkcnt'] = count($cjcol);
+                $temp['sum'] = array_sum($cjcol);
+                $temp['xkcnt']>0 ? $temp['avg'] = $temp['sum']/$temp['xkcnt'] : $temp['avg']=0;
+                $temp['biaozhuncha'] = round($this->getVariance($temp['avg'], $cjcol,true),2);
+                $temp['avg'] = round($temp['avg'],2);
+                $temp['youxiu'] = $this->rate($cjcol,$value->youxiu);
+                $temp['jige'] = $this->rate($cjcol,$value->jige);
+                $temp['max'] = max($cjcol);
+                $temp['min'] = min($cjcol);
+                $temp['sifenwei'] = $this->quartile($cjcol);
+                $temp['zhongshu'] = '';
+            }
+            $data[$value->lieming] = $temp;
+        }
+                
         return $data;
     }
 
@@ -269,9 +242,9 @@ class Tongji extends Base
     public function quartile($items) {
         // 获取数组长度
         $length = count($items);
-        if ($items == null || $length == 0) return $result = [0=>'-',1=>'-',2=>'-'];
+        if ($items == null || $length == 0) return $result = [0=>'',1=>'',2=>''];
         
-        if ($length < 5) return $result = [0=>'-',1=>'-',2=>'-'];
+        if ($length < 5) return $result = [0=>'',1=>'',2=>''];
         $result = array();
         
         sort($items);

@@ -81,7 +81,10 @@
       <i class="iconfont">&#xe69d;</i> 删除成绩
     </button>
     <button class="layui-btn" lay-event="download">
-      <i class="layui-icon layui-icon-download-circle"></i> 下载
+      <i class="layui-icon layui-icon-download-circle"></i> 下载成绩列表
+    </button>
+    <button class="layui-btn" lay-event="downloadcjtiao">
+      <i class="layui-icon layui-icon-download-circle"></i> 下载成绩条
     </button>
   </div>
 </script>
@@ -136,8 +139,11 @@
 	      		cjgl.delAll(checkStatus,'/kaoshi/kaohao/delete','mytable');
       			break;
       		case 'download':
-      			cjgl.add('下载成绩','/chengji/index/dwchengji/{$list.kaoshi}','650','300');
+      			cjgl.add('下载成绩列表','/chengji/index/dwchengji/{$list.kaoshi}','650','300');
       			break;
+          case 'downloadcjtiao':
+            cjgl.add('下载成绩条','/chengji/index/dwchengjitiao/{$list.kaoshi}','650','300');
+            break;
           case 'delcj':
             parent.xadmin.add_tab('删除成绩','/chengji/index/deletecjs/{$list.kaoshi}',true);
             break;

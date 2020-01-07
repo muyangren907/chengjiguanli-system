@@ -36,9 +36,7 @@
 	  <ul class="layui-tab-title">
 	    <li class="layui-this">1、前期操作</li>
 	    <li>2、成绩录入</li>
-      <li>3、学生成绩</li>
-      <li>4、班级成绩</li>
-      <li>5、年级成绩</li>
+      <li>3、成绩列表</li>
 	  </ul>
 	  <div class="layui-tab-content" style="height: 100px;">
 	    <div class="layui-tab-item layui-show">
@@ -84,10 +82,22 @@
                 <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">已录成绩数量</div>
               </div>
             </a>
-            <a href="javascript:void(0);" onclick="addteb('统计成绩','/chengji/tongji/yilucnt/{$kaoshiid}')" class="x-admin-backlog-body">
+            <a href="javascript:void(0);" onclick="tjbanji('\\chengji\\bjtj\\tongji')" class="x-admin-backlog-body">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
-                <i class="layui-icon layui-icon-chart-screen" style="font-size: 100px;"></i>
-                <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">统计成绩</div>
+                <i class="layui-icon layui-icon-water" style="font-size: 100px;"></i>
+                <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">统计班级成绩</div>
+              </div>
+            </a>
+            <a href="javascript:void(0);" onclick="tjbanji('\\chengji\\njtj\\tongji')" class="x-admin-backlog-body">
+              <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
+                <i class="layui-icon layui-icon-fire" style="font-size: 100px;"></i>
+                <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">统计各学校各年级成绩</div>
+              </div>
+            </a>
+            <a href="javascript:void(0);" onclick="tjbanji('\\chengji\\schtj\\tongji')" class="x-admin-backlog-body">
+              <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
+                <i class="layui-icon layui-icon-website" style="font-size: 100px;"></i>
+                <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">统计各年级成绩</div>
               </div>
             </a>
           </div>
@@ -103,35 +113,12 @@
                 <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">学生成绩列表</div>
               </div>
             </a>
-          </div>
-          <div class="layui-container">
-            <a href="javascript:void(0);" onclick="addlayer('下载学生成绩条','/chengji/index/dwchengjitiao/{$kaoshiid}','600','400')" class="x-admin-backlog-body">
-              <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
-                <i class="layui-icon layui-icon-tree" style="font-size: 100px;"></i>
-                <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">下载学生成绩条</div>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="layui-tab-item">
-        <!-- 内容开始 -->
-        <div class="layui-row" style="margin-top: 30px">
-          <div class="layui-container">
-            
             <a href="javascript:void(0);" onclick="addteb('各班级成绩统计','/chengji/bjtj/biaoge/{$kaoshiid}')" class="x-admin-backlog-body">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
                 <i class="layui-icon layui-icon-tree" style="font-size: 100px;"></i>
                 <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">各班级成绩统计表</div>
               </div>
             </a>
-          </div>
-        </div>
-      </div>
-      <div class="layui-tab-item">
-        <!-- 内容开始 -->
-        <div class="layui-row" style="margin-top: 30px">
-          <div class="layui-container">
             <a href="javascript:void(0);" onclick="addteb('各学校成绩统计表','/chengji/njtj/biaoge/{$kaoshiid}')" class="x-admin-backlog-body">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
                 <i class="layui-icon layui-icon-release" style="font-size: 100px;"></i>
@@ -158,6 +145,23 @@
     parent.xadmin.open(title,url,width,height,max);
   }
 
+  function tjbanji(url)
+  {
+    // 到服务器去删除数据。
+    $.ajax({
+      url:url,
+      type:'POST',
+      data:{
+          kaoshi:"{$kaoshiid}"
+      },
+      success:function(result){
+          layer.msg(result.msg);
+      },
+      error:function(result){
+          layer.msg('数据扔半道，回不来啦。',function(){});
+      },
+    });
+  }
 
 </script>
 </html>

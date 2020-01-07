@@ -56,6 +56,7 @@ class Category extends Base
                     }
                 ]
             )
+            ->cache(true,60)
             ->select();
         return $data;
     }
