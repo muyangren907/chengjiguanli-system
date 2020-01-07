@@ -51,4 +51,9 @@ function manfenvalidate($defen,$manfen)
 
 
 
+// 统计结果整理
+
+
+
+
 

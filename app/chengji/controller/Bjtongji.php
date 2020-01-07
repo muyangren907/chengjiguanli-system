@@ -12,10 +12,11 @@ class Bjtongji extends BaseController
     // 年级成绩汇总
     public function biaoge($kaoshi)
     {
+        // 获取考试信息
         $ks = new \app\kaoshi\model\Kaoshi;
         $ksinfo = $ks->where('id',$kaoshi)
             ->with([
-                'KsNianji'
+                'ksNianji'
                 ,'ksSubject'=>function($query){
                     $query->field('kaoshiid,subjectid,manfen')
                         ->with(['subjectName'=>function($q){
@@ -26,19 +27,19 @@ class Bjtongji extends BaseController
             ])
             ->field('id,title')
             ->find();
-
-        if(count($ksinfo->ksNianji)>0)
-        {
-            $list['nianji'] = $ksinfo->ksNianji[0]->nianji;
-        }else{
-            $list['nianji'] = "一年级";
-        }
+        // 获取参与学校
+        $kh = new \app\kaoshi\model\Kaohao;
+        $src['kaoshi'] = $kaoshi;
+        $list['school'] = $kh->cySchool($src);
+        $list['nianji'] = $ksinfo->ksNianji->toArray();
         $list['subject'] = $ksinfo->ksSubject->toArray();
         // 设置要给模板赋值的信息
         $list['webtitle'] = '各年级的班级成绩列表';
         $list['kaoshi'] = $kaoshi;
         $list['kaoshititle'] = $ksinfo->title;
         $list['dataurl'] = '/chengji/bjtj/data';
+
+        // halt($list);
 
 
         // 模板赋值
@@ -65,15 +66,15 @@ class Bjtongji extends BaseController
 
 
         $src['school'] = strToarray($src['school']);
+        $src['ruxuenian'] = strToarray($src['ruxuenian']);
 
         // 获取参与考试的班级
         $kh = new \app\kaoshi\model\Kaohao;
-        $src['banji']= $kh->cyBanji($src);
-
+        $src['banji']= array_column($kh->cyBanji($src),'id');
 
         // 统计成绩
         $btj = new BTJ;
-        $data = $btj->tjBanji($src);
+        $data = $btj->search($src);
 
        
         // 获取记录总数
@@ -284,9 +285,6 @@ class Bjtongji extends BaseController
         $data == true ? $data=['msg'=>'各班级成绩统计完成','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         return json($data);
-
-
-
     }
 
 

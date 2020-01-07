@@ -61,5 +61,7 @@ Route::group('njtj', function () {
 
 // 全年级统计
 Route::group('schtj', function () {
+	    Route::rule('biaoge/<kaoshi>','Schtongji/biaoge','get');			# 班级表格
+	    Route::rule('data','Schtongji/ajaxData','post');			# 扫码界面
 	    Route::rule('tongji','Schtongji/tongji','post');		# 统计各年级成绩
 	});

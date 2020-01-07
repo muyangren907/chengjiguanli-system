@@ -101,22 +101,8 @@ class Tongji extends Base
                 }])
                 ->find();
         $data = array();
-
-        // 循环统计各学科成绩
-        foreach ($ksinfo->ksSubject as $key => $value) {
-            $cjcol = array_column($cj,$value->lieming);
-            $stucnt = count($cjcol);
-            $cjcol = array_filter($cjcol,function($item){
-                return $item !== null; 
-            });
-
-            $temp = array();
-
-            if($cjcol==null)
-            {
-                $temp = [
-                    'stucnt'=>$stucnt,
-                    'id'=>$value->subjectid,
+        // 设置默认值
+        $tempNull = [
                     'xkcnt'=>0,
                     'sum'=>null,
                     'biaozhuncha'=>null,
@@ -132,9 +118,24 @@ class Tongji extends Base
                     'min'=>null,
                     'zhongshu'=>null,
                 ];
-            }else{
+
+
+        // 循环统计各学科成绩
+        foreach ($ksinfo->ksSubject as $key => $value) {
+            $cjcol = array_column($cj,$value->lieming);
+            $stucnt = count($cjcol);
+            $cjcol = array_filter($cjcol,function($item){
+                return $item !== null; 
+            });
+
+            $temp = array();
+
+            if($cjcol==null)
+            {
+                $temp = $tempNull;
                 $temp['stucnt'] = $stucnt;
                 $temp['id'] = $value->subjectid;
+            }else{
                 $temp['xkcnt'] = count($cjcol);
                 $temp['sum'] = array_sum($cjcol);
                 $temp['xkcnt']>0 ? $temp['avg'] = $temp['sum']/$temp['xkcnt'] : $temp['avg']=0;
@@ -146,6 +147,8 @@ class Tongji extends Base
                 $temp['min'] = min($cjcol);
                 $temp['sifenwei'] = $this->quartile($cjcol);
                 $temp['zhongshu'] = '';
+                $temp['stucnt'] = $stucnt;
+                $temp['id'] = $value->subjectid;
             }
             $data['cj'][$value->lieming] = $temp;
         }
@@ -153,45 +156,31 @@ class Tongji extends Base
 
         $temp = array();
         $cjcol = array_column($cj,'sum');
-        $temp['stucnt'] = count($cjcol);
+        $$stucnt = count($cjcol);
         $cjcol = array_filter($cjcol,function($item){
                 return $item !== null; 
             });
-        $temp['id'] = 0;
-        $temp['xkcnt'] = count($cjcol);   # 报名人数
-        $temp['sum'] = array_sum($cjcol);
-        $temp['sum'] = array_sum($cjcol);
-        $temp['xkcnt']>0 ? $temp['avg'] = $temp['sum']/$temp['xkcnt'] : $temp['avg']=0;
-        $temp['biaozhuncha'] = round($this->getVariance($temp['avg'], $cjcol,true),2);
-        $temp['avg'] = round($temp['avg'],2);
-        $temp['max'] = max($cjcol);
-        $temp['min'] = min($cjcol);
-        $temp['youxiu'] = null;
-        $temp['jige'] = null;
-        $temp['sifenwei'] = $this->quartile($cjcol);
-        $temp['zhongshu'] = '';
-        $temp['rate'] = $this->rateAll($cj,$ksinfo->ks_subject); #全科及格率
+        if($cjcol==null){
+            $temp = $tempNull;
+            $temp['stucnt'] = $stucnt;
+            $temp['id'] = 0;
+        }else{
+            $temp['xkcnt'] = count($cjcol);   # 报名人数
+            $temp['sum'] = array_sum($cjcol);
+            $temp['xkcnt']>0 ? $temp['avg'] = $temp['sum']/$temp['xkcnt'] : $temp['avg']=0;
+            $temp['biaozhuncha'] = round($this->getVariance($temp['avg'], $cjcol,true),2);
+            $temp['avg'] = round($temp['avg'],2);
+            $temp['max'] = max($cjcol);
+            $temp['min'] = min($cjcol);
+            $temp['youxiu'] = null;
+            $temp['jige'] = $this->rateAll($cj,$ksinfo->ks_subject); #全科及格率
+            $temp['sifenwei'] = $this->quartile($cjcol);
+            $temp['zhongshu'] = '';
+            $temp['stucnt'] = $stucnt;
+            $temp['id'] = 0;
+        }
         $data['cj']['all'] = $temp;
 
-
-
-
-
-        // if($data['bmcnt']>0)
-        // {
-        //     $data['sum'] = array_sum($cjcol);
-        //     $data['avg'] = round($data['sum']/$data['bmcnt'],2);
-        // }else{
-        //     $data['sum'] = '';
-        //     $data['avg'] = '';
-        // }
-        // foreach ($cj as $key => $value) {
-        //     unset($cj[$key]['avg']);
-        //     unset($cj[$key]['sum']);
-        // }
-        // $data['rate'] = $this->rateAll($cj,$ksinfo->ks_subject); #全科及格率
-        halt($data);
-                
         return $data;
     }
 

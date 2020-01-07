@@ -49,7 +49,7 @@ class TongjiSch extends Base
                 ];
                 $temp = $kh->srcChengji($src);
                 $temp = $tj->tongjiSubject($temp,$kaoshi);
-                foreach ($temp as $k => $cj) {
+                foreach ($temp['cj'] as $k => $cj) {
                     // 查询该班级该学科成绩是否存在
                     $tongjiJg = $this->where('kaoshi_id',$src['kaoshi'])
                                     ->where('ruxuenian',$nianji->nianji)
@@ -103,4 +103,92 @@ class TongjiSch extends Base
         
         return true;
     }
+
+
+    /**  
+    * 年级成绩统计结果查询
+    * 从数据库中取出数据
+    * @access public 
+    * @param number $kaoshi 考试id
+    * @param number $ruxuenian 入学年
+    * @return array 返回类型
+    */
+    public function search($srcfrom)
+    {
+
+        // 初始化参数 
+        $src = array(
+            'kaoshi'=>'',
+            'ruxuenian'=>'',
+        );
+
+        // 用新值替换初始值
+        $src = array_cover( $srcfrom , $src ) ;
+
+
+        $tongjiJg = $this
+            ->where('kaoshi_id',$src['kaoshi'])
+            ->where('ruxuenian',$src['ruxuenian'])
+            ->field('id,kaoshi_id,ruxuenian')
+            ->with([
+                'schJieguo'=>function($query){
+                    $query->field('subject_id,ruxuenian,chengji_cnt,avg,youxiu,jige')
+                        ->with([
+                            'schSubject'=>function($query){
+                                $query->field('id,lieming,jiancheng');
+                            },
+                        ])
+                        ->order(['subject_id']);
+                }
+
+            ])
+            ->group('ruxuenian')
+            ->select();
+
+
+
+        // 初始化数组
+        $data = array();
+
+        // 重组数据
+        foreach ($tongjiJg as $key => $value) {
+            $data['all']=[
+                'id'=>$value->id,
+                'school'=>'全区',
+                'schoolpaixu'=>999,
+            ];
+            foreach ($value->schJieguo as $k => $val) {
+                if($val->subject_id>0){
+                    $data['all']['chengji'][$val->schSubject->lieming] = [
+                        'avg'=>$val->avg,
+                        'youxiu'=>$val->youxiu,
+                        'jige'=>$val->jige,
+                        'cj_cnt'=>$val->chengji_cnt,
+                    ];
+                }else{
+                    $data['all']['quanke'] = [
+                        'avg'=>$val->avg,
+                        'jige'=>$val->jige,
+                    ];
+                }
+                
+            }
+        }
+
+        return $data;
+    }
+
+
+    // 学科关联
+    public function schSubject()
+    {
+        return $this->belongsTo('\app\teach\model\Subject','subject_id','id');
+    }
+    // 成绩统计结果关联
+    public function schJieguo()
+    {
+        return $this->hasMany('\app\chengji\model\TongjiSch','ruxuenian','ruxuenian');
+    }
+
+
 }

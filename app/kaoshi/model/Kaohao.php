@@ -334,6 +334,7 @@ class Kaohao extends Base
             'paixu'=>array(),
         );
 
+
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
         $school = strToarray($src['school']);
@@ -366,6 +367,7 @@ class Kaohao extends Base
                 ->field(['banji'])
                 ->select()
                 ->toArray();
+
 
         // 将二维数组的班级转换成一维数组
         foreach ($bjids as $key => $value) {

@@ -103,20 +103,18 @@ class TongjiBj extends Base
 
 
     /**  
-    * 统计指定个年级的各班级成绩
-    * 统计项目参考tongji方法
+    * 班级成绩统计结果查询
+    * 从数据库中取出数据
     * @access public 
     * @param number $kaoshi 考试id
     * @param number $ruxuenian 入学年
     * @return array 返回类型
     */
-    public function tjBanji1($srcfrom)
+    public function search($srcfrom)
     {
 
         // 初始化参数 
         $src = array(
-            'page'=>'1',
-            'limit'=>'10',
             'kaoshi'=>'',
             'banji'=>array(),
         );
@@ -129,44 +127,70 @@ class TongjiBj extends Base
             return array();
         }
 
-        // 实例化学生成绩统计类
-        $tj = new TJ;
-        $cj = new Chengji;
+        $tongjiJg = $this
+            ->where('kaoshi_id',$src['kaoshi'])
+            ->where('banji_id','in',$src['banji'])
+            ->field('id,banji_id,kaoshi_id')
+            ->with([
+                'bjBanji'=>function($query){
+                    $query->field('id,school,paixu')
+                        ->with([
+                            'glSchool'=>function($query){
+                                $query->field('id,jiancheng,paixu');
+                            },
+                        ]);
+                },
+                'bjJieguo'=>function($query){
+                    $query->field('subject_id,banji_id,chengji_cnt,avg,youxiu,jige')
+                        ->with([
+                            'bjSubject'=>function($query){
+                                $query->field('id,lieming,jiancheng');
+                            },
+                        ])
+                        ->order(['subject_id']);
+                }
 
+            ])
+            ->group('banji_id')
+            ->append(['banjiTitle'])
+            ->select();
 
-        // 获取并统计各班级成绩
+        // halt($tongjiJg->toArray());
+
+        // 初始化数组
         $data = array();
-        foreach ($src['banji'] as $key => $value) {
-            
-            $srcfrom = [
-                'kaoshi'=>$src['kaoshi'],
-                'banji'=>[$value['id']]
+
+        // 重组数据
+        foreach ($tongjiJg as $key => $value) {
+            $data[$value->banji_id]=[
+                'id'=>$value->id,
+                'school'=>$value->bjBanji->glSchool->jiancheng,
+                'schoolpaixu'=>$value->bjBanji->glSchool->paixu,
+                'title'=>$value->banjiTitle,
+                'banjipaixu'=>$value->bjBanji->paixu,
             ];
-
-            $temp = $cj->search($srcfrom);
-            $temp = $tj->tongji($temp,$srcfrom['kaoshi']);
-
-            $data[] = [
-                'banji'=>$value['banjiTitle'],
-                'banjinum'=>$value['banjiNum'],
-                'school'=>$value['glSchool']['jiancheng'],
-                'chengji'=>$temp
-            ];
-
+            foreach ($value->bjJieguo as $k => $val) {
+                if($val->subject_id>0){
+                    $data[$value->banji_id]['chengji'][$val->bjSubject->lieming] = [
+                        'avg'=>$val->avg,
+                        'youxiu'=>$val->youxiu,
+                        'jige'=>$val->jige,
+                        'cj_cnt'=>$val->chengji_cnt,
+                    ];
+                }else{
+                    $data[$value->banji_id]['quanke'] = [
+                        'avg'=>$val->avg,
+                        'jige'=>$val->jige,
+                    ];
+                }
+                
+            }
         }
 
 
-        $srcfrom['banji'] = array_column($src['banji'], 'id');
-        // 获取年级成绩
-        // $allcj = $tj->srcChengji($kaoshi=$kaoshi,$banji=$bjs,$nianji=$nianji,$school=array());
-        $allcj = $cj->search($srcfrom);
-        $temp = $tj->tongji($allcj,$srcfrom['kaoshi']);
-        $data[] = [
-            'banji'=>'合计',
-            'banjinum'=>'合计',
-            'school'=>'合计',
-            'chengji'=>$temp
-        ];
+        $data = sortArrByManyField($data,'schoolpaixu',SORT_ASC,'banjipaixu',SORT_ASC);
+
+        
 
 
         return $data;
@@ -183,13 +207,32 @@ class TongjiBj extends Base
     // 班级关联
     public function bjBanji()
     {
-        return $this->belongsTo('\app\teach\model\Banji','kaoshi_id','id');
+        return $this->belongsTo('\app\teach\model\Banji','banji_id','id');
     }
 
     // 学科关联
     public function bjSubject()
     {
         return $this->belongsTo('\app\teach\model\Subject','subject_id','id');
+    }
+
+    // 成绩统计结果关联
+    public function bjJieguo()
+    {
+        return $this->hasMany('\app\chengji\model\TongjiBj','banji_id','banji_id');
+    }
+
+
+    // 获取班级名称
+    public function getBanjiTitleAttr()
+    {
+        $bfdate = \app\kaoshi\model\Kaoshi::where('id',$this->getAttr('kaoshi_id'))
+                  ->value('bfdate');
+
+        $banji = new \app\teach\model\Banji;
+        $title = $banji->myBanjiTitle($this->getAttr('banji_id'),$bfdate);
+
+        return $title;
     }
     
 }

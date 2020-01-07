@@ -7,6 +7,7 @@ use app\chengji\model\TongjiSch as SCHTJ;
 
 class Schtongji
 {
+
     // 统计全区年级成绩
     public function tongji()
     {

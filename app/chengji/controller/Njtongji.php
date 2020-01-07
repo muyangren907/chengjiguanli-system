@@ -67,8 +67,11 @@ class Njtongji extends BaseController
 
         // 统计成绩
         $ntj = new NTJ;
-        $data = $ntj->tjNianji($src);
-
+        $data = $ntj->search($src);
+        $schtj = new \app\chengji\model\TongjiSch;
+        $dataAll = $schtj->search($src);
+        $data[] = $dataAll['all'];
+        
         // 获取记录数
         $cnt = count($data);
         // 截取当前页数据

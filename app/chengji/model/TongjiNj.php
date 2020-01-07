@@ -55,7 +55,7 @@ class TongjiNj extends Base
                     ];
                     $temp = $kh->srcChengji($src);
                     $temp = $tj->tongjiSubject($temp,$kaoshi);
-                    foreach ($temp as $k => $cj) {
+                    foreach ($temp['cj'] as $k => $cj) {
                         // 查询该班级该学科成绩是否存在
                         $tongjiJg = $this->where('kaoshi_id',$src['kaoshi'])
                                         ->where('school_id',$school['school'])
@@ -110,7 +110,7 @@ class TongjiNj extends Base
 
             }
         }
-        
+
         return true;
     }
 
@@ -121,72 +121,95 @@ class TongjiNj extends Base
 
 
     /**  
-    * 统计各学校的指定个年级的成绩
-    * 统计项目参考tongji方法
+    * 年级成绩统计结果查询
+    * 从数据库中取出数据
     * @access public 
     * @param number $kaoshi 考试id
     * @param number $ruxuenian 入学年
     * @return array 返回类型
     */
-    public function tjNianji1($srcfrom)
+    public function search($srcfrom)
     {
+
         // 初始化参数 
         $src = array(
-            'page'=>'1',
-            'limit'=>'10',
             'kaoshi'=>'',
-            'ruxuenian'=>'',
+            'ruxuenian'=>array(),
         );
-
 
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
 
-        $data = array();
-        if(strlen($src['ruxuenian']) == 0){
-            return $data;
-        }
+        $ruxuenian = $src['ruxuenian'];
+
+
 
         // 查询要统计成绩的学校
         $kh = new \app\kaoshi\model\Kaohao;
-        $school = $kh->cySchool($src);
+        $schoolList = $kh->cySchool($src);
 
-        if(count($school) == 0){
+
+        if(count($schoolList) == 0){
             return array();
         }
 
-        // 实例化学生成绩统计类
-        $tj = new TJ;
+
+        $tongjiJg = $this
+            ->where('kaoshi_id',$src['kaoshi'])
+            ->where('ruxuenian',$src['ruxuenian'])
+            ->field('id,kaoshi_id,school_id,ruxuenian')
+            ->with([
+                'njSchool'=>function($query){
+                    $query->field('id,paixu,jiancheng');
+                },
+                'njJieguo'=>function($query) use($ruxuenian){
+                    $query->field('subject_id,school_id,ruxuenian,chengji_cnt,avg,youxiu,jige')
+                        ->where('ruxuenian',$ruxuenian)
+                        ->with([
+                            'njSubject'=>function($query){
+                                $query->field('id,lieming,jiancheng');
+                            },
+                        ])
+                        ->order(['subject_id']);
+                }
+
+            ])
+            ->group('school_id')
+            ->select();
 
 
-        // 获取并统计各班级成绩
+        // 初始化数组
         $data = array();
-        $srcfrom = [
-            'kaoshi'=>$src['kaoshi']
-            ,'ruxuenian'=>$src['ruxuenian']
-        ];
 
-        foreach ($school as $key => $value) {
-            $srcfrom['school'] = [$value['school']];
-            $srcfrom['banji'] = array_column($kh->cyBanji($srcfrom), 'id');
-            $temp = $kh->srcChengji($srcfrom);
-            $temp = $tj->tongji($temp,$src['kaoshi']);
-            $data[] = [
-                'school'=>$value['cjSchool']['jiancheng'],
-                'chengji'=>$temp
+        // 重组数据
+        foreach ($tongjiJg as $key => $value) {
+            $data[$value->school_id]=[
+                'id'=>$value->id,
+                'school'=>$value->njSchool->jiancheng,
+                'schoolpaixu'=>$value->njSchool->paixu,
+                // 'title'=>$value->banjiTitle,
+                // 'banjipaixu'=>$value->bjBanji->paixu,
             ];
+            foreach ($value->njJieguo as $k => $val) {
+                if($val->subject_id>0){
+                    $data[$value->school_id]['chengji'][$val->njSubject->lieming] = [
+                        'avg'=>$val->avg,
+                        'youxiu'=>$val->youxiu,
+                        'jige'=>$val->jige,
+                        'cj_cnt'=>$val->chengji_cnt,
+                    ];
+                }else{
+                    $data[$value->school_id]['quanke'] = [
+                        'avg'=>$val->avg,
+                        'jige'=>$val->jige,
+                    ];
+                }
+                
+            }
         }
 
+        $data = sortArrByManyField($data,'schoolpaixu',SORT_ASC);
 
-        // 获取年级成绩
-        $srcfrom['school'] = array_column($school, 'school');
-        $srcfrom['banji'] = array_column($kh->cyBanji($srcfrom), 'id');
-        $allcj = $kh->srcChengji($srcfrom);
-        $temp = $tj->tongji($allcj,$src['kaoshi']);
-        $data[] = [
-            'school'=>'合计',
-            'chengji'=>$temp
-        ];
         return $data;
     }
 
@@ -207,5 +230,11 @@ class TongjiNj extends Base
     public function njSubject()
     {
         return $this->belongsTo('\app\teach\model\Subject','subject_id','id');
+    }
+
+    // 成绩统计结果关联
+    public function njJieguo()
+    {
+        return $this->hasMany('\app\chengji\model\TongjiNj','school_id','school_id');
     }
 }
