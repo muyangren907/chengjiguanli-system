@@ -70,7 +70,7 @@ class Njtongji extends BaseController
         $data = $ntj->search($src);
         $schtj = new \app\chengji\model\TongjiSch;
         $dataAll = $schtj->search($src);
-        $data[] = $dataAll['all'];
+        count($dataAll)>0 ? $data[] = $dataAll['all'] : $data;
         
         // 获取记录数
         $cnt = count($data);

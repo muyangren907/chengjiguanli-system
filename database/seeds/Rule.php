@@ -114,6 +114,9 @@ class Rule extends Seeder
                     // 年级成绩
                     ['title'=>'年级成绩统计','name'=>'Chengji/Njtongji/biaoge','paixu'=>61,'pid'=>302],
                     ['title'=>'下载年级成绩统计表','name'=>'chengji/Njtongji/dwBiaoge','paixu'=>62,'pid'=>302],
+                    ['title'=>'以班级为单位统计成绩','name'=>'chengji/Bjtongji/tongji','paixu'=>71,'pid'=>302],
+                    ['title'=>'以学校为单位统计成绩','name'=>'chengji/Njtongji/tongji','paixu'=>72,'pid'=>302],
+                    ['title'=>'以全部数组为单位统计成绩','name'=>'chengji/Schtongji/tongji','paixu'=>73,'pid'=>302],
 
 
 

@@ -135,12 +135,14 @@ class TongjiNj extends Base
         $src = array(
             'kaoshi'=>'',
             'ruxuenian'=>array(),
+            'school'=>array(),
         );
 
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
 
         $ruxuenian = $src['ruxuenian'];
+        $school = strToarray($src['school']);
 
 
 
@@ -157,6 +159,9 @@ class TongjiNj extends Base
         $tongjiJg = $this
             ->where('kaoshi_id',$src['kaoshi'])
             ->where('ruxuenian',$src['ruxuenian'])
+            ->when(count($school)>0,function($query) use($school){
+                $query->where('school_id','in',$school);
+            })
             ->field('id,kaoshi_id,school_id,ruxuenian')
             ->with([
                 'njSchool'=>function($query){

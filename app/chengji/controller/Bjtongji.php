@@ -130,28 +130,22 @@ class Bjtongji extends BaseController
 
         // 获取参与考试的班级
         $kh = new \app\kaoshi\model\Kaohao;
-        // $src['banji']= array_column($kh->cyBanji($src), 'id');
-        $src['banji']= $kh->cyBanji($src);
+        $src['banji']= array_column($kh->cyBanji($src), 'id');
+        // $src['banji']= $kh->cyBanji($src);
 
 
         // 统计成绩
         $btj = new BTJ;
-        $data = $btj->tjBanji($src);
+        $data = $btj->search($src);
+        $ntj = new \app\chengji\model\TongjiNj;
+        $dataAll = $ntj->search($src);
+        count($dataAll)>0 ? $data['all'] = $dataAll[0] : $data;
 
         
         // 获取参考学科
         $ks = new \app\kaoshi\model\Kaoshi;
         $ksinfo = $ks->where('id',$src['kaoshi'])
                     ->field('id,title,bfdate')
-                    ->with([
-                        'ksSubject'=>function($query){
-                            $query->field('kaoshiid,subjectid,manfen')
-                                ->with(['subjectName'=>function($q){
-                                    $q->field('id,title,lieming');
-                                }]
-                            );
-                        }
-                    ])
                     ->find();
         $xk = $ksinfo->ksSubject;
 
@@ -216,16 +210,16 @@ class Bjtongji extends BaseController
         foreach ($data as $key => $value) {
             $col = 2;
             $sheet->setCellValue('A'.$row, $row-4);
-            $sheet->setCellValue('B'.$row, $value['banjinum']);
+            $sheet->setCellValue('B'.$row, $value['title']);
             foreach ($xk as $ke => $val) {
                 foreach ($sbjcol as $k => $v) {
                      $sheet->setCellValue($colname[$col].$row, $value['chengji'][$val->subjectName->lieming][$k]);
                      $col++;
                 }
             }
-            $sheet->setCellValue($colname[$col].$row, $value['chengji']['rate']);
+            $sheet->setCellValue($colname[$col].$row, $value['quanke']['rate']);
             $col++;
-            $sheet->setCellValue($colname[$col].$row, $value['chengji']['avg']);
+            $sheet->setCellValue($colname[$col].$row, $value['quanke']['avg']);
             $row++;
         }
 
