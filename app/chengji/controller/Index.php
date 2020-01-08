@@ -776,20 +776,21 @@ class Index extends BaseController
         $tj = new \app\chengji\model\Tongji;
         $nianji = array();
         $chengjiinfo = $kh->srcChengji($src);
-        $temp = $tj->tongji($chengjiinfo,$src['kaoshi']);
+        $temp = $tj->tongjiSubject($chengjiinfo,$src['kaoshi']); 
+
         isset($colcnt) ? $colcnt = $colcnt+5 : $colcnt = 12;
         // 循环写出统计结果
         foreach ($ks->ks_subject as $key => $value) {
-            $sheet->setCellValue($colname[$colcnt].'3', $temp[$value->subject_name->lieming]['xkcnt']);
-            $sheet->setCellValue($colname[$colcnt].'4', $temp[$value->subject_name->lieming]['avg']);
-            $sheet->setCellValue($colname[$colcnt].'5', $temp[$value->subject_name->lieming]['youxiu']);
-            $sheet->setCellValue($colname[$colcnt].'6', $temp[$value->subject_name->lieming]['jige']);
-            $sheet->setCellValue($colname[$colcnt].'7', $temp[$value->subject_name->lieming]['biaozhuncha']);
+            $sheet->setCellValue($colname[$colcnt].'3', $temp['cj'][$value->subject_name->lieming]['xkcnt']);
+            $sheet->setCellValue($colname[$colcnt].'4', $temp['cj'][$value->subject_name->lieming]['avg']);
+            $sheet->setCellValue($colname[$colcnt].'5', $temp['cj'][$value->subject_name->lieming]['youxiu']);
+            $sheet->setCellValue($colname[$colcnt].'6', $temp['cj'][$value->subject_name->lieming]['jige']);
+            $sheet->setCellValue($colname[$colcnt].'7', $temp['cj'][$value->subject_name->lieming]['biaozhuncha']);
             $colcnt++;
         }
 
-        $sheet->setCellValue($colname[$colcnt+1].'3', $temp['avg']);
-        $sheet->setCellValue($colname[$colcnt+2].'3', $temp['rate']);
+        $sheet->setCellValue($colname[$colcnt+1].'3', $temp['cj']['all']['avg']);
+        $sheet->setCellValue($colname[$colcnt+2].'3', $temp['cj']['all']['jige']);
 
 
         // 保存文件
