@@ -127,8 +127,12 @@ class Njtongji extends BaseController
 
         // 统计成绩
         $ntj = new NTJ;
-        $data = $ntj->tjNianji($src);
-        
+        $data = $ntj->search($src);
+        $schtj = new \app\chengji\model\TongjiSch;
+        $dataAll = $schtj->search($src);
+        count($dataAll)>0 ? $data['all'] = $dataAll['all'] : $data;
+
+       
         // 获取参考学科
         $ks = new \app\kaoshi\model\Kaoshi;
         $ksinfo = $ks->where('id',$src['kaoshi'])
@@ -168,7 +172,7 @@ class Njtongji extends BaseController
             ->setKeywords("尚码 成绩管理") //关键字
             ->setCategory("成绩管理"); //分类
 
-        $sbjcol = ['xkcnt'=>'人数','avg'=>'平均分','jige'=>'及格率%','youxiu'=>'优秀率%'];
+        $sbjcol = ['cj_cnt'=>'人数','avg'=>'平均分','jige'=>'及格率%','youxiu'=>'优秀率%'];
         $sbjcolcnt = count($sbjcol);
         $colname = excelLieming();
         $colcnt = $sbjcolcnt*count($xk)+3;
@@ -209,9 +213,9 @@ class Njtongji extends BaseController
                      $col++;
                 }
             }
-            $sheet->setCellValue($colname[$col].$row, $value['chengji']['rate']);
+            $sheet->setCellValue($colname[$col].$row, $value['quanke']['jige']);
             $col++;
-            $sheet->setCellValue($colname[$col].$row, $value['chengji']['avg']);
+            $sheet->setCellValue($colname[$col].$row, $value['quanke']['avg']);
             $row++;
         }
 

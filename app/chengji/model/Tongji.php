@@ -9,7 +9,7 @@ class Tongji extends Base
 {
 
     // 统计成绩
-    public function tongji($cj=array(),$kaoshi)
+    public function tongjiCnt($cj=array(),$kaoshi)
     {   
         // 获取考试信息
         $ks = new \app\kaoshi\model\Kaoshi;
@@ -24,43 +24,14 @@ class Tongji extends Base
         // 循环统计各学科成绩
         foreach ($ksinfo->ksSubject as $key => $value) {
             $cjcol = array_column($cj,$value->lieming);
-            $stucnt = count($cjcol);
+            // $stucnt = count($cjcol);
             $cjcol = array_filter($cjcol,function($item){
                 return $item !== null; 
             });
 
             $temp = array();
 
-            if($cjcol==null)
-            {
-                $temp = [
-                    'id'=>$value->subjectid,
-                    'xkcnt'=>0,
-                    'sum'=>'',
-                    'biaozhuncha'=>'',
-                    'avg'=>'',
-                    'youxiu'=>'',
-                    'jige'=>'',
-                    'sifenwei'=>[
-                        '0'=>'',
-                        '1'=>'',
-                        '2'=>''
-                    ],
-                    'max'=>'',
-                    'min'=>''
-                ];
-            }else{
-                $temp['xkcnt'] = count($cjcol);
-                $temp['sum'] = array_sum($cjcol);
-                $temp['xkcnt']>0 ? $temp['avg'] = $temp['sum']/$temp['xkcnt'] : $temp['avg']=0;
-                $temp['biaozhuncha'] = round($this->getVariance($temp['avg'], $cjcol,true),2);
-                $temp['avg'] = round($temp['avg'],2);
-                $temp['youxiu'] = $this->rate($cjcol,$value->youxiu);
-                $temp['jige'] = $this->rate($cjcol,$value->jige);
-                $temp['max'] = max($cjcol);
-                $temp['min'] = min($cjcol);
-                $temp['sifenwei'] = $this->quartile($cjcol);
-            }
+            $temp['xkcnt'] = count($cjcol);
             $data[$value->lieming] = $temp;
         }
         $cjcol = array_column($cj,'sum');
@@ -69,23 +40,10 @@ class Tongji extends Base
             });
         $data['stucnt'] = count($cj);
         $data['bmcnt'] = count($cjcol);   # 报名人数
-        $data['sum'] = array_sum($cjcol);
-        if($data['bmcnt']>0)
-        {
-            $data['sum'] = array_sum($cjcol);
-            $data['avg'] = round($data['sum']/$data['bmcnt'],2);
-        }else{
-            $data['sum'] = '';
-            $data['avg'] = '';
-        }
-        foreach ($cj as $key => $value) {
-            unset($cj[$key]['avg']);
-            unset($cj[$key]['sum']);
-        }
-        $data['rate'] = $this->rateAll($cj,$ksinfo->ks_subject); #全科及格率
-        
+       
         return $data;
     }
+
 
 
 

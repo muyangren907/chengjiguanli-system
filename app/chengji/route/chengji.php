@@ -37,6 +37,7 @@ Route::group('index', function () {
 // 成绩统计
 Route::group('tongji', function () {
 		Route::rule('yilucnt/<kaoshi>','Tongji/yiluCnt');			# 更新信息
+		Route::rule('data','Tongji/ajaxData','post');			# 扫码界面
 	});
 
 

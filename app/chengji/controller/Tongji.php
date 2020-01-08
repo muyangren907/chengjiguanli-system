@@ -39,7 +39,7 @@ class Tongji extends BaseController
         $list['webtitle'] = '各年级的班级成绩列表';
         $list['kaoshi'] = $kaoshi;
         $list['kaoshititle'] = $ksinfo->title;
-        $list['dataurl'] = '/chengji/bjtj/data';
+        $list['dataurl'] = '/chengji/tongji/data';
 
 
         // 模板赋值
@@ -48,5 +48,52 @@ class Tongji extends BaseController
         // 渲染模板
         return $this->view->fetch();
     }
+
+
+        // 获取年级成绩统计结果
+    public function ajaxData()
+    {
+        // 获取参数
+        $src = $this->request
+                ->only([
+                    'page'=>'1',
+                    'limit'=>'10',
+                    'kaoshi'=>'',
+                    'ruxuenian'=>'',
+                    'school'=>array(),
+                    'paixu'=>array(),
+                ],'POST');
+
+
+        $src['school'] = strToarray($src['school']);
+
+
+        // 获取参与考试的班级
+        $kh = new \app\kaoshi\model\Kaohao;
+        $src['banji']= $kh->cyBanji($src);
+
+
+        // 统计成绩
+        $btj = new \app\chengji\model\TongjiBj;
+
+        $data = $btj->tjBanjiCnt($src);
+
+       
+        // 获取记录总数
+        $cnt = count($data);
+        // 截取当前页数据
+        $data = array_slice($data,($src['page']-1)*$src['limit'],$src['limit']);
+
+        // 重组返回内容
+        $data = [
+            'code'=> 0 , // ajax请求次数，作为标识符
+            'msg'=>"",  // 获取到的结果数(每页显示数量)
+            'count'=>$cnt, // 符合条件的总数据量
+            'data'=>$data, //获取到的数据结果
+        ];
+
+        return json($data);
+    }
+
 
 }

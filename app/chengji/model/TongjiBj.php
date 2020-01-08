@@ -102,6 +102,75 @@ class TongjiBj extends Base
 
 
 
+        /**  
+    * 统计指定个年级的各班级成绩
+    * 统计项目参考tongji方法
+    * @access public 
+    * @param number $kaoshi 考试id
+    * @param number $ruxuenian 入学年
+    * @return array 返回类型
+    */
+    public function tjBanjiCnt($srcfrom)
+    {
+
+        // 初始化参数 
+        $src = array(
+            'page'=>'1',
+            'limit'=>'10',
+            'kaoshi'=>'',
+            'banji'=>array(),
+        );
+
+
+        // 用新值替换初始值
+        $src = array_cover( $srcfrom , $src ) ;
+
+        if(count($src['banji']) == 0){
+            return array();
+        }
+
+        // 实例化学生成绩统计类
+        $tj = new TJ;
+        $cj = new Chengji;
+
+
+        // 获取并统计各班级成绩
+        $data = array();
+        foreach ($src['banji'] as $key => $value) {
+            $srcfrom = [
+                'kaoshi'=>$src['kaoshi'],
+                'banji'=>[$value['id']]
+            ];
+            $temp = $cj->search($srcfrom);
+            $temp = $tj->tongjiCnt($temp,$srcfrom['kaoshi']);
+            $data[] = [
+                'banji'=>$value['banjiTitle'],
+                'banjinum'=>$value['banjiNum'],
+                'school'=>$value['glSchool']['jiancheng'],
+                'chengji'=>$temp
+            ];
+        }
+
+
+        $srcfrom['banji'] = array_column($src['banji'], 'id');
+        // 获取年级成绩
+        // $allcj = $tj->srcChengji($kaoshi=$kaoshi,$banji=$bjs,$nianji=$nianji,$school=array());
+        $allcj = $cj->search($srcfrom);
+        $temp = $tj->tongjiCnt($allcj,$srcfrom['kaoshi']);
+        $data[] = [
+            'banji'=>'合计',
+            'banjinum'=>'合计',
+            'school'=>'合计',
+            'chengji'=>$temp
+        ];
+
+
+        return $data;
+    }
+
+
+
+
     /**  
     * 班级成绩统计结果查询
     * 从数据库中取出数据
@@ -130,7 +199,7 @@ class TongjiBj extends Base
         $tongjiJg = $this
             ->where('kaoshi_id',$src['kaoshi'])
             ->where('banji_id','in',$src['banji'])
-            ->field('id,banji_id,kaoshi_id')
+            ->field('banji_id,kaoshi_id')
             ->with([
                 'bjBanji'=>function($query){
                     $query->field('id,school,paixu')
@@ -149,13 +218,10 @@ class TongjiBj extends Base
                         ])
                         ->order(['subject_id']);
                 }
-
             ])
-            ->group('banji_id')
+            ->group('banji_id,kaoshi_id')
             ->append(['banjiTitle'])
             ->select();
-
-        // halt($tongjiJg->toArray());
 
         // 初始化数组
         $data = array();
@@ -203,6 +269,7 @@ class TongjiBj extends Base
     {
         return $this->belongsTo('\app\kaoshi\model\Kaoshi','kaoshi_id','id');
     }
+
 
     // 班级关联
     public function bjBanji()

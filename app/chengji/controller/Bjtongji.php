@@ -68,6 +68,7 @@ class Bjtongji extends BaseController
         $src['school'] = strToarray($src['school']);
         $src['ruxuenian'] = strToarray($src['ruxuenian']);
 
+
         // 获取参与考试的班级
         $kh = new \app\kaoshi\model\Kaohao;
         $src['banji']= array_column($kh->cyBanji($src),'id');
@@ -75,6 +76,7 @@ class Bjtongji extends BaseController
         // 统计成绩
         $btj = new BTJ;
         $data = $btj->search($src);
+
 
        
         // 获取记录总数
@@ -175,7 +177,8 @@ class Bjtongji extends BaseController
             ->setKeywords("尚码 成绩管理") //关键字
             ->setCategory("成绩管理"); //分类
 
-        $sbjcol = ['xkcnt'=>'人数','avg'=>'平均分','jige'=>'及格率%','youxiu'=>'优秀率%'];
+
+        $sbjcol = ['cj_cnt'=>'人数','avg'=>'平均分','jige'=>'及格率%','youxiu'=>'优秀率%'];
         $sbjcolcnt = count($sbjcol);
         $colname = excelLieming();
         $colcnt = $sbjcolcnt*count($xk)+3;
@@ -206,22 +209,32 @@ class Bjtongji extends BaseController
         $sheet->setCellValue($colname[$col].'3', '全科平均');
 
 
+
         $row = 5;
         foreach ($data as $key => $value) {
             $col = 2;
             $sheet->setCellValue('A'.$row, $row-4);
-            $sheet->setCellValue('B'.$row, $value['title']);
+            if($key === 'all')
+            {
+                $sheet->setCellValue('B'.$row, '合计');
+                $a = 'hj';
+            }else{
+                $sheet->setCellValue('B'.$row, $value['title']);
+                $a = 'val';
+            }
+
             foreach ($xk as $ke => $val) {
                 foreach ($sbjcol as $k => $v) {
                      $sheet->setCellValue($colname[$col].$row, $value['chengji'][$val->subjectName->lieming][$k]);
                      $col++;
                 }
             }
-            $sheet->setCellValue($colname[$col].$row, $value['quanke']['rate']);
+            $sheet->setCellValue($colname[$col].$row, $value['quanke']['jige']);
             $col++;
             $sheet->setCellValue($colname[$col].$row, $value['quanke']['avg']);
             $row++;
         }
+
 
 
         // 居中

@@ -129,7 +129,7 @@ class TongjiSch extends Base
         $tongjiJg = $this
             ->where('kaoshi_id',$src['kaoshi'])
             ->where('ruxuenian',$src['ruxuenian'])
-            ->field('id,kaoshi_id,ruxuenian')
+            ->field('kaoshi_id,ruxuenian')
             ->with([
                 'schJieguo'=>function($query){
                     $query->field('subject_id,ruxuenian,chengji_cnt,avg,youxiu,jige')
@@ -142,7 +142,7 @@ class TongjiSch extends Base
                 }
 
             ])
-            ->group('ruxuenian')
+            ->group('kaoshi_id,ruxuenian')
             ->select();
 
 

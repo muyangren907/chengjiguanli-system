@@ -162,7 +162,7 @@ class TongjiNj extends Base
             ->when(count($school)>0,function($query) use($school){
                 $query->where('school_id','in',$school);
             })
-            ->field('id,kaoshi_id,school_id,ruxuenian')
+            ->field('kaoshi_id,school_id,ruxuenian')
             ->with([
                 'njSchool'=>function($query){
                     $query->field('id,paixu,jiancheng');
@@ -179,7 +179,7 @@ class TongjiNj extends Base
                 }
 
             ])
-            ->group('school_id')
+            ->group('kaoshi_id,school_id,ruxuenian')
             ->select();
 
 
