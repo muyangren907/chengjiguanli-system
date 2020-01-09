@@ -111,7 +111,6 @@ layui.use(['form'], function(){
         },
 		    dataType:'json',
 		    success:function(result){
-          console.log(result);
           $(bj).append('<input type="checkbox" name="banji[]" title="全选" value="" lay-skin="primary" onclick="selectAll(this)" lay-filter="selectall">');
 		    	// if(result.length > 0){
 		    		result.forEach(function(val,index){

@@ -721,39 +721,39 @@ class Index extends BaseController
             ->setDescription("该表格由".session('username').session('id')."于".$thistime."在尚码成绩管理系统中下载，只作为内部交流材料,不允许外泄。")  //描述
             ->setKeywords("尚码 成绩管理") //关键字
             ->setCategory("成绩管理"); //分类
-        
+
 
         // 设置表头信息
         $sheet->setCellValue('A1', $tabletitle);
-        $sheet->setCellValue('A2', '序号');
-        $sheet->setCellValue('B2', '班级');
-        $sheet->setCellValue('C2', '姓名');
-        $sheet->setCellValue('D2', '性别');
+        $hb = 5 + $ks->ksSubject->count();
+        $sheet->mergeCells('A1:'.$colname[$hb].'1');
+        $sheet->setCellValue('A3', '序号');
+        $sheet->setCellValue('B3', '班级');
+        $sheet->setCellValue('C3', '姓名');
+        $sheet->setCellValue('D3', '性别');
         $i = 4;
-        foreach ($ks->ks_subject as $key => $value) {
-            $sheet->setCellValue($colname[$i].'2', $value->subject_name->title);
+        foreach ($ks->ksSubject as $key => $value) {
+            $sheet->setCellValue($colname[$i].'3', $value->subject_name->title);
             $i++;
         }
-        $sheet->setCellValue($colname[$i].'2', '平均分');
-        $sheet->setCellValue($colname[$i+1].'2', '总分');
+        $sheet->setCellValue($colname[$i].'3', '平均分');
+        $sheet->setCellValue($colname[$i+1].'3', '总分');
         $i=$i+4;
-        $sheet->setCellValue($colname[$i].'2', '项目');
-        $sheet->setCellValue($colname[$i].'3', '人数');
-        $sheet->setCellValue($colname[$i].'4', '平均分');
-        $sheet->setCellValue($colname[$i].'5', '优秀率%');
-        $sheet->setCellValue($colname[$i].'6', '及格率%');
-        $sheet->setCellValue($colname[$i].'7', '标准差');
+        $sheet->setCellValue($colname[$i].'3', '项目');
+        $sheet->setCellValue($colname[$i].'4', '人数');
+        $sheet->setCellValue($colname[$i].'5', '平均分');
+        $sheet->setCellValue($colname[$i].'6', '优秀率%');
+        $sheet->setCellValue($colname[$i].'7', '及格率%');
+        $sheet->setCellValue($colname[$i].'8', '标准差');
         $i++;
-        foreach ($ks->ks_subject as $key => $value) {
-            $sheet->setCellValue($colname[$i].'2', $value->subject_name->title);
+        foreach ($ks->ksSubject as $key => $value) {
+            $sheet->setCellValue($colname[$i].'3', $value->subject_name->title);
             $i++;
         }
-        $sheet->setCellValue($colname[$i+1].'2', '总平均分');
-        $sheet->setCellValue($colname[$i+2].'2', '全科及格率%');
         
 
         // 循环写出成绩及个人信息
-        $i = 3;
+        $i = 4;
         foreach ($chengjiinfo as $key => $value) {
                 // 表格赋值
                 $sheet->setCellValue('A'.$i, $i-2);
@@ -761,7 +761,7 @@ class Index extends BaseController
                 $sheet->setCellValue('C'.$i, $value['student']);
                 $sheet->setCellValue('D'.$i, $value['sex']);
                 $colcnt = 4;
-                foreach ($ks->ks_subject as $k => $val) {
+                foreach ($ks->ksSubject as $k => $val) {
                     if(isset($value[$val->subject_name->lieming]))
                     {
                         $sheet->setCellValue($colname[$colcnt].$i, $value[$val->subject_name->lieming]);
@@ -773,24 +773,76 @@ class Index extends BaseController
                 $i++;
         }
 
+        // 居中
+        $styleArrayJZ = [
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, //垂直居中
+            ],
+        ];
+        $sheet->getStyle('A1:'.$colname[$colcnt+1].($i-1))->applyFromArray($styleArrayJZ);
+
+        // 加边框
+        $styleArrayBK = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => '00000000'],
+                ],
+            ],
+        ];
+        $sheet->getStyle('A3:'.$colname[$colcnt+1].($i-1))->applyFromArray($styleArrayBK);
+
+
+
         $tj = new \app\chengji\model\Tongji;
         $nianji = array();
         $chengjiinfo = $kh->srcChengji($src);
         $temp = $tj->tongjiSubject($chengjiinfo,$src['kaoshi']); 
 
         isset($colcnt) ? $colcnt = $colcnt+5 : $colcnt = 12;
+        $colBiankuang = $colcnt;
         // 循环写出统计结果
-        foreach ($ks->ks_subject as $key => $value) {
-            $sheet->setCellValue($colname[$colcnt].'3', $temp['cj'][$value->subject_name->lieming]['xkcnt']);
-            $sheet->setCellValue($colname[$colcnt].'4', $temp['cj'][$value->subject_name->lieming]['avg']);
-            $sheet->setCellValue($colname[$colcnt].'5', $temp['cj'][$value->subject_name->lieming]['youxiu']);
-            $sheet->setCellValue($colname[$colcnt].'6', $temp['cj'][$value->subject_name->lieming]['jige']);
-            $sheet->setCellValue($colname[$colcnt].'7', $temp['cj'][$value->subject_name->lieming]['biaozhuncha']);
+        foreach ($ks->ksSubject as $key => $value) {
+            $sheet->setCellValue($colname[$colcnt].'4', $temp['cj'][$value->subject_name->lieming]['xkcnt']);
+            $sheet->setCellValue($colname[$colcnt].'5', $temp['cj'][$value->subject_name->lieming]['avg']);
+            $sheet->setCellValue($colname[$colcnt].'6', $temp['cj'][$value->subject_name->lieming]['youxiu']);
+            $sheet->setCellValue($colname[$colcnt].'7', $temp['cj'][$value->subject_name->lieming]['jige']);
+            $sheet->setCellValue($colname[$colcnt].'8', $temp['cj'][$value->subject_name->lieming]['biaozhuncha']);
             $colcnt++;
         }
 
-        $sheet->setCellValue($colname[$colcnt+1].'3', $temp['cj']['all']['avg']);
-        $sheet->setCellValue($colname[$colcnt+2].'3', $temp['cj']['all']['jige']);
+        $sheet->setCellValue($colname[$colBiankuang-1].'9', '总平均分');
+        $sheet->setCellValue($colname[$colBiankuang].'9', $temp['cj']['all']['avg']);
+        $sheet->mergeCells($colname[$colBiankuang].'9:'.$colname[$colcnt-1].'9');
+        $sheet->setCellValue($colname[$colBiankuang-1].'10', '全科及格率');
+        $sheet->setCellValue($colname[$colBiankuang].'10', $temp['cj']['all']['jige']);
+        $sheet->mergeCells($colname[$colBiankuang].'10:'.$colname[$colcnt-1].'10');
+        $sheet->getStyle($colname[$colBiankuang-1].'3:'.$colname[$colcnt-1].'10')->applyFromArray($styleArrayJZ);
+        $sheet->getStyle($colname[$colBiankuang-1].'3:'.$colname[$colcnt-1].'10')->applyFromArray($styleArrayBK);
+
+        // 修改标题字号
+        $sheet->getStyle('A1')->getFont()->setBold(true)->setName('宋体')->setSize(16);
+        // 设置行高
+        $sheet->getDefaultRowDimension()->setRowHeight(22.5);
+        $sheet->getRowDimension('1')->setRowHeight(25);
+        // 设置列宽
+        $sheet->getDefaultColumnDimension()->setWidth(9);
+        $sheet->getColumnDimension('A')->setWidth(6);
+        $sheet->getColumnDimension('B')->setWidth(12);
+        $sheet->getColumnDimension($colname[$colBiankuang-1])->setWidth(13);
+
+
+        // 页面设置
+        $sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
+        $sheet->getPageSetup()->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_A4);
+        $sheet->getPageMargins()->setTop(0.8);
+        $sheet->getPageMargins()->setRight(0.2);
+        $sheet->getPageMargins()->setLeft(0.2);
+        $sheet->getPageMargins()->setBottom(0.8);
+        // 打印居中
+        $sheet->getPageSetup()->setHorizontalCentered(true);
+        $sheet->getPageSetup()->setVerticalCentered(false);
 
 
         // 保存文件
@@ -871,7 +923,7 @@ class Index extends BaseController
         $srcAll['banji']= array_column($kh->cyBanji($srcAll), 'id');
         $chengjiinfo = $kh->srcChengji($src);
 
-        $njtj = $tj->tongji($chengjiinfo,$src['kaoshi']);
+        $njtj = $tj->tongjiSubject($chengjiinfo,$src['kaoshi']);
 
         // 获取部分学生成绩
         $chengjiinfo = $kh->srcChengji($src);
@@ -915,7 +967,7 @@ class Index extends BaseController
         
        
         $row = 1;   # 定义从 $row 行开始写入数据
-        $rows = count($ks->ks_subject);  # 定义学生信息列要合并的行数
+        $rows = count($ks->ksSubject);  # 定义学生信息列要合并的行数
 
         // 给单元格加边框
         $styleArray = [
@@ -930,6 +982,7 @@ class Index extends BaseController
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, //垂直居中
             ],
         ];
+
 
         // 从这里开始循环写入学生成绩
         foreach ($chengjiinfo as $key => $value) {
@@ -958,16 +1011,16 @@ class Index extends BaseController
 
 
             // 写入成绩
-            foreach ($ks->ks_subject as $k => $val) {
+            foreach ($ks->ksSubject as $k => $val) {
                 $sheet->setCellValue('D'.($row+$k), $val->subjectName->title);
                 $sheet->setCellValue('E'.($row+$k), $value[$val->subject_name->lieming]);   # 得分
-                $sheet->setCellValue('F'.($row+$k), $njtj[$val->subject_name->lieming]['avg']);
-                $sheet->setCellValue('G'.($row+$k), $njtj[$val->subject_name->lieming]['max']);
-                $sheet->setCellValue('H'.($row+$k), $njtj[$val->subject_name->lieming]['youxiu']);
-                $sheet->setCellValue('I'.($row+$k), $njtj[$val->subject_name->lieming]['jige']);
-                $sheet->setCellValue('J'.($row+$k), $njtj[$val->subject_name->lieming]['sifenwei'][0]);
-                $sheet->setCellValue('K'.($row+$k), $njtj[$val->subject_name->lieming]['sifenwei'][1]);
-                $sheet->setCellValue('L'.($row+$k), $njtj[$val->subject_name->lieming]['sifenwei'][2]);
+                $sheet->setCellValue('F'.($row+$k), $njtj['cj'][$val->subject_name->lieming]['avg']);
+                $sheet->setCellValue('G'.($row+$k), $njtj['cj'][$val->subject_name->lieming]['max']);
+                $sheet->setCellValue('H'.($row+$k), $njtj['cj'][$val->subject_name->lieming]['youxiu']);
+                $sheet->setCellValue('I'.($row+$k), $njtj['cj'][$val->subject_name->lieming]['jige']);
+                $sheet->setCellValue('J'.($row+$k), $njtj['cj'][$val->subject_name->lieming]['sifenwei'][0]);
+                $sheet->setCellValue('K'.($row+$k), $njtj['cj'][$val->subject_name->lieming]['sifenwei'][1]);
+                $sheet->setCellValue('L'.($row+$k), $njtj['cj'][$val->subject_name->lieming]['sifenwei'][2]);
             }
 
             // 设置格式

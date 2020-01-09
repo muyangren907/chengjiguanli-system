@@ -197,10 +197,10 @@ class Njtongji extends BaseController
         }
         $sheet->mergeCells($colname[$col].'3:'.$colname[$col].'4');
         $sheet->setCellValue($colname[$col].'3', '全科及格率%');
-        $sheet->getStyle($colname[$col].'3')->getAlignment()->setWrapText(true);
         $col++;
         $sheet->mergeCells($colname[$col].'3:'.$colname[$col].'4');
         $sheet->setCellValue($colname[$col].'3', '总平均分');
+        $sheet->getStyle('C3:'.$colname[$col].'4')->getAlignment()->setWrapText(true);
 
         $row = 5;
         foreach ($data as $key => $value) {
@@ -239,10 +239,26 @@ class Njtongji extends BaseController
         ];
         $sheet->getStyle('A3:'.$colname[$col].($row-1))->applyFromArray($styleArray);
         // 修改标题字号
-        $spreadsheet->getActiveSheet()->getStyle('A1')->getFont()->setBold(true)->setName('宋体')->setSize(20);
+        $sheet->getStyle('A1')->getFont()->setBold(true)->setName('宋体')->setSize(20);
         // 设置行高
-        $spreadsheet->getActiveSheet()->getDefaultRowDimension()->setRowHeight(35);
-        $spreadsheet->getActiveSheet()->getRowDimension('3:4')->setRowHeight(25);
+        $sheet->getDefaultRowDimension()->setRowHeight(35);
+        $sheet->getRowDimension('3:4')->setRowHeight(25);
+        // 设置列宽
+        $sheet->getDefaultColumnDimension()->setWidth(8.3);
+        $sheet->getColumnDimension('A')->setWidth(5);
+        $sheet->getColumnDimension('B')->setWidth(10.5);
+
+
+        // 页面设置
+        $sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
+        $sheet->getPageSetup()->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_A4);
+        $sheet->getPageMargins()->setTop(0.8);
+        $sheet->getPageMargins()->setRight(0.2);
+        $sheet->getPageMargins()->setLeft(0.2);
+        $sheet->getPageMargins()->setBottom(0.8);
+        // 打印居中
+        $sheet->getPageSetup()->setHorizontalCentered(true);
+        $sheet->getPageSetup()->setVerticalCentered(false);
 
 
 
