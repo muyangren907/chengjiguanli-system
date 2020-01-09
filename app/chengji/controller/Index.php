@@ -228,18 +228,56 @@ class Index extends BaseController
     // 表格录入成绩上传页面
     public function biaolu()
     {
+
+        // 获取参考年级
+        $kaoshilist = \app\kaoshi\model\Kaoshi::order(['id'=>'desc'])
+                ->with([
+                    'ksNianji'
+                    ,'ksSubject'=>function($query){
+                                $query->field('id,subjectid,kaoshiid')
+                                    ->with(['subjectName'=>function($q){
+                                        $q->field('id,title');
+                                    }]
+                                );
+                            }
+                ])
+                ->where('enddate','>=',time())
+                ->find();
+        // 获取考试年级
+        if(count($kaoshilist->ksNianji)>0)
+        {
+            foreach ($kaoshilist->ksNianji as $key => $value) {
+                $list['data']['nianji'][$key]['id']=$value->nianji;
+                $list['data']['nianji'][$key]['title']=$value->nianjiname;
+            }
+        }else{
+            $list['data']['nianji']= array();
+        }
+        // 获取考试学科
+        if(count($kaoshilist->ksSubject)>0)
+        {
+            foreach ($kaoshilist->ksSubject as $key => $value) {
+                $list['data']['subject'][$key]['id']=$value->subjectid;
+                $list['data']['subject'][$key]['title']=$value->subjectName->title;
+            }
+        }else{
+            $list['data']['subject']= array();
+        }
+
+        
         // 设置页面标题
         $list['set'] = array(
             'webtitle'=>'表格录入成绩',
-            'butname'=>'批传',
+            'butname'=>'下载',
             'formpost'=>'POST',
             'url'=>'/chengji/index/saveall',
+            'kaoshi'=>$kaoshilist->id,
         );
 
         // 模板赋值
         $this->view->assign('list',$list);
         // 渲染
-        return $this->view->fetch();
+        return $this->view->fetch('biaoqian');
     }
 
     
@@ -391,9 +429,9 @@ class Index extends BaseController
         $list['subject'] = $ksinfo->ksSubject->toArray();
         $list['kaoshi'] = $kaoshi;
         $list['dataurl'] = '/chengji/index/data';
-        if(count($ksinfo->ks_nianji)>0)
+        if(count($ksinfo->ksNianji)>0)
         {
-            $list['nianji'] = $ksinfo->ks_nianji[0]->nianji;
+            $list['nianji'] = $ksinfo->ksNianji[0]->nianji;
         }else{
             $list['nianji'] = "一年级";
         }

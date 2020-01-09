@@ -168,7 +168,7 @@ class Kaohao extends BaseController
         // 获取数据库信息
         $chengjiinfo = Chengji::where('kaoshi',$id)
                         ->where('ruxuenian',2017)
-                        ->append(['cj_school.jiancheng','cj_Student.xingming','banjiNumname'])
+                        ->append(['cjSchool.jiancheng','cjStudent.xingming','banjiNumname'])
                         ->select();
 
         // 获取学科信息
@@ -226,9 +226,9 @@ class Kaohao extends BaseController
 
                 // $table->addCell(700)->addImage('aaaa.jpg',$imageStyle);
                 $info = $table->addCell(650);
-                $info->addText($value['cj_school']['jiancheng'],$myStyle);
+                $info->addText($value['cjSchool']['jiancheng'],$myStyle);
                 $info->addText($value['banjiNumname'],$myStyle);
-                $info->addText($value['cj_student']['xingming'],$myStyle);
+                $info->addText($value['cjStudent']['xingming'],$myStyle);
                 $info->addText($val,$myStyle);
 
             }
@@ -268,9 +268,9 @@ class Kaohao extends BaseController
 
 
         // 获取考试年级
-        if(count($kaoshilist->ks_nianji)>0)
+        if(count($kaoshilist->ksNianji)>0)
         {
-            foreach ($kaoshilist->ks_nianji as $key => $value) {
+            foreach ($kaoshilist->ksNianji as $key => $value) {
                 $list['data']['nianji'][$key]['id']=$value->nianji;
                 $list['data']['nianji'][$key]['title']=$value->nianjiname;
             }
@@ -278,11 +278,11 @@ class Kaohao extends BaseController
             $list['data']['nianji']= array();
         }
         // 获取考试学科
-        if(count($kaoshilist->ks_subject)>0)
+        if(count($kaoshilist->ksSubject)>0)
         {
-            foreach ($kaoshilist->ks_subject as $key => $value) {
+            foreach ($kaoshilist->ksSubject as $key => $value) {
                 $list['data']['subject'][$key]['id']=$value->subjectid;
-                $list['data']['subject'][$key]['title']=$value->subject_name->title;
+                $list['data']['subject'][$key]['title']=$value->subjectName->title;
             }
         }else{
             $list['data']['subject']= array();
@@ -394,7 +394,7 @@ class Kaohao extends BaseController
                     // 表格赋值
                     $sheet->setCellValue('A'.$i, $i-1);
                     $stuKaohao = '';
-                    $stuKaohao = $md5->encrypt($kh->id.'|'.$sbj->subject_name->id,'dlbz');
+                    $stuKaohao = $md5->encrypt($kh->id.'|'.$sbj->subjectName->id,'dlbz');
                     $sheet->setCellValue('C'.$i, $bj->cjSchool->jiancheng);
                     $sheet->setCellValue('B'.$i, $stuKaohao);
                     $sheet->setCellValue('D'.$i, $bj->cjBanji->numTitle);
@@ -451,9 +451,9 @@ class Kaohao extends BaseController
                 ])
                 ->find();
         // 获取考试年级
-        if(count($kaoshilist->ks_nianji)>0)
+        if(count($kaoshilist->ksNianji)>0)
         {
-            foreach ($kaoshilist->ks_nianji as $key => $value) {
+            foreach ($kaoshilist->ksNianji as $key => $value) {
                 $list['data']['nianji'][$key]['id']=$value->nianji;
                 $list['data']['nianji'][$key]['title']=$value->nianjiname;
             }
@@ -461,9 +461,9 @@ class Kaohao extends BaseController
             $list['data']['nianji']= array();
         }
         // 获取考试学科
-        if(count($kaoshilist->ks_subject)>0)
+        if(count($kaoshilist->ksSubject)>0)
         {
-            foreach ($kaoshilist->ks_subject as $key => $value) {
+            foreach ($kaoshilist->ksSubject as $key => $value) {
                 $list['data']['subject'][$key]['id']=$value->subjectid;
                 $list['data']['subject'][$key]['title']=$value->subjectName->title;
             }

@@ -8,34 +8,93 @@
 
   <div style="padding: 20px; background-color: #F2F2F2;">
     <div class="layui-row layui-col-space15">
-      <div class="layui-col-md6">
+      <div class="layui-col-md12">
         <div class="layui-card">
           <div class="layui-card-header">1、载成绩采集表</div>
           <div class="layui-card-body" style="min-height: 180px;">
-            卡片式面板面板通常用于非白色背景色的主体内<br>
-            从而映衬出边框投影
+
+
+            <form class="layui-form layui-form-pane" lay-filter="myform">
+              <div class="layui-form-item">
+                <label for="school" class="layui-form-label"><span class="x-red">*</span>参考学校</label>
+                <div class="layui-input-block">
+                  {php} $schoollist = schlist('校级','校级',['小学','中小学']);{/php}
+                  <select name="school" id="school" lay-filter="school" lay-verify="required">
+                    <option value=""></option>
+                    {volist name="schoollist" id="vo"}
+                      <option value="{$vo.id}"
+                      {present name="$list.data.school"}
+                        {eq name="$list.data.school" value="$vo.id" }
+                          selected
+                        {/eq}
+                      {/present}>
+                        {$vo.title}
+                      </option>
+                    {/volist}
+                  </select>
+                </div>
+              </div>
+              <div class="layui-form-item">
+                  {volist name="$list.data.nianji" id="vo"}
+                    <label for="title" class="layui-form-label">{$vo.title}</label>
+                    <div class="layui-input-block">
+                        <input id="{$vo.id}" type="checkbox" title="全选" lay-skin="primary" action="parent">
+                    </div>
+                    {php}
+                      if($key==0){
+                        $nianji = $vo['id'];
+                      }else{
+                        $nianji = $nianji.','.$vo['id'];
+                      }
+                    {/php}
+                  {/volist}
+              </div>
+              <input type="hidden" name="kaoshi" id="kaoshi" value="{$list.set.kaoshi}">
+              <div class="layui-form-item" style="text-align: right;">
+                  <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
+                      {$list.set.butname}
+                  </button>
+              </div>
+            </form>
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           </div>
         </div>
       </div>
 
-      <div class="layui-col-md6">
+      <div class="layui-col-md12">
         <div class="layui-card">
           <div class="layui-card-header">2、上传成绩</div>
           <div class="layui-card-body" style="min-height: 180px;">
-            将录入好的成绩表，从这里上传。
+            <p>
             <div class="layui-inline">
-            <div class="layui-input-inline" style="min-width: 300px">
-              <input type="text" id="url" name="url" autocomplete="off" class="layui-input " placeholder="地址" readonly>
+              <form>
+                <div class="layui-input-inline" style="min-width: 300px">
+                  <input type="text" id="url" name="url" autocomplete="off" class="layui-input " placeholder="地址" readonly>
+                </div>
+                <div class="layui-input-inline" style="min-width: 80px">
+                  <button type="button" class="layui-btn" id="upload">
+                    <i class="layui-icon">&#xe67c;</i>选择文件
+                  </button>
+                  <button type="button" class="layui-btn layui-btn-normal">
+                    <i class="layui-icon">&#xe67c;</i>批传
+                  </button>
+                </div>
+              </form>
             </div>
-            <div class="layui-input-inline" style="min-width: 80px">
-              <button type="button" class="layui-btn" id="upload">
-                <i class="layui-icon">&#xe67c;</i>选择文件
-              </button>
-              <button type="button" class="layui-btn layui-btn-normal">
-                <i class="layui-icon">&#xe67c;</i>批传
-              </button>
-            </div>
-            
           </div>
         </div>
       </div>
