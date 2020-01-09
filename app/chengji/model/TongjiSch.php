@@ -125,14 +125,17 @@ class TongjiSch extends Base
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
 
+        $kaoshi = $src['kaoshi'];
+
 
         $tongjiJg = $this
             ->where('kaoshi_id',$src['kaoshi'])
             ->where('ruxuenian',$src['ruxuenian'])
             ->field('kaoshi_id,ruxuenian')
             ->with([
-                'schJieguo'=>function($query){
+                'schJieguo'=>function($query)use($kaoshi){
                     $query->field('subject_id,ruxuenian,chengji_cnt,avg,youxiu,jige')
+                        ->where('kaoshi_id',$kaoshi)
                         ->with([
                             'schSubject'=>function($query){
                                 $query->field('id,lieming,jiancheng');

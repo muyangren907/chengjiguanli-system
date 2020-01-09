@@ -143,6 +143,7 @@ class TongjiNj extends Base
 
         $ruxuenian = $src['ruxuenian'];
         $school = strToarray($src['school']);
+        $kaoshi = $src['kaoshi'];
 
 
 
@@ -167,9 +168,10 @@ class TongjiNj extends Base
                 'njSchool'=>function($query){
                     $query->field('id,paixu,jiancheng');
                 },
-                'njJieguo'=>function($query) use($ruxuenian){
+                'njJieguo'=>function($query) use($ruxuenian,$kaoshi){
                     $query->field('subject_id,school_id,ruxuenian,chengji_cnt,avg,youxiu,jige')
                         ->where('ruxuenian',$ruxuenian)
+                        ->where('kaoshi_id',$kaoshi)
                         ->with([
                             'njSubject'=>function($query){
                                 $query->field('id,lieming,jiancheng');

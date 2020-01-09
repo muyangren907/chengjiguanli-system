@@ -34,12 +34,7 @@ class Tongji extends Base
             $temp['xkcnt'] = count($cjcol);
             $data[$value->lieming] = $temp;
         }
-        $cjcol = array_column($cj,'sum');
-        $cjcol = array_filter($cjcol,function($item){
-                return $item !== null; 
-            });
         $data['stucnt'] = count($cj);
-        $data['bmcnt'] = count($cjcol);   # 报名人数
        
         return $data;
     }
@@ -172,8 +167,8 @@ class Tongji extends Base
         $sbjcnt = count($sbj);
         // 开始循环每个人的成绩
         foreach ($cj as $key => $value) {
-            $temjige = 0; #记录学生及格的学科数
-            $col = 0; #记录这个学生是不是有成绩
+            $temjige = 0; # 记录学生及格的学科数
+            $col = 0; # 记录有成绩的学生数
             // 开始循环这个学生的每个学科成绩
             foreach ($sbj as $k => $val) {
                 if(isset($value[$val->lieming]))
