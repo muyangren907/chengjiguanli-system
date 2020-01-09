@@ -8,5 +8,5 @@ use think\facade\Env;
 return [
     // 版本号
     'webtitle'         => '尚码成绩管理系统',
-    'version'         => 'v1.2.1',
+    'version'         => 'v1.2.2',
 ];

@@ -14,6 +14,10 @@
     {load href="__XADMIN__/js/cookie.js" /}
     {load href="__XADMIN__/js/md5.min.js" /}
     {block name="jsset"}{/block}
+    <style>
+        .point{position:absolute;left:50%; top:50%;}
+        .pop{width:500px; height:500px; position:absolute;left:-250px; top:-250px; border:2px solid red; }
+    </style>
     <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
     <!--[if lt IE 9]>
       <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -133,7 +137,7 @@
         <div class="layui-container"></div>
       </div>
 	  </div>
-	</div> 
+	</div>
   </body>
 <script>
 
@@ -155,8 +159,15 @@
     $.ajax({
       url:url,
       type:'POST',
+      async: true,
       data:{
           kaoshi:"{$kaoshiid}"
+      },
+      beforeSend: function () {
+         $("body").append('<div id="load" style="position:fixed;top:30%;z-index:1200;background:url(__XADMIN__/images/timg.gif) top center no-repeat;width:100%;height:140px;margin:auto auto;"></div>');
+        },
+      complete: function () {
+        $("#load").remove();
       },
       success:function(result){
           layer.msg(result.msg);

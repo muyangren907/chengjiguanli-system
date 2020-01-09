@@ -35,10 +35,10 @@ layui.use('upload', function(){
     elem: '#upload' //绑定元素
     ,url: "/renshi/teacher/upload" //上传接口
     ,done: function(res){
-      if(res.val == 1){
+      if(res.val != 1){
         $('#url').val(res.url);
       }
-      layer.msg(res.msg);
+      // layer.msg(res.msg);
     }
     ,data: {
       category: '1011103'
