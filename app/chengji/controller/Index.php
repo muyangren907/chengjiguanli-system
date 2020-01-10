@@ -230,7 +230,8 @@ class Index extends BaseController
     {
 
         // 获取参考年级
-        $kaoshilist = \app\kaoshi\model\Kaoshi::order(['id'=>'desc'])
+        $list['data'] = \app\kaoshi\model\Kaoshi::order(['id'=>'desc'])
+                ->field('id,title')
                 ->with([
                     'ksNianji'
                     ,'ksSubject'=>function($query){
@@ -242,27 +243,14 @@ class Index extends BaseController
                             }
                 ])
                 ->where('enddate','>=',time())
-                ->find();
-        // 获取考试年级
-        if(count($kaoshilist->ksNianji)>0)
-        {
-            foreach ($kaoshilist->ksNianji as $key => $value) {
-                $list['data']['nianji'][$key]['id']=$value->nianji;
-                $list['data']['nianji'][$key]['title']=$value->nianjiname;
-            }
-        }else{
-            $list['data']['nianji']= array();
-        }
-        // 获取考试学科
-        if(count($kaoshilist->ksSubject)>0)
-        {
-            foreach ($kaoshilist->ksSubject as $key => $value) {
-                $list['data']['subject'][$key]['id']=$value->subjectid;
-                $list['data']['subject'][$key]['title']=$value->subjectName->title;
-            }
-        }else{
-            $list['data']['subject']= array();
-        }
+                ->select()
+                ->toArray();
+        $kh = new \app\kaoshi\model\Kaohao;
+        $list['school'] = $kh->cySchool(['kaoshi'=>$list['data'][0]['id'],'ruxuenian'=>$list['data'][0]['ksNianji'][0]['nianji']]);
+        $list['subject'] = $list['data'][0]['ksSubject'];
+        $list['nianji'] = $list['data'][0]['ksNianji'];
+
+
 
         
         // 设置页面标题
@@ -271,8 +259,11 @@ class Index extends BaseController
             'butname'=>'下载',
             'formpost'=>'POST',
             'url'=>'/chengji/index/saveall',
-            'kaoshi'=>$kaoshilist->id,
+            'kaoshi'=> $list['data'][0]['id'],
         );
+
+
+        // halt($list);
 
         // 模板赋值
         $this->view->assign('list',$list);

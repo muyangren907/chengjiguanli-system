@@ -411,6 +411,21 @@ class Index extends BaseController
         $bj = $kh->cyBanji($src);
 
         return $bj;
+    }
+
+    // 考试参加考试的学校、学科、年级、班级
+    public function kaoshiInfo()
+    {
+        $list = request()->only(['kaoshi','subject','manfen','youxiu','jige','lieming','nianjiname'],'post');
+
+
+
+
+
+
+
+
+
 
     }
 }

@@ -295,7 +295,7 @@ class Kaohao extends Base
                 })
                 ->where('kaoshi',$src['kaoshi'])
                 ->with(['cjSchool'=>function($query){
-                        $query->field('id,jiancheng,paixu')->order(['paixu'=>'asc']);
+                        $query->field('id,jiancheng,paixu,title')->order(['paixu'=>'asc']);
                     }
                 ])
                 ->group('school')
