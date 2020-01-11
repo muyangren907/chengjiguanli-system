@@ -247,16 +247,14 @@ class Index extends BaseController
                 ->select()
                 ->toArray();
 
-        $list['kaoshiSet'] = $ks->kaoshiInfo($list['data'][0]['id']);
         
         
         // 设置页面标题
         $list['set'] = array(
-            'webtitle'=>'表格录入成绩',
+            'webtitle'=>'表格录入',
             'butname'=>'下载',
             'formpost'=>'POST',
-            'url'=>'/chengji/index/saveall',
-            'kaoshi'=> $list['data'][0]['id'],
+            'url'=>'/kaoshi/kaohao/dwcaiji',
         );
 
 

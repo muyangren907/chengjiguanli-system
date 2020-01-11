@@ -498,7 +498,7 @@ class Kaohao extends BaseController
         $validate = new \app\kaoshi\validate\Biaoqian;
 
         // 获取表单数据
-        $list = request()->only(['banjiids','kaoshi','subject'],'post');
+        $list = request()->only(['banjiids'=>array(),'kaoshi','subject'=>array()],'post');
 
         $kaoshi = $list['kaoshi'];
         $banji = $list['banjiids'];
