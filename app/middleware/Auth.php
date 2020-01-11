@@ -55,7 +55,7 @@ class Auth
             // 批量保存
             'saveall',
             // 考试
-            'cybanji',
+            'cybanji','kaoshiinfo',
             // 下载成绩表、下载成绩统计表
             'dwchengjixlsx','dwbanjixls','dwnianjixlsx','dwchengjitiaoxlsx',
             //保存考号、下载试卷标签、下载成绩采集表

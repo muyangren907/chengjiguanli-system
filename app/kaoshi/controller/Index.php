@@ -414,18 +414,20 @@ class Index extends BaseController
     }
 
     // 考试参加考试的学校、学科、年级、班级
-    public function kaoshiInfo()
+    public function kaoshiInfo($kaoshi=0)
     {
-        $list = request()->only(['kaoshi','subject','manfen','youxiu','jige','lieming','nianjiname'],'post');
+        $ks = new KS();
+        $data = $ks->kaoshiInfo($kaoshi);
 
+        if($data){
+            $data['msg'] = '查询成功';
+            $data['val'] = 1;
+        }else{
+            $data['msg'] = '查询失败';
+            $data['val'] = 0;
+        }
+        
 
-
-
-
-
-
-
-
-
+        return json($data);
     }
 }

@@ -51,6 +51,39 @@ class Kaoshi extends Base
             ->select();
         return $data;
     }
+
+
+    // 考试参加考试的学校、学科、年级、班级
+    public function kaoshiInfo($kaoshi=0)
+    {
+
+        // 获取参考年级
+        $kaoshiList = $this->where('id',$kaoshi)
+                ->field('id,title')
+                ->with([
+                    'ksNianji'
+                    ,'ksSubject'=>function($query){
+                                $query->field('id,subjectid,kaoshiid')
+                                    ->with(['subjectName'=>function($q){
+                                        $q->field('id,title');
+                                    }]
+                                );
+                            }
+                ])
+                ->where('enddate','>=',time())
+                ->find()
+                ->toArray();
+
+        // 获取参加考试信息
+        $kh = new \app\kaoshi\model\Kaohao;
+        $list = array();
+        $list['subject'] = $kaoshiList['ksSubject'];
+        $list['nianji'] = $kaoshiList['ksNianji'];
+        $nianji = array_column($list['nianji'], 'nianji');
+        $list['school'] = $kh->cySchool(['kaoshi'=>$kaoshiList['id'],'ruxuenian'=>$nianji]);
+
+        return $list;
+    }
   
 
 

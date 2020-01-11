@@ -20,11 +20,11 @@
               </fieldset>
             </div>
             <div class="layui-card-body" style="min-height: 300px;">
-              <form action="{$list.set.url}" method="{$list.set.formpost}" class="layui-form layui-form-pane" lay-filter="myform">
+              <form class="layui-form layui-form-pane" lay-filter="myform">
                 <div class="layui-form-item">
-                  <label for="school" class="layui-form-label"><span class="x-red">*</span>考试</label>
+                  <label for="kaoshi" class="layui-form-label"><span class="x-red">*</span>考试</label>
                   <div class="layui-input-block">
-                    <select name="school" id="school" lay-verify="required">
+                    <select name="kaoshi" id="kaoshi" lay-verify="required">
                       {volist name="list.data" id="vo"}
                         <option value="{$vo.id}"> {$vo.title} </option>
                       {/volist}
@@ -35,9 +35,9 @@
                   <label for="mysubject" class="layui-form-label">
                     <span class="x-red">*</span>学科
                   </label>
-                  <div class="layui-input-block">
+                  <div class="layui-input-block" id="subject">
                     <input type="checkbox" title="全选" lay-skin="primary" action="parent" id="subject">
-                    {volist name="$list.subject" id="vo"}
+                    {volist name="$list.kaoshiSet.subject" id="vo"}
                       <input type="checkbox" title="{$vo.subjectName.title}" value="{$vo.subjectid}" lay-skin="primary" name="subject[]" action="children" pid="subject">
                     {/volist}
                   </div>
@@ -47,7 +47,7 @@
                   <div class="layui-input-block">
                     <select name="school" id="school" lay-verify="required">
                       <option value=""></option>
-                      {volist name="list.school" id="vo"}
+                      {volist name="list.kaoshiSet.school" id="vo"}
                         <option value="{$vo.school}"> {$vo.cjSchool.title} </option>
                       {/volist}
                     </select>
@@ -59,7 +59,8 @@
                   </label>
                   <div class="layui-input-block">
                     <select name="ruxuenian" id="ruxuenian" lay-verify="required" class="layui-form-label">
-                      {foreach $list.nianji as $key=>$vo}
+                      <option value="">请选择年级</option>
+                      {foreach $list.kaoshiSet.nianji as $key=>$vo}
                         <option value="{$vo.nianji}">{$vo.nianjiname}</option>
                       {/foreach}
                     </select>
@@ -72,7 +73,6 @@
                   <div class="layui-input-block" id="banji">
                   </div>
                 </div>
-                <input type="hidden" name="kaoshi" id="kaoshi" value="{$list.set.kaoshi}">
                 <div class="layui-form-item" style="text-align: center;">
                     <button  class="layui-btn" lay-filter="download" lay-submit="">
                         {$list.set.butname}
@@ -169,8 +169,16 @@
 
     // 下载
     form.on('submit(download)', function(data){
-      url=$("#url").val();
-      $.post("/chengji/index/saveall",{"url":url},function(result){
+      kaoshi =$('#kaoshi').val();
+      banji = $("input[name='subject']:selected").val();
+      console.log(banji);
+      console.log(kaoshi);
+      return false
+      $.post("/kaoshi/kaohao/dwcaiji",{"url":url},function(result){
+        if(result.val == 1)
+        {
+          $("#url").val('');
+        }
         layer.msg(result.msg);
       });
       return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
@@ -193,6 +201,131 @@
       });
       return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
     });
+
+
+
+    // 监听选择按钮
+  form.on('select', function(data){
+    var myselectname = $(data.elem).attr('name');
+    if(myselectname == 'school' || myselectname == 'ruxuenian'){
+      mybanji();
+    }else if(myselectname == 'kaoshi'){
+      mykaoshiinfo();
+    }
+  });
+
+  // 根据考试ID获取参加考试的学校和年级
+  function mykaoshiinfo(){
+    var kaoshi = $("#kaoshi").val();
+
+    // 删除原来已有值
+    $('#school').children().remove();
+    $('#ruxuenian').children().remove();
+    $('#school').append(new Option('请选择学校',''));//往下拉菜单里添加元素
+    $('#ruxuenian').append(new Option('请选择入学年',''));//往下拉菜单里添加元素
+
+    $.ajax({
+      url:"/kaoshi/index/kaoshiinfo/"+kaoshi,
+      dataType:'json',
+      type:'post',
+      success:function(data){
+        $.each(data.school,function(index,item){
+          $('#school').append(new Option(item.cjSchool.title,item.school));//往下拉菜单里添加元素
+        })
+        $.each(data.nianji,function(index,item){
+          $('#ruxuenian').append(new Option(item.nianjiname,item.nianji));//往下拉菜单里添加元素
+        })
+        form.render();//菜单渲染 把内容加载进去
+      }
+    })
+    
+
+
+  }
+
+  //获取班级列表并更新
+  function mybanji(){
+    // 获取表单值
+    var school = $("#school").val()
+    ,ruxuenian = $("#ruxuenian").val()
+    ,kaoshi = $("#kaoshi").val();
+
+    if(school=='' || ruxuenian=='')
+    {
+      return true;
+    }
+  
+    // 获取节点
+    var bj = $("#banji");
+
+    // 删除原来已有值
+    $(bj).children().remove();
+
+    // 获取班级列表
+    $.ajax({
+        url:"/kaoshi/index/cybanji",
+        type:"POST",
+        data:{
+          school:school
+          ,ruxuenian:ruxuenian
+          ,kaoshi:kaoshi
+        },
+        dataType:'json',
+        success:function(result){
+          if(result.length > 0){
+            $(bj).append('<input id="first" type="checkbox" title="全选" lay-skin="primary" action="parent">');
+            result.forEach(function(val,index){
+              $(bj).append('<input type="checkbox" title="'+val['banTitle']+'" value="'+val['id']+'" lay-skin="primary" name="banjiids[]" action="children" pid="first">');
+            })
+          }
+          form.render('checkbox'); //刷新select选择框渲染
+        },
+        error:function(xhr,status,error) {
+          layer.msg('数据处理错误',{
+              icon: 2,
+              time: 2000 //2秒关闭（如果不配置，默认是3秒）
+          });
+        }
+    });
+  }
+
+  form.on('checkbox()', function(data){
+      var myelem = data.elem
+        ,ischecked = data.elem.checked
+        ,action = $(myelem).attr('action')
+        ,pid = $(myelem).attr('pid')
+        ,id = $(myelem).attr('id');
+      switch(action){
+        case 'children':
+          selectChildren(pid,ischecked);
+          break;
+        case 'parent':
+          selectParent(id,ischecked);
+          break;
+      };
+    });  
+
+  // 更改子选项
+  function selectChildren(pid,checked)
+  {
+    if(checked==true)
+    {
+      $('#'+pid).prop('checked',true);
+      form.render('checkbox');
+    }
+  }
+  // 更改父选项
+  function selectParent(id,checked)
+  {
+    if(checked == true)
+    {
+      $("input[pid='"+id+"']").prop('checked',true);
+    }else{
+      $("input[pid='"+id+"']").prop('checked',false);
+    }
+    form.render('checkbox');
+
+  }
 
 
 

@@ -229,8 +229,9 @@ class Index extends BaseController
     public function biaolu()
     {
 
+        $ks = new \app\kaoshi\model\Kaoshi;
         // 获取参考年级
-        $list['data'] = \app\kaoshi\model\Kaoshi::order(['id'=>'desc'])
+        $list['data'] = $ks::order(['id'=>'desc'])
                 ->field('id,title')
                 ->with([
                     'ksNianji'
@@ -245,13 +246,9 @@ class Index extends BaseController
                 ->where('enddate','>=',time())
                 ->select()
                 ->toArray();
-        $kh = new \app\kaoshi\model\Kaohao;
-        $list['school'] = $kh->cySchool(['kaoshi'=>$list['data'][0]['id'],'ruxuenian'=>$list['data'][0]['ksNianji'][0]['nianji']]);
-        $list['subject'] = $list['data'][0]['ksSubject'];
-        $list['nianji'] = $list['data'][0]['ksNianji'];
 
-
-
+        $list['kaoshiSet'] = $ks->kaoshiInfo($list['data'][0]['id']);
+        
         
         // 设置页面标题
         $list['set'] = array(
@@ -262,8 +259,6 @@ class Index extends BaseController
             'kaoshi'=> $list['data'][0]['id'],
         );
 
-
-        // halt($list);
 
         // 模板赋值
         $this->view->assign('list',$list);
