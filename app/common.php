@@ -328,7 +328,7 @@ function array_cover( $cover = array(), $covered = array() )
 function kaoshiDate($kaoshiid,$str='enddate')
 {
 	$ks = new app\kaoshi\model\Kaoshi;
-    $enddate = $ks->where('id',$kaoshiid)->value('enddate');
+    $enddate = $ks->where('id',$kaoshiid)->value($str);
 
     $thistime = time();
     if( $thistime > $enddate )

@@ -49,7 +49,7 @@
       // 查询并显示学生信息
       $.ajax({
         type: 'POST',
-        url: "/chengji/index/read",
+        url: "/chengji/luru/read",
         data:{
           val:$('#saoma').val()
         },
@@ -82,7 +82,7 @@
       // 查询并显示学生信息
       $.ajax({
         type: 'PUT',
-        url: "/chengji/index/malusave",
+        url: "/chengji/luru/malusave",
         data:{
           subject_id:$('#subject_id').val()
           ,kaohao_id:$('#kaohao_id').val()

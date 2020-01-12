@@ -13,13 +13,6 @@ use think\facade\Route;
 
 // 成绩管理
 Route::group('index', function () {
-	    Route::rule('malu','Index/malu','get');			# 扫码界面
-	    Route::rule('malusave','Index/malusave','put');		# 扫码保存
-	    Route::rule('read','Index/read','post');		# 成绩读取
-	    Route::rule('biaolu','Index/biaolu','get');					# 保存信息
-	    Route::rule('saveall','Index/saveAll','post');				# 读取信息
-	    Route::rule('edit/<id>','Index/edit','get');				# 修改信息
-	    Route::rule('update/<id>','Index/update','put');				# 更新信息
 	    Route::rule('list/<kaoshi>','Index/index','get');				# 成绩列表
 	    Route::rule('data','Index/ajaxData','post');			# 成绩获取
 	    Route::rule('readcjadd/<kaohao>','Index/readAdd','get');				# 成绩录入列表
@@ -66,3 +59,17 @@ Route::group('schtj', function () {
 	    Route::rule('data','Schtongji/ajaxData','post');			# 扫码界面
 	    Route::rule('tongji','Schtongji/tongji','post');		# 统计各年级成绩
 	});
+
+// 录入
+Route::group('luru', function () {
+	    Route::rule('malu','Luru/malu','get');			# 扫码界面
+	    Route::rule('malusave','Luru/malusave','put');		# 扫码保存
+	    Route::rule('read','Luru/read','post');		# 扫码后读取成绩
+	    Route::rule('biaolu','Luru/biaolu','get');					# 表格录入界面
+	    Route::rule('saveall','Luru/saveAll','post');				# 保存表格录入信息
+	    Route::rule('edit/<id>','Luru/edit','get');				# 修改信息
+	    Route::rule('update/<id>','Luru/update','put');				# 更新信息
+	    Route::rule('','Luru/index','get');			# 成绩获取
+	    Route::rule('data','Luru/ajaxData','post');			# 成绩获取
+	});
+

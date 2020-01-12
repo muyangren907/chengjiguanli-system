@@ -27,8 +27,9 @@ class Rule extends Seeder
             ['id'=>9,'title'=>'课题管理','name' =>'keti','paixu' =>7,'ismenu' =>1,'font' =>'&#xe6b3;','status'=>0],
                 // 二级菜单
                 // 成绩采集
-                ['id'=>101,'title'=>'扫码录入','name'=>'chengji/Index/malu','paixu'=>1,'ismenu' =>1,'pid' =>1,'url'=>'/chengji/index/malu',],
-                ['id'=>102,'title'=>'表格录入','name'=>'chengji/Index/biaolu','paixu'=>2,'ismenu' =>1,'pid' =>1,'url'=>'/chengji/index/biaolu',],
+                ['id'=>101,'title'=>'扫码录入','name'=>'chengji/luru/malu','paixu'=>1,'ismenu' =>1,'pid' =>1,'url'=>'/chengji/luru/malu',],
+                ['id'=>102,'title'=>'表格录入','name'=>'chengji/luru/biaolu','paixu'=>2,'ismenu' =>1,'pid' =>1,'url'=>'/chengji/luru/biaolu',],
+                ['id'=>103,'title'=>'已录列表','name'=>'chengji/luru/index','paixu'=>2,'ismenu' =>1,'pid' =>1,'url'=>'/chengji/luru',],
                 // 成绩统计
                 ['id'=>201,'title'=>'班级成绩','name'=>'tongji/Index/banji','paixu'=>1,'ismenu' =>1,'pid' =>2,'url'=>'/tongji',],
                 // 考试管理
@@ -75,12 +76,12 @@ class Rule extends Seeder
 
 
                     // 扫码录入
-                    ['title'=>'扫码查询','name'=>'Chengji/Index/read','paixu' =>1,'pid'=>101,'id'=>1000000],
-                    ['title'=>'扫码保存','name'=>'Chengji/Index/malusave','paixu' =>2,'pid'=>101],
+                    ['title'=>'扫码查询','name'=>'Chengji/Luru/read','paixu' =>1,'pid'=>101,'id'=>1000000],
+                    ['title'=>'扫码保存','name'=>'Chengji/Luru/malusave','paixu' =>2,'pid'=>101],
                     // 表格录入
-                    ['title'=>'表格保存','name'=>'Chengji/Index/saveAll','paixu' =>3,'pid'=>102],
-                    ['title'=>'表格上传','name'=>'Chengji/Index/upload','paixu' =>4,'pid'=>102],
-                    ['title'=>'成绩更新','name'=>'Chengji/Index/update','paixu' =>5,'pid'=>102],
+                    ['title'=>'表格保存','name'=>'Chengji/Luru/saveAll','paixu' =>3,'pid'=>102],
+                    ['title'=>'表格上传','name'=>'Chengji/Luru/upload','paixu' =>4,'pid'=>102],
+                    ['title'=>'成绩更新','name'=>'Chengji/Luru/update','paixu' =>5,'pid'=>102],
 
                     
                     // 考试管理
