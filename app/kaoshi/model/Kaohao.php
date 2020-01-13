@@ -104,7 +104,7 @@ class Kaohao extends Base
 
         // 查询成绩
         $khlist = $this->where('kaoshi',$src['kaoshi'])
-                ->field('id,school,student,ruxuenian,paixu,kaoshi')
+                ->field('id,school,student,ruxuenian,paixu,kaoshi,nianji')
                 ->when(count($school)>0,function($query) use($school){
                     $query->where('school','in',$school);
                 })
@@ -410,22 +410,20 @@ class Kaohao extends Base
     */
     public function getBanjiTitleAttr()
     {
-        $ks = $this->where('id',$this->id)
-                ->with([
-                    'cjKaoshi'=>function($query){
-                        $query->field('id,bfdate');
-                    }
-                ])
-                ->find();
-        $bfdate = $ks->cjKaoshi->getData('bfdate');
+        // $ks = $this->where('id',$this->id)
+        //         ->with([
+        //             'cjKaoshi'=>function($query){
+        //                 $query->field('id,bfdate');
+        //             }
+        //         ])
+        //         ->find();
+        // $bfdate = $ks->cjKaoshi->getData('bfdate');
 
-        $nj = nianjiList($bfdate);
+        // $nj = nianjiList($bfdate);
         $bj = banjinamelist();
 
-
-
-        $title = $nj[$this->getAttr('ruxuenian')] . $bj[$this->getAttr('paixu')];
-
+        // $title = $nj[$this->getAttr('nianji')] . $bj[$this->getAttr('paixu')];
+        $title = $this->getAttr('nianji') . $bj[$this->getAttr('paixu')];
 
         return $title;
     }

@@ -9,11 +9,6 @@ use app\common\model\Base;
 class Chengji extends Base
 {
    
-    // 成绩和学科关联
-    public function cjSubject()
-    {
-    	return $this->belongsTo('\app\teach\model\Subject');
-    }
 
     // 学科关联
     public function subjectName()
@@ -25,6 +20,12 @@ class Chengji extends Base
     public function userName()
     {
         return $this->belongsTo('\app\admin\model\Admin','user_id','id');
+    }
+
+    // 考号关联
+    public function cjKaohao()
+    {
+        return $this->belongsTo('\app\kaoshi\model\Kaohao','kaohao_id','id');
     }
 
 
@@ -40,7 +41,7 @@ class Chengji extends Base
             'banji'=>array(),
             'subject_id'=>array(),
             'searchval'=>array(),
-            'user_id'=>session('userid');
+            'user_id'=>session('userid'),
         );
 
         // 用新值替换初始值
@@ -50,47 +51,36 @@ class Chengji extends Base
         $kaoshi = $src['kaoshi'];
         $searchval = $src['searchval'];
 
-        // 获取参加考试时间
-        $ks = new app\kaoshi\model\Kaoshi;
-        $enddate = $ks->where('id',$kaoshiid)->value('enddate');
 
-        $nianji = nianjiList($enddate);
-        
-
-
+        $nianji = nianjiList();
         $cjList = $this
-                ->where('user_id'=>$src['user_id'])
+                ->where('user_id',$src['user_id'])
                 ->when(count($subject_id)>0,function($query)use($subject_id){
                     $query->where('subjectid','in',$subject_id);
                 })
-                ->where('kaohao_id','in',function($query)use($banji,$kaoshi,$searchval,$nianji){
-                    $query->name('kaohao')
-                        ->where('kaoshi',$kaoshi)
-                        ->where(count($banji)>0,function($q)use($banji){
-                            $q->where('banji','in',$banji);
-                        })
-                        ->when(strlen($searchval>0),function($w)use($searchval,$nianji){
-                            $w->name('student')
-                                ->where('banji','in',function($x)use($nianji){
-                                    $x->name('banji')
-                                        ->where('ruxuenian','in',$nianji)
-                                        ->field('id');
-                                })
-                                ->where('xingminng','like','%'.$searchval.'%')
-                                ->field('id');
-                        });
-                })
-                ->select();
-        halt($cjList->toArray());
+                ->with([
+                    'subjectName'=>function($query){
+                        $query->field('id,title,lieming');
+                    }
+                    ,'cjKaohao'=>function($query){
+                        $query->field('id,kaoshi,school,ruxuenian,nianji,banji,paixu,student')
+                            ->append(['banjiTitle'])
+                            ->with([
+                            'cjSchool'=>function($query){
+                                $query->field('id,jiancheng,paixu');
+                            }
+                            ,'cjStudent'=>function($query){
+                                $query->field('id,xingming,sex');
+                            }
+                        ]);
+                    }
+                ])
+                ->order([$src['field']=>$src['type']])
+                ->limit(200)
+                ->select()
+                ->toArray();
 
-
-        return true;
-
-
-
-
-
-
+        return $cjList;
     }
 
 

@@ -56,21 +56,20 @@ class Luru extends BaseController
     {
         // 获取参数
         $src = $this->request
-                ->only(['page','limit','field','type','kaoshi','school','ruxuenian','paixu','searchval'
+                ->only([
+                    'page'
+                    ,'limit'
+                    ,'field'=>'update_time'
+                    ,'type'=>'desc'
+                    ,'searchval'
                 ],'POST');
-
-        $src['school'] = strToarray($src['school']);
-
-        // 获取参与考试的班级
-        $kh = new \app\kaoshi\model\Kaohao;
-        $src['banji']= array_column($kh->cyBanji($src), 'id');
-
 
         // 实例化
         $cj = new Chengji;
 
         // 查询要显示的数据
         $data = $cj->searchLuru($src);
+
 
         // 获取符合条件记录总数
         $cnt = count($data);
