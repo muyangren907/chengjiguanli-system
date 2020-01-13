@@ -72,15 +72,44 @@ class Chengji extends Base
                             ,'cjStudent'=>function($query){
                                 $query->field('id,xingming,sex');
                             }
+                            ,'cjKaoshi'=>function($query){
+                                $query->field('id,title');
+                            }
                         ]);
                     }
                 ])
-                ->order([$src['field']=>$src['type']])
+                ->whereTime('update_time','-240 hours')
                 ->limit(200)
-                ->select()
-                ->toArray();
+                ->select();
 
-        return $cjList;
+        // 重新整理成绩
+        $data = array();
+        foreach ($cjList as $key => $value) {
+            $data[$key] = [
+                'id'=>$value->id,
+                'kaoshi'=>$value->cjKaohao->cjKaoshi->title,
+                'kaoshiid'=>$value->cjKaohao->cjKaoshi->id,
+                'school'=>$value->cjKaohao->cjSchool->jiancheng,
+                'schoolid'=>$value->cjKaohao->cjSchool->paixu,
+                'banji'=>$value->cjKaohao->banjiTitle,
+                'banjiid'=>$value->cjKaohao->banji,
+                'subject'=>$value->subjectName->title,
+                'subjectid'=>$value->subjectid,
+                'defen'=>$value->defen,
+                'status'=>$value->status,
+                'update_time'=>$value->update_time,
+            ];
+            $value->cjKaohao->cjStudent ? $data[$key]['student']=$value->cjKaohao->cjStudent->xingming : $data[$key]['student']= '';
+        }
+
+        // 按条件排序
+        $src['type'] == 'desc' ? $src['type'] =SORT_DESC :$src['type'] = SORT_ASC;
+        if(count($data)>0){
+            $data = sortArrByManyField($data,$src['field'],$src['type']);
+        }
+
+
+        return $data;
     }
 
 
@@ -110,9 +139,9 @@ class Chengji extends Base
         $chengjilist = $kh->srcChengji($src);
 
 
-        $src['type'] == 'desc' ? $src['type'] =SORT_DESC :$src['type'] = SORT_ASC;
 
         // 按条件排序
+        $src['type'] == 'desc' ? $src['type'] =SORT_DESC :$src['type'] = SORT_ASC;
         if(count($chengjilist)>0){
             $chengjilist = sortArrByManyField($chengjilist,$src['field'],$src['type']);
         }

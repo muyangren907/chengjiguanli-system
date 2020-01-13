@@ -67,27 +67,36 @@
 	// 设置列
     options.cols=[[ //表头
 			{type:'checkbox', fixed: 'left'},
-			{field: 'kaohao_id', title: '学校',sort: false, minWidth:120,templet:function(d){
+			{field: 'kaoshiid', title: '考试',sort: true, minWidth:120,templet:function(d){
 				var str ='';
-				if(d.cjKaohao)
+				if(d.kaoshi)
 				{
-					str = d.cjKaohao.cjSchool.jiancheng;
+					str = d.kaoshi;
 				}
 				return str;
 			}},
-			{field: 'kaohao_id', title: '班级',sort: false,templet:function(d){
+			{field: 'schoolid', title: '学校',sort: true, minWidth:70,templet:function(d){
+				var str ='';
+				if(d.school)
+				{
+					str = d.school;
+				}
+				return str;
+			}},
+			{field: 'banjiid', title: '班级',sort: true,templet:function(d){
 				var str='';
-				if(d.cjKaohao)
+				if(d.banji)
 				{
-					str = d.cjKaohao.banjiTitle;
+					str = d.banji;
 				}
 				return str;
 			}},
+			{field: 'student', title: '姓名',sort: true},
 			{field: "subjectid",title: '学科',sort: true,templet:function(d){
 				var str='';
-				if(d.subjectName)
+				if(d.subject)
 				{
-					str = d.subjectName.title;
+					str = d.subject;
 				}
 				return str;
 			}},
