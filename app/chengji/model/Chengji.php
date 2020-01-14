@@ -40,7 +40,7 @@ class Chengji extends Base
             'kaoshi'=>'0',
             'banji'=>array(),
             'subject_id'=>array(),
-            'searchval'=>array(),
+            'searchval'=>'',
             'user_id'=>session('userid'),
         );
 
@@ -51,6 +51,18 @@ class Chengji extends Base
         $kaoshi = $src['kaoshi'];
         $searchval = $src['searchval'];
 
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $bfdate = $ks->where('id',$kaoshi)
+                ->value('bfdate');
+        $nj = nianjiList($bfdate);
+        $stu = new \app\renshi\model\Student;
+        $stuid = $stu
+                    ->when(strlen($searchval)>0,function($query)use($searchval){
+                        $query->where('xingming','like','%'.$searchval.'%')
+                            ->field('id');
+                    })
+                    ->column('id');
+
 
         $nianji = nianjiList();
         $cjList = $this
@@ -58,11 +70,19 @@ class Chengji extends Base
                 ->when(count($subject_id)>0,function($query)use($subject_id){
                     $query->where('subjectid','in',$subject_id);
                 })
+                ->when(count($stuid)>0,function($query)use($stuid){
+                    $query->where('kaohao_id','in',function($q)use($stuid){
+                        $q->name('kaohao')
+                            ->where('student','in',$stuid)
+                            ->whereTime('update_time','-480 hours')
+                            ->field('id');
+                    });
+                })
                 ->with([
                     'subjectName'=>function($query){
                         $query->field('id,title,lieming');
                     }
-                    ,'cjKaohao'=>function($query){
+                    ,'cjKaohao'=>function($query)use($searchval){
                         $query->field('id,kaoshi,school,ruxuenian,nianji,banji,paixu,student')
                             ->append(['banjiTitle'])
                             ->with([
@@ -89,12 +109,14 @@ class Chengji extends Base
                 'id'=>$value->id,
                 'kaoshi'=>$value->cjKaohao->cjKaoshi->title,
                 'kaoshiid'=>$value->cjKaohao->cjKaoshi->id,
+                'kaohaoid'=>$value->cjKaohao->id,
                 'school'=>$value->cjKaohao->cjSchool->jiancheng,
                 'schoolid'=>$value->cjKaohao->cjSchool->paixu,
                 'banji'=>$value->cjKaohao->banjiTitle,
                 'banjiid'=>$value->cjKaohao->banji,
                 'subject'=>$value->subjectName->title,
-                'subjectid'=>$value->subjectid,
+                'subjectid'=>$value->id,
+                'subjectname'=>$value->subjectName->lieming,
                 'defen'=>$value->defen,
                 'status'=>$value->status,
                 'update_time'=>$value->update_time,

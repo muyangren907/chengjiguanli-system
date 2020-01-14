@@ -11,34 +11,14 @@
 {/block}
 {block name="search"}
 	<div class="layui-form-item">
-      <label for="searchval" class="layui-form-label">
-          关键字
-      </label>
-      <div class="layui-input-block">
-          <input type="text" id="searchval" name="searchval"
-          autocomplete="off" class="layui-input">
+		<label for="searchval" class="layui-form-label">
+			关键字
+		</label>
+		<div class="layui-input-block">
+			<input type="text" id="searchval" name="searchval"
+          autocomplete="off" class="layui-input" placeholder="按学生姓名查询">
       </div>
     </div>
-    <div class="layui-form-item">
-	    <label for="xingzhi" class="layui-form-label" style="height: 100%">课题类别</label>
-	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-	    	{php} $category = getCategory('课题立项类型');{/php}
-
-
-	    	{volist name="category" id="vo"}
-	    		<input type="checkbox" name="category[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
-	    	{/volist}
-	    </div>
-	</div>
-	<div class="layui-form-item" style="margin-bottom: 0;">
-	    <label for="lxdanweiid" class="layui-form-label" style="height: 100%">立项单位</label>
-	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-	    	{php} $school = schlist('区级','其它级'); {/php}
-	    	{volist name="school" id="vo"}
-	    		<input type="checkbox" name="lxdanweiid[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
-	    	{/volist}
-	    </div>
-	</div>
 {/block}
 {block name="table"}
 	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
@@ -50,16 +30,10 @@
 		<button class="layui-btn layui-btn-danger" lay-event="dels">
 			<i class="iconfont">&#xe69d;</i> 批量删除
 		</button>
-		<button class="layui-btn" lay-event="add">
-			<i class="iconfont">&#xe6b9;</i> 添加
-		</button>
 	</div>
 </script>
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
-	<a class="layui-btn-xs" lay-event="detail" title="课题列表"><i class="layui-icon">&#xe62d;</i></a>
-	<a class="layui-btn-xs" lay-event="more" title="批传"><i class="layui-icon">&#xe67c;</i></a>
-	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
 	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
 </script>
 <!-- 表格操作 -->
@@ -67,7 +41,7 @@
 	// 设置列
     options.cols=[[ //表头
 			{type:'checkbox', fixed: 'left'},
-			{field: 'kaoshiid', title: '考试',sort: true, minWidth:120,templet:function(d){
+			{field: 'kaoshiid', title: '考试',sort: true, minWidth:180,templet:function(d){
 				var str ='';
 				if(d.kaoshi)
 				{
@@ -103,7 +77,7 @@
 			{field: 'defen', title: '得分', sort: true,minWidth:80,edit:'text'},
 			{field: 'update_time', title: '修改时间', sort: true,minWidth:160},
 			{field: 'status', title: '状态',templet:'#status', sort: true},
-			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
+			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:70}
 		]];
 	// 设置每页显示条数
 	options.limit = 25;
@@ -118,10 +92,7 @@
     		switch(obj.event){
 				case 'dels':
 	    			var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-	    			cjgl.delAll(checkStatus,'ketice/delete','mytable');
-					break;
-				case 'add':
-					cjgl.add('添加荣誉册','ketice/create','500','300');
+	    			cjgl.delAll(checkStatus,'/chengji/index/delete','mytable');
 					break;
 			};
 		});
@@ -132,17 +103,8 @@
         	var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
         	var tr = obj.tr; //获得当前行 tr 的DOM对象
         	switch(layEvent){
-        		case 'detail':// 查看
-	        		parent.xadmin.add_tab(obj.data.title + ' 列表','/keti/ketiinfo/list/'+obj.data.id,true);
-	        		break;
         		case 'del':// 删除
-	        		cjgl.del(obj,"ketice/delete");
-	        		break;
-        		case 'edit':// 编辑
-	        		cjgl.add('编辑荣誉册','ketice/edit/'+obj.data.id,'500','300');
-	        		break;
-        		case 'more':// 状态
-	        		cjgl.add('批传','/keti/ketiinfo/createall/'+obj.data.id,'300','200');
+	        		cjgl.del(obj,"/chengji/index/delete");
 	        		break;
         	};
         });
@@ -151,16 +113,16 @@
         table.on('edit(mytable)',function(obj){
         	//声明变量
         	var newdefen = obj.value
-        		,colname = obj.data.subjectName.lieming
-        		,id = obj.data.cjKaohao.kaoshi;
+        		,colname = obj.data.subjectname
+        		,id = obj.data.kaohaoid;
 
 	      	// 修改服务器数据 
 	        $.ajax({
                 url:"/chengji/luru/update/"+id,
                 type:'PUT',
                 data:{
-                    "colname":colname,
-                    "newdefen":newdefen
+                    "colname":colname
+                    ,"newdefen":newdefen
                 },
                 success:function(result){
                     if(result.val == 0)

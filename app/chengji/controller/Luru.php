@@ -17,26 +17,6 @@ class Luru extends BaseController
     public function index()
     {
         
-        $ks = new \app\kaoshi\model\Kaoshi;
-        // 获取参考年级
-        $list['data'] = $ks::order(['id'=>'desc'])
-                ->field('id,title')
-                ->with([
-                    'ksNianji'
-                    ,'ksSubject'=>function($query){
-                                $query->field('id,subjectid,kaoshiid')
-                                    ->with(['subjectName'=>function($q){
-                                        $q->field('id,title');
-                                    }]
-                                );
-                            }
-                ])
-                ->limit(6)
-                ->select()
-                ->toArray();
-
-        
-        
         // 设置要给模板赋值的信息
         $list['webtitle'] = '已录列表';
         $list['dataurl'] = 'luru/data';
@@ -187,6 +167,7 @@ class Luru extends BaseController
             'newdefen']
             ,'post');
         $list['kaohao_id'] = $id;
+
 
         // 判断考试结束时间是否已过
         $kaoshiid = Kaohao::where('id',$list['kaohao_id'])->value('kaoshi');
