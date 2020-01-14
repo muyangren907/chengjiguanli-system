@@ -481,6 +481,23 @@ class Student extends BaseController
     }
 
 
+    // 恢复删除
+     public function reDel($id)
+    {
+
+        $user = STU::onlyTrashed()->find($id);
+        $data = $user->restore();
+
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'恢复成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
+
 
     // 设置学生状态
     public function setStatus()

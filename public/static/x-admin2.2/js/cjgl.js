@@ -36,6 +36,31 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
         });
     },
 
+    // 删除单条记录
+    redel:function(obj,url){
+        layer.confirm('确认要恢复删除吗？',function(index){
+            $.ajax({
+                url:url+'/'+obj.data.id,
+                type:'DELETE',
+                data:{
+                    id:obj.data.id
+                },
+                success:function(result){
+                    if(result.val == 1)
+                    {
+                        obj.del();
+                        layer.msg(result.msg);
+                    }else{
+                        layer.msg(result.msg,function(){});
+                    }
+                },
+                error:function(result){
+                    layer.msg('数据扔半道啦。',function(){});
+                },
+            });
+        });
+    },
+
     // 删除全部
     delAll:function(obj,url,tableid){
         //判断是否选择数据

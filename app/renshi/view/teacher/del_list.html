@@ -63,6 +63,7 @@
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
 	<a class="layui-btn-xs" lay-event="detail" title="查看"><i class="layui-icon layui-icon-search"></i></a>
+	<a class="layui-btn-xs" lay-event="huifu" title="恢复"><i class="layui-icon layui-icon-refresh-1"></i></a>
 </script>
 <!-- 表格操作 -->
 <script>
@@ -123,6 +124,9 @@
         switch(layEvent){
           	case 'detail':// 查看
 	          cjgl.add(obj.data.xingming+'信息','/renshi/teacher/read/'+obj.data.id,'','',true);
+	          break;
+	        case 'huifu':// 恢复删除
+	          cjgl.redel(obj,"/renshi/teacher/redel");
 	          break;
         };
       });

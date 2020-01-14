@@ -142,6 +142,7 @@ class Rule extends Seeder
                     ['title'=>'批量保存','name'=>'renshi/Student/saveAll','paixu'=>10,'pid'=>401],
                     ['title'=>'表格删除页面','name'=>'renshi/Student/deletes','paixu'=>11,'pid'=>401],
                     ['title'=>'表格删除数据','name'=>'renshi/Student/deleteXlsx','paixu'=>12,'pid'=>401],
+                    ['title'=>'恢复删除','name'=>'renshi/Student/reDel','paixu'=>13,'pid'=>401],
 
                     // 教师管理权限
                     ['title'=>'添加','name'=>'renshi/Teacher/create','paixu' =>1,'pid'=>404],
@@ -156,6 +157,7 @@ class Rule extends Seeder
                     ['title'=>'批量保存','name'=>'renshi/Teacher/saveAll','paixu'=>10,'pid'=>404],
                     ['title'=>'表格模板下载','name'=>'renshi/Teacher/downloadXls','paixu'=>11,'pid'=>404],
                     ['title'=>'姓名转换VBA下载','name'=>'renshi/Teacher/downloadVba','paixu'=>12,'pid'=>404],
+                    ['title'=>'恢复删除','name'=>'renshi/Teacher/reDel','paixu'=>13,'pid'=>404],
 
 
                     // 教务管理
