@@ -28,6 +28,15 @@ Route::group('student', function () {
 		Route::rule('deleteall','student/deleteXlsx','post');				# 批量保存
 		Route::rule('download','student/download','get');				# 批量保存
 		Route::rule('chengji','student/ajaxDatachengji','post');		# 获取学生成绩
+		Route::rule('srcstudent','student/srcStudent','post');		# 获取学生成绩
+	});
+
+// 学生管理
+Route::group('student', function () {
+	    Route::rule('bylist','student/byList','get');						# 信息列表
+	    Route::rule('databy','student/ajaxdataBy','post');				# 获取数据
+	    Route::rule('dellist','student/delList','get');						# 信息列表
+	    Route::rule('datadel','student/ajaxdataDel','post');				# 获取数据
 	});
 
 
@@ -49,4 +58,10 @@ Route::group('teacher', function () {
 	    Route::rule('downloadxls','teacher/downloadXls','get');		# 下载模板
 	    Route::rule('srcry/<teacherid>','teacher/srcRy','post');		# 查询荣誉
 	    Route::rule('srckt/<teacherid>','teacher/srcKt','post');		# 查询课题
+	});
+
+// 教师管理
+Route::group('teacher', function () {
+	    Route::rule('dellist','Teacher/delList','get');						# 信息列表
+	    Route::rule('datadel','Teacher/ajaxDataDel','post');				# 获取数据
 	});

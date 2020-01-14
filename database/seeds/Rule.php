@@ -38,7 +38,13 @@ class Rule extends Seeder
 
                 // 师生名单
                 ['id'=>401,'title'=>'学生列表','name'=>'renshi/Student/index','paixu'=>1,'ismenu' =>1,'pid' =>4,'url'=>'/renshi/student',],
-                ['id'=>402,'title'=>'教师列表','name'=>'renshi/Teacher/index','paixu'=>2,'ismenu' =>1,'pid' =>4,'url'=>'/renshi/teacher',],
+                // 师生名单
+                ['id'=>402,'title'=>'毕业学生','name'=>'renshi/Student/byList','paixu'=>1,'ismenu' =>1,'pid' =>4,'url'=>'/renshi/student/bylist',],
+                // 师生名单
+                ['id'=>403,'title'=>'删除学生','name'=>'renshi/Student/delList','paixu'=>1,'ismenu' =>1,'pid' =>4,'url'=>'/renshi/student/dellist',],
+                ['id'=>404,'title'=>'教师列表','name'=>'renshi/Teacher/index','paixu'=>2,'ismenu' =>1,'pid' =>4,'url'=>'/renshi/teacher',],
+                ['id'=>405,'title'=>'删除教师','name'=>'renshi/Teacher/delList','paixu'=>2,'ismenu' =>1,'pid' =>4,'status'=>0,'url'=>'/renshi/teacher/dellist',],
+
 
                 // 教务管理
                 ['id'=>501,'title'=>'学期列表','name'=>'teach/Xueqi/index','paixu'=>1,'ismenu' =>1,'pid' =>5,'url'=>'/teach/xueqi',],
@@ -106,6 +112,7 @@ class Rule extends Seeder
                         ['title'=>'批量删除界面','name'=>'Chengji/Index/deletecjs','paixu'=>11,'pid'=>302],
                         ['title'=>'批量删除','name'=>'Chengji/Index/deletecjmore','paixu'=>12,'pid'=>302],
                         ['title'=>'下载学生成绩条','name'=>'Chengji/Index/dwChengjitiao','paixu'=>13,'pid'=>302],
+                        ['title'=>'添加考号','name'=>'Kaoshi/Kaohao/addOne','paixu'=>14,'pid'=>302],
 
                     // 学生成绩
                     ['title'=>'下载学生成绩','name'=>'chengji/Index/dwChengji','paixu'=>21,'pid'=>302],
@@ -137,18 +144,18 @@ class Rule extends Seeder
                     ['title'=>'表格删除数据','name'=>'renshi/Student/deleteXlsx','paixu'=>12,'pid'=>401],
 
                     // 教师管理权限
-                    ['title'=>'添加','name'=>'renshi/Teacher/create','paixu' =>1,'pid'=>402],
-                    ['title'=>'保存','name'=>'renshi/Teacher/save','paixu' =>2,'pid'=>402],
-                    ['title'=>'删除','name'=>'renshi/Teacher/delete','paixu'=>3,'pid'=>402],
-                    ['title'=>'编辑','name'=>'renshi/Teacher/edit','paixu'=>7,'pid'=>402,],
-                    ['title'=>'更新','name'=>'renshi/Teacher/update','paixu' =>5,'pid'=>402],
-                    ['title'=>'查看','name'=>'renshi/Teacher/read','paixu'=>6,'pid'=>402,],
-                    ['title'=>'状态','name'=>'renshi/Teacher/setStatus','paixu'=>7,'pid'=>402],
-                    ['title'=>'查询教师','name'=>'renshi/Teacher/srcTeacher','paixu'=>8,'pid'=>402],
-                    ['title'=>'批量上传','name'=>'renshi/Teacher/createAll','paixu'=>9,'pid'=>402],
-                    ['title'=>'批量保存','name'=>'renshi/Teacher/saveAll','paixu'=>10,'pid'=>402],
-                    ['title'=>'表格模板下载','name'=>'renshi/Teacher/downloadXls','paixu'=>11,'pid'=>402],
-                    ['title'=>'姓名转换VBA下载','name'=>'renshi/Teacher/downloadVba','paixu'=>12,'pid'=>402],
+                    ['title'=>'添加','name'=>'renshi/Teacher/create','paixu' =>1,'pid'=>404],
+                    ['title'=>'保存','name'=>'renshi/Teacher/save','paixu' =>2,'pid'=>404],
+                    ['title'=>'删除','name'=>'renshi/Teacher/delete','paixu'=>3,'pid'=>404],
+                    ['title'=>'编辑','name'=>'renshi/Teacher/edit','paixu'=>7,'pid'=>404,],
+                    ['title'=>'更新','name'=>'renshi/Teacher/update','paixu' =>5,'pid'=>404],
+                    ['title'=>'查看','name'=>'renshi/Teacher/read','paixu'=>6,'pid'=>404,],
+                    ['title'=>'状态','name'=>'renshi/Teacher/setStatus','paixu'=>7,'pid'=>404],
+                    ['title'=>'查询教师','name'=>'renshi/Teacher/srcTeacher','paixu'=>8,'pid'=>404],
+                    ['title'=>'批量上传','name'=>'renshi/Teacher/createAll','paixu'=>9,'pid'=>404],
+                    ['title'=>'批量保存','name'=>'renshi/Teacher/saveAll','paixu'=>10,'pid'=>404],
+                    ['title'=>'表格模板下载','name'=>'renshi/Teacher/downloadXls','paixu'=>11,'pid'=>404],
+                    ['title'=>'姓名转换VBA下载','name'=>'renshi/Teacher/downloadVba','paixu'=>12,'pid'=>404],
 
 
                     // 教务管理

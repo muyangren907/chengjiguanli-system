@@ -47,9 +47,9 @@ class Auth
             'mybanji','banjilist',
             'editpassword','updatepassword',
             // 学生信息查询
-            'ajaxdatachengji',
+            'ajaxdatachengji','srcstudent','ajaxdataby','ajaxdatadel',
             // 教师信息查询
-            'srcteacher','srcry','srckt',
+            'srcteacher','srcry','srckt','ajaxdatadel',
             // 查询班级成绩、查询年级成绩、查询录入成绩人员信息
             'ajaxaddinfo',
             // 批量保存
@@ -59,7 +59,7 @@ class Auth
             // 下载成绩表、下载成绩统计表
             'dwchengjixlsx','dwbanjixls','dwnianjixlsx','dwchengjitiaoxlsx',
             //保存考号、下载试卷标签、下载成绩采集表
-            'updateset','biaoqianxls','dwcaiji',
+            'updateset','biaoqianxls','dwcaiji','saveone',
             //课题结题图片上传和更新
             'jtupdate','ajaxdata',
         );

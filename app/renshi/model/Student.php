@@ -97,6 +97,100 @@ class Student extends Base
     }
 
 
+    // 数据筛选
+    public function searchBy($srcfrom)
+    {
+        
+        $src = [
+            'field'=>'update_time',
+            'type'=>'desc',
+            'school'=>array(),
+            'searchval'=>''
+        ];
+
+        // 用新值替换初始值
+        $src = array_cover( $srcfrom , $src ) ;
+
+        // 获取参数
+        $school = $src['school'];
+        $searchval = $src['searchval'];
+
+        $njlist = array_keys(nianjiList());
+
+        $bj = new \app\teach\model\Banji;
+        $banji = $bj->where('ruxuenian','not in',$njlist)->column('id');
+
+        $data = $this
+                ->order([$src['field'] =>$src['type']])
+                ->when(count($school)>0,function($query) use($school){
+                    $query->where('school','in',$school);
+                })
+                ->when(strlen($searchval)>0,function($query) use($searchval){
+                        $query->where('xingming','like','%'.$searchval.'%')->field('id');
+                })
+                ->where('banji','in',$banji)
+                ->with([
+                    'stuSchool'=>function($query){
+                        $query->field('id,title');
+                    },
+                    'stuBanji'=>function($query){
+                        $query->field('id,ruxuenian,paixu')->append(['banjiTitle']);
+                    }
+                ])
+                ->field('id,xingming,school,sex,shengri,banji,status')
+                ->append(['age'])
+                ->select();
+
+        return $data;
+    }
+
+
+    // 数据筛选
+    public function searchDel($srcfrom)
+    {
+        
+        $src = [
+            'field'=>'update_time',
+            'type'=>'desc',
+            'school'=>array(),
+            'ruxuenian'=>array(),
+            'banji'=>array(),
+            'searchval'=>''
+        ];
+
+        // 用新值替换初始值
+        $src = array_cover( $srcfrom , $src ) ;
+
+        // 获取参数
+        $school = $src['school'];
+        $banji = $src['banji'];
+        $searchval = $src['searchval'];
+
+        $data = $this::onlyTrashed()
+                ->order([$src['field'] =>$src['type']])
+                ->when(count($school)>0,function($query) use($school){
+                    $query->where('school','in',$school);
+                })
+                ->when(strlen($searchval)>0,function($query) use($searchval){
+                        $query->where('xingming','like','%'.$searchval.'%')->field('id');
+                })
+                ->where('banji','in',$banji)
+                ->with([
+                    'stuSchool'=>function($query){
+                        $query->field('id,title');
+                    },
+                    'stuBanji'=>function($query){
+                        $query->field('id,ruxuenian,paixu')->append(['banjiTitle']);
+                    }
+                ])
+                ->field('id,xingming,school,sex,shengri,banji,status')
+                ->append(['age'])
+                ->select();
+
+        return $data;
+    }
+
+
     // 获取全部数据
     public function searchAll()
     {

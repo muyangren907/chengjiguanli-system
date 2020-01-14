@@ -43,6 +43,7 @@ class Teacher extends BaseController
                     'zhiwu'=>array(),
                     'danwei'=>array(),
                     'xueli'=>array(),
+                    'tuixiu'=>0,
                     'searchval'=>''
                 ],'POST');
 
@@ -52,6 +53,68 @@ class Teacher extends BaseController
 
         // 查询要显示的数据
         $data = $teacher->search($src);
+        // 获取符合条件记录总数
+        $cnt = $data->count();
+        // 获取当前页数据
+        $limit_start = $src['page'] * $src['limit'] - $src['limit'];
+        $limit_length = $src['limit'];
+        $data = $data->slice($limit_start,$limit_length);
+       
+        // 重组返回内容
+        $data = [
+            'code'=> 0 , // ajax请求次数，作为标识符
+            'msg'=>"",  // 获取到的结果数(每页显示数量)
+            'count'=>$cnt, // 符合条件的总数据量
+            'data'=>$data, //获取到的数据结果
+        ];
+
+
+        return json($data);
+    }
+
+
+    // 显示教师列表
+    public function delList()
+    {
+
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = '教师列表';
+        $list['dataurl'] = '/renshi/teacher/datadel';
+
+        // 模板赋值
+        $this->view->assign('list',$list);
+
+        // 渲染模板
+        return $this->view->fetch();
+    }
+
+
+    /**
+     * 显示教师信息列表
+     *
+     * @return \think\Response
+     */
+    public function ajaxDataDel()
+    {
+        // 获取参数
+        $src = $this->request
+                ->only([
+                    'page'=>'1',
+                    'limit'=>'10',
+                    'field'=>'update_time',
+                    'type'=>'desc',
+                    'zhiwu'=>array(),
+                    'danwei'=>array(),
+                    'xueli'=>array(),
+                    'searchval'=>''
+                ],'POST');
+
+
+        // 实例化
+        $teacher = new TC;
+
+        // 查询要显示的数据
+        $data = $teacher->searchDel($src);
         // 获取符合条件记录总数
         $cnt = $data->count();
         // 获取当前页数据
@@ -131,7 +194,8 @@ class Teacher extends BaseController
     {
         
         // 查询教师信息
-        $myInfo = TC::where('id',$id)
+        $myInfo = TC::withTrashed()
+            ->where('id',$id)
             ->with(
                 [
                     'jsDanwei'=>function($query){

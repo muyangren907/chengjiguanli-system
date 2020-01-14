@@ -7,7 +7,7 @@
 	<span class="layui-breadcrumb">
 		<a href="">师生名单</a>
 		<a href="">教师管理</a>
-		<a><cite>教师列表</cite></a>
+		<a><cite>异动教师</cite></a>
 	</span>
 {/block}
 {block name="search"}
@@ -47,13 +47,6 @@
 	    	{/volist}
 	    </div>
 	</div>
-	<div class="layui-form-item" style="margin-bottom: 0;">
-	    <label for="tuixiu" class="layui-form-label" style="height: 100%">是否退休</label>
-	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-	    	<input type="radio" name="tuixiu" title="是" value="1" lay-skin="primary">
-	    	<input type="radio" name="tuixiu" title="否" value="0" lay-skin="primary" checked="true">
-	    </div>
-	</div>
 {/block}
 {block name="table"}
 	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
@@ -65,22 +58,11 @@
 		<button class="layui-btn layui-btn-danger" lay-event="dels">
 			<i class="iconfont">&#xe69d;</i> 批量删除
 		</button>
-		<button class="layui-btn" lay-event="add">
-			<i class="iconfont">&#xe6b9;</i> 添加
-		</button>
-		<button class="layui-btn" lay-event="upload">
-			<i class="iconfont">&#xe71d;</i> 导入数据
-		</button>
-		<button class="layui-btn" lay-event="download">
-			<i class="iconfont">&#xe714;</i> 下载模板
-		</button>
 	</div>
 </script>
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
 	<a class="layui-btn-xs" lay-event="detail" title="查看"><i class="layui-icon layui-icon-search"></i></a>
-	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
-	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
 </script>
 <!-- 表格操作 -->
 <script>
@@ -125,17 +107,10 @@
       table.on('toolbar(mytable)', function(obj){
         switch(obj.event){
           case 'dels':
+          	layer.msg('这个～算了吧！');
+          	break;
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'teacher/delete','mytable');
-            break;
-          case 'add':
-            cjgl.add('添加教师','teacher/create','','',true);
-            break;
-          case 'upload':
-            cjgl.add('导入教师','teacher/createall','','',true);
-            break;
-          case 'download':
-          	window.open("teacher/downloadxls");
+            cjgl.delAll(checkStatus,'/renshi/teacher/delete','mytable');
             break;
         };
       });
@@ -147,13 +122,7 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
           	case 'detail':// 查看
-	          cjgl.add(obj.data.xingming+'信息','teacher/read/'+obj.data.id,'','',true);
-	          break;
-	        case 'del':// 删除
-	          cjgl.del(obj,"teacher/delete");
-	          break;
-	        case 'edit':// 编辑
-	          cjgl.add('编辑教师','teacher/edit/'+obj.data.id,'','',true);
+	          cjgl.add(obj.data.xingming+'信息','/renshi/teacher/read/'+obj.data.id,'','',true);
 	          break;
         };
       });

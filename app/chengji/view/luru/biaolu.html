@@ -118,6 +118,10 @@
 
 {block name="myjs"}
 <script>
+// 日期控件
+layui.use(['form','upload'], function(){
+    var form = layui.form
+        ,upload = layui.upload;
 		//执行实例
     var uploadInst = upload.render({
       elem: '#upload' //绑定元素
@@ -293,14 +297,7 @@
 
   }
 
-
-
-
-
-
-
-  });
-
+});
 </script>
 {/block}
 

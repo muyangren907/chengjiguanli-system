@@ -18,7 +18,8 @@ class Teacher extends Base
             'zhiwu'=>array(),
             'danwei'=>array(),
             'xueli'=>array(),
-            'searchval'=>''
+            'tuixiu'=>0,
+            'searchval'=>'',
         ];
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
@@ -33,6 +34,72 @@ class Teacher extends Base
 
 
         $data = $this->order([$src['field'] =>$src['type']])
+            ->when(count($danwei)>0,function($query) use($danwei){
+                    $query->where('danwei','in',$danwei);
+                })
+            ->when(count($zhiwu)>0,function($query) use($zhiwu){
+                    $query->where('zhiwu','in',$zhiwu);
+                })
+            ->when(count($xueli)>0,function($query) use($xueli){
+                    $query->where('xueli','in',$xueli);
+                })
+            ->where('tuixiu',$src['tuixiu'])
+            ->when(strlen($searchval)>0,function($query) use($searchval){
+                    $query->where('xingming|quanpin|shoupin','like','%'.$searchval.'%');
+                })
+            ->with(
+                [
+                    'jsDanwei'=>function($query){
+                        $query->field('id,jiancheng');
+                    },
+                    'jsZhiwu'=>function($query){
+                        $query->field('id,title');
+                    },
+                    'jsZhicheng'=>function($query){
+                        $query->field('id,title');
+                    },
+                    'jsXueli'=>function($query){
+                        $query->field('id,title');
+                    },
+                    'jsSubject'=>function($query){
+                        $query->field('id,title');
+                    },
+                ]
+            )
+            ->append(['age','gongling'])
+            ->select();
+
+
+        return $data;
+    }
+
+
+
+    //搜索单位获奖荣誉
+    public function searchDel($srcfrom)
+    {
+        $src = [
+            'field'=>'update_time',
+            'type'=>'desc',
+            'zhiwu'=>array(),
+            'danwei'=>array(),
+            'xueli'=>array(),
+            'searchval'=>''
+        ];
+        // 用新值替换初始值
+        $src = array_cover( $srcfrom , $src ) ;
+
+
+
+        // 获取参数
+        $zhiwu = $src['zhiwu'];
+        $danwei = $src['danwei'];
+        $xueli = $src['xueli'];
+        $searchval = $src['searchval'];
+
+
+        $data = $this::onlyTrashed()
+            ->order([$src['field'] =>$src['type']])
             ->when(count($danwei)>0,function($query) use($danwei){
                     $query->where('danwei','in',$danwei);
                 })

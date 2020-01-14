@@ -77,6 +77,9 @@
     <button class="layui-btn layui-btn-danger" lay-event="dels">
       <i class="iconfont">&#xe69d;</i> 批量删除考号
     </button>
+    <button class="layui-btn" lay-event="add">
+      <i class="iconfont">&#xe6b9;</i> 添加考号
+    </button>
     <button class="layui-btn" lay-event="delcj">
       <i class="iconfont">&#xe69d;</i> 删除成绩
     </button>
@@ -134,7 +137,10 @@
       //表头工具栏事件
       table.on('toolbar(mytable)', function(obj){
       	switch(obj.event){
-      		case 'dels':
+      		case 'add':
+            cjgl.add('添加考号','/kaoshi/kaohao/add/{$list.kaoshi}','650','400');
+            break;
+          case 'dels':
 	      		var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
 	      		cjgl.delAll(checkStatus,'/kaoshi/kaohao/delete','mytable');
       			break;

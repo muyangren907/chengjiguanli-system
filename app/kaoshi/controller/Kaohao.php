@@ -147,6 +147,96 @@ class Kaohao extends BaseController
     }
 
 
+
+    // 添加单条考号
+    public function addOne($kaoshi)
+    {
+        
+        // 获取参考年级
+        $kaoshilist = KS::where('id',$kaoshi)
+                ->with([
+                    'ksNianji'
+                ])
+                ->find();
+
+
+        if(count($kaoshilist->ksNianji)>0)
+        {
+            foreach ($kaoshilist->ksNianji as $key => $value) {
+                $list['data']['nianji'][$key]['id']=$value->nianji;
+                $list['data']['nianji'][$key]['title']=$value->nianjiname;
+            }
+        }else{
+            $list['data']['nianji']= array();
+        }
+
+
+
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'添加考号',
+            'butname'=>'添加',
+            'formpost'=>'POST',
+            'url'=>'/kaoshi/kaohao/saveOne',
+            'kaoshi'=>$kaoshi
+        );
+
+
+        // 模板赋值
+        $this->view->assign('list',$list);
+        // 渲染
+        return $this->view->fetch();
+    }
+
+
+
+    // 保存单条考号
+    public function saveOne()
+    {
+        // 获取表单数据
+        $list = request()->only(['kaoshi','banji','student'],'post');
+        $list['student'] = explode(' ', $list['student']);
+        $list['student'] = $list['student'][1];
+
+        // 查询考号是否存在
+        $ks = KH::where('kaoshi',$list['kaoshi'])
+                ->where('student',$list['student'])
+                ->find();
+        if($ks)
+        {
+            $data=['msg'=>'该学生考号已经存在','val'=>0];
+            return json($data);
+        }
+
+        // 获取班级信息
+        $bj = new \app\teach\model\Banji;
+        $bjinfo = $bj->where('id',$list['banji'])->find();
+        $list['school'] = $bjinfo->school;
+        $list['ruxuenian'] = $bjinfo->ruxuenian;
+        $list['nianji'] = $bjinfo->ruxuenian;
+        $list['paixu'] = $bjinfo->paixu;
+
+        $data = KH::create($list);
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'生成成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
     /**
      * 生成指定网址的二维码
      * @param string $url 二维码中所代表的网址
@@ -652,11 +742,6 @@ class Kaohao extends BaseController
             // 根据更新结果设置返回提示信息
             $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
         }
-
-        
-
-        
-
         // 返回信息
         return json($data);
     }
