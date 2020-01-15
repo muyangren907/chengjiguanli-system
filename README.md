@@ -34,43 +34,55 @@
 
 
 登录界面
+
 ![登录界面](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/denglu.png)
 
 欢迎页面
+
 ![欢迎页面](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/欢迎页面.png)
 
 
 ![考试列表](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/考试列表.png)
 
 考试设置
+
 ![考试设置](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/考试设置.png)
 
 考试操作一
+
 ![考试操作一](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/考试操作一.png)
 
 考试操作二
+
 ![考试操作二](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/考试操作二.png)
 
 考试操作三
+
 ![考试操作三](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/考试操作三.png)
 
 扫码录入成绩
+
 ![扫码录入成绩](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/扫码录入成绩.png)
 
 表格录入成绩
+
 ![表格录入成绩](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/表格录入成绩.png)
 
 学生成绩列表
+
 ![学生成绩列表](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/学生成绩列表.png)
 
 
 已录成绩
+
 ![已录成绩](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/已录成绩.png)
 
+系统设置
 
 ![系统设置](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/系统设置.png)
 
-系统设置
+权限分配
+
 ![权限分配](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/20190524164451.png)
 
 
