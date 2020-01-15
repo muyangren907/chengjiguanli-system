@@ -76,7 +76,7 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
           case 'del':// 删除
-            cjgl.del(obj,"authgroup/delete/");
+            cjgl.del(obj,"authgroup/delete");
             break;
           case 'edit':// 编辑
             cjgl.add('编辑角色','authgroup/edit/'+obj.data.id,'','',true);
