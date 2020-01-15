@@ -32,14 +32,29 @@
 * 查看成绩列表
 * 查看成绩统计结果
 
-![学生成绩列表](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/20190524162731.png)
-学生成绩列表
+![登录界面](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/登录界面.png)
 
-![班级成绩统计](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/20190524164321.png)
-班级成绩统计
+![欢迎页面](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/欢迎页面.png)
 
-![扫码录入成绩页面](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/20190524164409.png)
-扫码录入成绩页面
+![考试列表](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/考试列表.png)
+
+![考试设置](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/考试设置.png)
+
+![考试操作一](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/考试操作一.png)
+
+![考试操作二](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/考试操作二.png)
+
+![考试操作三](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/考试操作三.png)
+
+![扫码录入成绩](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/扫码录入成绩.png)
+
+![表格录入成绩](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/表格录入成绩.png)
+
+![学生成绩列表](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/学生成绩列表.png)
+
+![已录成绩](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/已录成绩.png)
+
+![系统设置](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/系统设置.png)
 
 ![权限分配](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/20190524164451.png)
 权限分配页面
@@ -53,9 +68,9 @@
 里面隐藏了两个很实用的功能，如果想了解隐藏功能，请下载。
 
 ## 更新内容
-	将ThinkPHP升级到6.0.1版本，X-admin升级到2.2版本，优化算法，修改已知问题。
+	将ThinkPHP升级到6.0.1版本，X-admin升级到2.2版本，优化算法，根据使用需要，增加一些便捷功能，重新布局功能列表，修改已知问题。
 ## 升级提示
-　　v1.2.1版，增减了几个字段，建议重新建表。
+　　v1.2.3版，增减了几个字段，建议结构同步。
 
 
 ## 更详细信息请查阅官方手册
