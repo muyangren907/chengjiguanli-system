@@ -32,7 +32,7 @@
 * 查看成绩列表
 * 查看成绩统计结果
 
-![登录界面](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/登录界面.png)
+![登录界面](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/denglu.png)
 
 ![欢迎页面](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/欢迎页面.png)
 
@@ -51,6 +51,7 @@
 ![表格录入成绩](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/表格录入成绩.png)
 
 ![学生成绩列表](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/学生成绩列表.png)
+
 
 ![已录成绩](https://gitee.com/dlbz/student_achievement_statistics/raw/master/public/examples/已录成绩.png)
 
