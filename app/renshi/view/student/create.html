@@ -44,23 +44,19 @@
           <div class="layui-form-item" pane>
             <label for="kaoshi" class="layui-form-label"><span class="x-red">*</span>是否参加考试</label>
             <div class="layui-input-block">
-              <input type="radio" name="kaoshi" value="1" title="参加" 
-                {present name="$list.data.kaoshi"}
-                {$list.data.kaoshi}
-                    {eq name="$list.data.kaoshi" value="1" }
+              {if (isset($list.data.kaoshi)) }
+                <input type="radio" name="kaoshi" value="1" title="是" 
+                    {eq name="$list.data.kaoshi" value="参加" }
                      checked
-                    {/eq}
-                {/present}>
-              <input type="radio" name="kaoshi" value="0" title="不参加" 
-                {present name="$list.data.kaoshi"}
-                    {eq name="list.data.kaoshi" value="0" }
+                    {/eq}>
+                <input type="radio" name="kaoshi" value="0" title="否" 
+                    {eq name="$list.data.kaoshi" value="不参加" }
                      checked
-                    {/eq}
-                {/present}
-                {notpresent name="$list.data.kaoshi"}
-                 checked
-                {/notpresent}
-                >
+                    {/eq}>
+              {else /}
+                <input type="radio" name="kaoshi" value="1" title="是" checked>
+                <input type="radio" name="kaoshi" value="0" title="否">
+              {/if}
             </div>
           </div>
           <div class="layui-form-item">

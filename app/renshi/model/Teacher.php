@@ -203,6 +203,13 @@ class Teacher extends Base
         return $sex[$value];
     }
 
+    // 退休获取器
+    public function getTuixiuAttr($value)
+    {
+        $sex = array('0'=>'否','1'=>'是','2'=>'未知');
+        return $sex[$value];
+    }
+
 
     
     // 年龄获取器

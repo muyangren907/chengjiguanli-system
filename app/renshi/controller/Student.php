@@ -249,7 +249,7 @@ class Student extends BaseController
 
 
         // 获取表单数据
-        $list = request()->only(['xingming','sex','shenfenzhenghao','shengri','school','ruxuenian','banji'],'post');
+        $list = request()->only(['xingming','sex','shenfenzhenghao','shengri','school','ruxuenian','banji','kaoshi'],'post');
 
         // 验证表单数据
         $result = $validate->check($list);
@@ -416,7 +416,7 @@ class Student extends BaseController
         $validate = new \app\renshi\validate\Student;
 
         // 获取表单数据
-        $list = request()->only(['xingming','sex','shengri','school','shenfenzhenghao','ruxuenian','banji'],'put');
+        $list = request()->only(['xingming','sex','shengri','school','shenfenzhenghao','ruxuenian','banji','kaoshi'],'put');
 
         // 验证表单数据
         $result = $validate->check($list);

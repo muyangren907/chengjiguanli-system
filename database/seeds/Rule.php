@@ -43,7 +43,7 @@ class Rule extends Seeder
                 // 师生名单
                 ['id'=>403,'title'=>'删除学生','name'=>'renshi/Student/delList','paixu'=>1,'ismenu' =>1,'pid' =>4,'url'=>'/renshi/student/dellist',],
                 ['id'=>404,'title'=>'教师列表','name'=>'renshi/Teacher/index','paixu'=>2,'ismenu' =>1,'pid' =>4,'url'=>'/renshi/teacher',],
-                ['id'=>405,'title'=>'删除教师','name'=>'renshi/Teacher/delList','paixu'=>2,'ismenu' =>1,'pid' =>4,'status'=>0,'url'=>'/renshi/teacher/dellist',],
+                ['id'=>405,'title'=>'删除教师','name'=>'renshi/Teacher/delList','paixu'=>2,'ismenu' =>1,'pid' =>4,'url'=>'/renshi/teacher/dellist',],
 
 
                 // 教务管理

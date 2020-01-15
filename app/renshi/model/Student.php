@@ -50,6 +50,13 @@ class Student extends Base
         return $sex[$value];
     }
 
+    // 性别获取器
+    public function getKaoshiAttr($value)
+    {
+        $sex = array('0'=>'不参加','1'=>'参加','2'=>'未知');
+        return $sex[$value];
+    }
+
 
     // 数据筛选
     public function search($srcfrom)

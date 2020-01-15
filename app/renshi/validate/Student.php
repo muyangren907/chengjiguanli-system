@@ -19,7 +19,8 @@ class Student extends Validate
         'shenfenzhenghao|身份证号' =>      "require|idCard",
         'school|学校'        =>      'require|number',
         'ruxuenian|年级'         =>      'require|number',
-        'banji|班级'     =>      'require|number'
+        'banji|班级'     =>      'require|number',
+        'kaoshi|是否参加考试'            =>      'require|number',
     ];
     
     /**

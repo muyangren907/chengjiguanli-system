@@ -164,6 +164,24 @@
                   <input type="input" id="worktime" name="worktime" class="layui-input" value="{$list.data.worktime|default=''}" placeholder="入职时间" autocomplete="off">
               </div>
           </div>
+          <div class="layui-form-item" pane>
+            <label for="tuixiu" class="layui-form-label"><span class="x-red">*</span>是否已经退体</label>
+            <div class="layui-input-block">
+              {if (isset($list.data.tuixiu)) }
+                <input type="radio" name="tuixiu" value="1" title="是" 
+                    {eq name="$list.data.tuixiu" value="是" }
+                     checked
+                    {/eq}>
+                <input type="radio" name="tuixiu" value="0" title="否" 
+                    {eq name="$list.data.tuixiu" value="否" }
+                     checked
+                    {/eq}>
+              {else /}
+                <input type="radio" name="tuixiu" value="1" title="是">
+                <input type="radio" name="tuixiu" value="0" title="否" checked>
+              {/if}
+            </div>
+          </div>
           <div class="layui-form-item" style="text-align: right;">
               <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
                   {$list.set.butname}

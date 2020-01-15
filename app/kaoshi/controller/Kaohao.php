@@ -98,9 +98,10 @@ class Kaohao extends BaseController
                             }
                         ])
                         ->select();
-
-
-        $njlist = nianjiList();
+        
+        // 获取参加考试年级数组
+        $bfdate = KS::where('id',$list['kaoshi'])->value('bfdate');
+        $njlist = nianjiList($bfdate);
         // 重新组合学生信息
         $kaohao = array();
         foreach ($stulist as $key => $value) {
@@ -208,12 +209,17 @@ class Kaohao extends BaseController
             return json($data);
         }
 
+        // 获取参加考试年级数组
+        $bfdate = KS::where('id',$list['kaoshi'])->value('bfdate');
+        $njlist = nianjiList($bfdate);
+
+
         // 获取班级信息
         $bj = new \app\teach\model\Banji;
         $bjinfo = $bj->where('id',$list['banji'])->find();
         $list['school'] = $bjinfo->school;
         $list['ruxuenian'] = $bjinfo->ruxuenian;
-        $list['nianji'] = $bjinfo->ruxuenian;
+        $list['nianji'] = $njlist[$bjinfo->ruxuenian];
         $list['paixu'] = $bjinfo->paixu;
 
         $data = KH::create($list);

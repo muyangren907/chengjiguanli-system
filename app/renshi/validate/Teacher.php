@@ -25,6 +25,7 @@ class Teacher extends Validate
         'biye|毕业院校'    =>  'length:1,50',
         'zhuanye|专业'     =>  'length:1,20',
         'worktime|参加工作时间'     =>  'date',
+        'tuixiu|退休'        =>      'require|number|max:2',
     ];
     
     /**

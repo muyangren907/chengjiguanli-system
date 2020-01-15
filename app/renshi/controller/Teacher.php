@@ -163,7 +163,7 @@ class Teacher extends BaseController
 
 
         // 获取表单数据
-        $list = request()->only(['xingming','sex','quanpin','shoupin','shengri','zhiwu','zhicheng','xueli','biye','worktime','zhuanye','danwei'],'post');
+        $list = request()->only(['xingming','sex','quanpin','shoupin','shengri','zhiwu','zhicheng','xueli','biye','worktime','zhuanye','danwei','tuixiu'],'post');
 
 
         // 验证表单数据
@@ -236,7 +236,7 @@ class Teacher extends BaseController
     {
 
         // 获取教师信息
-        $list['data'] = TC::field('id,xingming,sex,quanpin,shoupin,shengri,zhiwu,zhicheng,xueli,biye,worktime,zhuanye,danwei')
+        $list['data'] = TC::field('id,xingming,sex,quanpin,shoupin,shengri,zhiwu,zhicheng,xueli,biye,worktime,zhuanye,danwei,tuixiu')
             ->find($id);
 
         // 设置页面标题
@@ -263,7 +263,7 @@ class Teacher extends BaseController
         $validate = new \app\renshi\validate\Teacher;
 
         // 获取表单数据
-        $list = request()->only(['xingming','sex','quanpin','shoupin','shengri','zhiwu','zhicheng','xueli','biye','worktime','zhuanye','danwei'],'put');
+        $list = request()->only(['xingming','sex','quanpin','shoupin','shengri','zhiwu','zhicheng','xueli','biye','worktime','zhuanye','danwei','tuixiu'],'put');
 
         // 验证表单数据
         $result = $validate->check($list);
@@ -292,6 +292,7 @@ class Teacher extends BaseController
         $teacherlist->worktime = $list['worktime'];
         $teacherlist->zhuanye = $list['zhuanye'];
         $teacherlist->danwei = $list['danwei'];
+        $teacherlist->tuixiu = $list['tuixiu'];
 
         $data = $teacherlist->save();
         // $data = TC::where('id',$id)->update($list);
