@@ -50,7 +50,7 @@ class Tongji extends Base
         $ksinfo = $ks->where('id',$kaoshi)
                 ->field('id')
                 ->with(['ksSubject'=>function($query){
-                    $query->field('id,kaoshiid,subjectid,lieming,youxiu,jige');
+                    $query->field('id,kaoshiid,subjectid,lieming,manfen,youxiu,jige');
                 }])
                 ->find();
         $data = array();
@@ -248,6 +248,13 @@ class Tongji extends Base
         }
         
         return $result;
+    }
+
+
+    // 分数段
+    public function fenshuduan($cj=array(),$setp=10,$manfen=100)
+    {
+
     }
 
     
