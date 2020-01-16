@@ -14,6 +14,8 @@
         {load href="__XADMIN__/js/xadmin.js" /}
         {load href="__XADMIN__/js/cookie.js" /}
         {load href="__XADMIN__/js/md5.min.js" /}
+        {load href="__XADMIN__/js/md5.min.js" /}
+        {load href="__STATIC__/echarts/echarts.min.js" /}
         {block name="jsset"}{/block}
         <!--[if lt IE 9]>
           <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -55,6 +57,8 @@
             </div>
           </div>
           {block name="table"}{/block}
+        </div>
+        {block name="echart"}{/block}
     </body>
     
     <!-- 状态按钮 -->
