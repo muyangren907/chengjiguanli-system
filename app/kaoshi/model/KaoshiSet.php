@@ -72,6 +72,10 @@ class KaoshiSet extends Base
                 $query->where('nianji',$nianji);
             })
             ->group('subject_id')
+            ->field("subject_id
+                ,any_value(manfen) as manfen
+                ,any_value(youxiu) as youxiu
+                ,any_value(jige) as jige")
             ->with([
                 'subjectName'=>function($query){
                     $query->field('id,title,jiancheng,paixu,lieming');
@@ -98,6 +102,7 @@ class KaoshiSet extends Base
                 ],
             ];
         }
+
         // 按条件排序
         if(count($data)>0){
             $data = sortArrByManyField($data,'paixu',SORT_ASC);
@@ -115,6 +120,8 @@ class KaoshiSet extends Base
     {
         $njList = $this->where('kaoshi_id',$kaoshi)
             ->group('nianji')
+            ->field("nianji
+                ,any_value(nianjiname) as nianjiname")
             // ->cache(true)
             ->select();
 

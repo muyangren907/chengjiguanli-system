@@ -366,10 +366,16 @@ class Kaohao extends Base
                     }
                 ])
                 // ->cache(true)
+                ->field('banji 
+                    ,any_value(id) as id
+                    ,any_value(nianji) as nianji
+                    ,any_value(paixu) as paixu
+                    ,any_value(school) as school')
                 ->group('banji')
-                ->field('id,banji,nianji,paixu,school')
                 ->append(['banjiTitle','banTitle'])
                 ->select();
+
+        $bj = new \app\teach\model\Banji;
 
         $data = array();
         foreach ($bjids as $key => $value) {
