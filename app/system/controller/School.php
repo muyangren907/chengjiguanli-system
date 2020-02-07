@@ -33,7 +33,7 @@ class School extends BaseController
                     'page'=>'1',
                     'limit'=>'10',
                     'field'=>'paixu',
-                    'type'=>'asc',
+                    'order'=>'asc',
                     'jibie'=>array(),
                     'xingzhi'=>array(),
                     'searchval'=>''

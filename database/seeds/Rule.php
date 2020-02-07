@@ -97,7 +97,7 @@ class Rule extends Seeder
                     ['title'=>'更新','name'=>'Kaoshi/Index/update','paixu'=>4,'pid'=>301,],
                     ['title'=>'保存','name'=>'Kaoshi/Index/save','paixu'=>5,'pid'=>301,],
                     ['title'=>'状态','name'=>'Kaoshi/Index/setStatus','paixu'=>6,'pid'=>301],
-                    ['title'=>'设置','name'=>'Kaoshi/Index/kaoshiset','paixu'=>7,'pid'=>301],
+                    ['title'=>'设置','name'=>'Kaoshi/KaoshiSubject/index','paixu'=>7,'pid'=>301],
                     // 考试操作
                     ['title'=>'生成考号','name'=>'kaoshi/Kaohao/create','paixu'=>1,'pid'=>302],
                     ['title'=>'已录成绩数量','name'=>'Chengji/Tongji/yiluCnt','paixu'=>2,'pid'=>302],

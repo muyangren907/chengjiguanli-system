@@ -85,8 +85,8 @@ class Kaohao extends Base
         // 初始化参数 
         $src = array(
             'kaoshi'=>'0',
-            'school'=>array(),
-            'ruxuenian'=>array(),
+            // 'school'=>array(),
+            // 'ruxuenian'=>array(),
             'banji'=>array(),
             'searchval'=>''
         );
@@ -96,8 +96,8 @@ class Kaohao extends Base
 
 
         // 重新定义变量
-        $school = strToarray($src['school']);
-        $ruxuenian = strToarray($src['ruxuenian']);
+        // $school = strToarray($src['school']);
+        // $ruxuenian = strToarray($src['ruxuenian']);
         $banji = strToarray($src['banji']);
         $seachval = $src['searchval'];
 
@@ -105,15 +105,16 @@ class Kaohao extends Base
         // 查询成绩
         $khlist = $this->where('kaoshi',$src['kaoshi'])
                 ->field('id,school,student,ruxuenian,paixu,kaoshi,nianji')
-                ->when(count($school)>0,function($query) use($school){
-                    $query->where('school','in',$school);
-                })
-                ->when(count($ruxuenian)>0,function($query) use($ruxuenian){
-                    $query->where('ruxuenian','in',$ruxuenian);
-                })
-                ->when(count($banji)>0,function($query) use($banji){
-                    $query->where('banji','in',$banji);
-                })
+                // ->when(count($school)>0,function($query) use($school){
+                //     $query->where('school','in',$school);
+                // })
+                // ->when(count($ruxuenian)>0,function($query) use($ruxuenian){
+                //     $query->where('ruxuenian','in',$ruxuenian);
+                // })
+                ->where('banji','in',$banji)
+                // ->when(count($banji)>0,function($query) use($banji){
+                //     $query->where('banji','in',$banji);
+                // })
                 ->when(strlen($seachval)>0,function($query) use($seachval){
                     $query->where(function($w) use ($seachval){
                         $w
@@ -146,27 +147,19 @@ class Kaohao extends Base
 
 
         // 获取参考学科
-        $kaoshi = new \app\kaoshi\model\Kaoshi;
-        $ksinfo = $kaoshi->where('id',$src['kaoshi'])
-                    ->with([
-                        'ksSubject'=>function($query){
-                            $query->field('kaoshiid,subjectid,lieming,youxiu,jige');
-                        }
-                    ])
-                    ->find();
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $ksSubject = $ksset->srcSubject($src['kaoshi'],'','');
 
-        if($ksinfo->ksSubject->isEmpty())
+        if(count($ksSubject)==0)
         {
             return $data = array();
         }
 
         $xk = array();
-        foreach ($ksinfo->ksSubject as $key => $value) {
-            $xk[$value->subjectid] = $value->lieming;
-            // $xk[$value->subjectid]['lieming'] = $value->lieming;
-            // $xk[$value->subjectid]['youxiu'] = $value->youxiu;
-            // $xk[$value->subjectid]['jige'] = $value->jige;
+        foreach ($ksSubject as $key => $value) {
+            $xk[$value['id']] = $value['lieming'];
         }
+
 
         $bjlist = banjinamelist();
 
@@ -174,9 +167,11 @@ class Kaohao extends Base
         $stu = new \app\renshi\model\Student;
 
 
+
         // 整理数据
         $data = array();
         foreach ($khlist as $key => $value) {
+
             $data[$key]['id'] = $value->id;
             $data[$key]['school'] = $value->cjSchool->jiancheng;
             if($value->cjStudent != Null){
@@ -196,7 +191,7 @@ class Kaohao extends Base
             $sbjcnt = 0;
 
             // 整理当前学生成绩
-            $cjarr = $this->zzcj($value->ks_chengji);
+            $cjarr = $this->zzcj($value->ksChengji);
 
              // 初始化参数
             $sbjcnt = 0;  #记录拥有成绩的学科数
@@ -221,11 +216,12 @@ class Kaohao extends Base
                 $data[$key]['avg'] = null;
             }
         }
-
         return $data;
     }
 
-    
+
+
+  
 
     // 满分
     public function banjiKaohao()
@@ -251,11 +247,11 @@ class Kaohao extends Base
     	return $this->belongsTo('\app\renshi\model\Student','student','id');
     }
 
-    // 满分
-    public function cjManfen()
-    {
-    	return $this->hasMany('\app\kaoshi\model\KaoshiSubject','kaoshiid','kaoshi');
-    }
+    // // 满分
+    // public function cjManfen()
+    // {
+    // 	return $this->hasMany('\app\kaoshi\model\KaoshiSubject','kaoshiid','kaoshi');
+    // }
 
     // 考试关联
     public function cjKaoshi()
@@ -290,7 +286,7 @@ class Kaohao extends Base
         $src = array_cover( $srcfrom , $src ) ;
         $ruxuenian = strToarray($src['ruxuenian']);
 
-        $data = $this->when(count($ruxuenian)>0,function($query) use($ruxuenian){
+        $schoolList = $this->when(count($ruxuenian)>0,function($query) use($ruxuenian){
                     $query->where('ruxuenian','in',$ruxuenian);
                 })
                 ->where('kaoshi',$src['kaoshi'])
@@ -298,15 +294,21 @@ class Kaohao extends Base
                         $query->field('id,jiancheng,paixu,title')->order(['paixu'=>'asc']);
                     }
                 ])
+                // ->cache(true)
                 ->group('school')
                 ->field('school')
                 ->select()
                 ->toArray();
 
-        // 将cjSchool中排序向上层移动，为后面的排序做准备
-        foreach ($data as $key => $value) {
-            $data[$key]['paixu'] = $value['cjSchool']['paixu'];
-            unset($data[$key]['cjSchool']['paixu']);
+        // 重新整理参加学校信息
+        $data = array();
+        foreach ($schoolList as $key => $value) {
+            $data[] = [
+                'paixu'=>$value['cjSchool']['paixu'],
+                'id'=>$value['cjSchool']['id'],
+                'title'=>$value['cjSchool']['title'],
+                'jiancheng'=>$value['cjSchool']['jiancheng'],
+            ];
         }
 
         $data = sortArrByManyField($data,'paixu',SORT_ASC);
@@ -331,14 +333,14 @@ class Kaohao extends Base
             'kaoshi'=>'',
             'ruxuenian'=>array(),
             'school'=>array(),
-            'paixu'=>array(),
+            'banji'=>array(),
         );
 
 
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
         $school = strToarray($src['school']);
-        $paixu = $src['paixu'];
+        $banji = strToarray($src['banji']);
         $ruxuenian = strToarray($src['ruxuenian']);
 
 
@@ -355,54 +357,42 @@ class Kaohao extends Base
                 ->when(count($school)>0,function($query) use($school){
                     $query->where('school','in',$school);
                 })
-                ->when(count($paixu)>0,function($query) use($paixu){
-                    $query->where('paixu','in',$paixu);
+                ->when(count($banji)>0,function($query) use($banji){
+                    $query->where('banji','in',$banji);
                 })
                 ->with([
                     'cjSchool'=>function($query){
-                        $query->field('id,jiancheng');
+                        $query->field('id,jiancheng,title');
                     }
                 ])
+                // ->cache(true)
                 ->group('banji')
-                ->field(['banji'])
-                ->select()
-                ->toArray();
+                ->field('id,banji,nianji,paixu,school')
+                ->append(['banjiTitle','banTitle'])
+                ->select();
 
-
-        // 将二维数组的班级转换成一维数组
+        $data = array();
         foreach ($bjids as $key => $value) {
-            // halt($key);
-            $bjids[$key] = $value['banji'];
+            $data[] = [
+                'id'=>$value->banji,
+                'paixu'=>$value->paixu,
+                'schTitle'=>$value->cjSchool->title,
+                'schJiancheng'=>$value->cjSchool->jiancheng,
+                'schPaixu'=>$value->cjSchool->paixu,
+                'banTitle'=>$value->banTitle,
+                'banjiTitle'=>$value->banjiTitle,
+                // 'numTitle'=>$value->numTitle,
+            ];
         }
 
-
-        // 查询班级信息并赋值
-        $bj = new \app\teach\model\Banji;
-        $data  = $bj->withTrashed()
-                ->where('id','in',$bjids)
-                ->field('id,school,paixu')
-                ->with([
-                    'glSchool'=>function($query){
-                        $query->field('id,title,jiancheng,paixu');
-                    },
-                ])
-                ->append(['banTitle'])
-                ->select()
-                ->toArray();
-        foreach ($data as $key => $value) {
-            $data[$key]['banjiNum'] = $bj->myBanjiNum($value['id'],$kssj);
-            $data[$key]['banjiTitle'] = $bj->myBanjiTitle($value['id'],$kssj);
-            $data[$key]['schOrd'] = $value['glSchool']['paixu'];
-            unset($data[$key]['glSchool']['paixu']);
-        }
-        $data = sortArrByManyField($data,'schOrd',SORT_ASC,'paixu',SORT_ASC);
+        $data = sortArrByManyField($data,'schPaixu',SORT_ASC,'paixu',SORT_ASC);
 
         return $data;
     }
 
 
     /**  
-    * 获取参加考试的班级
+    * 获取参加考试的班级全名
     * @access public 
     * @param number $kaoshi 考试id
     * @param number $ruxuenian 入学年
@@ -410,26 +400,25 @@ class Kaohao extends Base
     */
     public function getBanjiTitleAttr()
     {
-        // $ks = $this->where('id',$this->id)
-        //         ->with([
-        //             'cjKaoshi'=>function($query){
-        //                 $query->field('id,bfdate');
-        //             }
-        //         ])
-        //         ->find();
-        // $bfdate = $ks->cjKaoshi->getData('bfdate');
-
-        // $nj = nianjiList($bfdate);
         $bj = banjinamelist();
-
         // $title = $nj[$this->getAttr('nianji')] . $bj[$this->getAttr('paixu')];
         $title = $this->getAttr('nianji') . $bj[$this->getAttr('paixu')];
-
         return $title;
     }
 
-
-
+    /**  
+    * 获取参加考试的班级全名
+    * @access public 
+    * @param number $kaoshi 考试id
+    * @param number $ruxuenian 入学年
+    * @return array 返回类型
+    */
+    public function getBanTitleAttr()
+    {
+        $bj = banjinamelist();
+        $title = $bj[$this->getAttr('paixu')];
+        return $title;
+    }
 
     // 转置成绩数组
     private function zzcj($array = array())

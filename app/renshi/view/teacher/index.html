@@ -22,7 +22,7 @@
     </div>
     <div class="layui-form-item">
 	    <label for="danwei" class="layui-form-label" style="height: 100%">单位</label>
-	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+	    <div class="layui-input-block">
 	    	{php} $schoollist = schlist('校级','校级');{/php}
 	    	{volist name="schoollist" id="vo"}
 	    		<input type="checkbox" name="danwei[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
@@ -31,7 +31,7 @@
 	</div>
 	<div class="layui-form-item">
 	    <label for="zhiwu" class="layui-form-label" style="height: 100%">职务</label>
-	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+	    <div class="layui-input-block">
 	    	{php} $category = getCategory('职务');{/php}
 	    	{volist name="category" id="vo"}
 	    		<input type="checkbox" name="zhiwu[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
@@ -40,7 +40,7 @@
 	</div>
 	<div class="layui-form-item" style="margin-bottom: 0;">
 	    <label for="xueli" class="layui-form-label" style="height: 100%">学历</label>
-	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+	    <div class="layui-input-block">
 	    	{php} $category = getCategory('学历');{/php}
 	    	{volist name="category" id="vo"}
 	    		<input type="checkbox" name="xueli[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
@@ -49,7 +49,7 @@
 	</div>
 	<div class="layui-form-item" style="margin-bottom: 0;">
 	    <label for="tuixiu" class="layui-form-label" style="height: 100%">是否退休</label>
-	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+	    <div class="layui-input-block">
 	    	<input type="radio" name="tuixiu" title="是" value="1" lay-skin="primary">
 	    	<input type="radio" name="tuixiu" title="否" value="0" lay-skin="primary" checked="true">
 	    </div>

@@ -1,22 +1,29 @@
 <?php
 
-// 获取学科满分
-function getmanfen($kaoshiid,$subjectid)
-{
+// // 获取学科满分
+// function getmanfen($kaoshiid,$subjectid)
+// {
 
-	// 根据考试号和学科名获取满分
-	$KSXK = new app\kaoshi\model\KaoshiSubject;
-	$manfen = $KSXK->where('kaoshiid',$kaoshiid)->where('subjectid',$subjectid)->value('manfen');
+// 	// 根据考试号和学科名获取满分
+// 	$KSXK = new app\kaoshi\model\KaoshiSubject;
+// 	$manfen = $KSXK->where('kaoshiid',$kaoshiid)->where('subjectid',$subjectid)->value('manfen');
 
-	$manfen = floatval($manfen);
-	return $manfen;
-}
+// 	$manfen = floatval($manfen);
+// 	return $manfen;
+// }
 
 // 分数验证
 function manfenvalidate($defen,$manfen)
 {
 	$data['val'] = 1;
 	$data['msg'] = '验证通过';
+
+	if($manfen == "")
+	{
+		$data['val'] = 0;
+		$data['msg'] = '本学科不参加考试';
+		return $data;
+	}
 
 	if(is_numeric($defen) == false)
 	{

@@ -1,0 +1,156 @@
+{extend name=".././view/create.html" /}
+
+{block name="form"}
+    <form class="layui-form layui-form-pane" lay-filter="myform">
+          <div class="layui-form-item">
+            <label for="school" class="layui-form-label"><span class="x-red">*</span>参考年级</label>
+            <div class="layui-input-block">
+              <select name="nianji" lay-verify="required">
+                <option value="">请选择年级</option>
+                {foreach $list.set.nianji as $key=>$vo } 
+                  <option value="{$key}">
+                    {$vo}
+                  </option>
+                {/foreach}
+              </select>
+              <input id="nianjiname" name="nianjiname" value="" type="hidden">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label for="school" class="layui-form-label"><span class="x-red">*</span>学科分数线</label>
+            <div class="layui-input-block">
+              {php} $subject = subjectList(); {/php}
+              <table class="layui-table" lay-skin="line" lay-size="sm" id="sbjtable">
+                  <colgroup>
+                    <col width="150">
+                    <col width="200">
+                    <col>
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th>选择</th>
+                      <th>学科</th>
+                      <th>满分</th>
+                      <th>优秀分数线</th>
+                      <th>及格分数线</th>
+                    </tr> 
+                  </thead>
+                  <tbody>
+                    {volist name="subject" id="vo"}
+                      <tr>
+                        <td>
+                          <input type="checkbox" id="{$vo.lieming}" action="btmOnclick" name="subject[{$vo.id}]" lay-skin="primary" value="{$vo.id}">
+<!--                           <input id="lieming" name="lieming[{$vo.id}]" value="{$vo.lieming}" type="hidden">
+ -->                        </td>
+                        <td>{$vo.title}</td>
+                        <td><input type="text" title="manfen" name="manfen[{$vo.id}]" placeholder="满分" lay-skin="primary" class="layui-input"></td>
+                        <td><input type="text" name="youxiu[{$vo.id}]" placeholder="优秀分" lay-skin="primary" class="layui-input"></td>
+                        <td><input type="text" name="jige[{$vo.id}]" placeholder="及格分" lay-skin="primary" class="layui-input"></td>
+                      </tr>
+                    {/volist}
+                  </tbody>
+              </table>
+            </div>
+          </div>
+          <input id="kaoshi" name="kaoshi" value="{$list.set.kaoshi}" type="hidden">
+          <div class="layui-form-item" style="text-align: right;">
+              <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
+                  {$list.set.butname}
+              </button>
+          </div>
+      </form>
+{/block}
+
+{block name="myjs"}
+<script>
+
+  layui.use(['laydate','form'], function(){
+    var laydate = layui.laydate
+        ,form = layui.form;
+
+    // 监听年级
+    // 监测表单复选框按钮
+    form.on('select()', function(data){
+      val = data.elem[data.elem.selectedIndex].text
+      $('#nianjiname').val(val);
+      $('#sbjtable').find("input[type='checkbox']").prop('checked',false);
+      $('#sbjtable').find("input[type='text']").val('');
+      form.render();
+    });
+
+    // 监听满分文本框
+    $("[title^='manfen']").on("input",function(obj){
+      mydiv = $(obj.delegateTarget).parents("tr");
+      val = $(obj.delegateTarget).val();
+      if(isRealNum(val))
+      {
+        // 选中复选框
+        $(mydiv).find("td:eq(0)").children("input").prop('checked',true);
+        // 设置优秀率和及格率
+        $(mydiv).find("td:eq(3)").children("input:eq(0)").val(val*0.9);
+        $(mydiv).find("td:eq(4)").children("input:eq(0)").val(val*0.6);
+      }else{
+        // 选中复选框
+        $(mydiv).find("td:eq(0)").children("input").prop('checked',false);
+        // 设置优秀率和及格率
+        $(mydiv).find("td:eq(3)").children("input:eq(0)").val('');
+        $(mydiv).find("td:eq(4)").children("input:eq(0)").val('');
+      }
+      
+      // 重载表格
+      form.render();
+      
+    });
+
+
+  });
+
+
+  // 下层按钮
+  function btmOnclick(id,ischecked)
+  {
+    $mydiv =  $('#'+id).parents("td");
+    if(ischecked == true){
+      // 设置满分
+      $mydiv =  $mydiv.next("td");
+      $mydiv =  $mydiv.next("td");
+      $mydiv.children('input').val('100');
+      // 设置优秀
+      $mydiv =  $mydiv.next();
+      $mydiv.children('input').val('90');
+      // 设置及格
+      $mydiv =  $mydiv.next();
+      $mydiv.children('input').val('60');
+    }else{
+      // 设置满分
+      $mydiv =  $mydiv.next("td");
+      $mydiv =  $mydiv.next("td");
+      $mydiv.children('input').val('');
+      // 设置优秀
+      $mydiv =  $mydiv.next();
+      $mydiv.children('input').val('');
+      // 设置及格
+      $mydiv =  $mydiv.next();
+      $mydiv.children('input').val('');
+    }
+  }
+
+
+  // 判断输入是否为数字
+  function isRealNum(val){
+    // isNaN()函数 把空串 空格 以及NUll 按照0来处理 所以先去除
+    if(val === "" || val ==null){
+        return false;
+    }
+    if(!isNaN(val)){
+        return true;
+    }else{
+        return false;
+    }
+} 
+
+
+
+</script>
+{/block}
+

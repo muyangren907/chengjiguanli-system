@@ -13,12 +13,14 @@ class Kaoshiset extends Validate
      * @var 
      */	
 	protected $rule = [
-        'nianji|年级'      =>  'require|array',
+        'kaoshi|考试ID'      =>  'require|integer',
+        'nianji|年级'      =>  'require|integer',
+        'nianjiname|年级名称'      =>  'require|chs',
         'subject|学科'      =>  'require|array',
         'manfen|满分'      =>  'require|array',
         'youxiu|优秀'      =>  'require|array',
         'jige|及格'      =>  'require|array',
-        'lieming|列名'      =>  'require|array',
+        // 'lieming|列名'      =>  'require|array',
     ];
     
     /**

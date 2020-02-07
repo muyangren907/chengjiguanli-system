@@ -13,7 +13,7 @@ class Keti extends Base
     {
     	$src = [
             'field'=>'lxshijian',
-            'type'=>'desc',
+            'order'=>'desc',
             'lxdanweiid'=>array(),
             'category'=>array(),
             'searchval'=>''
@@ -30,7 +30,7 @@ class Keti extends Base
         $searchval = $src['searchval'];
 
     	$data = $this
-            ->order([$src['field'] =>$src['type']])
+            ->order([$src['field'] =>$src['order']])
     		->when(count($lxdanweiid)>0,function($query) use($lxdanweiid){
                 	$query->where('lxdanweiid','in',$lxdanweiid);
                 })

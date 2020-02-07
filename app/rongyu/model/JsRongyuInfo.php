@@ -12,7 +12,7 @@ class JsRongyuInfo extends Base
     {
         $src = [
             'field'=>'update_time',
-            'type'=>'desc',
+            'order'=>'desc',
             'fzschool'=>array(),
             'hjschool'=>array(),
             'category'=>array(),
@@ -35,7 +35,7 @@ class JsRongyuInfo extends Base
 
 
     	$data = $this
-            ->order([$src['field'] =>$src['type']])
+            ->order([$src['field'] =>$src['order']])
     		->when(count($hjschool)>0,function($query) use($hjschool){
                 	$query->where('hjschool','in',$hjschool);
                 })

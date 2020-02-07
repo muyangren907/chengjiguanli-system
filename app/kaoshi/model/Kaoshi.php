@@ -34,21 +34,15 @@ class Kaoshi extends Base
                     'ksCategory'=>function($query){
                         $query->field('id,title');
                     }
-                    ,'ksSubject'=>function($query){
-                        $query->field('kaoshiid,subjectid')
-                            ->with(['subjectName'=>function($q){
-                                $q->field('id,jiancheng');
-                            }]
-                        );
-                    }
-                    ,'ksNianji'
                     ,'ksZuzhi'=>function($q)
                     {
                         $q->field('id,title,jiancheng');
                     }
                 ]
             )
+            ->append(['ckSubject','ckNianji'])
             ->select();
+
         return $data;
     }
 
@@ -60,16 +54,16 @@ class Kaoshi extends Base
         // 获取参考年级
         $kaoshiList = $this->where('id',$kaoshi)
                 ->field('id,title')
-                ->with([
-                    'ksNianji'
-                    ,'ksSubject'=>function($query){
-                                $query->field('id,subjectid,kaoshiid')
-                                    ->with(['subjectName'=>function($q){
-                                        $q->field('id,title');
-                                    }]
-                                );
-                            }
-                ])
+                // ->with([
+                //     'ksNianji'
+                //     ,'ksSubject'=>function($query){
+                //                 $query->field('id,subjectid,kaoshiid')
+                //                     ->with(['subjectName'=>function($q){
+                //                         $q->field('id,title');
+                //                     }]
+                //                 );
+                //             }
+                // ])
                 ->where('enddate','>=',time())
                 ->find()
                 ->toArray();
@@ -113,17 +107,60 @@ class Kaoshi extends Base
         return date('Y-m-d',$value);
     }
 
-    //参考年级关联表
-    public function ksNianji()
+    // 参考学科获取器
+    public function getCkSubjectAttr($value)
     {
-        return $this->hasMany('KaoshiNianji','kaoshiid','id')->field('kaoshiid,nianji,nianjiname');
-    } 
-
-    // 参考学科关联表
-    public function ksSubject()
-    {
-        return $this->hasMany('KaoshiSubject','kaoshiid','id');
+        // 查询参考学科
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $subject = $ksset->srcSubject($this->getAttr('id'),'','');
+        // 重新整理数据
+        $str = '';
+        foreach ($subject as $key => $value) {
+            if($key==0)
+            {
+                $str = $value['jiancheng'];
+            }else{
+                $str = $str.'、'.$value['jiancheng'];
+            }
+        }
+        return $str;
     }
+
+    // 参考年级获取器
+    public function getCkNianjiAttr($value)
+    {
+        // 查询参考年级
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $data = $ksset->srcNianji($this->getAttr('id'));
+        // 重新整理数据
+        $str = '';
+        foreach ($data as $key => $value) {
+            $temp = substr($value['nianjiname'], 0,3);
+            if($key==0)
+            {
+                $str = $temp;
+            }else{
+                $str = $str.'、'.$temp;
+            }
+        }
+        return $str;
+    }
+
+    // 考试设置关联表
+    public function ksSet()
+    {
+        return $this->hasMany('KaoshiSet','kaoshi_id','id');
+    }
+    // // 考试设置关联表
+    // public function ksSubject()
+    // {
+    //     return $this->hasMany('KaoshiSet','kaoshi_id','id')->gooup('subject_id');
+    // }
+    // // 考试设置关联表
+    // public function ksNianji()
+    // {
+    //     return $this->hasMany('KaoshiSet','kaoshi_id','id')->gooup('nianji');
+    // }
     // 参考类别关联表
     public function ksCategory()
     {

@@ -40,7 +40,7 @@ class School extends Base
     {
         $src = [
             'field'=>'paixu',
-            'type'=>'asc',
+            'order'=>'asc',
             'jibie'=>array(),
             'xingzhi'=>array(),
             'searchval'=>''
@@ -58,7 +58,7 @@ class School extends Base
 
         // 查询数据
         $data = $this
-            ->order([$src['field'] =>$src['type']])
+            ->order([$src['field'] =>$src['order']])
             ->when(count($xingzhi)>0,function($query) use($xingzhi){
                     $query->where('xingzhi','in',$xingzhi);
                 })

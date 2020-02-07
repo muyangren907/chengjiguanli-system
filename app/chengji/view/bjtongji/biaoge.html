@@ -4,75 +4,67 @@
 
 {/block}
 {block name="nav"}
-	<span class="layui-breadcrumb">
-		<a href="">考试管理</a>
-		<a href="">更多操作</a>
-		<a href="">成绩查看</a>
-		<a href="">各班级成绩统计表</a>
-		<a><cite>{$list['kaoshititle']}</cite></a>
-	</span>
+<span class="layui-breadcrumb">
+	<a href="">考试管理</a>
+	<a href="">更多操作</a>
+	<a href="">成绩查看</a>
+	<a href="">各班级成绩统计表</a>
+	<a><cite>{$list['kaoshititle']}</cite></a>
+</span>
 {/block}
 {block name="search"}
-	<div class="layui-form-item">
-	    <label for="school" class="layui-form-label" style="height: 100%">学校</label>
-	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-	    	<input type="radio" name="school" title="无" value="" checked="true" lay-skin="primary" >
-	    	{volist name="$list.school" id="vo"}
-	    		<input type="radio" name="school" title="{$vo.cjSchool.jiancheng}" value="{$vo.school}" lay-skin="primary" >
-	    	{/volist}
-	    </div>
+<div class="layui-form-item">
+	<label for="school" class="layui-form-label" style="height: 100%">学校</label>
+	<div class="layui-input-block">
+		<input type="radio" name="school" title="无" value="" checked="true" lay-skin="primary" >
+		{volist name="$list.school" id="vo"}
+		<input type="radio" name="school" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" >
+		{/volist}
 	</div>
-	<div class="layui-form-item">
-	    <label for="ruxuenian" class="layui-form-label" style="height: 100%">年级 </label>
-	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')" pane>
-	    	{volist name="$list.nianji" id="vo"}
-	    		<input type="radio" name="ruxuenian" title="{$vo.nianjiname}" value="{$vo.nianji}" lay-skin="primary" {eq name="i" value="1" }
-                      checked="true" 
-                    {/eq}>
-	    	{/volist}
-	    </div>
+</div>
+<div class="layui-form-item">
+	<label for="ruxuenian" class="layui-form-label" style="height: 100%">年级 </label>
+	<div class="layui-input-block" pane>
+		{volist name="$list.nianji" id="vo"}
+		<input type="radio" name="ruxuenian" title="{$vo.nianjiname}" value="{$vo.nianji}" lay-skin="primary" {eq name="i" value="1" }
+		checked="true" 
+		{/eq}>
+		{/volist}
 	</div>
-	<div class="layui-form-item" style="margin-bottom: 0;">
-	    <label for="paixu" class="layui-form-label" style="height: 100%">班级</label>
-	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-	    	{php}
-	    		$banji = new \app\teach\model\Banji;
-	    		$njlist = array_column($list['nianji'],'nianji');
-	    		$paixu = $banji->where('status',1)
-	    				->where('ruxuenian','in',$njlist)
-	    				->max('paixu');
-	    		$bjlist = banjinamelist();
-	    	{/php}
-	    	{for start="1" end="$paixu+1" }
-	    		<input type="checkbox" name="paixu[]" title="{$bjlist[$i]}" value="{$i}" lay-skin="primary">
-	    	{/for}
-	    </div>
+</div>
+<div class="layui-form-item" style="margin-bottom: 0;">
+	<label for="paixu" class="layui-form-label" style="height: 100%">班级</label>
+	<div class="layui-input-block" id="paixu">
 	</div>
-	<input type="hidden" name="kaoshi" value="{$list.kaoshi}">
+</div>
+<input type="hidden" name="kaoshi" value="{$list.kaoshi}">
 {/block}
 {block name="table"}
-	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
+<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
 {/block}
 {block name="echart"}
-	<div class="layui-row" style="padding-top: 80px;">
-		<div class="layui-col-xs6">
-			<div id="main" style="width: 600px;height:400px;"></div>
-		</div>
-		<div class="layui-col-xs6">
-			<div id="a2" style="width: 600px;height:400px;"></div>
-		</div>
-  </div>
+<div class="layui-row" style="padding-top: 80px;">
+	<div class="layui-col-xs6" style="padding-left: 20px;padding-right: 20px;">
+		<div id="myAvg" style="width: 550px;height:400px;"></div>
+	</div>
+	<div class="layui-col-xs6" style="padding-left: 20px;padding-right: 20px;">
+		<div id="myYouxiu" style="width: 550px;height:400px;"></div>
+	</div>
+	<div class="layui-col-xs6" style="padding-left: 20px;padding-right: 20px;">
+		<div id="myJige" style="width: 550px;height:400px;"></div>
+	</div>
+</div>
 {/block}
 {block name="myjs"}
-	<!-- 表格上面按钮模板 -->
+<!-- 表格上面按钮模板 -->
 <script type="text/html" id="toolbarDemo">
 	<div class="layui-btn-container">
 		<button class="layui-btn layui-btn-danger" lay-event="dels">
 			<i class="iconfont">&#xe69d;</i> 批量删除
 		</button>
 		<button class="layui-btn" lay-event="download">
-	      <i class="layui-icon layui-icon-download-circle"></i> 下载
-	    </button>
+			<i class="layui-icon layui-icon-download-circle"></i> 下载
+		</button>
 	</div>
 </script>
 <!-- 记录操作按钮模板 -->
@@ -82,133 +74,249 @@
 </script>
 <!-- 表格操作 -->
 <script>
-	// 设置请求地址
-	// options.url = "{:url('ajaxBianji')}";
 	// 设置列
   	options.cols=[[ //表头
-			{type:'numbers',title:'序号',rowspan:2},
-			{field: 'school', title: '学校',sort: false,minWidth:80,rowspan:2},
-			{field: 'title', title: '班级',sort: false,minWidth:100,rowspan:2},
-		]
-		,[]
-		];
+  	{type:'numbers',title:'序号',rowspan:2},
+  	{field: 'school', title: '学校',sort: false,minWidth:80,rowspan:2},
+  	{field: 'title', title: '班级',sort: false,minWidth:100,rowspan:2},
+  	]
+  	,[]
+  	];
 	// 获取学科
 	var xk = '<?php echo json_encode($list["subject"]);?>';
 	xk = eval(decodeURIComponent(xk));
-	var xiangmu = {cj_cnt:'人数',avg:'平均分',jige:'及格率%',youxiu:'优秀率%'};		// 要显示哪些统计结果
+	var xiangmu = {cjCnt:'人数',avg:'平均分',jige:'及格率%',youxiu:'优秀率%'};		// 要显示哪些统计结果
 
-    $.each(xk,function(index,value){
-    	options.cols[0].push({title: xk[index].subjectName.title+'('+xk[index].manfen+')',colspan:4,align:'center'});
-	    $.each(xiangmu,function(i,val){
-		    var colname = xk[index].subjectName.lieming;
+	$.each(xk,function(index,value){
+		options.cols[0].push({title: xk[index].title+'('+xk[index].fenshuxian.manfen+')',colspan:4,align:'center'});
+		$.each(xiangmu,function(i,val){
+			var colname = xk[index].lieming;
     		// console.log(colname + ' ' + i);
     		var colinfo = {
-	    		title:val
-	    		,minWidth:100
-	    		,templet:function(d){
-	    			var str = d.chengji[colname][i];
-	    			if(str == null)
-	    			{
-	    				str='';
-	    			}
-					return str;
-				}
-	    	};
-	    	
-	    	options.cols[1].push(colinfo);
-		});
+    			title:val
+    			,minWidth:100
+    			,templet:function(d){
+    				var str = "";
+    				if(d.chengji)
+    				{
+    					if(d.chengji[colname])
+	    				{
+	    					str = d.chengji[colname][i];
+	    				}
+    				}
+    				return str;
+    			}
+    		};
+
+    		options.cols[1].push(colinfo);
+    	});
 	});
 	options.cols[0].push({title: '全科及格率%',minWidth:100,rowspan:2,templet:function(d){
-	    			var str = d.quanke.jige;
-					return str;
-				}});
+		var str = d.quanke.jige;
+		return str;
+	}});
 	options.cols[0].push({ title: '总平均分',minWidth:100,rowspan:2,templet:function(d){
-	    			var str = d.quanke.avg;
-					return str;
-				}});
+		var str = d.quanke.avg;
+		return str;
+	}});
 
-
-	
-	// 设置查询条件
-	options.where = {
-		kaoshi:"{$list.kaoshi}"
-		,ruxuenian:$("input[name='ruxuenian']:checked").val()
-		,school:$("input[name='school']:checked").val()
-	}
-
-	options.autoSort=true;
-
-	
 
   // 提交搜索条件后重载表格
-    layui.use(['table','cjgl'],function(){
-      var table = layui.table
-          cjgl = layui.cjgl;
-      //表头工具栏事件
-      table.on('toolbar(mytable)', function(obj){
-        switch(obj.event){
-          case 'dels':
-            var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/school','mytable');
-            break;
-          case 'add':
-            cjgl.add('添加单位','/school/create','650','500');
-            break;
-       	  case 'download':
-  			cjgl.add('下载成绩','/chengji/bjtj/dwbiaoge/{$list.kaoshi}','650','300');
-  			break;
-    	};
-      });
+  layui.use(['table','cjgl'],function(){
+  	var table = layui.table
+  	cjgl = layui.cjgl
+  	form = layui.form;
 
-      //监听行工具条
-      table.on('tool(mytable)', function(obj){
+    // 添加班级
+    addBanji();
+    //表头工具栏事件
+    table.on('toolbar(mytable)', function(obj){
+	  	switch(obj.event){
+	  		case 'dels':
+	        var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
+	        cjgl.delAll(checkStatus,'/school','mytable');
+	        break;
+	        case 'add':
+	        cjgl.add('添加单位','/school/create','650','500');
+	        break;
+	        case 'download':
+	        cjgl.add('下载成绩','/chengji/bjtj/dwbiaoge/{$list.kaoshi}','650','300');
+	        break;
+	    };
+	});
+
+    //监听行工具条
+    table.on('tool(mytable)', function(obj){
         var data = obj.data; //获得当前行数据
         var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
-          case 'detail':// 查看
-          	layer.msg('查看' + data.id);
-          	break;
-          case 'del':// 删除
-          	cjgl.del(obj,"/school");
-          	break;
-          case 'edit':// 编辑
-          	cjgl.add('编辑单位','/school/'+obj.data.id+'/edit','650','500');
-          	break;
-          case 'status':// 状态
-          	cjgl.status(obj,"{:url('setstatus')}");
-          	break;
-        };
-      });
+        	case 'detail':// 查看
+	        	layer.msg('查看' + data.id);
+	       		break;
+        	case 'del':// 删除
+	        	cjgl.del(obj,"/school");
+	        	break;
+        	case 'edit':// 编辑
+	        	cjgl.add('编辑单位','/school/'+obj.data.id+'/edit','650','500');
+	        	break;
+        	case 'status':// 状态
+	        	cjgl.status(obj,"{:url('setstatus')}");
+	        	break;
+      };
     });
 
+     // 监听表单提交
+	form.on('radio', function(data){
+		addBanji();
+		$("#srcsubmit").click();
+	});
+
+	// 添加班级列表
+    function addBanji(){
+      // 获取参数
+      var formval;
+      formval = formval = form.val("search");
+      if(formval.school == '')
+      {
+      	$('#paixu').children().remove();
+      }else{
+      	cjgl.createCheckbox('paixu',formval,'/kaoshi/index/cybanji','banji','banTitle');
+      }
+    }
+  });
+
+
+
+ //    // 基于准备好的dom，初始化echarts实例
+ //    var myAvg = echarts.init(document.getElementById('myAvg'));
+
+ //    // 使用刚指定的配置项和数据显示图表。
+ //    myAvg.setOption({
+ //    	title: {
+ //                text: '平均分'
+ //            },
+	//     legend: {},
+	//     tooltip: {},
+	//     dataset: {
+	//         source:[
+	//             ['项目', '平列', '优秀', '及格率'],
+	//             ['一年级一班', 43.3, 85.8, 93.7],
+	//             ['一年级二班', 83.1, 73.4, 55.1],
+	//             ['一年级三班', 86.4, 65.2, 82.5],
+	//             ['一年级四班', 72.4, 53.9, 39.1]
+	//         ]
+	//     },
+	//     xAxis: {type: 'category'},
+	//     yAxis: {},
+	//     series: [
+	//         {type: 'bar'},
+	//         {type: 'bar'},
+	//         {type: 'bar'}
+	//     ]
+	// });
+
+ //    // 异步加载数据
+	// $.post('/chengji/bjtj/myavg',
+	// 	{kaoshi:"{$list.kaoshi}"
+	// 	,ruxuenian:$("input[name='ruxuenian']:checked").val()
+	// 	,school:$("input[name='school']:checked").val()
+	// }).done(function (data) {
+	//     // 填入数据
+	//     myAvg.setOption({
+	//         // xAxis: {
+	//         //     data: 'category'
+	//         // },
+	//         dataset: {
+	// 	        source:data.source
+	// 	    },
+	//         series: [{
+	//             // 根据名字对应到相应的系列
+	//             // name: '销量',
+	//             // data: data.data
+	//         }]
+	//     });
+	// });
+
+
+ //    // 基于准备好的dom，初始化echarts实例
+ //    var myYouxiu = echarts.init(document.getElementById('myYouxiu'));
+
+ //    // 指定图表的配置项和数据
+ //    var option = {
+ //        title: {
+ //            text: 'ECharts 入门示例'
+ //        },
+ //        tooltip: {},
+ //        legend: {
+ //            data:['销量']
+ //        },
+ //        xAxis: {
+ //            data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+ //        },
+ //        yAxis: {},
+ //        series: [{
+ //            name: '销量',
+ //            type: 'bar',
+ //            data: [5, 20, 36, 10, 10, 20]
+ //        }]
+ //    };
+
+ //    // 使用刚指定的配置项和数据显示图表。
+ //    myYouxiu.setOption(option);
 
 
     // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('main'));
+    var myJige = echarts.init(document.getElementById('myJige'));
 
     // 指定图表的配置项和数据
     var option = {
-        title: {
-            text: 'ECharts 入门示例'
-        },
-        tooltip: {},
-        legend: {
-            data:['销量']
-        },
-        xAxis: {
-            data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-        },
-        yAxis: {},
-        series: [{
-            name: '销量',
-            type: 'bar',
-            data: [5, 20, 36, 10, 10, 20]
-        }]
+    	title: {
+    		text: 'ECharts 入门示例'
+    	},
+    	tooltip: {},
+    	legend: {
+    		data:['销量']
+    	},
+    	xAxis: {
+    		data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+    	},
+    	yAxis: {},
+    	series: [{
+    		name: '销量',
+    		type: 'bar',
+    		data: [5, 20, 36, 10, 10, 20]
+    	}]
     };
 
     // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
+    myJige.setOption(option);
+
+    // // 基于准备好的dom，初始化echarts实例
+    // var myYouxiu = echarts.init(document.getElementById('a2'));
+
+    // // 指定图表的配置项和数据
+    // var option = {
+    //     title: {
+    //         text: 'ECharts 入门示例'
+    //     },
+    //     tooltip: {},
+    //     legend: {
+    //         data:['销量']
+    //     },
+    //     xAxis: {
+    //         data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+    //     },
+    //     yAxis: {},
+    //     series: [{
+    //         name: '销量',
+    //         type: 'bar',
+    //         data: [5, 20, 36, 10, 10, 20]
+    //     }]
+    // };
+
+    // // 使用刚指定的配置项和数据显示图表。
+    // myYouxiu.setOption(option);
 
 
 

@@ -13,29 +13,19 @@ class Njtongji extends BaseController
     public function biaoge($kaoshi)
     {
 
+        // 获取考试信息
         $ks = new \app\kaoshi\model\Kaoshi;
         $ksinfo = $ks->where('id',$kaoshi)
-            ->with([
-                'KsNianji'
-                ,'ksSubject'=>function($query){
-                    $query->field('kaoshiid,subjectid,manfen')
-                        ->with(['subjectName'=>function($q){
-                            $q->field('id,title,lieming');
-                        }]
-                    );
-                }
-            ])
             ->field('id,title')
             ->find();
-
-        if(count($ksinfo->ks_nianji)>0)
-        {
-            $list['nianji'] = $ksinfo->ks_nianji[0]->nianji;
-        }else{
-            $list['nianji'] = "一年级";
-        }
-
-        $list['subject'] = $ksinfo->ksSubject;
+        // 获取参与学校
+        $kh = new \app\kaoshi\model\Kaohao;
+        $src['kaoshi'] = $kaoshi;
+        $list['school'] = $kh->cySchool($src);
+        // 获取年级与学科
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $list['nianji'] = $ksset->srcNianji($kaoshi);
+        $list['subject'] = $ksset->srcSubject($kaoshi,'','');
 
         // 设置要给模板赋值的信息
         $list['webtitle'] = '各学校的年级成绩统计表';
@@ -104,6 +94,10 @@ class Njtongji extends BaseController
             'kaoshi'=>$kaoshi
         );
 
+        // 获取年级与学科
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $list['set']['nianji'] = $ksset->srcNianji($kaoshi);
+
         // 模板赋值
         $this->view->assign('list',$list);
         // 渲染
@@ -137,17 +131,9 @@ class Njtongji extends BaseController
         $ks = new \app\kaoshi\model\Kaoshi;
         $ksinfo = $ks->where('id',$src['kaoshi'])
                     ->field('id,title,bfdate')
-                    ->with([
-                        'ksSubject'=>function($query){
-                            $query->field('kaoshiid,subjectid,manfen')
-                                ->with(['subjectName'=>function($q){
-                                    $q->field('id,title,lieming');
-                                }]
-                            );
-                        }
-                    ])
                     ->find();
-        $xk = $ksinfo->ks_subject;
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $xk = $ksset->srcSubject($src['kaoshi'],'',$src['ruxuenian']); 
 
         // 获取考试年级名称
         $njlist = nianjiList($ksinfo->getData('bfdate'));
@@ -172,7 +158,7 @@ class Njtongji extends BaseController
             ->setKeywords("尚码 成绩管理") //关键字
             ->setCategory("成绩管理"); //分类
 
-        $sbjcol = ['cj_cnt'=>'人数','avg'=>'平均分','jige'=>'及格率%','youxiu'=>'优秀率%'];
+        $sbjcol = ['cjCnt'=>'人数','avg'=>'平均分','jige'=>'及格率%','youxiu'=>'优秀率%'];
         $sbjcolcnt = count($sbjcol);
         $colname = excelLieming();
         $colcnt = $sbjcolcnt*count($xk)+3;
@@ -189,7 +175,7 @@ class Njtongji extends BaseController
         foreach ($xk as $key => $value) {
             $colend = $col + $sbjcolcnt - 1;
             $sheet->mergeCells($colname[$col].'3:'.$colname[$colend].'3');
-            $sheet->setCellValue($colname[$col].'3', $value->subject_name->title.' ('.$value->manfen.')');
+            $sheet->setCellValue($colname[$col].'3', $value['title'].' ('.$value['fenshuxian']['manfen'].')');
             foreach ($sbjcol as $k => $val) {
                  $sheet->setCellValue($colname[$col].'4', $val);
                  $col++;
@@ -209,7 +195,7 @@ class Njtongji extends BaseController
             $sheet->setCellValue('B'.$row, $value['school']);
             foreach ($xk as $ke => $val) {
                 foreach ($sbjcol as $k => $v) {
-                     $sheet->setCellValue($colname[$col].$row, $value['chengji'][$val->subject_name->lieming][$k]);
+                     $sheet->setCellValue($colname[$col].$row, $value['chengji'][$val['lieming']][$k]);
                      $col++;
                 }
             }

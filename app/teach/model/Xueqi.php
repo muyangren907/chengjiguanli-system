@@ -45,7 +45,7 @@ class Xueqi extends Base
 
         // 查询数据
         $data = $this
-            ->order([$src['field'] =>$src['type']])
+            ->order([$src['field'] =>$src['order']])
             ->when(strlen($searchval)>0,function($query) use($searchval){
                     $query->where('title|xuenian','like','%'.$searchval.'%');
                 })

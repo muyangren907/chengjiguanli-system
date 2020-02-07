@@ -28,7 +28,7 @@ class Category extends Base
     {
         $src = [
             'field'=>'id',
-            'type'=>'asc',
+            'order'=>'asc',
             'pid'=>'',
             'searchval'=>''
         ];
@@ -42,7 +42,7 @@ class Category extends Base
 
         // 查询数据
         $data = $this
-            ->order([$src['field'] =>$src['type']])
+            ->order([$src['field'] =>$src['order']])
             ->when(strlen($pid)>0,function($query) use($pid){
                     $query->whereOr('pid','in',$pid);
                 })

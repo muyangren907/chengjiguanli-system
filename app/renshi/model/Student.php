@@ -64,7 +64,7 @@ class Student extends Base
         
         $src = [
             'field'=>'update_time',
-            'type'=>'desc',
+            'order'=>'desc',
             'school'=>array(),
             'ruxuenian'=>array(),
             'banji'=>array(),
@@ -80,7 +80,7 @@ class Student extends Base
         $searchval = $src['searchval'];
 
         $data = $this
-                ->order([$src['field'] =>$src['type']])
+                ->order([$src['field'] =>$src['order']])
                 ->when(count($school)>0,function($query) use($school){
                     $query->where('school','in',$school);
                 })
@@ -110,7 +110,7 @@ class Student extends Base
         
         $src = [
             'field'=>'update_time',
-            'type'=>'desc',
+            'order'=>'desc',
             'school'=>array(),
             'searchval'=>''
         ];
@@ -128,7 +128,7 @@ class Student extends Base
         $banji = $bj->where('ruxuenian','not in',$njlist)->column('id');
 
         $data = $this
-                ->order([$src['field'] =>$src['type']])
+                ->order([$src['field'] =>$src['order']])
                 ->when(count($school)>0,function($query) use($school){
                     $query->where('school','in',$school);
                 })
@@ -158,7 +158,7 @@ class Student extends Base
         
         $src = [
             'field'=>'update_time',
-            'type'=>'desc',
+            'order'=>'desc',
             'school'=>array(),
             'ruxuenian'=>array(),
             'banji'=>array(),
@@ -174,7 +174,7 @@ class Student extends Base
         $searchval = $src['searchval'];
 
         $data = $this::onlyTrashed()
-                ->order([$src['field'] =>$src['type']])
+                ->order([$src['field'] =>$src['order']])
                 ->when(count($school)>0,function($query) use($school){
                     $query->where('school','in',$school);
                 })

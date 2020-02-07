@@ -26,6 +26,7 @@
           </div>
           <input type="hidden" name="kaohao_id" id="kaohao_id">
           <input type="hidden" name="subject_id" id="subject_id">
+          <input type="hidden" name="nianji" id="nianji">
         </form>
       </div>
     </div>
@@ -62,6 +63,7 @@
 
          $('#kaohao_id').val(data.id);
          $('#subject_id').val(data.sbj.id);
+         $('#nianji').val(data.cjBanji.ruxuenian);
          if(data.ksChengji[0]){
           $('#defen').val(data.ksChengji[0].defen);
          }
@@ -87,12 +89,14 @@
           subject_id:$('#subject_id').val()
           ,kaohao_id:$('#kaohao_id').val()
           ,defen:$('#defen').val()
+          ,nianji:$('#nianji').val()
         },
         dataType: 'json',
         success: function(data){
          if(data.val == 1){
            $('#kaohao_id').val('');
            $('#subject_id').val('');
+           $('#nianji').val('');
            $('#defen').val('');
            $('#xsschool').text('');
            $('#xsbanji').text('');

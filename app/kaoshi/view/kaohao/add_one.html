@@ -15,19 +15,16 @@
           <div class="layui-form-item">
             <label for="school" class="layui-form-label"><span class="x-red">*</span>学校</label>
             <div class="layui-input-block">
-              {php} $schoollist = schlist('校级','校级',['小学','中小学']);{/php}
               <select name="school" id="school" lay-verify="required">
                 <option value=""></option>
-                {volist name="schoollist" id="vo"}
+                {foreach $list.data.school as $key=>$vo}
                   <option value="{$vo.id}"
-                  {present name="$list.data.school"}
-                    {eq name="$list.data.school" value="$vo.id" }
+                    {eq name="$key" value="0" }
                       selected
-                    {/eq}
-                  {/present}>
+                    {/eq}>
                     {$vo.title}
                   </option>
-                {/volist}
+                {/foreach}
               </select>
             </div>
           </div>
@@ -38,7 +35,7 @@
             <div class="layui-input-block">
               <select name="ruxuenian" id="ruxuenian" lay-verify="required" class="layui-form-label">
                 {foreach $list.data.nianji as $key=>$vo}
-                  <option value="{$vo.id}">{$vo.title}</option>
+                  <option value="{$vo.nianji}">{$vo.nianjiname}</option>
                 {/foreach}
               </select>
             </div>
@@ -75,95 +72,64 @@
 
 {block name="myjs"}
 <script>
-  layui.use('form', function(){
-    var form = layui.form;
+  layui.use(['form','cjgl'], function(){
+    var form = layui.form
+        cjgl = layui.cjgl;
 
 
+    addBanji();
     // 监听选择按钮
     form.on('select', function(data){
       var myselectname = $(data.elem).attr('name');
       if(myselectname == 'school' || myselectname == 'ruxuenian'){
-        mybanji();
+        addBanji();
         form.render();
       }
     });
 
-    //获取班级列表并更新
-    function mybanji(){
-      // 获取表单值
-      var school = $('#school').val()
-      ,ruxuenian = $('#ruxuenian').val();
-      
-      // 获取节点
-      var bj = $("#banji");
-      var bjdl = $('#banji').next().children('dl');
-      var bjdiv = $('#banji').next().children('div');
 
-      // 删除原来已有值
-      $(bj).empty();
-      $(bjdl).children('dd').each(function(){
-        this.remove();
-      });
-      // 删除选中值
-      $(bjdiv).children('input:first').val('');
-
-      // 获取班级列表
-      $.ajax({
-          url:"/teach/banji/mybanji", 
-          type:"POST",
-          data:{
-            school:school
-            ,ruxuenian:ruxuenian
-          },
-          dataType:'json',
-          success:function(result){
-            if(result.length > 0){
-              result.forEach(function(val,index){
-                $(bj).append("<option value="+val['id']+">"+val['banTitle']+"</option>");
-              })
-              form.render('select'); //刷新select选择框渲染
-            }
-          },
-          error:function(xhr,status,error) {
-            layer.msg('数据处理错误',{
-                icon: 2,
-                time: 2000 //2秒关闭（如果不配置，默认是3秒）
-            });
-          }
-      });
+    function addBanji()
+    {
+      // 获取参数
+      formval = form.val("myform");
+      cjgl.createSelectOption('banji',formval,'/teach/banji/mybanji','id','banTitle');
+      console.log(formval);
     }
+    
+
+    // 搜索教师
+    $('#search').bind({
+      keyup:function(){
+        str = $('#search').val().trim();
+        banji = $('#banji').val();
+        if(banji=='')
+        {
+          layer.msg('先选择班级');
+          return true;
+        }
+        // 获取数据
+        $.post(
+            "/renshi/student/srcstudent",
+            {
+                "str":str,
+                "banji":banji
+            },
+            function(data,status){
+                
+                if($.isEmptyObject(data))
+                {
+                    return true;
+                }
+                for (var i = data.length - 1; i >= 0; i--) {
+                  $('#list').append('<span name="aa" onclick="addStudent(this)" name="srcjg" class="layui-btn layui-btn-normal" stuid="'+data[i].id+'" stuname="'+data[i].xingming+'">'+data[i].xingming+' </span>');
+                }
+            }
+        );
+      }
+    })
   });
 
-  // 搜索教师
-  $('#search').bind({
-    keyup:function(){
-      str = $('#search').val().trim();
-      banji = $('#banji').val();
-      if(banji=='')
-      {
-        layer.msg('先选择学校');
-        return true;
-      }
-      // 获取数据
-      $.post(
-          "/renshi/student/srcstudent",
-          {
-              "str":str,
-              "banji":banji
-          },
-          function(data,status){
-              
-              if($.isEmptyObject(data))
-              {
-                  return true;
-              }
-              for (var i = data.length - 1; i >= 0; i--) {
-                $('#list').append('<span name="aa" onclick="addStudent(this)" name="srcjg" class="layui-btn layui-btn-normal" stuid="'+data[i].id+'" stuname="'+data[i].xingming+'">'+data[i].xingming+' </span>');
-              }
-          }
-      );
-    },
-  })
+
 
   // 添加学生
   function addStudent(obj)

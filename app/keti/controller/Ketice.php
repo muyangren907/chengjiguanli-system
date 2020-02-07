@@ -44,7 +44,7 @@ class Ketice extends BaseController
                     'page'=>'1',
                     'limit'=>'10',
                     'field'=>'lxshijian',
-                    'type'=>'desc',
+                    'order'=>'desc',
                     'lxdanweiid'=>array(),
                     'category'=>array(),
                     'searchval'=>''

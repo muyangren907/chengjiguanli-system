@@ -14,13 +14,12 @@
 		<div class="layui-form-item">
       <label for="searchval" class="layui-form-label">关键字</label>
       <div class="layui-input-block">
-        <input type="text" id="searchval" name="searchval"
-              autocomplete="off" class="layui-input">
+        <input type="text" id="searchval" name="searchval" autocomplete="off" class="layui-input">
       </div>
     </div>
     <div class="layui-form-item" style="margin-bottom: 0;">
 		    <label for="pid" class="layui-form-label" style="height: 100%">一级类型</label>
-		    <div class="layui-input-block" onclick ="clickSearchButton()">
+		    <div class="layui-input-block">
 		    	<input type="radio" name="pid" value="" title="无">
 		    	{php} $pid = getCategory(0);{/php}
 		    	{volist name="pid" id="vo"}

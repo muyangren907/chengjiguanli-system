@@ -41,6 +41,8 @@ Route::group('bjtj', function () {
 	    Route::rule('dwbiaoge/<kaoshi>','Bjtongji/dwBiaoge','get');		# 扫码保存
 	    Route::rule('dwxlsx','Bjtongji/dwBanjixls','post');		# 扫码保存
 	    Route::rule('tongji','Bjtongji/tongji','post');		# 统计各班级成绩
+	    Route::rule('myavg','Bjtongji/myAvg','post');			# 扫码界面
+	    Route::rule('digui/<num>','Bjtongji/digui','get');			# 扫码界面
 	});
 
 

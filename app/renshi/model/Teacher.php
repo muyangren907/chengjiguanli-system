@@ -14,7 +14,7 @@ class Teacher extends Base
     {
         $src = [
             'field'=>'update_time',
-            'type'=>'desc',
+            'order'=>'desc',
             'zhiwu'=>array(),
             'danwei'=>array(),
             'xueli'=>array(),
@@ -33,7 +33,7 @@ class Teacher extends Base
         $searchval = $src['searchval'];
 
 
-        $data = $this->order([$src['field'] =>$src['type']])
+        $data = $this->order([$src['field'] =>$src['order']])
             ->when(count($danwei)>0,function($query) use($danwei){
                     $query->where('danwei','in',$danwei);
                 })
@@ -80,7 +80,7 @@ class Teacher extends Base
     {
         $src = [
             'field'=>'update_time',
-            'type'=>'desc',
+            'order'=>'desc',
             'zhiwu'=>array(),
             'danwei'=>array(),
             'xueli'=>array(),
@@ -99,7 +99,7 @@ class Teacher extends Base
 
 
         $data = $this::onlyTrashed()
-            ->order([$src['field'] =>$src['type']])
+            ->order([$src['field'] =>$src['order']])
             ->when(count($danwei)>0,function($query) use($danwei){
                     $query->where('danwei','in',$danwei);
                 })

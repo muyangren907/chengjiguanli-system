@@ -12,7 +12,7 @@ class KetiInfo extends Base
     {
     	$src = [
             'field'=>'update_time',
-            'type'=>'desc',
+            'order'=>'desc',
             'lxdanweiid'=>array(),
             'lxcategory'=>array(),
             'fzdanweiid'=>array(),
@@ -36,7 +36,7 @@ class KetiInfo extends Base
     	$searchval = $src['searchval'];
 
     	$data = $this
-            ->order([$src['field'] =>$src['type']])
+            ->order([$src['field'] =>$src['order']])
     		->when(count($lxdanweiid)>0,function($query) use($lxdanweiid){
                 	$query->where('ketice','in',function ($q) use($lxdanweiid){
                         $q->name('keti')->where('lxdanweiid','in',$lxdanweiid)->field('id');
@@ -115,7 +115,7 @@ class KetiInfo extends Base
     public function srcKeti($ketice)
     {
         $data = $this
-            // ->order([$src['field'] =>$src['type']])
+            // ->order([$src['field'] =>$src['order']])
             ->where('ketice',$ketice)
             ->with(
                 [

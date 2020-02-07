@@ -71,7 +71,7 @@ class JsRongyuInfo extends BaseController
                     'page'=>'1',
                     'limit'=>'10',
                     'field'=>'update_time',
-                    'type'=>'desc',
+                    'order'=>'desc',
                     'fzschool'=>array(),
                     'hjschool'=>array(),
                     'category'=>array(),

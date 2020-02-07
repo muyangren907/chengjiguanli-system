@@ -14,7 +14,6 @@
         {load href="__XADMIN__/js/xadmin.js" /}
         {load href="__XADMIN__/js/cookie.js" /}
         {load href="__XADMIN__/js/md5.min.js" /}
-        {load href="__XADMIN__/js/md5.min.js" /}
         {load href="__STATIC__/echarts/echarts.min.js" /}
         {block name="jsset"}{/block}
         <!--[if lt IE 9]>
@@ -71,8 +70,6 @@
             base: "__XADMIN__/js/" //假设这是你存放拓展模块的根目录
         });
 
-        // 声明表格,和表格参数变量
-        var userTable,options,formval;
         // 设置表格初始变量
         options = {
           elem: '#tabledemo',
@@ -83,79 +80,93 @@
           loading:true,
           autoSort:false,
           id:'mytable',
-          defaultToolbar:'',
-          where:{},
+          defaultToolbar:['filter'],
           limits:[10,25,50,75,100],
           limit:10,
-          // height:390,
         };
+        
     </script>
     {block name="myjs"}{/block}
     <script type="text/javascript">
-        // 实例化表格
-        layui.use('table',function(){
-          var lTable = layui.table
-              lForm = layui.form
-              cjgl = layui.cjgl;
-              
+      // 实例化表格
+      layui.use('table',function(){
+        var lTable = layui.table
+            lForm = layui.form;
 
-          userTable = lTable.render(options);  //获取数据并渲染
+        options.where = lForm.val("search");
+        userTable = lTable.render(options);  //获取数据并渲染
 
-          // 监听排序
-          lTable.on('sort(mytable)', function(obj){
-            $("#srcsubmit").click();
-            formval.field = obj.field;
-            formval.type = obj.type; 
-            tablereload(formval);
-          });
-
-          //监听指定开关
-          lForm.on('switch(status)', function(data){
-            var status = "{$list.status ? $list.status : url('status')}";
-            cjgl.status(data,status);
-          });
-
-        });
-        
-
-        // 提交搜索条件后重载表格
-        layui.use('form',function(){
-          var form = layui.form;
-          // 监听表单提交
-          form.on('submit(srcsubmit)', function(data){
-            formval = data.field;
-            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
-          });
-        });
-
-
-        // 表格重载
-        function tablereload(val)
-        {
+        // 监听排序
+        lTable.on('sort(mytable)', function(obj){
           userTable.reload({
-              where: val
-              ,page: {
-                curr: 1 //重新从第 1 页开始
-              }
-            });
-        }
+            initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+            ,where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+              field: obj.field //排序字段
+              ,order: obj.type //排序方式
+            }
+          })
+        });
 
-        // 提交表单
-        function clickSearchButton(){
+        //监听状态开关
+        lForm.on('switch(status)', function(data){
+          var status = "{$list.status ? $list.status : url('status')}";
+          cjgl.status(data,status);
+        });
+
+        // 监听下拉菜单
+        lForm.on('select', function(data){
+          $("#srcsubmit").click();
+        });
+        // 监听复选框
+        lForm.on('checkbox', function(data){
+          filter = $(data.elem).parents("form").attr('lay-filter');
+          if(filter == 'search')
+          {
+            checkall = $(data.elem).attr('checkall');
+            parentId = $(data.elem).parents("div").attr('id');
+            if(checkall=='p'){
+              cjgl.checkboxAll(parentId,data.elem.checked);
+            }else if(checkall=='c'){
+              cjgl.checkboxParent(parentId);
+            }
+
+
             $("#srcsubmit").click();
-            tablereload(formval);
-        }
+            return true;
+          }
+
+        });
+        // 监听单选
+        lForm.on('radio', function(data){
+          $("#srcsubmit").click();
+        });
+        // 监听表单提交
+        lForm.on('submit(srcsubmit)', function(data){
+          tablereload();
+          return false;
+        });
 
         // 获取搜索框文字
-        $('#searchval').bind("keyup",function(){
-            var searchval = $('#searchval').val();
-            if($.trim(searchval)!="" || searchval==""){
-                $("#srcsubmit").click();
-                tablereload(formval);
-            }
+        $('#searchval').on("change",function(){
+            $("#srcsubmit").click();
         })
-        
-    </script>
 
-    
+        // 表格重载
+        function tablereload()
+        {
+          options.where = lForm.val("search");
+          userTable = lTable.render(options);  //获取数据并渲染
+        }
+        // // 数据排序
+        // function tablereload2(val)
+        // {
+        //   userTable.reload({
+        //     where: val //设定异步数据接口的额外参数
+        //     ,page:{
+        //       curr:1
+        //     }
+        //   });
+        // }
+      });
+    </script>
 </html>

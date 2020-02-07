@@ -34,7 +34,7 @@ class AuthGroup extends BaseController
                     'page'=>'1',
                     'limit'=>'10',
                     'field'=>'id',
-                    'type'=>'asc',
+                    'order'=>'asc',
                     'searchval'=>''
                 ],'POST');
 
@@ -73,6 +73,12 @@ class AuthGroup extends BaseController
             'formpost'=>'POST',
             'url'=>'save',
         );
+
+
+        $rule = new \app\admin\model\AuthRule;
+        $ruleList = $rule->srcChildren();
+
+        halt($ruleList);
 
 
         // 模板赋值

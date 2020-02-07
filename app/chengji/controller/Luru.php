@@ -21,6 +21,13 @@ class Luru extends BaseController
         $list['webtitle'] = '已录列表';
         $list['dataurl'] = 'luru/data';
 
+        // 获取学科列表
+        $sbj = new \app\teach\model\Subject;
+        $list['subject'] = $sbj->where('kaoshi',1)
+                                ->where('status',1)
+                                ->field('id,title,jiancheng')
+                                ->select();
+
 
         // 模板赋值
         $this->view->assign('list',$list);
@@ -41,6 +48,7 @@ class Luru extends BaseController
                     ,'limit'
                     ,'field'=>'update_time'
                     ,'type'=>'desc'
+                    ,'subject_id'=>''
                     ,'searchval'
                 ],'POST');
 
@@ -98,7 +106,7 @@ class Luru extends BaseController
     public function malusave()
     {   
         // 获取表单数据
-        $list = $this->request->only(['kaohao_id','subject_id','defen'],'post');
+        $list = $this->request->only(['kaohao_id','subject_id','nianji','defen'],'post');
 
         $kaoshiid = Kaohao::where('id',$list['kaohao_id'])->value('kaoshi');
         // 判断考试结束时间是否已过
@@ -109,8 +117,21 @@ class Luru extends BaseController
             return json($data);
         }
 
+        // // 根据考号获取学生年在年级及考试ID
+        // $kh = new \app\kaoshi\model\Kaohao;
+        // $khinfo = $kh->where('id',$list['k'])->find();
+        // 获取本学科满分
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $subject = $ksset->srcSubject($kaoshiid,$list['subject_id'],$list['nianji']);
+        if(count($subject)>0)
+        {
+            $manfen = $subject[0]['fenshuxian']['manfen'];
+        }else{
+            $manfen = "";
+        }
+
+
         // 成绩验证
-        $manfen =  getmanfen($kaoshiid,$list['subject_id']);
         $mfyz = manfenvalidate($list['defen'],$manfen);
         if($mfyz['val'] == 0)
         {
@@ -182,11 +203,21 @@ class Luru extends BaseController
         // 获取学科id
         $subject = new \app\teach\model\Subject;
         $subject_id = $subject->where('lieming',$list['colname'])->value('id');
-
+        // 根据考号获取学生年在年级及考试ID
+        $kh = new \app\kaoshi\model\Kaohao;
+        $khinfo = $kh->where('id',$id)->find();
+        // 获取本学科满分
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $subject = $ksset->srcSubject($khinfo->kaoshi,$subject_id,$khinfo->ruxuenian);
+        if(count($subject)>0)
+        {
+            $manfen = $subject[0]['fenshuxian']['manfen'];
+        }else{
+            $manfen = "";
+        }
 
 
         // 成绩验证
-        $manfen =  getmanfen($kaoshiid,$subject_id);
         $mfyz = manfenvalidate($list['newdefen'],$manfen);
         if($mfyz['val'] == 0)
         {
@@ -297,22 +328,10 @@ class Luru extends BaseController
         // 获取参考年级
         $list['data'] = $ks::order(['id'=>'desc'])
                 ->field('id,title')
-                ->with([
-                    'ksNianji'
-                    ,'ksSubject'=>function($query){
-                                $query->field('id,subjectid,kaoshiid')
-                                    ->with(['subjectName'=>function($q){
-                                        $q->field('id,title');
-                                    }]
-                                );
-                            }
-                ])
                 ->where('enddate','>=',time())
                 ->select()
                 ->toArray();
 
-        
-        
         // 设置页面标题
         $list['set'] = array(
             'webtitle'=>'表格录入',
@@ -344,9 +363,9 @@ class Luru extends BaseController
         $cjinfo = $excel->readXls(public_path().'public\\uploads\\'.$url);
 
         $kaoshiid = $cjinfo[1][0];  #获取考号
+        $nianji = $cjinfo[1][1];  #获取年级
 
-
-        if($kaoshiid == null || $cjinfo[2][0] != '序号' || $cjinfo[2][1] != '编号' || $cjinfo[2][2] != '班级' || $cjinfo[2][3] != '姓名')
+        if($kaoshiid == null || $nianji==null || $cjinfo[2][0] != '序号' || $cjinfo[2][1] != '编号' || $cjinfo[2][2] != '班级' || $cjinfo[2][3] != '姓名')
         {
             $data=['msg'=>'请使用模板上传','val'=>0];
             return json($data);
@@ -366,19 +385,26 @@ class Luru extends BaseController
         // 删除成绩采集表无用的标题行得到成绩数组
         array_splice($cjinfo,0,3);
 
+
+
         // 查询考试信息
-        $kh = new Kaohao;
-        // $ks = new \app\kaoshi\model\Kaoshi;
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $sbj = $ksset->srcSubject($kaoshiid,$xk,$nianji);
+        $subject = array();
+        foreach ($sbj as $key => $value) {
+            $key = array_search($value['id'], $xk);
+            if(is_numeric($key))
+            {
+                $subject[$key] = $value;
+            }
+        }
 
 
         $user_id = session('userid');   # 获取用户id
         $data = array();
 
-
         // 重新组合数组
-        foreach ($xk as $key => $value) {
-            // 获取成绩满分
-            $manfen =  getmanfen($kaoshiid,$value);
+        foreach ($subject as $key => $value) {
             # code...
             foreach ($cjinfo as $k => $val) {
                 $defen = $val[$key+4];    # 当前学生当前学科成绩
@@ -387,7 +413,7 @@ class Luru extends BaseController
                     continue;
                 }
                 // 验证成绩格式，如果不对则跳过
-                $mfyz = manfenvalidate($defen,$manfen);
+                $mfyz = manfenvalidate($defen,$value['fenshuxian']['manfen']);
                 if($mfyz['val'] == 0)
                 {
                     continue;
@@ -396,7 +422,7 @@ class Luru extends BaseController
                 // 添加或更新数据
                 $cjone = Chengji::withTrashed()
                         ->where('kaohao_id',$val[1])
-                        ->where('subject_id',$value)
+                        ->where('subject_id',$value['id'])
                         ->find();
                 // 判断成绩是否存在
                 if($cjone)
@@ -412,7 +438,7 @@ class Luru extends BaseController
                     // 如果不存在则新增记录
                     $data = [
                         'kaohao_id'=>$val[1],
-                        'subject_id'=>$value,
+                        'subject_id'=>$value['id'],
                         'user_id'=>$user_id,
                         'defen'=>$defen
                     ];

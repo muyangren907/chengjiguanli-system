@@ -13,28 +13,27 @@ class Tongji extends BaseController
     // 统计已经录入成绩数量
     public function yiluCnt($kaoshi)
     {
+        // 获取考试信息
         $ks = new \app\kaoshi\model\Kaoshi;
         $ksinfo = $ks->where('id',$kaoshi)
-            ->with([
-                'KsNianji'
-                ,'ksSubject'=>function($query){
-                    $query->field('kaoshiid,subjectid,manfen')
-                        ->with(['subjectName'=>function($q){
-                            $q->field('id,title,lieming');
-                        }]
-                    );
-                }
-            ])
             ->field('id,title')
             ->find();
 
-        if(count($ksinfo->ks_nianji)>0)
+        // 获取参加考试的年级和学科
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $list['nianji'] = $ksset->srcNianji($kaoshi);
+        $list['subject'] = $ksset->srcSubject($kaoshi);
+
+       
+        // 获取参与班级
+        if(count($list['nianji'])>0)
         {
-            $list['nianji'] = $ksinfo->ks_nianji[0]->nianji;
-        }else{
-            $list['nianji'] = "一年级";
+            $kh = new \app\kaoshi\model\Kaohao;
+            $src['ruxuenian'] = [$list['nianji'][0]['nianji']];
+            $src['kaoshi'] = $kaoshi;
+            $list['school'] = $kh->cySchool($src);
         }
-        $list['subject'] = $ksinfo->ksSubject->toArray();
+
         // 设置要给模板赋值的信息
         $list['webtitle'] = '各年级的班级成绩列表';
         $list['kaoshi'] = $kaoshi;
@@ -61,23 +60,13 @@ class Tongji extends BaseController
                     'kaoshi'=>'',
                     'ruxuenian'=>'',
                     'school'=>array(),
-                    'paixu'=>array(),
-                ],'POST');
-
-
-        $src['school'] = strToarray($src['school']);
-
-
-        // 获取参与考试的班级
-        $kh = new \app\kaoshi\model\Kaohao;
-        $src['banji']= $kh->cyBanji($src);
-
+                    'banji'=>array(),
+                ],'POST');     
 
         // 统计成绩
         $btj = new \app\chengji\model\TongjiBj;
 
         $data = $btj->tjBanjiCnt($src);
-
        
         // 获取记录总数
         $cnt = count($data);

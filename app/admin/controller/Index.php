@@ -35,7 +35,7 @@ class Index extends BaseController
                     'page'=>'1'
                     ,'limit'=>'10'
                     ,'field'=>'id'
-                    ,'type'=>'desc'
+                    ,'order'=>'desc'
                     ,'searchval'=>''
                 ],'POST');
 

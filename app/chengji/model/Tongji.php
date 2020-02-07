@@ -9,33 +9,25 @@ class Tongji extends Base
 {
 
     // 统计成绩
-    public function tongjiCnt($cj=array(),$kaoshi)
+    public function tongjiCnt($cj=array(),$subject)
     {   
-        // 获取考试信息
-        $ks = new \app\kaoshi\model\Kaoshi;
-        $ksinfo = $ks->where('id',$kaoshi)
-                ->field('id')
-                ->with(['ksSubject'=>function($query){
-                    $query->field('id,kaoshiid,subjectid,lieming,youxiu,jige');
-                }])
-                ->find();
         $data = array();
 
         // 循环统计各学科成绩
-        foreach ($ksinfo->ksSubject as $key => $value) {
-            $cjcol = array_column($cj,$value->lieming);
-            // $stucnt = count($cjcol);
+        foreach ($subject as $key => $value) {
+            $cjcol = array_column($cj,$value['lieming']);
+
             $cjcol = array_filter($cjcol,function($item){
-                return $item !== null; 
+                return $item != null;
             });
 
             $temp = array();
-
             $temp['xkcnt'] = count($cjcol);
-            $data[$value->lieming] = $temp;
+            $data[$value['lieming']] = $temp;
         }
+
         $data['stucnt'] = count($cj);
-       
+        
         return $data;
     }
 
@@ -43,39 +35,32 @@ class Tongji extends Base
 
 
     // 统计成绩
-    public function tongjiSubject($cj=array(),$kaoshi)
+    public function tongjiSubject($cj=array(),$subject)
     {   
-        // 获取考试信息
-        $ks = new \app\kaoshi\model\Kaoshi;
-        $ksinfo = $ks->where('id',$kaoshi)
-                ->field('id')
-                ->with(['ksSubject'=>function($query){
-                    $query->field('id,kaoshiid,subjectid,lieming,manfen,youxiu,jige');
-                }])
-                ->find();
-        $data = array();
+        
         // 设置默认值
         $tempNull = [
-                    'xkcnt'=>0,
-                    'sum'=>null,
-                    'biaozhuncha'=>null,
-                    'avg'=>null,
-                    'youxiu'=>null,
-                    'jige'=>null,
-                    'sifenwei'=>[
-                        '0'=>null,
-                        '1'=>null,
-                        '2'=>null
-                    ],
-                    'max'=>null,
-                    'min'=>null,
-                    'zhongshu'=>null,
-                ];
+            'xkcnt'=>0,
+            'sum'=>null,
+            'biaozhuncha'=>null,
+            'avg'=>null,
+            'youxiu'=>null,
+            'jige'=>null,
+            'sifenwei'=>[
+                '0'=>null,
+                '1'=>null,
+                '2'=>null
+            ],
+            'max'=>null,
+            'min'=>null,
+            'zhongshu'=>null,
+        ];
+        $data = array();
 
 
         // 循环统计各学科成绩
-        foreach ($ksinfo->ksSubject as $key => $value) {
-            $cjcol = array_column($cj,$value->lieming);
+        foreach ($subject as $key => $value) {
+            $cjcol = array_column($cj,$value['lieming']);
             $stucnt = count($cjcol);
             $cjcol = array_filter($cjcol,function($item){
                 return $item !== null; 
@@ -87,23 +72,23 @@ class Tongji extends Base
             {
                 $temp = $tempNull;
                 $temp['stucnt'] = $stucnt;
-                $temp['id'] = $value->subjectid;
+                $temp['id'] = $value['id'];
             }else{
                 $temp['xkcnt'] = count($cjcol);
                 $temp['sum'] = array_sum($cjcol);
                 $temp['xkcnt']>0 ? $temp['avg'] = $temp['sum']/$temp['xkcnt'] : $temp['avg']=0;
                 $temp['biaozhuncha'] = round($this->getVariance($temp['avg'], $cjcol,true),2);
                 $temp['avg'] = round($temp['avg'],2);
-                $temp['youxiu'] = $this->rate($cjcol,$value->youxiu);
-                $temp['jige'] = $this->rate($cjcol,$value->jige);
+                $temp['youxiu'] = $this->rate($cjcol,$value['fenshuxian']['youxiu']);
+                $temp['jige'] = $this->rate($cjcol,$value['fenshuxian']['jige']);
                 $temp['max'] = max($cjcol);
                 $temp['min'] = min($cjcol);
                 $temp['sifenwei'] = $this->quartile($cjcol);
                 $temp['zhongshu'] = '';
                 $temp['stucnt'] = $stucnt;
-                $temp['id'] = $value->subjectid;
+                $temp['id'] = $value['id'];
             }
-            $data['cj'][$value->lieming] = $temp;
+            $data['cj'][$value['lieming']] = $temp;
         }
 
 
@@ -126,7 +111,7 @@ class Tongji extends Base
             $temp['max'] = max($cjcol);
             $temp['min'] = min($cjcol);
             $temp['youxiu'] = null;
-            $temp['jige'] = $this->rateAll($cj,$ksinfo->ks_subject); #全科及格率
+            $temp['jige'] = $this->rateAll($cj,$subject); #全科及格率
             $temp['sifenwei'] = $this->quartile($cjcol);
             $temp['zhongshu'] = '';
             $temp['stucnt'] = $stucnt;
@@ -135,6 +120,14 @@ class Tongji extends Base
         $data['cj']['all'] = $temp;
 
         return $data;
+    }
+
+
+
+    // 统计给定成绩
+    public function tongjiArray($cj,$koashi)
+    {
+
     }
 
 
@@ -171,12 +164,12 @@ class Tongji extends Base
             $col = 0; # 记录有成绩的学生数
             // 开始循环这个学生的每个学科成绩
             foreach ($sbj as $k => $val) {
-                if(isset($value[$val->lieming]))
+                if(isset($value[$val['lieming']]))
                 {
-                       if($value[$val->lieming]>=$val->jige){
+                       if($value[$val['lieming']]>=$val['fenshuxian']['jige']){
                             $temjige++;
                        }
-                       if($value[$val->lieming] !== null)
+                       if($value[$val['lieming']] !== null)
                        {
                             $col++;
                        }

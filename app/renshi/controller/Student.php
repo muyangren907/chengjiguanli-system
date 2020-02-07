@@ -36,7 +36,7 @@ class Student extends BaseController
                     'page'=>'1',
                     'limit'=>'10',
                     'field'=>'update_time',
-                    'type'=>'desc',
+                    'order'=>'desc',
                     'school'=>array(),
                     'ruxuenian'=>array(),
                     'paixu'=>array(),
@@ -113,7 +113,7 @@ class Student extends BaseController
                     'page'=>'1',
                     'limit'=>'10',
                     'field'=>'update_time',
-                    'type'=>'desc',
+                    'order'=>'desc',
                     'school'=>array(),
                     'searchval'=>''
                 ],'POST');
@@ -168,7 +168,7 @@ class Student extends BaseController
                     'page'=>'1',
                     'limit'=>'10',
                     'field'=>'update_time',
-                    'type'=>'desc',
+                    'order'=>'desc',
                     'school'=>array(),
                     'ruxuenian'=>array(),
                     'paixu'=>array(),
@@ -325,7 +325,7 @@ class Student extends BaseController
                     'page'=>'1',
                     'limit'=>'10',
                     'field'=>'update_time',
-                    'type'=>'desc',
+                    'order'=>'desc',
                     'studentid'=>'',
                 ],'POST');
 

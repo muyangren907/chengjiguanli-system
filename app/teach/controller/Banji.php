@@ -34,10 +34,9 @@ class Banji extends BaseController
                     'page'=>'1',
                     'limit'=>'10',
                     'field'=>'school',
-                    'type'=>'asc',
+                    'order'=>'asc',
                     'school'=>'',
                     'ruxuenian'=>'',
-                    'searchval'=>''
                 ],'POST');
 
 
@@ -321,8 +320,14 @@ class Banji extends BaseController
                 ->where('status',1)
                 ->append(['banTitle'])
                 ->select()->toArray();
+        $cnt = count($list);
 
-        return json($list);
+        $data = [
+            'count'=>$cnt, // 符合条件的总数据量
+            'data'=>$list, //获取到的数据结果
+        ];
+
+        return json($data);
     }
 
 
@@ -336,13 +341,9 @@ class Banji extends BaseController
 
         // 获取变量
         $school = input('post.school');
-        $ruxuenian = explode(',',input('post.ruxuenian'));
-
-
-        if(is_array($ruxuenian)==false)
-        {
-            $ruxuenian = array($ruxuenian);
-        }
+        // $ruxuenian = explode(',',input('post.ruxuenian'));
+        $ruxuenian = input('post.ruxuenian');
+        $ruxuenian = strToarray($ruxuenian);
 
         // 查询年级数据
         $list = BJ:: where('school',$school)

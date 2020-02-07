@@ -11,22 +11,13 @@
 	</span>
 {/block}
 {block name="search"}
-	<div class="layui-form-item">
-      <label for="searchval" class="layui-form-label">
-          关键字
-      </label>
-      <div class="layui-input-block">
-          <input type="text" id="searchval" name="searchval"
-          autocomplete="off" class="layui-input">
-      </div>
-    </div>
     <div class="layui-form-item">
 	    <label for="school" class="layui-form-label" style="height: 100%">学校</label>
-	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+	    <div class="layui-input-block">
 	    	{php}
 	    		$schoollist = schlist('校级','校级',$xueduan=['小学','中小学']);
 	    	{/php}
-	    	<input type="radio" name="school" value="" title="无">
+	    	<input type="radio" name="school" value="" title="无" checked="true">
 	    	{volist name="schoollist" id="vo"}
 	    		<input type="radio" name="school" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
@@ -34,10 +25,9 @@
 	</div>
     <div class="layui-form-item" style="margin-bottom: 0;">
 	    <label for="ruxuenian" class="layui-form-label" style="height: 100%">年级</label>
-	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+	    <div class="layui-input-block">
 	    	{foreach :nianjiList() as $key=>$vo }
-	    		<input type="radio" name="ruxuenian" title="{$vo}" value="{$key}" lay-skin="primary" {eq name="vo" value="一年级"}checked{/eq}
->
+	    		<input type="radio" name="ruxuenian" title="{$vo}" value="{$key}" lay-skin="primary" {eq name="vo" value="一年级"}checked{/eq}>
 	    	{/foreach}
 	    </div>
 	</div>

@@ -50,42 +50,8 @@
 			{type:'checkbox', fixed: 'left'},
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:80},
 			{field: 'title', title: '考试名称',sort: true, minWidth:240},
-			// {field: 'category', title: '考试分类', minWidth:100,sort: true,templet:function(d){
-			// 	var str='';
-			// 	if(d.ks_category)
-			// 	{
-			// 		str = d.ks_category.title;
-			// 	}
-			// 	return str;
-			// }},
-			{field: "",title: '参考年级', minWidth:180,templet:function(d){
-				var str='';
-				if(d.ksNianji.length>0)
-				{
-					for (var k = 0, length = d.ksNianji.length; k < length; k++) {
-						if(k == 0){
-							str = d.ksNianji[k].nianjiname;
-						}else{
-							str =str+'、'+d.ksNianji[k].nianjiname;
-						}
-					}
-				}
-				return str;
-			}},
-			{field: '', title: '参考学科', minWidth:100,templet:function(d){
-				var str='';
-				if(d.ksSubject.length>0)
-				{
-					for (var k = 0, length = d.ksSubject.length; k < length; k++) {
-						if(k == 0){
-							str = d.ksSubject[k].subjectName.jiancheng;
-						}else{
-							str =str+'、'+d.ksSubject[k].subjectName.jiancheng;
-						}
-					}
-				}
-				return str;
-			}} ,
+			{field: "ckNianji",title: '参考年级', minWidth:180},
+			{field: 'ckSubject', title: '参考学科', minWidth:100} ,
 			{field: 'bfdate', title: '考试时间', minWidth:150,sort: true,templet:function(d){
 				var date;
 				date = d.enddate.split('-');

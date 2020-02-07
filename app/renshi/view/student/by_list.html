@@ -22,36 +22,11 @@
     </div>
     <div class="layui-form-item">
 	    <label for="school" class="layui-form-label" style="height: 100%">学校</label>
-	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+	    <div class="layui-input-block">
 	    	{php} $schoollist = schlist('校级','校级',$xueduan=['小学','中小学']);{/php}
 	    	{volist name="schoollist" id="vo"}
 	    		<input type="checkbox" name="school[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
-	    </div>
-	</div>
-	<div class="layui-form-item">
-	    <label for="ruxuenian" class="layui-form-label" style="height: 100%">年级 </label>
-	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-	    	{php} $njlist = nianjiList();{/php}
-	    	{foreach $njlist as $key=>$vo}
-	    		<input type="checkbox" name="ruxuenian[]" title="{$vo}" value="{$key}" lay-skin="primary">
-	    	{/foreach}
-	    </div>
-	</div>
-	<div class="layui-form-item" style="margin-bottom: 0;">
-	    <label for="paixu" class="layui-form-label" style="height: 100%">班级</label>
-	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-	    	{php}
-	    		$banji = new \app\teach\model\Banji;
-	    		$ruxuenian = array_keys($njlist);
-	    		$paixu = $banji->where('status',1)
-	    				->where('ruxuenian','in',$ruxuenian)
-	    				->max('paixu');
-	    		$bjlist = banjinamelist();
-	    	{/php}
-	    	{for start="1" end="$paixu+1" }
-	    		<input type="checkbox" name="paixu[]" title="{$bjlist[$i]}" value="{$i}" lay-skin="primary">
-	    	{/for}
 	    </div>
 	</div>
 {/block}

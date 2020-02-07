@@ -22,7 +22,7 @@
     </div>
     <div class="layui-form-item">
 	    <label for="xingzhi" class="layui-form-label" style="height: 100%">所属学科</label>
-	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+	    <div class="layui-input-block">
 	    	{php}
 	    		$sbj = new \app\teach\model\Subject;
 	    		$subject = $sbj->field('id,title')->where('status',1)->order('paixu')->select();
@@ -34,7 +34,7 @@
 	</div>
 	<div class="layui-form-item" style="margin-bottom: 0;">
 	    <label for="hjschool" class="layui-form-label" style="height: 100%">获奖单位</label>
-	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
+	    <div class="layui-input-block">
 	    	{php} $school = schlist('校级','区级'); {/php}
 	    	{volist name="school" id="vo"}
 	    		<input type="checkbox" name="hjschool[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">

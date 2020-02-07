@@ -3,7 +3,8 @@
   **/      
 
 layui.define(['table'],function(exports){ //提示：模块也可以依赖其它模块，如：layui.define('layer', callback);
-    var table = layui.table;
+    var table = layui.table
+        form = layui.form;
     var obj = {
 
     // 新建弹窗
@@ -144,7 +145,7 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
                         // }
                         // 更新缓存值，否则下次操作会报错。
                         // obj.update({
-                        //     status: 
+                        //     status: statusval
                         // });
                         // obj.elem.prop('value','off');
                         // obj.elem.prop('checked',true);
@@ -325,6 +326,109 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
     delTeacher:function(myobj){
         $(myobj).parent().remove();
     },
+
+    /**  
+    * 动太获取复选框列表并添加列表 
+    * 
+    * @access public 
+    * @param parentId 要添加checkbox的divID 
+    * @param array val post时需要的参数 
+    * @param url post地址
+    * @param createName 新checkbox名
+    * @param title 输出返回数组的列
+    * @return array 返回类型
+    */ 
+    createCheckbox:function(parentId,val,url,createName,title='title'){
+        $('#'+parentId).children().remove();
+        $.post(
+            url,
+            val,
+            function(data,status){
+                cnt = data.count;
+                mydata = data.data;
+                if(cnt>0){
+                    $('#'+parentId).append('<input type="checkbox" value="" title="全选" lay-skin="primary" checkall="p">');
+                }
+                for(x in mydata){
+                    $('#'+parentId).append('<input type="checkbox" name="'+createName+'[]" value="'+mydata[x]['id']+'" title="'+mydata[x][title]+'" lay-skin="primary" checkall="c">');
+                }
+                form.render();
+            }
+        );
+    },
+
+
+    /**  
+    * 动太获取复选框列表并添加列表 
+    * 
+    * @access public 
+    * @param idd 要添加select的ID 
+    * @param array val post时需要的参数 
+    * @param url post地址
+    * @param createName 新checkbox名
+    * @param title 输出返回数组的列
+    * @return array 返回类型
+    */ 
+    createSelectOption:function(id,val,url,cloval='id',cloname='title'){
+        $('#'+id).children().remove();
+        $.post(
+            url,
+            val,
+            function(data,status){
+                cnt = data.count;
+                mydata = data.data;
+                if(cnt>0){
+                    $('#'+id).append('<option value="">请选择</option>');
+                }
+                for(x in mydata){
+                    $('#'+id).append('<option value='+mydata[x][cloval]+'>'+mydata[x][cloname]+'</option>');
+                }
+                form.render();
+            }
+        );
+    },
+
+
+
+    /**  
+    * 单击全选按钮，全部选中或取消选中后面的checkbox
+    * 选中所有全部checkbox 
+    * 
+    * @access public 
+    * @param parentId 选中checkbox父级div的id
+    * @param checked post时需要的参数 
+    * @return array 返回类型
+    */ 
+    checkboxAll:function(parentId,checked){
+        if(checked==true)
+        {
+            $('#'+parentId).find("input[checkall='c']").prop('checked',true);
+        }else{
+            $('#'+parentId).find("input[checkall='c']").prop('checked',false);
+        }
+        form.render();
+    },
+
+    /**  
+    * 如果有选中的checkbox,那么就选中全选按钮，否则取消选中 
+    * 
+    * @access public 
+    * @param parentId 选中checkbox父级div的id
+    * @return array 返回类型
+    */ 
+    checkboxParent:function(parentId){
+        children = $('#'+parentId).find(".layui-form-checked").prev("input[checkall='c']");
+        children = children.length;
+        if(children==0)
+        {
+           $('#'+parentId).find("input[checkall='p']").prop('checked',false); 
+        }else{
+            $('#'+parentId).find("input[checkall='p']").prop('checked',true); 
+        }
+        form.render();
+    },
+
+
   };
   //输出test接口
   exports('cjgl', obj);

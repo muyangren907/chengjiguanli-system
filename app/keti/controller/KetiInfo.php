@@ -70,7 +70,7 @@ class KetiInfo extends BaseController
                     'page'=>'1',
                     'limit'=>'10',
                     'field'=>'update_time',
-                    'type'=>'desc',
+                    'order'=>'desc',
                     'lxdanweiid'=>array(),
                     'lxcategory'=>array(),
                     'fzdanweiid'=>array(),

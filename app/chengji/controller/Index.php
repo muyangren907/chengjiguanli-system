@@ -20,34 +20,21 @@ class Index extends BaseController
          // 设置要给模板赋值的信息
         $list['webtitle'] = '学生成绩列表';
 
-        // 实例化考试数据模型
-        $ks = new \app\kaoshi\model\Kaoshi;
-        $ksinfo = $ks->where('id',$kaoshi)
-                    ->field('id')
-                    ->with([
-                        'ksSubject'=>function($query){
-                            $query->field('kaoshiid,subjectid')
-                                ->with(['subjectName'=>function($q){
-                                    $q->field('id,title,lieming');
-                                }]
-                            );
-                        }
-                        ,'ksNianji'
-                    ])
-                    ->find();
+        // 获取参加考试的年级和学科
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $list['set']['nianji'] = $ksset->srcNianji($kaoshi);
+        $list['set']['subject'] = $ksset->srcSubject($kaoshi);
+        if(count($list['set']['nianji'])>0){
+            $src['ruxuenian']=$list['set']['nianji'][0];
+        } else {
+            $src['ruxuenian']=array();
+        }
+        $src['kaoshi'] = $kaoshi;
+        $kh = new Kaohao;
+        $list['set']['school'] = $kh->cySchool($src);
 
-
-
-        $list['subject'] = $ksinfo->ksSubject->toArray();
         $list['kaoshi'] = $kaoshi;
         $list['dataurl'] = '/chengji/index/data';
-        if(count($ksinfo->ksNianji)>0)
-        {
-            $list['nianji'] = $ksinfo->ksNianji[0]->nianji;
-        }else{
-            $list['nianji'] = "一年级";
-        }
-
 
         // 模板赋值
         $this->view->assign('list',$list);
@@ -63,21 +50,31 @@ class Index extends BaseController
     {
         // 获取参数
         $src = $this->request
-                ->only(['page','limit','field','type','kaoshi','school','ruxuenian','paixu','searchval'
+                ->only(['page','limit','field','order','kaoshi','school','ruxuenian','banjiids'=>array(),'searchval'
                 ],'POST');
 
-        $src['school'] = strToarray($src['school']);
-
         // 获取参与考试的班级
-        $kh = new \app\kaoshi\model\Kaohao;
-        $src['banji']= array_column($kh->cyBanji($src), 'id');
+        if(count($src['banjiids'])==0){
+            $kh = new \app\kaoshi\model\Kaohao;
+            $src['banjiids']= array_column($kh->cyBanji($src), 'id');
+        }
+
+
+        $srcform = [
+            // 'page'=>$src['page'],
+            // 'limit'=>$src['limit'],
+            // 'field'=>$src['field'],
+            // 'order'=>$src['order'],
+            'kaoshi'=>$src['kaoshi'],
+            'banji'=>$src['banjiids'],
+        ];
 
 
         // 实例化
         $cj = new Chengji;
 
         // 查询要显示的数据
-        $data = $cj->search($src);
+        $data = $cj->search($srcform);
 
         // 获取符合条件记录总数
         $cnt = count($data);
@@ -119,21 +116,13 @@ class Index extends BaseController
             'kaoshi'=>$kaoshi
         );
 
-        $ks = new \app\kaoshi\model\Kaoshi;
-        $subject = $ks
-                        ->where('id',$kaoshi)
-                        ->with([
-                            'ksSubject'=>function($query){
-                                $query->field('kaoshiid,subjectid')
-                                    ->with(['subjectName'=>function($q){
-                                        $q->field('id,title');
-                                    }]
-                                );
-                            }
-                        ])
-                        ->find()
-                        ->toArray();
-        $list['subject'] = $subject['ksSubject'];
+        // 获取参加考试的学校和年级
+        $kh = new \app\kaoshi\model\Kaohao;
+        $src['kaoshi'] = $kaoshi;
+        $list['school'] = $kh->cySchool($src);
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $list['nianji'] = $ksset->srcNianji($kaoshi);
+
 
         // 模板赋值
         $this->view->assign('list',$list);
@@ -147,14 +136,14 @@ class Index extends BaseController
     {
         // 获取参数
         $src = $this->request
-                ->only(['kaoshi','banji','subject'],'POST');
-        $banji = $src['banji'];
+                ->only(['kaoshi','banjiids','subject'],'POST');
+        $banji = $src['banjiids'];
         $subject = $src['subject'];
 
         // 获取要删除成绩的考号
         $kaohao = new \app\kaoshi\model\Kaohao;
         $kaohaolist = $kaohao::where('kaoshi',$src['kaoshi'])
-                            ->where('banji','in',$src['banji'])
+                            ->where('banji','in',$banji)
                             ->column('id');
 
         // 删除成绩
@@ -250,6 +239,13 @@ class Index extends BaseController
             'kaoshi'=>$kaoshi
         );
 
+        // 获取参加考试的学校和年级
+        $kh = new \app\kaoshi\model\Kaohao;
+        $src['kaoshi'] = $kaoshi;
+        $list['school'] = $kh->cySchool($src);
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $list['nianji'] = $ksset->srcNianji($kaoshi);
+
         // 模板赋值
         $this->view->assign('list',$list);
         // 渲染
@@ -269,7 +265,8 @@ class Index extends BaseController
                     'kaoshi'=>'1',
                     'banji'=>array(),
                     'school',
-                    'ruxuenian'
+                    'ruxuenian',
+                    'subject'
                 ],'POST');
 
 
@@ -288,34 +285,22 @@ class Index extends BaseController
             $this->error($msg);
         }
 
-        $src['school'] = strToarray($src['school']);
-
         // 获取参与考试的班级
         $kh = new \app\kaoshi\model\Kaohao;
-  
         $chengjiinfo = $kh->srcChengji($src);
-
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $subject = $ksset->srcSubject($src['kaoshi'],$src['subject'],$src['ruxuenian']);
 
         // 获取考试标题
         $ks = new \app\kaoshi\model\Kaoshi;
         $ks = $ks->where('id',$src['kaoshi'])
                 ->field('id,title,bfdate')
-                ->with([
-                    'ksSubject'=>function($query){
-                        $query->field('kaoshiid,subjectid')
-                            ->with(['subjectName'=>function($q){
-                                $q->field('id,title,lieming');
-                            }]
-                        );
-                    }
-                ])
                 ->find();
+
         // 获取考试年级名称
         $njlist = nianjiList($ks->getData('bfdate'));
         $nianji = $njlist[$src['ruxuenian']];
-
         $tabletitle =$ks->title.' '.$schoolname.' '.$nianji.' '.'学生成绩详细列表';
-
         $colname = excelLieming();
 
         // set_time_limit(0);
@@ -335,15 +320,15 @@ class Index extends BaseController
 
         // 设置表头信息
         $sheet->setCellValue('A1', $tabletitle);
-        $hb = 5 + $ks->ksSubject->count();
+        $hb = 5 + count($subject);
         $sheet->mergeCells('A1:'.$colname[$hb].'1');
         $sheet->setCellValue('A3', '序号');
         $sheet->setCellValue('B3', '班级');
         $sheet->setCellValue('C3', '姓名');
         $sheet->setCellValue('D3', '性别');
         $i = 4;
-        foreach ($ks->ksSubject as $key => $value) {
-            $sheet->setCellValue($colname[$i].'3', $value->subject_name->title);
+        foreach ($subject as $key => $value) {
+            $sheet->setCellValue($colname[$i].'3', $value['title']);
             $i++;
         }
         $sheet->setCellValue($colname[$i].'3', '平均分');
@@ -356,8 +341,8 @@ class Index extends BaseController
         $sheet->setCellValue($colname[$i].'7', '及格率%');
         $sheet->setCellValue($colname[$i].'8', '标准差');
         $i++;
-        foreach ($ks->ksSubject as $key => $value) {
-            $sheet->setCellValue($colname[$i].'3', $value->subject_name->title);
+        foreach ($subject as $key => $value) {
+            $sheet->setCellValue($colname[$i].'3', $value['title']);
             $i++;
         }
         
@@ -371,10 +356,10 @@ class Index extends BaseController
                 $sheet->setCellValue('C'.$i, $value['student']);
                 $sheet->setCellValue('D'.$i, $value['sex']);
                 $colcnt = 4;
-                foreach ($ks->ksSubject as $k => $val) {
-                    if(isset($value[$val->subject_name->lieming]))
+                foreach ($subject as $k => $val) {
+                    if(isset($value[$val['lieming']]))
                     {
-                        $sheet->setCellValue($colname[$colcnt].$i, $value[$val->subject_name->lieming]);
+                        $sheet->setCellValue($colname[$colcnt].$i, $value[$val['lieming']]);
                     }
                     $colcnt++;
                 }
@@ -404,28 +389,27 @@ class Index extends BaseController
         $sheet->getStyle('A3:'.$colname[$colcnt+1].($i-1))->applyFromArray($styleArrayBK);
 
 
-
         $tj = new \app\chengji\model\Tongji;
-        $nianji = array();
-        $chengjiinfo = $kh->srcChengji($src);
-        $temp = $tj->tongjiSubject($chengjiinfo,$src['kaoshi']); 
+        // $nianji = array();
+        // $chengjiinfo = $kh->srcChengji($src);
+        $temp = $tj->tongjiSubject($chengjiinfo,$subject); 
 
         isset($colcnt) ? $colcnt = $colcnt+5 : $colcnt = 12;
         $colBiankuang = $colcnt;
         // 循环写出统计结果
-        foreach ($ks->ksSubject as $key => $value) {
-            $sheet->setCellValue($colname[$colcnt].'4', $temp['cj'][$value->subject_name->lieming]['xkcnt']);
-            $sheet->setCellValue($colname[$colcnt].'5', $temp['cj'][$value->subject_name->lieming]['avg']);
-            $sheet->setCellValue($colname[$colcnt].'6', $temp['cj'][$value->subject_name->lieming]['youxiu']);
-            $sheet->setCellValue($colname[$colcnt].'7', $temp['cj'][$value->subject_name->lieming]['jige']);
-            $sheet->setCellValue($colname[$colcnt].'8', $temp['cj'][$value->subject_name->lieming]['biaozhuncha']);
+        foreach ($subject as $key => $value) {
+            $sheet->setCellValue($colname[$colcnt].'4', $temp['cj'][$value['lieming']]['xkcnt']);
+            $sheet->setCellValue($colname[$colcnt].'5', $temp['cj'][$value['lieming']]['avg']);
+            $sheet->setCellValue($colname[$colcnt].'6', $temp['cj'][$value['lieming']]['youxiu']);
+            $sheet->setCellValue($colname[$colcnt].'7', $temp['cj'][$value['lieming']]['jige']);
+            $sheet->setCellValue($colname[$colcnt].'8', $temp['cj'][$value['lieming']]['biaozhuncha']);
             $colcnt++;
         }
 
         $sheet->setCellValue($colname[$colBiankuang-1].'9', '总平均分');
         $sheet->setCellValue($colname[$colBiankuang].'9', $temp['cj']['all']['avg']);
         $sheet->mergeCells($colname[$colBiankuang].'9:'.$colname[$colcnt-1].'9');
-        $sheet->setCellValue($colname[$colBiankuang-1].'10', '全科及格率');
+        $sheet->setCellValue($colname[$colBiankuang-1].'10', '全科及格率%');
         $sheet->setCellValue($colname[$colBiankuang].'10', $temp['cj']['all']['jige']);
         $sheet->mergeCells($colname[$colBiankuang].'10:'.$colname[$colcnt-1].'10');
         $sheet->getStyle($colname[$colBiankuang-1].'3:'.$colname[$colcnt-1].'10')->applyFromArray($styleArrayJZ);
@@ -483,10 +467,17 @@ class Index extends BaseController
             'kaoshi'=>$kaoshi
         );
 
+        // 获取参加考试的学校和年级
+        $kh = new \app\kaoshi\model\Kaohao;
+        $src['kaoshi'] = $kaoshi;
+        $list['school'] = $kh->cySchool($src);
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $list['nianji'] = $ksset->srcNianji($kaoshi);
+
         // 模板赋值
         $this->view->assign('list',$list);
         // 渲染
-        return $this->view->fetch();
+        return $this->view->fetch('dw_chengji');
     }
 
 
@@ -502,9 +493,9 @@ class Index extends BaseController
                     'kaoshi'=>'1',
                     'banji'=>array(),
                     'school',
-                    'ruxuenian'
+                    'ruxuenian',
+                    'subject'
                 ],'POST');
-
 
         // 获取要下载成绩的学校和年级信息
         $school = new \app\system\model\School;
@@ -521,10 +512,12 @@ class Index extends BaseController
             $this->error($msg);
         }
 
-        $src['school'] = strToarray($src['school']);
+        // 获取参与考试的班级
+        $kh = new \app\kaoshi\model\Kaohao;
+        $chengjiinfo = $kh->srcChengji($src);
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $subject = $ksset->srcSubject($src['kaoshi'],$src['subject'],$src['ruxuenian']);
 
-        // 获取当前年级成绩统计结果
-        $kh = new Kaohao;
         $tj = new \app\chengji\model\Tongji;
         $srcAll = [
             'kaoshi'=>$src['kaoshi'],
@@ -533,33 +526,19 @@ class Index extends BaseController
         $srcAll['banji']= array_column($kh->cyBanji($srcAll), 'id');
         $chengjiinfo = $kh->srcChengji($src);
 
-        $njtj = $tj->tongjiSubject($chengjiinfo,$src['kaoshi']);
-
-        // 获取部分学生成绩
-        $chengjiinfo = $kh->srcChengji($src);
-
+        $njtj = $tj->tongjiSubject($chengjiinfo,$subject);
 
         // 获取考试标题
         $ks = new \app\kaoshi\model\Kaoshi;
         $ks = $ks->where('id',$src['kaoshi'])
                 ->field('id,title,bfdate')
-                ->with([
-                    'ksSubject'=>function($query){
-                        $query->field('kaoshiid,subjectid')
-                            ->with(['subjectName'=>function($q){
-                                $q->field('id,title,lieming');
-                            }]
-                        );
-                    }
-                ])
                 ->find();
+
         // 获取考试年级名称
         $njlist = nianjiList($ks->getData('bfdate'));
         $nianji = $njlist[$src['ruxuenian']];
-
         $tabletitle =$ks->title.' '.$schoolname.' '.$nianji.' '.'学生成绩条';
 
-        $colname = excelLieming();
 
         // set_time_limit(0);
         // 创建表格
@@ -577,7 +556,7 @@ class Index extends BaseController
         
        
         $row = 1;   # 定义从 $row 行开始写入数据
-        $rows = count($ks->ksSubject);  # 定义学生信息列要合并的行数
+        $rows = count($subject);  # 定义学生信息列要合并的行数
 
         // 给单元格加边框
         $styleArray = [
@@ -596,7 +575,6 @@ class Index extends BaseController
 
         // 从这里开始循环写入学生成绩
         foreach ($chengjiinfo as $key => $value) {
-
             // 写入学生信息
             $sheet->setCellValue('A'.$row, '学校');
             $sheet->mergeCells('A'.($row+1).':'.'A'.($row+$rows)); # 输入学科名
@@ -621,16 +599,16 @@ class Index extends BaseController
 
 
             // 写入成绩
-            foreach ($ks->ksSubject as $k => $val) {
-                $sheet->setCellValue('D'.($row+$k), $val->subjectName->title);
-                $sheet->setCellValue('E'.($row+$k), $value[$val->subject_name->lieming]);   # 得分
-                $sheet->setCellValue('F'.($row+$k), $njtj['cj'][$val->subject_name->lieming]['avg']);
-                $sheet->setCellValue('G'.($row+$k), $njtj['cj'][$val->subject_name->lieming]['max']);
-                $sheet->setCellValue('H'.($row+$k), $njtj['cj'][$val->subject_name->lieming]['youxiu']);
-                $sheet->setCellValue('I'.($row+$k), $njtj['cj'][$val->subject_name->lieming]['jige']);
-                $sheet->setCellValue('J'.($row+$k), $njtj['cj'][$val->subject_name->lieming]['sifenwei'][0]);
-                $sheet->setCellValue('K'.($row+$k), $njtj['cj'][$val->subject_name->lieming]['sifenwei'][1]);
-                $sheet->setCellValue('L'.($row+$k), $njtj['cj'][$val->subject_name->lieming]['sifenwei'][2]);
+            foreach ($subject as $k => $val) {
+                $sheet->setCellValue('D'.($row+$k), $val['title']);
+                $sheet->setCellValue('E'.($row+$k), $value[$val['lieming']]);   # 得分
+                $sheet->setCellValue('F'.($row+$k), $njtj['cj'][$val['lieming']]['avg']);
+                $sheet->setCellValue('G'.($row+$k), $njtj['cj'][$val['lieming']]['max']);
+                $sheet->setCellValue('H'.($row+$k), $njtj['cj'][$val['lieming']]['youxiu']);
+                $sheet->setCellValue('I'.($row+$k), $njtj['cj'][$val['lieming']]['jige']);
+                $sheet->setCellValue('J'.($row+$k), $njtj['cj'][$val['lieming']]['sifenwei'][0]);
+                $sheet->setCellValue('K'.($row+$k), $njtj['cj'][$val['lieming']]['sifenwei'][1]);
+                $sheet->setCellValue('L'.($row+$k), $njtj['cj'][$val['lieming']]['sifenwei'][2]);
             }
 
             // 设置格式
@@ -685,7 +663,7 @@ class Index extends BaseController
                     'page'=>'1',
                     'limit'=>'10',
                     'field'=>'subject_id',
-                    'type'=>'desc',
+                    'order'=>'desc',
                     'kaohao'=>''
                 ],'POST');
 
@@ -694,7 +672,7 @@ class Index extends BaseController
         $data = $chengji
                 ->where('kaohao_id',$src['kaohao'])
                 ->field('id,kaohao_id,subject_id,user_id,defen,update_time')
-                ->order([$src['field']=>$src['type']])
+                ->order([$src['field']=>$src['order']])
                 ->with([
                     'subjectName'=>function($query){
                         $query->field('id,title');

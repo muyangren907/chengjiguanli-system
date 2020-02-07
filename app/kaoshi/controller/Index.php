@@ -397,6 +397,46 @@ class Index extends BaseController
     }
 
 
+    // 根据考试ID和年级获取参加考试学校
+    public function cySchool()
+    {
+        // 获取变量
+        $src['kaoshi'] = input('post.kaoshi');
+        $src['ruxuenian'] = input('post.ruxuenian');
+
+        $kh = new \app\kaoshi\model\Kaohao;
+        $school = $kh->cySchool($src);
+        $cnt = count($school);
+
+        // 重组返回内容
+        $data = [
+            'count'=>$cnt, // 符合条件的总数据量
+            'data'=>$school, //获取到的数据结果
+        ];
+
+        return json($data);
+    }
+
+
+    // 根据考试ID和年级获取参加考试年级
+    public function cyNianji()
+    {
+        // 获取变量
+        $kaoshi = input('post.kaoshi');
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $nianji = $ksset->srcNianji($kaoshi);
+        $cnt = count($nianji);
+
+        // 重组返回内容
+        $data = [
+            'count'=>$cnt, // 符合条件的总数据量
+            'data'=>$nianji, //获取到的数据结果
+        ];
+
+        return json($data);
+    }
+
+
     // 根据考试ID和年级获取参加考试班级
     public function cyBanji()
     {
@@ -405,29 +445,54 @@ class Index extends BaseController
         $src['ruxuenian'] = input('post.ruxuenian');
         $src['kaoshi'] = input('post.kaoshi');
 
-        $src['school'] = strToarray($src['school']);
-
         $kh = new \app\kaoshi\model\Kaohao;
         $bj = $kh->cyBanji($src);
+        $cnt = count($bj);
 
-        return $bj;
-    }
-
-    // 考试参加考试的学校、学科、年级、班级
-    public function kaoshiInfo($kaoshi=0)
-    {
-        $ks = new KS();
-        $data = $ks->kaoshiInfo($kaoshi);
-
-        if($data){
-            $data['msg'] = '查询成功';
-            $data['val'] = 1;
-        }else{
-            $data['msg'] = '查询失败';
-            $data['val'] = 0;
-        }
-        
+        // 重组返回内容
+        $data = [
+            'count'=>$cnt, // 符合条件的总数据量
+            'data'=>$bj, //获取到的数据结果
+        ];
 
         return json($data);
     }
+
+    // 根据考试ID和年级获取参加考试学科
+    public function cySubject()
+    {
+        // 获取变量
+        $kaoshi = input('post.kaoshi');
+        $nianji = input('post.ruxuenian');
+
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $sbj = $ksset->srcSubject($kaoshi,'',$nianji);
+        $cnt = count($sbj);
+
+        // 重组返回内容
+        $data = [
+            'count'=>$cnt, // 符合条件的总数据量
+            'data'=>$sbj, //获取到的数据结果
+        ];
+
+        return json($data);
+    }
+
+    // // 考试参加考试的学校、学科、年级、班级
+    // public function kaoshiInfo($kaoshi=0)
+    // {
+    //     $ks = new KS();
+    //     $data = $ks->kaoshiInfo($kaoshi);
+
+    //     if($data){
+    //         $data['msg'] = '查询成功';
+    //         $data['val'] = 1;
+    //     }else{
+    //         $data['msg'] = '查询失败';
+    //         $data['val'] = 0;
+    //     }
+        
+
+    //     return json($data);
+    // }
 }

@@ -15,17 +15,10 @@
 {block name="search"}
 	<div class="layui-form-item">
 	    <label for="nianji" class="layui-form-label" style="height: 100%">年级 </label>
-	    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')" pane>
-	    	{php}
-	            $nianji = new \app\kaoshi\model\KaoshiNianji;
-	            $njlist = $nianji
-	                  ->where('kaoshiid',$list['kaoshi'])
-	                  ->field('nianji,nianjiname')
-	                  ->select();
-	        {/php}
-			{foreach $njlist as $key=>$vo}
-	            <input type="radio" name="ruxuenian" value="{$vo->nianji}" title="{$vo->nianjiname}" 
-	            {eq name="$list.nianji" value="$vo->nianji"} checked {/eq} >
+	    <div class="layui-input-block" pane>
+			{foreach $list.nianji as $key=>$vo}
+	            <input type="radio" name="ruxuenian" value="{$vo.nianji}" title="{$vo.nianjiname}" 
+	            {eq name="$key" value="0"} checked {/eq} >
 			{/foreach}
 	    </div>
 	</div>
@@ -63,23 +56,26 @@
 	// 获取学科
 	var xk = '<?php echo json_encode($list["subject"]);?>';
 	xk = eval(decodeURIComponent(xk));
-	var xiangmu = {cj_cnt:'参考人数',avg:'平均分',jige:'及格率%',youxiu:'优秀率%'};		// 要显示哪些统计结果
+	var xiangmu = {cjCnt:'参考人数',avg:'平均分',jige:'及格率%',youxiu:'优秀率%'};		// 要显示哪些统计结果
 
     $.each(xk,function(index,value){
-    	options.cols[0].push({title: xk[index].subjectName.title+'('+xk[index].manfen+')',colspan:4,align:'center'});
+    	options.cols[0].push({title: xk[index].title+'('+xk[index].fenshuxian.manfen+')',colspan:4,align:'center'});
 	    $.each(xiangmu,function(i,val){
-		    var colname = xk[index].subjectName.lieming;
+		    var colname = xk[index].lieming;
     		// console.log(colname + ' ' + i);
     		var colinfo = {
 	    		title:val
 	    		,minWidth:100
 	    		,templet:function(d){
-	    			var str = d.chengji[colname][i];
-	    			if(str == null)
-	    			{
-	    				str = '';
-	    			}
-					return str;
+	    			var str = "";
+    				if(d.chengji)
+    				{
+    					if(d.chengji[colname])
+	    				{
+	    					str = d.chengji[colname][i];
+	    				}
+    				}
+    				return str;
 				}
 	    	};
 	    	

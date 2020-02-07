@@ -34,7 +34,7 @@ class Subject extends BaseController
                     'page'=>'1',
                     'limit'=>'10',
                     'field'=>'update_time',
-                    'type'=>'asc',
+                    'order'=>'asc',
                     'xingzhi'=>array(),
                     'searchval'=>''
                 ],'POST');

@@ -24,44 +24,25 @@
         </div>
         <div class="layui-form-item">
 		    <label for="school" class="layui-form-label" style="height: 100%">学校</label>
-		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-		    	{php} $schoollist = schlist('校级','校级',['小学','中小学']);{/php}
-		    	{volist name="schoollist" id="vo"}
+		    <div class="layui-input-block">
+		    	{volist name="list.set.school" id="vo"}
 		    		<input type="radio" name="school" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" 
-            {eq name="key" value="0"} checked {/eq} >
+            {eq name="key" value="0"} checked=true {/eq} >
 		    	{/volist}
 		    </div>
 		</div>
 		<div class="layui-form-item">
 		    <label for="ruxuenian" class="layui-form-label" style="height: 100%">年级 </label>
-		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-		    	{php}
-            $nianji = new \app\kaoshi\model\KaoshiNianji;
-            $njlist = $nianji
-                  ->where('kaoshiid',$list['kaoshi'])
-                  ->field('nianji,nianjiname')
-                  ->select();
-          {/php}
-		    	{foreach $njlist as $key=>$vo}
-            <input type="radio" name="ruxuenian" value="{$vo->nianji}" title="{$vo->nianjiname}" 
-            {eq name="$list.nianji" value="$vo->nianji"} checked {/eq} >
+		    <div class="layui-input-block">
+		    	{foreach $list.set.nianji as $key=>$vo}
+            <input type="radio" name="ruxuenian" value="{$vo.nianji}" title="{$vo.nianjiname}" {eq name="key" value="0"} checked=true {/eq} >
 		    	{/foreach}
+          
 		    </div>
 		</div>
 		<div class="layui-form-item" style="margin-bottom: 0;">
-		    <label for="paixu" class="layui-form-label" style="height: 100%">班级</label>
-		    <div class="layui-input-block" onclick ="clickSearchButton('#search','mytable')">
-		    	{php}
-		    		$banji = new \app\teach\model\Banji;
-            $njlist = $njlist->column('nianji');
-		    		$paixu = $banji->where('status',1)
-		    				->where('ruxuenian','in',$njlist)
-		    				->max('paixu');
-		    		$bjlist = banjinamelist();
-		    	{/php}
-		    	{for start="1" end="$paixu+1" }
-		    		<input type="checkbox" name="paixu[]" title="{$bjlist[$i]}" value="{$i}" lay-skin="primary">
-		    	{/for}
+		    <label for="banji" class="layui-form-label" style="height: 100%">班级</label>
+		    <div class="layui-input-block" id="banji">
 		    </div>
 		</div>
 		<input type="hidden" id="kaoshi" name="kaoshi" value="{$list.kaoshi}">
@@ -108,11 +89,11 @@
 	]];
 
 
-	var xk = '<?php echo json_encode($list["subject"]);?>';
+	var xk = '<?php echo json_encode($list["set"]["subject"]);?>';
 	xk = eval(decodeURIComponent(xk));
 	for(x in xk)
     {
-      options.cols[0].push({field: xk[x].subjectName.lieming, title: xk[x].subjectName.title , minWidth:100,sort: true,edit:'text'});
+      options.cols[0].push({field: xk[x].lieming, title: xk[x].title , minWidth:100,sort: true,edit:'text'});
     }
     options.cols[0].push({field: 'avg', title: '平均分', minWidth:100,sort: true});
     options.cols[0].push({field: 'sum', title: '总分', minWidth:100,sort: true});
@@ -134,6 +115,9 @@
     layui.use(['table','cjgl'],function(){
       var table = layui.table
       		cjgl = layui.cjgl;
+
+      addBanji();
+
       //表头工具栏事件
       table.on('toolbar(mytable)', function(obj){
       	switch(obj.event){
@@ -180,26 +164,38 @@
 
       	// 修改服务器数据 
         $.ajax({
-                url:"/chengji/luru/update/"+rowdata.id,
-                type:'PUT',
-                data:{
-                    "colname":colname,
-                    "newdefen":newdefen
-                },
-                success:function(result){
-                    if(result.val == 0)
-                    {
-                        layer.msg(result.msg,{icon:5});
-                    }else{
-                    	// 这个地方重新赋值平均分和总分
-                    }
-                },
-                error:function(result){
-                    layer.msg('数据扔半道啦。',function(){});
-                },
-            });
+          url:"/chengji/luru/update/"+rowdata.id,
+          type:'PUT',
+          data:{
+              "colname":colname,
+              "newdefen":newdefen
+          },
+          success:function(result,obj){
+              if(result.val == 0)
+              {
+                layer.msg(result.msg,{icon:5});
+              }else{
+              	// 这个地方重新赋值平均分和总分
+              }
+          },
+          error:function(result){
+              layer.msg('数据扔半道啦。',function(){});
+          },
+        });
+      });
 
-      }) 
+      // 监听表单提交
+      form.on('radio', function(data){
+        addBanji();
+        $("#srcsubmit").click();
+      });
+
+      // 添加班级列表
+      function addBanji(){
+        // 获取参数
+        var formval = form.val('search');
+        cjgl.createCheckbox('banji',formval,'/kaoshi/index/cybanji','banjiids','banTitle');
+      } 
 
 
 

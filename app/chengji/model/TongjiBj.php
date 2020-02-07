@@ -27,76 +27,76 @@ class TongjiBj extends Base
         // 实例化学生成绩统计类
         $tj = new TJ;
         $kh = new Kaohao;
-        // 查询参与班级
-        $src['banji'] = $kh->cyBanji($src);
-        $src['kaoshi'] = $kaoshi;
-
-
-        // 获取并统计各班级成绩
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $nianji = $ksset->srcNianji($kaoshi);
+        // 初始化统计结果
         $data = array();
-        foreach ($src['banji'] as $key => $banji) {
-            
-            $srcfrom = [
-                'kaoshi'=>$src['kaoshi'],
-                'banji'=>[$banji['id']]
-            ];
+        // 循环年级
+        foreach ($nianji as $njkey => $value) {
+            // 获取参加考试班级
+            $src['ruxuenian'] = $value['nianji'];
+            $banji = $kh->cyBanji($src);
+            $subject = $ksset->srcSubject($kaoshi,'',$value['nianji']);
+            // 循环班级，获取并统计成绩
+            foreach ($banji as $bjkey => $val) {
+               $srcfrom = [
+                    'kaoshi'=>$kaoshi,
+                    'banji'=>$val['id'],
+                ];
+                $temp = $kh->srcChengji($srcfrom);
+                $temp = $tj->tongjiSubject($temp,$subject);
+                // 循环更新或写入成绩
+                foreach ($temp['cj'] as $cjkey => $cj) {
+                    // 查询该班级该学科成绩是否存在
+                    $tongjiJg = $this->where('kaoshi_id',$src['kaoshi'])
+                                    ->where('banji_id',$val['id'])
+                                    ->where('subject_id',$cj['id'])
+                                    ->find();
+                    if($tongjiJg)
+                    {
+                        $tongjiJg->kaoshi_id = $src['kaoshi'];
+                        $tongjiJg->banji_id = $val['id'];
+                        $tongjiJg->subject_id = $cj['id'];
+                        $tongjiJg->stu_cnt = $cj['stucnt'];
+                        $tongjiJg->chengji_cnt = $cj['xkcnt'];
+                        $tongjiJg->sum = $cj['sum'];
+                        $tongjiJg->avg = $cj['avg'];
+                        $tongjiJg->biaozhuncha = $cj['biaozhuncha'];
+                        $tongjiJg->youxiu = $cj['youxiu'];
+                        $tongjiJg->jige = $cj['jige'];
+                        $tongjiJg->max = $cj['max'];
+                        $tongjiJg->min = $cj['min'];
+                        $tongjiJg->qian = $cj['sifenwei'][0];
+                        $tongjiJg->zhong = $cj['sifenwei'][1];
+                        $tongjiJg->hou = $cj['sifenwei'][2];
+                        $tongjiJg->zhong = $cj['zhongshu'];
+                        $data = $tongjiJg->save();
+                    }else{
+                        // 重新组合统计结果
+                        $tongjiJg = [
+                            'kaoshi_id'=>$src['kaoshi'],
+                            'banji_id'=>$val['id'],
+                            'subject_id'=>$cj['id'],
+                            'stu_cnt'=>$cj['stucnt'],
+                            'chengji_cnt'=>$cj['xkcnt'],
+                            'sum'=>$cj['sum'],
+                            'avg'=>$cj['avg'],
+                            'biaozhuncha'=>$cj['biaozhuncha'],
+                            'youxiu'=>$cj['youxiu'],
+                            'jige'=>$cj['jige'],
+                            'max'=>$cj['max'],
+                            'min'=>$cj['min'],
+                            'qian'=>$cj['sifenwei'][0],
+                            'zhong'=>$cj['sifenwei'][1],
+                            'hou'=>$cj['sifenwei'][2],
+                            'zhongshu'=>$cj['zhongshu'],
+                        ];
 
-            $temp = $kh->srcChengji($srcfrom);
-            $temp = $tj->tongjiSubject($temp,$srcfrom['kaoshi']);
-
-            foreach ($temp['cj'] as $k => $cj) {
-                // 查询该班级该学科成绩是否存在
-                $tongjiJg = $this->where('kaoshi_id',$src['kaoshi'])
-                                ->where('banji_id',$banji['id'])
-                                ->where('subject_id',$cj['id'])
-                                ->find();
-                if($tongjiJg)
-                {
-                    $tongjiJg->kaoshi_id = $src['kaoshi'];
-                    $tongjiJg->banji_id = $banji['id'];
-                    $tongjiJg->subject_id = $cj['id'];
-                    $tongjiJg->stu_cnt = $cj['stucnt'];
-                    $tongjiJg->chengji_cnt = $cj['xkcnt'];
-                    $tongjiJg->sum = $cj['sum'];
-                    $tongjiJg->avg = $cj['avg'];
-                    $tongjiJg->biaozhuncha = $cj['biaozhuncha'];
-                    $tongjiJg->youxiu = $cj['youxiu'];
-                    $tongjiJg->jige = $cj['jige'];
-                    $tongjiJg->max = $cj['max'];
-                    $tongjiJg->min = $cj['min'];
-                    $tongjiJg->qian = $cj['sifenwei'][0];
-                    $tongjiJg->zhong = $cj['sifenwei'][1];
-                    $tongjiJg->hou = $cj['sifenwei'][2];
-                    $tongjiJg->zhong = $cj['zhongshu'];
-                    $data = $tongjiJg->save();
-                }else{
-                    // 重新组合统计结果
-                    $tongjiJg = [
-                        'kaoshi_id'=>$src['kaoshi'],
-                        'banji_id'=>$banji['id'],
-                        'subject_id'=>$cj['id'],
-                        'stu_cnt'=>$cj['stucnt'],
-                        'chengji_cnt'=>$cj['xkcnt'],
-                        'sum'=>$cj['sum'],
-                        'avg'=>$cj['avg'],
-                        'biaozhuncha'=>$cj['biaozhuncha'],
-                        'youxiu'=>$cj['youxiu'],
-                        'jige'=>$cj['jige'],
-                        'max'=>$cj['max'],
-                        'min'=>$cj['min'],
-                        'qian'=>$cj['sifenwei'][0],
-                        'zhong'=>$cj['sifenwei'][1],
-                        'hou'=>$cj['sifenwei'][2],
-                        'zhongshu'=>$cj['zhongshu'],
-                    ];
-
-                    $data = $this::create($tongjiJg);
+                        $data = $this::create($tongjiJg);
+                    }
                 }
             }
         }
-
-
-
         return true;
     }
 
@@ -118,6 +118,8 @@ class TongjiBj extends Base
             'page'=>'1',
             'limit'=>'10',
             'kaoshi'=>'',
+            'ruxuenian'=>'',
+            'school'=>'',
             'banji'=>array(),
         );
 
@@ -125,38 +127,38 @@ class TongjiBj extends Base
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
 
-        if(count($src['banji']) == 0){
-            return array();
-        }
-
         // 实例化学生成绩统计类
         $tj = new TJ;
-        $cj = new Chengji;
+        $kh = new Kaohao;
+        // $cj = new Chengji;
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+
+        // 获取参加考试学科
+        $subject = $ksset->srcSubject($src['kaoshi'],'',$src['ruxuenian']);
+        $banji =$kh->cyBanji($src);
 
 
         // 获取并统计各班级成绩
         $data = array();
-        foreach ($src['banji'] as $key => $value) {
-            $srcfrom = [
-                'kaoshi'=>$src['kaoshi'],
-                'banji'=>[$value['id']]
-            ];
-            $temp = $cj->search($srcfrom);
-            $temp = $tj->tongjiCnt($temp,$srcfrom['kaoshi']);
+        $srcfrom['kaoshi'] = $src['kaoshi'];
+        foreach ($banji as $key => $value) {
+            $srcfrom['banji'] = $value['id'];
+            $temp = $kh->srcChengji($srcfrom);
+            $temp = $tj->tongjiCnt($temp,$subject);
             $data[] = [
                 'banji'=>$value['banjiTitle'],
-                'banjinum'=>$value['banjiNum'],
-                'school'=>$value['glSchool']['jiancheng'],
+                'banjinum'=>$value['banjiTitle'],
+                'school'=>$value['schJiancheng'],
                 'chengji'=>$temp
             ];
         }
 
 
-        $srcfrom['banji'] = array_column($src['banji'], 'id');
+        $srcfrom['banji'] = array_column($banji, 'id');
+
         // 获取年级成绩
-        // $allcj = $tj->srcChengji($kaoshi=$kaoshi,$banji=$bjs,$nianji=$nianji,$school=array());
-        $allcj = $cj->search($srcfrom);
-        $temp = $tj->tongjiCnt($allcj,$srcfrom['kaoshi']);
+        $temp = $kh->srcChengji($srcfrom);
+        $temp = $tj->tongjiCnt($temp,$subject);
         $data[] = [
             'banji'=>'合计',
             'banjinum'=>'合计',
@@ -190,6 +192,7 @@ class TongjiBj extends Base
 
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
+        $src['banji'] = strToarray($src['banji']);
 
 
         if(count($src['banji']) == 0){
@@ -210,7 +213,7 @@ class TongjiBj extends Base
                         ]);
                 },
                 'bjJieguo'=>function($query){
-                    $query->field('subject_id,banji_id,chengji_cnt,avg,youxiu,jige')
+                    $query->field('subject_id,banji_id,stu_cnt,chengji_cnt,avg,youxiu,jige')
                         ->with([
                             'bjSubject'=>function($query){
                                 $query->field('id,lieming,jiancheng');
@@ -219,12 +222,16 @@ class TongjiBj extends Base
                         ->order(['subject_id']);
                 }
             ])
+            ->cache(true)
             ->group('banji_id,kaoshi_id')
             ->append(['banjiTitle'])
             ->select();
 
+        // halt($tongjiJg->toArray());
+
         // 初始化数组
         $data = array();
+
 
         // 重组数据
         foreach ($tongjiJg as $key => $value) {
@@ -234,6 +241,7 @@ class TongjiBj extends Base
                 'schoolpaixu'=>$value->bjBanji->glSchool->paixu,
                 'title'=>$value->banjiTitle,
                 'banjipaixu'=>$value->bjBanji->paixu,
+                'stuCnt'=>$value->stuCnt,
             ];
             foreach ($value->bjJieguo as $k => $val) {
                 if($val->subject_id>0){
@@ -241,7 +249,8 @@ class TongjiBj extends Base
                         'avg'=>$val->avg,
                         'youxiu'=>$val->youxiu,
                         'jige'=>$val->jige,
-                        'cj_cnt'=>$val->chengji_cnt,
+                        'cjCnt'=>$val->chengji_cnt,
+                        'sbjTitle'=>$val->bjSubject->jiancheng,
                     ];
                 }else{
                     $data[$value->banji_id]['quanke'] = [
@@ -256,8 +265,7 @@ class TongjiBj extends Base
 
         $data = sortArrByManyField($data,'schoolpaixu',SORT_ASC,'banjipaixu',SORT_ASC);
 
-        
-
+        // halt($data);
 
         return $data;
     }
@@ -293,13 +301,23 @@ class TongjiBj extends Base
     // 获取班级名称
     public function getBanjiTitleAttr()
     {
-        $bfdate = \app\kaoshi\model\Kaoshi::where('id',$this->getAttr('kaoshi_id'))
-                  ->value('bfdate');
+        // $bfdate = \app\kaoshi\model\Kaoshi::where('id',$this->getAttr('kaoshi_id'))
+        //           ->value('bfdate');
 
-        $banji = new \app\teach\model\Banji;
-        $title = $banji->myBanjiTitle($this->getAttr('banji_id'),$bfdate);
+        // $banji = new \app\teach\model\Banji;
+        // $title = $banji->myBanjiTitle($this->getAttr('banji_id'),$bfdate);
 
-        return $title;
+        // return $title;
+        $kh = new \app\kaoshi\model\Kaohao;
+        $src = [
+            'kaoshi'=>$this->getAttr('kaoshi_id'),
+            'banji'=>$this->getAttr('banji_id'),
+        ];
+
+        $bj = $kh->cyBanji($src);
+
+        return $bj[0]['banjiTitle'];
+
     }
     
 }

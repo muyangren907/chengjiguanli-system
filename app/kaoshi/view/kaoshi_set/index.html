@@ -1,0 +1,131 @@
+
+{extend name=".././view/list.html" /}
+{block name="jsset"}
+
+{/block}
+{block name="nav"}
+<span class="layui-breadcrumb">
+	<a href="">考试管理</a>
+	<a><cite>考试设置</cite></a>
+</span>
+{/block}
+{block name="search"}
+<input type="hidden" name="kaoshi" id="kaoshi" value="{$list.kaoshi}">
+<div class="layui-form-item">
+	<label for="nianji" class="layui-form-label" style="height: 100%">年级 </label>
+	<div class="layui-input-block">
+		<input type="radio" name="nianji" title="无" value="" lay-skin="primary">
+		{php} $njlist = nianjiList();{/php}
+		{foreach $njlist as $key=>$vo}
+		<input type="radio" name="nianji" title="{$vo}" value="{$key}" lay-skin="primary">
+		{/foreach}
+	</div>
+</div>
+<div class="layui-form-item">
+	<label for="subject" class="layui-form-label" style="height: 100%">学科</label>
+	<div class="layui-input-block" id="subject">
+
+	</div>
+</div>
+{/block}
+{block name="table"}
+<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
+{/block}
+{block name="myjs"}
+<!-- 表格上面按钮模板 -->
+<script type="text/html" id="toolbarDemo">
+	<div class="layui-btn-container">
+		<button class="layui-btn layui-btn-danger" lay-event="dels">
+			<i class="iconfont">&#xe69d;</i> 批量删除
+		</button>
+		<button class="layui-btn" lay-event="add">
+			<i class="iconfont">&#xe6b9;</i> 新建
+		</button>
+	</div>
+</script>
+<!-- 记录操作按钮模板 -->
+<script type="text/html" id="barDemo">
+	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
+	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon layui-icon-edit"></i></a>
+</script>
+<!-- 表格操作 -->
+<script>
+
+  // 设置列
+  options.cols=[[ //表头
+	  {type:'checkbox', fixed: 'left'},
+	  {field: 'nianji', title: '年级',sort: true,templet:function(d){
+	  	var str='';
+	  	if(d.nianjiname)
+	  	{
+	  		str = d.nianjiname;
+	  	}
+	  	return str;
+	  }},
+	  {field: "subject_id",title: '考试学科',sort: true,templet:function(d){
+	  	var str='';
+	  	if(d.subjectName)
+	  	{
+	  		str = d.subjectName.title;
+	  	}
+	  	return str;
+	  }},
+	  {field: 'manfen', title: '满分',sort: true} ,
+	  {field: 'youxiu', title: '优秀率%',sort: true},
+	  {field: 'jige', title: '及格率%',sort: true},
+	  {field: 'status', title: '状态', minWidth:80,templet:'#status', sort: true},
+	  {field: 'id', title: '操作',toolbar: '#barDemo',minWidth:80},
+  ]];
+
+	// 提交搜索条件后重载表格
+	layui.use(['table','cjgl'],function(){
+	  	var table = layui.table
+		  	cjgl = layui.cjgl
+		  	form = layui.form;
+
+  		addSubject();
+  		//表头工具栏事件
+  		table.on('toolbar(mytable)', function(obj){
+	      	switch(obj.event){
+	      		case 'dels':
+		            var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
+		            cjgl.delAll(checkStatus,'/kaoshi/kaoshiset/delete','mytable');
+		            break;
+	            case 'add':
+		            cjgl.add('添加参考学科','/kaoshi/kaoshiset/create/'+"{$list.kaoshi}",'','',true);
+		            break;
+	        };
+	    });
+
+	    //监听行工具条
+	    table.on('tool(mytable)', function(obj){
+	        var data = obj.data; //获得当前行数据
+	        var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+	        var tr = obj.tr; //获得当前行 tr 的DOM对象
+	        switch(layEvent){
+		        case 'del':// 删除
+		        	cjgl.del(obj,"/kaoshi/kaoshiset/delete");
+		        	break;
+		        case 'edit':// 编辑
+			        cjgl.add('编辑考试','/kaoshi/kaoshiset/edit/'+obj.data.id,'','',true);
+			        break;
+		    };
+		});
+
+		// 监听表单提交
+		form.on('radio', function(data){
+			// 获取数据
+			addSubject();
+			// $("#srcsubmit").click();
+		});
+
+		// 添加班级列表
+		function addSubject(){
+	    	// 获取参数
+	    	formval = form.val("search");
+	    	formval.ruxuenian = formval.nianji;
+	    	cjgl.createCheckbox('subject',formval,'/kaoshi/index/cysubject','subject');
+	    }
+	});
+</script>
+{/block}

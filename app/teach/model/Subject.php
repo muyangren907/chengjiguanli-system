@@ -14,12 +14,12 @@ class Subject extends Base
 
         // 查询数据
         $data = $this
-            ->order([$src['field'] =>$src['type']])
+            ->order([$src['field'] =>$src['order']])
             ->when(strlen($searchval)>0,function($query) use($searchval){
                     $query->where('title|jiancheng','like','%'.$searchval.'%');
                 })
             ->with([
-            	'sujCategory'=>function($query){
+            	'sbjCategory'=>function($query){
             		$query->field('id,title');
             	}
             ])
@@ -28,15 +28,8 @@ class Subject extends Base
     }
 
     // 大类别关联
-    public function sujCategory()
+    public function sbjCategory()
 	{
 		return $this->belongsTo('\app\system\model\Category','category','id');
 	}
-
-
-    // // 是否参加考试获取器
-    // public function getKaoshiAttr($value){
-    //     $kaoshi = array(0=>'否',1=>'是');
-    //     return $kaoshi[$value];
-    // }	
 }

@@ -36,10 +36,10 @@ class Chengji extends Base
         // 初始化参数
         $src = array(
             'field'=>'banji',
-            'type'=>'desc',
+            'order'=>'desc',
             'kaoshi'=>'0',
             'banji'=>array(),
-            'subject_id'=>array(),
+            'subject_id'=>'',
             'searchval'=>'',
             'user_id'=>session('userid'),
         );
@@ -47,14 +47,16 @@ class Chengji extends Base
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
         $banji = strToarray($src['banji']);
-        $subject_id = strToarray($src['subject_id']);
+        $subject_id = $src['subject_id'];
         $kaoshi = $src['kaoshi'];
         $searchval = $src['searchval'];
 
-        $ks = new \app\kaoshi\model\Kaoshi;
-        $bfdate = $ks->where('id',$kaoshi)
-                ->value('bfdate');
-        $nj = nianjiList($bfdate);
+        // $ks = new \app\kaoshi\model\Kaoshi;
+        // $bfdate = $ks->where('id',$kaoshi)
+        //         ->value('bfdate');
+        // // $nj = nianjiList($bfdate);
+        // $ksset = new \app\kaoshi\model\KaoshiSet;
+        // $nianji = $ksset->srcNianji($src['kaoshi']);
         $stu = new \app\renshi\model\Student;
         $stuid = $stu
                     ->when(strlen($searchval)>0,function($query)use($searchval){
@@ -67,8 +69,8 @@ class Chengji extends Base
         $nianji = nianjiList();
         $cjList = $this
                 ->where('user_id',$src['user_id'])
-                ->when(count($subject_id)>0,function($query)use($subject_id){
-                    $query->where('subjectid','in',$subject_id);
+                ->when(is_numeric($subject_id),function($query)use($subject_id){
+                    $query->where('subject_id',$subject_id);
                 })
                 ->when(count($stuid)>0,function($query)use($stuid){
                     $query->where('kaohao_id','in',function($q)use($stuid){
@@ -125,9 +127,9 @@ class Chengji extends Base
         }
 
         // 按条件排序
-        $src['type'] == 'desc' ? $src['type'] =SORT_DESC :$src['type'] = SORT_ASC;
+        $src['order'] == 'desc' ? $src['order'] =SORT_DESC :$src['order'] = SORT_ASC;
         if(count($data)>0){
-            $data = sortArrByManyField($data,$src['field'],$src['type']);
+            $data = sortArrByManyField($data,$src['field'],$src['order']);
         }
 
 
@@ -143,16 +145,14 @@ class Chengji extends Base
         // 初始化参数
         $src = array(
             'field'=>'banji',
-            'type'=>'desc',
+            'order'=>'desc',
             'kaoshi'=>'',
             'banji'=>array(),
             'searchval'=>''
         );
 
-
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
-
 
         // 实例化考号数据模型
         $kh = new \app\kaoshi\model\Kaohao;
@@ -160,12 +160,10 @@ class Chengji extends Base
         // 以考号为基础查询成绩
         $chengjilist = $kh->srcChengji($src);
 
-
-
         // 按条件排序
-        $src['type'] == 'desc' ? $src['type'] =SORT_DESC :$src['type'] = SORT_ASC;
+        $src['order'] == 'desc' ? $src['order'] =SORT_DESC :$src['order'] = SORT_ASC;
         if(count($chengjilist)>0){
-            $chengjilist = sortArrByManyField($chengjilist,$src['field'],$src['type']);
+            $chengjilist = sortArrByManyField($chengjilist,$src['field'],$src['order']);
         }
 
         return $chengjilist;

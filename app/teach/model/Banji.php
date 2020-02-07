@@ -14,20 +14,16 @@ class Banji extends Base
         // 整理变量
         $school = $src['school'];
         $ruxuenian = $src['ruxuenian'];
-        $searchval = $src['searchval'];
 
         // 查询数据
         $data = $this
             // ->order('school','ruxuenian','paixu')
-            ->order([$src['field'] =>$src['type']])
+            ->order([$src['field'] =>$src['order']])
             ->when(strlen($school)>0,function($query) use($school){
                     $query->where('school',$school);
                 })
             ->when(strlen($ruxuenian)>0,function($query) use($ruxuenian){
                     $query->where('ruxuenian',$ruxuenian);
-                })
-            ->when(strlen($searchval)>0,function($query) use($searchval){
-                    $query->where('title','like','%'.$searchval.'%');
                 })
             ->with(
                 [
@@ -75,8 +71,6 @@ class Banji extends Base
         }else{
             $numname = $nj.'.'.$bj;
         }
-        
-
     	return $numname;
     }
 
@@ -85,8 +79,21 @@ class Banji extends Base
     // 班级名获取器
     public function getBanjiTitleAttr()
     {
+        //获取班级、年级列表
+        $njlist = nianjiList();
+        $bjlist = banjinamelist();
+
+        $nj = $this->getAttr('ruxuenian');
+        $bj = $this->getAttr('paixu');
+
         // 获取班级名
-        $title = $this->myBanjiTitle($this->getAttr('id'));
+        if( array_key_exists($nj,$njlist)==true )
+        {
+            $title = $njlist[$nj] . $bjlist[$bj];
+        }else{
+            $title = $nj . '届' . $bj . '班';
+        }
+
         return $title;
     }
 
@@ -95,10 +102,14 @@ class Banji extends Base
     {
         $bjname = banjinamelist();
         $bj = $this->getAttr('paixu');
+        // 获取班级名
+        if( array_key_exists($bj,$bjname)==true )
+        {
+            $title = $bjname[$bj];
+        }else{
+            $title = $bj . '班';
+        }
 
-        $bjkeys = array_keys($bjname);
-
-        in_array($bj,$bjkeys) ? $title = $bjname[$bj] : $title = $bj.'班';
 
         $del = $this->getAttr('delete_time');
         $del==null ?  $title : $title=$title&'(删)' ;
@@ -114,65 +125,65 @@ class Banji extends Base
     }
 
 
-    /**
-     * 获取考试时的班级名称(文本格式-一年级十一班)
-     * $jdshijian 考试开始时间
-     * $ruxuenian 年级
-     * $paixu 班级
-     * 返回 $str 班级名称 
-     * */ 
-    public function myBanjiTitle($bjid,$jdshijian=0)
-    {
-        // 查询班级信息
-        $bjinfo = $this::withTrashed()
-            ->where('id',$bjid)
-            ->field('id,ruxuenian,paixu,delete_time')
-            ->find();
+    // /**
+    //  * 获取考试时的班级名称(文本格式-一年级十一班)
+    //  * $jdshijian 考试开始时间
+    //  * $ruxuenian 年级
+    //  * $paixu 班级
+    //  * 返回 $str 班级名称 
+    //  * */ 
+    // public function myBanjiTitle($bjid,$jdshijian=0)
+    // {
+    //     // 查询班级信息
+    //     $bjinfo = $this::withTrashed()
+    //         ->where('id',$bjid)
+    //         ->field('id,ruxuenian,paixu,delete_time')
+    //         ->find();
 
 
-        //获取班级、年级列表
-        $njlist = nianjiList($jdshijian);
-        $bjlist = banjinamelist();
+    //     //获取班级、年级列表
+    //     $njlist = nianjiList($jdshijian);
+    //     $bjlist = banjinamelist();
 
-        if(array_key_exists($bjinfo->ruxuenian,$njlist))
-        {
-            $bjtitle = $njlist[$bjinfo->ruxuenian].$bjlist[$bjinfo->paixu];
-        }else{
-            $bjtitle = $bjinfo->ruxuenian.'界'.$bjinfo->paixu.'班';
-        }
+    //     if(array_key_exists($bjinfo->ruxuenian,$njlist))
+    //     {
+    //         $bjtitle = $njlist[$bjinfo->ruxuenian].$bjlist[$bjinfo->paixu];
+    //     }else{
+    //         $bjtitle = $bjinfo->ruxuenian.'界'.$bjinfo->paixu.'班';
+    //     }
 
-        // 如果该班级被删除，则标删除
-        if($bjinfo->delete_time != null)
-        {
-            $bjtitle = $bjtitle.'(删)';
-        }
+    //     // 如果该班级被删除，则标删除
+    //     if($bjinfo->delete_time != null)
+    //     {
+    //         $bjtitle = $bjtitle.'(删)';
+    //     }
 
-        return $bjtitle;
-    }
+    //     return $bjtitle;
+    // }
 
-    /**
-     * 获取考试时的班级名称(数字格式5.1)
-     * $jdshijian 考试开始时间
-     * $ruxuenian 年级
-     * $paixu 班级
-     * 返回 $str 班级名称 
-     * */ 
-    public function myBanjiNum($bjid,$jdshijian=0)
-    {
-        // 查询班级信息
-        $bjinfo = $this::withTrashed()
-            ->where('id',$bjid)
-            ->field('id,ruxuenian,paixu,delete_time')
-            ->find();
+    // /**
+    //  * 获取考试时的班级名称(数字格式5.1)
+    //  * $jdshijian 考试开始时间
+    //  * $ruxuenian 年级
+    //  * $paixu 班级
+    //  * 返回 $str 班级名称 
+    //  * */ 
+    // public function myBanjiNum($bjid,$jdshijian=0)
+    // {
+    //     // 查询班级信息
+    //     $bjinfo = $this::withTrashed()
+    //         ->where('id',$bjid)
+    //         ->field('id,ruxuenian,paixu,delete_time')
+    //         ->find();
 
 
-        //获取班级、年级列表
-        $njlist = array_keys(nianjiList($jdshijian));
-        $nj = array_search($bjinfo->ruxuenian,$njlist)+1;
-        $bjtitle = $nj.'.'.$bjinfo->paixu;
+    //     //获取班级、年级列表
+    //     $njlist = array_keys(nianjiList($jdshijian));
+    //     $nj = array_search($bjinfo->ruxuenian,$njlist)+1;
+    //     $bjtitle = $nj.'.'.$bjinfo->paixu;
 
-        return $bjtitle;
-    }
+    //     return $bjtitle;
+    // }
 
 
 }

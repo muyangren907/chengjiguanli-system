@@ -21,44 +21,34 @@ class TongjiSch extends Base
     public function tjSchool($kaoshi)
     {
         $src['kaoshi'] = $kaoshi;
-        // 查询我统计的年级
+        // // 查询要统计的学校
         $kh = new \app\kaoshi\model\Kaohao;
-
-        
+        // $subjectList = $kh->cySchool($src);
         // 查询要统计的年级
-        $ks = new \app\kaoshi\model\Kaoshi;
-        $ksinfo = $ks->where('id',$kaoshi)
-                    ->field('id')
-                    ->with(['ksNianji',
-                        'ksSubject'=>function($query)
-                        {
-                            $query->field('kaoshiid,subjectid');
-                        }
-                    ])
-                    ->find();
-        $njList = $ksinfo->ksNianji;
-        $subjectList =  $ksinfo->ksSubject;
-
-
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $njList = $ksset->srcNianji($kaoshi);
+        
         // 实例化学生成绩统计类
         $tj = new TJ;
             foreach ($njList as $k => $nianji) {
                 $src = [
                     'kaoshi'=>$kaoshi,
-                    'ruxuenian'=>$nianji->nianji,
+                    'ruxuenian'=>$nianji['nianji'],
                 ];
+                $src['banji'] = array_column($kh->cyBanji($src),'id');
+                $subject = $ksset->srcSubject($kaoshi,'',$nianji['nianji']);
                 $temp = $kh->srcChengji($src);
-                $temp = $tj->tongjiSubject($temp,$kaoshi);
+                $temp = $tj->tongjiSubject($temp,$subject);
                 foreach ($temp['cj'] as $k => $cj) {
                     // 查询该班级该学科成绩是否存在
                     $tongjiJg = $this->where('kaoshi_id',$src['kaoshi'])
-                                    ->where('ruxuenian',$nianji->nianji)
+                                    ->where('ruxuenian',$nianji['nianji'])
                                     ->where('subject_id',$cj['id'])
                                     ->find();
                     if($tongjiJg)
                     {
                         $tongjiJg->kaoshi_id = $src['kaoshi'];
-                        $tongjiJg->ruxuenian = $nianji->nianji;
+                        $tongjiJg->ruxuenian = $nianji['nianji'];
                         $tongjiJg->subject_id = $cj['id'];
                         $tongjiJg->stu_cnt = $cj['stucnt'];
                         $tongjiJg->chengji_cnt = $cj['xkcnt'];
@@ -78,7 +68,7 @@ class TongjiSch extends Base
                         // 重新组合统计结果
                         $tongjiJg = [
                             'kaoshi_id'=>$src['kaoshi'],
-                            'ruxuenian'=>$nianji->nianji,
+                            'ruxuenian'=>$nianji['nianji'],
                             'subject_id'=>$cj['id'],
                             'stu_cnt'=>$cj['stucnt'],
                             'chengji_cnt'=>$cj['xkcnt'],
@@ -166,7 +156,7 @@ class TongjiSch extends Base
                         'avg'=>$val->avg,
                         'youxiu'=>$val->youxiu,
                         'jige'=>$val->jige,
-                        'cj_cnt'=>$val->chengji_cnt,
+                        'cjCnt'=>$val->chengji_cnt,
                     ];
                 }else{
                     $data['all']['quanke'] = [

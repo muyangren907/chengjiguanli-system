@@ -33,7 +33,7 @@ class AuthRule extends BaseController
                     'page'=>'1'
                     ,'limit'=>'10'
                     ,'field'=>'id'
-                    ,'type'=>'asc'
+                    ,'order'=>'asc'
                     ,'searchval'=>''
                 ],'POST');
 

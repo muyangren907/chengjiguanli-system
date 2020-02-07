@@ -275,6 +275,7 @@
     }
 
 
+// 给数组按多条件排序
 function sortArrByManyField(){
   $args = func_get_args();
   if(empty($args)){
@@ -284,6 +285,7 @@ function sortArrByManyField(){
   if(!is_array($arr)){
     throw new Exception("第一个参数不为数组");
   }
+
   foreach($args as $key => $field){
     if(is_string($field)){
       $temp = array();
@@ -294,8 +296,10 @@ function sortArrByManyField(){
     }
   }
   $args[] = &$arr;//引用值
+  $keys = array_keys($args[0]);
   call_user_func_array('array_multisort',$args);
-  return array_pop($args);
+
+  return array_pop($args);;
 }
 
 
@@ -358,27 +362,27 @@ function subjectList()
 
 
 /**  
-    * 把request到的参数转换成数组，并删除空值 
-    * 
-    * @access public 
-    * @param str或array $str 表单中获取的参数 
-    * @return array 返回类型
-    */ 
-	function strToarray($str)
+* 把request到的参数转换成数组，并删除空值 
+* 
+* @access public 
+* @param str或array $str 表单中获取的参数 
+* @return array 返回类型
+*/ 
+function strToarray($str)
+{
+	// 如果str是字符串，则转换成数组
+	if(is_array($str)==false)
 	{
-		// 如果str是字符串，则转换成数组
-		if(is_array($str)==false)
-		{
-			$str = explode(',', $str);
-		}
-		// 循环数组，删除空元素
-		foreach ($str as $key => $value) {
-			if($value == "" && $value == null){
-				unset($str[$key]);
-			}
-		}
-		return $str;
+		$str = explode(',', $str);
 	}
+	// 循环数组，删除空元素
+	foreach ($str as $key => $value) {
+		if($value == "" && $value == null){
+			unset($str[$key]);
+		}
+	}
+	return $str;
+}
 
 
 

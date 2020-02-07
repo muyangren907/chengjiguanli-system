@@ -15,31 +15,24 @@ class Bjtongji extends BaseController
         // 获取考试信息
         $ks = new \app\kaoshi\model\Kaoshi;
         $ksinfo = $ks->where('id',$kaoshi)
-            ->with([
-                'ksNianji'
-                ,'ksSubject'=>function($query){
-                    $query->field('kaoshiid,subjectid,manfen')
-                        ->with(['subjectName'=>function($q){
-                            $q->field('id,title,lieming');
-                        }]
-                    );
-                }
-            ])
             ->field('id,title')
             ->find();
         // 获取参与学校
         $kh = new \app\kaoshi\model\Kaohao;
         $src['kaoshi'] = $kaoshi;
         $list['school'] = $kh->cySchool($src);
-        $list['nianji'] = $ksinfo->ksNianji->toArray();
-        $list['subject'] = $ksinfo->ksSubject->toArray();
+
+        // 获取年级与学科
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $list['nianji'] = $ksset->srcNianji($kaoshi);
+        $list['subject'] = $ksset->srcSubject($kaoshi,'','');
         // 设置要给模板赋值的信息
         $list['webtitle'] = '各年级的班级成绩列表';
         $list['kaoshi'] = $kaoshi;
         $list['kaoshititle'] = $ksinfo->title;
         $list['dataurl'] = '/chengji/bjtj/data';
 
-        // halt($list);
+
 
 
         // 模板赋值
@@ -61,23 +54,25 @@ class Bjtongji extends BaseController
                     'kaoshi'=>'',
                     'ruxuenian'=>'',
                     'school'=>array(),
-                    'paixu'=>array(),
+                    'banji'=>array(),
                 ],'POST');
 
 
-        $src['school'] = strToarray($src['school']);
-        $src['ruxuenian'] = strToarray($src['ruxuenian']);
+        // $src['school'] = strToarray($src['school']);
+        // $src['ruxuenian'] = strToarray($src['ruxuenian']);
+        $src['banji'] = strToarray($src['banji']);
 
 
-        // 获取参与考试的班级
-        $kh = new \app\kaoshi\model\Kaohao;
-        $src['banji']= array_column($kh->cyBanji($src),'id');
-
+        if(count($src['banji'])==0)
+        {
+            // 获取参与考试的班级
+            $kh = new \app\kaoshi\model\Kaohao;
+            $src['banji']= array_column($kh->cyBanji($src),'id');
+        }
+        
         // 统计成绩
         $btj = new BTJ;
         $data = $btj->search($src);
-
-
        
         // 获取记录总数
         $cnt = count($data);
@@ -106,6 +101,13 @@ class Bjtongji extends BaseController
             'url'=>'/chengji/bjtj/dwxlsx',
             'kaoshi'=>$kaoshi
         );
+        // 获取参与学校
+        $kh = new \app\kaoshi\model\Kaohao;
+        $src['kaoshi'] = $kaoshi;
+        $list['set']['school'] = $kh->cySchool($src);
+        // 获取年级与学科
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $list['set']['nianji'] = $ksset->srcNianji($kaoshi);
 
         // 模板赋值
         $this->view->assign('list',$list);
@@ -136,20 +138,21 @@ class Bjtongji extends BaseController
         // $src['banji']= $kh->cyBanji($src);
 
 
-        // 统计成绩
+        // 获统计成绩结果
         $btj = new BTJ;
         $data = $btj->search($src);
         $ntj = new \app\chengji\model\TongjiNj;
         $dataAll = $ntj->search($src);
         count($dataAll)>0 ? $data['all'] = $dataAll[0] : $data;
 
-        
+       
         // 获取参考学科
         $ks = new \app\kaoshi\model\Kaoshi;
         $ksinfo = $ks->where('id',$src['kaoshi'])
                     ->field('id,title,bfdate')
                     ->find();
-        $xk = $ksinfo->ksSubject;
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $xk = $ksset->srcSubject($src['kaoshi'],'',$src['ruxuenian']);
 
         // 获取考试年级名称
         $njlist = nianjiList($ksinfo->getData('bfdate'));
@@ -159,10 +162,7 @@ class Bjtongji extends BaseController
         // 获取要下载成绩的学校和年级信息
         $school = new \app\system\model\School;
         $schoolname = $school->where('id','in',$src['school'])->value('jiancheng');
-
-
         $tabletitle = $ksinfo->title.' '.$schoolname.' '. $nianji.'各班级成绩汇总';
-
 
         // 创建表格
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -178,7 +178,7 @@ class Bjtongji extends BaseController
             ->setCategory("成绩管理"); //分类
 
 
-        $sbjcol = ['cj_cnt'=>'人数','avg'=>'平均分','jige'=>'及格率%','youxiu'=>'优秀率%'];
+        $sbjcol = ['cjCnt'=>'人数','avg'=>'平均分','jige'=>'及格率%','youxiu'=>'优秀率%'];
         $sbjcolcnt = count($sbjcol);
         $colname = excelLieming();
         $colcnt = $sbjcolcnt*count($xk)+3;
@@ -195,7 +195,7 @@ class Bjtongji extends BaseController
         foreach ($xk as $key => $value) {
             $colend = $col + $sbjcolcnt - 1;
             $sheet->mergeCells($colname[$col].'3:'.$colname[$colend].'3');
-            $sheet->setCellValue($colname[$col].'3', $value->subjectName->title.' ('.$value->manfen.')');
+            $sheet->setCellValue($colname[$col].'3', $value['title'].' ('.$value['fenshuxian']['manfen'].')');
             foreach ($sbjcol as $k => $val) {
                  $sheet->setCellValue($colname[$col].'4', $val);
                  $col++;
@@ -225,7 +225,7 @@ class Bjtongji extends BaseController
 
             foreach ($xk as $ke => $val) {
                 foreach ($sbjcol as $k => $v) {
-                     $sheet->setCellValue($colname[$col].$row, $value['chengji'][$val->subjectName->lieming][$k]);
+                     $sheet->setCellValue($colname[$col].$row, $value['chengji'][$val['lieming']][$k]);
                      $col++;
                 }
             }
@@ -308,6 +308,46 @@ class Bjtongji extends BaseController
         return json($data);
     }
 
+
+
+    // 统计平均分优秀率及格率
+    public function myAvg($kaoshi)
+    {
+        
+        // 获取参数
+        $src = $this->request
+                ->only([
+                    'kaoshi'=>'',
+                    'ruxuenian'=>'',
+                    'school'=>array(),
+                ],'POST');
+
+
+        $src['school'] = strToarray($src['school']);
+        $src['ruxuenian'] = strToarray($src['ruxuenian']);
+
+
+        // 获取参与考试的班级
+        $kh = new \app\kaoshi\model\Kaohao;
+        $src['banji']= array_column($kh->cyBanji($src),'id');
+
+        // 统计成绩
+        $btj = new BTJ;
+        $data = $btj->search($src);
+
+        halt($data);
+
+        $data = [
+            'source'=>[
+                ['项目', '语文', '优秀率', '及格率'],
+                ['一年级一班', 10, 10, 10],
+                ['一年级二班', 83.1, 73.4, 55.1],
+                ['一年级三班', 86.4, 65.2, 82.5],
+                ['一年级四班', 72.4, 53.9, 39.1]
+            ],
+        ];
+        return json($data);
+    }
 
     
 }
