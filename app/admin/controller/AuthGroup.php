@@ -76,10 +76,7 @@ class AuthGroup extends BaseController
 
 
         $rule = new \app\admin\model\AuthRule;
-        $ruleList = $rule->srcChildren();
-
-        halt($ruleList);
-
+        $ruleList = $rule->srcStatus();
 
         // 模板赋值
         $this->view->assign('list',$list);

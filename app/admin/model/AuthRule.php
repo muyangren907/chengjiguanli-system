@@ -43,35 +43,12 @@ class AuthRule extends Base
 
 
     // 递归权限
-    public function srcChildren($arr=array())
+    public function srcStatus()
     {
-        if(count($arr)==0 && $pid==0)
-        {
-            $arr = $this->where('pid',0)
-                ->where('status',1)
-                ->field('id,name,title,condition,paixu,ismenu,url,pid,type')
-                ->select()
-                ->toArray();
-        }
-
-        $getArr = array();
-
-        foreach ($arr as $key => $value) {
-            $temp = $this->where('pid',$value['pid'])
-                ->where('status',1)
-                ->field('id,name,title,condition,paixu,ismenu,url,pid,type')
-                ->select()
-                ->toArray();
-            if(count($temp)>0)
-            {
-                // $getArr['pid'] = $this->srcChildren($temp,$value['pid']);
-            }else{
-               // $getArr['pid'] = $temp; 
-            }
-        }
-
-        $getArr[$value['pid']] = $temp;
-      
-        return $getArr;
+        $data = $this->where('status',1)
+            ->field('id,name,title,condition,paixu,ismenu,url,pid,type')
+            ->select()
+            ->toArray();
+        return $data;
     }
 }
