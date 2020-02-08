@@ -77,6 +77,13 @@ class AuthGroup extends BaseController
 
         $rule = new \app\admin\model\AuthRule;
         $ruleList = $rule->srcStatus();
+        $ruleSelect = array();
+
+        $auth = $rule->digui($ruleList,$ruleSelect,0);
+        // halt($auth);
+        // $auth = ['a'=>11,12,13];
+
+        $list['auth'] = $auth;
 
         // 模板赋值
         $this->view->assign('list',$list);

@@ -67,112 +67,130 @@
       // 监测复选框按钮
       layui.use(['form'], function(){
         var form = layui.form;
-        form.on('checkbox()', function(data){
-          var myelem = data.elem
-            ,ischecked = data.elem.checked
-            ,action = $(myelem).attr('action')
-            ,pid = $(myelem).attr('pid')
-            ,id = $(myelem).attr('id');
-          switch(action){
-            case 'topOnclick':
-              topOnclick(id,ischecked)
-              break;
-            case 'midOnclick':
-              midOnclick(id,pid,ischecked);
-              break;
-            case 'btmOnclick':
-              btmOnclick(id,ischecked);
-              break;
-          };
-        });        
+
+        // form.on('checkbox()', function(data){
+        //   var myelem = data.elem
+        //     ,ischecked = data.elem.checked
+        //     ,action = $(myelem).attr('action')
+        //     ,pid = $(myelem).attr('pid')
+        //     ,id = $(myelem).attr('id');
+        //   switch(action){
+        //     case 'topOnclick':
+        //       topOnclick(id,ischecked)
+        //       break;
+        //     case 'midOnclick':
+        //       midOnclick(id,pid,ischecked);
+        //       break;
+        //     case 'btmOnclick':
+        //       btmOnclick(id,ischecked);
+        //       break;
+        //   };
+        // });
+        auth = "<?php echo json_encode($list['auth']); ?>";
+
+        // var auth = "<?php echo json_encode($list['auth'])?>";
+        // auth = eval(decodeURIComponent(auth));
+        auth = eval(auth);
+
+        // for(var i = 0;i <auth.length;i ++){
+        //      auth[i].step_size = 0;
+        //      auth[i] = auth[i];
+        //      auth = auth;
+        //  }
+        console.log(auth); 
+
+        // function create()
+        // {
+
+        // }
       });
 
-      // 顶层按钮
-      function topOnclick(id,ischecked)
-      {
-        if(ischecked == true){
-          // 更换全部子复选框样式
-          $('#'+id).parent().next().find('div.layui-form-checkbox').each(function(){
-            $(this).attr('class','layui-unselect layui-form-checkbox layui-form-checked');
-          });
-          // 全部子复选框
-          $('#'+id).parent().next().find('input').each(function(){
-            $(this).attr('checked',true);
-          });
-        }else{
-          // 更换全部子复选框样式
-          $('#'+id).parent().next().find('div.layui-form-checkbox').each(function(){
-            $(this).attr('class','layui-unselect layui-form-checkbox')
-          });
-          // 取消全部子复选框
-          $('#'+id).parent().next().find('input').each(function(){
-            $(this).attr('checked',false);
-          });
-        }
-      }
+      // // 顶层按钮
+      // function topOnclick(id,ischecked)
+      // {
+      //   if(ischecked == true){
+      //     // 更换全部子复选框样式
+      //     $('#'+id).parent().next().find('div.layui-form-checkbox').each(function(){
+      //       $(this).attr('class','layui-unselect layui-form-checkbox layui-form-checked');
+      //     });
+      //     // 全部子复选框
+      //     $('#'+id).parent().next().find('input').each(function(){
+      //       $(this).attr('checked',true);
+      //     });
+      //   }else{
+      //     // 更换全部子复选框样式
+      //     $('#'+id).parent().next().find('div.layui-form-checkbox').each(function(){
+      //       $(this).attr('class','layui-unselect layui-form-checkbox')
+      //     });
+      //     // 取消全部子复选框
+      //     $('#'+id).parent().next().find('input').each(function(){
+      //       $(this).attr('checked',false);
+      //     });
+      //   }
+      // }
 
-      // 中层按钮
-      function midOnclick(id,pid,ischecked)
-      {
-        if(ischecked == true){
+      // // 中层按钮
+      // function midOnclick(id,pid,ischecked)
+      // {
+      //   if(ischecked == true){
 
-          // 更换上级复选框样式
-          $('#'+id).parent().parent().prev().find('div.layui-form-checkbox').each(function(){
-            $(this).attr('class','layui-unselect layui-form-checkbox layui-form-checked')
-          });
-          // 选中上级复选框
-          $('#'+id).parent().parent().prev().find('input').each(function(){
-            $(this).attr('checked',true);
-          });
+      //     // 更换上级复选框样式
+      //     $('#'+id).parent().parent().prev().find('div.layui-form-checkbox').each(function(){
+      //       $(this).attr('class','layui-unselect layui-form-checkbox layui-form-checked')
+      //     });
+      //     // 选中上级复选框
+      //     $('#'+id).parent().parent().prev().find('input').each(function(){
+      //       $(this).attr('checked',true);
+      //     });
 
-          // 更换全部下级复选框样式
-          $('#'+id).siblings('div.layui-form-checkbox').each(function(){
-            $(this).attr('class','layui-unselect layui-form-checkbox layui-form-checked');
-          });
-          // 选中全部下级复选框
-          $('#'+id).siblings('input').each(function(){
-            $(this).attr('checked',true);
-          });
-        }else{
-          // 更换所有下级复选框样式
-          $('#'+id).siblings('div.layui-form-checkbox').each(function(){
-            $(this).attr('class','llayui-unselect layui-form-checkbox')
-          });
-          // 取消选中所有下级复选框
-          $('#'+id).siblings('input').each(function(){
-            $(this).attr('checked',false)
-          });
+      //     // 更换全部下级复选框样式
+      //     $('#'+id).siblings('div.layui-form-checkbox').each(function(){
+      //       $(this).attr('class','layui-unselect layui-form-checkbox layui-form-checked');
+      //     });
+      //     // 选中全部下级复选框
+      //     $('#'+id).siblings('input').each(function(){
+      //       $(this).attr('checked',true);
+      //     });
+      //   }else{
+      //     // 更换所有下级复选框样式
+      //     $('#'+id).siblings('div.layui-form-checkbox').each(function(){
+      //       $(this).attr('class','llayui-unselect layui-form-checkbox')
+      //     });
+      //     // 取消选中所有下级复选框
+      //     $('#'+id).siblings('input').each(function(){
+      //       $(this).attr('checked',false)
+      //     });
 
-          // 如果所有属于上级的复框为未状态，则取消选中上级复选框
-          var checkboxs = $('#'+id).parent().parent().find('div.layui-form-checked').length;
-          if(checkboxs == 0){
-            // 更换样式
-            $('#'+id).parent().parent().prev().find('div.layui-form-checkbox').each(function(){
-              $(this).attr('class','layui-unselect layui-form-checkbox')
-            });
-            // 取消选中
-            $('#'+id).parent().parent().prev().find('input').each(function(){
-              $(this).attr('checked',false)
-            });
-          }
-        }
-      }
+      //     // 如果所有属于上级的复框为未状态，则取消选中上级复选框
+      //     var checkboxs = $('#'+id).parent().parent().find('div.layui-form-checked').length;
+      //     if(checkboxs == 0){
+      //       // 更换样式
+      //       $('#'+id).parent().parent().prev().find('div.layui-form-checkbox').each(function(){
+      //         $(this).attr('class','layui-unselect layui-form-checkbox')
+      //       });
+      //       // 取消选中
+      //       $('#'+id).parent().parent().prev().find('input').each(function(){
+      //         $(this).attr('checked',false)
+      //       });
+      //     }
+      //   }
+      // }
 
-      // 下层按钮
-      function btmOnclick(id,ischecked)
-      {
-        if(ischecked == true){
-          // 设置上级复选框为状态
-          $('#'+id).parent().children('div.layui-form-checkbox').first().attr('class','layui-unselect layui-form-checkbox layui-form-checked');
-          // 选中上级复选框
-          $('#'+id).parent().children('input').first().attr('checked',true);
+      // // 下层按钮
+      // function btmOnclick(id,ischecked)
+      // {
+      //   if(ischecked == true){
+      //     // 设置上级复选框为状态
+      //     $('#'+id).parent().children('div.layui-form-checkbox').first().attr('class','layui-unselect layui-form-checkbox layui-form-checked');
+      //     // 选中上级复选框
+      //     $('#'+id).parent().children('input').first().attr('checked',true);
 
-          // 设置上级的上级复选框为状态
-          $('#'+id).parent().parent().prev().children('div.layui-form-checkbox').first().attr('class','layui-unselect layui-form-checkbox layui-form-checked');
-          // 选中上级的上级复选框
-          $('#'+id).parent().parent().prev().children('input').first().attr('checked',true);
-        }
-      }
+      //     // 设置上级的上级复选框为状态
+      //     $('#'+id).parent().parent().prev().children('div.layui-form-checkbox').first().attr('class','layui-unselect layui-form-checkbox layui-form-checked');
+      //     // 选中上级的上级复选框
+      //     $('#'+id).parent().parent().prev().children('input').first().attr('checked',true);
+      //   }
+      // }
 
     </script>
 {/block}

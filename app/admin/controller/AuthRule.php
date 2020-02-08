@@ -212,5 +212,25 @@ class AuthRule extends BaseController
         return json($data);
     }
 
+    // 递归权限类别
+    public function digui($arrAll=array(),$arrSelected=array(),$pid=0)
+    {
+        // 声明子权限
+        $child = array();
+        // 循环所有权限
+        foreach ($arrAll as $key => $value) {
+            # 获取当前子权限
+            if($value['pid'] == $pid)
+            {
+                # 判断当前权限是否被选中
+                array_search($value['id'], $arrSelected) ? $value['select'] = true : $value['select'] = false;
+
+                $child[$value['id']] = $value;
+                unset($arrAll[$key]);
+                $child[$value['id']]['child'] = $this->digui($arrAll,$arrSelected,$value['id']);
+            }
+        }
+        return $child;
+    }
     
 }
