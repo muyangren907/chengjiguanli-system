@@ -80,8 +80,6 @@ class AuthGroup extends BaseController
         $ruleSelect = array();
 
         $auth = $rule->digui($ruleList,$ruleSelect,0);
-        // halt($auth);
-        // $auth = ['a'=>11,12,13];
 
         $list['auth'] = $auth;
 
@@ -144,9 +142,6 @@ class AuthGroup extends BaseController
     // 修改角色信息
     public function edit($id)
     {
-        // 获取单位信息
-        $list['data'] = AG::field('id,title,miaoshu,rules')
-            ->find($id);
 
         // 设置页面标题
         $list['set'] = array(
@@ -155,6 +150,23 @@ class AuthGroup extends BaseController
             'formpost'=>'PUT',
             'url'=>'/admin/authgroup/update/'.$id,
         );
+
+        $rule = new \app\admin\model\AuthRule;
+        $ruleList = $rule->srcStatus();
+        $aglist = AG::where('id',$id)
+                        ->field('id,title,miaoshu,rules')
+                        ->find();
+
+        $ruleSelect = explode(",", $aglist->rules);
+
+        $auth = $rule->digui($ruleList,$ruleSelect,0);
+
+        $list['auth'] = $auth;
+        $list['data'] =[
+            'title'=>$aglist->title,
+            'miaoshu'=>$aglist->miaoshu,
+            'id'=>$aglist->id,
+        ];
 
         // 模板赋值
         $this->view->assign('list',$list);

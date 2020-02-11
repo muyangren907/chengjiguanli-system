@@ -106,7 +106,6 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
     // 设置状态
     status:function(obj,url){
         // 判断是禁用操作还是启用操作后赋值标题。
-
         var statusval;
         var title;
         if(obj.elem.checked ==true){
@@ -116,8 +115,6 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
             statusval=0;
             title='禁用';
         }
-        // console.log(url);
-        // console.log(obj.elem);
         // 设置修改后的状态值
         layer.confirm('确认要'+title+'吗？',function(index){
             $.ajax({
@@ -129,27 +126,6 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
                 },
                 success:function(result){
                     if(result.val == 1){
-                        // // 获取状态栏元素
-                        // var myspan = $(obj.tr).find("span");
-                        // // 获取状操作按钮元素
-                        // var mya = $(obj.tr).find("[title='启用'],[title='禁用']");
-                        // // 状态栏重新赋值
-                        // myspan.text(title);
-                        // // 重新设置状态栏class和状态操作按钮图标
-                        // if(statusval == 1){
-                        //     myspan.attr('class','layui-btn layui-btn-normal layui-btn-mini');
-                        //     mya.attr("title",'启用');
-                        // }else{
-                        //     myspan.attr('class','layui-btn layui-btn-disabled layui-btn-mini');
-                        //     mya.attr("title",'禁用');
-                        // }
-                        // 更新缓存值，否则下次操作会报错。
-                        // obj.update({
-                        //     status: statusval
-                        // });
-                        // obj.elem.prop('value','off');
-                        // obj.elem.prop('checked',true);
-                        // 操作提示
                         layer.msg('已'+title);
                     }else{
                         layer.msg('数据处理错误!',function(){});
@@ -177,35 +153,6 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
             });
         });
     },
-    // getSearchVal:function(name){
-    //     // 声明对象，用于存表单名与数值
-    //     var obj={};
-    //     // 循环获取有表单的div
-    //     $(name).children('div.layui-form-item').each(function(i){
-    //         // 声明二级div
-    //         var myblock = $(this).children('div.layui-input-block');
-    //         var name=$(myblock).children("input:first").attr("name");
-    //         // 判断二级div下的第一个input是不是text
-    //         if($(myblock).children("input:first").attr("type") == 'text'){
-    //             // 如果是文本框，则直接获取。
-    //             var value=$(myblock).children('input').val();
-    //             obj[name] = value;
-    //         }else if($(myblock).children("input:first").attr("type") == 'checkbox'){
-    //             // 如果是复选框，获取被选中的div
-    //             var checkdiv = $(myblock).children("div.layui-form-checked");
-    //             obj[name] = new Array();
-    //             $(checkdiv).each(function(cd){
-    //                 var value = $(this).prev('input').val();
-    //                 obj[name].push(value);
-    //             });
-    //         }else if($(myblock).children("input:first").attr("type") == 'radio'){
-    //              var checkdiv = $(myblock).children("div.layui-form-radioed");
-    //              var value = $(checkdiv).prev('input').val();
-    //              obj[name] = value;
-    //         }
-    //     });
-    //     return obj;
-    //   },
 
     // 表格重载
     reLoadTable:function(formname,tableID,mydata={}){
@@ -230,7 +177,6 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
         var srcInput = $(myobj);
         // 删除原来列表
         srcInput.next().remove();
-
         // 添加列表div
         srcInput.after('<div class="srcSelectStyly"><dl><dd onclick="cjgl.addTeacher(this)">请选择</dd></dl></div>');
         // 声明变量
@@ -248,11 +194,9 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
                 {
                     return true;
                 }
-
                 for (var i = data.length - 1; i >= 0; i--) {
                     mydl.append('<dd id="'+data[i].id+'" onclick="cjgl.addTeacher(this)" addname='+addname+' teachername="'+data[i].xingming+'">'+data[i].xingming+'　'+data[i].jsDanwei.jiancheng+'　'+data[i].shengri+'</dd>');
                 }
-                
             }
         );
     }, 
@@ -269,7 +213,6 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
         if(myId){
             $(myBut).append('<div class="layui-input-inline" style="width:60px"><div onclick="cjgl.delTeacher(this)" class="layui-btn layui-btn-normal">'+teachername+'</div><input type="hidden" name="'+addname+'" value="'+myId+'"></div>');
         }
-
         $(myList).prev().val('');
         $(myList).remove();
     },
@@ -298,15 +241,11 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
                 {
                     return true;
                 }
-
                 for (var i = data.length - 1; i >= 0; i--) {
                     mydl.append('<dd id="'+data[i].id+'" onclick="cjgl.addTeacher1(this)" addname='+addname+' teachername="'+data[i].xingming+'">'+data[i].xingming+'　'+data[i].jsDanwei.jiancheng+'　'+data[i].shengri+'</dd>');
                 }
-                
             }
         );
-
-          
     }, 
 
     // 添加教师
@@ -427,6 +366,27 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
         }
         form.render();
     },
+
+    /**  
+    * 在创建角色中，选中类别时的动作 
+    * 
+    * @access public 
+    * @param id 选中复选框的ID
+    * @param checked 选中复选框的状态
+    * @return array 返回类型
+    */ 
+    checkedAuth:function(id,checed){
+        obj = $('#p'+id).html();
+        aa = $('#p'+id).find("input[type='checkbox']").prop('checked',checked);
+        form.render();
+    },
+
+
+
+
+
+
+
 
 
   };

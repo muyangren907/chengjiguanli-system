@@ -31,15 +31,6 @@ class Index
         // 清除session（当前作用域）
         session(null);
 
-        //实例化系统数据模型
-        $db = new   \think\facade\Db;
-
-        // 查询系统信息
-        $list = $db::table('cj_system_base')
-            ->order(['id'=>'desc'])
-            ->field('id,keywords,description')
-            ->find();
-
         // 获取系统名称和版本号
         $list['webtitle'] = Config::get('shangma.webtitle');
         $list['version'] = Config::get('shangma.version');

@@ -63,7 +63,10 @@ class AuthRule extends Base
             if($value['pid'] == $pid)
             {
                 # 判断当前权限是否被选中
-                array_search($value['id'], $arrSelected) ? $value['select'] = true : $value['select'] = false;
+                // array_search($value['id'], $arrSelected) == '' ? $value['select'] = false : $value['select'] = true;
+                $value['select'] = in_array($value['id'],$arrSelected);
+                // dump($value['id']);
+                // halt($a);
 
                 $child[$value['id']] = $value;
                 unset($arrAll[$key]);

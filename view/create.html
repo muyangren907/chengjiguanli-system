@@ -34,12 +34,15 @@
     <div class="x-body">
     	{block name="form"}{/block}
     </div>
-    {block name="myjs"}{/block}
+    
     <script>
       //config的设置是全局的
       layui.config({
           base: "__XADMIN__/js/" //假设这是你存放拓展模块的根目录
       });
+    </script>
+    
+    <script>
         
       layui.use(['form','cjgl'], function(){
         var form = layui.form
@@ -82,6 +85,7 @@
         form.on('checkbox', function(data){
           checkall = $(data.elem).attr('checkall');
           parentId = $(data.elem).parents("div").attr('id');
+          fields = $(data.elem).attr('lay-filter');
           if(checkall=='p'){
             cjgl.checkboxAll(parentId,data.elem.checked);
           }else if(checkall=='c'){
@@ -94,10 +98,15 @@
             ischecked = data.elem.checked
             btmOnclick(id,ischecked);
           }
+          if(fields=='auth')
+          {
+            id = $(data.elem).attr('id');
+            checked = data.elem.checked;
+            cjgl.checkedAuth(id,checked);
+          }
         });       
-
       });
-
   </script>
+  {block name="myjs"}{/block}
   </body>
 </html>

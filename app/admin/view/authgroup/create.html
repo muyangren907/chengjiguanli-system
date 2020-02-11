@@ -1,5 +1,16 @@
 {extend name=".././view/create.html" /}
+{block name="jscss"}
+<style>
+/*mycheckbox
+{
+    style:{
+      padding-left: 10px;
+      padding-right: 10px;
+  };
+}*/
+</style>
 
+{/block}
 {block name="form"}
     <form class="layui-form layui-form-pane" lay-filter="myform">
           <div class="layui-form-item">
@@ -11,7 +22,7 @@
                   autocomplete="off" class="layui-input " value="{$list.data.title|default=''}" placeholder="中文2-25个字符">
               </div>
           </div>
-          <div class="layui-form-item">
+          <div class="layui-form-item" >
               <label for="miaoshu" class="layui-form-label">
                   <span class="x-red">*</span>角色描述
               </label>
@@ -20,38 +31,7 @@
                   autocomplete="off" class="layui-input " value="{$list.data.miaoshu|default=''}" placeholder="中文2-25个字符">
               </div>
           </div>
-          {php}
-            $authrule = new \app\admin\model\AuthRule;
-            $authrulelist = $authrule->where('status',1)->where('pid',0)->select();
-          {/php}
-          <div class="layui-form-item">
-              {volist name="authrulelist" id="vo"}
-                <div style="background: #eeeeee">
-                  <input type="checkbox" name="rules[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary" id ="{$vo.id}" pid="0" action="topOnclick" {present name="$list.data.rules"}
-                    {in name="vo.id" value="$list['data']['rules']"}
-                     checked
-                    {/in}
-                  {/present}>
-                </div>
-                <div class="layui-form-item" id="{$vo.id}" style="padding-left: 10px;padding-right: 10px;">
-                  {volist name="vo.auth_cid" id="vc"}
-                    <div>
-                      <input type="checkbox" name="rules[]" title="{$vc.title}" value="{$vc.id}" lay-skin="primary" id ="{$vc.id}" pid="{$vo.id}" action="midOnclick" {present name="$list.data.rules"}
-                        {in name="vc.id" value="$list['data']['rules']"}
-                          checked
-                        {/in}
-                      {/present}>
-                      {volist name="vc.auth_cid" id="vd"}
-                        <input type="checkbox" name="rules[]" title="{$vd.title}" value="{$vd.id}" lay-skin="primary" id ="{$vd.id}" pid="{$vc.id}" action="btmOnclick" {present name="$list.data.rules"}
-                          {in name="vd.id" value="$list['data']['rules']"}
-                            checked
-                          {/in}
-                        {/present}>
-                      {/volist}
-                    </div>
-                  {/volist}
-                </div>
-              {/volist}
+          <div class="layui-form-item" id="rule" style="background: #eeeeee">
           </div>  
           <div class="layui-form-item" style="text-align: right;">
               <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
@@ -68,130 +48,46 @@
       layui.use(['form'], function(){
         var form = layui.form;
 
-        // form.on('checkbox()', function(data){
-        //   var myelem = data.elem
-        //     ,ischecked = data.elem.checked
-        //     ,action = $(myelem).attr('action')
-        //     ,pid = $(myelem).attr('pid')
-        //     ,id = $(myelem).attr('id');
-        //   switch(action){
-        //     case 'topOnclick':
-        //       topOnclick(id,ischecked)
-        //       break;
-        //     case 'midOnclick':
-        //       midOnclick(id,pid,ischecked);
-        //       break;
-        //     case 'btmOnclick':
-        //       btmOnclick(id,ischecked);
-        //       break;
-        //   };
-        // });
-        auth = "<?php echo json_encode($list['auth']); ?>";
-
-        // var auth = "<?php echo json_encode($list['auth'])?>";
-        // auth = eval(decodeURIComponent(auth));
+        // 加载权限
+        auth = <?php echo json_encode($list['auth']);?>;  
         auth = eval(auth);
+        createCheckbox(auth,0);
 
-        // for(var i = 0;i <auth.length;i ++){
-        //      auth[i].step_size = 0;
-        //      auth[i] = auth[i];
-        //      auth = auth;
-        //  }
-        console.log(auth); 
+        // 创建权限按钮
+        function createCheckbox(arr,pid)
+        {
+          
+          if(arr.length==0)
+          {
+            return false;
+          }
 
-        // function create()
-        // {
+          // 创建div
+          if(pid == 0)
+          {
+            mydiv = "<p><div class='layui-form-item' id='p"+pid+"'></div>";
+            $('#rule').append(mydiv);
+          }else{
+            mydiv = "<p><div class='layui-form-item' style='margin-left: 3%' id='p"+pid+"'></div>";
+            $('#'+pid).after(mydiv);
+          }
+          // 创建checkbox
+          for(var i in arr){
+            if(arr[i].select == true)
+            {
+              mycheckbox = '<input type="checkbox" name="rules[]" title="'+arr[i].title+'" value="'+arr[i].id+'" lay-skin="primary" lay-filter="auth" lay-verify="required" id ="'+arr[i].id+'" pid="'+arr[i].pid+'" checked>';
+            }else{
+              mycheckbox = '<input type="checkbox" name="rules[]" title="'+arr[i].title+'" value="'+arr[i].id+'" lay-skin="primary" lay-filter="auth" lay-verify="required" id ="'+arr[i].id+'" pid="'+arr[i].pid+'">';
+            }
 
-        // }
+            
+            $('#p'+pid).append(mycheckbox);
+            createCheckbox(arr[i].child,arr[i].id);
+          }
+
+          form.render();
+        }
       });
-
-      // // 顶层按钮
-      // function topOnclick(id,ischecked)
-      // {
-      //   if(ischecked == true){
-      //     // 更换全部子复选框样式
-      //     $('#'+id).parent().next().find('div.layui-form-checkbox').each(function(){
-      //       $(this).attr('class','layui-unselect layui-form-checkbox layui-form-checked');
-      //     });
-      //     // 全部子复选框
-      //     $('#'+id).parent().next().find('input').each(function(){
-      //       $(this).attr('checked',true);
-      //     });
-      //   }else{
-      //     // 更换全部子复选框样式
-      //     $('#'+id).parent().next().find('div.layui-form-checkbox').each(function(){
-      //       $(this).attr('class','layui-unselect layui-form-checkbox')
-      //     });
-      //     // 取消全部子复选框
-      //     $('#'+id).parent().next().find('input').each(function(){
-      //       $(this).attr('checked',false);
-      //     });
-      //   }
-      // }
-
-      // // 中层按钮
-      // function midOnclick(id,pid,ischecked)
-      // {
-      //   if(ischecked == true){
-
-      //     // 更换上级复选框样式
-      //     $('#'+id).parent().parent().prev().find('div.layui-form-checkbox').each(function(){
-      //       $(this).attr('class','layui-unselect layui-form-checkbox layui-form-checked')
-      //     });
-      //     // 选中上级复选框
-      //     $('#'+id).parent().parent().prev().find('input').each(function(){
-      //       $(this).attr('checked',true);
-      //     });
-
-      //     // 更换全部下级复选框样式
-      //     $('#'+id).siblings('div.layui-form-checkbox').each(function(){
-      //       $(this).attr('class','layui-unselect layui-form-checkbox layui-form-checked');
-      //     });
-      //     // 选中全部下级复选框
-      //     $('#'+id).siblings('input').each(function(){
-      //       $(this).attr('checked',true);
-      //     });
-      //   }else{
-      //     // 更换所有下级复选框样式
-      //     $('#'+id).siblings('div.layui-form-checkbox').each(function(){
-      //       $(this).attr('class','llayui-unselect layui-form-checkbox')
-      //     });
-      //     // 取消选中所有下级复选框
-      //     $('#'+id).siblings('input').each(function(){
-      //       $(this).attr('checked',false)
-      //     });
-
-      //     // 如果所有属于上级的复框为未状态，则取消选中上级复选框
-      //     var checkboxs = $('#'+id).parent().parent().find('div.layui-form-checked').length;
-      //     if(checkboxs == 0){
-      //       // 更换样式
-      //       $('#'+id).parent().parent().prev().find('div.layui-form-checkbox').each(function(){
-      //         $(this).attr('class','layui-unselect layui-form-checkbox')
-      //       });
-      //       // 取消选中
-      //       $('#'+id).parent().parent().prev().find('input').each(function(){
-      //         $(this).attr('checked',false)
-      //       });
-      //     }
-      //   }
-      // }
-
-      // // 下层按钮
-      // function btmOnclick(id,ischecked)
-      // {
-      //   if(ischecked == true){
-      //     // 设置上级复选框为状态
-      //     $('#'+id).parent().children('div.layui-form-checkbox').first().attr('class','layui-unselect layui-form-checkbox layui-form-checked');
-      //     // 选中上级复选框
-      //     $('#'+id).parent().children('input').first().attr('checked',true);
-
-      //     // 设置上级的上级复选框为状态
-      //     $('#'+id).parent().parent().prev().children('div.layui-form-checkbox').first().attr('class','layui-unselect layui-form-checkbox layui-form-checked');
-      //     // 选中上级的上级复选框
-      //     $('#'+id).parent().parent().prev().children('input').first().attr('checked',true);
-      //   }
-      // }
-
     </script>
 {/block}
 
