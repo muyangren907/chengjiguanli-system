@@ -154,7 +154,6 @@ class Tongji extends Base
     // 全科及格率
     public function rateAll($cj = array(), $sbj=array())
     {
-
         $jige = 0;  # 总及格人数
         $row = 0; #记录有成绩的学生数
         $sbjcnt = count($sbj);
@@ -166,26 +165,22 @@ class Tongji extends Base
             foreach ($sbj as $k => $val) {
                 if(isset($value[$val['lieming']]))
                 {
-                       if($value[$val['lieming']]>=$val['fenshuxian']['jige']){
-                            $temjige++;
-                       }
-                       if($value[$val['lieming']] !== null)
-                       {
-                            $col++;
-                       }
+                    if($value[$val['lieming']]>=$val['fenshuxian']['jige']){
+                        $temjige++;
+                    }
+                    if($value[$val['lieming']] !== null)
+                    {
+                        $col++;
+                    }
                 }
             }
-
             $col>0 ? $row++ : $row;
-
             // 如果这个学生及格学科数等于学科总数，那么全科及格总数加1
             $temjige == $sbjcnt && $temjige>0 ? $jige++ : $jige ;
         }
 
         $row>0 ? $rate = round($jige/count($cj)*100,2) : $rate='';
         return $rate;
-
-
     }
 
 
