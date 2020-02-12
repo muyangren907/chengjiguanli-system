@@ -269,7 +269,7 @@ class Student extends BaseController
         $stu = new STU;
         if($chongfu == Null)
         {
-            $stu::create($list);
+            $data = $stu::create($list);
 
         }else{
             if($chongfu->delete_time>0)

@@ -65,10 +65,10 @@
           // 创建div
           if(pid == 0)
           {
-            mydiv = "<p><div class='layui-form-item' id='p"+pid+"'></div>";
+            mydiv = "<div class='layui-form-item' id='p"+pid+"'></div>";
             $('#rule').append(mydiv);
           }else{
-            mydiv = "<p><div class='layui-form-item' style='margin-left: 3%' id='p"+pid+"'></div>";
+            mydiv = "<div class='layui-form-item' style='margin-left: 3%; overflow:auto' id='p"+pid+"'></div>";
             $('#'+pid).after(mydiv);
           }
           // 创建checkbox
@@ -80,7 +80,6 @@
               mycheckbox = '<input type="checkbox" name="rules[]" title="'+arr[i].title+'" value="'+arr[i].id+'" lay-skin="primary" lay-filter="auth" lay-verify="required" id ="'+arr[i].id+'" pid="'+arr[i].pid+'">';
             }
 
-            
             $('#p'+pid).append(mycheckbox);
             createCheckbox(arr[i].child,arr[i].id);
           }

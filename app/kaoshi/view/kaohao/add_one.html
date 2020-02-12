@@ -15,13 +15,11 @@
           <div class="layui-form-item">
             <label for="school" class="layui-form-label"><span class="x-red">*</span>学校</label>
             <div class="layui-input-block">
+              {php}$schoolList = schlist('校级','校级',array('小学','中小学')){/php}
               <select name="school" id="school" lay-verify="required">
                 <option value=""></option>
-                {foreach $list.data.school as $key=>$vo}
-                  <option value="{$vo.id}"
-                    {eq name="$key" value="0" }
-                      selected
-                    {/eq}>
+                {foreach $schoolList as $key=>$vo}
+                  <option value="{$vo.id}" >
                     {$vo.title}
                   </option>
                 {/foreach}
@@ -83,6 +81,11 @@
       var myselectname = $(data.elem).attr('name');
       if(myselectname == 'school' || myselectname == 'ruxuenian'){
         addBanji();
+
+        form.val("myform", { //formTest 即 class="layui-form" 所在元素属性 lay-filter="" 对应的值
+          "search": "" // "name": "value"
+        });
+
         form.render();
       }
     });
@@ -93,13 +96,13 @@
       // 获取参数
       formval = form.val("myform");
       cjgl.createSelectOption('banji',formval,'/teach/banji/mybanji','id','banTitle');
-      console.log(formval);
     }
     
 
     // 搜索教师
     $('#search').bind({
       keyup:function(){
+        $('#list').children("span[name='aa']").remove();
         str = $('#search').val().trim();
         banji = $('#banji').val();
         if(banji=='')
@@ -115,7 +118,7 @@
                 "banji":banji
             },
             function(data,status){
-                
+                $('#list').children("span[name='aa']").remove();
                 if($.isEmptyObject(data))
                 {
                     return true;

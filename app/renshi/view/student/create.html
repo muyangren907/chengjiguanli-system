@@ -149,9 +149,10 @@
 
 {block name="myjs"}
 <script>
-layui.use(['laydate','form'], function(){
+layui.use(['laydate','form','cjgl'], function(){
 	var laydate = layui.laydate
-		,form = layui.form;
+		,form = layui.form
+    ,cjgl = layui.cjgl;
 	//执行一个laydate实例
 	laydate.render({
 		elem: '#shengri' //指定元素
@@ -162,55 +163,23 @@ layui.use(['laydate','form'], function(){
 	form.on('select', function(data){
 	  var myselectname = $(data.elem).attr('name');
 	  if(myselectname == 'school' || myselectname == 'ruxuenian'){
-	  	mybanji();
+	  	addBanji();
 	  }
 	});
 
-	//获取班级列表并更新
-	function mybanji(){
-		// 获取表单值
-		var school = $('#school').val()
-		,ruxuenian = $('#ruxuenian').val();
-		
-		// 获取节点
-		var bj = $("#banji");
-		var bjdl = $('#banji').next().children('dl');
-		var bjdiv = $('#banji').next().children('div');
-
-		// 删除原来已有值
-		$(bj).empty();
-		$(bjdl).children('dd').each(function(){
-			this.remove();
-		});
-		// 删除选中值
-		$(bjdiv).children('input:first').val('');
-
-		// 获取班级列表
-		$.ajax({
-		    url:"/teach/banji/mybanji", 
-		    type:"POST",
-		    data:{
-		    	school:school
-		    	,ruxuenian:ruxuenian
-		    },
-		    dataType:'json',
-		    success:function(result){
-		    	if(result.length > 0){
-		    		result.forEach(function(val,index){
-		    			$(bj).append("<option value="+val['id']+">"+val['banTitle']+"</option>");
-		    		})
-		    		form.render('select'); //刷新select选择框渲染
-		    	}
-		    },
-		    error:function(xhr,status,error) {
-		      layer.msg('数据处理错误',{
-		          icon: 2,
-		          time: 2000 //2秒关闭（如果不配置，默认是3秒）
-		      });
-		    }
-		});
+  // 班级列表
+  function addBanji()
+  {
+    formval = form.val("myform");
+    val = {
+      school:formval.school,
+      ruxuenian:formval.ruxuenian
+    };
+    cjgl.createSelectOption('banji',val,'/teach/banji/mybanji','id','banTitle');
   }
 
+
+  // 根据身份证号添加出生日期和
   $('#shenfenzhenghao').bind('change',function sfz(){
     // 获取身份证号 210281198510288213
     var str = $(this).val();

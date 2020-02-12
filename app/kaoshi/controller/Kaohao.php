@@ -31,10 +31,6 @@ class Kaohao extends BaseController
         $list['data']['nianji'] = $ksset->srcNianji($kaoshi);
         $list['data']['nianjiNum'] = array_column($list['data']['nianji'], 'nianji');
 
-        $kh = new KH;
-        $src['kaoshi'] = $kaoshi;
-        $list['data']['school'] = $kh->cySchool($src);
-
         // 设置页面标题
         $list['set'] = array(
             'webtitle'=>'生成考号',
@@ -155,7 +151,6 @@ class Kaohao extends BaseController
         } else {
             $src['ruxuenian']=array();
         }
-        $list['data']['school'] = $kh->cySchool($src);
 
 
         // 设置页面标题
@@ -216,12 +211,6 @@ class Kaohao extends BaseController
         // 返回信息
         return json($data);
     }
-
-
-
-
-
-
 
 
     /**

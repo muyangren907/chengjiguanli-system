@@ -5,9 +5,10 @@
   <div class="layui-form-item">
     <label for="school" class="layui-form-label"><span class="x-red">*</span>参考学校</label>
     <div class="layui-input-block">
+      {php}$schoolList = schlist('校级','校级',array('小学','中小学')){/php}
       <select name="school" id="school" lay-filter="school" lay-verify="required">
         <option value="">请选择学校</option>
-        {foreach $list.data.school as $key=>$vo }
+        {foreach $schoolList as $key=>$vo }
         <option value="{$vo.id}">
         {$vo.title}
       </option>

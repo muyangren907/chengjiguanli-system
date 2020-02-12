@@ -44,13 +44,12 @@ Route::group('kaohao', function () {
 	});
 
 
-// 参加考试学科
+// 考试设置
 Route::group('kaoshiset', function () {
 	    Route::rule('index/<kaoshi>','KaoshiSet/index','get');						# 信息列表
 	    Route::rule('data','KaoshiSet/ajaxdata','post');				# 获取数据
 	    Route::rule('create/<kaoshi>','KaoshiSet/create','get');		# 添加信息
 	    Route::rule('save','KaoshiSet/save','post');					# 保存信息
-	    // Route::rule('read/<id>','KaoshiSet/read','get');				# 读取信息
 	    Route::rule('edit/<id>','KaoshiSet/edit','get');				# 修改信息
 	    Route::rule('update/<id>','KaoshiSet/update','put');			# 更新信息
 	    Route::rule('delete/<id>','KaoshiSet/delete','delete');		# 删除信息

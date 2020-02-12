@@ -46,6 +46,7 @@ class AuthRule extends Base
     public function srcStatus()
     {
         $data = $this->where('status',1)
+            ->order(['paixu'=>'desc'])
             ->field('id,name,title,condition,paixu,ismenu,url,pid,type')
             ->select()
             ->toArray();

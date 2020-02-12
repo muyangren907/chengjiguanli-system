@@ -25,6 +25,7 @@ class Rule extends Seeder
             ['id'=>7,'title'=>'系统管理','name' =>'system','paixu' =>9,'ismenu' =>1,'font' =>'&#xe6ae;'],
             ['id'=>8,'title'=>'荣誉管理','name' =>'rongyu','paixu' =>6,'ismenu' =>1,'font' =>'&#xe6e4;','status'=>0],
             ['id'=>9,'title'=>'课题管理','name' =>'keti','paixu' =>7,'ismenu' =>1,'font' =>'&#xe6b3;','status'=>0],
+
                 // 二级菜单
                 // 成绩采集
                 ['id'=>101,'title'=>'扫码录入','name'=>'chengji/luru/malu','paixu'=>1,'ismenu' =>1,'pid' =>1,'url'=>'/chengji/luru/malu',],
@@ -39,18 +40,16 @@ class Rule extends Seeder
                 // 师生名单
                 ['id'=>401,'title'=>'学生列表','name'=>'renshi/Student/index','paixu'=>1,'ismenu' =>1,'pid' =>4,'url'=>'/renshi/student',],
                 // 师生名单
-                ['id'=>402,'title'=>'毕业学生','name'=>'renshi/Student/byList','paixu'=>1,'ismenu' =>1,'pid' =>4,'url'=>'/renshi/student/bylist',],
+                ['id'=>402,'title'=>'毕业学生','name'=>'renshi/Student/byList','paixu'=>2,'ismenu' =>1,'pid' =>4,'url'=>'/renshi/student/bylist',],
                 // 师生名单
-                ['id'=>403,'title'=>'删除学生','name'=>'renshi/Student/delList','paixu'=>1,'ismenu' =>1,'pid' =>4,'url'=>'/renshi/student/dellist',],
-                ['id'=>404,'title'=>'教师列表','name'=>'renshi/Teacher/index','paixu'=>2,'ismenu' =>1,'pid' =>4,'url'=>'/renshi/teacher',],
-                ['id'=>405,'title'=>'删除教师','name'=>'renshi/Teacher/delList','paixu'=>2,'ismenu' =>1,'pid' =>4,'url'=>'/renshi/teacher/dellist',],
-
+                ['id'=>403,'title'=>'删除学生','name'=>'renshi/Student/delList','paixu'=>3,'ismenu' =>1,'pid' =>4,'url'=>'/renshi/student/dellist',],
+                ['id'=>404,'title'=>'教师列表','name'=>'renshi/Teacher/index','paixu'=>4,'ismenu' =>1,'pid' =>4,'url'=>'/renshi/teacher',],
+                ['id'=>405,'title'=>'删除教师','name'=>'renshi/Teacher/delList','paixu'=>5,'ismenu' =>1,'pid' =>4,'url'=>'/renshi/teacher/dellist',],
 
                 // 教务管理
                 ['id'=>501,'title'=>'学期列表','name'=>'teach/Xueqi/index','paixu'=>1,'ismenu' =>1,'pid' =>5,'url'=>'/teach/xueqi',],
                 ['id'=>502,'title'=>'班级列表','name'=>'teach/Banji/index','paixu'=>2,'ismenu' =>1,'pid' =>5,'url'=>'/teach/banji',],
                 ['id'=>503,'title'=>'学科列表','name'=>'teach/Subject/index','paixu'=>3,'ismenu' =>1,'pid' =>5,'url'=>'/teach/subject',],
-                
 
                 // 管理员管理
                 ['id'=>601,'title'=>'管理员列表','name'=>'admin/Index/index','paixu'=>1,'ismenu' =>1,'pid' =>6,'url'=>'/admin/index',],
@@ -62,27 +61,20 @@ class Rule extends Seeder
                 ['id'=>702,'title'=>'单位管理','name'=>'system/School/index','paixu'=>2,'ismenu' =>1,'pid' =>7,'url'=>'/system/school',],
                 ['id'=>703,'title'=>'文件管理','name'=>'system/Fields/index','paixu'=>3,'ismenu' =>1,'pid' =>7,'url'=>'/system/file',],
                 ['id'=>704,'title'=>'系统设置','name'=>'system/SystemBase/edit','paixu'=>10,'ismenu' =>1,'pid' =>7,'url'=>'/system/',],
-                
-
 
                 // 荣誉管理
                 ['id'=>801,'title'=>'单位荣誉','name'=>'rongyu/Danwei/index','paixu'=>1,'ismenu' =>1,'pid' =>8,'url'=>'/rongyu/danwei',],
                 ['id'=>802,'title'=>'教师荣誉册','name'=>'rongyu/Jiaoshi/index','paixu'=>2,'ismenu' =>1,'pid' =>8,'url'=>'/rongyu/jiaoshi',],
                 ['id'=>803,'title'=>'教师荣誉信息','name'=>'rongyu/JsRongyuInfo/index','paixu'=>3,'ismenu' =>1,'pid' =>8,'url'=>'/rongyu/jsryinfo',],
-                // ['id'=>804,'title'=>'学生荣誉','name'=>'rongyu/StuRongyu/index','paixu'=>7,'ismenu' =>1,'pid' =>8,'url'=>'/xsry','status'=>0],
 
                 // 荣誉管理
                 ['id'=>901,'title'=>'课题册','name'=>'keti/Ketice/index','paixu'=>1,'ismenu' =>1,'pid' =>9,'url'=>'/keti/ketice',],
                 ['id'=>902,'title'=>'课题列表','name'=>'keti/KetiInfo/index','paixu'=>2,'ismenu' =>1,'pid' =>9,'url'=>'/keti/ketiinfo',],
                 
-                
-                
                     
                     // 三级-权限
-
-
                     // 扫码录入
-                    ['title'=>'扫码查询','name'=>'Chengji/Luru/read','paixu' =>1,'pid'=>101,'id'=>1000000],
+                    ['id'=>1000000000,'title'=>'扫码查询','name'=>'Chengji/Luru/read','paixu' =>1,'pid'=>101],
                     ['title'=>'扫码保存','name'=>'Chengji/Luru/malusave','paixu' =>2,'pid'=>101],
                     // 表格录入
                     ['title'=>'表格保存','name'=>'Chengji/Luru/saveAll','paixu' =>3,'pid'=>102],
@@ -97,35 +89,11 @@ class Rule extends Seeder
                     ['title'=>'更新','name'=>'Kaoshi/Index/update','paixu'=>4,'pid'=>301,],
                     ['title'=>'保存','name'=>'Kaoshi/Index/save','paixu'=>5,'pid'=>301,],
                     ['title'=>'状态','name'=>'Kaoshi/Index/setStatus','paixu'=>6,'pid'=>301],
-                    ['title'=>'设置','name'=>'Kaoshi/KaoshiSubject/index','paixu'=>7,'pid'=>301],
                     // 考试操作
-                    ['title'=>'生成考号','name'=>'kaoshi/Kaohao/create','paixu'=>1,'pid'=>302],
-                    ['title'=>'已录成绩数量','name'=>'Chengji/Tongji/yiluCnt','paixu'=>2,'pid'=>302],
-                    ['title'=>'保存考号','name'=>'kaoshi/Kaohao/save','paixu'=>3,'pid'=>302],
-                    ['title'=>'考号删除','name'=>'kaoshi/Kaohao/delete','paixu'=>4,'pid'=>302],
-                    ['title'=>'下载试卷标签信息','name'=>'kaoshi/Kaohao/biaoqian','paixu'=>5,'pid'=>302],
-                    ['title'=>'下载成绩采集表','name'=>'kaoshi/Kaohao/caiji','paixu'=>6,'pid'=>302],
-                    ['title'=>'成绩列表','name'=>'Chengji/Index/index','paixu'=>7,'pid'=>302],
-                        ['title'=>'录入人信息','name'=>'Chengji/Index/readAdd','paixu'=>8,'pid'=>302],
-                        ['title'=>'删除成绩','name'=>'Chengji/Index/delete','paixu'=>9,'pid'=>302],
-                        ['title'=>'成绩状态','name'=>'Chengji/Index/setStatus','paixu'=>10,'pid'=>302],
-                        ['title'=>'批量删除界面','name'=>'Chengji/Index/deletecjs','paixu'=>11,'pid'=>302],
-                        ['title'=>'批量删除','name'=>'Chengji/Index/deletecjmore','paixu'=>12,'pid'=>302],
-                        ['title'=>'下载学生成绩条','name'=>'Chengji/Index/dwChengjitiao','paixu'=>13,'pid'=>302],
-                        ['title'=>'添加考号','name'=>'Kaoshi/Kaohao/addOne','paixu'=>14,'pid'=>302],
-
-                    // 学生成绩
-                    ['title'=>'下载学生成绩','name'=>'chengji/Index/dwChengji','paixu'=>21,'pid'=>302],
-                    // 班级成绩
-                    ['title'=>'班级成绩统计','name'=>'Chengji/Bjtongji/biaoge','paixu'=>41,'pid'=>302],
-                    ['title'=>'下载班级成绩统计表','name'=>'chengji/Bjtongji/dwBiaoge','paixu'=>42,'pid'=>302],
-                    // 年级成绩
-                    ['title'=>'年级成绩统计','name'=>'Chengji/Njtongji/biaoge','paixu'=>61,'pid'=>302],
-                    ['title'=>'下载年级成绩统计表','name'=>'chengji/Njtongji/dwBiaoge','paixu'=>62,'pid'=>302],
-                    ['title'=>'以班级为单位统计成绩','name'=>'chengji/Bjtongji/tongji','paixu'=>71,'pid'=>302],
-                    ['title'=>'以学校为单位统计成绩','name'=>'chengji/Njtongji/tongji','paixu'=>72,'pid'=>302],
-                    ['title'=>'以全部成绩为单位统计成绩','name'=>'chengji/Schtongji/tongji','paixu'=>73,'pid'=>302],
-
+                    ['id'=>30201,'title'=>'前期操作','name'=>'kaoshicaozuo1','paixu'=>1,'pid'=>302],
+                    ['id'=>30202,'title'=>'成绩录入','name'=>'kaoshicaozuo2','paixu'=>2,'pid'=>302],
+                    ['id'=>30203,'title'=>'成绩列表','name'=>'kaoshicaozuo3','paixu'=>3,'pid'=>302],
+                    
 
 
                     // 师生管理
@@ -142,13 +110,19 @@ class Rule extends Seeder
                     ['title'=>'批量保存','name'=>'renshi/Student/saveAll','paixu'=>10,'pid'=>401],
                     ['title'=>'表格删除页面','name'=>'renshi/Student/deletes','paixu'=>11,'pid'=>401],
                     ['title'=>'表格删除数据','name'=>'renshi/Student/deleteXlsx','paixu'=>12,'pid'=>401],
-                    ['title'=>'恢复删除','name'=>'renshi/Student/reDel','paixu'=>13,'pid'=>401],
+                    
+
+                    // 毕业学生
+                    ['title'=>'格式占位','name'=>'biyexueshengzhanwei','paixu' =>1,'pid'=>402],
+
+                    // 删除学生
+                    ['title'=>'恢复删除','name'=>'renshi/Student/reDel','paixu'=>1,'pid'=>403],
 
                     // 教师管理权限
                     ['title'=>'添加','name'=>'renshi/Teacher/create','paixu' =>1,'pid'=>404],
                     ['title'=>'保存','name'=>'renshi/Teacher/save','paixu' =>2,'pid'=>404],
                     ['title'=>'删除','name'=>'renshi/Teacher/delete','paixu'=>3,'pid'=>404],
-                    ['title'=>'编辑','name'=>'renshi/Teacher/edit','paixu'=>7,'pid'=>404,],
+                    ['title'=>'编辑','name'=>'renshi/Teacher/edit','paixu'=>4,'pid'=>404,],
                     ['title'=>'更新','name'=>'renshi/Teacher/update','paixu' =>5,'pid'=>404],
                     ['title'=>'查看','name'=>'renshi/Teacher/read','paixu'=>6,'pid'=>404,],
                     ['title'=>'状态','name'=>'renshi/Teacher/setStatus','paixu'=>7,'pid'=>404],
@@ -157,7 +131,10 @@ class Rule extends Seeder
                     ['title'=>'批量保存','name'=>'renshi/Teacher/saveAll','paixu'=>10,'pid'=>404],
                     ['title'=>'表格模板下载','name'=>'renshi/Teacher/downloadXls','paixu'=>11,'pid'=>404],
                     ['title'=>'姓名转换VBA下载','name'=>'renshi/Teacher/downloadVba','paixu'=>12,'pid'=>404],
-                    ['title'=>'恢复删除','name'=>'renshi/Teacher/reDel','paixu'=>13,'pid'=>404],
+                    
+
+                    // 删除教师
+                    ['title'=>'恢复删除','name'=>'renshi/Teacher/reDel','paixu'=>1,'pid'=>405],
 
 
                     // 教务管理
@@ -294,7 +271,50 @@ class Rule extends Seeder
                     ['title'=>'批量保存','name'=>'keti/ketiinfo/saveAll','paixu'=>9,'pid'=>902],
                     ['title'=>'结题','name'=>'keti/ketiinfo/jieTi','paixu'=>10,'pid'=>902],
                     ['title'=>'下载','name'=>'keti/KetiInfo/outXlsx','paixu'=>11,'pid'=>902],
-            
+
+
+                        // 四级权限
+                        // 前期操作
+                        // 考试设置
+                        ['id'=>3020101,'title'=>'考试设置','name'=>'kaoshi/kaoshiset/index','paixu'=>1,'pid'=>30201],
+                        ['title'=>'新建','name'=>'kaoshi/kaoshiset/create','paixu'=>1,'pid'=>3020101],
+                        ['title'=>'保存','name'=>'kaoshi/kaoshiset/save','paixu'=>2,'pid'=>3020101],
+                        ['title'=>'删除','name'=>'kaoshi/kaoshiset/delete','paixu'=>3,'pid'=>3020101],
+
+                        ['title'=>'生成考号','name'=>'kaoshi/Kaohao/create','paixu'=>2,'pid'=>30201],
+                        ['title'=>'保存考号','name'=>'kaoshi/Kaohao/save','paixu'=>3,'pid'=>30201],
+                        ['title'=>'下载试卷标签信息','name'=>'kaoshi/Kaohao/biaoqian','paixu'=>4,'pid'=>30201],
+
+
+                        // 录入成绩
+                        ['title'=>'下载成绩采集表','name'=>'kaoshi/Kaohao/caiji','paixu'=>1,'pid'=>30202],
+                        ['title'=>'已录成绩数量','name'=>'Chengji/Tongji/yiluCnt','paixu'=>2,'pid'=>30202],
+                        ['title'=>'以班级为单位统计成绩','name'=>'chengji/Bjtongji/tongji','paixu'=>3,'pid'=>30202],
+                        ['title'=>'以学校为单位统计成绩','name'=>'chengji/Njtongji/tongji','paixu'=>4,'pid'=>30202],
+                        ['title'=>'以全部成绩为单位统计成绩','name'=>'chengji/Schtongji/tongji','paixu'=>5,'pid'=>30202],
+
+                        // 成绩列表
+                        // 学生成绩
+                        ['id'=>3020301,'title'=>'成绩列表','name'=>'Chengji/Index/index','paixu'=>1,'pid'=>30203],
+                        ['title'=>'录入人信息','name'=>'Chengji/Index/readAdd','paixu'=>1,'pid'=>3020301],
+                        ['title'=>'考号删除','name'=>'kaoshi/Kaohao/delete','paixu'=>2,'pid'=>3020301],
+                        ['title'=>'删除成绩','name'=>'Chengji/Index/delete','paixu'=>3,'pid'=>3020301],
+                        ['title'=>'成绩状态','name'=>'Chengji/Index/setStatus','paixu'=>4,'pid'=>3020301],
+                        ['title'=>'批量删除界面','name'=>'Chengji/Index/deletecjs','paixu'=>5,'pid'=>3020301],
+                        ['title'=>'批量删除','name'=>'Chengji/Index/deletecjmore','paixu'=>6,'pid'=>3020301],
+                        ['title'=>'下载学生成绩条','name'=>'Chengji/Index/dwChengjitiao','paixu'=>7,'pid'=>3020301],
+                        ['title'=>'添加考号','name'=>'Kaoshi/Kaohao/addOne','paixu'=>8,'pid'=>3020301],
+                        ['title'=>'下载学生成绩','name'=>'chengji/Index/dwChengji','paixu'=>9,'pid'=>3020301],
+                        // 班级成绩统计表
+                        ['id'=>3020302,'title'=>'班级成绩','name'=>'banjichengji','paixu'=>2,'pid'=>30203],
+                        ['title'=>'班级成绩统计','name'=>'Chengji/Bjtongji/biaoge','paixu'=>1,'pid'=>3020302],
+                        ['title'=>'下载班级成绩统计表','name'=>'chengji/Bjtongji/dwBiaoge','paixu'=>2,'pid'=>3020302],
+                        // 年级成绩统计表
+                        ['id'=>3020303,'title'=>'年级成绩','name'=>'nianjichengji','paixu'=>3,'pid'=>30203],
+                        ['title'=>'年级成绩统计','name'=>'Chengji/Njtongji/biaoge','paixu'=>1,'pid'=>3020303],
+                        ['title'=>'下载年级成绩统计表','name'=>'chengji/Njtongji/dwBiaoge','paixu'=>2,'pid'=>3020303],
+
+
         ];
         // 保存数据
         $this->table('auth_rule')->insert($rows)->save();
