@@ -309,12 +309,14 @@ class Rule extends Seeder
                         ['id'=>3020302,'title'=>'班级成绩','name'=>'banjichengji','paixu'=>2,'pid'=>30203],
                         ['title'=>'班级成绩统计','name'=>'Chengji/Bjtongji/biaoge','paixu'=>1,'pid'=>3020302],
                         ['title'=>'下载班级成绩统计表','name'=>'chengji/Bjtongji/dwBiaoge','paixu'=>2,'pid'=>3020302],
-                         ['title'=>'条形统计图','name'=>'chengji/Bjtongji/myavg','paixu'=>3,'pid'=>3020302],
-                         ['title'=>'箱体图','name'=>'chengji/Bjtongji/myxiangti','paixu'=>4,'pid'=>3020302],
+                        ['title'=>'条形统计图','name'=>'chengji/Bjtongji/myavg','paixu'=>3,'pid'=>3020302],
+                        ['title'=>'箱体图','name'=>'chengji/Bjtongji/myxiangti','paixu'=>4,'pid'=>3020302],
                         // 年级成绩统计表
                         ['id'=>3020303,'title'=>'年级成绩','name'=>'nianjichengji','paixu'=>3,'pid'=>30203],
                         ['title'=>'年级成绩统计','name'=>'Chengji/Njtongji/biaoge','paixu'=>1,'pid'=>3020303],
                         ['title'=>'下载年级成绩统计表','name'=>'chengji/Njtongji/dwBiaoge','paixu'=>2,'pid'=>3020303],
+                        ['title'=>'条形统计图','name'=>'chengji/Njtongji/myavg','paixu'=>3,'pid'=>3020303],
+                        ['title'=>'箱体图','name'=>'chengji/Njtongji/myxiangti','paixu'=>4,'pid'=>3020303],
 
 
         ];
