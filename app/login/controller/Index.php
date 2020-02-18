@@ -17,13 +17,19 @@ use think\exception\ValidateException;
 use think\facade\Config;
 
 
-
 class Index
 {
+    // protected $request;
+
+    // public function __construct(Request $request)
+    // {
+    //     $this->request = $request;
+    // }
+
     // 显示登录界面
     public function index()
     {
-        
+        $mobile = request()->isMobile();
         // 清除cookie
         cookie('userid', null);
         cookie('username', null);
@@ -34,6 +40,7 @@ class Index
         // 获取系统名称和版本号
         $list['webtitle'] = Config::get('shangma.webtitle');
         $list['version'] = Config::get('shangma.version');
+        $list['mobile'] = $mobile;
 
         View::assign('list',$list);
 

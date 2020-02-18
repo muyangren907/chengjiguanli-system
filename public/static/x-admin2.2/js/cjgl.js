@@ -283,8 +283,14 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
             url,
             val,
             function(data,status){
-                cnt = data.count;
-                mydata = data.data;
+                if(data.count){
+                    cnt = data.count;
+                    mydata = data.data;
+                }else{
+                    cnt = 0;
+                    mydata = Array();
+                }
+                
                 if(cnt>0){
                     $('#'+parentId).append('<input type="checkbox" value="" title="全选" lay-skin="primary" checkall="p">');
                 }
@@ -380,14 +386,6 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
         aa = $('#p'+id).find("input[type='checkbox']").prop('checked',checked);
         form.render();
     },
-
-
-
-
-
-
-
-
 
   };
   //输出test接口

@@ -39,10 +39,12 @@
             <input name="username" placeholder="用户名"  type="text" lay-verify="required" class="layui-input" >
             <hr class="hr15">
             <input name="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input" autocomplete="off">
-            <hr class="hr15">
-            <div class="layui-form-item" style="margin-left:0px">
+            <hr class="hr15" id="thisafter">
+            {neq name="list.mobile" value="true"}
+              <div class="layui-form-item" style="margin-left:0px">
                 <div id="slider"></div>
-            </div>
+              </div>
+            {/neq}
             <hr class="hr15">
             <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
             <hr class="hr20" >
@@ -56,16 +58,30 @@
       }).use(['sliderVerify', 'jquery', 'form'], function() {
         var sliderVerify = layui.sliderVerify,
           form = layui.form;
-        var slider = sliderVerify.render({
-          elem: '#slider',
-          onOk: function(){
-            //当验证通过回调
-            // layer.msg("滑块验证通过");
-          },
-        })
+
+        mobile = "{$list['mobile']}";
+        if(mobile!==true)
+        {
+          var slider = sliderVerify.render({
+            elem: '#slider',
+            onOk: function(){
+              //当验证通过回调
+              // layer.msg("滑块验证通过");
+            },
+          })
+        }
+        
         //监听提交
-        form.on('submit(login)', function(data) {
-          if(slider.isOk()){
+        form.on('submit(login)', function(data){
+          mobile = "{$list['mobile']}";
+          if(mobile == true)
+          {
+            yz = true
+          }else{
+            yz = slider.isOk();
+          }
+
+          if(yz){
             $.post("/login",data.field,function(data,status){
                   if(status != 'success')
                   {
@@ -92,7 +108,6 @@
           }
           return false;
         });
-        
       })
     </script>
 

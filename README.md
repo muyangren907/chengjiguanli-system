@@ -85,6 +85,26 @@
 
 ![权限分配](https://gitee.com/dlbz/shangma/raw/master/public/examples/20190524164451.png)
 
+平均分
+
+![权限分配](https://gitee.com/dlbz/shangma/raw/master/public/examples/bjavg.png)
+
+优秀率
+
+![权限分配](https://gitee.com/dlbz/shangma/raw/master/public/examples/bjyouxiu.png)
+
+及格率
+
+![权限分配](https://gitee.com/dlbz/shangma/raw/master/public/examples/bjjige.png)
+
+标准差
+
+![权限分配](https://gitee.com/dlbz/shangma/raw/master/public/examples/bjbiaozhuncha.png)
+
+箱体图
+
+![权限分配](https://gitee.com/dlbz/shangma/raw/master/public/examples/bjchayi.png)
+
 
 
 ## 演示地址
@@ -111,6 +131,6 @@ https://www.kancloud.cn/llblax/abcd/789222
 
 ## 下一步工作
 * 继续增加统计项目
-* 以图表形式呈现统计结果
+* 以更多图表形式呈现统计结果
 * 增加教师职务权限验证
 * 增加学生自助查询成绩

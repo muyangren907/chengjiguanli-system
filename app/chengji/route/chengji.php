@@ -42,6 +42,7 @@ Route::group('bjtj', function () {
 	    Route::rule('dwxlsx','Bjtongji/dwBanjixls','post');		# 扫码保存
 	    Route::rule('tongji','Bjtongji/tongji','post');		# 统计各班级成绩
 	    Route::rule('myavg','Bjtongji/myAvg','post');			# 扫码界面
+	    Route::rule('myxiangti','Bjtongji/myXiangti','post');			# 扫码界面
 	    Route::rule('digui/<num>','Bjtongji/digui','get');			# 扫码界面
 	});
 
@@ -53,6 +54,8 @@ Route::group('njtj', function () {
 	    Route::rule('dwbiaoge/<kaoshi>','Njtongji/dwBiaoge','get');		# 扫码保存
 	    Route::rule('dwxlsx','Njtongji/dwNianjixlsx','post');		# 扫码保存
 	    Route::rule('tongji','Njtongji/tongji','post');		# 统计各年级成绩
+	    Route::rule('myavg','Njtongji/myAvg','post');			# 扫码界面
+	    Route::rule('myxiangti','Njtongji/myXiangti','post');			# 扫码界面
 	});
 
 // 全年级统计

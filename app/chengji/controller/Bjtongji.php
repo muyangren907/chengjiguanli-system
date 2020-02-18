@@ -56,11 +56,6 @@ class Bjtongji extends BaseController
                 ],'POST');
 
 
-        // $src['school'] = strToarray($src['school']);
-        // $src['ruxuenian'] = strToarray($src['ruxuenian']);
-        $src['banji'] = strToarray($src['banji']);
-
-
         if(count($src['banji'])==0)
         {
             // 获取参与考试的班级
@@ -308,6 +303,8 @@ class Bjtongji extends BaseController
 
 
 
+
+
     // 统计平均分优秀率及格率
     public function myAvg($kaoshi)
     {
@@ -318,32 +315,53 @@ class Bjtongji extends BaseController
                     'kaoshi'=>'',
                     'ruxuenian'=>'',
                     'school'=>array(),
+                    'banji'=>array(),
+                    'xiangmu'=>'',
                 ],'POST');
 
-
-        $src['school'] = strToarray($src['school']);
-        $src['ruxuenian'] = strToarray($src['ruxuenian']);
-
-
-        // 获取参与考试的班级
-        $kh = new \app\kaoshi\model\Kaohao;
-        $src['banji']= array_column($kh->cyBanji($src),'id');
+        if(count($src['banji'])==0)
+        {
+            // 获取参与考试的班级
+            $kh = new \app\kaoshi\model\Kaohao;
+            $src['banji']= array_column($kh->cyBanji($src),'id');
+        }
 
         // 统计成绩
         $btj = new BTJ;
         $data = $btj->search($src);
 
-        halt($data);
+        $data = tiaoxingOnexiangmu($data,$src['xiangmu']);
 
-        $data = [
-            'source'=>[
-                ['项目', '语文', '优秀率', '及格率'],
-                ['一年级一班', 10, 10, 10],
-                ['一年级二班', 83.1, 73.4, 55.1],
-                ['一年级三班', 86.4, 65.2, 82.5],
-                ['一年级四班', 72.4, 53.9, 39.1]
-            ],
-        ];
+        return json($data);
+    }
+
+
+
+    // 统计平均分优秀率及格率
+    public function myXiangti($kaoshi)
+    {
+        // 获取参数
+        $src = $this->request
+                ->only([
+                    'kaoshi'=>'',
+                    'ruxuenian'=>'',
+                    'school'=>array(),
+                    'banji'=>array(),
+                ],'POST');
+
+        if(count($src['banji'])==0)
+        {
+            // 获取参与考试的班级
+            $kh = new \app\kaoshi\model\Kaohao;
+            $src['banji']= array_column($kh->cyBanji($src),'id');
+        }
+
+        // 统计成绩
+        $btj = new BTJ;
+        $data = $btj->search($src);
+
+        $data = xiangti($data);
+
         return json($data);
     }
 

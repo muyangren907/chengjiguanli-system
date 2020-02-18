@@ -239,6 +239,54 @@ class Tongji extends Base
     }
 
 
+    // 自己写的四分位
+    public function myquartile($arr)
+    {
+        // 获取数组长度
+        $length = count($arr);
+        if ($arr == null || $length == 0) return $result = [0=>'',1=>'',2=>''];
+        
+        if ($length < 5) return $result = [0=>'',1=>'',2=>''];
+        $result = array();
+        
+        sort($arr);
+
+        if ($length % 2 == 0) {//偶数
+            
+            // Q1
+            $tempNum = ($length + 1 ) * 0.25;
+            $temp = intval($tempNum);
+            $tempNum = ceil($tempNum)-$tempNum;
+            $result[0] = $arr[$temp-1] * (1-$tempNum) + $arr[$temp] * $tempNum;
+
+            // Q2
+            $tempNum = ($length + 1 ) * 0.5;
+            $temp = intval($tempNum);
+            $tempNum = ceil($tempNum)-$tempNum;
+            $result[1] = $arr[$temp-1] * (1-$tempNum) + $arr[$temp] * $tempNum;
+
+            // Q3
+            $tempNum = ($length + 1 ) * 0.75;
+            $temp = intval($tempNum);
+            $tempNum = ceil($tempNum)-$tempNum;
+            $result[2] = $arr[$temp-1] * (1-$tempNum) + $arr[$temp] * $tempNum;
+
+
+
+        } else {//奇数
+            $tempNum = ($length + 1 ) * 0.25;
+            $result[0] = $arr[$tempNum-1];
+            $tempNum = ($length + 1 ) * 0.5;
+            $result[1] = $arr[$tempNum-1];
+            $tempNum = ($length + 1 ) * 0.75;
+            $result[2] = $arr[$tempNum-1];
+
+        }
+
+        return $result;
+    }
+
+
     // 分数段
     public function fenshuduan($cj=array(),$setp=10,$manfen=100)
     {

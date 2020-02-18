@@ -274,6 +274,52 @@ class Njtongji extends BaseController
         return json($data);
     }
 
+
+    // 统计平均分优秀率及格率
+    public function myAvg($kaoshi)
+    {
+        
+        // 获取参数
+        $src = $this->request
+                ->only([
+                    'kaoshi'=>'',
+                    'ruxuenian'=>'',
+                    'school'=>array(),
+                    'xiangmu'=>'',
+                ],'POST');
+
+        // 统计成绩
+        $ntj = new NTJ;
+        $data = $ntj->search($src);
+        $ntj = new \app\chengji\model\TongjiBj;
+        $data = tiaoxingOnexiangmu($data,$src['xiangmu']);
+
+        return json($data);
+    }
+
+
+
+    // 统计平均分优秀率及格率
+    public function myXiangti($kaoshi)
+    {
+        // 获取参数
+        $src = $this->request
+                ->only([
+                    'kaoshi'=>'',
+                    'ruxuenian'=>'',
+                    'school'=>array(),
+                ],'POST');
+
+
+        // 统计成绩
+        $ntj = new NTJ;
+        $data = $ntj->search($src);
+
+        $data = xiangti($data);
+
+        return json($data);
+    }
+
     
 
 }

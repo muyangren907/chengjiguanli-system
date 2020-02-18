@@ -1,17 +1,5 @@
 <?php
 
-// // 获取学科满分
-// function getmanfen($kaoshiid,$subjectid)
-// {
-
-// 	// 根据考试号和学科名获取满分
-// 	$KSXK = new app\kaoshi\model\KaoshiSubject;
-// 	$manfen = $KSXK->where('kaoshiid',$kaoshiid)->where('subjectid',$subjectid)->value('manfen');
-
-// 	$manfen = floatval($manfen);
-// 	return $manfen;
-// }
-
 // 分数验证
 function manfenvalidate($defen,$manfen)
 {
@@ -58,9 +46,102 @@ function manfenvalidate($defen,$manfen)
 
 
 
-// 统计结果整理
+    /**  
+    * 从统计结果中获取条形统计图中需要的各项目成绩
+    * 
+    * @access public 
+    * @param arr 统计结果
+    * @param xm 要统计的项目
+    * @return array 返回类型
+    */ 
+    function tiaoxingOnexiangmu($jg,$xm)
+    {
+        $chengji = array();
+        $series = array();
+        foreach ($jg as $key => $value) {
+            if($key ==0)
+            {
+                $chengji[$key][]='项目';
+                foreach ($value['chengji'] as $k => $val) {
+                    $chengji[$key][] = $val['title'];
+                    $series[] = ['type'=>'bar'];
+                }
+            }
+            # code...
+            if( isset($value['title']))
+            {
+                $temp = $value['school'].$value['title'];
+            }else{
+                $temp = $value['school'];
+            }
+            $chengji[$key+1][] = $temp;
+            foreach ($value['chengji'] as $k => $val) {
+                $chengji[$key+1][] = $val[$xm];
+            }
+        }
+        $data = [
+            'data'=>$chengji,
+            'series'=>$series,
+        ];
+
+        return $data;
+    }
 
 
+    /**  
+    * 从统计结果中获取条形箱体图需要的各项目成绩
+    * 
+    * @access public 
+    * @param arr 统计结果
+    * @param xm 要统计的项目
+    * @return array 返回类型
+    */ 
+    function xiangti($jg)
+    {
+        
+        $data = array();
+        $axisData = array();
+        $chengji = array();
+        $category = array();
+
+        foreach ($jg as $key => $value) {
+            if($key ==0)
+            {
+                foreach ($value['chengji'] as $k => $val) {
+                    $category[$k] = $val['title'];
+                }
+            }
+
+            foreach ($value['chengji'] as $k => $val) {
+                // $chengji[$k][$key]['min'] = $val['sifenwei']['min'];
+                // $chengji[$k][$key]['q1'] = $val['sifenwei']['q1'];
+                // $chengji[$k][$key]['q2'] = $val['sifenwei']['q2'];
+                // $chengji[$k][$key]['q3'] = $val['sifenwei']['q3'];
+                // $chengji[$k][$key]['max'] = $val['sifenwei']['max'];
+
+                $chengji[$k][$key][0] = $val['sifenwei']['min'];
+                $chengji[$k][$key][1] = $val['sifenwei']['q1'];
+                $chengji[$k][$key][2] = $val['sifenwei']['q2'];
+                $chengji[$k][$key][3] = $val['sifenwei']['q3'];
+                $chengji[$k][$key][4] = $val['sifenwei']['max'];
+            }
+
+            if( isset($value['title']))
+            {
+                $temp = $value['school'].$value['title'];
+            }else{
+                $temp = $value['school'];
+            }
+
+            $axisData[] = $temp;
+        }
 
 
+        $data = [
+            'axisData'=>$axisData,
+            'boxData'=>$chengji,
+            'category'=>$category,
+        ];
 
+        return $data;
+    }

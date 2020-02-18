@@ -68,10 +68,10 @@ class TongjiNj extends Base
                         $tongjiJg->jige = $cj['jige'];
                         $tongjiJg->max = $cj['max'];
                         $tongjiJg->min = $cj['min'];
-                        $tongjiJg->qian = $cj['sifenwei'][0];
-                        $tongjiJg->zhong = $cj['sifenwei'][1];
-                        $tongjiJg->hou = $cj['sifenwei'][2];
-                        $tongjiJg->zhong = $cj['zhongshu'];
+                        $tongjiJg->q1 = $cj['sifenwei'][0];
+                        $tongjiJg->q2 = $cj['sifenwei'][1];
+                        $tongjiJg->q3 = $cj['sifenwei'][2];
+                        $tongjiJg->zhongshu = $cj['zhongshu'];
                         $data = $tongjiJg->save();
                     }else{
                         // 重新组合统计结果
@@ -89,9 +89,9 @@ class TongjiNj extends Base
                             'jige'=>$cj['jige'],
                             'max'=>$cj['max'],
                             'min'=>$cj['min'],
-                            'qian'=>$cj['sifenwei'][0],
-                            'zhong'=>$cj['sifenwei'][1],
-                            'hou'=>$cj['sifenwei'][2],
+                            'q1'=>$cj['sifenwei'][0],
+                            'q2'=>$cj['sifenwei'][1],
+                            'q3'=>$cj['sifenwei'][2],
                             'zhongshu'=>$cj['zhongshu'],
                         ];
 
@@ -159,12 +159,12 @@ class TongjiNj extends Base
                     $query->field('id,paixu,jiancheng');
                 },
                 'njJieguo'=>function($query) use($ruxuenian,$kaoshi){
-                    $query->field('subject_id,school_id,ruxuenian,stu_cnt,chengji_cnt,avg,youxiu,jige')
+                    $query->field('subject_id,school_id,ruxuenian,stu_cnt,chengji_cnt,avg,youxiu,jige,biaozhuncha,max,min,q1,q2,q3')
                         ->where('ruxuenian',$ruxuenian)
                         ->where('kaoshi_id',$kaoshi)
                         ->with([
                             'njSubject'=>function($query){
-                                $query->field('id,lieming,jiancheng');
+                                $query->field('id,lieming,jiancheng,title');
                             },
                         ])
                         ->order(['subject_id']);
@@ -195,6 +195,16 @@ class TongjiNj extends Base
                         'youxiu'=>$val->youxiu,
                         'jige'=>$val->jige,
                         'cjCnt'=>$val->chengji_cnt,
+                        'title'=>$val->njSubject->title,
+                        'jiancheng'=>$val->njSubject->jiancheng,
+                        'biaozhuncha'=>$val->biaozhuncha,
+                        'sifenwei'=>[
+                            'min'=>$val->min,
+                            'q1'=>$val->q1,
+                            'q2'=>$val->q2,
+                            'q3'=>$val->q3,
+                            'max'=>$val->max,
+                        ],
                     ];
                 }else{
                     $data[$value->school_id]['quanke'] = [
@@ -235,4 +245,5 @@ class TongjiNj extends Base
     {
         return $this->hasMany('\app\chengji\model\TongjiNj','school_id','school_id');
     }
+
 }

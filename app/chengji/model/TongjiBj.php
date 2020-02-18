@@ -31,12 +31,14 @@ class TongjiBj extends Base
         $nianji = $ksset->srcNianji($kaoshi);
         // 初始化统计结果
         $data = array();
+
         // 循环年级
         foreach ($nianji as $njkey => $value) {
             // 获取参加考试班级
             $src['ruxuenian'] = $value['nianji'];
             $banji = $kh->cyBanji($src);
             $subject = $ksset->srcSubject($kaoshi,'',$value['nianji']);
+
             // 循环班级，获取并统计成绩
             foreach ($banji as $bjkey => $val) {
                $srcfrom = [
@@ -45,13 +47,22 @@ class TongjiBj extends Base
                 ];
                 $temp = $kh->srcChengji($srcfrom);
                 $temp = $tj->tongjiSubject($temp,$subject);
+
+                // halt($temp);
+
                 // 循环更新或写入成绩
                 foreach ($temp['cj'] as $cjkey => $cj) {
+                    // if($cjkey == 'all')
+                    // {
+                    //     continue;
+                    // }
                     // 查询该班级该学科成绩是否存在
                     $tongjiJg = $this->where('kaoshi_id',$src['kaoshi'])
                                     ->where('banji_id',$val['id'])
                                     ->where('subject_id',$cj['id'])
                                     ->find();
+                    // halt('aa');
+
                     if($tongjiJg)
                     {
                         $tongjiJg->kaoshi_id = $src['kaoshi'];
@@ -66,10 +77,10 @@ class TongjiBj extends Base
                         $tongjiJg->jige = $cj['jige'];
                         $tongjiJg->max = $cj['max'];
                         $tongjiJg->min = $cj['min'];
-                        $tongjiJg->qian = $cj['sifenwei'][0];
-                        $tongjiJg->zhong = $cj['sifenwei'][1];
-                        $tongjiJg->hou = $cj['sifenwei'][2];
-                        $tongjiJg->zhong = $cj['zhongshu'];
+                        $tongjiJg->q1 = $cj['sifenwei'][0];
+                        $tongjiJg->q2 = $cj['sifenwei'][1];
+                        $tongjiJg->q3 = $cj['sifenwei'][2];
+                        $tongjiJg->zhongshu = $cj['zhongshu'];
                         $data = $tongjiJg->save();
                     }else{
                         // 重新组合统计结果
@@ -86,12 +97,11 @@ class TongjiBj extends Base
                             'jige'=>$cj['jige'],
                             'max'=>$cj['max'],
                             'min'=>$cj['min'],
-                            'qian'=>$cj['sifenwei'][0],
-                            'zhong'=>$cj['sifenwei'][1],
-                            'hou'=>$cj['sifenwei'][2],
+                            'q1'=>$cj['sifenwei'][0],
+                            'q2'=>$cj['sifenwei'][1],
+                            'q3'=>$cj['sifenwei'][2],
                             'zhongshu'=>$cj['zhongshu'],
                         ];
-
                         $data = $this::create($tongjiJg);
                     }
                 }
@@ -199,6 +209,8 @@ class TongjiBj extends Base
             return array();
         }
 
+        $kaoshi = $src['kaoshi'];
+
         $tongjiJg = $this
             ->where('kaoshi_id',$src['kaoshi'])
             ->where('banji_id','in',$src['banji'])
@@ -213,10 +225,10 @@ class TongjiBj extends Base
                         ]);
                 },
                 'bjJieguo'=>function($query){
-                    $query->field('subject_id,banji_id,stu_cnt,chengji_cnt,avg,youxiu,jige')
+                    $query->field('subject_id,banji_id,stu_cnt,chengji_cnt,avg,youxiu,jige,biaozhuncha,max,min,q1,q2,q3')
                         ->with([
                             'bjSubject'=>function($query){
-                                $query->field('id,lieming,jiancheng');
+                                $query->field('id,lieming,jiancheng,title');
                             },
                         ])
                         ->order(['subject_id']);
@@ -227,7 +239,6 @@ class TongjiBj extends Base
             ->append(['banjiTitle'])
             ->select();
 
-        // halt($tongjiJg->toArray());
 
         // 初始化数组
         $data = array();
@@ -235,6 +246,7 @@ class TongjiBj extends Base
 
         // 重组数据
         foreach ($tongjiJg as $key => $value) {
+            
             $data[$value->banji_id]=[
                 'id'=>$value->id,
                 'school'=>$value->bjBanji->glSchool->jiancheng,
@@ -250,7 +262,16 @@ class TongjiBj extends Base
                         'youxiu'=>$val->youxiu,
                         'jige'=>$val->jige,
                         'cjCnt'=>$val->chengji_cnt,
-                        'sbjTitle'=>$val->bjSubject->jiancheng,
+                        'title'=>$val->bjSubject->title,
+                        'jiancheng'=>$val->bjSubject->jiancheng,
+                        'biaozhuncha'=>$val->biaozhuncha,
+                        'sifenwei'=>[
+                            'min'=>$val->min,
+                            'q1'=>$val->q1,
+                            'q2'=>$val->q2,
+                            'q3'=>$val->q3,
+                            'max'=>$val->max,
+                        ],
                     ];
                 }else{
                     $data[$value->banji_id]['quanke'] = [
@@ -264,8 +285,6 @@ class TongjiBj extends Base
 
 
         $data = sortArrByManyField($data,'schoolpaixu',SORT_ASC,'banjipaixu',SORT_ASC);
-
-        // halt($data);
 
         return $data;
     }
@@ -294,20 +313,15 @@ class TongjiBj extends Base
     // 成绩统计结果关联
     public function bjJieguo()
     {
-        return $this->hasMany('\app\chengji\model\TongjiBj','banji_id','banji_id');
+        $ksid = $this->getAttr('kaoshi_id');
+        return $this->hasMany('\app\chengji\model\TongjiBj','banji_id','banji_id')
+                ->where('kaoshi_id',$ksid);
     }
 
 
     // 获取班级名称
     public function getBanjiTitleAttr()
     {
-        // $bfdate = \app\kaoshi\model\Kaoshi::where('id',$this->getAttr('kaoshi_id'))
-        //           ->value('bfdate');
-
-        // $banji = new \app\teach\model\Banji;
-        // $title = $banji->myBanjiTitle($this->getAttr('banji_id'),$bfdate);
-
-        // return $title;
         $kh = new \app\kaoshi\model\Kaohao;
         $src = [
             'kaoshi'=>$this->getAttr('kaoshi_id'),
@@ -315,9 +329,9 @@ class TongjiBj extends Base
         ];
 
         $bj = $kh->cyBanji($src);
-
         return $bj[0]['banjiTitle'];
-
     }
+
+
     
 }
