@@ -57,7 +57,7 @@ class Kaohao extends BaseController
 
         // 获取表单数据
         $list = request()->only(['school','kaoshi','banjiids'],'post');
-
+        event('ksstatus',$list['kaoshi']);
 
         // 验证表单数据
         $result = $validate->check($list);
@@ -68,10 +68,6 @@ class Kaohao extends BaseController
             return ['msg'=>$msg,'val'=>0];
         }
 
-        if(kaoshiDate($list['kaoshi'],'enddate'))
-        {
-            return ['msg'=>'考试已经结束，不能分配考号','val'=>0];
-        }
 
         // 获取实例化学生数据模型
         $stu = new \app\renshi\model\Student;
@@ -180,30 +176,44 @@ class Kaohao extends BaseController
         $list['student'] = explode(' ', $list['student']);
         $list['student'] = $list['student'][1];
 
+        event('ksstatus',$list['kaoshi']);
+
         // 查询考号是否存在
-        $ks = KH::where('kaoshi',$list['kaoshi'])
+        $ks = KH::withTrashed()
+                ->where('kaoshi',$list['kaoshi'])
                 ->where('student',$list['student'])
                 ->find();
+
+        // 如果存在成绩则更新，不存在则添加
         if($ks)
         {
-            $data=['msg'=>'该学生考号已经存在','val'=>0];
-            return json($data);
+            // 判断记录是否被删除 
+            if($ks->delete_time > 0)
+            {
+                $ks->restore();
+            }
+            $data=['msg'=>'生成成功','val'=>1];
+        }else{
+            // 获取参加考试年级数组
+            $bfdate = KS::where('id',$list['kaoshi'])->value('bfdate');
+            $njlist = nianjiList($bfdate);
+
+
+            // 获取班级信息
+            $bj = new \app\teach\model\Banji;
+            $bjinfo = $bj->where('id',$list['banji'])->find();
+            $list['school'] = $bjinfo->school;
+            $list['ruxuenian'] = $bjinfo->ruxuenian;
+            $list['nianji'] = $njlist[$bjinfo->ruxuenian];
+            $list['paixu'] = $bjinfo->paixu;
+            $data = KH::create($list);
         }
 
-        // 获取参加考试年级数组
-        $bfdate = KS::where('id',$list['kaoshi'])->value('bfdate');
-        $njlist = nianjiList($bfdate);
 
 
-        // 获取班级信息
-        $bj = new \app\teach\model\Banji;
-        $bjinfo = $bj->where('id',$list['banji'])->find();
-        $list['school'] = $bjinfo->school;
-        $list['ruxuenian'] = $bjinfo->ruxuenian;
-        $list['nianji'] = $njlist[$bjinfo->ruxuenian];
-        $list['paixu'] = $bjinfo->paixu;
 
-        $data = KH::create($list);
+
+        
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'生成成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -317,7 +327,6 @@ class Kaohao extends BaseController
     // 标签下载
     public function biaoqian($kaoshi)
     {
-
         // 获取参考年级、学科
         $ksset = new ksset;
         $list['data']['nianji'] = $ksset->srcNianji($kaoshi);
@@ -352,15 +361,10 @@ class Kaohao extends BaseController
 
         // 获取表单数据
         $list = request()->only(['banjiids'=>array(),'kaoshi','subject'=>array()],'post');
-
+        event('ksstatus',$list['kaoshi']);
         $kaoshi = $list['kaoshi'];
         $banji = $list['banjiids'];
         $subject = $list['subject'];
-
-        if(kaoshiDate($kaoshi,'enddate'))
-        {
-            $this->error('考试已经结束，不能下载','/kaoshi/kaohao/biaoqian/'.$kaoshi);
-        }
 
         // 实例化验证模型
         $validate = new \app\kaoshi\validate\Biaoqian;
@@ -386,7 +390,7 @@ class Kaohao extends BaseController
 
         $kh = new KH();
         // 获取考试信息
-        $kaohao = $kh->srcKaohao($kaoshi,$banji);
+        $kaohao = $kh->srcKaohaoBanji($kaoshi,$banji);
 
 
         $thistime = date("Y-m-d h:i:sa");
@@ -465,11 +469,6 @@ class Kaohao extends BaseController
     public function caiji($kaoshi)
     {
         
-        if(kaoshiDate($kaoshi,'enddate'))
-        {
-            $this->error('考试已经结束，不能下载','/kaoshi/kaohao/biaoqian/'.$kaoshi);
-        }
-
         // 获取参考年级、学科
         $ksset = new ksset;
         $list['data']['nianji'] = $ksset->srcNianji($kaoshi);
@@ -510,6 +509,7 @@ class Kaohao extends BaseController
 
         // 获取表单数据
         $list = request()->only(['banjiids'=>array(),'ruxuenian','kaoshi','subject'=>array()],'post');
+        event('ksstatus',$list['kaoshi']);
 
         $kaoshi = $list['kaoshi'];
         $banji = $list['banjiids'];
@@ -536,7 +536,7 @@ class Kaohao extends BaseController
 
         $kh = new KH();
         // 获取考试信息
-        $kaohao = $kh->srcKaohao($kaoshi,$banji);
+        $kaohao = $kh->srcKaohaoBanji($kaoshi,$banji);
 
 
         // 获取电子表格列名
@@ -647,18 +647,13 @@ class Kaohao extends BaseController
 
         // 判断考试结束时间是否已过
         $ksid = KH::where('id',$id[0])->value('kaoshi');
-        $enddate = kaoshiDate($ksid,'enddate');
+        event('ksstatus',$ksid);
         
 
-        if( $enddate === true )
-        {
-            $data=['msg'=>'考试时间已过，不能删除','val'=>0];
-        }else{
-            $data = KH::destroy($id);
-            // 根据更新结果设置返回提示信息
-            $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
-        }
-        // 返回信息
+        $data = KH::destroy($id);
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+    // 返回信息
         return json($data);
     }
 

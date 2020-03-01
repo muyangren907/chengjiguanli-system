@@ -289,7 +289,7 @@ class Student extends BaseController
     //
     public function read($id)
     {
-        // 查询教师信息
+        // 查询学生信息
         $myInfo = STU::withTrashed()
             ->where('id',$id)
             ->with([
@@ -303,6 +303,15 @@ class Student extends BaseController
                 }
             ])
             ->find();
+
+        // 获取参加考试学科
+        $sbj = new \app\teach\model\Subject;
+        $ksSbj = $sbj
+                ->where('kaoshi',1)
+                ->field('id,title,jiancheng,lieming')
+                ->select()
+                ->toArray();
+        $myInfo['sbj'] = $ksSbj;
         // 设置页面标题
         $myInfo['webtitle'] = $myInfo->xingming.' 信息';
 
@@ -324,44 +333,28 @@ class Student extends BaseController
                 ->only([
                     'page'=>'1',
                     'limit'=>'10',
-                    'field'=>'update_time',
+                    'field'=>'kaoshiId',
                     'order'=>'desc',
-                    'studentid'=>'',
+                    'student'=>'',
                 ],'POST');
 
         // 获取学生成绩
-        $kh = new \app\kaoshi\model\Kaohao;
-        $khList = $kh
-                    ->where('student',$src['studentid'])
-                    ->field('id,kaoshi,school,ruxuenian,banji,paixu,student')
-                    ->with([
-                        'cjSchool'=>function($query){
-                            $query->field('id,jiancheng');
-                        }
-                        ,'cjKaoshi'=>function($query)
-                        {
-                            $query->field('id,title,category,zuzhi,bfdate,enddate')
-                                ->with([
-                                    'ksCategory'=>function($query){
-                                        $query->field('id,title');
-                                    }
-                                    ,'ksZuzhi'=>function($query)
-                                    {
-                                        $query->field('id,title,jiancheng');
-                                    }
-                                ]);
-                        }
-                        ,'ksChengji'
-                    ])
-                    ->append(['banjiTitle'])
-                    ->select();
+        $cj = new \app\chengji\model\Chengji;
+        $khList = $cj->oneChengji($src);
 
         // 获取符合条件记录总数
-        $cnt = $khList->count();
+        $cnt = count($khList);
         // 获取当前页数据
         $limit_start = $src['page'] * $src['limit'] - $src['limit'];
         $limit_length = $src['limit'];
-        $khList = $khList->slice($limit_start,$limit_length);
+        // $khList = $khList->slice($limit_start,$limit_length);
+
+        // 按条件排序
+        $src['order'] == 'desc' ? $src['order'] =SORT_DESC :$src['order'] = SORT_ASC;
+        if($cnt>0){
+            $khList = sortArrByManyField($khList,$src['field'],$src['order']);
+        }
+
 
         // 重组返回内容
         $data = [
@@ -516,119 +509,6 @@ class Student extends BaseController
         // 返回信息
         return json($data);
     }
-
-    // // 批量添加
-    // public function createAll()
-    // {
-    //     // 设置页面标题
-    //     $list['set'] = array(
-    //         'webtitle'=>'批量上传学生信息',
-    //         'butname'=>'批传',
-    //         'formpost'=>'POST',
-    //         'url'=>'saveall',
-    //     );
-
-    //     // 模板赋值
-    //     $this->view->assign('list',$list);
-    //     // 渲染
-    //     return $this->view->fetch();
-    // }
-
-    // 批量保存
-    // public function saveAll()
-    // {
-    //     // 获取表单数据
-    //     $list = request()->only(['school','url'],'post');
-
-    //     // 实例化操作表格类
-    //     $excel = new Myexcel();
-
-    //     // 读取表格数据
-    //     $stuinfo = $excel->readXls(public_path().'public\\uploads\\'.$list['url']);
-
-    //     // 判断表格是否正确
-    //     if($stuinfo[0][0] != "学生信息上传模板" )
-    //     {
-    //         $data = array('msg'=>'请使用模板上传','val'=>0,'url'=>null);
-    //         return json($data);
-    //     }
-        
-    //     // 删除标题行
-    //     array_splice($stuinfo,0,3);
-
-    //     // 实例化班级数据模型
-    //     $banji = new \app\teach\model\Banji;
-    //     $njlist = nianjilist();
-    //     $bjlist = banjinamelist();
-
-
-    //     $i = 0;
-    //     $bfbanji = '';
-    //     $bj = '';
-    //     $students = array();
-    //     // 重新计算组合数据，如果存在数据则更新数据
-    //     foreach ($stuinfo as $key => $value) {
-    //         //  如果姓名、身份证号为空则跳过
-    //         if(empty($value[1]) || empty($value[2]))
-    //         {
-    //             continue;
-    //         }
-    //         // 判断本行班级与上行班级数据是否相等，如果不相等则从数据库查询班级ID
-    //         if($bfbanji != $value[3])
-    //         {
-    //             // 获取入学年与排序
-    //             $paixu = array_search(substr($value[3],9),$bjlist);
-    //             $ruxuenian = array_search(substr($value[3],0,9),$njlist);
-    //             // 查询班级ID
-    //             $bj = $banji::where('school',$list['school'])
-    //                 ->where('ruxuenian',$ruxuenian)
-    //                 ->where('paixu',$paixu)
-    //                 ->value('id');
-    //             // 如果班级ID为空，删除数据并跳出当前循环
-    //             if( empty($bj) )
-    //             {
-    //                 continue;
-    //             }
-    //         }
-    //         $bfbanji = $value[3];
-
-    //         // 各变量赋值
-    //         $students[$i]['banji'] = $bj;
-    //         $students[$i]['xingming'] = $value[1];
-    //         $students[$i]['shenfenzhenghao'] = strtoupper($value[2]);
-    //         intval(substr($value[2],16,1) )% 2 ? $students[$i]['sex'] = 1 :$students[$i]['sex'] = 0 ;
-    //         $students[$i]['shengri'] = substr($value[2],6,4).'-'.substr($value[2],10,2).'-'.substr($value[2],12,2);
-    //         $students[$i]['school'] = $list['school'];
-    //         $stuid = STU::withTrashed()->where('shenfenzhenghao',$value[2])->find();
-    //         if($stuid)
-    //         {
-    //             if($stuid->delete_time>0)
-    //             {
-    //                 $stuid->restore();
-    //             }
-    //             if($stuid->status == 0)
-    //             {
-    //                 $stuid->status = 1;
-    //                 $stuid->save();
-    //             }
-    //             $students[$i]['id'] = $stuid->id;
-    //         }
-    //         // 销毁无用变量
-    //         $i++;
-    //     }
-       
-        
-    //     // 实例化学生信息数据模型
-    //     $student = new STU();
-
-    //     // 保存或更新信息
-    //     $data = $student->saveAll($students);
-
-    //     $data ? $data = ['msg'=>'数据同步成功','val'=>1] : ['msg'=>'数据同步失败','val'=>0];
-        
-    //     return json($data);
-    // }
-
 
 
     // 使用上传的表格进行校对，表格中不存在的数据删除
@@ -913,23 +793,7 @@ class Student extends BaseController
 
     
 
-    // // 上传文件
-    // public function upload()
-    // {
-    //     // 获取文件信息
-    //     $list['text'] = $this->request->post('text');
-    //     $list['serurl'] = $this->request->post('serurl');
-
-    //     // 获取表单上传文件
-    //     $file = request()->file('file');
-    //     // 上传文件并返回结果
-    //     $data = upload($list,$file,true);
-
-    //     return json($data);
-    // }
-
-
-
+    
     // 下载表格模板
     public function download()
     {
@@ -938,7 +802,7 @@ class Student extends BaseController
     }
 
 
-    // 根据教师姓名、首拼、全拼搜索教师信息
+    // 根据学生姓名、首拼、全拼搜索教师信息
     public function srcStudent()
     {
         // 声明结果数组

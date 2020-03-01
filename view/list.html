@@ -130,11 +130,9 @@
               cjgl.checkboxParent(parentId);
             }
 
-
             $("#srcsubmit").click();
             return true;
           }
-
         });
         // 监听单选
         lForm.on('radio', function(data){
@@ -151,22 +149,23 @@
             $("#srcsubmit").click();
         })
 
+        // 禁止使用回车提交表单
+        $('#searchval').on("keydown",function(e){
+          var e = e || window.event;
+          if(e.keyCode == 13){
+             $("#srcsubmit").click();
+             return false;
+          }
+          return true;
+        })
+
+
         // 表格重载
         function tablereload()
         {
           options.where = lForm.val("search");
           userTable = lTable.render(options);  //获取数据并渲染
         }
-        // // 数据排序
-        // function tablereload2(val)
-        // {
-        //   userTable.reload({
-        //     where: val //设定异步数据接口的额外参数
-        //     ,page:{
-        //       curr:1
-        //     }
-        //   });
-        // }
       });
     </script>
 </html>

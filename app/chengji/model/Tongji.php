@@ -20,7 +20,6 @@ class Tongji extends Base
             $cjcol = array_filter($cjcol,function($item){
                 return $item != null;
             });
-
             $temp = array();
             $temp['xkcnt'] = count($cjcol);
             $data[$value['lieming']] = $temp;
@@ -54,80 +53,78 @@ class Tongji extends Base
             'max'=>null,
             'min'=>null,
             'zhongshu'=>null,
+            'defenlv'=>null,
         ];
+
         $data = array();
+        $sbjdefencnt = 0;   #记录试卷满分
 
 
         // 循环统计各学科成绩
         foreach ($subject as $key => $value) {
+            $sbjdefencnt = $sbjdefencnt + $value['fenshuxian']['manfen'];
             $cjcol = array_column($cj,$value['lieming']);
             $stucnt = count($cjcol);
             $cjcol = array_filter($cjcol,function($item){
                 return $item !== null; 
             });
 
-            $temp = array();
+            $temp = $tempNull;
+            $temp['id'] = $value['id'];
+            $temp['stucnt'] = $stucnt;
 
-            if($cjcol==null)
+            if($cjcol!=null)
             {
-                $temp = $tempNull;
-                $temp['stucnt'] = $stucnt;
-                $temp['id'] = $value['id'];
-            }else{
                 $temp['xkcnt'] = count($cjcol);
                 $temp['sum'] = array_sum($cjcol);
-                $temp['xkcnt']>0 ? $temp['avg'] = $temp['sum']/$temp['xkcnt'] : $temp['avg']=0;
+                if( $temp['xkcnt']>0)
+                {
+                    $temp['avg'] = $temp['sum']/$temp['xkcnt'];
+                    $temp['defenlv'] = $temp['avg'] / $value['fenshuxian']['manfen'];
+                }
                 $temp['biaozhuncha'] = round($this->getVariance($temp['avg'], $cjcol,true),2);
                 $temp['avg'] = round($temp['avg'],2);
                 $temp['youxiu'] = $this->rate($cjcol,$value['fenshuxian']['youxiu']);
                 $temp['jige'] = $this->rate($cjcol,$value['fenshuxian']['jige']);
                 $temp['max'] = max($cjcol);
                 $temp['min'] = min($cjcol);
-                $temp['sifenwei'] = $this->quartile($cjcol);
+                $temp['sifenwei'] = $this->myquartile($cjcol);
                 $temp['zhongshu'] = '';
-                $temp['stucnt'] = $stucnt;
-                $temp['id'] = $value['id'];
+                $temp['defenlv'] = round($temp['defenlv'] * 100,2);
             }
             $data['cj'][$value['lieming']] = $temp;
         }
 
 
-        $temp = array();
+        $temp = $tempNull;
         $cjcol = array_column($cj,'sum');
-        $$stucnt = count($cjcol);
+        $stucnt = count($cjcol);
         $cjcol = array_filter($cjcol,function($item){
                 return $item !== null; 
             });
-        if($cjcol==null){
-            $temp = $tempNull;
-            $temp['stucnt'] = $stucnt;
-            $temp['id'] = 0;
-        }else{
+        $temp['id'] = 0;
+        $temp['stucnt'] = $stucnt;
+        if($cjcol!=null){
             $temp['xkcnt'] = count($cjcol);   # 报名人数
             $temp['sum'] = array_sum($cjcol);
-            $temp['xkcnt']>0 ? $temp['avg'] = $temp['sum']/$temp['xkcnt'] : $temp['avg']=0;
+            if( $temp['xkcnt']>0)
+            {
+                $temp['avg'] = $temp['sum']/$temp['xkcnt'];
+                $temp['defenlv'] = $temp['avg'] / $sbjdefencnt;
+            }
             $temp['biaozhuncha'] = round($this->getVariance($temp['avg'], $cjcol,true),2);
             $temp['avg'] = round($temp['avg'],2);
             $temp['max'] = max($cjcol);
             $temp['min'] = min($cjcol);
             $temp['youxiu'] = null;
             $temp['jige'] = $this->rateAll($cj,$subject); #全科及格率
-            $temp['sifenwei'] = $this->quartile($cjcol);
+            $temp['sifenwei'] = $this->myquartile($cjcol);
             $temp['zhongshu'] = '';
-            $temp['stucnt'] = $stucnt;
-            $temp['id'] = 0;
+            $temp['defenlv'] = round($temp['defenlv'] * 100,2);
         }
         $data['cj']['all'] = $temp;
 
         return $data;
-    }
-
-
-
-    // 统计给定成绩
-    public function tongjiArray($cj,$koashi)
-    {
-
     }
 
 
@@ -210,88 +207,55 @@ class Tongji extends Base
     }
 
 
-    // 四分位
-    public function quartile($items) {
-        // 获取数组长度
-        $length = count($items);
-        if ($items == null || $length == 0) return $result = [0=>'',1=>'',2=>''];
-        
-        if ($length < 5) return $result = [0=>'',1=>'',2=>''];
-        $result = array();
-        
-        sort($items);
-        
-        if ($length % 2 == 0) {//偶数
-            $result[1] =  ($items[$length/2 - 1] + $items[$length/2]) / 2;
-        } else {//奇数
-            $result[1] =  $items[($length + 1)/2 - 1];
-        }
-        
-        if ($length % 4 == 0) {
-            $result[0] =  ($items[$length/4 - 1] + $items[$length/4]) / 2;
-            $result[2] =  ($items[3*$length/4 - 1] + $items[3*$length/4]) / 2;
-        } else {
-            $result[0] =  $items[$length/4];
-            $result[2] =  $items[3*$length/4];
-        }
-        
-        return $result;
-    }
-
-
-    // 自己写的四分位
+    /**  
+    * 计算四分位（ Quartile ） Q1、Q2、Q3的值
+    * @access public 
+    * @param array $arr 要计算的一维数组
+    * @return array $result 下标0-2 分别对应Q1、Q2、Q3
+    */ 
     public function myquartile($arr)
     {
         // 获取数组长度
         $length = count($arr);
+
+        // 如果数组为空或数组长度小于5时，返回空。
         if ($arr == null || $length == 0) return $result = [0=>'',1=>'',2=>''];
-        
         if ($length < 5) return $result = [0=>'',1=>'',2=>''];
-        $result = array();
         
+        // 数组排序
         sort($arr);
 
-        if ($length % 2 == 0) {//偶数
-            
-            // Q1
-            $tempNum = ($length + 1 ) * 0.25;
-            $temp = intval($tempNum);
-            $tempNum = ceil($tempNum)-$tempNum;
-            $result[0] = $arr[$temp-1] * (1-$tempNum) + $arr[$temp] * $tempNum;
+        // 初始化变量
+        $result = array();  #储存结果
+        $q = array();       #储存位置
 
-            // Q2
-            $tempNum = ($length + 1 ) * 0.5;
-            $temp = intval($tempNum);
-            $tempNum = ceil($tempNum)-$tempNum;
-            $result[1] = $arr[$temp-1] * (1-$tempNum) + $arr[$temp] * $tempNum;
+        // 确定位置
+        // 计算方法参考百度百科
+        // 使用n-1方法。
+        $q[0] = 1 + ($length - 1 ) * 0.25;
+        $q[1] = 1 + ($length - 1 ) * 0.5;
+        $q[2] = 1 + ($length - 1 ) * 0.75;
+        // n+1方法结果也对，但是与excel不相同
+        // $q[0] = ($length + 1 ) * 0.25;
+        // $q[1] = ($length + 1 ) * 0.5;
+        // $q[2] = ($length + 1 ) * 0.75;
 
-            // Q3
-            $tempNum = ($length + 1 ) * 0.75;
-            $temp = intval($tempNum);
-            $tempNum = ceil($tempNum)-$tempNum;
-            $result[2] = $arr[$temp-1] * (1-$tempNum) + $arr[$temp] * $tempNum;
-
-
-
-        } else {//奇数
-            $tempNum = ($length + 1 ) * 0.25;
-            $result[0] = $arr[$tempNum-1];
-            $tempNum = ($length + 1 ) * 0.5;
-            $result[1] = $arr[$tempNum-1];
-            $tempNum = ($length + 1 ) * 0.75;
-            $result[2] = $arr[$tempNum-1];
-
+        // 计算每个位置对应的值
+        foreach ($q as $key => $value) {
+            if(is_int($value))      # 如果位置是整数，则直接取位置对应的值
+            {
+                $result[$key] = $arr[$value-1];
+            }else{
+            # 如果位置不是整数。计算公式:大数*位置小数 + 小数*(1-位置小数)          
+                $tempNum = $value;
+                $temp = intval($tempNum);
+                $tempNum = $tempNum - $temp;
+                $result[$key] = $arr[$temp] * $tempNum + $arr[$temp-1] * (1-$tempNum);
+                $result[$key] = round($result[$key],2);
+            }
         }
 
         return $result;
     }
-
-
-    // 分数段
-    public function fenshuduan($cj=array(),$setp=10,$manfen=100)
-    {
-
-    }
-
     
 }

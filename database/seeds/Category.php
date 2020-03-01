@@ -35,7 +35,6 @@ class Category extends Seeder
             ['id'=>116,'title'=>'课题研究所属学科分类','pid'=>0,'paixu'=>16,'isupdate'=>0],
             ['id'=>117,'title'=>'研究类型','pid'=>0,'paixu'=>17,'isupdate'=>0],
 
-
             // 二级类别
                 //  大学科
                 ['id'=>1011001,'title'=>'语文','pid'=>110,'paixu'=>2,'isupdate'=>0],
@@ -149,7 +148,6 @@ class Category extends Seeder
                 ['title'=>'A.基础研究','pid'=>117,'paixu'=>1,'isupdate'=>0],
                 ['title'=>'B.应用研究','pid'=>117,'paixu'=>2,'isupdate'=>0],
                 ['title'=>'C.综合研究','pid'=>117,'paixu'=>3,'isupdate'=>0],
-
                
         ];
         // 保存数据

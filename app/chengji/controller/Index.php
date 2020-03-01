@@ -50,31 +50,18 @@ class Index extends BaseController
     {
         // 获取参数
         $src = $this->request
-                ->only(['page','limit','field','order','kaoshi','school','ruxuenian','banjiids'=>array(),'searchval'
+                ->only(['page','limit','field','order','kaoshi','school','ruxuenian','banji'=>array(),'searchval'
                 ],'POST');
 
         // 获取参与考试的班级
-        if(count($src['banjiids'])==0){
+        if(count($src['banji'])==0){
             $kh = new \app\kaoshi\model\Kaohao;
-            $src['banjiids']= array_column($kh->cyBanji($src), 'id');
+            $src['banji']= array_column($kh->cyBanji($src), 'id');
         }
 
-
-        $srcform = [
-            // 'page'=>$src['page'],
-            // 'limit'=>$src['limit'],
-            // 'field'=>$src['field'],
-            // 'order'=>$src['order'],
-            'kaoshi'=>$src['kaoshi'],
-            'banji'=>$src['banjiids'],
-        ];
-
-
-        // 实例化
+        // 实例化并查询成绩
         $cj = new Chengji;
-
-        // 查询要显示的数据
-        $data = $cj->search($srcform);
+        $data = $cj->search($src);
 
         // 获取符合条件记录总数
         $cnt = count($data);
@@ -99,13 +86,6 @@ class Index extends BaseController
     // 批量删除成绩
     public function deletecjs($kaoshi)
     {
-
-        // 判断考试结束时间是否已过
-        $enddate = kaoshiDate($kaoshi,'enddate');
-        if($enddate === true)
-        {
-            $this->error('考试时间已过，不能删除成绩','/login/err');
-        }
 
         // 设置页面标题
         $list['set'] = array(
@@ -139,6 +119,9 @@ class Index extends BaseController
                 ->only(['kaoshi','banjiids','subject'],'POST');
         $banji = $src['banjiids'];
         $subject = $src['subject'];
+
+        // 判断考试状态
+        event('ksstatus',$src['kaoshi']);  
 
         // 获取要删除成绩的考号
         $kaohao = new \app\kaoshi\model\Kaohao;
@@ -183,12 +166,8 @@ class Index extends BaseController
         $khid = Chengji::where('id',$id['0'])->value('kaohao_id');
         $kaoshiid = Kaohao:: where('id',$khid)->value('Kaoshi');
 
-        // 判断考试结束时间是否已过
-        $enddate = kaoshiDate($kaoshiid,'enddate');
-        if($enddate === true)
-        {
-            $this->error('考试时间已过，不能删除成绩','/login/err');
-        }
+        // 判断考试状态
+        event('ksstatus',$kaoshiid);  
 
         $data = Chengji::destroy($id);
 
@@ -203,23 +182,23 @@ class Index extends BaseController
 
 
 
-    // 设置成绩状态
-    public function setStatus()
-    {
+    // // 设置成绩状态
+    // public function setStatus()
+    // {
 
-        //  获取id变量
-        $id = request()->post('id');
-        $value = request()->post('value');
+    //     //  获取id变量
+    //     $id = request()->post('id');
+    //     $value = request()->post('value');
 
-        // 获取班级信息
-        $data = Chengji::where('id',$id)->update(['status'=>$value]);
+    //     // 获取班级信息
+    //     $data = Chengji::where('id',$id)->update(['status'=>$value]);
 
-        // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+    //     // 根据更新结果设置返回提示信息
+    //     $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
-        // 返回信息
-        return json($data);
-    }
+    //     // 返回信息
+    //     return json($data);
+    // }
 
 
 
@@ -592,9 +571,9 @@ class Index extends BaseController
             $sheet->setCellValue('G'.$row, '优秀率%');
             $sheet->setCellValue('H'.$row, '及格率%');
             $sheet->setCellValue('I'.$row, '最高分');
-            $sheet->setCellValue('J'.$row, '%75');
+            $sheet->setCellValue('J'.$row, '%25');
             $sheet->setCellValue('K'.$row, '%50');
-            $sheet->setCellValue('L'.$row, '%25');
+            $sheet->setCellValue('L'.$row, '%75');
             $row = $row + 1 ;
 
 

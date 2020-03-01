@@ -2,10 +2,12 @@
 
 namespace app\admin\model;
 
+// // 引用用户数据模型
+// use think\model\Pivot;
 // 引用用户数据模型
-use think\model\Pivot;
+use app\common\model\Base;
 
-class AuthGroupAccess extends Pivot
+class AuthGroupAccess extends Base
 {
     //
 }

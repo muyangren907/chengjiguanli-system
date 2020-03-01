@@ -63,6 +63,7 @@ class TongjiSch extends Base
                         $tongjiJg->q2 = $cj['sifenwei'][1];
                         $tongjiJg->q3 = $cj['sifenwei'][2];
                         $tongjiJg->zhongshu = $cj['zhongshu'];
+                        $tongjiJg->defenlv = $cj['defenlv'];
                         $data = $tongjiJg->save();
                     }else{
                         // 重新组合统计结果
@@ -83,6 +84,7 @@ class TongjiSch extends Base
                             'q2'=>$cj['sifenwei'][1],
                             'q3'=>$cj['sifenwei'][2],
                             'zhongshu'=>$cj['zhongshu'],
+                            'defenlv'=>$cj['defenlv'],
                         ];
 
                         $data = $this::create($tongjiJg);
@@ -170,6 +172,48 @@ class TongjiSch extends Base
 
         return $data;
     }
+
+
+
+    // 成绩排序
+    public function schOrder($kaoshi)
+    {
+        $src = array('kaoshi'=>$kaoshi);
+        // 实例化学生成绩统计类
+        $kh = new \app\kaoshi\model\Kaohao;
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $cj = new \app\chengji\model\Chengji;
+        $nianji = $ksset->srcNianji($kaoshi);
+
+
+        // 初始化统计结果
+        $data = array();
+
+        // 循环年级
+        foreach ($nianji as $njkey => $value) {
+            // 获取参加考试班级
+            $src['ruxuenian'] = $value['nianji'];
+            $subject = $ksset->srcSubject($kaoshi,'',$value['nianji']);
+            $banji = $kh->cyBanji($src);
+            $col = ['qpaixu','qweizhi'];
+
+           // 获取成绩
+           $srcfrom = [
+                'kaoshi'=>$kaoshi,
+                'ruxuenian'=>$value['nianji'],
+                'banji'=>array_column($banji, 'id'),
+            ];
+            $temp = $kh->srcChengjiSubject($srcfrom);
+            // 循环计算成绩排序
+            foreach ($temp as $key => $value) {
+                $cj->saveOrder($value,$col);
+            }
+        }
+
+        return true;
+    }   
+
+
 
 
     // 学科关联

@@ -92,12 +92,12 @@
 	var xk = '<?php echo json_encode($list["set"]["subject"]);?>';
 	xk = eval(decodeURIComponent(xk));
 	for(x in xk)
-    {
+  {
       options.cols[0].push({field: xk[x].lieming, title: xk[x].title , minWidth:100,sort: true,edit:'text'});
-    }
-    options.cols[0].push({field: 'avg', title: '平均分', minWidth:100,sort: true});
-    options.cols[0].push({field: 'sum', title: '总分', minWidth:100,sort: true});
-    options.cols[0].push({field: 'id', title: '操作',toolbar: '#barDemo',minWidth:125});
+  }
+  options.cols[0].push({field: 'avg', title: '平均分', minWidth:100,sort: true});
+  options.cols[0].push({field: 'sum', title: '总分', minWidth:100,sort: true});
+  options.cols[0].push({field: 'id', title: '操作',toolbar: '#barDemo',minWidth:125});
 
 	// 设置查询条件
 	options.where = {
@@ -171,7 +171,7 @@
               "newdefen":newdefen
           },
           success:function(result,obj){
-              if(result.val == 0)
+              if(result.val == 0 || result.code==0)
               {
                 layer.msg(result.msg,{icon:5});
               }else{
@@ -194,7 +194,7 @@
       function addBanji(){
         // 获取参数
         var formval = form.val('search');
-        cjgl.createCheckbox('banji',formval,'/kaoshi/index/cybanji','banjiids','banTitle');
+        cjgl.createCheckbox('banji',formval,'/kaoshi/index/cybanji','banji','banTitle');
       } 
 
 

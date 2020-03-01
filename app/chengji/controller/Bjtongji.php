@@ -290,13 +290,34 @@ class Bjtongji extends BaseController
     public function tongji()
     {
         // 获取变量
-        $kaoshi = input('post.kaoshi');        
+        $kaoshi = input('post.kaoshi');
+        // 判断考试状态
+        event('ksstatus',$kaoshi);        
 
         // 统计成绩
         $btj = new BTJ;
         $data = $btj->tjBanji($kaoshi);
 
         $data == true ? $data=['msg'=>'各班级成绩统计完成','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        return json($data);
+    }
+
+
+
+    // 统计学生在班级名次
+    public function bjOrder()
+    {
+        // 获取变量
+        $kaoshi = input('post.kaoshi');
+        // 判断考试状态
+        event('ksstatus',$kaoshi);
+
+        // 统计成绩
+        $btj = new BTJ;
+        $data = $btj->bjOrder($kaoshi);
+
+        $data == true ? $data=['msg'=>'学生成绩在班级位置统计完成。','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         return json($data);
     }

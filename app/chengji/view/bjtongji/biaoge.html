@@ -1,8 +1,7 @@
 
 {extend name=".././view/list.html" /}
 {block name="jsset"}
-	{load href="__STATIC__/echarts/echarts.min.js" /}
-	{load href="__STATIC__/echarts/dataTool.js" /}
+	{load href="__STATIC__/echarts/echarts.js" /}
 {/block}
 {block name="nav"}
 <span class="layui-breadcrumb">
@@ -284,20 +283,31 @@
 			        top: '10%',
 			    },
 			    grid: {
-			        // left: '10%',
+			        left: '10%',
 			        top: '20%',
-			        // right: '10%',
-			        // bottom: '15%'
+			        right: '10%',
+			        bottom: '15%'
 			    },
                 tooltip: {
-                    feature:{
-                         saveAsImage:{
-                            show:true,
-                            type:'png',
-                            title:title
-                         },
-                    },
+                	show: true,
+                	axisPointer: {
+			            type: 'cross'
+			        }
                 },
+                toolbox: {
+                 	id:id,
+                 	show:true,
+                 	orient:'horizontal',
+                 	showTitle:true,
+                 	feature: {
+	                    restore: { //重置
+	                        show: true
+	                    },
+	                    saveAsImage: { //保存文件
+	                        show: true
+	                    },
+	                },
+			    },
                 dataset: {
                     source:data.data
                 },
@@ -369,8 +379,22 @@
 			    tooltip: {
 			        trigger: 'item',
 			        axisPointer: {
-			            type: 'shadow'
+			            type: 'cross'
 			        }
+			    },
+			    toolbox: {
+                 	id:id,
+                 	show:true,
+                 	orient:'horizontal',
+                 	showTitle:true,
+                 	feature: {
+	                    restore: { //重置
+	                        show: true
+	                    },
+	                    saveAsImage: { //保存文件
+	                        show: true
+	                    },
+	                },
 			    },
 			    grid: {
 			        left: '10%',

@@ -5,6 +5,8 @@ namespace app\kaoshi\controller;
 use app\BaseController;
 // 引用考号数据模型类
 use app\kaoshi\model\KaoshiSet as ksset;
+// 考试控制器
+use app\kaoshi\controller\Kaoshi as kscon;
 
 
 class KaoshiSet extends BaseController
@@ -87,7 +89,7 @@ class KaoshiSet extends BaseController
      */
     public function create($kaoshi)
     {
-
+        
         // 设置页面标题
         $list['set'] = array(
             'webtitle'=>'设置考试',
@@ -128,6 +130,8 @@ class KaoshiSet extends BaseController
                     'jige'=>array(),
                     // 'lieming'=>array()
                 ],'POST');
+
+        event('ksstatus',$src['kaoshi']);
 
         // 验证表单数据
         $validate = new \app\kaoshi\validate\Kaoshiset;
@@ -229,17 +233,11 @@ class KaoshiSet extends BaseController
         // 判断考试结束时间是否已过
         $ksset = new ksset;
         $ksid = $ksset::where('id',$id[0])->value('kaoshi_id');
-        $enddate = kaoshiDate($ksid,'enddate');
+        event('ksstatus',$ksid);
        
-
-        if( $enddate === true )
-        {
-            $data=['msg'=>'考试时间已过，不能删除','val'=>0];
-        }else{
-            $data = ksset::destroy($id,true);
-            // 根据更新结果设置返回提示信息
-            $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
-        }
+        $data = ksset::destroy($id,true);
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
         // 返回信息
         return json($data);
     }

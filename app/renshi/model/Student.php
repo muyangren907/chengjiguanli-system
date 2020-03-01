@@ -104,7 +104,7 @@ class Student extends Base
     }
 
 
-    // 数据筛选
+    // 查询毕业学生信息
     public function searchBy($srcfrom)
     {
         
@@ -152,7 +152,7 @@ class Student extends Base
     }
 
 
-    // 数据筛选
+    // 查询删除学生信息
     public function searchDel($srcfrom)
     {
         
@@ -196,6 +196,9 @@ class Student extends Base
 
         return $data;
     }
+
+
+    
 
 
     // 获取全部数据

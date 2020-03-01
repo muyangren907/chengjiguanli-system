@@ -85,4 +85,36 @@ class Tongji extends BaseController
     }
 
 
+    public function newJieguo()
+    {
+        // 获取成绩最后修改时间
+        $cj = new \app\chengji\model\Chengji;
+        $cj = $cj->order(['update_time'=>'desc'])->find();
+        $cj = $cj->getData('update_time');
+
+        // 分别获取班级、年级、学校统计结果更新时间
+        $bj = new \app\chengji\model\TongjiBj;
+        $bj = $bj->order(['update_time'=>'desc'])->find();
+        $bj = $bj->getData('update_time');
+
+        $nj = new \app\chengji\model\TongjiNj;
+        $nj = $nj->order(['update_time'=>'desc'])->find();
+        $nj = $nj->getData('update_time');
+
+        $sch = new \app\chengji\model\TongjiSch;
+        $sch = $sch->order(['update_time'=>'desc'])->find();
+        $sch = $sch->getData('update_time');
+
+        if($cj>=$bj || $cj>=$nj || $cj>=$sch)
+        {
+            $data=['msg'=>'不是最新结果,重算一下！','val'=>0];
+        }else{
+            $data=['msg'=>'是最新结果，不用算啦~','val'=>1];
+        }
+
+        return json($data);
+
+    }
+
+
 }

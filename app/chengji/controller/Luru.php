@@ -28,7 +28,6 @@ class Luru extends BaseController
                                 ->field('id,title,jiancheng')
                                 ->select();
 
-
         // 模板赋值
         $this->view->assign('list',$list);
         // 渲染
@@ -79,11 +78,6 @@ class Luru extends BaseController
     }
 
 
-
-
-
-
-
     // 使用二维码录入成绩
     public function malu()
     {
@@ -107,22 +101,17 @@ class Luru extends BaseController
     {   
         // 获取表单数据
         $list = $this->request->only(['kaohao_id','subject_id','nianji','defen'],'post');
+        
 
         $kaoshiid = Kaohao::where('id',$list['kaohao_id'])->value('kaoshi');
-        // 判断考试结束时间是否已过
-        $enddate = kaoshiDate($kaoshiid,'enddate');
-        if($enddate === true)
-        {
-            $data=['msg'=>'考试时间已过，不能录入成绩','val'=>0];
-            return json($data);
-        }
-
+        // 判断考试状态
+        event('ksstatus',$kaoshiid);  
+        
         // // 根据考号获取学生年在年级及考试ID
-        // $kh = new \app\kaoshi\model\Kaohao;
-        // $khinfo = $kh->where('id',$list['k'])->find();
         // 获取本学科满分
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $subject = $ksset->srcSubject($kaoshiid,$list['subject_id'],$list['nianji']);
+
         if(count($subject)>0)
         {
             $manfen = $subject[0]['fenshuxian']['manfen'];
@@ -148,7 +137,7 @@ class Luru extends BaseController
         if($cjone)
         {
             // 判断记录是否被删除 
-            if($cjone->delete_time > 1)
+            if($cjone->delete_time > 0)
             {
                 $cjone->restore();
             }
@@ -160,6 +149,7 @@ class Luru extends BaseController
             }
 
             $cjone->defen = $list['defen'];
+            $cjone->defenlv = $list['defen'] / $manfen * 100;
             $data = $cjone->save();
 
         }else{
@@ -167,7 +157,8 @@ class Luru extends BaseController
                 'kaohao_id'=>$list['kaohao_id'],
                 'subject_id'=>$list['subject_id'],
                 'user_id'=>session('userid'),
-                'defen'=>$list['defen']
+                'defen'=>$list['defen'],
+                'defenlv' => $list['defen'] / $manfen * 100,
             ];
             $data = Chengji::create($data);
         }
@@ -192,13 +183,8 @@ class Luru extends BaseController
 
         // 判断考试结束时间是否已过
         $kaoshiid = Kaohao::where('id',$list['kaohao_id'])->value('kaoshi');
-        $enddate = kaoshiDate($kaoshiid,'enddate');
-        if($enddate === true)
-        {
-            $data=['msg'=>'考试时间已过，不能录入成绩','val'=>0];
-            return json($data);
-        }
-
+        // 判断考试状态
+        event('ksstatus',$kaoshiid);
 
         // 获取学科id
         $subject = new \app\teach\model\Subject;
@@ -249,6 +235,7 @@ class Luru extends BaseController
             }
 
             $cjone->defen = $list['newdefen'];
+            $cjone->defenlv = $list['newdefen'] / $manfen * 100;
             $data = $cjone->save();
 
         }else{
@@ -256,7 +243,8 @@ class Luru extends BaseController
                 'kaohao_id'=>$list['kaohao_id'],
                 'subject_id'=>$subject_id,
                 'user_id'=>session('userid'),
-                'defen'=>$list['newdefen']
+                'defen'=>$list['newdefen'],
+                'defenlv'=>$list['newdefen'] / $manfen * 100,
             ];
             $data = Chengji::create($data);
         }
@@ -370,13 +358,8 @@ class Luru extends BaseController
             $data=['msg'=>'请使用模板上传','val'=>0];
             return json($data);
         }
-        // 判断考试结束时间是否已过
-        $enddate = kaoshiDate($kaoshiid,'enddate');
-        if($enddate === true)
-        {
-            $data=['msg'=>'考试时间已过，不能录入成绩','val'=>0];
-            return json($data);
-        }
+        // 判断考试状态
+        event('ksstatus',$kaoshiid);
 
         // 删除空单元格得到学科列名数组
         array_splice($cjinfo[1],0,4);
@@ -412,8 +395,15 @@ class Luru extends BaseController
                 if($defen === null){
                     continue;
                 }
+
                 // 验证成绩格式，如果不对则跳过
-                $mfyz = manfenvalidate($defen,$value['fenshuxian']['manfen']);
+                if(isset($value['fenshuxian']['manfen']))
+                {
+                    $manfen = $value['fenshuxian']['manfen'];
+                }else{
+                    $manfen = "";
+                }
+                $mfyz = manfenvalidate($defen,$manfen);
                 if($mfyz['val'] == 0)
                 {
                     continue;
@@ -432,6 +422,7 @@ class Luru extends BaseController
                     {
                         $cjone->restore();
                         $cjone->defen = $defen;
+                        $cjone->defenlv = $defen/$manfen*100;
                         $cjone->save();
                     }
                 }else{
@@ -440,7 +431,7 @@ class Luru extends BaseController
                         'kaohao_id'=>$val[1],
                         'subject_id'=>$value['id'],
                         'user_id'=>$user_id,
-                        'defen'=>$defen
+                        'defen'=>$defen/$manfen*100,
                     ];
                     Chengji::create($data);
                 }

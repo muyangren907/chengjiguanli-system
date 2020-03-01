@@ -145,3 +145,21 @@ function manfenvalidate($defen,$manfen)
 
         return $data;
     }
+
+    /**  
+    * 把给定的成绩进行排序
+    * @access public 
+    * @param array $arr 要计算的一维数组成绩
+    * @return array $result 返回成绩排序结果
+    */ 
+    function tjOrder($cj,$type = 'desc')
+    {
+        if($type == 'desc')
+        {
+            arsort($cj);
+        }else{
+            asort($cj);
+        }
+
+        return $cj;
+    }

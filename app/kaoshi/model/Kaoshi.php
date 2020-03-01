@@ -8,26 +8,41 @@ use app\common\model\Base;
 
 class Kaoshi extends Base
 {
-    // 查询所有单位
+    // 查询所有考试
     public function search($srcfrom)
     {
         $src = [
             'field'=>'id',
             'order'=>'desc',
+            'zuzhi'=>array(),
+            'xueqi'=>'',
+            'category'=>array(),
             'searchval'=>''
         ];
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
-
-        // 整理变量
-        // $xingzhi = $src['xingzhi'];
-        $searchval = $src['searchval'];
+        $src['zuzhi'] = strToarray($src['zuzhi']);
+        $src['xueqi'] = strToarray($src['xueqi']);
+        $src['category'] = strToarray($src['category']);
 
         // 查询数据
         $data = $this
             ->order([$src['field'] =>$src['order']])
-            ->when(strlen($searchval)>0,function($query) use($searchval){
-                    $query->where('title','like','%'.$searchval.'%');
+            ->when(strlen($src['searchval'])>0,function($query) use($src){
+                    $query->where('title','like','%'.$src['searchval'].'%');
+                })
+            ->when(count($src['zuzhi'])>0,function($query) use($src){
+                    $query->where('zuzhi','in',$src['zuzhi']);
+                })
+            ->when(count($src['xueqi'])>0,function($query) use($src){
+                    $query->where('xueqi','in',function($q)use($src){
+                        $q->name('xueqi')
+                            ->where('category','in',$src['xueqi'])
+                            ->field('id');
+                    });
+                })
+            ->when(count($src['category'])>0,function($query) use($src){
+                    $query->where('category','in',$src['category']);
                 })
             ->with(
                 [
@@ -50,33 +65,11 @@ class Kaoshi extends Base
     // 考试参加考试的学校、学科、年级、班级
     public function kaoshiInfo($kaoshi=0)
     {
-
         // 获取参考年级
         $kaoshiList = $this->where('id',$kaoshi)
-                ->field('id,title')
-                // ->with([
-                //     'ksNianji'
-                //     ,'ksSubject'=>function($query){
-                //                 $query->field('id,subjectid,kaoshiid')
-                //                     ->with(['subjectName'=>function($q){
-                //                         $q->field('id,title');
-                //                     }]
-                //                 );
-                //             }
-                // ])
-                ->where('enddate','>=',time())
-                ->find()
-                ->toArray();
-
-        // 获取参加考试信息
-        $kh = new \app\kaoshi\model\Kaohao;
-        $list = array();
-        $list['subject'] = $kaoshiList['ksSubject'];
-        $list['nianji'] = $kaoshiList['ksNianji'];
-        $nianji = array_column($list['nianji'], 'nianji');
-        $list['school'] = $kh->cySchool(['kaoshi'=>$kaoshiList['id'],'ruxuenian'=>$nianji]);
-
-        return $list;
+                ->field('id,title,status')
+                ->find();
+        return $kaoshiList;
     }
   
 
@@ -151,16 +144,8 @@ class Kaoshi extends Base
     {
         return $this->hasMany('KaoshiSet','kaoshi_id','id');
     }
-    // // 考试设置关联表
-    // public function ksSubject()
-    // {
-    //     return $this->hasMany('KaoshiSet','kaoshi_id','id')->gooup('subject_id');
-    // }
-    // // 考试设置关联表
-    // public function ksNianji()
-    // {
-    //     return $this->hasMany('KaoshiSet','kaoshi_id','id')->gooup('nianji');
-    // }
+
+
     // 参考类别关联表
     public function ksCategory()
     {

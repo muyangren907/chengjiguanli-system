@@ -7,14 +7,16 @@ use app\BaseController;
 // 引用考试数据模型类
 use app\kaoshi\model\Kaoshi as KS;
 
+use app\middleware\KaoshiStatus;
+
 
 
 class Index extends BaseController
 {
+
     // 显示考试列表
     public function index()
     {
-
         // 设置要给模板赋值的信息
         $list['webtitle'] = '考试列表';
         $list['dataurl'] = 'index/data';
@@ -34,6 +36,8 @@ class Index extends BaseController
         // 获取参数
         $src = $this->request
                 ->only([
+                    'xueqi'=>'',
+                    'category'=>'',
                     'page'=>'1',
                     'limit'=>'10',
                     'field'=>'id',
@@ -91,9 +95,9 @@ class Index extends BaseController
     // 保存信息
     public function save()
     {
+        
         // 实例化验证模型
         $validate = new \app\kaoshi\validate\Kaoshi;
-
 
         // 获取表单数据
         $list = request()->only(['title','xueqi','category','bfdate','enddate','zuzhi'],'post');
@@ -164,10 +168,14 @@ class Index extends BaseController
     // 更新考试信息
     public function update($id)
     {
+        event('ksstatus',$id);
+
         $validate = new \app\kaoshi\validate\Kaoshi;
 
         // 获取表单数据
         $list = request()->only(['title','xueqi','category','bfdate','enddate','zuzhi'],'post');
+
+        
 
         // 验证表单数据
         $result = $validate->check($list);
@@ -214,7 +222,6 @@ class Index extends BaseController
                     ->field('id')
                     ->find();
 
-
         // 重新整理年级和学科
         $subject=array();
         $subjectid=array();
@@ -225,12 +232,10 @@ class Index extends BaseController
             $subject[$value->lieming]['jige'] = $value['jige'];
         }
 
-
         $nianji = array();
         foreach ($data['ks_nianji'] as $key => $value) {
             $nianji[] = $value['nianji'];
         }
-
 
         $list['data']['ks_subjectid'] = implode(',' , $subjectid);
         $list['data']['ks_nianjiid'] = implode(',' , $nianji);
@@ -246,8 +251,6 @@ class Index extends BaseController
             'kaoshi'=>$id,
         );
 
-
-
         // 模板赋值
         $this->view->assign('list',$list);
         // 渲染
@@ -259,77 +262,77 @@ class Index extends BaseController
 
 
 
-    // 更新考试信息
-    public function updateSet($id)
-    {
-        $validate = new \app\kaoshi\validate\Kaoshiset;
+    // // 更新考试信息
+    // public function updateSet($id)
+    // {
 
-        // 获取表单数据
-        $list = request()->only(['nianji','subject','manfen','youxiu','jige','lieming','nianjiname'],'post');
+    //     $validate = new \app\kaoshi\validate\Kaoshiset;
+
+    //     // 获取表单数据
+    //     $list = request()->only(['nianji','subject','manfen','youxiu','jige','lieming','nianjiname'],'post');
 
 
-        // 验证表单数据
-        $result = $validate->check($list);
-        $msg = $validate->getError();
+    //     // 验证表单数据
+    //     $result = $validate->check($list);
+    //     $msg = $validate->getError();
         
 
-        // 如果验证不通过则停止保存
-        if(!$result){
-            return json(['msg'=>$msg,'val'=>0]);;
-        }
+    //     // 如果验证不通过则停止保存
+    //     if(!$result){
+    //         return json(['msg'=>$msg,'val'=>0]);;
+    //     }
 
-        $list['id'] = $id;
+    //     $list['id'] = $id;
 
-        // 整理数据
-        $data = array();
-        $i = 0;
-        foreach ($list['subject'] as $key => $value) {
-            $data[$i]['subjectid'] = $key;
-            $data[$i]['manfen'] = $list['manfen'][$key];
-            $data[$i]['youxiu'] = $list['youxiu'][$key];
-            $data[$i]['jige'] = $list['jige'][$key];
-            $data[$i]['lieming'] = $list['lieming'][$key];
-            $data[$i]['kaoshiid'] = $id;
-            $i++;
-        }
-
-
-        // 更新数据
-
-        // 删除原来的数据
-        $subject = new \app\kaoshi\model\KaoshiSubject;
-
-        $subject::destroy(function($query) use ($id){
-            $query->where('kaoshiid',$id);
-        });
-
-        // 添加新的数据
-        $subjectdata = $subject->saveAll($data);
-
-        // 整理数据
-        $data = array();
-        $i = 0;
-        foreach ($list['nianji'] as $key => $value) {
-            $data[$i]['nianji'] = $key;
-            $data[$i]['nianjiname'] = $list['nianjiname'][$key];
-            $data[$i]['kaoshiid'] = $id;
-            $i++;
-        }
-
-        // 更新数据
-        $nianji = new \app\kaoshi\model\KaoshiNianji;
-        $nianji::destroy(function($query) use ($id){
-            $query->where('kaoshiid',$id);
-        });
-        $nianjidata = $nianji->saveAll($data);
+    //     // 整理数据
+    //     $data = array();
+    //     $i = 0;
+    //     foreach ($list['subject'] as $key => $value) {
+    //         $data[$i]['subjectid'] = $key;
+    //         $data[$i]['manfen'] = $list['manfen'][$key];
+    //         $data[$i]['youxiu'] = $list['youxiu'][$key];
+    //         $data[$i]['jige'] = $list['jige'][$key];
+    //         $data[$i]['lieming'] = $list['lieming'][$key];
+    //         $data[$i]['kaoshiid'] = $id;
+    //         $i++;
+    //     }
 
 
-        // 根据更新结果设置返回提示信息
-        $subjectdata && $nianjidata ? $data=['msg'=>'设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+    //     // 更新数据
+    //     // 删除原来的数据
+    //     $subject = new \app\kaoshi\model\KaoshiSubject;
 
-        // 返回信息
-        return json($data);
-    }
+    //     $subject::destroy(function($query) use ($id){
+    //         $query->where('kaoshiid',$id);
+    //     });
+
+    //     // 添加新的数据
+    //     $subjectdata = $subject->saveAll($data);
+
+    //     // 整理数据
+    //     $data = array();
+    //     $i = 0;
+    //     foreach ($list['nianji'] as $key => $value) {
+    //         $data[$i]['nianji'] = $key;
+    //         $data[$i]['nianjiname'] = $list['nianjiname'][$key];
+    //         $data[$i]['kaoshiid'] = $id;
+    //         $i++;
+    //     }
+
+    //     // 更新数据
+    //     $nianji = new \app\kaoshi\model\KaoshiNianji;
+    //     $nianji::destroy(function($query) use ($id){
+    //         $query->where('kaoshiid',$id);
+    //     });
+    //     $nianjidata = $nianji->saveAll($data);
+
+
+    //     // 根据更新结果设置返回提示信息
+    //     $subjectdata && $nianjidata ? $data=['msg'=>'设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+    //     // 返回信息
+    //     return json($data);
+    // }
 
     
 
@@ -477,22 +480,4 @@ class Index extends BaseController
 
         return json($data);
     }
-
-    // // 考试参加考试的学校、学科、年级、班级
-    // public function kaoshiInfo($kaoshi=0)
-    // {
-    //     $ks = new KS();
-    //     $data = $ks->kaoshiInfo($kaoshi);
-
-    //     if($data){
-    //         $data['msg'] = '查询成功';
-    //         $data['val'] = 1;
-    //     }else{
-    //         $data['msg'] = '查询失败';
-    //         $data['val'] = 0;
-    //     }
-        
-
-    //     return json($data);
-    // }
 }

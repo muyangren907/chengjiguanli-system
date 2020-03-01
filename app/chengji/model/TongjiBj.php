@@ -32,6 +32,7 @@ class TongjiBj extends Base
         // 初始化统计结果
         $data = array();
 
+
         // 循环年级
         foreach ($nianji as $njkey => $value) {
             // 获取参加考试班级
@@ -48,21 +49,12 @@ class TongjiBj extends Base
                 $temp = $kh->srcChengji($srcfrom);
                 $temp = $tj->tongjiSubject($temp,$subject);
 
-                // halt($temp);
-
                 // 循环更新或写入成绩
                 foreach ($temp['cj'] as $cjkey => $cj) {
-                    // if($cjkey == 'all')
-                    // {
-                    //     continue;
-                    // }
-                    // 查询该班级该学科成绩是否存在
                     $tongjiJg = $this->where('kaoshi_id',$src['kaoshi'])
                                     ->where('banji_id',$val['id'])
                                     ->where('subject_id',$cj['id'])
                                     ->find();
-                    // halt('aa');
-
                     if($tongjiJg)
                     {
                         $tongjiJg->kaoshi_id = $src['kaoshi'];
@@ -81,6 +73,7 @@ class TongjiBj extends Base
                         $tongjiJg->q2 = $cj['sifenwei'][1];
                         $tongjiJg->q3 = $cj['sifenwei'][2];
                         $tongjiJg->zhongshu = $cj['zhongshu'];
+                        $tongjiJg->defenlv = $cj['defenlv'];
                         $data = $tongjiJg->save();
                     }else{
                         // 重新组合统计结果
@@ -101,12 +94,14 @@ class TongjiBj extends Base
                             'q2'=>$cj['sifenwei'][1],
                             'q3'=>$cj['sifenwei'][2],
                             'zhongshu'=>$cj['zhongshu'],
+                            'defenlv'=>$cj['defenlv'],
                         ];
                         $data = $this::create($tongjiJg);
                     }
                 }
             }
         }
+
         return true;
     }
 
@@ -234,7 +229,7 @@ class TongjiBj extends Base
                         ->order(['subject_id']);
                 }
             ])
-            ->cache(true)
+            // ->cache(true)
             ->group('banji_id,kaoshi_id')
             ->append(['banjiTitle'])
             ->select();
@@ -258,18 +253,18 @@ class TongjiBj extends Base
             foreach ($value->bjJieguo as $k => $val) {
                 if($val->subject_id>0){
                     $data[$value->banji_id]['chengji'][$val->bjSubject->lieming] = [
-                        'avg'=>$val->avg,
-                        'youxiu'=>$val->youxiu,
-                        'jige'=>$val->jige,
+                        'avg'=>$val->avg*1,
+                        'youxiu'=>$val->youxiu*1,
+                        'jige'=>$val->jige*1,
                         'cjCnt'=>$val->chengji_cnt,
                         'title'=>$val->bjSubject->title,
                         'jiancheng'=>$val->bjSubject->jiancheng,
-                        'biaozhuncha'=>$val->biaozhuncha,
+                        'biaozhuncha'=>$val->biaozhuncha*1,
                         'sifenwei'=>[
                             'min'=>$val->min,
-                            'q1'=>$val->q1,
-                            'q2'=>$val->q2,
-                            'q3'=>$val->q3,
+                            'q1'=>$val->q1*1,
+                            'q2'=>$val->q2*1,
+                            'q3'=>$val->q3*1,
                             'max'=>$val->max,
                         ],
                     ];
@@ -288,6 +283,46 @@ class TongjiBj extends Base
 
         return $data;
     }
+
+
+    // 成绩排序
+    public function bjOrder($kaoshi)
+    {
+        $src = array('kaoshi'=>$kaoshi);
+        // 实例化学生成绩统计类
+        $kh = new Kaohao;
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $cj = new \app\chengji\model\Chengji;
+        $nianji = $ksset->srcNianji($kaoshi);
+        $col = ['bpaixu','bweizhi'];
+
+
+        // 初始化统计结果
+        $data = array();
+
+        // 循环年级
+        foreach ($nianji as $njkey => $value) {
+            // 获取参加考试班级
+            $src['ruxuenian'] = $value['nianji'];
+            $banji = $kh->cyBanji($src);
+            $subject = $ksset->srcSubject($kaoshi,'',$value['nianji']);
+
+            // 循环班级，获取并统计成绩
+            foreach ($banji as $bjkey => $val) {
+               // 获取成绩
+               $srcfrom = [
+                    'kaoshi'=>$kaoshi,
+                    'banji'=>$val['id'],
+                ];
+                $temp = $kh->srcChengjiSubject($srcfrom);
+                // 循环计算成绩排序
+                foreach ($temp as $key => $value) {
+                    $cj->saveOrder($value,$col);
+                }
+            }
+        }
+        return true;
+    }   
 
 
 

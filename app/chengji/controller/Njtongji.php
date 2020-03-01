@@ -264,12 +264,31 @@ class Njtongji extends BaseController
     {
         // 获取变量
         $kaoshi = input('post.kaoshi');         
-
+        // 判断考试状态
+        event('ksstatus',$kaoshi);  
         // 统计成绩
         $ntj = new NTJ;
         $data = $ntj->tjNianji($kaoshi);
 
         $data == true ? $data=['msg'=>'各学校年级统计完成','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        return json($data);
+    }
+
+
+    // 统计学生在班级名次
+    public function njOrder()
+    {
+        // 获取变量
+        $kaoshi = input('post.kaoshi');
+        // 判断考试状态
+        event('ksstatus',$kaoshi);
+
+        // 统计成绩
+        $ntj = new NTJ;
+        $data = $ntj->njOrder($kaoshi);
+
+        $data == true ? $data=['msg'=>'学生成绩在班级位置统计完成。','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         return json($data);
     }

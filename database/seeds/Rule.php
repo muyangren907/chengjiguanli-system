@@ -92,7 +92,8 @@ class Rule extends Seeder
                     // 考试操作
                     ['id'=>30201,'title'=>'前期操作','name'=>'kaoshicaozuo1','paixu'=>1,'pid'=>302],
                     ['id'=>30202,'title'=>'成绩录入','name'=>'kaoshicaozuo2','paixu'=>2,'pid'=>302],
-                    ['id'=>30203,'title'=>'成绩列表','name'=>'kaoshicaozuo3','paixu'=>3,'pid'=>302],
+                    ['id'=>30203,'title'=>'成绩统计','name'=>'kaoshicaozuo3','paixu'=>4,'pid'=>302],
+                    ['id'=>30204,'title'=>'统计结果','name'=>'kaoshicaozuo4','paixu'=>4,'pid'=>302],
                     
 
 
@@ -289,34 +290,38 @@ class Rule extends Seeder
                         // 录入成绩
                         ['title'=>'下载成绩采集表','name'=>'kaoshi/Kaohao/caiji','paixu'=>1,'pid'=>30202],
                         ['title'=>'已录成绩数量','name'=>'Chengji/Tongji/yiluCnt','paixu'=>2,'pid'=>30202],
-                        ['title'=>'以班级为单位统计成绩','name'=>'chengji/Bjtongji/tongji','paixu'=>3,'pid'=>30202],
-                        ['title'=>'以学校为单位统计成绩','name'=>'chengji/Njtongji/tongji','paixu'=>4,'pid'=>30202],
-                        ['title'=>'以全部成绩为单位统计成绩','name'=>'chengji/Schtongji/tongji','paixu'=>5,'pid'=>30202],
+                        // 统计成绩
+                        ['title'=>'以班级为单位统计成绩','name'=>'chengji/Bjtongji/tongji','paixu'=>1,'pid'=>30203],
+                        ['title'=>'以学校为单位统计成绩','name'=>'chengji/Njtongji/tongji','paixu'=>2,'pid'=>30203],
+                        ['title'=>'以全部成绩为单位统计成绩','name'=>'chengji/Schtongji/tongji','paixu'=>3,'pid'=>30203],
+                        ['title'=>'统计学生成绩在班级位置','name'=>'chengji/Bjtongji/bjorder','paixu'=>4,'pid'=>30203],
+                        ['title'=>'统计学生成绩在学校位置','name'=>'chengji/Njtongji/njorder','paixu'=>5,'pid'=>30203],
+                        ['title'=>'统计学生成绩在区位置','name'=>'chengji/Schtongji/schorder','paixu'=>6,'pid'=>30203],
 
                         // 成绩列表
                         // 学生成绩
-                        ['id'=>3020301,'title'=>'成绩列表','name'=>'Chengji/Index/index','paixu'=>1,'pid'=>30203],
-                        ['title'=>'录入人信息','name'=>'Chengji/Index/readAdd','paixu'=>1,'pid'=>3020301],
-                        ['title'=>'考号删除','name'=>'kaoshi/Kaohao/delete','paixu'=>2,'pid'=>3020301],
-                        ['title'=>'删除成绩','name'=>'Chengji/Index/delete','paixu'=>3,'pid'=>3020301],
-                        ['title'=>'成绩状态','name'=>'Chengji/Index/setStatus','paixu'=>4,'pid'=>3020301],
-                        ['title'=>'批量删除界面','name'=>'Chengji/Index/deletecjs','paixu'=>5,'pid'=>3020301],
-                        ['title'=>'批量删除','name'=>'Chengji/Index/deletecjmore','paixu'=>6,'pid'=>3020301],
-                        ['title'=>'下载学生成绩条','name'=>'Chengji/Index/dwChengjitiao','paixu'=>7,'pid'=>3020301],
-                        ['title'=>'添加考号','name'=>'Kaoshi/Kaohao/addOne','paixu'=>8,'pid'=>3020301],
-                        ['title'=>'下载学生成绩','name'=>'chengji/Index/dwChengji','paixu'=>9,'pid'=>3020301],
+                        ['id'=>3020401,'title'=>'学生成绩','name'=>'Chengji/Index/index','paixu'=>1,'pid'=>30204],
+                        ['title'=>'录入人信息','name'=>'Chengji/Index/readAdd','paixu'=>1,'pid'=>3020401],
+                        ['title'=>'考号删除','name'=>'kaoshi/Kaohao/delete','paixu'=>2,'pid'=>3020401],
+                        ['title'=>'删除成绩','name'=>'Chengji/Index/delete','paixu'=>3,'pid'=>3020401],
+                        ['title'=>'成绩状态','name'=>'Chengji/Index/setStatus','paixu'=>4,'pid'=>3020401],
+                        ['title'=>'批量删除界面','name'=>'Chengji/Index/deletecjs','paixu'=>5,'pid'=>3020401],
+                        ['title'=>'批量删除','name'=>'Chengji/Index/deletecjmore','paixu'=>6,'pid'=>3020401],
+                        ['title'=>'下载学生成绩条','name'=>'Chengji/Index/dwChengjitiao','paixu'=>7,'pid'=>3020401],
+                        ['title'=>'添加考号','name'=>'Kaoshi/Kaohao/addOne','paixu'=>8,'pid'=>3020401],
+                        ['title'=>'下载学生成绩','name'=>'chengji/Index/dwChengji','paixu'=>9,'pid'=>3020401],
                         // 班级成绩统计表
-                        ['id'=>3020302,'title'=>'班级成绩','name'=>'banjichengji','paixu'=>2,'pid'=>30203],
-                        ['title'=>'班级成绩统计','name'=>'Chengji/Bjtongji/biaoge','paixu'=>1,'pid'=>3020302],
-                        ['title'=>'下载班级成绩统计表','name'=>'chengji/Bjtongji/dwBiaoge','paixu'=>2,'pid'=>3020302],
-                        ['title'=>'条形统计图','name'=>'chengji/Bjtongji/myavg','paixu'=>3,'pid'=>3020302],
-                        ['title'=>'箱体图','name'=>'chengji/Bjtongji/myxiangti','paixu'=>4,'pid'=>3020302],
+                        ['id'=>3020402,'title'=>'班级成绩','name'=>'banjichengji','paixu'=>2,'pid'=>30204],
+                        ['title'=>'班级成绩统计','name'=>'Chengji/Bjtongji/biaoge','paixu'=>1,'pid'=>3020402],
+                        ['title'=>'下载班级成绩统计表','name'=>'chengji/Bjtongji/dwBiaoge','paixu'=>2,'pid'=>3020402],
+                        ['title'=>'条形统计图','name'=>'chengji/Bjtongji/myavg','paixu'=>3,'pid'=>3020402],
+                        ['title'=>'箱体图','name'=>'chengji/Bjtongji/myxiangti','paixu'=>4,'pid'=>3020402],
                         // 年级成绩统计表
-                        ['id'=>3020303,'title'=>'年级成绩','name'=>'nianjichengji','paixu'=>3,'pid'=>30203],
-                        ['title'=>'年级成绩统计','name'=>'Chengji/Njtongji/biaoge','paixu'=>1,'pid'=>3020303],
-                        ['title'=>'下载年级成绩统计表','name'=>'chengji/Njtongji/dwBiaoge','paixu'=>2,'pid'=>3020303],
-                        ['title'=>'条形统计图','name'=>'chengji/Njtongji/myavg','paixu'=>3,'pid'=>3020303],
-                        ['title'=>'箱体图','name'=>'chengji/Njtongji/myxiangti','paixu'=>4,'pid'=>3020303],
+                        ['id'=>3020403,'title'=>'年级成绩','name'=>'nianjichengji','paixu'=>3,'pid'=>30204],
+                        ['title'=>'年级成绩统计','name'=>'Chengji/Njtongji/biaoge','paixu'=>1,'pid'=>3020403],
+                        ['title'=>'下载年级成绩统计表','name'=>'chengji/Njtongji/dwBiaoge','paixu'=>2,'pid'=>3020403],
+                        ['title'=>'条形统计图','name'=>'chengji/Njtongji/myavg','paixu'=>3,'pid'=>3020403],
+                        ['title'=>'箱体图','name'=>'chengji/Njtongji/myxiangti','paixu'=>4,'pid'=>3020403],
 
 
         ];

@@ -1,8 +1,7 @@
 
 {extend name=".././view/list.html" /}
 {block name="jsset"}
-	{load href="__STATIC__/echarts/echarts.min.js" /}
-	{load href="__STATIC__/echarts/dataTool.js" /}
+	{load href="__STATIC__/echarts/echarts.js" /}
 {/block}
 {block name="nav"}
 	<span class="layui-breadcrumb">
@@ -254,6 +253,20 @@
                          },
                     },
                 },
+                toolbox: {
+                 	id:id,
+                 	show:true,
+                 	orient:'horizontal',
+                 	showTitle:true,
+                 	feature: {
+	                    restore: { //重置
+	                        show: true
+	                    },
+	                    saveAsImage: { //保存文件
+	                        show: true
+	                    },
+	                },
+			    },
                 dataset: {
                     source:data.data
                 },
@@ -327,6 +340,20 @@
 			        axisPointer: {
 			            type: 'shadow'
 			        }
+			    },
+			    toolbox: {
+                 	id:id,
+                 	show:true,
+                 	orient:'horizontal',
+                 	showTitle:true,
+                 	feature: {
+	                    restore: { //重置
+	                        show: true
+	                    },
+	                    saveAsImage: { //保存文件
+	                        show: true
+	                    },
+	                },
 			    },
 			    grid: {
 			        left: '10%',

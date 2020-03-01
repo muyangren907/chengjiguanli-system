@@ -31,6 +31,7 @@ Route::group('index', function () {
 Route::group('tongji', function () {
 		Route::rule('yilucnt/<kaoshi>','Tongji/yiluCnt');			# 更新信息
 		Route::rule('data','Tongji/ajaxData','post');			# 扫码界面
+		Route::rule('newjieguo','Tongji/newJieguo','post');
 	});
 
 
@@ -44,6 +45,7 @@ Route::group('bjtj', function () {
 	    Route::rule('myavg','Bjtongji/myAvg','post');			# 扫码界面
 	    Route::rule('myxiangti','Bjtongji/myXiangti','post');			# 扫码界面
 	    Route::rule('digui/<num>','Bjtongji/digui','get');			# 扫码界面
+	    Route::rule('bjorder','Bjtongji/bjOrder','post');		# 统计各班级成绩
 	});
 
 
@@ -56,6 +58,7 @@ Route::group('njtj', function () {
 	    Route::rule('tongji','Njtongji/tongji','post');		# 统计各年级成绩
 	    Route::rule('myavg','Njtongji/myAvg','post');			# 扫码界面
 	    Route::rule('myxiangti','Njtongji/myXiangti','post');			# 扫码界面
+	    Route::rule('njorder','Njtongji/njOrder','post');		# 统计各班级成绩
 	});
 
 // 全年级统计
@@ -63,6 +66,7 @@ Route::group('schtj', function () {
 	    Route::rule('biaoge/<kaoshi>','Schtongji/biaoge','get');			# 班级表格
 	    Route::rule('data','Schtongji/ajaxData','post');			# 扫码界面
 	    Route::rule('tongji','Schtongji/tongji','post');		# 统计各年级成绩
+	    Route::rule('schorder','Schtongji/schOrder','post');		# 统计各班级成绩
 	});
 
 // 录入

@@ -72,6 +72,7 @@ class TongjiNj extends Base
                         $tongjiJg->q2 = $cj['sifenwei'][1];
                         $tongjiJg->q3 = $cj['sifenwei'][2];
                         $tongjiJg->zhongshu = $cj['zhongshu'];
+                        $tongjiJg->defenlv = $cj['defenlv'];
                         $data = $tongjiJg->save();
                     }else{
                         // 重新组合统计结果
@@ -93,6 +94,7 @@ class TongjiNj extends Base
                             'q2'=>$cj['sifenwei'][1],
                             'q3'=>$cj['sifenwei'][2],
                             'zhongshu'=>$cj['zhongshu'],
+                            'defenlv'=>$cj['defenlv'],
                         ];
 
                         $data = $this::create($tongjiJg);
@@ -160,8 +162,6 @@ class TongjiNj extends Base
                 },
                 'njJieguo'=>function($query) use($ruxuenian,$kaoshi){
                     $query->field('subject_id,school_id,ruxuenian,stu_cnt,chengji_cnt,avg,youxiu,jige,biaozhuncha,max,min,q1,q2,q3')
-                        ->where('ruxuenian',$ruxuenian)
-                        ->where('kaoshi_id',$kaoshi)
                         ->with([
                             'njSubject'=>function($query){
                                 $query->field('id,lieming,jiancheng,title');
@@ -191,18 +191,18 @@ class TongjiNj extends Base
             foreach ($value->njJieguo as $k => $val) {
                 if($val->subject_id>0){
                     $data[$value->school_id]['chengji'][$val->njSubject->lieming] = [
-                        'avg'=>$val->avg,
-                        'youxiu'=>$val->youxiu,
-                        'jige'=>$val->jige,
+                        'avg'=>$val->avg*1,
+                        'youxiu'=>$val->youxiu*1,
+                        'jige'=>$val->jige*1,
                         'cjCnt'=>$val->chengji_cnt,
                         'title'=>$val->njSubject->title,
                         'jiancheng'=>$val->njSubject->jiancheng,
-                        'biaozhuncha'=>$val->biaozhuncha,
+                        'biaozhuncha'=>$val->biaozhuncha*1,
                         'sifenwei'=>[
                             'min'=>$val->min,
-                            'q1'=>$val->q1,
-                            'q2'=>$val->q2,
-                            'q3'=>$val->q3,
+                            'q1'=>$val->q1*1,
+                            'q2'=>$val->q2*1,
+                            'q3'=>$val->q3*1,
                             'max'=>$val->max,
                         ],
                     ];
@@ -220,6 +220,52 @@ class TongjiNj extends Base
 
         return $data;
     }
+
+
+    // 成绩排序
+    public function njOrder($kaoshi)
+    {
+        $src = array('kaoshi'=>$kaoshi);
+        // 实例化学生成绩统计类
+        $kh = new \app\kaoshi\model\Kaohao;
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $cj = new \app\chengji\model\Chengji;
+        $nianji = $ksset->srcNianji($kaoshi);
+        $col = ['xpaixu','xweizhi'];
+
+
+        // 初始化统计结果
+        $data = array();
+
+        // 循环年级
+        foreach ($nianji as $njkey => $value) {
+            // 获取参加考试班级
+            $src['ruxuenian'] = $value['nianji'];
+            
+            $school = $kh->cySchool($src);
+            $subject = $ksset->srcSubject($kaoshi,'',$value['nianji']);
+
+            // 循环班级，获取并统计成绩
+            foreach ($school as $schkey => $val) {
+                // 获取查询成绩参数
+                $src['school'] = $val['id'];
+                $banji = $kh->cyBanji($src);
+               $srcfrom = [
+                    'kaoshi'=>$kaoshi,
+                    'school'=>$val['id'],
+                    'banji'=>array_column($banji, 'id'),
+                ];
+                $temp = $kh->srcChengjiSubject($srcfrom);
+
+                // 循环计算成绩排序
+                foreach ($temp as $key => $value) {
+                    $cj->saveOrder($value,$col);
+                }
+            }
+        }
+
+        return true;
+    }   
 
 
     // 考试关联
@@ -243,7 +289,11 @@ class TongjiNj extends Base
     // 成绩统计结果关联
     public function njJieguo()
     {
-        return $this->hasMany('\app\chengji\model\TongjiNj','school_id','school_id');
+        $ruxuenian = $this->getAttr('ruxuenian');
+        $kaoshi = $this->getAttr('kaoshi_id');
+        return $this->hasMany('\app\chengji\model\TongjiNj','school_id','school_id')
+                    ->where('ruxuenian',$ruxuenian)
+                    ->where('kaoshi_id',$kaoshi);
     }
 
 }

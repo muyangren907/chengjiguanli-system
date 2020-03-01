@@ -2,6 +2,7 @@
 // 事件定义文件
 return [
     'bind'      => [
+        'kaoshistatus'=>'ksstatus',
     ],
 
     'listen'    => [
@@ -10,8 +11,10 @@ return [
         'HttpEnd'  => [],
         'LogLevel' => [],
         'LogWrite' => [],
+        'ksstatus' => [
+            'app\listener\KaoshiStatus'
+        ],
     ],
-
     'subscribe' => [
     ],
 ];

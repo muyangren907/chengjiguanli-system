@@ -33,16 +33,16 @@ class Kaohao extends Migrator
 
         // 添加当前表字段
         $table
-            ->addColumn('kaoshi','integer',['limit'=>11,'null'=>false,'comment'=>'考试'])
-            ->addColumn('school','integer',['limit'=>11,'null'=>false,'comment'=>'学校'])
-            ->addColumn('ruxuenian','integer',['limit'=>4,'null'=>false,'comment'=>'入学年'])
-            ->addColumn('nianji','string',['limit'=>4,'null'=>false,'comment'=>'年级'])
-            ->addColumn('banji','integer',['limit'=>11,'null'=>false,'comment'=>'班级'])
-            ->addColumn('paixu','integer',['limit'=>11,'null'=>false,'comment'=>'班级排序'])
-            ->addColumn('student','integer',['limit'=>11,'null'=>false,'comment'=>'学生'])
-            ->addColumn('create_time','integer',['limit'=>11,'null'=>true,'comment'=>'创建时间'])
+            ->addColumn('kaoshi','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'考试'])
+            ->addColumn('school','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'学校'])
+            ->addColumn('ruxuenian','integer',['limit'=>4,'default'=>0,'null'=>false,'comment'=>'入学年'])
+            ->addColumn('nianji','string',['limit'=>4,'default'=>'a','null'=>false,'comment'=>'年级'])
+            ->addColumn('banji','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'班级'])
+            ->addColumn('paixu','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'班级排序'])
+            ->addColumn('student','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'学生'])
+            ->addColumn('create_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'创建时间'])
+            ->addColumn('update_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'更新时间'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
-            ->addColumn('update_time','integer',['limit'=>11,'null'=>true,'comment'=>'更新时间'])
             ->addColumn('status','boolean',['limit'=>1,'default'=>'1','null'=>false,'comment'=>'0=禁用，1=正常'])
             ->addIndex(array('kaoshi','student'), array('unique' => true))
             ->create();

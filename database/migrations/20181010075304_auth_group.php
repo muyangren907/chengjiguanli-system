@@ -33,10 +33,12 @@ class AuthGroup extends Migrator
 
         // 添加当前表字段
         $table
-            ->addColumn('title','string',['limit'=>100,'default'=>'','null'=>false,'comment'=>'用户组中文名称'])
-            ->addColumn('rules','string',['limit'=>10000,'default'=>'','null'=>false,'comment'=>'用户组拥有的规则id'])
-            ->addColumn('miaoshu','string',['limit'=>200,'default'=>'','null'=>false,'comment'=>'用户组功能描述'])
+            ->addColumn('title','string',['limit'=>100,'default'=>'测试用户组','null'=>false,'comment'=>'用户组中文名称'])
+            ->addColumn('rules','string',['limit'=>10000,'default'=>'0','null'=>false,'comment'=>'用户组拥有的规则id'])
+            ->addColumn('miaoshu','string',['limit'=>200,'default'=>'测试用户组','null'=>false,'comment'=>'用户组功能描述'])
             ->addColumn('status','boolean',['default'=>true,'null'=>false,'comment'=>'用户组状态'])
+            ->addColumn('create_time','integer',['limit'=>11,'default'=>1539158918,'null'=>false,'comment'=>'创建时间'])
+            ->addColumn('update_time','integer',['limit'=>11,'default'=>1539158918,'null'=>false,'comment'=>'更新时间'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
             ->addIndex(array('title'), array('unique' => true))
             ->create();
