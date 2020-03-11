@@ -35,11 +35,11 @@
 {block name="myjs"}
 <!-- 表格上面按钮模板 -->
 <script type="text/html" id="toolbarDemo">
-	<div class="layui-btn-container">
+<!-- 	<div class="layui-btn-container">
 		<button class="layui-btn layui-btn-danger" lay-event="dels">
 			<i class="iconfont">&#xe69d;</i> 批量删除
 		</button>
-	</div>
+	</div> -->
 </script>
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
@@ -126,7 +126,7 @@
         	,colname = obj.data.subjectname
         	,id = obj.data.kaohaoid;
 
-	      	// 修改服务器数据 
+	      	// 修改服务器数据
 	      	$.ajax({
 	      		url:"/chengji/luru/update/"+id,
 	      		type:'PUT',
@@ -135,16 +135,15 @@
 	      			,"newdefen":newdefen
 	      		},
 	      		success:function(result){
-	      			if(result.val == 0)
+	      			if(result.val == 0 || result.code==0)
 	      			{
 	      				layer.msg(result.msg,{icon:5});
 	      			}else{
-                    	// 这个地方重新赋值平均分和总分
-                    }
-                },
-                error:function(result){
-                	layer.msg('数据扔半道啦。',function(){});
-                },
+              }
+            },
+            error:function(result){
+            	layer.msg('数据扔半道啦。',function(){});
+            },
             });
 	      })
     });

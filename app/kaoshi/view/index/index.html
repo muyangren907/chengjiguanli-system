@@ -59,7 +59,10 @@
 	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
 	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon layui-icon-edit"></i></a>
 	<a class="layui-btn-xs" lay-event="more" title="更多操作"><i class="layui-icon layui-icon-more-vertical"></i></a>
-	
+
+</script>
+<script type="text/html" id="luru">
+  <input type="checkbox" myurl="{$list.luru ? $list.luru : url('luru')}" {{d.luru == 1 ? "checked" :""}} id="{{d.id}}" lay-skin="switch" lay-filter="luru" lay-text="允许|不允许">
 </script>
 <!-- 表格操作 -->
 <script>
@@ -79,8 +82,9 @@
 				endate = d.bfdate + '～' + endate;
 				return endate;
 			}},
+      {field: 'luru', title: '成绩操作', minWidth:80,templet:'#luru', sort: true},
 			{field: 'status', title: '状态', minWidth:80,templet:'#status', sort: true},
-			
+
 		]];
 
   // 提交搜索条件后重载表格
@@ -112,9 +116,6 @@
 	        case 'edit':// 编辑
 	          cjgl.add('编辑考试','index/edit/'+obj.data.id,'','',true);
 	          break;
-	        // case 'set':// 编辑
-	        //   cjgl.add('设置考试','index/set/'+obj.data.id,'','',true);
-	        //   break;
 	        case 'more':// 状态
 	          parent.xadmin.add_tab(obj.data.title + ' 操作','/kaoshi/index/more/'+obj.data.id,true);
 	          break;

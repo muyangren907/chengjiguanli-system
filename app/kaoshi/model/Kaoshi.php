@@ -67,18 +67,18 @@ class Kaoshi extends Base
     {
         // 获取参考年级
         $kaoshiList = $this->where('id',$kaoshi)
-                ->field('id,title,status')
+                ->field('id,title,status,luru')
                 ->find();
         return $kaoshiList;
     }
-  
+
 
 
     // 开始时间修改器
     public function setBfdateAttr($value)
     {
         return strtotime($value);
-    }  
+    }
 
     // 开始时间获取器
     public function getBfdateAttr($value)
@@ -163,8 +163,6 @@ class Kaoshi extends Base
     {
         return $this->belongsTo('\app\system\model\School','zuzhi','id');
     }
-
-
 
 
 }

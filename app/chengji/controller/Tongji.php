@@ -24,7 +24,7 @@ class Tongji extends BaseController
         $list['nianji'] = $ksset->srcNianji($kaoshi);
         $list['subject'] = $ksset->srcSubject($kaoshi);
 
-       
+
         // 获取参与班级
         if(count($list['nianji'])>0)
         {
@@ -61,13 +61,13 @@ class Tongji extends BaseController
                     'ruxuenian'=>'',
                     'school'=>array(),
                     'banji'=>array(),
-                ],'POST');     
+                ],'POST');
 
         // 统计成绩
         $btj = new \app\chengji\model\TongjiBj;
 
         $data = $btj->tjBanjiCnt($src);
-       
+
         // 获取记录总数
         $cnt = count($data);
         // 截取当前页数据
@@ -85,34 +85,47 @@ class Tongji extends BaseController
     }
 
 
-    public function newJieguo()
+    public function newJieguo($kaoshi_id)
     {
-        // 获取成绩最后修改时间
-        $cj = new \app\chengji\model\Chengji;
-        $cj = $cj->order(['update_time'=>'desc'])->find();
-        $cj = $cj->getData('update_time');
+        // 获取考试信息
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $ksinfo = $ks->where('id',$kaoshi_id)
+            ->field('id,title')
+            ->find();
 
-        // 分别获取班级、年级、学校统计结果更新时间
-        $bj = new \app\chengji\model\TongjiBj;
-        $bj = $bj->order(['update_time'=>'desc'])->find();
-        $bj = $bj->getData('update_time');
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = '最新统计结果状态';
+        $list['kaoshi'] = $kaoshi_id;
+        $list['kaoshititle'] = $ksinfo->title;
+        $list['dataurl'] = '/chengji/tongji/jgdata';
 
-        $nj = new \app\chengji\model\TongjiNj;
-        $nj = $nj->order(['update_time'=>'desc'])->find();
-        $nj = $nj->getData('update_time');
 
-        $sch = new \app\chengji\model\TongjiSch;
-        $sch = $sch->order(['update_time'=>'desc'])->find();
-        $sch = $sch->getData('update_time');
+        // 模板赋值
+        $this->view->assign('list',$list);
 
-        if($cj>=$bj || $cj>=$nj || $cj>=$sch)
-        {
-            $data=['msg'=>'不是最新结果,重算一下！','val'=>0];
-        }else{
-            $data=['msg'=>'是最新结果，不用算啦~','val'=>1];
-        }
+        // 渲染模板
+        return $this->view->fetch();
+    }
 
-        return json($data);
+
+    public function ajaxNewJieguo()
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'kaoshi'=>'',
+            ],'POST');
+
+        // 实例化考号
+        $kh = new \app\kaoshi\model\Kaohao;
+        $lastcj = $kh->lastUpdateTime($src['kaoshi']);
+        $logLastTime = $lastcj->getData('update_time');
+
+        $log = new \app\kaoshi\model\TongjiLog;
+
+
+        halt($logLastTime);
+
 
     }
 

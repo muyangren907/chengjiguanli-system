@@ -26,7 +26,7 @@ class AuthGroupAccess extends Migrator
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change()
+    public function up()
     {
         // 定义数据表名称
         $table = $this->table('auth_group_access');

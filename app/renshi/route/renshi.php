@@ -10,16 +10,15 @@
 // +----------------------------------------------------------------------
 use think\facade\Route;
 
-
 // 学生管理
 Route::group('student', function () {
 	    Route::rule('','Student/index','get');						# 信息列表
 	    Route::rule('data','Student/ajaxdata','post');				# 获取数据
 	    Route::rule('create','Student/create','get');				# 添加信息
 	    Route::rule('save','Student/save','post');					# 保存信息
-	    Route::rule('read/<id>','Student/read','get');				# 读取信息
 	    Route::rule('edit/<id>','Student/edit','get');				# 修改信息
 	    Route::rule('update/<id>','Student/update','put');			# 更新信息
+        Route::rule('read/<id>','Student/read','get');              # 读取信息
 	    Route::rule('delete/<id>','Student/delete','delete');		# 删除信息
 	    Route::rule('status','Student/setStatus','post');		# 删除信息
 	    Route::rule('createall','Student/createAll','get');				# 批量导入
@@ -27,18 +26,27 @@ Route::group('student', function () {
 		Route::rule('deletes','Student/deletes','get');					# 批量保存
 		Route::rule('deleteall','Student/deleteXlsx','post');				# 批量保存
 		Route::rule('download','Student/download','get');				# 批量保存
-		Route::rule('chengji','Student/ajaxDatachengji','post');		# 获取学生成绩
 		Route::rule('srcstudent','Student/srcStudent','post');		# 获取学生成绩
 		Route::rule('redel/<id>','Student/reDel','delete');		# 恢复删除的学生
 	});
 
+
+// 学生成绩列表
+Route::group('studentcj', function () {
+        Route::rule('<id>','StudentChengji/index','get');              # 读取信息
+	    Route::rule('data','StudentChengji/ajaxData','post');       # 获取学生成绩列表
+        Route::rule('chengjitubiao','StudentChengji/ajaxOneStudentChengjiTuBiao','post');       # 获取学生成绩列表
+        Route::rule('chengjileida','StudentChengji/ajaxOneStudentChengjiLeiDa','post');       # 获取学生成绩列表
+	});
+
+
 // 学生管理
 Route::group('student', function () {
-	    Route::rule('bylist','Student/byList','get');						# 信息列表
-	    Route::rule('databy','Student/ajaxdataBy','post');				# 获取数据
-	    Route::rule('dellist','Student/delList','get');						# 信息列表
-	    Route::rule('datadel','Student/ajaxdataDel','post');				# 获取数据
-	});
+        Route::rule('bylist','Student/byList','get');                       # 信息列表
+        Route::rule('databy','Student/ajaxdataBy','post');              # 获取数据
+        Route::rule('dellist','Student/delList','get');                     # 信息列表
+        Route::rule('datadel','Student/ajaxdataDel','post');                # 获取数据
+    });
 
 
 // 教师管理

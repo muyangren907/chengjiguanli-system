@@ -12,7 +12,7 @@
 	</span>
 {/block}
 {block name="search"}
-	
+
 		<div class="layui-form-item">
           <label for="searchval" class="layui-form-label">
               关键字
@@ -26,7 +26,7 @@
 		    <label for="school" class="layui-form-label" style="height: 100%">学校</label>
 		    <div class="layui-input-block">
 		    	{volist name="list.set.school" id="vo"}
-		    		<input type="radio" name="school" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" 
+		    		<input type="radio" name="school" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary"
             {eq name="key" value="0"} checked=true {/eq} >
 		    	{/volist}
 		    </div>
@@ -37,7 +37,7 @@
 		    	{foreach $list.set.nianji as $key=>$vo}
             <input type="radio" name="ruxuenian" value="{$vo.nianji}" title="{$vo.nianjiname}" {eq name="key" value="0"} checked=true {/eq} >
 		    	{/foreach}
-          
+
 		    </div>
 		</div>
 		<div class="layui-form-item" style="margin-bottom: 0;">
@@ -75,6 +75,7 @@
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
   <a class="layui-btn-xs" lay-event="detail" title="录入信息"><i class="layui-icon layui-icon-search"></i></a>
+  <a class="layui-btn-xs" lay-event="chengji" title="成绩图表"><i class="layui-icon layui-icon-chart-screen"></i></a>
   <a class="layui-btn-xs" lay-event="del" title="删除考号"><i class="layui-icon">&#xe640;</i></a>
 </script>
 <!-- 表格操作 -->
@@ -149,6 +150,9 @@
       		case 'detail':// 查看
             cjgl.add(obj.data.student+' 成绩录入信息','/chengji/index/readcjadd/'+obj.data.id,'','',true);
             break;
+          case 'chengji':// 查看
+            cjgl.add(obj.data.student+' 成绩图表','/kaoshi/kaohao/read/'+obj.data.id,'','',true);
+            break;
       		case 'del':// 删除
 	      		cjgl.del(obj,"/kaoshi/kaohao/delete");
 	      		break;
@@ -162,7 +166,7 @@
       		,colname = obj.field
       		,rowdata = obj.data;
 
-      	// 修改服务器数据 
+      	// 修改服务器数据
         $.ajax({
           url:"/chengji/luru/update/"+rowdata.id,
           type:'PUT',
@@ -195,7 +199,7 @@
         // 获取参数
         var formval = form.val('search');
         cjgl.createCheckbox('banji',formval,'/kaoshi/index/cybanji','banji','banTitle');
-      } 
+      }
 
 
 

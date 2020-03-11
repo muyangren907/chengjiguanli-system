@@ -32,7 +32,6 @@ class Bjtongji extends BaseController
         $list['kaoshititle'] = $ksinfo->title;
         $list['dataurl'] = '/chengji/bjtj/data';
 
-
         // 模板赋值
         $this->view->assign('list',$list);
 
@@ -62,11 +61,11 @@ class Bjtongji extends BaseController
             $kh = new \app\kaoshi\model\Kaohao;
             $src['banji']= array_column($kh->cyBanji($src),'id');
         }
-        
+
         // 统计成绩
         $btj = new BTJ;
         $data = $btj->search($src);
-       
+
         // 获取记录总数
         $cnt = count($data);
         // 截取当前页数据
@@ -138,7 +137,7 @@ class Bjtongji extends BaseController
         $dataAll = $ntj->search($src);
         count($dataAll)>0 ? $data['all'] = $dataAll[0] : $data;
 
-       
+
         // 获取参考学科
         $ks = new \app\kaoshi\model\Kaoshi;
         $ksinfo = $ks->where('id',$src['kaoshi'])
@@ -292,13 +291,23 @@ class Bjtongji extends BaseController
         // 获取变量
         $kaoshi = input('post.kaoshi');
         // 判断考试状态
-        event('ksstatus',$kaoshi);        
+        event('ksjs',$kaoshi);
 
         // 统计成绩
         $btj = new BTJ;
         $data = $btj->tjBanji($kaoshi);
 
-        $data == true ? $data=['msg'=>'各班级成绩统计完成','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        if(true == $data)
+        {
+            $data = ['msg' => '各班级成绩统计完成', 'val' => 1];
+            $src = [
+                'kaoshi_id' => $kaoshi,
+                'category' => 'bjtj',
+            ];
+            event('tjlog', $src);
+        }else{
+            $data = ['msg' => '数据处理错误', 'val' => 0];
+        }
 
         return json($data);
     }
@@ -311,25 +320,32 @@ class Bjtongji extends BaseController
         // 获取变量
         $kaoshi = input('post.kaoshi');
         // 判断考试状态
-        event('ksstatus',$kaoshi);
+        event('ksjs',$kaoshi);
 
         // 统计成绩
         $btj = new BTJ;
         $data = $btj->bjOrder($kaoshi);
 
-        $data == true ? $data=['msg'=>'学生成绩在班级位置统计完成。','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        if(true == $data)
+        {
+            $data=['msg'=>'学生成绩在班级位置统计完成。','val'=>1];
+            $src = [
+                'kaoshi_id' => $kaoshi,
+                'category' => 'bjwz',
+            ];
+            event('tjlog', $src);
+        }else{
+            $data=['msg'=>'数据处理错误','val'=>0];
+        }
 
         return json($data);
     }
 
 
-
-
-
     // 统计平均分优秀率及格率
     public function myAvg($kaoshi)
     {
-        
+
         // 获取参数
         $src = $this->request
                 ->only([
@@ -386,5 +402,5 @@ class Bjtongji extends BaseController
         return json($data);
     }
 
-    
+
 }

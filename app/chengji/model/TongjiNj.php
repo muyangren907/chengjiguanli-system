@@ -10,10 +10,10 @@ use app\chengji\model\Tongji as TJ;
  */
 class TongjiNj extends Base
 {
-    /**  
+    /**
     * 统计各学校的指定个年级的成绩
     * 统计项目参考tongji方法
-    * @access public 
+    * @access public
     * @param number $kaoshi 考试id
     * @param number $ruxuenian 入学年
     * @return array 返回类型
@@ -108,14 +108,14 @@ class TongjiNj extends Base
 
 
 
-    
 
 
 
-    /**  
+
+    /**
     * 年级成绩统计结果查询
     * 从数据库中取出数据
-    * @access public 
+    * @access public
     * @param number $kaoshi 考试id
     * @param number $ruxuenian 入学年
     * @return array 返回类型
@@ -123,7 +123,7 @@ class TongjiNj extends Base
     public function search($srcfrom)
     {
 
-        // 初始化参数 
+        // 初始化参数
         $src = array(
             'kaoshi'=>'',
             'ruxuenian'=>array(),
@@ -212,7 +212,7 @@ class TongjiNj extends Base
                         'jige'=>$val->jige,
                     ];
                 }
-                
+
             }
         }
 
@@ -241,7 +241,7 @@ class TongjiNj extends Base
         foreach ($nianji as $njkey => $value) {
             // 获取参加考试班级
             $src['ruxuenian'] = $value['nianji'];
-            
+
             $school = $kh->cySchool($src);
             $subject = $ksset->srcSubject($kaoshi,'',$value['nianji']);
 
@@ -265,7 +265,7 @@ class TongjiNj extends Base
         }
 
         return true;
-    }   
+    }
 
 
     // 考试关联

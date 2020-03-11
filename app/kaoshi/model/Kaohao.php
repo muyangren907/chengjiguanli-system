@@ -7,14 +7,14 @@ use app\common\model\Base;
 
 class Kaohao extends Base
 {
-    /**  
-    * 根据班级ID和考试ID，以班级为单位分组，查询参加当前考试的学生信息 
-    * 
-    * @access public 
-    * @param mixed $kaoshi 当前考试ID 
-    * @param array $banji 学生所在班级 
+    /**
+    * 根据班级ID和考试ID，以班级为单位分组，查询参加当前考试的学生信息
+    *
+    * @access public
+    * @param mixed $kaoshi 当前考试ID
+    * @param array $banji 学生所在班级
     * @return array 返回类型
-    */  
+    */
     public function srcKaohaoBanji($kaoshi,$banji)
     {
         // 获取考试标签
@@ -54,9 +54,9 @@ class Kaohao extends Base
                 if($val->cjStudent == Null)
                 {
                     $stuinof = $stu::withTrashed()
-                            ->where('id',$val->student)
-                            ->field('id,xingming')
-                            ->find();
+                        ->where('id',$val->student)
+                        ->field('id,xingming')
+                        ->find();
                     $data[$key]->banjiKaohao[$key]->cjStudent = array('id'=>$stuinof->id,'xingming'=>$stuinof->xingming);
                 }
             }
@@ -65,20 +65,20 @@ class Kaohao extends Base
     }
 
 
-    /**  
+    /**
     * 整理出适合显示的学生成绩，
-    * 以考号为基础查询学生成绩信息并排序，计划在网页上显示成绩列表中使用 
+    * 以考号为基础查询学生成绩信息并排序，计划在网页上显示成绩列表中使用
     * 信息包括：学校、年级、班级、姓名、性别、各学科成绩、平均分、总分
-    * @access public 
-    * @param array $src 参数数组 
+    * @access public
+    * @param array $src 参数数组
     * @param number $src['kaoshi'] 考试ID
-    * @param array $src['banji'] 班级数组 
+    * @param array $src['banji'] 班级数组
     * @param number $src['searchval'] 关键字
     * @return array 返回类型
     */
     public function srcChengji($srcfrom)
     {
-        // 初始化参数 
+        // 初始化参数
         $src = array(
             'kaoshi'=>'0',
             'banji'=>array(),
@@ -88,7 +88,7 @@ class Kaohao extends Base
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
 
-        $khlist = self::search($src);  
+        $khlist = self::search($src);
 
         // 成绩整理
         if($khlist->isEmpty())
@@ -164,21 +164,21 @@ class Kaohao extends Base
 
 
 
-    /**  
+    /**
     * 按考号查询学生成绩，整理出学生每个学科成绩
-    * 计划在成绩排序中使用 
+    * 计划在成绩排序中使用
     * 信息包括：成绩id,排序，位置
-    * @access public 
-    * @param array $src 参数数组 
+    * @access public
+    * @param array $src 参数数组
     * @param number $src['kaoshi'] 考试ID
-    * @param array $src['banji'] 班级数组 
+    * @param array $src['banji'] 班级数组
     * @param number $src['searchval'] 关键字
     * @return array 返回类型
     */
 
     public function srcChengjiSubject($srcfrom)
     {
-        // 初始化参数 
+        // 初始化参数
         $src = array(
             'kaoshi'=>'0',
             'banji'=>array(),
@@ -188,7 +188,7 @@ class Kaohao extends Base
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
 
-        $khlist = self::search($src);  
+        $khlist = self::search($src);
 
 
         // 成绩整理
@@ -211,18 +211,18 @@ class Kaohao extends Base
 
 
 
-    /**  
+    /**
     * 列出成绩原始数据，其它数据模型中的方法以此方法为基础进行数据整理
-    * @access public 
-    * @param array $src 参数数组 
+    * @access public
+    * @param array $src 参数数组
     * @param number $src['kaoshi'] 考试ID
-    * @param array $src['banji'] 班级数组 
+    * @param array $src['banji'] 班级数组
     * @param number $src['searchval'] 关键字
     * @return array 返回成绩对象
     */
     public function search($srcfrom)
     {
-        // 初始化参数 
+        // 初始化参数
         $src = array(
             'kaoshi'=>'0',
             'banji'=>array(),
@@ -263,53 +263,132 @@ class Kaohao extends Base
     }
 
 
-
-
-
-
     // 获取单个学生考试成绩
     public function srcOneStudentChengji($srcfrom)
     {
-        // 初始化参数 
+        // 初始化参数
         $src = array(
-            'student'=>'',
-            'kaoshi'=>array(),
+            'student' => '',
+            'category' => '',
+            'xueqi' => '',
+            'kaoshi' => '',
         );
 
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
+
+        if(isset($srcfrom['bfdate']) && strlen($srcfrom['bfdate'])>0)
+        {
+            $src['bfdate'] = $srcfrom['bfdate'];
+        }else{
+            $src['bfdate'] = date("Y-m-d",strtotime("-1 year"));
+        }
+
+        if(isset($srcfrom['enddate']) && strlen($srcfrom['enddate'])>0)
+        {
+            $src['enddate'] = $srcfrom['enddate'];
+        }else{
+            $src['enddate'] = date("Y-m-d",strtotime("+1 day"));
+        }
+
+        $src['category'] = strToarray($src['category']);
+        $src['xueqi'] = strToarray($src['xueqi']);
         $src['kaoshi'] = strToarray($src['kaoshi']);
 
+
         $stuCj = $this->where('student',$src['student'])
-                ->when(count($src['kaoshi'])>0,function($query)use($src){
-                    $query->where('kaoshi_id','in',$src['kaoshi'])
+            ->when(count($src['category'])>0, function($query) use($src){
+                $query->where('kaoshi','in',function($q) use($src){
+                    $q->name('kaoshi')
+                    ->where('category','in',$src['category'])
+                    ->field('id');
+                });
+            })
+            ->when(count($src['xueqi'])>0, function($query) use($src){
+                $query->where('kaoshi','in',function($q) use($src){
+                    $q->name('kaoshi')
+                        ->where('xueqi','in',function($w) use($src){
+                            $w->name('xueqi')
+                                ->where('category','in',$src['xueqi'])
+                                ->field('id');
+                        })
                         ->field('id');
-                })
-                 ->with([
-                    'ksChengji'=>function($query){
-                        $query->field('id,kaohao_id,subject_id,defen,bweizhi,xweizhi,qweizhi');
-                    }
-                    ,'cjSchool'=>function($query){
-                        $query->field('id,jiancheng');
-                    }
-                    ,'cjKaoshi'=>function($query){
-                        $query->field('id,title,zuzhi,xueqi,category,bfdate,enddate')
-                            ->with([
-                                'ksCategory'=>function($q){
-                                    $q->field('id,title');
-                                }
-                                ,'ksZuzhi'=>function($q)
-                                {
-                                    $q->field('id,title,jiancheng');
-                                }
-                            ]);
-                    }
-                ])
-                ->field('id,kaoshi,student,ruxuenian,nianji,banji,paixu')
-                ->append(['banjiTitle'])
-                ->select();
+                });
+            })
+            ->when(count($src['kaoshi'])>0, function($query) use($src){
+                $query->where('kaoshi', 'in', $src['kaoshi']);
+            })
+            ->where('kaoshi','in',function($query) use($src){
+                $query->name('kaoshi')
+                    ->whereTime('bfdate|enddate','between',[ $src['bfdate'],$src['enddate'] ])
+                    ->field('id');
+            })
+            ->with([
+                'ksChengji'=>function($query){
+                    $query->field('id,kaohao_id,subject_id,defen,defenlv,bweizhi,xweizhi,qweizhi');
+                }
+                ,'cjSchool'=>function($query){
+                    $query->field('id,jiancheng');
+                }
+                ,'cjKaoshi'=>function($query){
+                    $query->field('id,title,zuzhi,xueqi,category,bfdate,enddate')
+                        ->with([
+                            'ksCategory'=>function($q){
+                                $q->field('id,title');
+                            }
+                            ,'ksZuzhi'=>function($q)
+                            {
+                                $q->field('id,title,jiancheng');
+                            }
+                    ]);
+                }
+            ])
+            ->field('id,kaoshi,student,ruxuenian,nianji,banji,paixu')
+            ->append(['banjiTitle'])
+            ->select();
 
         return $stuCj;
+    }
+
+
+    // 根据考号查询成绩
+    public function khSrcChengji($id)
+    {
+        $stuCj = self::where('id',$id)
+            ->with([
+                'ksChengji'=>function($query){
+                    $query
+                        ->with([
+                            'subjectName'=>function($q){
+                                $q->field('id,title');
+                            }
+                        ])
+                        ->field('id,kaohao_id,subject_id,defen,defenlv,bweizhi,xweizhi,qweizhi');
+                }
+            ])
+            ->field('id,kaoshi,student,ruxuenian,nianji,banji,paixu')
+            ->append(['banjiTitle'])
+            ->find();
+
+        return $stuCj;
+    }
+
+
+
+    // 获取考试成绩最后更新时间
+    public function lastUpdateTime($kaoshi_id)
+    {
+        // 获取考号
+        $kaohaoids = self::where('kaoshi', $kaoshi_id)
+            ->cache(true)
+            ->column('id');
+
+        $cj = new \app\chengji\model\Chengji;
+        $lastcj = $cj->where('kaohao_id', 'in', $kaohaoids)
+                    ->order(['update_time' => 'desc'])
+                    ->find();
+
+        return $lastcj;
     }
 
 
@@ -317,7 +396,7 @@ class Kaohao extends Base
 
 
 
-      
+
 
     // 满分
     public function banjiKaohao()
@@ -362,18 +441,18 @@ class Kaohao extends Base
         return $this->hasMany('\app\chengji\model\Chengji','kaohao_id','id');
     }
 
-    
 
-    /**  
+
+    /**
     * 获取参加考试的学校
-    * @access public 
+    * @access public
     * @param number $kaoshi 考试id
     * @param number $ruxuenian 入学年
     * @return array 返回类型
     */
     public function cySchool($srcfrom)
     {
-        // 初始化参数 
+        // 初始化参数
         $src = array(
             'kaoshi'=>'',
             'ruxuenian'=>'',
@@ -414,17 +493,17 @@ class Kaohao extends Base
     }
 
 
-    /**  
+    /**
     * 获取参加考试的班级
-    * @access public 
+    * @access public
     * @param number $kaoshi 考试id
     * @param number $ruxuenian 入学年
     * @return array 返回班级数据模型
     */
     public function cyBanji($srcfrom)
     {
-        
-        // 初始化参数 
+
+        // 初始化参数
         $src = array(
             'kaoshi'=>'',
             'ruxuenian'=>array(),
@@ -462,7 +541,7 @@ class Kaohao extends Base
                     }
                 ])
                 // ->cache(true)
-                ->field('banji 
+                ->field('banji
                     ,any_value(id) as id
                     ,any_value(nianji) as nianji
                     ,any_value(paixu) as paixu
@@ -493,9 +572,9 @@ class Kaohao extends Base
     }
 
 
-    /**  
+    /**
     * 获取参加考试的班级全名
-    * @access public 
+    * @access public
     * @param number $kaoshi 考试id
     * @param number $ruxuenian 入学年
     * @return array 返回类型
@@ -508,9 +587,9 @@ class Kaohao extends Base
         return $title;
     }
 
-    /**  
+    /**
     * 获取参加考试的班级全名
-    * @access public 
+    * @access public
     * @param number $kaoshi 考试id
     * @param number $ruxuenian 入学年
     * @return array 返回类型
@@ -525,7 +604,7 @@ class Kaohao extends Base
     // 转置成绩数组
     private function zzcj($array = array())
     {
-        
+
         $arr = array();
         foreach ($array as $key => $value) {
             $arr[$value['subject_id']] = $value['defen'];

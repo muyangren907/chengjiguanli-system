@@ -49,7 +49,7 @@ class Category extends Seeder
                 ['id'=>1011010,'title'=>'地方/校本课程','pid'=>110,'paixu'=>11,'isupdate'=>0],
                 ['id'=>1011011,'title'=>'幼儿园全科','pid'=>110,'paixu'=>12,'isupdate'=>0],
                 ['id'=>1011012,'title'=>'其它','pid'=>110,'paixu'=>13,'isupdate'=>0],
-                
+
                 //  文件
                 ['id'=>1011101,'title'=>'教师名单','pid'=>111,'paixu'=>1,'isupdate'=>0],
                 ['id'=>1011102,'title'=>'学生名单','pid'=>111,'paixu'=>2,'isupdate'=>0],
@@ -66,7 +66,7 @@ class Category extends Seeder
                 ['title'=>'教育行政部门','pid'=>101,'paixu'=>8,'isupdate'=>0],
                 ['title'=>'其他教育机构','pid'=>101,'paixu'=>9,'isupdate'=>0],
                 // 单位级别
-                ['title'=>'班级','pid'=>102,'paixu'=>1,'isupdate'=>0],
+                ['title'=>'班级','pid'=>102,'paixu'=>1,'status'=>0,'isupdate'=>0],
                 ['title'=>'教研组','pid'=>102,'paixu'=>2,'isupdate'=>0],
                 ['title'=>'校级','pid'=>102,'paixu'=>3,'isupdate'=>0],
                 ['title'=>'区级','pid'=>102,'paixu'=>4,'isupdate'=>0],
@@ -148,7 +148,7 @@ class Category extends Seeder
                 ['title'=>'A.基础研究','pid'=>117,'paixu'=>1,'isupdate'=>0],
                 ['title'=>'B.应用研究','pid'=>117,'paixu'=>2,'isupdate'=>0],
                 ['title'=>'C.综合研究','pid'=>117,'paixu'=>3,'isupdate'=>0],
-               
+
         ];
         // 保存数据
         $this->table('category')->insert($rows)->save();

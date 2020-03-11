@@ -5,7 +5,7 @@
           <div class="layui-form-item">
             <label for="zuzhi" class="layui-form-label"><span class="x-red">*</span>组织单位</label>
             <div class="layui-input-block">
-              {php} $schoollist = schlist('校级','区级',['小学','初中','中小学','其他学段']);{/php}
+              {php} $schoollist = schlist('校级','区级',['小学','初中','中小学']);{/php}
               <select name="zuzhi" lay-verify="required">
                 <option value=""></option>
                 {volist name="schoollist" id="vo"}
@@ -33,7 +33,7 @@
           <div class="layui-form-item">
             <label for="xueqi" class="layui-form-label"><span class="x-red">*</span>学期</label>
             <div class="layui-input-block">
-              {php} 
+              {php}
                 $xueqi = new \app\teach\model\Xueqi;
                 $xueqilist = $xueqi
                       ->limit(6)
@@ -106,8 +106,8 @@
       elem: '#bfdate'
       ,type: 'datetime'
       ,trigger: 'click' //采用click弹出
-      ,min: 0 //今天
-      ,max: 30 //30天后
+      // ,min: 0 //今天
+      // ,max: 30 //30天后
       ,format: 'yyyy-M-d' //可任意组合
     });
     //结束时间
@@ -115,8 +115,8 @@
       elem: '#enddate'
       ,type: 'datetime'
       ,trigger: 'click' //采用click弹出
-      ,min: 0 //今天
-      ,max: 30 //30天后
+      // ,min: 0 //今天
+      // ,max: 30 //30天后
       ,format: 'yyyy-M-d' //可任意组合
     });
   });

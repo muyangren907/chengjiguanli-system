@@ -26,7 +26,7 @@ class Member extends Migrator
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change()
+    public function up()
     {
         // 定义数据表名称
         $table = $this->table('admin');
@@ -37,7 +37,7 @@ class Member extends Migrator
             ->addColumn('sex','boolean',['limit'=>1,'default'=>'2','null'=>false,'default'=>2,'comment'=>'0=女，1=男，2=未知'])
             ->addColumn('shengri','integer',['limit'=>11,'null'=>true,'comment'=>'出生日期'])
             ->addColumn('username','string',['limit'=>20,'null'=>false,'default'=>'a','comment'=>'用户帐号'])
-            ->addColumn('password','string',['limit'=>37,'null'=>false,'default'=>'$apr1$RSUodBwI$zOhVq9RQWfQDOW2sbeCDS1','comment'=>'登录密码'])
+            ->addColumn('password','string',['limit'=>137,'null'=>false,'default'=>'$apr1$RSUodBwI$zOhVq9RQWfQDOW2sbeCDS1','comment'=>'登录密码'])
             ->addColumn('teacher_id','string',['limit'=>11,'null'=>true,'comment'=>'教师编号'])
             ->addColumn('school','integer',['limit'=>11,'null'=>false,'default'=>0,'comment'=>'所在单位'])
             ->addColumn('phone','string',['limit'=>11,'null'=>true,'comment'=>'联系方式'])

@@ -16,14 +16,14 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 // 引用二维码生成类
 use \Endroid\QrCode\QrCode;
 
-// 调用验证类 
+// 调用验证类
 use think\Validate;
 
 
 class Kaohao extends BaseController
 {
     // 生成考号
-    public function create($kaoshi)
+    public function createAll($kaoshi)
     {
 
         // 获取参考年级
@@ -36,7 +36,7 @@ class Kaohao extends BaseController
             'webtitle'=>'生成考号',
             'butname'=>'生成',
             'formpost'=>'POST',
-            'url'=>'/kaoshi/kaohao/save',
+            'url'=>'/kaoshi/kaohao/saveall',
             'kaoshi'=>$kaoshi
         );
 
@@ -49,7 +49,7 @@ class Kaohao extends BaseController
     }
 
     // 保存考号
-    public function save()
+    public function saveAll()
     {
 
         // 实例化验证模型
@@ -57,7 +57,7 @@ class Kaohao extends BaseController
 
         // 获取表单数据
         $list = request()->only(['school','kaoshi','banjiids'],'post');
-        event('ksstatus',$list['kaoshi']);
+        event('kslu',$list['kaoshi']);
 
         // 验证表单数据
         $result = $validate->check($list);
@@ -82,7 +82,7 @@ class Kaohao extends BaseController
                             }
                         ])
                         ->select();
-        
+
         // 获取参加考试年级数组
         $bfdate = KS::where('id',$list['kaoshi'])->value('bfdate');
         $njlist = nianjiList($bfdate);
@@ -122,7 +122,7 @@ class Kaohao extends BaseController
         $data = $kh
             ->allowField(['id','kaoshi','student','school','ruxuenian','nianji','banji','paixu','create_time','update_time'])
             ->saveAll($kaohao);
-        
+
 
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'生成成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -134,9 +134,9 @@ class Kaohao extends BaseController
 
 
     // 添加单条考号
-    public function addOne($kaoshi)
+    public function create($kaoshi)
     {
-        
+
         // 获取参考年级、学科
         $ksset = new ksset;
         $list['data']['nianji'] = $ksset->srcNianji($kaoshi);
@@ -169,14 +169,14 @@ class Kaohao extends BaseController
 
 
     // 保存单条考号
-    public function saveOne()
+    public function save()
     {
         // 获取表单数据
         $list = request()->only(['kaoshi','banji','student'],'post');
         $list['student'] = explode(' ', $list['student']);
         $list['student'] = $list['student'][1];
 
-        event('ksstatus',$list['kaoshi']);
+        event('kslu', $list['kaoshi']);
 
         // 查询考号是否存在
         $ks = KH::withTrashed()
@@ -187,7 +187,7 @@ class Kaohao extends BaseController
         // 如果存在成绩则更新，不存在则添加
         if($ks)
         {
-            // 判断记录是否被删除 
+            // 判断记录是否被删除
             if($ks->delete_time > 0)
             {
                 $ks->restore();
@@ -209,18 +209,42 @@ class Kaohao extends BaseController
             $data = KH::create($list);
         }
 
-
-
-
-
-        
-
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'生成成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);
     }
+
+
+
+    // 学生信息
+    public function read($id)
+    {
+
+        $list['webtitle'] ='成绩';
+        $list['dataurl'] = '/renshi/studentcj/chengjilist';
+        $list['id'] = $id;
+
+        $stucj = new KH;
+        $defen = $stucj->khSrcChengji($id);
+
+        $color = ['layui-bg-red','layui-bg-orange','layui-bg-green','layui-bg-cyan','layui-bg-blue','layui-bg-black'];
+
+        foreach ($defen->ksChengji as $key => $value) {
+            $list['cj'][$value->subject_id]['defen'] = $value->defen * 1;
+            $list['cj'][$value->subject_id]['defenlv'] = $value->defenlv * 1;
+            $list['cj'][$value->subject_id]['title'] = $value->subjectName->title;
+            $list['cj'][$value->subject_id]['color'] = $color[$key % 5];
+        }
+
+        // // 模板赋值
+        $this->view->assign('list',$list);
+        // 渲染模板
+        return $this->view->fetch();
+    }
+
+
 
 
     /**
@@ -256,7 +280,7 @@ class Kaohao extends BaseController
 
         // Word处理
         // 实例化类
-        $phpWord = new \PhpOffice\PhpWord\PhpWord(); 
+        $phpWord = new \PhpOffice\PhpWord\PhpWord();
 
 
         // 设置页面格式
@@ -286,7 +310,7 @@ class Kaohao extends BaseController
                 'bold' => true,
             ]
         );
-        
+
 
         // 循环写出信息
         foreach ($chengjiinfo as $key => $value) {
@@ -295,10 +319,10 @@ class Kaohao extends BaseController
                 $table = $section->addTable($key);
                 $table->addRow(1500);
 
-                
+
                 $img = $this->create_qrcode($value['id'].','.$xkkey);
                 $table->addCell(850)->addImage($img,$imageStyle);
-                
+
 
                 // $table->addCell(700)->addImage('aaaa.jpg',$imageStyle);
                 $info = $table->addCell(650);
@@ -361,7 +385,7 @@ class Kaohao extends BaseController
 
         // 获取表单数据
         $list = request()->only(['banjiids'=>array(),'kaoshi','subject'=>array()],'post');
-        event('ksstatus',$list['kaoshi']);
+        event('kslu', $list['kaoshi']);
         $kaoshi = $list['kaoshi'];
         $banji = $list['banjiids'];
         $subject = $list['subject'];
@@ -377,7 +401,7 @@ class Kaohao extends BaseController
         if(!$result){
             $this->error($msg);
         }
-        
+
 
         $ks = new KS();
         $kslist = $ks::where('id',$kaoshi)
@@ -417,7 +441,7 @@ class Kaohao extends BaseController
 
 
         // 实例化系统设置类
-        $md5 = new \app\system\controller\Encrypt; 
+        $md5 = new \app\system\controller\Encrypt;
 
 
         // 循环写出信息
@@ -459,7 +483,7 @@ class Kaohao extends BaseController
         $writer->save('php://output');
         ob_flush();
         flush();
-        
+
     }
 
 
@@ -468,7 +492,7 @@ class Kaohao extends BaseController
     // 下载考试成绩采集表
     public function caiji($kaoshi)
     {
-        
+
         // 获取参考年级、学科
         $ksset = new ksset;
         $list['data']['nianji'] = $ksset->srcNianji($kaoshi);
@@ -495,13 +519,13 @@ class Kaohao extends BaseController
         // 渲染
         return $this->view->fetch('biaoqian');
     }
-    
 
 
- 
 
 
-    // 获取参考名单 
+
+
+    // 获取参考名单
     public function dwcaiji()
     {
         // 实例化验证模型
@@ -509,7 +533,8 @@ class Kaohao extends BaseController
 
         // 获取表单数据
         $list = request()->only(['banjiids'=>array(),'ruxuenian','kaoshi','subject'=>array()],'post');
-        event('ksstatus',$list['kaoshi']);
+        event('kslu',$list['kaoshi']);
+
 
         $kaoshi = $list['kaoshi'];
         $banji = $list['banjiids'];
@@ -524,7 +549,7 @@ class Kaohao extends BaseController
         if(!$result){
             $this->error($msg);
         }
-        
+
         $ks = new KS();
         $kslist = $ks::where('id',$kaoshi)
                     ->field('id,title')
@@ -647,8 +672,8 @@ class Kaohao extends BaseController
 
         // 判断考试结束时间是否已过
         $ksid = KH::where('id',$id[0])->value('kaoshi');
-        event('ksstatus',$ksid);
-        
+        event('kslu',$ksid);
+
 
         $data = KH::destroy($id);
         // 根据更新结果设置返回提示信息
@@ -657,5 +682,5 @@ class Kaohao extends BaseController
         return json($data);
     }
 
-    
+
 }

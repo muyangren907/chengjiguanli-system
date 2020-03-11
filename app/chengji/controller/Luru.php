@@ -16,10 +16,12 @@ class Luru extends BaseController
     // 成绩列表
     public function index()
     {
-        
+
         // 设置要给模板赋值的信息
         $list['webtitle'] = '已录列表';
         $list['dataurl'] = 'luru/data';
+        $list['status'] = '/chengji/index/status';
+
 
         // 获取学科列表
         $sbj = new \app\teach\model\Subject;
@@ -64,7 +66,7 @@ class Luru extends BaseController
         $limit_start = $src['page'] * $src['limit'] - $src['limit'];
         $limit_length = $src['limit'];
         $data = array_slice($data,$limit_start,$limit_length);
-       
+
         // 重组返回内容
         $data = [
             'code'=> 0 , // ajax请求次数，作为标识符
@@ -98,15 +100,15 @@ class Luru extends BaseController
 
     // 保存使用二维码录入的成绩
     public function malusave()
-    {   
+    {
         // 获取表单数据
         $list = $this->request->only(['kaohao_id','subject_id','nianji','defen'],'post');
-        
+
 
         $kaoshiid = Kaohao::where('id',$list['kaohao_id'])->value('kaoshi');
         // 判断考试状态
-        event('ksstatus',$kaoshiid);  
-        
+        event('kslu',$kaoshiid);
+
         // // 根据考号获取学生年在年级及考试ID
         // 获取本学科满分
         $ksset = new \app\kaoshi\model\KaoshiSet;
@@ -136,7 +138,7 @@ class Luru extends BaseController
         // 如果存在成绩则更新，不存在则添加
         if($cjone)
         {
-            // 判断记录是否被删除 
+            // 判断记录是否被删除
             if($cjone->delete_time > 0)
             {
                 $cjone->restore();
@@ -180,11 +182,10 @@ class Luru extends BaseController
             ,'post');
         $list['kaohao_id'] = $id;
 
-
         // 判断考试结束时间是否已过
         $kaoshiid = Kaohao::where('id',$list['kaohao_id'])->value('kaoshi');
         // 判断考试状态
-        event('ksstatus',$kaoshiid);
+        event('kslu',$kaoshiid);
 
         // 获取学科id
         $subject = new \app\teach\model\Subject;
@@ -212,17 +213,17 @@ class Luru extends BaseController
 
 
 
-        // 更新成绩 
+        // 更新成绩
         $cjone = Chengji::withTrashed()
                     ->where('kaohao_id',$list['kaohao_id'])
                     ->where('subject_id',$subject_id)
                     ->find();
-        
+
 
         // 如果存在成绩则更新，不存在则添加
         if($cjone)
         {
-            // 判断记录是否被删除 
+            // 判断记录是否被删除
             if($cjone->delete_time > 1)
             {
                 $cjone->restore();
@@ -257,14 +258,14 @@ class Luru extends BaseController
     }
 
 
-    
+
     // 根据考号获取学生信息
     public function read()
     {
         // 获取表单数据
         $val = input('post.val');
         // 实例化系统设置类
-        $md5 = new \app\system\controller\Encrypt; 
+        $md5 = new \app\system\controller\Encrypt;
 
         $val = $md5->decrypt($val,'dlbz');
         $list = explode('|',$val);
@@ -316,7 +317,7 @@ class Luru extends BaseController
         // 获取参考年级
         $list['data'] = $ks::order(['id'=>'desc'])
                 ->field('id,title')
-                ->where('enddate','>=',time())
+                ->where('luru',1)
                 ->select()
                 ->toArray();
 
@@ -335,9 +336,9 @@ class Luru extends BaseController
         return $this->view->fetch();
     }
 
-    
 
-    // 保存表格批量上传的成绩 
+
+    // 保存表格批量上传的成绩
     public function saveAll()
     {
         // set_time_limit(0);
@@ -359,7 +360,7 @@ class Luru extends BaseController
             return json($data);
         }
         // 判断考试状态
-        event('ksstatus',$kaoshiid);
+        event('kslu',$kaoshiid);
 
         // 删除空单元格得到学科列名数组
         array_splice($cjinfo[1],0,4);
@@ -431,7 +432,8 @@ class Luru extends BaseController
                         'kaohao_id'=>$val[1],
                         'subject_id'=>$value['id'],
                         'user_id'=>$user_id,
-                        'defen'=>$defen/$manfen*100,
+                        'defen'=>$defen,
+                        'defenlv'=>$defen/$manfen*100,
                     ];
                     Chengji::create($data);
                 }
@@ -467,10 +469,10 @@ class Luru extends BaseController
 
 
 
-    
 
 
 
 
-    
+
+
 }

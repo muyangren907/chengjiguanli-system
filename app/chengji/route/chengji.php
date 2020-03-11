@@ -24,6 +24,7 @@ Route::group('index', function () {
 		Route::rule('dwxlsx','Index/dwchengjixlsx','post');				# 成绩删除
 		Route::rule('dwchengjitiao/<kaoshi>','Index/dwChengjitiao','get');				# 成绩删除
 		Route::rule('dwcjtiaoxlsx','Index/dwchengjitiaoxlsx','post');				# 成绩删除
+        Route::rule('status','Index/setStatus','post');     # 删除信息
 	});
 
 
@@ -31,7 +32,6 @@ Route::group('index', function () {
 Route::group('tongji', function () {
 		Route::rule('yilucnt/<kaoshi>','Tongji/yiluCnt');			# 更新信息
 		Route::rule('data','Tongji/ajaxData','post');			# 扫码界面
-		Route::rule('newjieguo','Tongji/newJieguo','post');
 	});
 
 

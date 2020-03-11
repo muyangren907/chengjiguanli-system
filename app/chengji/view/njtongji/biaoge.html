@@ -17,7 +17,7 @@
 	    <label for="nianji" class="layui-form-label" style="height: 100%">年级 </label>
 	    <div class="layui-input-block" pane>
 			{foreach $list.nianji as $key=>$vo}
-	            <input type="radio" name="ruxuenian" value="{$vo.nianji}" title="{$vo.nianjiname}" 
+	            <input type="radio" name="ruxuenian" value="{$vo.nianji}" title="{$vo.nianjiname}"
 	            {eq name="$key" value="0"} checked {/eq} >
 			{/foreach}
 	    </div>
@@ -40,9 +40,9 @@
 	<!-- 表格上面按钮模板 -->
 <script type="text/html" id="toolbarDemo">
 	<div class="layui-btn-container">
-		<button class="layui-btn layui-btn-danger" lay-event="dels">
+<!-- 		<button class="layui-btn layui-btn-danger" lay-event="dels">
 			<i class="iconfont">&#xe69d;</i> 批量删除
-		</button>
+		</button> -->
 		<button class="layui-btn" lay-event="download">
 	      <i class="layui-icon layui-icon-download-circle"></i> 下载
 	    </button>
@@ -87,7 +87,7 @@
     				return str;
 				}
 	    	};
-	    	
+
 	    	options.cols[1].push(colinfo);
 		});
 	});
@@ -101,7 +101,7 @@
 				}});
 
 
-	
+
 	// 设置查询条件
 	options.where = {
 		kaoshi:"{$list.kaoshi}"
@@ -162,7 +162,7 @@
 
     // 条形统计图--平均分
     function getAvg(){
-    	
+
   		var id = 'myAvg';
   		var url = '/chengji/njtj/myavg';
   		var val = form.val('search');
@@ -173,7 +173,7 @@
 
     // 条形统计图--及格率
     function getJige(){
-    	
+
   		var id = 'myJige';
   		var url = '/chengji/njtj/myavg';
   		var val = form.val('search');
@@ -184,7 +184,7 @@
 
     // 条形统计图--优秀率
     function getYouxiu(){
-    	
+
   		var id = 'myYouxiu';
   		var url = '/chengji/njtj/myavg';
   		var val = form.val('search');
@@ -195,7 +195,7 @@
 
     // 条形统计图--标准差
     function getBiaozhucha(){
-    	
+
   		var id = 'myBiaozhunca';
   		var url = '/chengji/njtj/myavg';
   		var val = form.val('search');
@@ -216,10 +216,10 @@
 
 });
 
-  /**  
-    * 异步获取图表中的数据 
-    * 
-    * @access public 
+  /**
+    * 异步获取图表中的数据
+    *
+    * @access public
     * @param id 要添加数据的div
     * @param url 异步地址
     * @param val 异步时携带的参数
@@ -297,10 +297,10 @@
 
 
 
-  	/**  
-    * 异步获取箱线图表中的数据 
-    * 
-    * @access public 
+  	/**
+    * 异步获取箱线图表中的数据
+    *
+    * @access public
     * @param id 要添加数据的div
     * @param url 异步地址
     * @param val 异步时携带的参数
@@ -333,7 +333,7 @@
 			    },
 			    legend: {
 			        top: '10%',
-			        // data: 
+			        // data:
 			    },
 			    tooltip: {
 			        trigger: 'item',

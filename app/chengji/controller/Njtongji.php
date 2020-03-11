@@ -61,7 +61,7 @@ class Njtongji extends BaseController
         $schtj = new \app\chengji\model\TongjiSch;
         $dataAll = $schtj->search($src);
         count($dataAll)>0 ? $data[] = $dataAll['all'] : $data;
-        
+
         // 获取记录数
         $cnt = count($data);
         // 截取当前页数据
@@ -126,14 +126,14 @@ class Njtongji extends BaseController
         $dataAll = $schtj->search($src);
         count($dataAll)>0 ? $data['all'] = $dataAll['all'] : $data;
 
-       
+
         // 获取参考学科
         $ks = new \app\kaoshi\model\Kaoshi;
         $ksinfo = $ks->where('id',$src['kaoshi'])
                     ->field('id,title,bfdate')
                     ->find();
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $xk = $ksset->srcSubject($src['kaoshi'],'',$src['ruxuenian']); 
+        $xk = $ksset->srcSubject($src['kaoshi'],'',$src['ruxuenian']);
 
         // 获取考试年级名称
         $njlist = nianjiList($ksinfo->getData('bfdate'));
@@ -263,14 +263,24 @@ class Njtongji extends BaseController
     public function tongji()
     {
         // 获取变量
-        $kaoshi = input('post.kaoshi');         
+        $kaoshi = input('post.kaoshi');
         // 判断考试状态
-        event('ksstatus',$kaoshi);  
+        event('ksjs',$kaoshi);
         // 统计成绩
         $ntj = new NTJ;
         $data = $ntj->tjNianji($kaoshi);
 
-        $data == true ? $data=['msg'=>'各学校年级统计完成','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        if(true == $data)
+        {
+            $data=['msg'=>'各学校年级成绩统计完成','val'=>1];
+            $src = [
+                'kaoshi_id' => $kaoshi,
+                'category' => 'njtj',
+            ];
+            event('tjlog', $src);
+        }else{
+            $data=['msg'=>'数据处理错误','val'=>0];
+        }
 
         return json($data);
     }
@@ -282,13 +292,23 @@ class Njtongji extends BaseController
         // 获取变量
         $kaoshi = input('post.kaoshi');
         // 判断考试状态
-        event('ksstatus',$kaoshi);
+        event('ksjs',$kaoshi);
 
         // 统计成绩
         $ntj = new NTJ;
         $data = $ntj->njOrder($kaoshi);
 
-        $data == true ? $data=['msg'=>'学生成绩在班级位置统计完成。','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        if(true == $data)
+        {
+            $data=['msg'=>'学生成绩在学校年级位置统计完成。','val'=>1];
+            $src = [
+                'kaoshi_id' => $kaoshi,
+                'category' => 'njwz',
+            ];
+            event('tjlog', $src);
+        }else{
+            $data=['msg'=>'数据处理错误','val'=>0];
+        }
 
         return json($data);
     }
@@ -297,7 +317,7 @@ class Njtongji extends BaseController
     // 统计平均分优秀率及格率
     public function myAvg($kaoshi)
     {
-        
+
         // 获取参数
         $src = $this->request
                 ->only([
@@ -339,6 +359,6 @@ class Njtongji extends BaseController
         return json($data);
     }
 
-    
+
 
 }

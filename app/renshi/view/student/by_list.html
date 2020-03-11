@@ -45,6 +45,7 @@
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
 	<a class="layui-btn-xs" lay-event="detail" title="查看"><i class="layui-icon layui-icon-search"></i></a>
+  <a class="layui-btn-xs" lay-event="chengji" title="成绩"><i class="layui-icon layui-icon-chart-screen"></i></a>
 </script>
 <!-- 表格操作 -->
 <script>
@@ -98,9 +99,12 @@
         var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
-          	case 'detail':// 查看
+          case 'detail':// 查看
 	          cjgl.add(obj.data.xingming+'信息','/renshi/student/read/'+obj.data.id,'','',true);
 	          break;
+          case 'chengji':// 查看
+            cjgl.add(obj.data.xingming+'成绩','/renshi/studentcj/'+obj.data.id,'','',true);
+            break;
         };
       });
     });

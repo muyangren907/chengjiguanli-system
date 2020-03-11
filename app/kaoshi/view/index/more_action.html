@@ -34,13 +34,13 @@
       <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
         <i class="iconfont" style="line-height:30px">&#xe6aa;</i></a>
     </div>
-	{php}$kaoshiid =$list['kaoshiid']; {/php} 
+	{php}$kaoshiid =$list['kaoshiid']; {/php}
 	<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
 	  <ul class="layui-tab-title">
-	    <li class="layui-this">1、前期操作</li>
-	    <li>2、表格录入</li>
-      <li>3、成绩统计</li>
-      <li>4、统计结果</li>
+	    <li class="layui-this">一、前期操作</li>
+	    <li>二、表格录入</li>
+      <li>三、成绩统计</li>
+      <li>四、统计结果</li>
 	  </ul>
 	  <div class="layui-tab-content" style="height: 100px;">
 	    <div class="layui-tab-item layui-show">
@@ -55,7 +55,7 @@
               </div>
             </a>
             <a href="javascript:void(0);"
-            onclick="addlayer('生成考号','/kaoshi/kaohao/create/{$kaoshiid}','800','400')" class="x-admin-backlog-body">
+            onclick="addlayer('生成考号','/kaoshi/kaohao/createall/{$kaoshiid}','800','400')" class="x-admin-backlog-body">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
                 <i class="layui-icon layui-icon-note" style="font-size: 100px;"></i>
                 <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">生成考号</div>
@@ -94,24 +94,9 @@
         <!-- 内容开始 -->
         <div class="layui-row" style="margin-top:30px">
           <div class="layui-container">
-            <a href="javascript:void(0);" onclick="tjbanji('\\chengji\\bjtj\\tongji')" class="x-admin-backlog-body">
-              <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
-                <i class="layui-icon layui-icon-water" style="font-size: 100px;"></i>
-                <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">统计班级成绩</div>
-              </div>
-            </a>
-            <a href="javascript:void(0);" onclick="tjbanji('\\chengji\\njtj\\tongji')" class="x-admin-backlog-body">
-              <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
-                <i class="layui-icon layui-icon-fire" style="font-size: 100px;"></i>
-                <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">统计各学校各年级成绩</div>
-              </div>
-            </a>
-            <a href="javascript:void(0);" onclick="tjbanji('\\chengji\\schtj\\tongji')" class="x-admin-backlog-body">
-              <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
-                <i class="layui-icon layui-icon-website" style="font-size: 100px;"></i>
-                <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">统计各年级成绩</div>
-              </div>
-            </a>
+            <fieldset class="layui-elem-field layui-field-title layui-col-xs12 layui-col-sm12 layui-col-md12">
+              <legend>1、排序统计</legend>
+            </fieldset>
             <a href="javascript:void(0);" onclick="tjbanji('\\chengji\\bjtj\\bjorder')" class="x-admin-backlog-body">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
                 <i class="layui-icon layui-icon-templeate-1" style="font-size: 100px;"></i>
@@ -130,6 +115,27 @@
                 <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">统计学生成绩在全区位置</div>
               </div>
             </a>
+            <fieldset class="layui-elem-field layui-field-title layui-col-xs12 layui-col-sm12 layui-col-md12">
+              <legend>2、成绩统计</legend>
+            </fieldset>
+            <a href="javascript:void(0);" onclick="tjbanji('\\chengji\\bjtj\\tongji')" class="x-admin-backlog-body">
+              <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
+                <i class="layui-icon layui-icon-water" style="font-size: 100px;"></i>
+                <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">统计班级成绩</div>
+              </div>
+            </a>
+            <a href="javascript:void(0);" onclick="tjbanji('\\chengji\\njtj\\tongji')" class="x-admin-backlog-body">
+              <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
+                <i class="layui-icon layui-icon-fire" style="font-size: 100px;"></i>
+                <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">统计各学校各年级成绩</div>
+              </div>
+            </a>
+            <a href="javascript:void(0);" onclick="tjbanji('\\chengji\\schtj\\tongji')" class="x-admin-backlog-body">
+              <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
+                <i class="layui-icon layui-icon-website" style="font-size: 100px;"></i>
+                <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">统计各年级成绩</div>
+              </div>
+            </a>
             <div style="height: 30px">　</div>
           </div>
         </div>
@@ -138,7 +144,7 @@
         <!-- 内容开始 -->
         <div class="layui-row" style="margin-top: 30px">
           <div class="layui-container">
-            <a href="javascript:void(0);" onclick="tjbanji('\\chengji\\tongji\\newjieguo')" class="x-admin-backlog-body">
+            <a href="javascript:void(0);" onclick="addteb('检测统计结果是否是最新结果','/kaoshi/tjlog/index/{$kaoshiid}')" class="x-admin-backlog-body">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
                 <i class="layui-icon layui-icon-layouts" style="font-size: 100px;"></i>
                 <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">检测统计结果是否是最新结果</div>

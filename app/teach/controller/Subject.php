@@ -15,12 +15,14 @@ class Subject extends BaseController
         // 设置要给模板赋值的信息
         $list['webtitle'] = '学科列表';
         $list['dataurl'] = 'subject/data';
+        $list['status'] = '/teach/subject/status';
+        $list['kaoshi'] = '/teach/subject/kaoshi';
 
         // 模板赋值
         $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->view->fetch();       
+        return $this->view->fetch();
     }
 
 
@@ -50,7 +52,7 @@ class Subject extends BaseController
         $limit_start = $src['page'] * $src['limit'] - $src['limit'];
         $limit_length = $src['limit'];
         $data = $data->slice($limit_start,$limit_length);
-       
+
         // 重组返回内容
         $data = [
             'code'=> 0 , // ajax请求次数，作为标识符
@@ -81,7 +83,7 @@ class Subject extends BaseController
         return $this->view->fetch('create');
     }
 
-    
+
 
     // 保存信息
     public function save()
@@ -104,7 +106,7 @@ class Subject extends BaseController
             return json(['msg'=>$msg,'val'=>0]);
         }
 
-        // 保存数据 
+        // 保存数据
         $data = SJ::create($list);
 
         // 根据更新结果设置返回提示信息
@@ -177,7 +179,7 @@ class Subject extends BaseController
         return json($data);
     }
 
-    
+
 
 
 

@@ -7,7 +7,7 @@ use app\common\model\Base;
 
 class Banji extends Base
 {
-    
+
     // 查询所有班级
     public function search($src)
     {
@@ -125,49 +125,49 @@ class Banji extends Base
     }
 
 
-    // /**
-    //  * 获取考试时的班级名称(文本格式-一年级十一班)
-    //  * $jdshijian 考试开始时间
-    //  * $ruxuenian 年级
-    //  * $paixu 班级
-    //  * 返回 $str 班级名称 
-    //  * */ 
-    // public function myBanjiTitle($bjid,$jdshijian=0)
-    // {
-    //     // 查询班级信息
-    //     $bjinfo = $this::withTrashed()
-    //         ->where('id',$bjid)
-    //         ->field('id,ruxuenian,paixu,delete_time')
-    //         ->find();
+    /**
+     * 获取考试时的班级名称(文本格式-一年级十一班)
+     * $jdshijian 考试开始时间
+     * $ruxuenian 年级
+     * $paixu 班级
+     * 返回 $str 班级名称
+     * */
+    public function myBanjiTitle($bjid,$jdshijian=0)
+    {
+        // 查询班级信息
+        $bjinfo = $this::withTrashed()
+            ->where('id',$bjid)
+            ->field('id,ruxuenian,paixu,delete_time')
+            ->find();
 
 
-    //     //获取班级、年级列表
-    //     $njlist = nianjiList($jdshijian);
-    //     $bjlist = banjinamelist();
+        //获取班级、年级列表
+        $njlist = nianjiList($jdshijian);
+        $bjlist = banjinamelist();
 
-    //     if(array_key_exists($bjinfo->ruxuenian,$njlist))
-    //     {
-    //         $bjtitle = $njlist[$bjinfo->ruxuenian].$bjlist[$bjinfo->paixu];
-    //     }else{
-    //         $bjtitle = $bjinfo->ruxuenian.'界'.$bjinfo->paixu.'班';
-    //     }
+        if(array_key_exists($bjinfo->ruxuenian,$njlist))
+        {
+            $bjtitle = $njlist[$bjinfo->ruxuenian].$bjlist[$bjinfo->paixu];
+        }else{
+            $bjtitle = $bjinfo->ruxuenian.'界'.$bjinfo->paixu.'班';
+        }
 
-    //     // 如果该班级被删除，则标删除
-    //     if($bjinfo->delete_time != null)
-    //     {
-    //         $bjtitle = $bjtitle.'(删)';
-    //     }
+        // 如果该班级被删除，则标删除
+        if($bjinfo->delete_time != null)
+        {
+            $bjtitle = $bjtitle.'(删)';
+        }
 
-    //     return $bjtitle;
-    // }
+        return $bjtitle;
+    }
 
     // /**
     //  * 获取考试时的班级名称(数字格式5.1)
     //  * $jdshijian 考试开始时间
     //  * $ruxuenian 年级
     //  * $paixu 班级
-    //  * 返回 $str 班级名称 
-    //  * */ 
+    //  * 返回 $str 班级名称
+    //  * */
     // public function myBanjiNum($bjid,$jdshijian=0)
     // {
     //     // 查询班级信息

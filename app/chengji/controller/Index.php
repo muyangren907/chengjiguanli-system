@@ -16,7 +16,7 @@ class Index extends BaseController
     // 成绩列表
     public function index($kaoshi)
     {
-        
+
          // 设置要给模板赋值的信息
         $list['webtitle'] = '学生成绩列表';
 
@@ -69,7 +69,7 @@ class Index extends BaseController
         $limit_start = $src['page'] * $src['limit'] - $src['limit'];
         $limit_length = $src['limit'];
         $data = array_slice($data,$limit_start,$limit_length);
-       
+
         // 重组返回内容
         $data = [
             'code'=> 0 , // ajax请求次数，作为标识符
@@ -121,7 +121,7 @@ class Index extends BaseController
         $subject = $src['subject'];
 
         // 判断考试状态
-        event('ksstatus',$src['kaoshi']);  
+        event('kslu',$src['kaoshi']);
 
         // 获取要删除成绩的考号
         $kaohao = new \app\kaoshi\model\Kaohao;
@@ -140,7 +140,7 @@ class Index extends BaseController
         }else{
             $this->error($msg = '删除失败',  $url = '/chengji/index/deletecjs/'.$src['kaoshi'], $wait = 3);
         }
-        
+
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'成绩删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
@@ -167,7 +167,8 @@ class Index extends BaseController
         $kaoshiid = Kaohao:: where('id',$khid)->value('Kaoshi');
 
         // 判断考试状态
-        event('ksstatus',$kaoshiid);  
+        event('kslu',$kaoshiid);
+
 
         $data = Chengji::destroy($id);
 
@@ -180,28 +181,27 @@ class Index extends BaseController
 
 
 
+    // 设置考试状态
+    public function setStatus()
+    {
 
+        //  获取id变量
+        $id = request()->post('id');
+        $value = request()->post('value');
 
-    // // 设置成绩状态
-    // public function setStatus()
-    // {
+        $khid = Chengji::where('id',$id)->value('kaohao_id');
+        $kaoshiid = Kaohao:: where('id',$khid)->value('Kaoshi');
+        event('kslu',$kaoshiid);
 
-    //     //  获取id变量
-    //     $id = request()->post('id');
-    //     $value = request()->post('value');
+        // 获取考试信息
+        $data = Chengji::where('id',$id)->update(['status'=>$value]);
 
-    //     // 获取班级信息
-    //     $data = Chengji::where('id',$id)->update(['status'=>$value]);
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
-    //     // 根据更新结果设置返回提示信息
-    //     $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
-
-    //     // 返回信息
-    //     return json($data);
-    // }
-
-
-
+        // 返回信息
+        return json($data);
+    }
 
 
 
@@ -235,7 +235,7 @@ class Index extends BaseController
 
 
 
-    //生成学生表格
+    //生成学生成绩表格
     public function dwchengjixlsx()
     {
         // 获取参数
@@ -324,7 +324,7 @@ class Index extends BaseController
             $sheet->setCellValue($colname[$i].'3', $value['title']);
             $i++;
         }
-        
+
 
         // 循环写出成绩及个人信息
         $i = 4;
@@ -371,7 +371,7 @@ class Index extends BaseController
         $tj = new \app\chengji\model\Tongji;
         // $nianji = array();
         // $chengjiinfo = $kh->srcChengji($src);
-        $temp = $tj->tongjiSubject($chengjiinfo,$subject); 
+        $temp = $tj->tongjiSubject($chengjiinfo,$subject);
 
         isset($colcnt) ? $colcnt = $colcnt+5 : $colcnt = 12;
         $colBiankuang = $colcnt;
@@ -532,8 +532,8 @@ class Index extends BaseController
             ->setDescription("该表格由".session('username').session('id')."于".$thistime."在尚码成绩管理系统中下载，只作为内部交流材料,不允许外泄。")  //描述
             ->setKeywords("尚码 成绩管理") //关键字
             ->setCategory("成绩管理"); //分类
-        
-       
+
+
         $row = 1;   # 定义从 $row 行开始写入数据
         $rows = count($subject);  # 定义学生信息列要合并的行数
 
@@ -687,5 +687,5 @@ class Index extends BaseController
         return json($data);
     }
 
-      
+
 }

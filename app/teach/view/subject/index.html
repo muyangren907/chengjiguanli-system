@@ -44,7 +44,7 @@
 
 <!-- 状态按钮 -->
 <script type="text/html" id="kaoshi">
-  <input type="checkbox" {{d.kaoshi == 1 ? "checked" :""}} id="{{d.id}}" lay-skin="switch" lay-filter="kaoshi" lay-text="是|否">
+  <input type="checkbox" myurl="{$list.kaoshi ? $list.kaoshi : url('kaoshi')}" {{d.kaoshi == 1 ? "checked" :""}} id="{{d.id}}" lay-skin="switch" lay-filter="kaoshi" lay-text="参加|不参加">
 </script>
 
 <!-- 表格操作 -->
@@ -103,42 +103,6 @@
             break;
         };
       });
-
-      //监听指定开关
-      lForm.on('switch(kaoshi)', function(data){
-
-        var statusval;
-        var title;
-        if(data.elem.checked ==true){
-            statusval=1;
-            title='参加考试';
-        }else{
-            statusval=0;
-            title='取消参加考试';
-        }
-        // 设置修改后的状态值
-        layer.confirm('确认要'+title+'吗？',function(index){
-            $.ajax({
-                url:'/teach/subject/kaoshi',
-                type:'POST',
-                data:{
-                    id:data.elem.id,
-                    value: statusval,
-                },
-                success:function(result){
-                    if(result.val == 1){
-                        layer.msg('已'+title);
-                    }else{
-                        layer.msg('数据处理错误!',function(){});
-                    }
-                },
-                error:function(result){
-                    layer.msg('数据扔半道啦。',function(){});
-                },
-            });
-        });
-      });
-
 
     });
 </script>

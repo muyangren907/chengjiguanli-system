@@ -27,6 +27,7 @@ Route::group('index', function () {
 	    Route::rule('cybanji','Index/cyBanji','post');				# 获取参加考试班级
 	    Route::rule('cysubject','Index/cySubject','post');				# 获取参加考试学科
 	    Route::rule('kaoshiinfo/<kaoshi>','Index/kaoshiInfo','post');				# 获取参加考试的学校、学科、班级、年级等信息
+        Route::rule('luru','Index/luru','post');     # 删除信息
 	});
 
 
@@ -36,11 +37,12 @@ Route::group('kaohao', function () {
 	    Route::rule('save','Kaohao/save','post');					# 保存信息
 	    Route::rule('biaoqian/<kaoshi>','Kaohao/biaoqian','get');						# 信息列表
 	    Route::rule('biaoqianxls','Kaohao/biaoqianXls','post');						# 信息列表
-	    Route::rule('caiji/<kaoshi>','Kaohao/caiji','get');						# 成绩采集下载页面
+	    Route::rule('caiji/<kaoshi>','Kaohao/caiji','get');					# 成绩采集下载页面
 	    Route::rule('dwcaiji','Kaohao/dwcaiji','post');						# 成绩采集下载
 	    Route::rule('delete/<id>','Kaohao/delete','delete');						# 成绩采集下载
-	    Route::rule('add/<kaoshi>','Kaohao/addOne','get');						# 信息列表
-	    Route::rule('saveone','Kaohao/saveOne','post');					# 保存信息
+	    Route::rule('createall/<kaoshi>','Kaohao/createAll','get');						# 信息列表
+	    Route::rule('saveall','Kaohao/saveAll','post');					# 保存信息
+        Route::rule('read/<id>','Kaohao/read','get');             # 读取信息
 	});
 
 
@@ -55,6 +57,20 @@ Route::group('kaoshiset', function () {
 	    Route::rule('delete/<id>','KaoshiSet/delete','delete');		# 删除信息
 	    Route::rule('status','KaoshiSet/setStatus','post');		# 删除信息
 	});
+
+
+// 考试设置
+Route::group('tjlog', function () {
+        Route::rule('index/<kaoshi_id>','TongjiLog/index','get');
+        Route::rule('data','TongjiLog/ajaxData','post');
+    });
+
+
+
+
+
+
+
 
 
 

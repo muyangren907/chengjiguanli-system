@@ -75,7 +75,7 @@ class Student extends BaseController
         $limit_start = $src['page'] * $src['limit'] - $src['limit'];
         $limit_length = $src['limit'];
         $data = $data->slice($limit_start,$limit_length);
-       
+
         // 重组返回内容
         $data = [
             'code'=> 0 , // ajax请求次数，作为标识符
@@ -130,7 +130,7 @@ class Student extends BaseController
         $limit_start = $src['page'] * $src['limit'] - $src['limit'];
         $limit_length = $src['limit'];
         $data = $data->slice($limit_start,$limit_length);
-       
+
         // 重组返回内容
         $data = [
             'code'=> 0 , // ajax请求次数，作为标识符
@@ -207,7 +207,7 @@ class Student extends BaseController
         $limit_start = $src['page'] * $src['limit'] - $src['limit'];
         $limit_length = $src['limit'];
         $data = $data->slice($limit_start,$limit_length);
-       
+
         // 重组返回内容
         $data = [
             'code'=> 0 , // ajax请求次数，作为标识符
@@ -239,7 +239,7 @@ class Student extends BaseController
         return $this->view->fetch('create');
     }
 
-    
+
 
     // 保存信息
     public function save()
@@ -285,89 +285,6 @@ class Student extends BaseController
         // 返回信息
         return json($data);
     }
-
-    //
-    public function read($id)
-    {
-        // 查询学生信息
-        $myInfo = STU::withTrashed()
-            ->where('id',$id)
-            ->with([
-                'stuBanji'=>function($query)
-                {
-                    $query->field('id,school,ruxuenian,paixu')->append(['banjiTitle']);
-                },
-                'stuSchool'=>function($query)
-                {
-                    $query->field('id,title');
-                }
-            ])
-            ->find();
-
-        // 获取参加考试学科
-        $sbj = new \app\teach\model\Subject;
-        $ksSbj = $sbj
-                ->where('kaoshi',1)
-                ->field('id,title,jiancheng,lieming')
-                ->select()
-                ->toArray();
-        $myInfo['sbj'] = $ksSbj;
-        // 设置页面标题
-        $myInfo['webtitle'] = $myInfo->xingming.' 信息';
-
-
-        // 模板赋值
-        $this->view->assign('list',$myInfo);
-        // 渲染模板
-        return $this->view->fetch();
-    }
-
-
-
-    // 获取考试成绩
-    public function ajaxDatachengji()
-    {
-        // 获取表单参数
-        // 获取参数
-        $src = $this->request
-                ->only([
-                    'page'=>'1',
-                    'limit'=>'10',
-                    'field'=>'kaoshiId',
-                    'order'=>'desc',
-                    'student'=>'',
-                ],'POST');
-
-        // 获取学生成绩
-        $cj = new \app\chengji\model\Chengji;
-        $khList = $cj->oneChengji($src);
-
-        // 获取符合条件记录总数
-        $cnt = count($khList);
-        // 获取当前页数据
-        $limit_start = $src['page'] * $src['limit'] - $src['limit'];
-        $limit_length = $src['limit'];
-        // $khList = $khList->slice($limit_start,$limit_length);
-
-        // 按条件排序
-        $src['order'] == 'desc' ? $src['order'] =SORT_DESC :$src['order'] = SORT_ASC;
-        if($cnt>0){
-            $khList = sortArrByManyField($khList,$src['field'],$src['order']);
-        }
-
-
-        // 重组返回内容
-        $data = [
-            'code'=> 0 , // ajax请求次数，作为标识符
-            'msg'=>"",  // 获取到的结果数(每页显示数量)
-            'count'=>$cnt, // 符合条件的总数据量
-            'data'=>$khList, //获取到的数据结果
-        ];
-
-
-        return json($data);
-    }
-
 
 
 
@@ -449,7 +366,36 @@ class Student extends BaseController
         return json($data);
     }
 
-    
+
+    // 学生信息
+    public function read($id)
+    {
+        // 查询教师信息
+        $myInfo = STU::withTrashed()
+            ->where('id',$id)
+            ->with([
+                'stuBanji'=>function($query)
+                {
+                    $query->field('id,school,ruxuenian,paixu')->append(['banjiTitle']);
+                },
+                'stuSchool'=>function($query)
+                {
+                    $query->field('id,title');
+                }
+            ])
+            ->find();
+        // 设置页面标题
+        $myInfo['webtitle'] = $myInfo->xingming.'－信息';
+
+
+        // 模板赋值
+        $this->view->assign('list',$myInfo);
+        // 渲染模板
+        return $this->view->fetch();
+    }
+
+
+
 
 
 
@@ -549,17 +495,16 @@ class Student extends BaseController
             $this->error('请使用模板上传','/login/err');
             return json($data);
         }
-        
+
         // 删除标题行
         array_splice($stuinfo,0,3);
-
 
         $stuinfo = array_filter($stuinfo,function($q){
             return $q[1] != null && strlen($q[2]) >=6 && $q[3] != null;
         });
 
 
-        // 获取班级对应的入学年和排序 
+        // 获取班级对应的入学年和排序
         $bj = array_column($stuinfo, 3);
 
         // 获取班级名
@@ -598,7 +543,7 @@ class Student extends BaseController
                         ->select();
             $sfzh = $serStulist->column('shenfenzhenghao');
 
-            // 返回数据对比结果 
+            // 返回数据对比结果
             $jiaoji = array_intersect($xlsStuList, $sfzh);  #返回交集
             $add = array_diff($xlsStuList, $sfzh);
             $del = array_diff($sfzh, $xlsStuList);
@@ -766,7 +711,7 @@ class Student extends BaseController
             $data = array('msg'=>'请使用模板上传','val'=>0,'url'=>null);
             return json($data);
         }
-        
+
         // 删除标题行
         array_splice($stuinfo,0,3);
 
@@ -775,10 +720,10 @@ class Student extends BaseController
         });
 
 
-        // 获取班级对应的入学年和排序 
+        // 获取班级对应的入学年和排序
         $stuids = array_column($stuinfo, 1);
 
-        
+
         // 实例化学生数据模型
         $stu = new STU;
 
@@ -791,9 +736,9 @@ class Student extends BaseController
         return json($data);
     }
 
-    
 
-    
+
+
     // 下载表格模板
     public function download()
     {

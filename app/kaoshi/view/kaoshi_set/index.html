@@ -46,8 +46,8 @@
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
 	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
-<!-- 	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon layui-icon-edit"></i></a>
- --></script>
+	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon layui-icon-edit"></i></a>
+</script>
 <!-- 表格操作 -->
 <script>
 
@@ -70,9 +70,9 @@
 	  	}
 	  	return str;
 	  }},
-	  {field: 'manfen', title: '满分',sort: true} ,
-	  {field: 'youxiu', title: '优秀率%',sort: true},
-	  {field: 'jige', title: '及格率%',sort: true},
+	  {field: 'manfen', title: '满分线',sort: true} ,
+	  {field: 'youxiu', title: '优秀线',sort: true},
+	  {field: 'jige', title: '及格线',sort: true},
 	  {field: 'status', title: '状态', minWidth:80,templet:'#status', sort: true},
 	  {field: 'id', title: '操作',toolbar: '#barDemo',minWidth:80},
   ]];
@@ -107,7 +107,7 @@
 		        	cjgl.del(obj,"/kaoshi/kaoshiset/delete");
 		        	break;
 		        case 'edit':// 编辑
-			        cjgl.add('编辑考试','/kaoshi/kaoshiset/edit/'+obj.data.id,'','',true);
+			        cjgl.add('编辑','/kaoshi/kaoshiset/edit/'+obj.data.id,'','',true);
 			        break;
 		    };
 		});
@@ -116,7 +116,7 @@
 		form.on('radio', function(data){
 			// 获取数据
 			addSubject();
-			// $("#srcsubmit").click();
+			$("#srcsubmit").click();
 		});
 
 		// 添加班级列表

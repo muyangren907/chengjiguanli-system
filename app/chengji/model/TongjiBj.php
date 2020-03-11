@@ -13,10 +13,10 @@ use app\kaoshi\model\Kaohao;
  */
 class TongjiBj extends Base
 {
-    /**  
+    /**
     * 统计指定个年级的各班级成绩
     * 统计项目参考tongji方法
-    * @access public 
+    * @access public
     * @param number $kaoshi 考试id
     * @param number $ruxuenian 入学年
     * @return array 返回类型
@@ -31,7 +31,6 @@ class TongjiBj extends Base
         $nianji = $ksset->srcNianji($kaoshi);
         // 初始化统计结果
         $data = array();
-
 
         // 循环年级
         foreach ($nianji as $njkey => $value) {
@@ -107,10 +106,10 @@ class TongjiBj extends Base
 
 
 
-        /**  
+        /**
     * 统计指定个年级的各班级成绩
     * 统计项目参考tongji方法
-    * @access public 
+    * @access public
     * @param number $kaoshi 考试id
     * @param number $ruxuenian 入学年
     * @return array 返回类型
@@ -118,7 +117,7 @@ class TongjiBj extends Base
     public function tjBanjiCnt($srcfrom)
     {
 
-        // 初始化参数 
+        // 初始化参数
         $src = array(
             'page'=>'1',
             'limit'=>'10',
@@ -178,10 +177,10 @@ class TongjiBj extends Base
 
 
 
-    /**  
+    /**
     * 班级成绩统计结果查询
     * 从数据库中取出数据
-    * @access public 
+    * @access public
     * @param number $kaoshi 考试id
     * @param number $ruxuenian 入学年
     * @return array 返回类型
@@ -189,7 +188,7 @@ class TongjiBj extends Base
     public function search($srcfrom)
     {
 
-        // 初始化参数 
+        // 初始化参数
         $src = array(
             'kaoshi'=>'',
             'banji'=>array(),
@@ -241,7 +240,7 @@ class TongjiBj extends Base
 
         // 重组数据
         foreach ($tongjiJg as $key => $value) {
-            
+
             $data[$value->banji_id]=[
                 'id'=>$value->id,
                 'school'=>$value->bjBanji->glSchool->jiancheng,
@@ -274,7 +273,7 @@ class TongjiBj extends Base
                         'jige'=>$val->jige,
                     ];
                 }
-                
+
             }
         }
 
@@ -322,7 +321,7 @@ class TongjiBj extends Base
             }
         }
         return true;
-    }   
+    }
 
 
 
@@ -368,5 +367,5 @@ class TongjiBj extends Base
     }
 
 
-    
+
 }

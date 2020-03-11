@@ -68,7 +68,7 @@ class KaoshiSet extends BaseController
         $limit_start = $src['page'] * $src['limit'] - $src['limit'];
         $limit_length = $src['limit'];
         $data = $data->slice($limit_start,$limit_length);
-       
+
         // 重组返回内容
         $data = [
             'code'=> 0 , // ajax请求次数，作为标识符
@@ -89,7 +89,7 @@ class KaoshiSet extends BaseController
      */
     public function create($kaoshi)
     {
-        
+
         // 设置页面标题
         $list['set'] = array(
             'webtitle'=>'设置考试',
@@ -131,11 +131,11 @@ class KaoshiSet extends BaseController
                     // 'lieming'=>array()
                 ],'POST');
 
-        event('ksstatus',$src['kaoshi']);
+        event('kslu',$src['kaoshi']);
 
         // 验证表单数据
         $validate = new \app\kaoshi\validate\Kaoshiset;
-        $result = $validate->check($src);
+        $result = $validate->scene('create')->check($src);
         $msg = $validate->getError();
         // 如果验证不通过则停止保存
         if(!$result){
@@ -175,19 +175,8 @@ class KaoshiSet extends BaseController
         $data ? $data=['msg'=>'设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
-        return json($data);       
+        return json($data);
 
-    }
-
-    /**
-     * 显示指定的资源
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function read($id)
-    {
-        //
     }
 
     /**
@@ -198,7 +187,29 @@ class KaoshiSet extends BaseController
      */
     public function edit($id)
     {
-        //
+        // 获取考试信息
+        $ksset = new ksset;
+        $list['data'] = $ksset::where('id',$id)
+            ->field('id,kaoshi_id,nianjiname,subject_id,manfen,youxiu,jige')
+            ->with([
+                'subjectName' => function($query){
+                    $query->field('id,title,jiancheng');
+                }
+            ])
+            ->find()->toArray();
+
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'编辑考试设置',
+            'butname'=>'修改',
+            'formpost'=>'PUT',
+            'url'=>'/kaoshi/kaoshiset/update/'.$id,
+        );
+
+        // 模板赋值
+        $this->view->assign('list',$list);
+        // 渲染
+        return $this->view->fetch('edit');
     }
 
     /**
@@ -208,9 +219,31 @@ class KaoshiSet extends BaseController
      * @param  int  $id
      * @return \think\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
-        //
+        $validate = new \app\kaoshi\validate\KaoshiSetEdit;
+        // 获取表单数据
+        $list = request()->only(['id','kaoshi','manfen','youxiu','jige'],'post');
+
+        // 验证表单数据
+        $result = $validate->scene('edit')->check($list);
+        $msg = $validate->getError();
+        // 如果验证不通过则停止保存
+        if(!$result){
+            return json(['msg'=>$msg,'val'=>0]);;
+        }
+        event('kslu',$list['kaoshi']);
+
+        // 更新数据
+        $ksset = new ksset();
+        $ksdata = $ksset::update($list);
+
+
+        // 根据更新结果设置返回提示信息
+        $ksdata ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
     }
 
     /**
@@ -233,8 +266,8 @@ class KaoshiSet extends BaseController
         // 判断考试结束时间是否已过
         $ksset = new ksset;
         $ksid = $ksset::where('id',$id[0])->value('kaoshi_id');
-        event('ksstatus',$ksid);
-       
+        event('kslu',$ksid);
+
         $data = ksset::destroy($id,true);
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
@@ -246,10 +279,12 @@ class KaoshiSet extends BaseController
     // 设置荣誉状态
     public function setStatus()
     {
-
         //  获取id变量
         $id = request()->post('id');
         $value = request()->post('value');
+
+        $ksid = ksset::where('id',$id)->value('kaoshi_id');
+        event('kslu',$ksid);
 
         // 获取学生信息
         $data = ksset::where('id',$id)->update(['status'=>$value]);

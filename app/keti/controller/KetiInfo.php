@@ -93,7 +93,7 @@ class KetiInfo extends BaseController
         $limit_start = $src['page'] * $src['limit'] - $src['limit'];
         $limit_length = $src['limit'];
         $data = $data->slice($limit_start,$limit_length);
-       
+
         // 重组返回内容
         $data = [
             'code'=> 0 , // ajax请求次数，作为标识符
@@ -121,7 +121,7 @@ class KetiInfo extends BaseController
             'webtitle'=>'添加课题册',
             'butname'=>'添加',
             'formpost'=>'POST',
-            'url'=>'/keti/ketiinfo/save', 
+            'url'=>'/keti/ketiinfo/save',
             'ketice'=>$ketice
         );
 
@@ -167,7 +167,7 @@ class KetiInfo extends BaseController
                     'category' => 1,
                 ];
             }
-            
+
 
         // 添加新的获奖人与参与人信息
         $cy = $data->ktZcr()->saveAll($canyulist);
@@ -231,26 +231,6 @@ class KetiInfo extends BaseController
     }
 
 
-    /**
-     * 上传荣誉图片并保存
-     *
-     * @param  \think\Request  $request
-     * @return \think\Response
-     */
-    // public function upload()
-    // {
-    //     // 获取文件信息
-    //     $list['text'] = $this->request->post('text');
-    //     $list['serurl'] = $this->request->post('serurl');
-
-    //     // 获取表单上传文件
-    //     $file = request()->file('file');
-    //     // 上传文件并返回结果
-    //     $data = upload($list,$file);
-
-    //     return json($data);
-    // }
-
 
     /**
      * 显示指定的资源
@@ -285,7 +265,7 @@ class KetiInfo extends BaseController
                     },
                 ])
                 ->find();
-        
+
 
         // 设置页面标题
         $list['set'] = array(
@@ -341,7 +321,7 @@ class KetiInfo extends BaseController
                     'category' => 1,
                 ];
             }
-            
+
 
         // 添加新的获奖人与参与人信息
         $data = $data->ktZcr()->saveAll($canyulist);
@@ -464,7 +444,7 @@ class KetiInfo extends BaseController
                     'category' => 2,
                 ];
             }
-            
+
 
         // 添加新的获奖人与参与人信息
         $data = $data->ktCy()->saveAll($canyulist);
@@ -479,34 +459,6 @@ class KetiInfo extends BaseController
     }
 
 
-    // /**
-    //  * 上传荣誉图片并保存
-    //  *
-    //  * @param  \think\Request  $request
-    //  * @return \think\Response
-    //  */
-    // public function jtupload()
-    // {
-
-    //     // 获取表单上传文件 例如上传了001.jpg
-    //     $file = request()->file('file');
-    //     // 移动到框架应用根目录/uploads/ 目录下
-    //     $info = $file->validate(['size'=>2*1024*1024,'ext'=>'jpg,png,gif,jpeg'])->move('uploads\keti\jieti');
-
-    //     if($info){
-    //         // 成功上传后 获取上传信息
-    //         $list['url'] = $info->getSaveName();
-    //         $list['url'] = str_replace('\\','/',$list['url']);
-    //         // 如果图片上传成功，则返回
-    //         $data = array('msg'=>'上传成功','val'=>true,'url'=>$list['url']);
-    //     }else{
-    //         // 上传失败获取错误信息
-    //         $data = array('msg'=>$file->getError(),'val'=>false,'url'=>null);
-    //     }
-
-    //     // 返回信息
-    //     return json($data);
-    // }
 
 
     // 下载课题信息表
@@ -582,16 +534,16 @@ class KetiInfo extends BaseController
                 ],
             ],
         ];
-        
+
         if($key+4>9)
         {
-            
+
             $worksheet->getStyle('A10:H'.($key+4))->applyFromArray($styleArray);
             // 设置行高
             for($i = 10;  $i<=($key+4); $i++){
                 $worksheet->getRowDimension($i)->setRowHeight(30);
             }
-            
+
         }
 
         $worksheet->getStyle('A4')->applyFromArray($styleArray);

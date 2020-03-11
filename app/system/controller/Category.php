@@ -9,8 +9,8 @@ use app\system\model\Category as CG;
 
 class Category extends BaseController
 {
-    
-    
+
+
 
     // 类别列表
     public function index()
@@ -56,7 +56,7 @@ class Category extends BaseController
         $limit_start = $src['page'] * $src['limit']-$src['limit'];
         $limit_length = $src['limit'];
         $data = $data->slice($limit_start,$limit_length);
-       
+
         // 重组返回内容
         $data = [
             'code'=> 0 , // ajax请求次数，作为标识符
@@ -89,7 +89,7 @@ class Category extends BaseController
         return $this->view->fetch();
     }
 
-    
+
 
     // 保存信息
     public function save()
@@ -113,7 +113,7 @@ class Category extends BaseController
             return json(['msg'=>$msg,'val'=>0]);;
         }
 
-        // 保存数据 
+        // 保存数据
         $data = CG::create($list);
 
 
@@ -129,11 +129,6 @@ class Category extends BaseController
     // 编辑类别
     public function edit($id)
     {
-        $isupdate = CG::where('id',$id)->value('isupdate');
-        if($isupdate == 0)
-        {
-            $this->error('系统默认分类不允许修改','/login/err');
-        }
 
         // 获取单位信息
         $list['data'] = CG::field('id,title,pid,paixu')
@@ -161,6 +156,12 @@ class Category extends BaseController
         // 获取表单数据
         $list = request()->only(['title','pid','paixu'],'put');
 
+        $isupdate = CG::where('id',$id)->value('isupdate');
+        if($isupdate == 0)
+        {
+            $this->error('系统默认分类不允许修改','/login/err');
+        }
+
         // 验证表单数据
         $result = $validate->check($list);
         $msg = $validate->getError();
@@ -183,7 +184,7 @@ class Category extends BaseController
         return json($data);
     }
 
-    
+
     // 删除类别
     public function delete($id)
     {
@@ -194,10 +195,13 @@ class Category extends BaseController
 
         $id = explode(',', $id);
 
-        $data = CG::destroy($id);
+        $data = CG::destroy(function($query) use($id){
+            $query->where('isupdate',1)
+                ->where('id','in',$id);
+        });
 
         // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data ? $data=['msg'=>'除系统保留分类以外，其它删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);

@@ -17,7 +17,7 @@ class KaoshiSet extends Base
     // 查询参加考试学科
     public function search($srcfrom=array())
     {
-    	// 初始化参数 
+    	// 初始化参数
         $src = array(
             'kaoshi'=>'0',
             'nianji'=>array(),
@@ -31,7 +31,6 @@ class KaoshiSet extends Base
 
         $nianji = strToarray($src['nianji']);
         $subject = strToarray($src['subject']);
-
 
         $data = $this->where('kaoshi_id',$src['kaoshi'])
         	->order([$src['field'] =>$src['order']])
@@ -81,7 +80,7 @@ class KaoshiSet extends Base
                     $query->field('id,title,jiancheng,paixu,lieming');
                 }
             ])
-            // ->cache(true)
+            ->where('status',1)
             ->select();
 
 
@@ -109,6 +108,7 @@ class KaoshiSet extends Base
         }
         return $data;
     }
+
 
     /**
      * 查询参加考试年级
@@ -141,5 +141,5 @@ class KaoshiSet extends Base
         return $data;
     }
 
-    
+
 }

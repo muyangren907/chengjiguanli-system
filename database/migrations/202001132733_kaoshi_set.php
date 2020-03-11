@@ -26,7 +26,7 @@ class KaoshiSet extends Migrator
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change()
+    public function up()
     {
         // 定义数据表名称
         $table = $this->table('kaoshi_set');
@@ -40,6 +40,7 @@ class KaoshiSet extends Migrator
             ->addColumn('manfen','integer',['limit'=>3,'default'=>100,'null'=>false,'comment'=>'满分'])
             ->addColumn('youxiu','integer',['limit'=>3,'default'=>90,'null'=>false,'comment'=>'优秀'])
             ->addColumn('jige','integer',['limit'=>3,'default'=>00,'null'=>false,'comment'=>'及格'])
+            ->addColumn('luru','boolean',['default'=>1,'null'=>false,'comment'=>'是否允许录入成绩'])
             ->addColumn('status','boolean',['default'=>1,'null'=>false,'comment'=>'状态'])
             ->addColumn('create_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'更新时间'])
