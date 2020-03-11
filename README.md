@@ -145,7 +145,7 @@
     增加成绩统计记录。
     整理权限验证。
 
-	更多更新日志（http://www.xiaoshongshu.cn/login/log）
+	更多更新日志（http://www.www.dl-sm.cn.cn/login/log 或 http://www.xiaoshongshu.cn/login/log）
 ## 升级提示
   v1.3.1升级到v1.3.2版本时，对 cj_chengji 、 cj_tongji_bj 、 cj_tongji_nj 、 cj_tongji_sch等 几个表做的字段作了调整，具体调整，请参考号 database/migrations 文件下对应的文件，如果已经存在数据的话，建议重新建表并执行结构同步。如果有没数据可以重新建表。
 
