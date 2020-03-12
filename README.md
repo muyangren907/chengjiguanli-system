@@ -126,8 +126,9 @@
 
 
 ## 演示地址
-[http://www.dl-sm.cn](http://www.dl-sm.cn) 或
-[http://xiaoshongshu.cn](http://xiaoshongshu.cn)
+[http://www.dl-sm.cn](http://www.dl-sm.cn)  时间到2023年
+或
+[http://www.lncxd.cn](http://www.lncxd.cn) 服务器3月21日到期
 
 帐号   test1    密码  123456
 
@@ -145,7 +146,7 @@
     增加成绩统计记录。
     整理权限验证。
 
-	更多更新日志（http://www.www.dl-sm.cn.cn/login/log 或 http://www.xiaoshongshu.cn/login/log）
+	更多更新日志（http://www.www.dl-sm.cn.cn/login/log 或 http://www.lncxd.cn/login/log）
 ## 升级提示
   v1.3.1升级到v1.3.2版本时，对 cj_chengji 、 cj_tongji_bj 、 cj_tongji_nj 、 cj_tongji_sch等 几个表做的字段作了调整，具体调整，请参考号 database/migrations 文件下对应的文件，如果已经存在数据的话，建议重新建表并执行结构同步。如果有没数据可以重新建表。
 
@@ -154,6 +155,8 @@
 https://www.kancloud.cn/llblax/abcd/789222
 
 ## 下一步工作
+* 重新整理手册
+* 规范后端代码
 * 继续增加统计项目
 * 以更多图表形式呈现统计结果
 * 增加教师职务权限验证

@@ -47,7 +47,7 @@ class StudentChengji extends Base
                 'kaohaoId'=>$value->id,
                 'banjiTitle'=>$value->banjiTitle,
                 'zuzhi'=>$value->cjKaoshi->ksZuzhi->jiancheng,
-                // 'category'=>$value->cjKaoshi->ksCategory->title,
+                'category'=>$value->cjKaoshi->ksCategory->title,
                 'bfdate'=>$value->cjKaoshi->bfdate,
                 'enddate'=>$value->cjKaoshi->enddate,
             ];
