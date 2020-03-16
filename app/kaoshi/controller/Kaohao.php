@@ -74,7 +74,7 @@ class Kaohao extends BaseController
         // 获取参加考试学生名单
         $stulist = $stu::where('school',$list['school'])
                         ->where('banji','in',$list['banjiids'])
-                        ->where('status',1)
+                        ->where('kaoshi',1)
                         ->field('id,school,banji')
                         ->with([
                             'stuBanji'=>function($query){

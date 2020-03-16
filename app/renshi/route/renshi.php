@@ -28,6 +28,7 @@ Route::group('student', function () {
 		Route::rule('download','Student/download','get');				# 批量保存
 		Route::rule('srcstudent','Student/srcStudent','post');		# 获取学生成绩
 		Route::rule('redel/<id>','Student/reDel','delete');		# 恢复删除的学生
+		Route::rule('kaoshi','Student/setKaoshi','post');		# 删除信息
 	});
 
 

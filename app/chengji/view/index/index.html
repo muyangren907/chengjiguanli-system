@@ -123,7 +123,7 @@
       table.on('toolbar(mytable)', function(obj){
       	switch(obj.event){
       		case 'add':
-            cjgl.add('添加考号','/kaoshi/kaohao/add/{$list.kaoshi}','650','400');
+            cjgl.add('添加考号','/kaoshi/kaohao/create/{$list.kaoshi}','650','400');
             break;
           case 'dels':
 	      		var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值

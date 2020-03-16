@@ -128,7 +128,9 @@
 ## 演示地址
 [http://www.dl-sm.cn](http://www.dl-sm.cn)  时间到2023年
 或
-[http://www.lncxd.cn](http://www.lncxd.cn) 服务器3月21日到期
+[http://www.lncxd.cn](http://www.lncxd.cn) 
+或
+[154.8.193.178](154.8.193.178)
 
 帐号   test1    密码  123456
 

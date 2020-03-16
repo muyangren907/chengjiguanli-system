@@ -109,12 +109,13 @@ class Rule extends Seeder
                     ['title'=>'更新','name'=>'renshi/Student/update','paixu'=>5,'pid'=>401,],
                     ['title'=>'查看信息','name'=>'renshi/Student/read','paixu'=>6,'pid'=>401,],
                     ['title'=>'状态','name'=>'renshi/Student/setStatus','paixu'=>8,'pid'=>401],
-                    ['title'=>'下载模板','name'=>'renshi/Student/download','paixu'=>9,'pid'=>401],
-                    ['title'=>'校对导入','name'=>'renshi/Student/createAll','paixu'=>10,'pid'=>401],
-                    ['title'=>'批量保存','name'=>'renshi/Student/saveAll','paixu'=>11,'pid'=>401],
-                    ['title'=>'表格删除页面','name'=>'renshi/Student/deletes','paixu'=>12,'pid'=>401],
-                    ['title'=>'表格删除数据','name'=>'renshi/Student/deleteXlsx','paixu'=>13,'pid'=>401],
-                    ['title'=>'查看成绩','name'=>'renshi/StudentChengji/index','paixu'=>7,'pid'=>401],
+                    ['title'=>'是否参加考试','name'=>'renshi/Student/setKaoshi','paixu'=>9,'pid'=>401],
+                    ['title'=>'下载模板','name'=>'renshi/Student/download','paixu'=>10,'pid'=>401],
+                    ['title'=>'校对导入','name'=>'renshi/Student/createAll','paixu'=>11,'pid'=>401],
+                    ['title'=>'批量保存','name'=>'renshi/Student/saveAll','paixu'=>12,'pid'=>401],
+                    ['title'=>'表格删除页面','name'=>'renshi/Student/deletes','paixu'=>13,'pid'=>401],
+                    ['title'=>'表格删除数据','name'=>'renshi/Student/deleteXlsx','paixu'=>14,'pid'=>401],
+                    ['title'=>'查看成绩','name'=>'renshi/StudentChengji/index','paixu'=>15,'pid'=>401],
 
 
 

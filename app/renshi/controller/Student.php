@@ -18,6 +18,8 @@ class Student extends BaseController
         // 设置要给模板赋值的信息
         $list['webtitle'] = '学生列表';
         $list['dataurl'] = 'student/data';
+        $list['status'] = '/reshi/student/status';
+        $list['kaoshi'] = '/renshi/student/kaoshi';
 
         // 模板赋值
         $this->view->assign('list',$list);
@@ -457,6 +459,27 @@ class Student extends BaseController
     }
 
 
+    // 设置学生状态
+    public function setKaoshi()
+    {
+
+        //  获取id变量
+        $id = request()->post('id');
+        $value = request()->post('value');
+
+        // 获取学生信息
+        $data = STU::where('id',$id)->update(['kaoshi'=>$value]);
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
+
+
     // 使用上传的表格进行校对，表格中不存在的数据删除
     public function createAll()
     {
@@ -755,6 +778,7 @@ class Student extends BaseController
 
         $str = input("post.str");
         $banji = input("post.banji");
+        $kaoshi = input("post.kaoshi");
 
         // 判断是否存在数据，如果没有数据则返回。
         if(strlen($str) <= 0){
@@ -766,6 +790,9 @@ class Student extends BaseController
                     ->whereOr('xingming','like','%'.$str.'%')
                     ->when(strlen($banji),function($query)use($banji){
                         $query->where('banji',$banji);
+                    })
+                    ->when(strlen($kaoshi),function($query)use($kaoshi){
+                        $query->where('kaoshi',$kaoshi);
                     })
                     ->with(
                         [
