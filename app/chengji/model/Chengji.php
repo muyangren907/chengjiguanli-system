@@ -194,7 +194,7 @@ class Chengji extends Base
             {
                 $data[$key][$col[0]] = $data[$key-1][$col[0]];
             }
-            $data[$key][$col[1]] = ($data[$key][$col[0]]-1)/$cnt;
+            $data[$key][$col[1]] = 1 - ($data[$key][$col[0]]-1)/$cnt;
             $data[$key][$col[1]] = round($data[$key][$col[1]] * 100 , 2) ;
         }
 

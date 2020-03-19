@@ -46,14 +46,14 @@ function manfenvalidate($defen,$manfen)
 
 
 
-    /**  
+    /**
     * 从统计结果中获取条形统计图中需要的各项目成绩
-    * 
-    * @access public 
+    *
+    * @access public
     * @param arr 统计结果
     * @param xm 要统计的项目
     * @return array 返回类型
-    */ 
+    */
     function tiaoxingOnexiangmu($jg,$xm)
     {
         $chengji = array();
@@ -88,17 +88,17 @@ function manfenvalidate($defen,$manfen)
     }
 
 
-    /**  
+    /**
     * 从统计结果中获取条形箱体图需要的各项目成绩
-    * 
-    * @access public 
+    *
+    * @access public
     * @param arr 统计结果
     * @param xm 要统计的项目
     * @return array 返回类型
-    */ 
+    */
     function xiangti($jg)
     {
-        
+
         $data = array();
         $axisData = array();
         $chengji = array();
@@ -113,12 +113,6 @@ function manfenvalidate($defen,$manfen)
             }
 
             foreach ($value['chengji'] as $k => $val) {
-                // $chengji[$k][$key]['min'] = $val['sifenwei']['min'];
-                // $chengji[$k][$key]['q1'] = $val['sifenwei']['q1'];
-                // $chengji[$k][$key]['q2'] = $val['sifenwei']['q2'];
-                // $chengji[$k][$key]['q3'] = $val['sifenwei']['q3'];
-                // $chengji[$k][$key]['max'] = $val['sifenwei']['max'];
-
                 $chengji[$k][$key][0] = $val['sifenwei']['min'];
                 $chengji[$k][$key][1] = $val['sifenwei']['q1'];
                 $chengji[$k][$key][2] = $val['sifenwei']['q2'];
@@ -146,12 +140,12 @@ function manfenvalidate($defen,$manfen)
         return $data;
     }
 
-    /**  
+    /**
     * 把给定的成绩进行排序
-    * @access public 
+    * @access public
     * @param array $arr 要计算的一维数组成绩
     * @return array $result 返回成绩排序结果
-    */ 
+    */
     function tjOrder($cj,$type = 'desc')
     {
         if($type == 'desc')

@@ -40,8 +40,6 @@ class Kaohao extends BaseController
             'kaoshi'=>$kaoshi
         );
 
-
-
         // 模板赋值
         $this->view->assign('list',$list);
         // 渲染

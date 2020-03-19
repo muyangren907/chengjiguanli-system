@@ -60,6 +60,7 @@ class Auth
             // Teach应用
             'teach/banji/mybanji',  # 获取班级数据
             'teach/banji/banjilist',  # 获取班级数据
+            'teach/banjichengji/ajaxdatatiaoxing',  # 获取班级成绩-条形统计表
             // Kaoshi应用
             'kaoshi/index/cyschool',    # 获取参加考试学校
             'kaoshi/index/cynianji',    # 获取参加考试年级

@@ -35,11 +35,7 @@ class StudentChengji extends BaseController
 
         // 获取参加考试学科
         $sbj = new \app\teach\model\Subject;
-        $ksSbj = $sbj
-                ->where('kaoshi',1)
-                ->field('id,title,jiancheng,lieming')
-                ->select()
-                ->toArray();
+        $ksSbj = $sbj->searchKaoshi()->toArray();
 
         $myInfo['sbj'] = $ksSbj;
         // 设置页面标题

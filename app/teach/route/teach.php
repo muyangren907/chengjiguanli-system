@@ -30,7 +30,7 @@ Route::group('banji', function () {
 	    Route::rule('data','banji/ajaxdata','post');				# 获取数据
 	    Route::rule('create','banji/create','get');				# 添加信息
 	    Route::rule('save','banji/save','post');					# 保存信息
-	    // Route::rule('read/<id>','banji/read','get');				# 读取信息
+	    Route::rule('read/<id>','banji/read','get');				# 读取信息
 	    Route::rule('edit/<id>','banji/edit','get');				# 修改信息
 	    Route::rule('update/<id>','banji/update','put');			# 更新信息
 	    Route::rule('delete/<id>','banji/delete','delete');		# 删除信息
@@ -39,6 +39,14 @@ Route::group('banji', function () {
 	    Route::rule('mybanji','banji/mybanji','post');		# 删除信息
 	    Route::rule('mybanjis','banji/banjiList','post');		# 删除信息
 	});
+
+
+// 班级管理
+Route::group('banjicj', function () {
+        Route::rule('index/<banji>','BanjiChengji/index','get');                        # 信息列表
+        Route::rule('data','BanjiChengji/ajaxData','post');         # 获取成绩
+        Route::rule('datatx','BanjiChengji/ajaxDataTiaoXing','post');         # 获取成绩
+    });
 
 
 // 学科管理

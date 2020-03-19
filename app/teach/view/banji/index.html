@@ -4,39 +4,39 @@
 
 {/block}
 {block name="nav"}
-	<span class="layui-breadcrumb">
-		<a href="">教务管理</a>
-		<a href="">班级管理</a>
-		<a><cite>班级列表</cite></a>
-	</span>
+<span class="layui-breadcrumb">
+	<a href="">教务管理</a>
+	<a href="">班级管理</a>
+	<a><cite>班级列表</cite></a>
+</span>
 {/block}
 {block name="search"}
-    <div class="layui-form-item">
-	    <label for="school" class="layui-form-label" style="height: 100%">学校</label>
-	    <div class="layui-input-block">
-	    	{php}
-	    		$schoollist = schlist('校级','校级',$xueduan=['小学','中小学']);
-	    	{/php}
-	    	<input type="radio" name="school" value="" title="无" checked="true">
-	    	{volist name="schoollist" id="vo"}
-	    		<input type="radio" name="school" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
-	    	{/volist}
-	    </div>
+<div class="layui-form-item">
+	<label for="school" class="layui-form-label" style="height: 100%">学校</label>
+	<div class="layui-input-block">
+		{php}
+		$schoollist = schlist('校级','校级',$xueduan=['小学','中小学']);
+		{/php}
+		<input type="radio" name="school" value="" title="无" checked="true">
+		{volist name="schoollist" id="vo"}
+		<input type="radio" name="school" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+		{/volist}
 	</div>
-    <div class="layui-form-item" style="margin-bottom: 0;">
-	    <label for="ruxuenian" class="layui-form-label" style="height: 100%">年级</label>
-	    <div class="layui-input-block">
-	    	{foreach :nianjiList() as $key=>$vo }
-	    		<input type="radio" name="ruxuenian" title="{$vo}" value="{$key}" lay-skin="primary" {eq name="vo" value="一年级"}checked{/eq}>
-	    	{/foreach}
-	    </div>
+</div>
+<div class="layui-form-item" style="margin-bottom: 0;">
+	<label for="ruxuenian" class="layui-form-label" style="height: 100%">年级</label>
+	<div class="layui-input-block">
+		{foreach :nianjiList() as $key=>$vo }
+		<input type="radio" name="ruxuenian" title="{$vo}" value="{$key}" lay-skin="primary" {eq name="vo" value="一年级"}checked{/eq}>
+		{/foreach}
 	</div>
+</div>
 {/block}
 {block name="table"}
-	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
+<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
 {/block}
 {block name="myjs"}
-	<!-- 表格上面按钮模板 -->
+<!-- 表格上面按钮模板 -->
 <script type="text/html" id="toolbarDemo">
 	<div class="layui-btn-container">
 		<button class="layui-btn layui-btn-danger" lay-event="dels">
@@ -49,6 +49,7 @@
 </script>
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
+	<a class="layui-btn-xs" lay-event="detail" title="成绩"><i class="layui-icon layui-icon-chart-screen"></i></a>
 	<a class="layui-btn-xs" lay-event="befo" title="前移"><i class="layui-icon">&#xe603;</i></a>
 	<a class="layui-btn-xs" lay-event="end" title="后移"><i class="layui-icon">&#xe602;</i></a>
 	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
@@ -57,36 +58,38 @@
 <script>
 	// 设置列
 	options.cols=[[ //表头
-			{type:'checkbox', fixed: 'left'},
-			{field: 'id', title: 'ID', minWidth:100,sort: true},
-			{field: 'banjiTitle', title: '班级名称', minWidth:100},
-			{field: 'school', title: '单位名称',sort: true, minWidth:240,templet:function(d){
-				var str='';
-				if(d.glSchool)
-				{
-					str = d.glSchool.title;
-				}
-				return str;
-			}},
-			{field: "ruxuenian",title: '入学年',sort: true},
-			{field: 'paixu', title: '排序', sort: true},
-			{field:"gl_student_count",title: '学生数',sort: true},
-			{field: 'status', title: '状态',templet:'#status', sort: true},
-			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:160}
-		]];
+	{type:'checkbox', fixed: 'left'},
+	{field: 'id', title: 'ID', minWidth:100,sort: true},
+	{field: 'banjiTitle', title: '班级名称', minWidth:100},
+	{field: 'school', title: '单位名称',sort: true, minWidth:240,templet:function(d){
+		var str='';
+		if(d.glSchool)
+		{
+			str = d.glSchool.title;
+		}
+		return str;
+	}},
+	{field: "ruxuenian",title: '入学年',sort: true},
+	{field: 'paixu', title: '排序', sort: true},
+	{field:"gl_student_count",title: '学生数',sort: true},
+	{field: 'status', title: '状态',templet:'#status', sort: true},
+	{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:160}
+	]];
 	// 设置查询条件
 	options.where = {
 		ruxuenian:$("input[name='ruxuenian']:checked").val()
 	}
 
 	// 提交搜索条件后重载表格
-    layui.use(['table','cjgl'],function(){
-      var table = layui.table
-      		cjgl = layui.cjgl;
+	layui.use(['table','cjgl'],function(){
+		var table = layui.table
+		cjgl = layui.cjgl;
       //表头工具栏事件
       table.on('toolbar(mytable)', function(obj){
       	switch(obj.event){
       		case 'dels':
+            layer.msg('暂时不允许删除');
+            break;
       			var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
       			cjgl.delAll(checkStatus,'banji/delete','mytable');
       			break;
@@ -94,7 +97,7 @@
       			cjgl.add('添加班级','banji/create','600','300');
       			break;
       		};
-      });
+      	});
 
       //监听行工具条
       table.on('tool(mytable)', function(obj){
@@ -102,23 +105,28 @@
       	var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
       	var tr = obj.tr; //获得当前行 tr 的DOM对象
       	switch(layEvent){
-	        case 'befo':// 前移
-	          yidong(this,'banji/yidong/'+data.id,-1);
-	          break;
+	        case 'detail':// 查看
+            parent.xadmin.add_tab(obj.data.banjiTitle  +'－考试成绩','/teach/banjicj/index/'+obj.data.id,'','',true);
+            break;
+          case 'befo':// 前移
+  	        yidong(this,'banji/yidong/'+data.id,-1);
+  	        break;
 	        case 'end':// 后移
-	          yidong(this,'banji/yidong/'+data.id,1);
-	          break;
+  	        yidong(this,'banji/yidong/'+data.id,1);
+  	        break;
 	        case 'del':// 删除
-	          cjgl.del(obj,"banji/delete");
+            layer.msg('暂时不允许删除');
+            break;
+  	        cjgl.del(obj,"banji/delete");
 	          break;
 	        case 'edit':// 编辑
-	          cjgl.add('编辑班级','banji/edit/'+obj.data.id,'600','300');
-	          break;
-      	};
-      });
+  	        cjgl.add('编辑班级','banji/edit/'+obj.data.id,'600','300');
+  	        break;
+       };
+     });
     });
 
-      	/*班级移动*/
+	/*班级移动*/
 	function yidong(obj,url,caozuo){
 		layer.confirm('确认要移动班级位置吗？',function(index){
 			$.ajax({
@@ -129,7 +137,7 @@
 				},
 				dataType: 'json',
 				success: function(data){
-					
+
 					if(data.val == 0){
 						layer.alert(data.msg);
 						return true;
@@ -147,7 +155,7 @@
 				error:function(data) {
 					layer.alert('移动失败');
 				},
-			});		
+			});
 		});
 	}
 

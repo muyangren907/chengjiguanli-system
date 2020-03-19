@@ -40,6 +40,7 @@ class TongjiSch extends Migrator
             ->addColumn('chengji_cnt','integer',['limit'=>11,'null'=>true,'comment'=>'有成绩数'])
             ->addColumn('sum','decimal',['precision'=>10,'scale'=>1,'null'=>true,'comment'=>'总分'])
             ->addColumn('avg','decimal',['precision'=>6,'scale'=>2,'null'=>true,'comment'=>'平均分'])
+            ->addColumn('defenlv','decimal',['precision'=>6,'scale'=>2,'null'=>true,'comment'=>'得分率'])
             ->addColumn('biaozhuncha','decimal',['precision'=>6,'scale'=>2,'null'=>true,'comment'=>'标准差'])
             ->addColumn('youxiu','decimal',['precision'=>6,'scale'=>2,'null'=>true,'comment'=>'优秀'])
             ->addColumn('jige','decimal',['precision'=>6,'scale'=>2,'null'=>true,'comment'=>'及格'])

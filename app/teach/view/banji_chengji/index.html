@@ -5,11 +5,9 @@
 {/block}
 {block name="nav"}
 <span class="layui-breadcrumb">
-  <a href="">考试管理</a>
-  <a href="">更多操作</a>
-  <a href="">成绩查看</a>
-  <a href="">各班级成绩统计表</a>
-  <a><cite>{$list['webtitle']}</cite></a>
+	<a href="">教务管理</a>
+	<a href="">班级管理</a>
+	<a><cite>{$list['webtitle']}</cite></a>
 </span>
 {/block}
 {block name="search"}
@@ -36,7 +34,7 @@
   <div class="layui-input-block">
     {php} $category = getCategory('考试');{/php}
     {volist name="category" id="vo"}
-      <input type="checkbox" name="category[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+    <input type="checkbox" name="category[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
     {/volist}
   </div>
 </div>
@@ -53,66 +51,83 @@
     </div>
   </div>
 </div>
-
-
-<input type="hidden" name="student" value="{$list.student}">
+<input type="hidden" name="banji" value="{$list.banji_id}">
 {/block}
 {block name="table"}
-  <table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
+<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
 {/block}
+
 {block name="echart"}
-  {volist name="$list.sbj" id="vo"}
-    <div class="layui-col-xs6" style="width:100%; height:400px; margin-top: 45px; margin-bottom: 45px;" id="{$vo.lieming}"></div>
-  {/volist}
+{volist name="$list.subject" id="vo"}
+<div class="layui-col-xs6" style="width:100%; height:400px; margin-top: 45px; margin-bottom: 45px;" id="{$vo.lieming}"></div>
+{/volist}
 {/block}
 {block name="myjs"}
 <!-- 表格上面按钮模板 -->
 <script type="text/html" id="toolbarDemo">
-<!--   <div class="layui-btn-container">
-    <button class="layui-btn" lay-event="download">
-      <i class="layui-icon layui-icon-download-circle"></i> 下载报告
-    </button>
-  </div> -->
+ <div class="layui-btn-container">
+  <button class="layui-btn" lay-event="download">
+   <i class="layui-icon layui-icon-download-circle"></i> 下载
+ </button>
+</div>
 </script>
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
-  <a class="layui-btn-xs" lay-event="detail" title="查看"><i class="layui-icon layui-icon-search"></i></a>
+	<!-- <a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a> -->
+	<!-- <a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a> -->
 </script>
 <!-- 表格操作 -->
 <script>
- // 设置列
+	// 设置列
   options.cols=[[ //表头
-  {field:'id',type:'numbers',sort:true,width:50,title:'序号'}
-  ,{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:10}
-  ,{field: 'kaoshiTitle',sort:true, title: '考试类型', minWidth:100}
-  ,{field:'bfdate',title: '考试时间',sort:true, minWidth:150,templet:function(d){
-    var date;
-    date = d.enddate.split('-');
-    endate = date[1] + '-' + date[2];
-    endate = d.bfdate + '～' + endate;
-    return endate;
-  }}
-  ,{field:'zuzhi',title: '组织单位',sort:true, minWidth:100}
-  ]];
+  {type:'numbers',title:'序号',rowspan:2},
+  {field: 'ks_title', title: '考试名称',sort: false,minWidth:80,rowspan:2},
+  ]
+  ,[]
+  ];
+	// 获取学科
+	var xk = '<?php echo json_encode($list["subject"]);?>';
+	xk = eval(decodeURIComponent(xk));
+	var xiangmu = {cj_cnt:'人数',avg:'平均分',jige:'及格率%',youxiu:'优秀率%'};		// 要显示哪些统计结果
 
 
-  var xk = '<?php echo json_encode($list["sbj"]);?>';
-  xk = eval(decodeURIComponent(xk));
-  for(x in xk)
-  {
-    options.cols[0].push({field:xk[x].lieming, title: xk[x].title , minWidth:100,sort: true});
-  }
-  options.cols[0].push({field: 'avg', title: '平均分', minWidth:100,sort: true});
-  options.cols[0].push({field: 'sum', title: '总分', minWidth:100,sort: true});
-
+	$.each(xk,function(index,value){
+		options.cols[0].push({title: xk[index].title,colspan:4,align:'center'});
+		$.each(xiangmu,function(i,val){
+			var colname = xk[index].lieming;
+      var colinfo = {
+       title:val
+       ,minWidth:100
+       ,templet:function(d){
+        var str = "";
+        if(d.chengji)
+        {
+          if(d.chengji[colname])
+          {
+            str = d.chengji[colname][i];
+          }
+        }
+        return str;
+      }
+    };
+    options.cols[1].push(colinfo);
+  });
+  });
+ options.cols[0].push({title: '全科及格率%',minWidth:100,rowspan:2,templet:function(d){
+  var str = d.quanke.jige;
+  return str;
+}});
+ options.cols[0].push({ title: '总平均分',minWidth:100,rowspan:2,templet:function(d){
+  var str = d.quanke.avg;
+  return str;
+}});
 
   // 提交搜索条件后重载表格
-  layui.use(['table','cjgl','laydate','element'],function(){
-    var table = layui.table
-    cjgl = layui.cjgl
-    laydate = layui.laydate
-    form = layui.form
-    element = layui.element;
+  layui.use(['table','cjgl','laydate'],function(){
+  	var table = layui.table
+  	cjgl = layui.cjgl
+  	form = layui.form
+    laydate = layui.laydate;
 
     //开始时间
     laydate.render({
@@ -151,78 +166,77 @@
       }
     });
 
-
     // 添加图表中内容
     for(x in xk)
     {
       getDefenlv(xk[x].id,xk[x].lieming,xk[x].title);
     }
 
+
     //表头工具栏事件
     table.on('toolbar(mytable)', function(obj){
       switch(obj.event){
         case 'dels':
-          var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-          cjgl.delAll(checkStatus,'/school','mytable');
-          break;
-        case 'add':
-          cjgl.add('添加单位','/school/create','650','500');
-          break;
-        case 'download':
-          cjgl.add('下载成绩','/chengji/bjtj/dwbiaoge/{$list.kaoshi}','650','300');
-          break;
-        };
-      });
-
-
+	        var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
+	        cjgl.delAll(checkStatus,'/school','mytable');
+	        break;
+	      case 'add':
+	        cjgl.add('添加单位','/school/create','650','500');
+	        break;
+	      case 'download':
+	        cjgl.add('下载成绩','','650','300');
+	        break;
+       };
+     });
 
     //监听行工具条
     table.on('tool(mytable)', function(obj){
-      var data = obj.data; //获得当前行数据
-      var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
-      var tr = obj.tr; //获得当前行 tr 的DOM对象
-      switch(layEvent){
-        case 'detail':// 查看
-          cjgl.add(obj.data.kaoshiTitle + '考试成绩','/kaoshi/kaohao/read/'+obj.data.kaohaoId,'','',true);
-          break;
-      };
-    });
-
-
+        var data = obj.data; //获得当前行数据
+        var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+        var tr = obj.tr; //获得当前行 tr 的DOM对象
+        switch(layEvent){
+        	case 'del':// 删除
+            cjgl.del(obj,"/school");
+            break;
+        	case 'edit':// 编辑
+            cjgl.add('编辑单位','','650','500');
+            break;
+        };
+      });
 
     // 监听表单提交
     form.on('radio', function(data){
+      $("#srcsubmit").click();
+      // 添加图表中内容
       for(x in xk)
       {
         getDefenlv(xk[x].id,xk[x].lieming,xk[x].title);
       }
-
-      $("#srcsubmit").click();
     });
 
 
-  // 监听表单提交
-  form.on('checkbox', function(data){
-    for(x in xk)
-    {
-      getDefenlv(xk[x].id,xk[x].lieming,xk[x].title);
+  	// 监听表单提交
+  	form.on('checkbox', function(data){
+      $("#srcsubmit").click();
+      // 添加图表中内容
+      for(x in xk)
+      {
+        getDefenlv(xk[x].id,xk[x].lieming,xk[x].title);
+      }
+    });
+
+
+    // 条形统计图--平均分
+    function getDefenlv(sbjid,sbjlieming,sbjtitle){
+      var id = sbjlieming;
+      var url = '/teach/banjicj/datatx';
+      var val = form.val('search');
+      val.subject = sbjid;
+      var title = sbjtitle;
+      createZhexian(id,url,val,title);
     }
 
-    $("#srcsubmit").click();
   });
-
-
-   // 条形统计图--平均分
-   function getDefenlv(sbjid,sbjlieming,sbjtitle){
-    var id = sbjlieming;
-    var url = '/renshi/studentcj/chengjitubiao';
-    var val = form.val('search');
-    val.subject = sbjid;
-    var title = sbjtitle;
-    createZhexian(id,url,val,title);
-  }
-
-});
 
   /**
   * 异步获取图表中的数据
@@ -271,5 +285,6 @@
       });
     });
   }
-</script>
-{/block}
+
+  </script>
+  {/block}

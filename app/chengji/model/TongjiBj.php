@@ -284,6 +284,73 @@ class TongjiBj extends Base
     }
 
 
+    /**
+    * 查询班级历次成绩
+    */
+    public function srcBanjiChengji($srcfrom)
+    {
+        // 初始化参数
+        $src = array(
+            'banji' => '',
+            'category' => '',
+            'xueqi' => '',
+        );
+
+        // 用新值替换初始值
+        $src = array_cover( $srcfrom , $src ) ;
+        $src['xueqi'] = strToarray($src['xueqi']);
+        $src['category'] = strToarray($src['category']);
+
+        if(isset($srcfrom['bfdate']) && strlen($srcfrom['bfdate'])>0)
+        {
+            $src['bfdate'] = $srcfrom['bfdate'];
+        }else{
+            $src['bfdate'] = date("Y-m-d",strtotime("-1 year"));
+        }
+
+        if(isset($srcfrom['enddate']) && strlen($srcfrom['enddate'])>0)
+        {
+            $src['enddate'] = $srcfrom['enddate'];
+        }else{
+            $src['enddate'] = date("Y-m-d",strtotime("+1 day"));
+        }
+
+
+        $data = $this
+                ->where('banji_id',$src['banji'])
+                ->where('kaoshi_id','in',function($query) use($src){
+                    $query->name('kaoshi')
+                        ->whereTime('bfdate|enddate','between',[ $src['bfdate'],$src['enddate'] ])
+                        ->when(count($src['xueqi']) > 0, function($q) use($src){
+                            $q->where('xueqi', 'in', function($w) use($src){
+                                $w->name('xueqi')
+                                    ->where('category', 'in', $src['xueqi'])
+                                    ->field('id');
+                            });
+                        })
+                        ->when(count($src['category']) > 0, function($q) use($src){
+                            $q->where('category', 'in', $src['category']);
+                        })
+                        ->field('id');
+                })
+                ->with([
+                    'bjKaoshi' => function($query){
+                        $query->field('id,title,bfdate');
+                    },
+                    'bjSubject' => function($query){
+                        $query->field('id,title,jiancheng,paixu,lieming');
+                    },
+                    'quJieguo' => function($query){
+                        $query->field('id,kaoshi_id,subject_id,defenlv');
+                    }
+                ])
+                ->select();
+
+        return $data;
+    }
+
+
+
     // 成绩排序
     public function bjOrder($kaoshi)
     {
@@ -353,6 +420,15 @@ class TongjiBj extends Base
     }
 
 
+    // 区成绩统计结果关联
+    public function quJieguo()
+    {
+        $sbjid = $this->getAttr('subject_id');
+        return $this->belongsTo('\app\chengji\model\TongjiSch','kaoshi_id','kaoshi_id')
+                ->where('subject_id',$sbjid);
+    }
+
+
     // 获取班级名称
     public function getBanjiTitleAttr()
     {
@@ -365,7 +441,6 @@ class TongjiBj extends Base
         $bj = $kh->cyBanji($src);
         return $bj[0]['banjiTitle'];
     }
-
 
 
 }

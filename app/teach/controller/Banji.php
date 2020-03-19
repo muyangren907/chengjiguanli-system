@@ -51,7 +51,7 @@ class Banji extends BaseController
         $limit_start = $src['page'] * $src['limit'] - $src['limit'];
         $limit_length = $src['limit'];
         $data = $data->slice($limit_start,$limit_length);
-       
+
         // 重组返回内容
         $data = [
             'code'=> 0 , // ajax请求次数，作为标识符
@@ -82,7 +82,7 @@ class Banji extends BaseController
         return $this->view->fetch('create');
     }
 
-    
+
 
     // 保存信息
     public function save()
@@ -127,7 +127,7 @@ class Banji extends BaseController
         // 实例化班级数据模型类
         $bj = new BJ();
 
-        // 保存数据 
+        // 保存数据
         $data = $bj->saveAll($bjarr);
 
         // 根据更新结果设置返回提示信息
@@ -137,14 +137,6 @@ class Banji extends BaseController
         return json($data);
     }
 
-    //
-    public function read($id)
-    {
-        //
-    }
-
-
-
 
     // 修改班级信息
     public function edit($id)
@@ -153,7 +145,6 @@ class Banji extends BaseController
         // 获取班级信息
         $list = BJ::field('id,school,ruxuenian,paixu')
             ->find($id);
-
 
         $this->view->assign('list',$list);
 
@@ -194,7 +185,7 @@ class Banji extends BaseController
         return json($data);
     }
 
-    
+
 
 
 
@@ -287,7 +278,7 @@ class Banji extends BaseController
 
             $bj = new BJ;
             $bjtitle = $bj->myBanjiTitle($bjinfo[0]['id']);
-            
+
 
             $yz==0 ? $data = ['msg'=>'移动成功','val'=>1,'title'=>$bjtitle,'paixu'=>$bjinfo[0]['paixu']] : $data = ['msg'=>'数据处理错误','val'=>0];
         }else{
@@ -296,7 +287,7 @@ class Banji extends BaseController
 
         // 返回处理结果
         return json($data);
-        
+
     }
 
 

@@ -10,7 +10,7 @@ class Tongji extends Base
 
     // 统计成绩
     public function tongjiCnt($cj=array(),$subject)
-    {   
+    {
         $data = array();
 
         // 循环统计各学科成绩
@@ -26,7 +26,7 @@ class Tongji extends Base
         }
 
         $data['stucnt'] = count($cj);
-        
+
         return $data;
     }
 
@@ -35,8 +35,8 @@ class Tongji extends Base
 
     // 统计成绩
     public function tongjiSubject($cj=array(),$subject)
-    {   
-        
+    {
+
         // 设置默认值
         $tempNull = [
             'xkcnt'=>0,
@@ -66,7 +66,7 @@ class Tongji extends Base
             $cjcol = array_column($cj,$value['lieming']);
             $stucnt = count($cjcol);
             $cjcol = array_filter($cjcol,function($item){
-                return $item !== null; 
+                return $item !== null;
             });
 
             $temp = $tempNull;
@@ -100,7 +100,7 @@ class Tongji extends Base
         $cjcol = array_column($cj,'sum');
         $stucnt = count($cjcol);
         $cjcol = array_filter($cjcol,function($item){
-                return $item !== null; 
+                return $item !== null;
             });
         $temp['id'] = 0;
         $temp['stucnt'] = $stucnt;
@@ -207,12 +207,12 @@ class Tongji extends Base
     }
 
 
-    /**  
+    /**
     * 计算四分位（ Quartile ） Q1、Q2、Q3的值
-    * @access public 
+    * @access public
     * @param array $arr 要计算的一维数组
     * @return array $result 下标0-2 分别对应Q1、Q2、Q3
-    */ 
+    */
     public function myquartile($arr)
     {
         // 获取数组长度
@@ -221,7 +221,7 @@ class Tongji extends Base
         // 如果数组为空或数组长度小于5时，返回空。
         if ($arr == null || $length == 0) return $result = [0=>'',1=>'',2=>''];
         if ($length < 5) return $result = [0=>'',1=>'',2=>''];
-        
+
         // 数组排序
         sort($arr);
 
@@ -246,7 +246,7 @@ class Tongji extends Base
             {
                 $result[$key] = $arr[$value-1];
             }else{
-            # 如果位置不是整数。计算公式:大数*位置小数 + 小数*(1-位置小数)          
+            # 如果位置不是整数。计算公式:大数*位置小数 + 小数*(1-位置小数)
                 $tempNum = $value;
                 $temp = intval($tempNum);
                 $tempNum = $tempNum - $temp;
@@ -257,5 +257,5 @@ class Tongji extends Base
 
         return $result;
     }
-    
+
 }

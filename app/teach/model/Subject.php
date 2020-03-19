@@ -6,7 +6,7 @@ use app\common\model\Base;
 
 class Subject extends Base
 {
-    // 查询所有单位
+    // 按条件查询学科
     public function search($src)
     {
         // 整理变量
@@ -24,6 +24,16 @@ class Subject extends Base
             	}
             ])
             ->select();
+        return $data;
+    }
+
+    // 获取参加考试的学科
+    public function searchKaoshi()
+    {
+        $data = self::where('kaoshi',1)
+                ->field('id,title,jiancheng,lieming')
+                ->select();
+
         return $data;
     }
 
