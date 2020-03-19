@@ -152,9 +152,6 @@ class Banji extends BaseController
     }
 
 
-
-
-
     // 更新班级信息
     public function update($id)
     {
@@ -184,9 +181,6 @@ class Banji extends BaseController
         // 返回信息
         return json($data);
     }
-
-
-
 
 
     // 删除班级
