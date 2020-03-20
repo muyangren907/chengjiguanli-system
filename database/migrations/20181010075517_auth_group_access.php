@@ -33,7 +33,7 @@ class AuthGroupAccess extends Migrator
 
         // 添加当前表字段
         $table
-            ->addColumn('user_id','integer',['limit'=>11,'null'=>false,'comment'=>'用户id'])
+            ->addColumn('uid','integer',['limit'=>11,'null'=>false,'comment'=>'用户id'])
             ->addColumn('group_id','integer',['limit'=>11,'null'=>false,'comment'=>'用户组id'])
             ->addColumn('create_time','integer',['limit'=>11,'default'=>1539158918,'null'=>false,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'default'=>1539158918,'null'=>false,'comment'=>'更新时间'])

@@ -10,14 +10,6 @@ use app\system\model\SystemBase as  sysbasemod;
 class Index extends BaseController
 {
 
-    // 初始化
-    protected function initialize()
-    {
-        
-    }
-
-
-
     // 主页
     public function index()
     {
@@ -26,8 +18,8 @@ class Index extends BaseController
 
         // 查询系统信息
         $list = $sysbasemod
-            ->order(['id'=>'desc'])
-            ->field('id,keywords,description')
+            ->order(['id' => 'desc'])
+            ->field('id, keywords, description')
             ->find();
 
 
@@ -42,7 +34,8 @@ class Index extends BaseController
                         ->field('id')
                         ->with([
                             'glGroup'=>function($query){
-                                $query->where('status',1)->field('title,rules,miaoshu');
+                                $query->where('status', 1)
+                                    ->field('title, rules, miaoshu');
                             }
                         ])
                         ->find();
@@ -51,7 +44,7 @@ class Index extends BaseController
             if($key == 0){
                 $rules = $value->rules;
             }else{
-                $rules = $rules.','.$value->rules;
+                $rules = $rules . ',' . $value->rules;
             }
         }
 
@@ -60,24 +53,25 @@ class Index extends BaseController
         $authrule = new \app\admin\model\AuthRule;
         // 获取用户拥有权限的菜单
         $list['menu'] = $authrule
-                        ->where('pid',0)
-                        ->where('status&ismenu',1)
-                        ->when(session('userid')>2,function($query) use($rules){
-                            $query->where('id','in',$rules);
+                        ->where('pid', 0)
+                        ->where('status&ismenu', 1)
+                        ->when(session('userid') > 2, function($query) use($rules){
+                            $query->where('id', 'in', $rules);
                         })
-                        ->field('id,title,font,name,pid')
+                        ->field('id, title, font, name, pid')
                         ->with([
-                            'authCid'=>function($query) use($rules){
-                                $query->where('status&ismenu',1)
-                                    ->when(session('userid')>2,function($query) use($rules)
+                            'authCid' => function($query) use($rules){
+                                $query->where('status&ismenu', 1)
+                                    ->when(session('userid') > 2, function($query) use($rules)
                                     {
-                                        $query->where('id','in',$rules);
+                                        $query->where('id', 'in', $rules);
                                     })
-                                    ->field('id,title,name,pid,url');
+                                    ->field('id, title, name, pid, url');
                             },
                         ])
                         ->order(['paixu'])
-                        ->select()->toArray();
+                        ->select()
+                        ->toArray();
 
         // 模版赋值
         $this->view->assign('list',$list);
@@ -96,7 +90,7 @@ class Index extends BaseController
         // 查询系统设置
         $list = $sysbasemod
             ->order(['id'=>'desc'])
-            ->field('thinks,danwei')
+            ->field('thinks, danwei')
             ->find();
 
         // 查询用户登信息
@@ -105,7 +99,8 @@ class Index extends BaseController
 
         // 查询用户姓名及用户拥有的权限
         $admin = new \app\admin\model\Admin;
-        $list['xingming'] = $admin->where('id',session('userid'))->value('xingming');
+        $list['xingming'] = $admin->where('id',session('userid'))
+            ->value('xingming');
         $list['group'] = $admin->getGroupnames(session('userid'));
 
         $list['server'] = request()->server();
@@ -120,7 +115,7 @@ class Index extends BaseController
         // 获取服务器操作系统
         $list->xitong = php_uname('s');
         // 获取磁盘空间
-        $list->kongjian = round(disk_free_space('/')*1/1024/1024/1024,2).'GB';
+        $list->kongjian = round(disk_free_space('/')*1/1024/1024/1024, 2).'GB';
         // 获取Session过期时间
         $list->session = \think\facade\Config::get('session.expire').'s';
         // 获取thinkphp版本
@@ -137,9 +132,11 @@ class Index extends BaseController
         $njlist = nianjiList();
         $njlist = array_keys($njlist);
         $con = new \app\teach\model\Banji;
-        $bjids = $con->where('ruxuenian','in',$njlist)->column('id');
+        $bjids = $con->where('ruxuenian', 'in', $njlist)
+            ->column('id');
         $con = new \app\renshi\model\Student;
-        $list['student'] =  $con->where('banji','in',$bjids)->count();
+        $list['student'] =  $con->where('banji_id', 'in', $bjids)
+            ->count();
         // 管理员数
         $con = new \app\admin\model\Admin;
         $list['admin'] =  $con->count();
@@ -152,11 +149,12 @@ class Index extends BaseController
 
 
 
+
         $view = app('view');
         // 模版赋值
         $view->assign('list',$list);
 
-        
+
         // 渲染输出
         return $view->fetch('welcome');
     }
