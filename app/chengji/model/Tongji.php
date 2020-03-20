@@ -3,9 +3,9 @@
 namespace app\chengji\model;
 
 // 引用基类
-use app\common\model\Base;
+use app\BaseModel;
 
-class Tongji extends Base
+class Tongji extends BaseModel
 {
 
     // 统计成绩

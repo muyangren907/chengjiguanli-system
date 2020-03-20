@@ -2,13 +2,11 @@
 
 namespace app\renshi\model;
 
-use app\common\model\Base;
+use app\BaseModel;
 
 
-class Teacher extends Base
+class Teacher extends BaseModel
 {
-    
-
     //搜索单位获奖荣誉
     public function search($srcfrom)
     {
@@ -211,7 +209,7 @@ class Teacher extends Base
     }
 
 
-    
+
     // 年龄获取器
     public function getAgeAttr()
     {
@@ -226,7 +224,7 @@ class Teacher extends Base
     }
 
 
-    
+
 
 
 }

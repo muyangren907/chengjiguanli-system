@@ -36,7 +36,7 @@ class Subject extends Migrator
             ->addColumn('title','string',['limit'=>25,'default'=>'a','null'=>false,'comment'=>'学科名称'])
             ->addColumn('jiancheng','string',['limit'=>6,'default'=>'a','null'=>false,'comment'=>'简称'])
             ->addColumn('lieming','string',['limit'=>46,'default'=>'a','null'=>false,'comment'=>'列名'])
-            ->addColumn('category','string',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'大学科类别'])
+            ->addColumn('category_id','string',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'大学科类别'])
             ->addColumn('kaoshi','boolean',['limit'=>1,'default'=>false,'null'=>0,'comment'=>'是否参与考试'])
             ->addColumn('paixu','integer',['limit'=>4,'default'=>'999','null'=>false,'comment'=>'排序'])
             ->addColumn('status','boolean',['limit'=>1,'default'=>1,'null'=>false,'comment'=>'0=禁用，1=正常'])

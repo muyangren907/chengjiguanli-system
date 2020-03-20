@@ -2,9 +2,9 @@
 
 namespace app\system\model;
 
-use app\common\model\Base;
+use app\BaseModel;
 
-class SystemBase extends Base
+class SystemBase extends BaseModel
 {
     //
 }

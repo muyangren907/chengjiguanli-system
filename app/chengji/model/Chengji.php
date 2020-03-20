@@ -3,10 +3,10 @@
 namespace app\chengji\model;
 
 // 引用基类
-use app\common\model\Base;
+use app\BaseModel;
 
 
-class Chengji extends Base
+class Chengji extends BaseModel
 {
 
 

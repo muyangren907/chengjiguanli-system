@@ -2,25 +2,35 @@
 
 namespace app\teach\model;
 
-use app\common\model\Base;
+use app\BaseModel;
 
-class Subject extends Base
+class Subject extends BaseModel
 {
     // 按条件查询学科
-    public function search($src)
+    public function search($srcfrom)
     {
         // 整理变量
-        $searchval = $src['searchval'];
+        $src = [
+            'status' => ''
+            ,'kaoshi' => ''
+            ,'searchval' => ''
+        ];
+        $src = array_cover($srcfrom, $src) ;
 
         // 查询数据
         $data = $this
-            ->order([$src['field'] =>$src['order']])
-            ->when(strlen($searchval)>0,function($query) use($searchval){
-                    $query->where('title|jiancheng','like','%'.$searchval.'%');
-                })
+            ->when(strlen($src['searchval']) > 0, function($query) use($src){
+                $query->where('title|jiancheng', 'like', '%' . $src['searchval'] . '%');
+            })
+            ->when(strlen($src['kaoshi']) > 0, function($query) use($src){
+                $query->where('kaoshi', $src['kaoshi']);
+            })
+            ->when(strlen($src['status']) > 0, function($query) use($src){
+                $query->where('status', $src['status']);
+            })
             ->with([
-            	'sbjCategory'=>function($query){
-            		$query->field('id,title');
+            	'sbjCategory' => function($query){
+            		$query->field('id, title');
             	}
             ])
             ->select();
@@ -30,8 +40,8 @@ class Subject extends Base
     // 获取参加考试的学科
     public function searchKaoshi()
     {
-        $data = self::where('kaoshi',1)
-                ->field('id,title,jiancheng,lieming')
+        $data = self::where('kaoshi', 1)
+                ->field('id, title, jiancheng, lieming')
                 ->select();
 
         return $data;
@@ -40,6 +50,6 @@ class Subject extends Base
     // 大类别关联
     public function sbjCategory()
 	{
-		return $this->belongsTo('\app\system\model\Category','category','id');
+		return $this->belongsTo('\app\system\model\Category', 'category', 'id');
 	}
 }

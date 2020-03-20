@@ -3,9 +3,9 @@
 namespace app\admin\model;
 
 // 引用用户数据模型
-use app\common\model\Base;
+use app\BaseModel;
 
-class AuthGroup extends Base
+class AuthGroup extends BaseModel
 {
     // 查询所有角色
     public function search($src)
@@ -22,5 +22,5 @@ class AuthGroup extends Base
             ->select();
         return $data;
     }
-    
+
 }

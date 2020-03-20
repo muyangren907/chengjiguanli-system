@@ -3,32 +3,39 @@
 namespace app\teach\model;
 
 // 引用数据模型基类
-use app\common\model\Base;
+use app\BaseModel;
 
-class Banji extends Base
+class Banji extends BaseModel
 {
 
     // 查询所有班级
-    public function search($src)
+    public function search($srcfrom)
     {
         // 整理变量
-        $school = $src['school'];
-        $ruxuenian = $src['ruxuenian'];
+        $src = [
+            'banji_school_id' => ''
+            ,'banji_ruxuenian' => ''
+            ,'banji_status' => ''
+        ];
+        $src = array_cover($srcfrom, $src) ;
+        $src['banji_school_id'] = strToarray($src['banji_school_id']);
+        $src['banji_ruxuenian'] = strToarray($src['banji_ruxuenian']);
 
         // 查询数据
         $data = $this
-            // ->order('school','ruxuenian','paixu')
-            ->order([$src['field'] =>$src['order']])
-            ->when(strlen($school)>0,function($query) use($school){
-                    $query->where('school',$school);
+            ->when(count($src['banji_school_id']) > 0, function($query) use($src){
+                    $query->where('school_id', 'in', $src['banji_school_id']);
                 })
-            ->when(strlen($ruxuenian)>0,function($query) use($ruxuenian){
-                    $query->where('ruxuenian',$ruxuenian);
+            ->when(count($src['banji_ruxuenian']) > 0, function($query) use($src){
+                    $query->where('ruxuenian', 'in', $src['banji_ruxuenian']);
+                })
+            ->when(strlen($src['banji_status']) > 0, function($query) use($src){
+                    $query->where('status', $src['banji_status']);
                 })
             ->with(
                 [
                     'glSchool'=>function($query){
-                        $query->field('id,title');
+                        $query->field('id, title');
                     },
                 ]
             )
@@ -44,9 +51,43 @@ class Banji extends Base
     }
 
 
+    // 以年级分组查询班级
+    public function searchNjGroup($srcfrom)
+    {
+        // 整理变量
+        $src = [
+            'banji_school_id' => ''
+            ,'banji_ruxuenian' => ''
+            ,'banji_status' => ''
+        ];
+        $src = array_cover($srcfrom, $src) ;
+        $src['banji_ruxuenian'] = strToarray($src['banji_ruxuenian']);
+
+        // 查询年级数据
+        $data = self:: where('school_id',$src['banji_school_id'])
+        ->where('ruxuenian','in',$src['banji_ruxuenian'])
+        ->where('status',$src['banji_status'])
+        ->group('ruxuenian')
+        ->field('ruxuenian')
+        ->with([
+            'njBanji'=>function($query)use($src){
+                $query->where('status',1)
+                ->where('school_id',$src['banji_school_id'])
+                ->field('id,ruxuenian,paixu')
+                ->where('status',1)
+                ->order('paixu')
+                ->append(['banjiTitle','banTitle']);
+            }
+        ])
+        ->select();
+
+        return $data;
+    }
+
+
     // 学校关联模型
     public function glSchool(){
-        return $this->belongsTo('\app\system\model\School','school','id');
+        return $this->belongsTo('\app\system\model\School','school_id','id');
     }
 
     // 学校关联模型
@@ -58,11 +99,10 @@ class Banji extends Base
     // 班级名获取器
     public function getNumTitleAttr()
     {
-    	$njname = nianjilist();
-    	// $bjname = banjinamelist();
+    	// 获取基础信息
+        $njname = nianjilist();     # 年级名对应表
     	$nj = $this->getAttr('ruxuenian');
     	$bj = $this->getAttr('paixu');
-
         $numnj = array_flip(array_keys($njname));
 
         if(array_key_exists($nj,$numnj))
@@ -71,6 +111,7 @@ class Banji extends Base
         }else{
             $numname = $nj.'.'.$bj;
         }
+
     	return $numname;
     }
 
@@ -102,6 +143,7 @@ class Banji extends Base
     {
         $bjname = banjinamelist();
         $bj = $this->getAttr('paixu');
+
         // 获取班级名
         if( array_key_exists($bj,$bjname)==true )
         {
@@ -140,7 +182,6 @@ class Banji extends Base
             ->field('id,ruxuenian,paixu,delete_time')
             ->find();
 
-
         //获取班级、年级列表
         $njlist = nianjiList($jdshijian);
         $bjlist = banjinamelist();
@@ -160,30 +201,6 @@ class Banji extends Base
 
         return $bjtitle;
     }
-
-    // /**
-    //  * 获取考试时的班级名称(数字格式5.1)
-    //  * $jdshijian 考试开始时间
-    //  * $ruxuenian 年级
-    //  * $paixu 班级
-    //  * 返回 $str 班级名称
-    //  * */
-    // public function myBanjiNum($bjid,$jdshijian=0)
-    // {
-    //     // 查询班级信息
-    //     $bjinfo = $this::withTrashed()
-    //         ->where('id',$bjid)
-    //         ->field('id,ruxuenian,paixu,delete_time')
-    //         ->find();
-
-
-    //     //获取班级、年级列表
-    //     $njlist = array_keys(nianjiList($jdshijian));
-    //     $nj = array_search($bjinfo->ruxuenian,$njlist)+1;
-    //     $bjtitle = $nj.'.'.$bjinfo->paixu;
-
-    //     return $bjtitle;
-    // }
 
 
 }

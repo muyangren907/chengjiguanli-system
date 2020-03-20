@@ -3,10 +3,10 @@
 namespace app\keti\model;
 
 // 引用数据模型基类
-use app\common\model\Base;
+use app\BaseModel;
 
 
-class Keti extends Base
+class Keti extends BaseModel
 {
     //搜索课题册
     public function search($srcfrom)
@@ -18,7 +18,7 @@ class Keti extends Base
             'category'=>array(),
             'searchval'=>''
         ];
-        
+
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
 

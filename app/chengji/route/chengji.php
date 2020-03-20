@@ -78,7 +78,7 @@ Route::group('luru', function () {
 	    Route::rule('saveall','Luru/saveAll','post');				# 保存表格录入信息
 	    Route::rule('edit/<id>','Luru/edit','get');				# 修改信息
 	    Route::rule('update/<id>','Luru/update','put');				# 更新信息
-	    Route::rule('','Luru/index','get');			# 成绩获取
+	    Route::rule('index','Luru/index','get');			# 成绩获取
 	    Route::rule('data','Luru/ajaxData','post');			# 成绩获取
 	});
 

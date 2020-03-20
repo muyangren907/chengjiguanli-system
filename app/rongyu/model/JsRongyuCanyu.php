@@ -3,9 +3,9 @@
 namespace app\rongyu\model;
 
 // 引用数据模型类
-use think\Model;
+use app\BaseModel;
 
-class JsRongyuCanyu extends Model
+class JsRongyuCanyu extends BaseModel
 {
 
     // 荣誉册关联

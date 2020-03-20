@@ -1,14 +1,14 @@
 <?php
 namespace app\chengji\model;
 // 引用基类
-use app\common\model\Base;
+use app\BaseModel;
 // 引用学生成绩统计类
 use app\chengji\model\Tongji as TJ;
 
 /**
  * @mixin think\Model
  */
-class TongjiSch extends Base
+class TongjiSch extends BaseModel
 {
     /**
     * 统计各学校的指定个年级的成绩

@@ -3,9 +3,9 @@
 namespace app\admin\model;
 
 // 引用用户数据模型
-use app\common\model\Base;
+use app\BaseModel;
 
-class Admin extends Base
+class Admin extends BaseModel
 {
     // 查询所有角色
     public function search($src)
@@ -49,7 +49,7 @@ class Admin extends Base
     // 获取密码
     public function password($username)
     {
-    	// 查询数据 
+    	// 查询数据
     	$pasW = $this
     		->where('username',$username)
     		->value('password');

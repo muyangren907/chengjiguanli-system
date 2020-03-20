@@ -3,9 +3,9 @@
 namespace app\rongyu\model;
 
 // 引用数据模型基类
-use app\common\model\Base;
+use app\BaseModel;
 
-class DwRongyu extends Base
+class DwRongyu extends BaseModel
 {
     //搜索单位获奖荣誉
     public function search($srcfrom)

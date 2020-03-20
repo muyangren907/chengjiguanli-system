@@ -3,10 +3,10 @@
 namespace app\kaoshi\model;
 
 // 引用数据模型基类
-use app\common\model\Base;
+use app\BaseModel;
 
 
-class Kaoshi extends Base
+class Kaoshi extends BaseModel
 {
     // 查询所有考试
     public function search($srcfrom)

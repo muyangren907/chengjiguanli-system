@@ -3,9 +3,9 @@
 namespace app\rongyu\model;
 
 // 引用数据模型基类
-use think\Model;
+use app\BaseModel;
 
-class DwRongyuCanyu extends Model
+class DwRongyuCanyu extends BaseModel
 {
     // 关闭全局自动时间戳
     protected $autoWriteTimestamp = false;

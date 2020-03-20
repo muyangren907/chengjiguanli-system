@@ -2,10 +2,10 @@
 
 namespace app\teach\model;
 
-use app\common\model\Base;
+use app\BaseModel;
 
 
-class Xueqi extends Base
+class Xueqi extends BaseModel
 {
      // 开始时间修改器
     public function setBfdateAttr($value)
@@ -38,16 +38,40 @@ class Xueqi extends Base
     }
 
     // 查询所有单位
-    public function search($src)
+    public function search($srcfrom)
     {
         // 整理变量
-        $searchval = $src['searchval'];
+        $src = [
+            'category' => ''
+            ,'searchval' => ''
+            ,'status' => ''
+        ];
+        $src = array_cover($srcfrom, $src) ;
+        if(isset($srcfrom['bfdate']) && strlen($srcfrom['bfdate'])>0)
+        {
+            $src['bfdate'] = $srcfrom['bfdate'];
+        }else{
+            $src['bfdate'] = date("Y-m-d",strtotime("-4 year"));
+        }
+        if(isset($srcfrom['enddate']) && strlen($srcfrom['enddate'])>0)
+        {
+            $src['enddate'] = $srcfrom['enddate'];
+        }else{
+            $src['enddate'] = date("Y-m-d",strtotime("+1 day"));
+        }
+
 
         // 查询数据
         $data = $this
-            ->order([$src['field'] =>$src['order']])
-            ->when(strlen($searchval)>0,function($query) use($searchval){
-                    $query->where('title|xuenian','like','%'.$searchval.'%');
+            ->whereTime('bfdate|enddate','between',[ $src['bfdate'],$src['enddate'] ])
+            ->when(strlen($src['searchval'])>0,function($query) use($src){
+                    $query->where('title|xuenian','like','%'.$src['searchval'].'%');
+                })
+            ->when(strlen($src['category'])>0,function($query) use($src){
+                    $query->where('category', $src['category']);
+                })
+            ->when(strlen($src['status'])>0,function($query) use($src){
+                    $query->where('status', $src['status']);
                 })
             ->with(
                 [
@@ -57,6 +81,7 @@ class Xueqi extends Base
                 ]
             )
             ->select();
+
         return $data;
     }
 }

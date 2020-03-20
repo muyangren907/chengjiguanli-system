@@ -34,9 +34,9 @@ class Kaoshi extends Migrator
         // 添加当前表字段
         $table
             ->addColumn('title','string',['limit'=>25,'default'=>'a','null'=>false,'comment'=>'考试名称'])
-            ->addColumn('zuzhi','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'组织考试单位'])
-            ->addColumn('xueqi','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'学期'])
-            ->addColumn('category','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'类别'])
+            ->addColumn('zuzhi_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'组织考试单位'])
+            ->addColumn('xueqi_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'学期'])
+            ->addColumn('category_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'类别'])
             ->addColumn('bfdate','integer',['limit'=>11,'default'=>1539158918,'null'=>false,'comment'=>'开始日期'])
             ->addColumn('enddate','integer',['limit'=>11,'default'=>1539158918,'null'=>false,'comment'=>'结束日期'])
             ->addColumn('status','boolean',['limit'=>1,'default'=>'1','null'=>false,'comment'=>'0=禁用，1=正常'])

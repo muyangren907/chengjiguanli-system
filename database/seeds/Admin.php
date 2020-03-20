@@ -20,14 +20,14 @@ class Admin extends Seeder
                 'id'        =>  1,
                 'xingming'  =>  '超级管理员1',
                 'username'  =>  'admin',
-                'school'    =>  1,
+                'school_id' =>  1,
                 'password'  =>  '$apr1$RSUodBwI$zOhVq9RQWfQDOW2sbeCDS1',
             ],
             [
                 'id'        =>  2,
                 'xingming'  =>  '超级管理员2',
                 'username'  =>  'admin1',
-                'school'    =>  1,
+                'school_id'    =>  1,
                 'password'  =>  '$apr1$RSUodBwI$zOhVq9RQWfQDOW2sbeCDS1',
             ],
 

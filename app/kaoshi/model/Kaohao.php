@@ -3,9 +3,9 @@
 namespace app\kaoshi\model;
 
 // 引用数据模型基类
-use app\common\model\Base;
+use app\BaseModel;
 
-class Kaohao extends Base
+class Kaohao extends BaseModel
 {
     /**
     * 根据班级ID和考试ID，以班级为单位分组，查询参加当前考试的学生信息

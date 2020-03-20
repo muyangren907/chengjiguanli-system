@@ -14,7 +14,6 @@
 	// 获取类别列表
 	function getCategory($str = 0)
 	{
-
 		$category = new \app\system\model\Category;
 
 		// 如果参数格式不为数字的时候查询$pid
@@ -22,22 +21,19 @@
 		{
 			// 根据父级id查询类别列表
 			$str = $category
-				->where('title',$str)
+				->where('title', $str)
 				->value('id');
 		}
 
 
-		$str == '' || $str == null ? $str=0 :$str=$str;
-
-
+		$str == '' || $str == null ? $str=0 : $str = $str;
 		// 根据父级id查询类别列表
 		$list = $category
-			->where('pid',$str)
-			->where('status',1)
-			->field('id,title')
+			->where('pid', $str)
+			->where('status', 1)
+			->field('id, title')
 			->select();
 
-		
 		// 返回类别列表
 		return $list;
 	}
@@ -49,17 +45,17 @@
 		// $yd = '8-1';
 		if($riqi == 0)
 		{
-			$jiedian = strtotime(date('Y').'-8-1');
+			$jiedian = strtotime(date('Y') . '-8-1');
 			$thisday = time();
 			$nian = date('Y');
 		}else{
-			$jiedian = strtotime(date('Y',$riqi).'-8-1');
+			$jiedian = strtotime(date('Y', $riqi) . '-8-1');
 			$thisday = $riqi;
-			$nian = date('Y',$riqi);
+			$nian = date('Y', $riqi);
 		}
 
 
-		if($thisday<=$jiedian)
+		if($thisday <= $jiedian)
 		{
 			$str = 1;
 		}else{
@@ -70,13 +66,12 @@
 		$nian = $nian - $str;
 
 		$njlist = array();
-
-		$njlist[$nian]='一年级';
-		$njlist[$nian-1]='二年级';
-		$njlist[$nian-2]='三年级';
-		$njlist[$nian-3]='四年级';
-		$njlist[$nian-4]='五年级';
-		$njlist[$nian-5]='六年级';
+		$njlist[$nian] = '一年级';
+		$njlist[$nian - 1] = '二年级';
+		$njlist[$nian - 2] = '三年级';
+		$njlist[$nian - 3] = '四年级';
+		$njlist[$nian - 4] = '五年级';
+		$njlist[$nian - 5] = '六年级';
 
 		return $njlist;
 	}
@@ -86,31 +81,31 @@
 	function banjinamelist()
 	{
 		$bjarr = array(
-			'1'=>'一班',
-			'2'=>'二班',
-			'3'=>'三班',
-			'4'=>'四班',
-			'5'=>'五班',
-			'6'=>'六班',
-			'7'=>'七班',
-			'8'=>'八班',
-			'9'=>'九班',
-			'10'=>'十班',
-			'11'=>'十一班',
-			'12'=>'十二班',
-			'13'=>'十三班',
-			'14'=>'十四班',
-			'15'=>'十五班',
-			'16'=>'十六班',
-			'17'=>'十七班',
-			'18'=>'十八班',
-			'19'=>'十九班',
-			'20'=>'二十班',
-			'21'=>'二十一班',
-			'22'=>'二十二班',
-			'23'=>'二十三班',
-			'24'=>'二十四班',
-			'25'=>'二十五班',
+			'1' => '一班'
+			,'2' => '二班'
+			,'3' => '三班'
+			,'4' => '四班'
+			,'5' => '五班'
+			,'6' => '六班'
+			,'7' => '七班'
+			,'8' => '八班'
+			,'9' => '九班'
+			,'10' => '十班'
+			,'11' => '十一班'
+			,'12' => '十二班'
+			,'13' => '十三班'
+			,'14' => '十四班'
+			,'15' => '十五班'
+			,'16' => '十六班'
+			,'17' => '十七班'
+			,'18' => '十八班'
+			,'19' => '十九班'
+			,'20' => '二十班'
+			,'21' => '二十一班'
+			,'22' => '二十二班'
+			,'23' => '二十三班'
+			,'24' => '二十四班'
+			,'25' => '二十五班'
 		);
 
 		return $bjarr;
@@ -123,20 +118,20 @@
 	* $date是时间戳
 	* $type为1的时候是虚岁,2的时候是周岁
 	*/
-	function getAgeByBirth($date = 0,$type = 1){
-	   $nowYear = date("Y",time());
-	   $nowMonth = date("m",time());
-	   $nowDay = date("d",time());
-	   $birthYear = date("Y",$date);
-	   $birthMonth = date("m",$date);
-	   $birthDay = date("d",$date);
+	function getAgeByBirth($date = 0, $type = 1){
+	   $nowYear = date("Y", time());
+	   $nowMonth = date("m", time());
+	   $nowDay = date("d", time());
+	   $birthYear = date("Y", $date);
+	   $birthMonth = date("m", $date);
+	   $birthDay = date("d", $date);
 	   if($type == 1){
 	    $age = $nowYear - ($birthYear - 1);
 	   }elseif($type == 2){
-	    if($nowMonth<$birthMonth){
+	    if($nowMonth < $birthMonth){
 	     $age = $nowYear - $birthYear - 1;
-	    }elseif($nowMonth==$birthMonth){
-	     if($nowDay<$birthDay){
+	    }elseif($nowMonth == $birthMonth){
+	     if($nowDay < $birthDay){
 	      $age = $nowYear - $birthYear - 1;
 	     }else{
 	      $age = $nowYear - $birthYear;
@@ -159,7 +154,7 @@
 
 
 	// 单位列表
-	function schlist($low='班级',$high='其它级',$xueduan=array())
+	function schlist($low = '班级', $high = '其它级', $xueduan = array())
 	{
 
 		// 实例化单位模型
@@ -167,29 +162,28 @@
 		// 实例化类别数据模型
 		$cat = new \app\system\model\Category;
 		// 获取获取级别列表
-		$catlist = $cat->where('pid',102)
-			->where('status',1)
-			->column('id','title');
+		$catlist = $cat->where('pid', 102)
+			->where('status', 1)
+			->column('id', 'title');
 
 		// 获取学段列表
-		if(count($xueduan)>0){
-			$xdlist = $cat->where('pid',103)
-				->where('status',1)
-				->where('title','in',$xueduan)
+		if(count($xueduan) > 0){
+			$xdlist = $cat->where('pid', 103)
+				->where('status', 1)
+				->where('title', 'in', $xueduan)
 				->column('id');
 		}else{
-			$xdlist = $cat->where('pid',103)
-				->where('status',1)
+			$xdlist = $cat->where('pid', 103)
+				->where('status', 1)
 				->column('id');
 		}
 
-
 		// 查询学校
-		$schlist = $sch->where('jibie','between',[$catlist[$low],$catlist[$high]])
-						->where('status',1)
-						->where('xueduan','in',$xdlist)
+		$schlist = $sch->where('jibie', 'between', [$catlist[$low], $catlist[$high]])
+						->where('status', 1)
+						->where('xueduan', 'in', $xdlist)
 						->order(['paixu'])
-						->field('id,title,jiancheng')
+						->field('id, title, jiancheng')
 						->select();
 
 		return $schlist;
@@ -203,7 +197,6 @@
 		{
 			return '';
 		}
-
 
 		$names = '';
 		foreach ($list as $key => $value) {
@@ -238,7 +231,7 @@
     {
     	$hash = $file->hash('sha1');
     	$f = new \app\system\model\Fields;
-    	$serFile = $f::where('hash',$hash)->find();
+    	$serFile = $f::where('hash', $hash)->find();
     	if($serFile)
     	{
     		$data['msg'] = '文件已经存在';
@@ -248,13 +241,14 @@
     	}
 
     	// 上传文件到本地服务器
-        $savename = \think\facade\Filesystem::disk('public')->putFile($list['serurl'], $file);
+        $savename = \think\facade\Filesystem::disk('public')
+            ->putFile($list['serurl'], $file);
         // 重新组合文件路径
-        $savename = str_replace("/","\\",$savename);
+        $savename = str_replace("/", "\\", $savename);
 
 	    if($isSave==true){
 	    	$list['url'] = $savename;
-		    $list['newname'] = substr($savename,strripos($savename,'\\')+1,strlen($savename)-strripos($savename,'\\')); 
+		    $list['newname'] = substr($savename, strripos($savename, '\\') + 1, strlen($savename)-strripos($savename, '\\'));
 		    $list['hash'] = $file->hash('sha1');
 		    $list['userid'] = session('userid');
 		    $list['oldname'] = $file->getOriginalName();
@@ -262,15 +256,14 @@
 		    $list['category'] = $list['category'];
 		    $list['bianjitime'] = $file->getMTime();
 		    $list['extension'] = $file->getOriginalExtension();
-		    
+
 	    	$saveinfo = $f::create($list);
 	    }
-	    
 
 		$data['msg'] = '上传成功';
     	$data['val'] = true;
     	$data['url'] = $savename;
-	    
+
 	    return $data;
     }
 
@@ -289,7 +282,7 @@ function sortArrByManyField(){
   foreach($args as $key => $field){
     if(is_string($field)){
       $temp = array();
-      foreach($arr as $index=> $val){
+      foreach($arr as $index => $val){
         $temp[$index] = $val[$field];
       }
       $args[$key] = $temp;
@@ -297,7 +290,7 @@ function sortArrByManyField(){
   }
   $args[] = &$arr;//引用值
   $keys = array_keys($args[0]);
-  call_user_func_array('array_multisort',$args);
+  call_user_func_array('array_multisort', $args);
 
   return array_pop($args);;
 }
@@ -327,12 +320,13 @@ function array_cover( $cover = array(), $covered = array() )
  * 根据考试ID值，判断考试开始或者结束时间是否已过
  * $kaoshiid 考试ID
  * $str      统计项目
- * 返回 $data 
- * */ 
-function kaoshiDate($kaoshiid,$str='enddate')
+ * 返回 $data
+ * */
+function kaoshiDate($kaoshiid, $str='enddate')
 {
 	$ks = new app\kaoshi\model\Kaoshi;
-    $enddate = $ks->where('id',$kaoshiid)->value($str);
+    $enddate = $ks->where('id', $kaoshiid)
+        ->value($str);
 
     $thistime = time();
     if( $thistime > $enddate )
@@ -348,26 +342,29 @@ function kaoshiDate($kaoshiid,$str='enddate')
 
 /**
  * 获取参加考试的学科
- * 返回 $data 
- * */ 
+ * 返回 $data
+ * */
 function subjectList()
 {
-	$sbj = new \app\teach\model\Subject;
-	$data = $sbj::where('status',1)
-                    ->where('kaoshi',1)
-                    ->field('id,title,jiancheng,lieming')
-                    ->select();
+	$src = [
+        'status' => 1
+        ,'kaoshi' =>1
+    ];
+
+    $sbj = new \app\teach\model\Subject;
+    $data = $sbj->search($src);
+
     return $data;
 }
 
 
-/**  
-* 把request到的参数转换成数组，并删除空值 
-* 
-* @access public 
-* @param str或array $str 表单中获取的参数 
+/**
+* 把request到的参数转换成数组，并删除空值
+*
+* @access public
+* @param str或array $str 表单中获取的参数
 * @return array 返回类型
-*/ 
+*/
 function strToarray($str)
 {
 	// 如果str是字符串，则转换成数组
@@ -383,6 +380,80 @@ function strToarray($str)
 	}
 	return $str;
 }
+
+
+/**
+* 把重新整理从数据模型中返回的对象
+* @access public
+* @param str或array $str 表单中获取的参数
+* @return array 返回类型
+*/
+function reSetObject($obj, $srcfrom)
+{
+    // 整理变量
+    $src = [
+        'field' => 'update_time'
+        ,'order' => 'desc'
+        ,'page' => 1
+        ,'limit' => 10
+    ];
+    $src = array_cover($srcfrom, $src) ;
+
+    // 整理数据
+    $cnt = $obj->count();
+    $obj = $obj->order(strval($src['field']), $src['order']);
+
+    $limit_start = $src['page'] * $src['limit'] - $src['limit'];
+    $limit_length = $src['limit'];
+    $obj = $obj->slice($limit_start, $limit_length);
+    $data = [
+        'code' => 0  // ajax请求次数，作为标识符
+        ,'msg' => ""  // 获取到的结果数(每页显示数量)
+        ,'count' => $cnt // 符合条件的总数据量
+        ,'data' => $obj //获取到的数据结果
+    ];
+
+    return $data;
+}
+
+/**
+* 把重新整理从数据模型中返回的对象
+* @access public
+* @param str或array $str 表单中获取的参数
+* @return array 返回类型
+*/
+function reSetArray($arr, $srcfrom)
+{
+    // 整理变量
+    $src = [
+        'field' => 'update_time'
+        ,'order' => 'desc'
+        ,'page' => 1
+        ,'limit' => 10
+    ];
+    $src = array_cover($srcfrom, $src) ;
+
+    // 重新整理数据
+    $cnt = count($arr);    # 记录总数
+    if($cnt > 0){
+        $src['order'] == 'desc' ? $src['order'] = SORT_DESC :$src['order'] = SORT_ASC;   # 数据排序
+        $arr = sortArrByManyField($arr,$src['field'],$src['order']);
+    }
+    $limit_start = $src['page'] * $src['limit'] - $src['limit']; # 获取当前页数据
+    $limit_length = $src['limit'];
+    $arr = array_slice($arr,$limit_start,$limit_length);
+    $data = [   # 数据合并
+        'code'=> 0 , # ajax请求次数，作为标识符
+        'msg'=>"",  # 获取到的结果数(每页显示数量)
+        'count'=>$cnt, # 符合条件的总数据量
+        'data'=>$arr, # 获取到的数据结果
+    ];
+
+    return $data;
+}
+
+
+
 
 
 

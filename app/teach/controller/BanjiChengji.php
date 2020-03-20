@@ -6,12 +6,12 @@ namespace app\teach\controller;
 // 引用控制器基类
 use app\BaseController;
 // 引用班级数据模型类
-use app\teach\model\BanjiChengji as bjcj;
+use app\teach\model\BanjiChengji as bjcjmod;
 
 class BanjiChengji extends BaseController
 {
     /**
-     * 显示资源列表
+     * 班级历次成绩列表
      *
      * @return \think\Response
      */
@@ -39,45 +39,24 @@ class BanjiChengji extends BaseController
         // 获取参数
         $src = $this->request
             ->only([
-                'page'=>'1',
-                'limit'=>'10',
-                'field'=>'ks_id',
-                'order'=>'desc',
-                'banji'=>'',
-                'category'=>'',
-                'xueqi'=>'',
-                'bfdate'=>'',
-                'enddate'=>'',
+                'page'=>'1'
+                ,'limit'=>'10'
+                ,'field'=>'ks_id'
+                ,'order'=>'desc'
+                ,'banji'=>''
+                ,'category'=>''
+                ,'xueqi'=>''
+                ,'bfdate'=>''
+                ,'enddate'=>''
             ],'POST');
 
 
-        // 实例化班级成绩数据模型
-        $bjcj = new \app\chengji\model\TongjiBj;
-        $data = $bjcj->srcBanjiChengji($src);
-        $bjcj = new bjcj;
-        $data = $bjcj->banjiChengjiList($data);
-
-
-        // 获取符合条件记录总数
-        $cnt = count($data);
-
-        $src['order'] == 'desc' ? $src['order'] =SORT_DESC :$src['order'] = SORT_ASC;
-        if($cnt > 0){
-            $data = sortArrByManyField($data,$src['field'],$src['order']);
-        }
-
-        // 获取当前页数据
-        $limit_start = $src['page'] * $src['limit'] - $src['limit'];
-        $limit_length = $src['limit'];
-        $data = array_slice($data,$limit_start,$limit_length);
-
-        // 重组返回内容
-        $data = [
-            'code'=> 0 , // ajax请求次数，作为标识符
-            'msg'=>"",  // 获取到的结果数(每页显示数量)
-            'count'=>$cnt, // 符合条件的总数据量
-            'data'=>$data, //获取到的数据结果
-        ];
+        // 根据条件获取班级成绩
+        $bjcjmod = new \app\chengji\model\TongjiBj;
+        $data = $bjcjmod->srcBanjiChengji($src);
+        $bjcjmod = new bjcjmod;
+        $data = $bjcjmod->banjiChengjiList($data);
+        $data = reSetArray($data, $src);
 
         return json($data);
     }
@@ -89,25 +68,24 @@ class BanjiChengji extends BaseController
         // 获取参数
         $src = $this->request
             ->only([
-                'field'=>'ks_id',
-                'order'=>'desc',
-                'banji'=>'',
-                'subject' => '',
-                'category'=>'',
-                'xueqi'=>'',
-                'bfdate'=>'',
-                'enddate'=>'',
+                'field' => 'ks_id'
+                ,'order' => 'desc'
+                ,'banji' => ''
+                ,'subject' => ''
+                ,'category' => ''
+                ,'xueqi' => ''
+                ,'bfdate' => ''
+                ,'enddate' => ''
             ],'POST');
 
 
-        // 实例化班级成绩数据模型
-        $bjcj = new \app\chengji\model\TongjiBj;
-        $data = $bjcj->srcBanjiChengji($src);
-        $bjcj = new bjcj;
-        $data = $bjcj->tiaoXing($data, $src['subject']);
+        // 获取统计图需要的数据
+        $bjcjmod = new \app\chengji\model\TongjiBj;
+        $data = $bjcjmod->srcBanjiChengji($src);
+        $bjcjmod = new bjcjmod;
+        $data = $bjcjmod->tiaoXing($data, $src['subject']);
 
         return json($data);
-
     }
 
 }

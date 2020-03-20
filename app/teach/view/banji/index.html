@@ -17,9 +17,9 @@
 		{php}
 		$schoollist = schlist('校级','校级',$xueduan=['小学','中小学']);
 		{/php}
-		<input type="radio" name="school" value="" title="无" checked="true">
+		<input type="radio" name="school_id" value="" title="无" checked="true">
 		{volist name="schoollist" id="vo"}
-		<input type="radio" name="school" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+		<input type="radio" name="school_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 		{/volist}
 	</div>
 </div>

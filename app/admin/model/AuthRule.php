@@ -3,9 +3,9 @@
 namespace app\admin\model;
 
 // 引用用户数据模型
-use app\common\model\Base;
+use app\BaseModel;
 
-class AuthRule extends Base
+class AuthRule extends BaseModel
 {
 
     // 父级菜单数据模型关联
@@ -20,7 +20,7 @@ class AuthRule extends Base
     {
         return $this->hasMany('AuthRule','pid','id');
     }
-    
+
 
     // 查询所有角色
     public function search($src)

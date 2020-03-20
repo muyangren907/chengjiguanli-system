@@ -102,6 +102,7 @@ abstract class BaseController
         return $v->failException(true)->check($data);
     }
 
+
     use \liliuwei\think\Jump;
 
 }

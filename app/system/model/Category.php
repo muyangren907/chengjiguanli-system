@@ -2,9 +2,9 @@
 
 namespace app\system\model;
 
-use app\common\model\Base;
+use app\BaseModel;
 
-class Category extends Base
+class Category extends BaseModel
 {
 	// 关闭全局自动时间戳
     protected $autoWriteTimestamp = false;

@@ -4,12 +4,12 @@ declare (strict_types = 1);
 namespace app\teach\model;
 
 // 引用数据模型基类
-use app\common\model\Base;
+use app\BaseModel;
 
 /**
  * @mixin think\Model
  */
-class BanjiChengji extends Base
+class BanjiChengji extends BaseModel
 {
     /**
     * 整理班级成绩表

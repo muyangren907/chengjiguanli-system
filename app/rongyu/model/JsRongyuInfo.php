@@ -3,9 +3,9 @@
 namespace app\rongyu\model;
 
 // 引用数据模型基类
-use app\common\model\Base;
+use app\BaseModel;
 
-class JsRongyuInfo extends Base
+class JsRongyuInfo extends BaseModel
 {
     //搜索单位获奖荣誉
     public function search($srcfrom)
@@ -43,7 +43,7 @@ class JsRongyuInfo extends Base
                     $query->where('rongyuce','in',function($q) use($fzschool){
                         $q->name('JsRongyu')->where('fzschool','in',$fzschool)->field('id');
                     });
-                	
+
                 })
     		->when(count($category)>0,function($query) use($category){
                 	$query->where('rongyuce','in',function($q) use($category){
@@ -269,8 +269,8 @@ class JsRongyuInfo extends Base
         if($this->fzschool){
             $jibie = $this->fzSchool->jibie;
         }
-        
-         return $jibie;   
+
+         return $jibie;
     }
 
 

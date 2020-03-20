@@ -2,9 +2,9 @@
 
 namespace app\keti\model;
 
-use think\Model;
+use app\BaseModel;
 
-class KetiCanyu extends Model
+class KetiCanyu extends BaseModel
 {
     // 课题册关联
     public function keti()

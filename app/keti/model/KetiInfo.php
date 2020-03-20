@@ -3,9 +3,9 @@
 namespace app\Keti\model;
 
 // 引用数据模型基类
-use app\common\model\Base;
+use app\BaseModel;
 
-class KetiInfo extends Base
+class KetiInfo extends BaseModel
 {
     //搜索课题册
     public function search($srcfrom)
@@ -200,7 +200,7 @@ class KetiInfo extends Base
     public function ktCe()
     {
          return $this->belongsTo('\app\keti\model\Keti','ketice','id');
-    } 
+    }
 
 
 

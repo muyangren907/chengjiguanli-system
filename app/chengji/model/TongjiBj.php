@@ -2,7 +2,7 @@
 namespace app\chengji\model;
 
 // 引用基类
-use app\common\model\Base;
+use app\BaseModel;
 // 引用学生成绩统计类
 use app\chengji\model\Tongji as TJ;
 // 引用学生成绩类
@@ -11,7 +11,7 @@ use app\kaoshi\model\Kaohao;
 /**
  * @mixin think\Model
  */
-class TongjiBj extends Base
+class TongjiBj extends BaseModel
 {
     /**
     * 统计指定个年级的各班级成绩
@@ -292,14 +292,15 @@ class TongjiBj extends Base
         // 初始化参数
         $src = array(
             'banji' => '',
-            'category' => '',
+            'category_id' => '',
             'xueqi' => '',
+            'searchval' => ''
         );
 
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
         $src['xueqi'] = strToarray($src['xueqi']);
-        $src['category'] = strToarray($src['category']);
+        $src['category_id'] = strToarray($src['category_id']);
 
         if(isset($srcfrom['bfdate']) && strlen($srcfrom['bfdate'])>0)
         {
@@ -324,12 +325,15 @@ class TongjiBj extends Base
                         ->when(count($src['xueqi']) > 0, function($q) use($src){
                             $q->where('xueqi', 'in', function($w) use($src){
                                 $w->name('xueqi')
-                                    ->where('category', 'in', $src['xueqi'])
+                                    ->where('category_id', 'in', $src['xueqi'])
                                     ->field('id');
                             });
                         })
-                        ->when(count($src['category']) > 0, function($q) use($src){
-                            $q->where('category', 'in', $src['category']);
+                        ->when(count($src['category_id']) > 0, function($q) use($src){
+                            $q->where('category_id', 'in', $src['category_id']);
+                        })
+                        ->when(strlen($src['searchval']) > 0, function($q) use($src){
+                            $q->where('title', 'like', '%'.$src['searchval'].'%');
                         })
                         ->field('id');
                 })

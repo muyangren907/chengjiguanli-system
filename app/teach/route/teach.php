@@ -17,7 +17,6 @@ Route::group('xueqi', function () {
 	    Route::rule('data','xueqi/ajaxdata','post');				# 获取数据
 	    Route::rule('create','xueqi/create','get');				# 添加信息
 	    Route::rule('save','xueqi/save','post');					# 保存信息
-	    // Route::rule('read/<id>','xueqi/read','get');				# 读取信息
 	    Route::rule('edit/<id>','xueqi/edit','get');				# 修改信息
 	    Route::rule('update/<id>','xueqi/update','put');			# 更新信息
 	    Route::rule('delete/<id>','xueqi/delete','delete');		# 删除信息
@@ -30,9 +29,6 @@ Route::group('banji', function () {
 	    Route::rule('data','banji/ajaxdata','post');				# 获取数据
 	    Route::rule('create','banji/create','get');				# 添加信息
 	    Route::rule('save','banji/save','post');					# 保存信息
-	    Route::rule('read/<id>','banji/read','get');				# 读取信息
-	    Route::rule('edit/<id>','banji/edit','get');				# 修改信息
-	    Route::rule('update/<id>','banji/update','put');			# 更新信息
 	    Route::rule('delete/<id>','banji/delete','delete');		# 删除信息
 	    Route::rule('status','banji/setStatus','post');		# 删除信息
 	    Route::rule('yidong/<id>','banji/yidong','post');		# 删除信息

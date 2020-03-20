@@ -1,13 +1,13 @@
 <?php
 
-namespace app\common\model;
+namespace app;
 
 // 引用模型类
 use think\Model;
 // 引用软删除类
 use think\model\concern\SoftDelete;
 
-class Base extends Model
+class BaseModel extends Model
 {
 
     // 开启全局自动时间戳

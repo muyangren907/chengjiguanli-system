@@ -3,9 +3,9 @@
 namespace app\kaoshi\model;
 
 // 引用数据模型基类
-use app\common\model\Base;
+use app\BaseModel;
 
-class KaoshiSet extends Base
+class KaoshiSet extends BaseModel
 {
     // 关联学科
     public function subjectName()

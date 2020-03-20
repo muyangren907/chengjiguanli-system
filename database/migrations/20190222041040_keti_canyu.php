@@ -33,9 +33,9 @@ class KetiCanyu extends Migrator
 
         // 添加当前表字段
         $table
-            ->addColumn('category','integer',['limit'=>1,'null'=>false,'default'=>0,'comment'=>'1=>课题主持人,2=>课题参与人'])
-            ->addColumn('ketiinfoid','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'课题信息id'])
-            ->addColumn('teacherid','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'教师id'])
+            ->addColumn('category_id','integer',['limit'=>1,'null'=>false,'default'=>0,'comment'=>'1=>课题主持人,2=>课题参与人'])
+            ->addColumn('ketiinfo_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'课题信息id'])
+            ->addColumn('teacher_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'教师id'])
             ->addColumn('create_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'更新时间'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])

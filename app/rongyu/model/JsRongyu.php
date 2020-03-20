@@ -3,9 +3,9 @@
 namespace app\rongyu\model;
 
 // 引用数据模型基类
-use app\common\model\Base;
+use app\BaseModel;
 
-class JsRongyu extends Base
+class JsRongyu extends BaseModel
 {
 	//搜索教师获奖荣誉
     public function search($srcfrom)
@@ -50,7 +50,7 @@ class JsRongyu extends Base
                     'lxCategory'=>function($query){
                         $query->field('id,title');
                     },
-                    
+
                 ]
             )
             ->withCount(['ryInfo'=>'count'])
@@ -84,7 +84,7 @@ class JsRongyu extends Base
     // 荣誉级别
     public function getCntAttr()
     {
-         return $this->ryInfo->count();   
+         return $this->ryInfo->count();
     }
 
 

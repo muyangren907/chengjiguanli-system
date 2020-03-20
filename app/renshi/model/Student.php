@@ -3,11 +3,11 @@
 namespace app\renshi\model;
 
 // 引用数据模型基类
-use app\common\model\Base;
+use app\BaseModel;
 // 引用班级数据模型类
 use app\teach\model\Banji;
 
-class Student extends Base
+class Student extends BaseModel
 {
     // 班级关联
     public function stuBanji()
@@ -61,7 +61,7 @@ class Student extends Base
     // 数据筛选
     public function search($srcfrom)
     {
-        
+
         $src = [
             'field'=>'update_time',
             'order'=>'desc',
@@ -107,7 +107,7 @@ class Student extends Base
     // 查询毕业学生信息
     public function searchBy($srcfrom)
     {
-        
+
         $src = [
             'field'=>'update_time',
             'order'=>'desc',
@@ -155,7 +155,7 @@ class Student extends Base
     // 查询删除学生信息
     public function searchDel($srcfrom)
     {
-        
+
         $src = [
             'field'=>'update_time',
             'order'=>'desc',
@@ -198,7 +198,7 @@ class Student extends Base
     }
 
 
-    
+
 
 
     // 获取全部数据
@@ -210,5 +210,5 @@ class Student extends Base
 
 
 
-    
+
 }

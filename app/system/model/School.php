@@ -2,9 +2,9 @@
 
 namespace app\system\model;
 
-use app\common\model\Base;
+use app\BaseModel;
 
-class School extends Base
+class School extends BaseModel
 {
 
     // 教师数据模型关联

@@ -17,11 +17,13 @@ class School extends Seeder
         // 设置数据
         $rows= [
             [
-                'id'=>1,
-                'title'=>'大连长兴岛经济区文教中心',
-                'jiancheng'=>'文教中心',
-                'biaoshi'=>'',
-                'jibie'=>'3',
+                'id' => 1
+                ,'title' => '大连长兴岛经济区文教中心'
+                ,'jiancheng' => '文教中心'
+                ,'biaoshi' => ''
+                ,'jibie_id' => 10204
+                ,'xueduan_id'  =>  10303
+                ,'paixu' => 10
             ],
         ];
         // 保存数据

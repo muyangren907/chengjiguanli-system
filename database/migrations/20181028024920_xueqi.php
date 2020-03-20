@@ -35,7 +35,7 @@ class Xueqi extends Migrator
         $table
             ->addColumn('title','string',['limit'=>25,'default'=>'a','null'=>false,'comment'=>'学期标题'])
             ->addColumn('xuenian','string',['limit'=>15,'default'=>'a','null'=>false,'comment'=>'学年标题'])
-            ->addColumn('category','string',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'学期分类'])
+            ->addColumn('category_id','string',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'学期分类'])
             ->addColumn('bfdate','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'开始日期'])
             ->addColumn('enddate','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'结束日期'])
             ->addColumn('status','boolean',['limit'=>1,'default'=>'1','null'=>false,'comment'=>'0=禁用，1=正常'])

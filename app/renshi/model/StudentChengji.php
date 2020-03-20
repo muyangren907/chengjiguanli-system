@@ -4,12 +4,12 @@ declare (strict_types = 1);
 namespace app\Renshi\model;
 
 // 引用数据模型基类
-use app\common\model\Base;
+use app\BaseModel;
 
 /**
  * @mixin think\Model
  */
-class StudentChengji extends Base
+class StudentChengji extends BaseModel
 {
     // 一个学生所有学科成绩列表
     public function oneStudentChengjiList($srcfrom)

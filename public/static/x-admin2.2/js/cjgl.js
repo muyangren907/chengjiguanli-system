@@ -16,7 +16,7 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
     del:function(obj,url){
       layer.confirm('确认要删除吗？',function(index){
         $.ajax({
-          url:url+'/m',
+          url:url,
           type:'DELETE',
           data:{
             ids:obj.data.id
@@ -37,7 +37,7 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
       });
     },
 
-    // 删除单条记录
+    // 恢复单条记录
     redel:function(obj,url){
       layer.confirm('确认要恢复删除吗？',function(index){
         $.ajax({
@@ -82,7 +82,7 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
           }
           // 到服务器去删除数据。
           $.ajax({
-            url:url+'/m',
+            url:url,
             type:'DELETE',
             data:{
               ids:ids

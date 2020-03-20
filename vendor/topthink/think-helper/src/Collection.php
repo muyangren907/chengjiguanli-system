@@ -515,7 +515,8 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
             $fieldA = $a[$field] ?? null;
             $fieldB = $b[$field] ?? null;
 
-            return 'desc' == strtolower($order) ? strcmp($fieldB, $fieldA) : strcmp($fieldA, $fieldB);
+            // return 'desc' == strtolower($order) ? strcmp($fieldB, $fieldA) : strcmp($fieldA, $fieldB);
+            return 'desc' == strtolower($order) ? strcmp(strval($fieldB), strval($fieldA)) : strcmp(strval($fieldA), strval($fieldB));
         });
     }
 

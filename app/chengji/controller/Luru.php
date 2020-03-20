@@ -19,9 +19,8 @@ class Luru extends BaseController
 
         // 设置要给模板赋值的信息
         $list['webtitle'] = '已录列表';
-        $list['dataurl'] = 'luru/data';
+        $list['dataurl'] = '/chengji/luru/data';
         $list['status'] = '/chengji/index/status';
-
 
         // 获取学科列表
         $sbj = new \app\teach\model\Subject;
