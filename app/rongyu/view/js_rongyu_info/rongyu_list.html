@@ -21,27 +21,27 @@
       </div>
     </div>
     <div class="layui-form-item">
-	    <label for="xingzhi" class="layui-form-label" style="height: 100%">所属学科</label>
+	    <label for="subject_id" class="layui-form-label" style="height: 100%">所属学科</label>
 	    <div class="layui-input-block">
 	    	{php}
 	    		$sbj = new \app\teach\model\Subject;
 	    		$subject = $sbj->field('id,title')->where('status',1)->order('paixu')->select();
 	    	{/php}
 	    	{volist name="subject" id="vo"}
-	    		<input type="checkbox" name="subject[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="checkbox" name="subject_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
 	<div class="layui-form-item" style="margin-bottom: 0;">
-	    <label for="hjschool" class="layui-form-label" style="height: 100%">获奖单位</label>
+	    <label for="hjschool_id" class="layui-form-label" style="height: 100%">获奖单位</label>
 	    <div class="layui-input-block">
 	    	{php} $school = schlist('校级','区级'); {/php}
 	    	{volist name="school" id="vo"}
-	    		<input type="checkbox" name="hjschool[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="checkbox" name="hjschool_id[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
-	<input type="hidden" name="rongyuce" value="{$list.rongyuce}">
+	<input type="hidden" name="rongyuce_id" value="{$list.rongyuce}">
 {/block}
 {block name="table"}
 	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
@@ -103,7 +103,7 @@
 				}
 				return str;
 			}},
-			{field: "subject",title: '所属学科',minWidth:120,sort: true,templet:function(d){
+			{field: "subject_id",title: '所属学科',minWidth:120,sort: true,templet:function(d){
 				var str='';
 				if(d.rySubject)
 				{
@@ -111,7 +111,7 @@
 				}
 				return str;
 			}},
-			{field: "jiangxiang",title: '奖项', minWidth:120,sort: true,templet:function(d){
+			{field: "jiangxiang_id",title: '奖项', minWidth:120,sort: true,templet:function(d){
 				var str='';
 				if(d.jxCategory)
 				{

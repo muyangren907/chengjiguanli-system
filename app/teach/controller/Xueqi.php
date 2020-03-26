@@ -18,12 +18,10 @@ class Xueqi extends BaseController
         $list['status'] = '/teach/xueqi/status';
 
         // 模板赋值
-        $this->view
-            ->assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染模板
-        return $this->view
-            ->fetch();
+        return $this->view->fetch();
     }
 
 
@@ -40,10 +38,19 @@ class Xueqi extends BaseController
                 ,'searchval' => ''
             ], 'POST');
 
-
         // 根据条件查询数据
         $xq = new XQ;
-        $data = $xq->search($src);
+        $data = $xq->search($src)
+            ->visible([
+                'id'
+                ,'title'
+                ,'xuenian'
+                ,'glCategory' => ['title']
+                ,'bfdate'
+                ,'enddate'
+                ,'status'
+                ,'update_time'
+            ]);
         $data = reSetObject($data, $src);
 
         return json($data);
@@ -63,11 +70,9 @@ class Xueqi extends BaseController
         );
 
         // 模板赋值
-        $this->view
-            ->assign('list', $list);
+        $this->view->assign('list', $list);
         // 渲染
-        return $this->view
-            ->fetch('create');
+        return $this->view->fetch('create');
     }
 
 
@@ -79,7 +84,7 @@ class Xueqi extends BaseController
         $list = request()->only([
             'title'
             ,'xuenian'
-            ,'category'
+            ,'category_id'
             ,'bfdate'
             ,'enddate'
         ], 'post');
@@ -87,7 +92,7 @@ class Xueqi extends BaseController
 
         // 验证表单数据
         $validate = new \app\teach\validate\Xueqi;
-        $result = $validate->check($list);
+        $result = $validate->scene('create')->check($list);
         $msg = $validate->getError();
         if(!$result){
             return json(['msg' => $msg, 'val' => 0]);
@@ -107,7 +112,7 @@ class Xueqi extends BaseController
     public function edit($id)
     {
         // 获取学期信息
-        $list['data'] = XQ::field('id, title, xuenian, category, bfdate, enddate')
+        $list['data'] = XQ::field('id, title, xuenian, category_id, bfdate, enddate')
             ->find($id);
 
        // 设置页面标题
@@ -119,11 +124,9 @@ class Xueqi extends BaseController
         );
 
         // 模板赋值
-        $this->view
-            ->assign('list',$list);
+        $this->view->assign('list',$list);
         // 渲染
-        return $this->view
-            ->fetch('create');
+        return $this->view->fetch('create');
     }
 
 
@@ -137,25 +140,25 @@ class Xueqi extends BaseController
         $list = request()->only([
             'title'
             ,'xuenian'
-            ,'category'
+            ,'category_id'
             ,'bfdate'
             ,'enddate'
         ], 'put');
+        $list['id'] = $id;
 
         // 验证表单数据
         $validate = new \app\teach\validate\Xueqi;
-        $result = $validate->check($list);
+        $result = $validate->scene('edit')->check($list);
         $msg = $validate->getError();
         if(!$result){
             return json(['msg' => $msg, 'val' => 0]);
         }
 
-
         // 更新数据
         $xueqilist = XQ::find($id);
         $xueqilist->title = $list['title'];
         $xueqilist->xuenian = $list['xuenian'];
-        $xueqilist->category = $list['category'];
+        $xueqilist->category_id = $list['category_id'];
         $xueqilist->bfdate = $list['bfdate'];
         $xueqilist->enddate = $list['enddate'];
         $data = $xueqilist->save();
@@ -172,6 +175,8 @@ class Xueqi extends BaseController
     // 删除学期
     public function delete($id)
     {
+        // 整理数据
+        $id = request()->delete('id');
         $id = explode(',', $id);
 
         $data = XQ::destroy($id);
@@ -183,7 +188,6 @@ class Xueqi extends BaseController
         // 返回信息
         return json($data);
     }
-
 
 
     // 设置学期状态

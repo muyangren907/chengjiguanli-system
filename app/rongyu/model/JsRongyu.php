@@ -11,16 +11,13 @@ class JsRongyu extends BaseModel
     public function search($srcfrom)
     {
     	$src = [
-            'field'=>'update_time',
-            'order'=>'desc',
-            'fzschool'=>array(),
-            'hjschool'=>array(),
-            'category'=>array(),
+            'fzschool_id'=>array(),
+            'hjschool_id'=>array(),
+            'category_id'=>array(),
             'searchval'=>''
         ];
         // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
-
 
         // 整理参数
         $hjschool = $src['hjschool'];
@@ -64,20 +61,21 @@ class JsRongyu extends BaseModel
     // 颁奖单位关联
     public function fzSchool()
     {
-         return $this->belongsTo('\app\system\model\School','fzschool','id');
+         return $this->belongsTo('\app\system\model\School', 'fzschool', 'id');
     }
+
 
     // 荣誉类型关联
     public function lxCategory()
     {
-         return $this->belongsTo('\app\system\model\Category','category','id');
+         return $this->belongsTo('\app\system\model\Category', 'category', 'id');
     }
 
 
     // 荣誉信息关联
     public function ryInfo()
     {
-    	return $this->hasMany('JsRongyuInfo','rongyuce','id');
+    	return $this->hasMany('JsRongyuInfo', 'rongyuce', 'id');
     }
 
 
@@ -97,12 +95,8 @@ class JsRongyu extends BaseModel
     // 发证时间获取器
     public function getFzshijianAttr($value)
     {
-        if ($value>0)
-        {
-            $value = date('Y-m-d',$value);
-        }else{
-            $value = "";
-        }
+        $value>0 ? $value = date('Y-m-d',$value) : $value = "";
+
         return $value;
     }
 

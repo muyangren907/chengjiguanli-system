@@ -13,15 +13,15 @@
               </div>
           </div>
           <div class="layui-form-item">
-    		    <label for="category" class="layui-form-label"><span class="x-red">*</span>课题类型</label>
+    		    <label for="category_id" class="layui-form-label"><span class="x-red">*</span>课题类型</label>
     		    <div class="layui-input-block">
-    		    	{php} $category = getCategory('课题立项类型');{/php}
-    		      <select name="category" lay-verify="required">
+    		    	{php} $category = getCategory(115);{/php}
+    		      <select name="categor_idy" lay-verify="required">
     		      	<option value=""></option>
     		      	{volist name="category" id="vo"}
                   <option value="{$vo.id}"
-                  {present name="$list.data.category"}
-                    {eq name="$list.data.category" value="$vo.id" }
+                  {present name="$list.data.category_id"}
+                    {eq name="$list.data.category_id" value="$vo.id" }
                       selected
                     {/eq}
                   {/present}>
@@ -32,15 +32,15 @@
     		    </div>
     		  </div>
           <div class="layui-form-item">
-            <label for="lxdanweiid" class="layui-form-label"><span class="x-red">*</span>立项单位</label>
+            <label for="lxdanwei_id" class="layui-form-label"><span class="x-red">*</span>立项单位</label>
             <div class="layui-input-block">
               {php} $school = schlist('区级','其它级');{/php}
-              <select name="lxdanweiid" lay-verify="required">
+              <select name="lxdanwei_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="school" id="vo"}
                   <option value="{$vo.id}"
-                  {present name="$list.data.lxdanweiid"}
-                    {eq name="$list.data.lxdanweiid" value="$vo.id" }
+                  {present name="$list.data.lxdanwei_id"}
+                    {eq name="$list.data.lxdanwei_id" value="$vo.id" }
                       selected
                     {/eq}
                   {/present}>
@@ -79,6 +79,6 @@
       ,trigger: 'click' //采用click弹出
     });
   });
-</script>  
+</script>
 {/block}
 

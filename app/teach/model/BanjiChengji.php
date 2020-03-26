@@ -78,7 +78,6 @@ class BanjiChengji extends BaseModel
             ],
         ];
 
-
         foreach ($cjlist as $key => $value) {
 
             if($subject == $value->subject_id){
@@ -91,7 +90,7 @@ class BanjiChengji extends BaseModel
         $data = [
             'xAxis' => $xAxis,
             'series' => $series,
-            'legend' => ['班级得分率%','全部得分率%'],
+            'legend' => ['班级得分率%', '全部得分率%'],
         ];
 
         return $data;

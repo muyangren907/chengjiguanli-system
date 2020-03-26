@@ -11,17 +11,16 @@ class Category extends BaseController
 {
 
 
-
     // 类别列表
     public function index()
     {
-
         // 设置要给模板赋值的信息
         $list['webtitle'] = '类别列表';
-        $list['dataurl'] = 'category/data';
+        $list['dataurl'] = '/system/category/data';
+        $list['status'] = '/system/category/status';
 
         // 模板赋值
-        $this->view->assign('list',$list);
+        $this->view->assign('list', $list);
 
         // 渲染模板
         return $this->view->fetch();
@@ -34,36 +33,27 @@ class Category extends BaseController
         // 获取参数
         $src = $this->request
                 ->only([
-                    'page'=>'1',
-                    'limit'=>'10',
-                    'field'=>'id',
-                    'order'=>'asc',
-                    'pid'=>'',
-                    'searchval'=>''
-                ],'POST');
+                    'page' => '1'
+                    ,'limit' => '10'
+                    ,'field' => 'id'
+                    ,'order' => 'asc'
+                    ,'p_id' => ''
+                    ,'searchval' => ''
+                ], 'POST');
 
-        // 实例化
+        // 按条件查询数据
         $cg = new CG;
-
-        // 查询要显示的数据
-        $data = $cg->search($src);
-        // 获取记录总数
-        $cnt = $data->count();
-        // 获取当前页数据
-        // $data = $data->page(1,10);
-        // dump($data);
-
-        $limit_start = $src['page'] * $src['limit']-$src['limit'];
-        $limit_length = $src['limit'];
-        $data = $data->slice($limit_start,$limit_length);
-
-        // 重组返回内容
-        $data = [
-            'code'=> 0 , // ajax请求次数，作为标识符
-            'msg'=>"",  // 获取到的结果数(每页显示数量)
-            'count'=>$cnt,       // 符合条件的总数据量
-            'data'=>$data, //获取到的数据结果
-        ];
+        $data = $cg->search($src)
+            ->visible([
+                'id'
+                ,'title'
+                ,'paixu'
+                ,'glPid' => ['title']
+                ,'isupdate'
+                ,'status'
+                ,'update_time'
+            ]);
+        $data = reSetObject($data, $src);
 
         return json($data);
     }
@@ -75,15 +65,14 @@ class Category extends BaseController
     {
         // 设置页面标题
         $list['set'] = array(
-            'webtitle'=>'添加类别',
-            'butname'=>'添加',
-            'formpost'=>'POST',
-            'url'=>'save',
+            'webtitle' => '添加类别'
+            ,'butname' => '添加'
+            ,'formpost' => 'POST'
+            ,'url' => 'save'
         );
 
-
         // 模板赋值
-        $this->view->assign('list',$list);
+        $this->view->assign('list', $list);
 
         // 渲染
         return $this->view->fetch();
@@ -94,31 +83,27 @@ class Category extends BaseController
     // 保存信息
     public function save()
     {
-
-        // 实例化验证模型
-        $validate = new \app\system\validate\Category;
-
-
         // 获取表单数据
-        $list = request()->only(['title','pid','paixu'],'post');
-
+        $list = request()->only([
+            'title'
+            ,'p_id'
+            ,'paixu'
+        ], 'post');
 
         // 验证表单数据
-        $result = $validate->check($list);
+        $validate = new \app\system\validate\Category;
+        $result = $validate->scene('create')->check($list);
         $msg = $validate->getError();
-
-
-        // 如果验证不通过则停止保存
         if(!$result){
-            return json(['msg'=>$msg,'val'=>0]);;
+            return json(['msg' => $msg, 'val' => 0]);;
         }
 
         // 保存数据
         $data = CG::create($list);
 
-
         // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data ? $data=['msg' => '添加成功', 'val' => 1]
+            : $data=['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息
         return json($data);
@@ -129,21 +114,21 @@ class Category extends BaseController
     // 编辑类别
     public function edit($id)
     {
-
         // 获取单位信息
-        $list['data'] = CG::field('id,title,pid,paixu')
+        $list['data'] = CG::field('id, title, p_id, paixu')
             ->find($id);
 
         // 设置页面标题
         $list['set'] = array(
-            'webtitle'=>'编辑类别',
-            'butname'=>'修改',
-            'formpost'=>'PUT',
-            'url'=>'/system/category/update/'.$id,
+            'webtitle' => '编辑类别'
+            ,'butname' => '修改'
+            ,'formpost' => 'PUT'
+            ,'url' => '/system/category/update/' . $id
         );
 
         // 模板赋值
-        $this->view->assign('list',$list);
+        $this->view->assign('list', $list);
+
         // 渲染
         return $this->view->fetch('create');
     }
@@ -151,34 +136,40 @@ class Category extends BaseController
     // 更新类别信息
     public function update($id)
     {
-        $validate = new \app\system\validate\Category;
+
 
         // 获取表单数据
-        $list = request()->only(['title','pid','paixu'],'put');
+        $list = request()->only([
+            'title'
+            ,'p_id'
+            ,'paixu'
+        ], 'put');
+        $list['id'] = $id;
 
-        $isupdate = CG::where('id',$id)->value('isupdate');
+        // 验证是不是被保护分类
+        $isupdate = CG::where('id', $id)->value('isupdate');
         if($isupdate == 0)
         {
-            $this->error('系统默认分类不允许修改','/login/err');
+            $this->error('系统默认分类不允许修改', '/login/err');
         }
 
         // 验证表单数据
-        $result = $validate->check($list);
+        $validate = new \app\system\validate\Category;
+        $result = $validate->scene('edit')->check($list);
         $msg = $validate->getError();
 
         // 如果验证不通过则停止保存
         if(!$result){
-            return json(['msg'=>$msg,'val'=>0]);;
+            return json(['msg' => $msg, 'val' => 0]);;
         }
 
         $list['id'] = $id;
 
-
-        // $data = CG::cache(true)->where('id',$id)->update($list);
         $data = CG::cache(true)->update($list);
 
         // 根据更新结果设置返回提示信息
-        $data>=0 ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data>=0 ? $data=['msg' => '更新成功', 'val' => 1]
+            : $data=['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息
         return json($data);
@@ -188,20 +179,17 @@ class Category extends BaseController
     // 删除类别
     public function delete($id)
     {
-        if($id == 'm')
-        {
-            $id = request()->delete('ids');
-        }
-
+        $id = request()->delete('id');
         $id = explode(',', $id);
 
         $data = CG::destroy(function($query) use($id){
-            $query->where('isupdate',1)
-                ->where('id','in',$id);
+            $query->where('isupdate', 1)
+                ->where('id', 'in', $id);
         });
 
         // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'除系统保留分类以外，其它删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data ? $data=['msg' => '除系统保留分类以外，其它删除成功', 'val' => 1]
+            : $data=['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息
         return json($data);
@@ -216,10 +204,11 @@ class Category extends BaseController
         $value = request()->post('value');
 
         // 获取类别信息
-        $data = CG::where('id',$id)->update(['status'=>$value]);
+        $data = CG::where('id', $id)->update(['status' => $value]);
 
         // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data ? $data=['msg' => '状态设置成功', 'val' => 1]
+            : $data=['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息
         return json($data);

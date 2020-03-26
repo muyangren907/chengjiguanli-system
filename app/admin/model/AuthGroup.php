@@ -8,18 +8,22 @@ use app\BaseModel;
 class AuthGroup extends BaseModel
 {
     // 查询所有角色
-    public function search($src)
+    public function search($srcfrom)
     {
         // 整理变量
-        $searchval = $src['searchval'];
+        $src = [
+            'searchval' => ''
+            ,'status' => ''
+        ];
+        $src = array_cover($srcfrom, $src);
 
         // 查询数据
         $data = $this
-            ->order([$src['field'] =>$src['order']])
-            ->when(strlen($searchval)>0,function($query) use($searchval){
-                    $query->where('title','like','%'.$searchval.'%');
+            ->when(strlen($src['searchval']) > 0, function($query) use($src){
+                    $query->where('title', 'like', '%' . $src['searchval'] . '%');
                 })
             ->select();
+
         return $data;
     }
 

@@ -42,6 +42,7 @@ class Subject extends BaseModel
     {
         $data = self::where('kaoshi', 1)
                 ->field('id, title, jiancheng, lieming')
+                ->order(['paixu'=>'asc'])
                 ->select();
 
         return $data;
@@ -50,6 +51,6 @@ class Subject extends BaseModel
     // 大类别关联
     public function sbjCategory()
 	{
-		return $this->belongsTo('\app\system\model\Category', 'category', 'id');
+		return $this->belongsTo('\app\system\model\Category', 'category_id', 'id');
 	}
 }

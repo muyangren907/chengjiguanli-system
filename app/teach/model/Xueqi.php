@@ -16,7 +16,7 @@ class Xueqi extends BaseModel
     // 开始时间获取器
     public function getBfdateAttr($value)
     {
-        return date('Y-m-d',$value);
+        return date('Y-m-d', $value);
     }
 
     // 结束时间修改器
@@ -28,13 +28,13 @@ class Xueqi extends BaseModel
     // 结束时间获取器
     public function getEnddateAttr($value)
     {
-        return date('Y-m-d',$value);
+        return date('Y-m-d', $value);
     }
 
     // 分类关联
     public function glCategory()
     {
-        return $this->belongsTo('\app\system\model\Category','category','id');
+        return $this->belongsTo('\app\system\model\Category', 'category_id', 'id');
     }
 
     // 查询所有单位
@@ -47,36 +47,35 @@ class Xueqi extends BaseModel
             ,'status' => ''
         ];
         $src = array_cover($srcfrom, $src) ;
-        if(isset($srcfrom['bfdate']) && strlen($srcfrom['bfdate'])>0)
+        if(isset($srcfrom['bfdate']) && strlen($srcfrom['bfdate']) > 0)
         {
             $src['bfdate'] = $srcfrom['bfdate'];
         }else{
-            $src['bfdate'] = date("Y-m-d",strtotime("-4 year"));
+            $src['bfdate'] = date("Y-m-d", strtotime("-4 year"));
         }
-        if(isset($srcfrom['enddate']) && strlen($srcfrom['enddate'])>0)
+        if(isset($srcfrom['enddate']) && strlen($srcfrom['enddate']) > 0)
         {
             $src['enddate'] = $srcfrom['enddate'];
         }else{
-            $src['enddate'] = date("Y-m-d",strtotime("+1 day"));
+            $src['enddate'] = date("Y-m-d", strtotime("+1 day"));
         }
-
 
         // 查询数据
         $data = $this
-            ->whereTime('bfdate|enddate','between',[ $src['bfdate'],$src['enddate'] ])
-            ->when(strlen($src['searchval'])>0,function($query) use($src){
-                    $query->where('title|xuenian','like','%'.$src['searchval'].'%');
+            ->whereTime('bfdate|enddate', 'between', [$src['bfdate'], $src['enddate']])
+            ->when(strlen($src['searchval']) > 0, function($query) use($src){
+                    $query->where('title|xuenian', 'like', '%' . $src['searchval'] . '%');
                 })
-            ->when(strlen($src['category'])>0,function($query) use($src){
+            ->when(strlen($src['category']) > 0, function($query) use($src){
                     $query->where('category', $src['category']);
                 })
-            ->when(strlen($src['status'])>0,function($query) use($src){
+            ->when(strlen($src['status']) > 0, function($query) use($src){
                     $query->where('status', $src['status']);
                 })
             ->with(
                 [
                     'glCategory'=>function($query){
-                        $query->field('id,title');
+                        $query->field('id, title');
                     },
                 ]
             )

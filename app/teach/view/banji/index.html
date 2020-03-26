@@ -15,20 +15,20 @@
 	<label for="school" class="layui-form-label" style="height: 100%">学校</label>
 	<div class="layui-input-block">
 		{php}
-		$schoollist = schlist('校级','校级',$xueduan=['小学','中小学']);
+		$schoollist = schoolList('校级','校级');
 		{/php}
-		<input type="radio" name="school_id" value="" title="无" checked="true">
 		{volist name="schoollist" id="vo"}
-		<input type="radio" name="school_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+		<input type="radio" name="school_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" {eq name="i" value="1"}checked{/eq}>
 		{/volist}
 	</div>
 </div>
 <div class="layui-form-item" style="margin-bottom: 0;">
 	<label for="ruxuenian" class="layui-form-label" style="height: 100%">年级</label>
 	<div class="layui-input-block">
-		{foreach :nianjiList() as $key=>$vo }
-		<input type="radio" name="ruxuenian" title="{$vo}" value="{$key}" lay-skin="primary" {eq name="vo" value="一年级"}checked{/eq}>
-		{/foreach}
+    {php} $njlist = nianJiNameList(); {/php}
+    {volist name="njlist" id="vo"}
+		<input type="radio" name="ruxuenian" title="{$vo}" value="{$key}" lay-skin="primary" {eq name="i" value="1"}checked{/eq}>
+		{/volist}
 	</div>
 </div>
 {/block}

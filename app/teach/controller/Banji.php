@@ -22,12 +22,12 @@ class Banji extends BaseController
         $list['status'] = '/teach/banji/status';
 
         // 模板赋值
-        $this->view
-            ->assign('list', $list);
+        $this->view->assign('list', $list);
 
         // 渲染模板
         return $this->view->fetch();
     }
+
 
     /**
      * 获取班级列表数据
@@ -39,23 +39,31 @@ class Banji extends BaseController
         // 获取参数
         $src = $this->request
             ->only([
-                'page' => '1',
-                'limit' => '10',
-                'field' => 'update_time',
-                'order' => 'asc',
-                'banji_school_id' => '',
-                'banji_ruxuenian' => '',
+                'page' => '1'
+                ,'limit' => '10'
+                ,'field' => 'paixu'
+                ,'order' => 'asc'
+                ,'school_id' => ''
+                ,'ruxuenian' => ''
             ], 'POST');
 
         // 查询数据
         $bj = new bjmod;
-        $data = $bj->search($src);  # 查询数据
-        $data = reSetObject($data,$src);
+        $data = $bj->search($src)
+            ->visible([
+                'id'
+                ,'glSchool' => ['title']
+                ,'ruxuenian'
+                ,'paixu'
+                ,'gl_student_count'
+                ,'status'
+                ,'update_time'
+            ]);  # 查询数据
+        $data = reSetObject($data, $src);
 
         // 返回数据
         return json($data);
     }
-
 
 
     /**
@@ -67,20 +75,17 @@ class Banji extends BaseController
     {
         // 设置页面标题
         $list['set'] = array(
-            'webtitle' => '添加班级',
-            'butname' => '添加',
-            'formpost' => 'POST',
-            'url' => 'save',
+            'webtitle' => '添加班级'
+            ,'butname' => '添加'
+            ,'formpost' => 'POST'
+            ,'url' => 'save'
         );
 
         // 模板赋值
-        $this->view
-            ->assign('list', $list);
+        $this->view->assign('list', $list);
         // 渲染
-        return $this->view
-            ->fetch('create');
+        return $this->view->fetch('create');
     }
-
 
 
     /**
@@ -92,21 +97,18 @@ class Banji extends BaseController
     {
         // 获取表单数据
         $list = request()->only([
-            'school_id',
-            'ruxuenian',
-            'bjsum',
+            'school_id'
+            ,'ruxuenian'
+            ,'bjsum'
         ], 'post');
 
         // 验证表单数据
         $validate = new \app\teach\validate\Banji;
-        $result = $validate->check($list);
+        $result = $validate->scene('create')->check($list);
         $msg = $validate->getError();
         if(!$result)
         {
-            return json([
-                'msg' => $msg,
-                'val' => 0,
-            ]);
+            return json(['msg' => $msg, 'val' => 0]);
         }
 
         // 整理要添加的数据
@@ -149,23 +151,18 @@ class Banji extends BaseController
     public function delete($id)
     {
 
-        if($id == 'm')
-        {
-            $id = request()->delete('ids');// 获取delete请求方式传送过来的数据并转换成数据
-        }
-
+        $id = request()->delete('id');
         $id = explode(',', $id);
 
         $data = bjmod::destroy($id);
 
         // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'删除成功','val'=>1]
-            : $data=['msg'=>'数据处理错误','val'=>0];
+        $data ? $data = ['msg' => '删除成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息
         return json($data);
     }
-
 
 
     /**
@@ -181,11 +178,11 @@ class Banji extends BaseController
         $value = request()->post('value');
 
         // 更新状态
-        $data = bjmod::where('id',$id)->update(['status'=>$value]);
+        $data = bjmod::where('id', $id)->update(['status' => $value]);
 
         // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'状态设置成功','val'=>1]
-            : $data=['msg'=>'数据处理错误','val'=>0];
+        $data ? $data = ['msg' => '状态设置成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息
         return json($data);
@@ -204,7 +201,6 @@ class Banji extends BaseController
 
         // 获取当前班级信息
         $thisbj = bjmod::find($id);
-
 
         // 获取相邻两个班级信息
         if( $caozuo > 0 )
@@ -246,8 +242,8 @@ class Banji extends BaseController
             $data = $bj->saveAll($data);
             $bjtitle = $bj->myBanjiTitle($bjinfo[0]['id']);
 
-            $data ? $data = ['msg' => '移动成功','val' => 1]
-                : $data = ['msg' => '数据处理错误','val' => 0];
+            $data ? $data = ['msg' => '移动成功', 'val' => 1]
+                : $data = ['msg' => '数据处理错误', 'val' => 0];
         }else{
             $data = ['msg' => '已经到头啦~', 'val' => 0];
         }
@@ -268,23 +264,25 @@ class Banji extends BaseController
         // 获取参数
         $src = $this->request
             ->only([
-                'school_id' => '',
-                'ruxuenian' => '',
-                'status' => 1,
+                'school_id' => ''
+                ,'ruxuenian' => ''
+                ,'status' => 1
             ], 'POST');
-
 
         // 查询班级
         $bj = new bjmod;
-        $list = $bj->search($src);  # 查询数据
-
-
-        // 整理数据
-        $cnt = $list->count();
-        $data = [
-            'count'=>$cnt, // 符合条件的总数据量
-            'data'=>$list, //获取到的数据结果
-        ];
+        $data = $bj->search($src);  # 查询数据
+        $data = $data->order('paixu','asc')
+            ->visible([
+                'id'
+                ,'banTitle'
+                ,'banjiTitle'
+                ,'glSchool' => [
+                    'title'
+                    ,'jiancheng'
+                ]
+            ]);
+        $data = reSetObject($data, $src);
 
         return json($data);
     }
@@ -312,7 +310,4 @@ class Banji extends BaseController
         // 返回数据
         return json($list);
     }
-
-
-
 }

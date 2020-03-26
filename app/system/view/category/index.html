@@ -18,12 +18,12 @@
       </div>
     </div>
     <div class="layui-form-item" style="margin-bottom: 0;">
-		    <label for="pid" class="layui-form-label" style="height: 100%">一级类型</label>
+		    <label for="p_id" class="layui-form-label" style="height: 100%">一级类型</label>
 		    <div class="layui-input-block">
-		    	<input type="radio" name="pid" value="" title="无">
+		    	<input type="radio" name="p_id" value="" title="无">
 		    	{php} $pid = getCategory(0);{/php}
 		    	{volist name="pid" id="vo"}
-		    		<input type="radio" name="pid" value="{$vo.id}" title="{$vo.title}">
+		    		<input type="radio" name="p_id" value="{$vo.id}" title="{$vo.title}">
 		    	{/volist}
 		    </div>
 		</div>
@@ -55,11 +55,17 @@
       {type:'checkbox', fixed: 'left'},
       {field: 'id', title: 'ID',sort: true},
       {field: 'title', title: '名称',sort: true, minWidth:240},
-      {field: "pid",title: '父级类别',sort: true,templet:function(d){
+      {field: "p_id",title: '父级类别',sort: true,templet:function(d){
         var str='';
         if(d.glPid)
         {
+          if(d.glPid.title == '')
+          {
+            str = '';
+          }
           str = d.glPid.title;
+        }else{
+          str = '顶级分类';
         }
         return str;
       }},

@@ -12,50 +12,37 @@ class Keti extends BaseModel
     public function search($srcfrom)
     {
     	$src = [
-            'field'=>'lxshijian',
-            'order'=>'desc',
-            'lxdanweiid'=>array(),
-            'category'=>array(),
-            'searchval'=>''
+            'lxdanwei_id' => array(),
+            ,'category_id' => array(),
+            ,'searchval' => ''
         ];
-
-        // 用新值替换初始值
-        $src = array_cover( $srcfrom , $src ) ;
-
-
-
-        // 整理参数
-        $lxdanweiid = $src['lxdanweiid'];
-        $category = $src['category'];
-        $searchval = $src['searchval'];
+        $src = array_cover($srcfrom, $src);
 
     	$data = $this
-            ->order([$src['field'] =>$src['order']])
-    		->when(count($lxdanweiid)>0,function($query) use($lxdanweiid){
-                	$query->where('lxdanweiid','in',$lxdanweiid);
+    		->when(count($src['lxdanwei_id']) > 0, function($query) use($src){
+                	$query->where('lxdanwei_id', 'in', $src['lxdanwei_id']);
                 })
-    		->when(count($category)>0,function($query) use($category){
-                	$query->where('category','in',$category);
+    		->when(count($src['category_id']) > 0, function($query) use($src){
+                	$query->where('category_id', 'in', $src['category_id']);
                 })
-    		->when(strlen( $searchval)>0,function($query) use( $searchval){
-                	$query->where('title','like', $searchval);
+    		->when(strlen($src['searchval']) > 0, function($query) use($src){
+                	$query->where('title', 'like', $src['searchval']);
                 })
             ->with(
                 [
-                    'ktCategory'=>function($query){
-                        $query->field('id,title');
+                    'ktCategory' => function($query){
+                        $query->field('id, title');
                     },
-                    'ktLxdanwei'=>function($query){
-                        $query->field('id,title');
+                    'ktLxdanwei' => function($query){
+                        $query->field('id, title');
                     },
                 ]
             )
-            ->withCount(['ktInfo'=>'lxcount'],'id')
-            ->withCount(['ktInfo'=>function($query){
-                $query->where('jddengji','between',[1,2]);
+            ->withCount(['ktInfo' => 'lxcount'], 'id')
+            ->withCount(['ktInfo' => function($query){
+                $query->where('jddengji_id', 'between', [11802, 11803]);
             }])
     		->select();
-
 
     	return $data;
     }
@@ -64,21 +51,21 @@ class Keti extends BaseModel
     // 类型关联
     public function ktCategory()
     {
-    	return $this->belongsTo('\app\system\model\Category','category','id');
+    	return $this->belongsTo('\app\system\model\Category', 'category_id', 'id');
     }
 
 
     // 立项单位关联
     public function ktLxdanwei()
     {
-    	return $this->belongsTo('\app\system\model\School','lxdanweiid','id');
+    	return $this->belongsTo('\app\system\model\School', 'lxdanwei_id', 'id');
     }
 
 
     // 课题信息关联
     public function ktInfo()
     {
-    	return $this->hasMany('KetiInfo','ketice','id');
+    	return $this->hasMany('KetiInfo', 'ketice_id', 'id');
     }
 
 
@@ -87,7 +74,7 @@ class Keti extends BaseModel
     {
     	if ($value>0)
         {
-            $value = date('Y-m-d',$value);
+            $value = date('Y-m-d', $value);
         }else{
             $value = "";
         }
@@ -112,6 +99,8 @@ class Keti extends BaseModel
     // 结题课题数量
     public function getJtcntAttr()
     {
-    	return $this->ktInfo->where('jddengji','>',0)->where('jtshijian','>',0)->count();
+    	return $this->ktInfo->where('jddengji_id', '>', 0)
+            ->where('jtshijian', '>', 0)
+            ->count();
     }
 }

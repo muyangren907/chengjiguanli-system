@@ -11,19 +11,36 @@ class Keti extends Validate
      * 格式：'字段名'	=>	['规则1','规则2'...]
      *
      * @var array
-     */	
+     */
 	protected $rule = [
+        'id|ID'         =>     'require:number',
         'title|课题册标题'     =>  'require|length:1,30',
-        'category|课题类型'     =>  'require|number',
+        'category_id|课题类型'     =>  'require|number',
         'lxshijian|立项时间'     =>  'require|date',
-        'lxdanweiid|立项单位'     =>  'require|number',
+        'lxdanwei_id|立项单位'     =>  'require|number',
     ];
-    
+
     /**
      * 定义错误信息
      * 格式：'字段名.规则名'	=>	'错误信息'
      *
      * @var array
-     */	
+     */
     protected $message = [];
+
+    protected $scene = [
+        'create'  =>  [
+            'title'
+            ,'category_id'
+            ,'lxshijian'
+            ,'lxdanwei_id'
+        ],
+        'edit'  =>  [
+            'id'
+            ,'title'
+            ,'category_id'
+            ,'lxshijian'
+            ,'lxdanwei_id'
+        ],
+    ];
 }

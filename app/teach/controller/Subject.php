@@ -23,38 +23,45 @@ class Subject extends BaseController
         $list['kaoshi'] = '/teach/subject/kaoshi';
 
         // 模板赋值
-        $this->view
-            ->assign('list',$list);
+        $this->view->assign('list', $list);
 
         // 渲染模板
-        return $this->view
-            ->fetch();
+        return $this->view->fetch();
     }
 
 
     // 获取学科信息列表
     public function ajaxData()
     {
-
         // 获取参数
         $src = $this->request
             ->only([
-                'page' => '1',
-                'limit' => '10',
-                'field' => 'update_time',
-                'order' => 'asc',
-                'xingzhi' => array(),
-                'searchval' => ''
+                'page' => '1'
+                ,'limit' => '10'
+                ,'field' => 'update_time'
+                ,'order' => 'asc'
+                ,'xingzhi' => array()
+                ,'searchval' => ''
             ],'POST');
 
         // 按条件查询数据
         $sj = new SJ;
-        $data = $sj->search($src);
-        $data = reSetObject($data,$src);
+        $data = $sj->search($src)
+            ->visible([
+                'id'
+                ,'title'
+                ,'jiancheng'
+                ,'lieming'
+                ,'sbjCategory' => ['title']
+                ,'status'
+                ,'kaoshi'
+                ,'paixu'
+                ,'update_time'
+            ]);
+        $data = reSetObject($data, $src);
 
         return json($data);
     }
-
 
 
     // 创建学科
@@ -62,20 +69,17 @@ class Subject extends BaseController
     {
         // 设置页面标题
         $list['set'] = array(
-            'webtitle' => '添加学科',
-            'butname' => '添加',
-            'formpost' => 'POST',
-            'url' => 'save',
+            'webtitle' => '添加学科'
+            ,'butname' => '添加'
+            ,'formpost' => 'POST'
+            ,'url' => 'save'
         );
 
         // 模板赋值
-        $this->view
-            ->assign('list',$list);
+        $this->view->assign('list', $list);
         // 渲染
-        return $this->view
-            ->fetch('create');
+        return $this->view->fetch('create');
     }
-
 
 
     // 保存信息
@@ -85,7 +89,7 @@ class Subject extends BaseController
         $list = request()->only([
             'title'
             ,'jiancheng'
-            ,'category'
+            ,'category_id'
             ,'kaoshi'
             ,'paixu'
             ,'lieming'
@@ -94,10 +98,10 @@ class Subject extends BaseController
 
         // 验证表单数据
         $validate = new \app\teach\validate\Subject;
-        $result = $validate->check($list);
+        $result = $validate->scene('create')->check($list);
         $msg = $validate->getError();
         if(!$result){
-            return json(['msg'=>$msg,'val'=>0]);
+            return json(['msg' => $msg, 'val' => 0]);
         }
 
         // 保存数据
@@ -116,7 +120,7 @@ class Subject extends BaseController
     public function edit($id)
     {
         // 获取学科信息
-        $list['data'] = SJ::field('id, title, jiancheng, category, kaoshi, lieming, paixu, status')
+        $list['data'] = SJ::field('id, title, jiancheng, category_id, kaoshi, lieming, paixu, status')
             ->find($id);
 
         // 设置页面标题
@@ -128,13 +132,10 @@ class Subject extends BaseController
         );
 
         // 模板赋值
-        $this->view
-            ->assign('list',$list);
+        $this->view->assign('list', $list);
         // 渲染
-        return $this->view
-            ->fetch('create');
+        return $this->view->fetch('create');
     }
-
 
 
     // 更新学科信息
@@ -149,22 +150,21 @@ class Subject extends BaseController
             ,'lieming'
             ,'paixu'
         ], 'put');
+        $list['id'] = $id;
 
         // 验证表单数据
         $validate = new \app\teach\validate\Subject;
-        $result = $validate->check($list);
+        $result = $validate->scene('edit')->check($list);
         $msg = $validate->getError();
         if(!$result){
             return json(['msg' => $msg, 'val' => 0]);
         }
 
-
         // 更新数据
-        $data = SJ::where('id', $id)
-            ->update($list);
+        $data = SJ::update($list, $id);
 
         // 根据更新结果设置返回提示信息
-        $data >= 0 ? $data = ['msg' => '更新成功', 'val' => 1]
+        $data ? $data = ['msg' => '更新成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息
@@ -176,10 +176,7 @@ class Subject extends BaseController
     public function delete($id)
     {
         // 整理数据
-        if($id == 'm')
-        {
-            $id = request()->delete('ids');// 获取delete请求方式传送过来的数据并转换成数据
-        }
+        $id = request()->delete('id');
         $id = explode(',', $id);
 
         // 删除数据
@@ -194,7 +191,6 @@ class Subject extends BaseController
     }
 
 
-
     // 设置学科状态
     public function setStatus()
     {
@@ -203,11 +199,11 @@ class Subject extends BaseController
         $value = request()->post('value');
 
         // 获取学科信息
-        $data = SJ::where('id',$id)->update(['status'=>$value]);
+        $data = SJ::where('id', $id)->update(['status' => $value]);
 
         // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'状态设置成功','val'=>1]
-            : $data=['msg'=>'数据处理错误','val'=>0];
+        $data ? $data = ['msg' => '状态设置成功' , 'val' => 1]
+            : $data = ['msg' => '数据处理错误' , 'val' => 0];
 
         // 返回信息
         return json($data);
@@ -218,7 +214,6 @@ class Subject extends BaseController
     // 设置学科是否参加考试
     public function kaoshi()
     {
-
         //  获取id变量
         $id = request()->post('id');
         $value = request()->post('value');
@@ -229,7 +224,7 @@ class Subject extends BaseController
 
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '状态设置成功', 'val' =>1 ]
-        : $dat = ['msg' => '数据处理错误', 'val' =>0 ];
+            : $dat = ['msg' => '数据处理错误', 'val' =>0 ];
 
         // 返回信息
         return json($data);

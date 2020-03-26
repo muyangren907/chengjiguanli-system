@@ -11,7 +11,7 @@ class Admin extends Validate
      * 格式：'字段名'	=>	['规则1','规则2'...]
      *
      * @var array
-     */	
+     */
 	protected $rule = [
         'xingming|用户姓名'  =>  'require|chs|length:2,6',
         'username|帐号'  =>  ['require','uset'=>'/^[a-z][a-z0-9-_]*$/'],
@@ -22,14 +22,12 @@ class Admin extends Validate
         'phone|手机'     =>  'mobile',
         'beizhu|备注'    =>  'max:80',
     ];
-    
+
     /**
      * 定义错误信息
      * 格式：'字段名.规则名'	=>	'错误信息'
      *
      * @var array
-     */	
-    protected $message = [
-        'username.ustr' => '帐号格式错误',
-    ];
+     */
+    protected $message = [];
 }

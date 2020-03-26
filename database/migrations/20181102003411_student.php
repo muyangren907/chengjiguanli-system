@@ -37,7 +37,6 @@ class Student extends Migrator
             ->addColumn('sex','boolean',['limit'=>1,'default'=>1,'null'=>false,'comment'=>'性别'])
             ->addColumn('shengri','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'生日'])
             ->addColumn('shenfenzhenghao','string',['limit'=>18,'default'=>'N1539158918','null'=>false,'comment'=>'身份证号'])
-            ->addColumn('school_id','integer',['limit'=>11,'default'=>1,'null'=>false,'comment'=>'学校'])
             ->addColumn('banji_id','integer',['limit'=>11,'default'=>1,'null'=>false,'comment'=>'班级'])
             ->addColumn('kaoshi','boolean',['limit'=>1,'default'=>1,'null'=>false,'comment'=>'是否参加考试'])
             ->addColumn('create_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'创建时间'])

@@ -16,10 +16,10 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
     del:function(obj,url){
       layer.confirm('确认要删除吗？',function(index){
         $.ajax({
-          url:url,
+          url:url + '/m',
           type:'DELETE',
           data:{
-            ids:obj.data.id
+            id:obj.data.id
           },
           success:function(result){
             if(result.val == 1)
@@ -82,10 +82,10 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
           }
           // 到服务器去删除数据。
           $.ajax({
-            url:url,
+            url:url + '/m',
             type:'DELETE',
             data:{
-              ids:ids
+              id:ids
             },
             success:function(result){
               if(result.val == 1)
@@ -302,8 +302,10 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
     * @param title 输出返回数组的列
     * @return array 返回类型
     */
-    createSelectOption:function(id,val,url,cloval='id',cloname='title'){
-      $('#'+id).children().remove();
+    createSelectOption:function(id, val, url, cloval='id', cloname='title', checkval=null){
+      $('#' + id).children().remove();
+      console.log(id);
+      console.log(checkval);
       $.post(
         url,
         val,
@@ -311,14 +313,20 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
           cnt = data.count;
           mydata = data.data;
           if(cnt>0){
-            $('#'+id).append('<option value="">请选择</option>');
+            $('#' + id).append('<option value="">请选择</option>');
           }
           for(x in mydata){
-            $('#'+id).append('<option value='+mydata[x][cloval]+'>'+mydata[x][cloname]+'</option>');
+            if(mydata[x][cloval] == checkval)
+            {
+              $('#' + id).append('<option value=' + mydata[x][cloval] + ' selected>' + mydata[x][cloname] + '</option>');
+            }else{
+              $('#' + id).append('<option value=' + mydata[x][cloval] + '>' + mydata[x][cloname] + '</option>');
+            }
           }
           form.render();
         }
       );
+      console.log(checkval);
     },
 
 

@@ -5,7 +5,7 @@
           <div class="layui-form-item">
     		    <label for="school" class="layui-form-label"><span class="x-red">*</span>学校</label>
     		    <div class="layui-input-block">
-    		    	{php} $schoollist = schlist('校级','校级');{/php}
+    		    	{php} $schoollist = schoolList('校级','校级');{/php}
     		      <select name="school_id" lay-verify="required">
     		      	<option value=""></option>
     		      	{volist name="schoollist" id="vo"}
@@ -26,7 +26,7 @@
             <div class="layui-input-block">
               <select name="ruxuenian" lay-verify="required">
                 <option value=""></option>
-                {foreach :nianjiList() as $key=>$vo }
+                {foreach :nianJiNameList() as $key=>$vo }
                   <option value="{$key}">{$vo}</option>
                 {/foreach}
               </select>

@@ -50,7 +50,7 @@
                     <i class="layui-icon">&#xe67c;</i>上传图片
                   </button>
                 </div>
-                
+
               </div>
           </div>
           <div class="layui-form-item">
@@ -91,15 +91,15 @@
               </div>
           </div>
           <div class="layui-form-item">
-    		    <label for="category" class="layui-form-label"><span class="x-red">*</span>荣誉类型</label>
+    		    <label for="category_id" class="layui-form-label"><span class="x-red">*</span>荣誉类型</label>
     		    <div class="layui-input-block">
-    		    	{php} $category = getCategory('单位荣誉类型');{/php}
-    		      <select name="category" lay-verify="required">
+    		    	{php} $category = getCategory(112);{/php}
+    		      <select name="category_id" lay-verify="required">
     		      	<option value=""></option>
     		      	{volist name="category" id="vo"}
                   <option value="{$vo.id}"
-                  {present name="$list.data.category"}
-                    {eq name="$list.data.category" value="$vo.id" }
+                  {present name="$list.data.category_id"}
+                    {eq name="$list.data.category_id" value="$vo.id" }
                       selected
                     {/eq}
                   {/present}>
@@ -110,15 +110,15 @@
     		    </div>
     		  </div>
           <div class="layui-form-item">
-            <label for="hjschool" class="layui-form-label"><span class="x-red">*</span>获奖单位</label>
+            <label for="hjschool_id" class="layui-form-label"><span class="x-red">*</span>获奖单位</label>
             <div class="layui-input-block">
               {php} $school = schlist('校级','区级');{/php}
-              <select name="hjschool" lay-verify="required">
+              <select name="hjschool_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="school" id="vo"}
                   <option value="{$vo.id}"
-                  {present name="$list.data.hjschool"}
-                    {eq name="$list.data.hjschool" value="$vo.id" }
+                  {present name="$list.data.hjschool_id"}
+                    {eq name="$list.data.hjschool_id" value="$vo.id" }
                       selected
                     {/eq}
                   {/present}>
@@ -138,15 +138,15 @@
               </div>
           </div>
                     <div class="layui-form-item">
-            <label for="jibie" class="layui-form-label"><span class="x-red">*</span>颁奖单位</label>
+            <label for="fzschool_id" class="layui-form-label"><span class="x-red">*</span>颁奖单位</label>
             <div class="layui-input-block">
               {php} $school = schlist('区级','其它级');{/php}
-              <select name="fzschool" lay-verify="required">
+              <select name="fzschool_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="school" id="vo"}
                   <option value="{$vo.id}"
-                  {present name="$list.data.fzschool"}
-                    {eq name="$list.data.fzschool" value="$vo.id" }
+                  {present name="$list.data.fzschool_id"}
+                    {eq name="$list.data.fzschool_id" value="$vo.id" }
                       selected
                     {/eq}
                   {/present}>
@@ -157,17 +157,17 @@
             </div>
           </div>
           <div class="layui-form-item">
-            <label for="jiangxiang" class="layui-form-label">
+            <label for="jiangxiang_id" class="layui-form-label">
               <span class="x-red">*</span>奖项
             </label>
             <div class="layui-input-block">
               {php} $category = getCategory('荣誉奖项');{/php}
-              <select name="jiangxiang" lay-verify="required">
+              <select name="jiangxiang_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="category" id="vo"}
                   <option value="{$vo.id}"
-                  {present name="$list.data.jiangxiang"}
-                    {eq name="$list.data.jiangxiang" value="$vo.id" }
+                  {present name="$list.data.jiangxiang_id"}
+                    {eq name="$list.data.jiangxiang_id" value="$vo.id" }
                       selected
                     {/eq}
                   {/present}>
@@ -212,7 +212,6 @@
       ,data: {
         text: '单位荣誉'
         ,serurl:'rongyu_school'
-
       }
       ,acceptMime:'.jpg,.jpeg,.png'
       ,exts:'jpg|jpeg|png'
@@ -251,6 +250,6 @@
   }
 
 
-</script>  
+</script>
 {/block}
 

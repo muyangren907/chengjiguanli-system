@@ -24,6 +24,8 @@ class School extends Seeder
                 ,'jibie_id' => 10204
                 ,'xueduan_id'  =>  10303
                 ,'paixu' => 10
+                ,'kaoshi' => 1
+                ,'xingzhi_id' => 10107
             ],
         ];
         // 保存数据

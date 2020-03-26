@@ -32,7 +32,7 @@
               </div>
           </div>
           <div class="layui-form-item" id="rule" style="background: #eeeeee">
-          </div>  
+          </div>
           <div class="layui-form-item" style="text-align: right;">
               <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
                   {$list.set.butname}
@@ -43,20 +43,18 @@
 
 {block name="myjs"}
     <script type="text/javascript">
-
       // 监测复选框按钮
       layui.use(['form'], function(){
         var form = layui.form;
-
         // 加载权限
-        auth = <?php echo json_encode($list['auth']);?>;  
+        auth = <?php echo json_encode($list['auth']);?>;
         auth = eval(auth);
         createCheckbox(auth,0);
 
         // 创建权限按钮
         function createCheckbox(arr,pid)
         {
-          
+
           if(arr.length==0)
           {
             return false;

@@ -20,20 +20,20 @@
 	  </div>
 	</div>
 	<div class="layui-form-item" style="margin-bottom: 0;">
-	    <label for="xingzhi" class="layui-form-label" style="height: 100%">单位级别</label>
+	    <label for="jibie_id" class="layui-form-label" style="height: 100%">单位级别</label>
 	    <div class="layui-input-block">
-	    	{php} $category = getCategory('单位级别');{/php}
+	    	{php} $category = getCategory(102);{/php}
 	    	{volist name="category" id="vo"}
-	    		<input type="checkbox" name="jibie[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="checkbox" name="jibie_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
 	<div class="layui-form-item" style="margin-bottom: 0;">
-	    <label for="xingzhi" class="layui-form-label" style="height: 100%">单位性质</label>
+	    <label for="xingzhi_id" class="layui-form-label" style="height: 100%">单位性质</label>
 	    <div class="layui-input-block">
-	    	{php} $category = getCategory('单位性质');{/php}
+	    	{php} $category = getCategory(101);{/php}
 	    	{volist name="category" id="vo"}
-	    		<input type="checkbox" name="xingzhi[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="checkbox" name="xingzhi_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
@@ -53,6 +53,9 @@
 		</button>
 	</div>
 </script>
+<script type="text/html" id="kaoshi">
+  <input type="checkbox" myurl="{$list.kaoshi ? $list.kaoshi : url('kaoshi')}" {{d.kaoshi == 1 ? "checked" :""}} id="{{d.id}}" lay-skin="switch" lay-filter="kaoshi" lay-text="能|不能">
+</script>
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
 	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
@@ -65,7 +68,7 @@
 			{type:'checkbox', fixed: 'left'},
 			{field: 'title', title: '单位名称',sort: true, minWidth:240},
 			{field: 'jiancheng', title: '单位简称', minWidth:100,sort: true},
-			{field: "xingzhi",title: '性质',sort: true,templet:function(d){
+			{field: "xingzhi_id", title: '性质', sort: true, minWidth:100, templet:function(d){
 				var str='';
 				if(d.dwXingzhi)
 				{
@@ -73,7 +76,7 @@
 				}
 				return str;
 			}},
-			{field: 'jibie', title: '级别',sort: true,templet:function(d){
+			{field: 'jibie_id', title: '级别',sort: true, minWidth:100,templet:function(d){
 				var str='';
 				if(d.dwJibie)
 				{
@@ -81,7 +84,7 @@
 				}
 				return str;
 			}} ,
-			{field: 'xueduan', title: '学段',sort: true,templet:function(d){
+			{field: 'xueduan_id', title: '学段',sort: true, minWidth:100,templet:function(d){
 				var str='';
 				if(d.dwXueduan)
 				{
@@ -91,7 +94,8 @@
 			}},
 			{field: 'paixu', title: '排序', sort: true},
 			{field: 'dw_teacher_count', minWidth:100, title: '教师数', sort: true},
-			{field: 'status', title: '状态',templet:'#status', sort: true},
+      {field: 'kaoshi', title: '组织考试',templet:'#kaoshi', sort: true, minWidth:100},
+			{field: 'status', title: '状态',templet:'#status', sort: true, minWidth:100},
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
 		]];
 

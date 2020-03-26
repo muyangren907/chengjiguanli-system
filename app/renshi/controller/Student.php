@@ -14,7 +14,6 @@ class Student extends BaseController
     // 显示学生列表
     public function index()
     {
-
         // 设置要给模板赋值的信息
         $list['webtitle'] = '学生列表';
         $list['dataurl'] = 'student/data';
@@ -22,7 +21,7 @@ class Student extends BaseController
         $list['kaoshi'] = '/renshi/student/kaoshi';
 
         // 模板赋值
-        $this->view->assign('list',$list);
+        $this->view->assign('list', $list);
 
         // 渲染模板
         return $this->view->fetch();
@@ -34,58 +33,32 @@ class Student extends BaseController
     {
         // 获取参数
         $src = $this->request
-                ->only([
-                    'page'=>'1',
-                    'limit'=>'10',
-                    'field'=>'update_time',
-                    'order'=>'desc',
-                    'school'=>array(),
-                    'ruxuenian'=>array(),
-                    'paixu'=>array(),
-                    'searchval'=>''
-                ],'POST');
+            ->only([
+                'page' => '1'
+                ,'limit' => '10'
+                ,'field' => 'update_time'
+                ,'order' => 'desc'
+                ,'school_id' => array()
+                ,'ruxuenian' => array()
+                ,'banji_id' => array()
+                ,'searchval' => ''
+            ], 'POST');
 
-        $ruxuenian = $src['ruxuenian'];
-        $paixu = $src['paixu'];
-
-        if(count($ruxuenian)==0)
+        if(count($src['banji_id']) == 0)        # 如果没有获取到班级id,则查询班级id
         {
-            $njlist = nianjilist();
-            $ruxuenian = array_keys($njlist);
+            $banji = new \app\teach\model\Banji;
+            $bjsrc = [
+                'school_id' => $src['school_id']
+                ,'ruxuenian' => $src['ruxuenian']
+                ,'status' => 1
+            ];
+            $src['banji_id'] = $banji->search($bjsrc)->column('id');
         }
 
-
-        // 实例化班级数据模型
-        $banji = new  \app\teach\model\Banji;
-        $src['banji'] = $banji->where('status',1)
-                    ->when(count($ruxuenian)>0,function($query) use($ruxuenian){
-                        $query->where('ruxuenian','in',$ruxuenian);
-                    })
-                    ->when(count($paixu)>0,function($query) use($paixu){
-                        $query->where('paixu','in',$paixu);
-                    })
-                    ->column('id');
-
-        // 实例化
+        // 根据条件查询数据
         $stu = new STU;
-
-        // 查询要显示的数据
         $data = $stu->search($src);
-        // 获取符合条件记录总数
-        $cnt = $data->count();
-        // 获取当前页数据
-        $limit_start = $src['page'] * $src['limit'] - $src['limit'];
-        $limit_length = $src['limit'];
-        $data = $data->slice($limit_start,$limit_length);
-
-        // 重组返回内容
-        $data = [
-            'code'=> 0 , // ajax请求次数，作为标识符
-            'msg'=>"",  // 获取到的结果数(每页显示数量)
-            'count'=>$cnt, // 符合条件的总数据量
-            'data'=>$data, //获取到的数据结果
-        ];
-
+        $data = reSetObject($data, $src);
 
         return json($data);
     }
@@ -99,7 +72,7 @@ class Student extends BaseController
         $list['dataurl'] = '/renshi/student/databy';
 
         // 模板赋值
-        $this->view->assign('list',$list);
+        $this->view->assign('list', $list);
 
         // 渲染模板
         return $this->view->fetch();
@@ -111,36 +84,32 @@ class Student extends BaseController
     {
         // 获取参数
         $src = $this->request
-                ->only([
-                    'page'=>'1',
-                    'limit'=>'10',
-                    'field'=>'update_time',
-                    'order'=>'desc',
-                    'school'=>array(),
-                    'searchval'=>''
-                ],'POST');
+            ->only([
+                'page' => '1'
+                ,'limit' => '10'
+                ,'field' => 'update_time'
+                ,'order' => 'desc'
+                ,'school_id' => array()
+                ,'ruxuenian' => array()
+                ,'banji_id' => array()
+                ,'searchval' => ''
+            ], 'POST');
 
+        if(count($src['banji_id']) == 0)        # 如果没有获取到班级id,则查询班级id
+        {
+            $banji = new \app\teach\model\Banji;
+            $bjsrc = [
+                'school_id' => $src['school_id']
+                ,'ruxuenian' => $src['ruxuenian']
+                ,'status' => 1
+            ];
+            $src['banji_id'] = $banji->search($bjsrc)->column('id');
+        }
 
-        // 实例化
+        // 根据条件查询数据
         $stu = new STU;
-
-        // 查询要显示的数据
-        $data = $stu->searchBy($src);
-        // 获取符合条件记录总数
-        $cnt = $data->count();
-        // 获取当前页数据
-        $limit_start = $src['page'] * $src['limit'] - $src['limit'];
-        $limit_length = $src['limit'];
-        $data = $data->slice($limit_start,$limit_length);
-
-        // 重组返回内容
-        $data = [
-            'code'=> 0 , // ajax请求次数，作为标识符
-            'msg'=>"",  // 获取到的结果数(每页显示数量)
-            'count'=>$cnt, // 符合条件的总数据量
-            'data'=>$data, //获取到的数据结果
-        ];
-
+        $data = $stu->search($src);
+        $data = reSetObject($data, $src);
 
         return json($data);
     }
@@ -154,7 +123,7 @@ class Student extends BaseController
         $list['dataurl'] = '/renshi/student/datadel';
 
         // 模板赋值
-        $this->view->assign('list',$list);
+        $this->view->assign('list', $list);
 
         // 渲染模板
         return $this->view->fetch();
@@ -167,61 +136,34 @@ class Student extends BaseController
         // 获取参数
         $src = $this->request
                 ->only([
-                    'page'=>'1',
-                    'limit'=>'10',
-                    'field'=>'update_time',
-                    'order'=>'desc',
-                    'school'=>array(),
-                    'ruxuenian'=>array(),
-                    'paixu'=>array(),
-                    'searchval'=>''
-                ],'POST');
+                    'page' => '1'
+                    ,'limit' => '10'
+                    ,'field' => 'update_time'
+                    ,'order' => 'desc'
+                    ,'school_id' => array()
+                    ,'ruxuenian' => array()
+                    ,'banji_id' => array()
+                    ,'searchval' => ''
+                ], 'POST');
 
-        $ruxuenian = $src['ruxuenian'];
-        $paixu = $src['paixu'];
-
-        if(count($ruxuenian)==0)
+        if(count($src['banji_id']) == 0)        # 如果没有获取到班级id,则查询班级id
         {
-            $njlist = nianjilist();
-            $ruxuenian = array_keys($njlist);
+            $banji = new \app\teach\model\Banji;
+            $bjsrc = [
+                'school_id' => $src['school_id']
+                ,'ruxuenian' => $src['ruxuenian']
+                ,'status' => 1
+            ];
+            $src['banji_id'] = $banji->search($bjsrc)->column('id');
         }
-
-
-        // 实例化班级数据模型
-        $banji = new  \app\teach\model\Banji;
-        $src['banji'] = $banji->where('status',1)
-                    ->when(count($ruxuenian)>0,function($query) use($ruxuenian){
-                        $query->where('ruxuenian','in',$ruxuenian);
-                    })
-                    ->when(count($paixu)>0,function($query) use($paixu){
-                        $query->where('paixu','in',$paixu);
-                    })
-                    ->column('id');
 
         // 实例化
         $stu = new STU;
-
-        // 查询要显示的数据
         $data = $stu->searchDel($src);
-        // 获取符合条件记录总数
-        $cnt = $data->count();
-        // 获取当前页数据
-        $limit_start = $src['page'] * $src['limit'] - $src['limit'];
-        $limit_length = $src['limit'];
-        $data = $data->slice($limit_start,$limit_length);
-
-        // 重组返回内容
-        $data = [
-            'code'=> 0 , // ajax请求次数，作为标识符
-            'msg'=>"",  // 获取到的结果数(每页显示数量)
-            'count'=>$cnt, // 符合条件的总数据量
-            'data'=>$data, //获取到的数据结果
-        ];
-
+        $data = reSetObject($data, $src);
 
         return json($data);
     }
-
 
 
     // 创建学生
@@ -229,44 +171,50 @@ class Student extends BaseController
     {
         // 设置页面标题
         $list['set'] = array(
-            'webtitle'=>'添加学生',
-            'butname'=>'添加',
-            'formpost'=>'POST',
-            'url'=>'save',
+            'webtitle' => '添加学生'
+            ,'butname' => '添加'
+            ,'formpost' => 'POST'
+            ,'url' => 'save'
         );
 
         // 模板赋值
-        $this->view->assign('list',$list);
+        $this->view->assign('list', $list);
         // 渲染
         return $this->view->fetch('create');
     }
 
 
-
     // 保存信息
     public function save()
     {
-        // 实例化验证模型
-        $validate = new \app\renshi\validate\Student;
-
-
         // 获取表单数据
-        $list = request()->only(['xingming','sex','shenfenzhenghao','shengri','school','ruxuenian','banji','kaoshi'],'post');
+        $list = request()->only([
+            'xingming'
+            ,'sex'
+            ,'shenfenzhenghao'
+            ,'shengri'
+            ,'ruxuenian'
+            ,'banji_id'
+            ,'kaoshi'
+            ,'quanpin'
+            ,'shoupin'
+        ], 'POST');
 
         // 验证表单数据
-        $result = $validate->check($list);
+        $validate = new \app\renshi\validate\Student;
+        $result = $validate->scene('create')->check($list);
         $msg = $validate->getError();
-
-
-        // 如果验证不通过则停止保存
         if(!$result){
-            return json(['msg'=>$msg,'val'=>0]);;
+            return json(['msg' => $msg, 'val' => 0]);;
         }
 
         $list['shenfenzhenghao'] = strtoupper($list['shenfenzhenghao']);
+        // 大写转小写
+        $list['quanpin'] =  trim(strtolower($list['quanpin']));
+        $list['shoupin'] =  trim(strtolower($list['shoupin']));
 
         // 查询数据是否重复
-        $chongfu = STU::withTrashed()->where('shenfenzhenghao',$list['shenfenzhenghao'])->find();
+        $chongfu = STU::withTrashed()->where('shenfenzhenghao', $list['shenfenzhenghao'])->find();
         // 保存或更新数据
         $stu = new STU;
         if($chongfu == Null)
@@ -274,95 +222,103 @@ class Student extends BaseController
             $data = $stu::create($list);
 
         }else{
-            if($chongfu->delete_time>0)
+            if($chongfu->delete_time > 0)
             {
                 $chongfu->restore();
             }
-            $data = $stu::update($list,['id'=>$chongfu->id]);
+            $data = $stu::update($list, ['id' => $chongfu->id]);
         }
 
         // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'添加成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data ? $data = ['msg' => '添加成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息
         return json($data);
     }
 
 
-
     // 修改学生信息
     public function edit($id)
     {
-
         // 获取学生信息
-        $list['data'] = STU::field('id,xingming,sex,shenfenzhenghao,shengri,banji,school,kaoshi,status')
+        $list['data'] = STU::field('id, xingming, sex, shenfenzhenghao, shengri, banji_id, kaoshi, status, quanpin, shoupin')
             ->with([
                     'stuBanji'=>function($query){
-                        $query->field('id,ruxuenian,paixu')->append(['banTitle']);
+                        $query->field('id, ruxuenian, paixu, school_id')
+                            ->append(['banTitle']);
                     }
                 ])
             ->find($id)->toArray();
 
         // 设置页面标题
         $list['set'] = array(
-            'webtitle'=>'编辑学生',
-            'butname'=>'修改',
-            'formpost'=>'PUT',
-            'url'=>'/renshi/student/update/'.$id,
+            'webtitle' => '编辑学生'
+            ,'butname' => '修改'
+            ,'formpost' => 'PUT'
+            ,'url' => '/renshi/student/update/' . $id
         );
 
-
         // 模板赋值
-        $this->view->assign('list',$list);
+        $this->view->assign('list', $list);
         // 渲染
         return $this->view->fetch('create');
     }
 
 
-
-
-
     // 更新学生信息
     public function update($id)
     {
-        $validate = new \app\renshi\validate\Student;
-
         // 获取表单数据
-        $list = request()->only(['xingming','sex','shengri','school','shenfenzhenghao','ruxuenian','banji','kaoshi'],'put');
+        $list = request()->only([
+            'xingming'
+            ,'sex'
+            ,'shengri'
+            ,'shenfenzhenghao'
+            ,'ruxuenian'
+            ,'banji_id'
+            ,'kaoshi'
+            ,'quanpin'
+            ,'shoupin'
+        ], 'PUT');
+        $list['id'] = $id;
 
         // 验证表单数据
-        $result = $validate->check($list);
+        $validate = new \app\renshi\validate\Student;
+        $result = $validate->scene('edit')->check($list);
         $msg = $validate->getError();
-
-        // 如果验证不通过则停止保存
         if(!$result){
             return json(['msg'=>$msg,'val'=>0]);;
         }
 
-        $stu = new STU();
+        // 大写转小写
+        $list['quanpin'] =  trim(strtolower($list['quanpin']));
+        $list['shoupin'] =  trim(strtolower($list['shoupin']));
 
+        $stu = new STU();
         $stuinfo = $stu::withTrashed()
-                    ->where('shenfenzhenghao',$list['shenfenzhenghao'])
-                    ->where('id','<>',$id)
-                    ->with([
-                        'stuSchool'=>function($query){
-                            $query->field('title,jiancheng,id');
-                        },
-                        'stuBanji'
-                    ])
-                    ->find();
+            ->where('shenfenzhenghao', $list['shenfenzhenghao'])
+            ->where('id', '<>', $id)
+            ->with([
+                'stuBanji'
+            ])
+            ->find();
 
 
         if($stuinfo){
-            return json(['msg'=>'此身份证号与　'.$stuinfo->stuSchool->jiancheng.':'.$stuinfo->xingming.'　重复。','val'=>0]);
+            return json([
+                'msg' => '此身份证号与　' . $stuinfo->stuSchool->jiancheng . ':' . $stuinfo->xingming . '　重复。'
+                ,'val' => 0
+            ]);
         }
 
         // 更新数据
         $stu = new STU();
-        $data = $stu::update($list,['id'=>$id]);
+        $data = $stu::update($list, ['id' => $id]);
 
         // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data ? $data = ['msg' => '更新成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息
         return json($data);
@@ -376,22 +332,20 @@ class Student extends BaseController
         $myInfo = STU::withTrashed()
             ->where('id',$id)
             ->with([
-                'stuBanji'=>function($query)
-                {
-                    $query->field('id,school,ruxuenian,paixu')->append(['banjiTitle']);
+                'stuBanji' => function($query){
+                    $query->field('id, school_id, ruxuenian, paixu')
+                        ->append(['banjiTitle']);
                 },
-                'stuSchool'=>function($query)
-                {
+                'stuSchool' => function($query){
                     $query->field('id,title');
                 }
             ])
             ->find();
         // 设置页面标题
-        $myInfo['webtitle'] = $myInfo->xingming.'－信息';
-
+        $myInfo['webtitle'] = $myInfo->xingming . '－信息';
 
         // 模板赋值
-        $this->view->assign('list',$myInfo);
+        $this->view->assign('list', $myInfo);
         // 渲染模板
         return $this->view->fetch();
     }
@@ -405,11 +359,8 @@ class Student extends BaseController
     public function delete($id)
     {
 
-        if($id == 'm')
-        {
-            $id = request()->delete('ids');// 获取delete请求方式传送过来的数据并转换成数据
-        }
-
+        // 整理数据
+        $id = request()->delete('id');
         $id = explode(',', $id);
 
         $data = STU::destroy($id);
@@ -486,8 +437,8 @@ class Student extends BaseController
 
         // 设置页面标题
         $list['set'] = array(
-            'webtitle'=>'校对学生名单',
-            'butname'=>'校对',
+            'webtitle'=>'同步学生名单',
+            'butname'=>'同步',
             'formpost'=>'POST',
             'url'=>'/renshi/student/saveall',
         );
@@ -503,159 +454,27 @@ class Student extends BaseController
     public function saveAll()
     {
         // 获取表单数据
-        $list = request()->only(['school','url'],'post');
-
-        // 实例化操作表格类
-        $excel = new Myexcel();
+        $list = request()->only([
+            'school_id'
+            ,'url'
+        ], 'POST');
 
         // 读取表格数据
-        $stuinfo = $excel->readXls(public_path().'public\\uploads\\'.$list['url']);
-
-
-        // 判断表格是否正确
+        $excel = new Myexcel();
+        $stuinfo = $excel->readXls(public_path() . 'public\\uploads\\' . $list['url']);
         if($stuinfo[0][2] != "序号" && $stuinfo[1][2] != "姓名" && $stuinfo[2][2] != "身份证号")
         {
-            $this->error('请使用模板上传','/login/err');
+            $this->error('请使用模板上传', '/login/err'); #如果表格数据与模板不相符，则跳转。
             return json($data);
         }
 
-        // 删除标题行
-        array_splice($stuinfo,0,3);
-
-        $stuinfo = array_filter($stuinfo,function($q){
-            return $q[1] != null && strlen($q[2]) >=6 && $q[3] != null;
-        });
-
-
-        // 获取班级对应的入学年和排序
-        $bj = array_column($stuinfo, 3);
-
-        // 获取班级名
-        $bjStrName = array_unique($bj);
-
-        // 实例化学生数据模型
+        // 同步学生信息并返回数据库中多的信息
         $stu = new STU;
-        // 声明数据，记录要删除学生ID
-        $delarr = array();
-
-
-        // 循环班级数组，查询数据，进行对比，并返回结果。
-        foreach ($bjStrName as $key => $value) {
-
-            $myStuList = array();
-            // 获取电子表格中本班级学生名单
-            $myStuList = array_filter($stuinfo,function($q) use ($value){
-                return $q[3] == $value;
-            });
-
-
-            $xlsStuList = array_column($myStuList, 2,0);
-            $xlsStuList = array_map('strtoupper', $xlsStuList);  # 将大写字母转换成小写字母
-            $xlsStuList = array_map('trim', $xlsStuList);  # 将大写字母转换成小写字母
-
-
-            $bjid = strBjmArray($value,$list['school']);
-            if($bjid == null)
-            {
-                continue;
-            }
-
-            $serStulist = $stu::withTrashed()
-                        ->where('banji',$bjid)
-                        ->field('id,xingming,shenfenzhenghao,sex')
-                        ->select();
-            $sfzh = $serStulist->column('shenfenzhenghao');
-
-            // 返回数据对比结果
-            $jiaoji = array_intersect($xlsStuList, $sfzh);  #返回交集
-            $add = array_diff($xlsStuList, $sfzh);
-            $del = array_diff($sfzh, $xlsStuList);
-
-
-            // 从新增的数据中查找是否有已经存在，但是班级不正确的信息。
-            $add_temp = $stu::withTrashed()
-                        ->where('shenfenzhenghao','in',$add)
-                        ->field('shenfenzhenghao')
-                        ->column('shenfenzhenghao','id');
-
-            foreach ($add_temp as $key => $val) {
-                // 这个地方在大小写不一致的时候容易出错，需要将小写转换成大写
-                $k = array_search($val, $xlsStuList);
-                $jiaoji[$k]=$val;
-            }
-            $add = array_diff($add, $add_temp);
-
-
-
-            // 针对不同数据进行不同操作
-            // 更新数据
-            foreach ($jiaoji as $key => $val) {
-                $oneStu = $stu::withTrashed()
-                    ->where('shenfenzhenghao',$val)
-                    ->field('id,xingming,banji,school,delete_time')
-                    ->find();
-
-                $oneStu->restore();
-                $oneStu->xingming = $myStuList[$key-1][1];
-                $oneStu->school = $list['school'];
-                $oneStu->banji = $bjid;
-                $oneStu->save();
-            }
-
-
-
-            // 新增数据
-            $data = array();
-            foreach ($add as $key => $val) {
-                $sfzhval = strtoupper(trim($myStuList[$key-1][2]));
-                if(strlen($sfzhval) == 18)
-                {
-                    intval(substr($sfzhval,16,1) )% 2 ? $sex = 1 :$sex = 0 ;
-                    $data[] = [
-                        'xingming'=>$myStuList[$key-1][1],
-                        'shenfenzhenghao'=>$sfzhval,
-                        'banji'=>$bjid,
-                        'school'=>$list['school'],
-                        'shengri' => substr($sfzhval,6,4).'-'.substr($sfzhval,10,2).'-'.substr($sfzhval,12,2),
-                        'sex' =>$sex,
-                    ];
-                }else{
-                    $data[] = [
-                        'xingming'=>$myStuList[$key-1][1],
-                        'shenfenzhenghao'=>$sfzhval,
-                        'banji'=>$bjid,
-                        'school'=>$list['school'],
-                        'shengri' => '1970-1-1',
-                        'sex' =>2,
-                    ];
-                }
-            }
-            $stu->saveAll($data);
-
-
-            // 记录要删除的学生ID数据
-            foreach ($del as $key => $val){
-                array_push($delarr,$serStulist[$key]->id);
-            }
-        }
-
-
-
+        $delStuList = $stu->tongBu($stuinfo, $list['school_id']);
 
         // 获取学校名称
-        $sch = new \app\system\model\school;
-        $sch = $sch::where('id',$list['school'])->value('jiancheng');
-
-        // 查询要删除的学生信息
-        $del = $stu::where('id','in',$delarr)
-                ->field('id,xingming,banji,sex')
-                ->with([
-                    'stuBanji'=>function($query){
-                        $query->field('id,ruxuenian,paixu')->append(['banjiTitle']);
-                    }
-                ])
-                ->select();
-
+        $sch = new \app\system\model\School;
+        $sch = $sch->where('id', $list['school_id'])->value('jiancheng');
 
         // 导出要删除的信息
         // 创建表格
@@ -663,7 +482,7 @@ class Student extends BaseController
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
         // 设置表头信息
-        $sheet->setCellValue('A1', $sch.'需要删除学生名单');
+        $sheet->setCellValue('A1', $sch . '电子表格中不存在的学生名单');
         $sheet->setCellValue('A2', '此表中学生名单是系统中比上传名单中多的数据，是否删除请结合实际情况');
         $sheet->setCellValue('A3', '序号');
         $sheet->setCellValue('B3', 'ID');
@@ -674,18 +493,17 @@ class Student extends BaseController
         // 定义数据起始行号
         $i = 4;
 
-        foreach ($del as $key => $val) {
-            $j = $i+$key;
-            $sheet->setCellValue('A'.$j, $key+1);
-            $sheet->setCellValue('B'.$j, $val->id);
-            $sheet->setCellValue('C'.$j, $val->stuBanji->banjiTitle);
-            $sheet->setCellValue('D'.$j, $val->xingming);
-            $sheet->setCellValue('E'.$j, $val->sex);
+        foreach ($delStuList as $key => $val) {
+            $j = $i + $key;
+            $sheet->setCellValue('A' . $j, $key + 1);
+            $sheet->setCellValue('B' . $j, $val['id']);
+            $sheet->setCellValue('C' . $j, $val['banjiTitle']);
+            $sheet->setCellValue('D' . $j, $val['xingming']);
+            $sheet->setCellValue('E' . $j, $val['sex']);
         }
 
-
         // 保存文件
-        $filename = $sch.'删除学生名单'.date('ymdHis').'.xlsx';
+        $filename = $sch . '电子表格中不存在的学生名单' . date('ymdHis') . '.xlsx';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
@@ -693,7 +511,6 @@ class Student extends BaseController
         $writer->save('php://output');
         ob_flush();
         flush();
-
     }
 
 
@@ -719,14 +536,13 @@ class Student extends BaseController
     public function deleteXlsx()
     {
         // 获取表单数据
-        $list = request()->only(['url'],'post');
+        $list = request()->only([
+            'url'
+        ], 'POST');
 
-        // 实例化操作表格类
+        // 读取表中数据
         $excel = new Myexcel();
-
-        // 读取表格数据
-        $stuinfo = $excel->readXls(public_path().'public\\uploads\\'.$list['url']);
-
+        $stuinfo = $excel->readXls(public_path() . 'public\\uploads\\' . $list['url']);
 
         // 判断表格是否正确
         if($stuinfo[0][2] != "序号" && $stuinfo[1][2] != "ID" && $stuinfo[2][2] != "班级" && $stuinfo[3][2] != "姓名")
@@ -735,37 +551,30 @@ class Student extends BaseController
             return json($data);
         }
 
-        // 删除标题行
-        array_splice($stuinfo,0,3);
-
+        // 整理数据
+        array_splice($stuinfo,0,3);     # 去掉标题行
         $stuinfo = array_filter($stuinfo,function($q){
-            return $q[1] != null && $q[2] != null && $q[3] != null;
+            return $q[1] != null && $q[2] != null && $q[3] != null; # 去掉有空值行
         });
+        $stuids = array_column($stuinfo, 1); # 获取学生信息
 
-
-        // 获取班级对应的入学年和排序
-        $stuids = array_column($stuinfo, 1);
-
-
-        // 实例化学生数据模型
+        // 删除学生信息
         $stu = new STU;
-
         $data = $stu::destroy(function($query) use($stuids){
-            $query->where('id','in',$stuids);
+            $query->where('id', 'in', $stuids);
         });
 
-        $data ? $data = ['msg'=>'数据同步成功','val'=>1] : ['msg'=>'数据同步失败','val'=>0];
+        $data ? $data = ['msg' => '数据同步成功', 'val' => 1]
+            : ['msg' => '数据同步失败', 'val' => 0];
 
         return json($data);
     }
 
 
-
-
     // 下载表格模板
     public function download()
     {
-        $url = public_path().'public\\uploads\\student\\student_template.xlsx';
+        $url = public_path() . 'public\\uploads\\student\\student_template.xlsx';
         return download($url,'学生名单模板.xlsx');
     }
 
@@ -775,7 +584,6 @@ class Student extends BaseController
     {
         // 声明结果数组
         $data = array();
-
         $str = input("post.str");
         $banji = input("post.banji");
         $kaoshi = input("post.kaoshi");

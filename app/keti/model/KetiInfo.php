@@ -11,154 +11,138 @@ class KetiInfo extends BaseModel
     public function search($srcfrom)
     {
     	$src = [
-            'field'=>'update_time',
-            'order'=>'desc',
-            'lxdanweiid'=>array(),
-            'lxcategory'=>array(),
-            'fzdanweiid'=>array(),
-            'subject'=>array(),
-            'category'=>array(),
-            'jddengji'=>array(),
-            'ketice'=>'',
-            'searchval'=>''
+            'lxdanwei_id'=>array()
+            ,'lxcategory_id'=>array()
+            ,'fzdanwei_idid'=>array()
+            ,'subject_id_id'=>array()
+            ,'category_id'=>array()
+            ,'jddengji_id'=>array()
+            ,'ketice_id'=>''
+            ,'searchval'=>''
         ];
         // 用新值替换初始值
-        $src = array_cover( $srcfrom , $src ) ;
-
-        // 获取参数
-    	$lxdanweiid = $src['lxdanweiid'];
-    	$lxcategory = $src['lxcategory'];
-    	$fzdanweiid = $src['fzdanweiid'];
-        $subject = $src['subject'];
-        $category = $src['category'];
-        $jddengji = $src['jddengji'];
-        $ketice = $src['ketice'];
-    	$searchval = $src['searchval'];
+        $src = array_cover($srcfrom, $src);
 
     	$data = $this
-            ->order([$src['field'] =>$src['order']])
-    		->when(count($lxdanweiid)>0,function($query) use($lxdanweiid){
-                	$query->where('ketice','in',function ($q) use($lxdanweiid){
-                        $q->name('keti')->where('lxdanweiid','in',$lxdanweiid)->field('id');
+    		->when(count($src['lxdanwei_id']) > 0, function($query) use($src){
+                	$query->where('ketice_id', 'in', function ($q) use($src){
+                        $q->name('keti')->where('lxdanwei_id', 'in', $src['lxdanwei_id'])->field('id');
                     });
                 })
-    		->when(count($lxcategory)>0,function($query) use($lxcategory){
-                	$query->where('ketice','in',function($q) use($lxcategory){
-                        $q->name('keti')->where('category','in',$lxcategory)->field('id');
+    		->when(count($src['lxcategory_id']) > 0, function($query) use($src){
+                	$query->where('ketice_id', 'in', function($q) use($src){
+                        $q->name('keti')->where('category_id', 'in', $src['lxcategory_id'])->field('id');
                     });
                 })
-    		->when(count($fzdanweiid)>0,function($query) use($fzdanweiid){
-                	$query->where('fzdanweiid','in',$fzdanweiid);
+    		->when(count($src['fzdanwei_id']) > 0, function($query) use($src){
+                	$query->where('fzdanwei_id', 'in', $src['fzdanwei_id']);
                 })
-            ->when(count($subject)>0,function($query) use($subject){
-                    $query->where('subject','in',$subject);
+            ->when(count($src['subject_id']) > 0, function($query) use($src){
+                    $query->where('subject_id', 'in', $src['subject_id']);
                 })
-            ->when(count($category)>0,function($query) use($category){
-                    $query->where('category','in',$category);
+            ->when(count($src['category_id']) > 0, function($query) use($src){
+                    $query->where('category_id', 'in', $src['category_id']);
                 })
-            ->when(count($jddengji)>0,function($query) use($jddengji){
-                    $query->where('jddengji','in',$jddengji);
+            ->when(count($src['jddengji_id']) > 0, function($query) use($src){
+                    $query->where('jddengji_id', 'in', $src['jddengji_id']);
                 })
-            ->when(strlen($ketice)>0,function($query) use($ketice){
-                    $query->where('ketice',$ketice);
+            ->when(strlen($src['ketice_id']) > 0, function($query) use($src){
+                    $query->where('ketice_id', $src['ketice_id']);
                 })
-    		->when(strlen($searchval)>0,function($query) use($searchval){
-                	$query->where('title','like',$searchval);
+    		->when(strlen($src['searchval']) > 0, function($query) use($src){
+                	$query->where('title', 'like', $src['searchval']);
                 })
             ->with(
                 [
                     'fzSchool'=>function($query){
-                        $query->field('id,jiancheng');
+                        $query->field('id, jiancheng');
                     },
                     'KtCe'=>function($query){
-                        $query->field('id,lxdanweiid,category,lxshijian')
+                        $query->field('id, lxdanwei_id, category_id, lxshijian')
                             ->with([
                                 'ktCategory' => function($q){
-                                    $q->field('id,title');
+                                    $q->field('id, title');
                                 },
                                 'ktLxdanwei' => function($q){
-                                    $q->field('id,jiancheng');
+                                    $q->field('id, jiancheng');
                                 }
                             ]);
                     },
                     'ktCategory'=>function($query){
-                        $query->field('id,title');
+                        $query->field('id, title');
                     },
                     'ktSubject'=>function($query){
-                        $query->field('id,title');
+                        $query->field('id, title');
                     },
                     'ktZcr'=>function($query){
-                        $query->field('ketiinfoid,teacherid')
+                        $query->field('ketiinfo_id, teacher_id')
                             ->with([
                                 'teacher'=>function($q){
-                                    $q->field('id,xingming');
+                                    $q->field('id, xingming');
                                 }
                             ]);
                     },
                     'ktCy'=>function($query){
-                        $query->field('ketiinfoid,teacherid')
+                        $query->field('ketiinfo_id, teacher_id')
                             ->with([
                                 'teacher'=>function($q){
-                                    $q->field('id,xingming');
+                                    $q->field('id, xingming');
                                 }
                             ]);
                     }
                 ])
     		->select();
 
-
     	return $data;
     }
 
 
     //搜索课题册
-    public function srcKeti($ketice)
+    public function srcKeti($ketice_id)
     {
         $data = $this
-            // ->order([$src['field'] =>$src['order']])
-            ->where('ketice',$ketice)
+            ->where('ketice_id', $ketice_id)
             ->with(
                 [
-                    'fzSchool'=>function($query){
-                        $query->field('id,jiancheng');
+                    'fzSchool' => function($query){
+                        $query->field('id, jiancheng');
                     },
-                    'KtCe'=>function($query){
-                        $query->field('id,title,lxdanweiid,category,lxshijian')
+                    'KtCe' => function($query){
+                        $query->field('id, title, lxdanwei_id, category_id, lxshijian')
                             ->with([
                                 'ktCategory' => function($q){
-                                    $q->field('id,title');
+                                    $q->field('id, title');
                                 },
                                 'ktLxdanwei' => function($q){
-                                    $q->field('id,jiancheng,title');
+                                    $q->field('id, jiancheng_id, title');
                                 }
                             ]);
                     },
                     'ktCategory'=>function($query){
-                        $query->field('id,title');
+                        $query->field('id, title');
                     },
                     'ktSubject'=>function($query){
-                        $query->field('id,title');
+                        $query->field('id, title');
                     },
                     'ktZcr'=>function($query){
-                        $query->field('ketiinfoid,teacherid')
+                        $query->field('ketiinfo_id, teacher_id')
                             ->with([
                                 'teacher'=>function($q){
-                                    $q->field('id,xingming');
+                                    $q->field('id, xingming');
                                 }
                             ]);
                     },
                     'ktCy'=>function($query){
-                        $query->field('ketiinfoid,teacherid')
+                        $query->field('ketiinfo_id, teacher_id')
                             ->with([
                                 'teacher'=>function($q){
-                                    $q->field('id,xingming');
+                                    $q->field('id, xingming');
                                 }
                             ]);
                     }
                 ]
             )
             ->select();
-
 
         return $data;
     }
@@ -167,54 +151,45 @@ class KetiInfo extends BaseModel
     // 课题主持人关联
     public function ktZcr()
     {
-        return $this->hasMany('\app\keti\model\KetiCanyu','ketiinfoid','id')->where('category',1);
+        return $this->hasMany('\app\keti\model\KetiCanyu', 'ketiinfo_id', 'id')
+            ->where('category_id',1);
     }
+
+
     // 课题参与人关联
     public function ktCy()
     {
-        return $this->hasMany('\app\keti\model\KetiCanyu','ketiinfoid','id')->where('category',2);
+        return $this->hasMany('\app\keti\model\KetiCanyu', 'ketiinfo_id', 'id')
+            ->where('category_id',2);
     }
+
 
     // 立项单位关联
     public function fzSchool()
     {
-         return $this->belongsTo('\app\system\model\School','fzdanweiid','id');
+         return $this->belongsTo('\app\system\model\School', 'fzdanwei_id','id');
     }
 
 
     // 研究类型关联
     public function ktCategory()
     {
-         return $this->belongsTo('\app\system\model\Category','category','id');
+         return $this->belongsTo('\app\system\model\Category', 'category_id', 'id');
     }
 
 
     // 所属学科关联
     public function ktSubject()
     {
-         return $this->belongsTo('\app\system\model\Category','subject','id');
+         return $this->belongsTo('\app\system\model\Category', 'subject_id', 'id');
     }
 
 
     // 课题册关联
     public function ktCe()
     {
-         return $this->belongsTo('\app\keti\model\Keti','ketice','id');
+         return $this->belongsTo('\app\keti\model\Keti', 'ketice_id', 'id');
     }
-
-
-
-    // 结题等级获取器
-    public function getJddengjiAttr($value)
-    {
-        // 结题数组
-        $jtdj = array('0'=>'研究中','1'=>'合格','2'=>'优秀','3'=>'流失');
-        // 获取结题鉴定等级
-        $str =  $jtdj[$value];
-        // 返回结题等级
-        return $str;
-    }
-
 
 
     // 计划结题时间修改器
@@ -223,17 +198,19 @@ class KetiInfo extends BaseModel
         return strtotime($value);
     }
 
+
     // 计划结题时间获取器
     public function getJhjtshijianAttr($value)
     {
         if ($value>0)
         {
-            $value = date('Y-m-d',$value);
+            $value = date('Y-m-d', $value);
         }else{
             $value = "";
         }
         return $value;
     }
+
 
     // 结题时间修改器
     public function setJtshijianAttr($value)
@@ -241,18 +218,16 @@ class KetiInfo extends BaseModel
         return strtotime($value);
     }
 
+
     // 结题时间获取器
     public function getJtshijianAttr($value)
     {
         if ($value>0)
         {
-            $value = date('Y-m-d',$value);
+            $value = date('Y-m-d', $value);
         }else{
             $value = "";
         }
         return $value;
     }
-
-
-
 }

@@ -10,58 +10,48 @@ class DwRongyu extends BaseModel
     //搜索单位获奖荣誉
     public function search($srcfrom)
     {
+        // 整理变量
         $src = [
-            'field'=>'update_time',
-            'order'=>'desc',
-            'fzschool'=>array(),
-            'hjschool'=>array(),
-            'category'=>array(),
-            'searchval'=>''
+            'fzschool_id'=>array()
+            ,'hjschool_id'=>array()
+            ,'category_id'=>array()
+            ,'searchval'=>''
         ];
         // 用新值替换初始值
-        $src = array_cover( $srcfrom , $src ) ;
-
-
-        // 整理变量
-        $hjschool = $src['hjschool'];
-        $fzschool = $src['fzschool'];
-        $category = $src['category'];
-        $searchval = $src['searchval'];
-
+        $src = array_cover($srcfrom, $src);
 
         // 查询数据
         $data = $this
-            ->order([$src['field'] =>$src['order']])
-            ->when(count($hjschool)>0,function($query) use($hjschool){
-                    $query->where('hjschool','in',$hjschool);
+            ->when(count($src['hjschool_id']) > 0, function($query) use($src){
+                    $query->where('hjschool_id', 'in', $src['hjschool_id']);
                 })
-            ->when(count($fzschool)>0,function($query) use($fzschool){
-                    $query->where('fzschool','in',$fzschool);
+            ->when(count($src['fzschool_id']) > 0, function($query) use($src){
+                    $query->where('fzschool_id', 'in', $src['fzschool_id']);
                 })
-            ->when(count($category)>0,function($query) use($category){
-                    $query->where('category','in',$category);
+            ->when(count($src['category_id']) > 0, function($query) use($src){
+                    $query->where('category_id', 'in', $src['category_id']);
                 })
-            ->when(strlen($searchval)>0,function($query) use($searchval){
-                    $query->where('title|jiancheng','like','%'.$searchval.'%');
+            ->when(strlen($src['searchval']) > 0, function($query) use($src){
+                    $query->where('title|jiancheng', 'like', '%' . $src['searchval'] . '%');
                 })
             ->with(
                 [
                     'hjSchool'=>function($query){
-                        $query->field('id,jiancheng');
+                        $query->field('id, jiancheng');
                     },
                     'fzSchool'=>function($query){
-                        $query->field('id,jiancheng,jibie')
+                        $query->field('id, jiancheng, jibie')
                             ->with([
                                 'dwJibie'=>function($query){
-                                    $query->field('id,title');
+                                    $query->field('id, title');
                                 },
                             ]);
                     },
                     'lxCategory'=>function($query){
-                        $query->field('id,title');
+                        $query->field('id, title');
                     },
                     'jxCategory'=>function($query){
-                        $query->field('id,title');
+                        $query->field('id, title');
                     }
                 ]
             )
@@ -73,31 +63,35 @@ class DwRongyu extends BaseModel
     // 获奖单位关联
     public function hjSchool()
     {
-         return $this->belongsTo('\app\system\model\School','hjschool','id');
+         return $this->belongsTo('\app\system\model\School', 'hjschool_id', 'id');
     }
+
 
     // 颁奖单位关联
     public function fzSchool()
     {
-         return $this->belongsTo('\app\system\model\School','fzschool','id');
+         return $this->belongsTo('\app\system\model\School', 'fzschool_id', 'id');
     }
+
 
     // 荣誉类型
     public function lxCategory()
     {
-         return $this->belongsTo('\app\system\model\Category','category','id');
+         return $this->belongsTo('\app\system\model\Category', 'category_id', 'id');
     }
+
 
     // 奖项
     public function jxCategory()
     {
-         return $this->belongsTo('\app\system\model\Category','jiangxiang','id');
+         return $this->belongsTo('\app\system\model\Category', 'jiangxiang_id', 'id');
     }
+
 
     // 参与人
     public function cyDwry()
     {
-        return $this->hasMany('\app\rongyu\model\DwRongyuCanyu','rongyuid','id');
+        return $this->hasMany('\app\rongyu\model\DwRongyuCanyu', 'rongyu_id', 'id');
     }
 
 
@@ -107,16 +101,12 @@ class DwRongyu extends BaseModel
         return strtotime($value);
     }
 
+
     // 发证时间获取器
     public function getFzshijianAttr($value)
     {
         // 判断发证时间是否为空
-        if ($value>0)
-        {
-            $value = date('Y-m-d',$value);
-        }else{
-            $value = "";
-        }
+        $value>0 ? $value = date('Y-m-d',$value) : $value = "";
 
         // 返回发证时间
         return $value;

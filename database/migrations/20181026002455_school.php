@@ -39,6 +39,7 @@ class School extends Migrator
             ->addColumn('xingzhi_id','integer',['limit'=>11,'null'=>true,'comment'=>'单位性质'])
             ->addColumn('jibie_id','integer',['limit'=>11,'null'=>true,'comment'=>'单位级别'])
             ->addColumn('xueduan_id','integer',['limit'=>11,'null'=>true,'comment'=>'学段'])
+            ->addColumn('kaoshi','boolean',['limit'=>1,'default'=>'0','null'=>false,'comment'=>'能不能组织考试，0=不用，1=能'])
             ->addColumn('status','boolean',['limit'=>1,'default'=>'1','null'=>false,'comment'=>'0=禁用，1=正常'])
             ->addColumn('paixu','integer',['limit'=>4,'default'=>'999','null'=>false,'comment'=>'排序'])
             ->addColumn('create_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'创建时间'])

@@ -86,7 +86,6 @@
           limits:[10,25,50,75,100],
           limit:10,
         };
-
     </script>
     {block name="myjs"}{/block}
     <script type="text/javascript">
@@ -100,12 +99,12 @@
 
         // 监听排序
         lTable.on('sort(mytable)', function(obj){
+          val = lForm.val();
+          val.field = obj.field;
+          val.order = obj.type;
           userTable.reload({
             initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
-            ,where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
-              field: obj.field //排序字段
-              ,order: obj.type //排序方式
-            }
+            ,where: val
           })
         });
 
@@ -114,10 +113,11 @@
           var obj = {};
           obj.msg = $(data.elem).attr('lay-text').split('|');
           obj.url = $(data.elem).attr('myurl');
-          obj.val = {};
-          obj.val.id = data.elem.id;
-          obj.val.value = Number(data.elem.checked);
-          obj.val.ziduan = $(data.elem).attr('lay-filter');
+          obj.val = {
+            'id': data.elem.id
+            ,'value': Number(data.elem.checked)
+            ,'ziduan': $(data.elem).attr('lay-filter')
+          };
           cjgl.onoff(obj);
         });
 
@@ -128,20 +128,15 @@
 
         // 监听复选框
         lForm.on('checkbox', function(data){
-          filter = $(data.elem).parents("form").attr('lay-filter');
-          if(filter == 'search')
-          {
-            checkall = $(data.elem).attr('checkall');
-            parentId = $(data.elem).parents("div").attr('id');
-            if(checkall=='p'){
-              cjgl.checkboxAll(parentId,data.elem.checked);
-            }else if(checkall=='c'){
-              cjgl.checkboxParent(parentId);
-            }
-
-            $("#srcsubmit").click();
-            return true;
+          checkall = $(data.elem).attr('checkall');
+          parentId = $(data.elem).parents("div").attr('id');
+          if(checkall == 'p'){
+            cjgl.checkboxAll(parentId, data.elem.checked);
+          }else if(checkall == 'c'){
+            cjgl.checkboxParent(parentId);
           }
+          $("#srcsubmit").click();
+          return true;
         });
 
         // 监听单选
@@ -156,12 +151,12 @@
         });
 
         // 获取搜索框文字
-        $('#searchval').on("change",function(){
+        $('#searchval').on("change", function(){
             $("#srcsubmit").click();
-        })
+        });
 
         // 禁止使用回车提交表单
-        $('#searchval').on("keydown",function(e){
+        $('#searchval').on("keydown", function(e){
           var e = e || window.event;
           if(e.keyCode == 13){
              $("#srcsubmit").click();

@@ -17,8 +17,8 @@ class TongjiLog extends BaseController
     {
         // 获取考试信息
         $ks = new \app\kaoshi\model\Kaoshi;
-        $ksinfo = $ks->where('id',$kaoshi_id)
-            ->field('id,title')
+        $ksinfo = $ks->where('id', $kaoshi_id)
+            ->field('id, title')
             ->find();
 
         // 设置要给模板赋值的信息
@@ -27,21 +27,21 @@ class TongjiLog extends BaseController
         $list['kaoshititle'] = $ksinfo->title;
         $list['dataurl'] = '/kaoshi/tjlog/data';
 
-
         // 模板赋值
-        $this->view->assign('list',$list);
+        $this->view->assign('list', $list);
 
         // 渲染模板
         return $this->view->fetch();
     }
 
+
+    // 获取数据
     public function ajaxData()
     {
-        // 获取参数
         $src = $this->request
             ->only([
-                'kaoshi'=>'',
-            ],'POST');
+                'kaoshi' => '',
+            ], 'POST');
 
         // 实例化考号
         $kh = new \app\kaoshi\model\Kaohao;
@@ -51,15 +51,8 @@ class TongjiLog extends BaseController
 
         $log = new \app\kaoshi\model\TongjiLog;
         $data = $log->search($src);
-        $cnt = count($data);
+        $data = reSetObject($data, $src);
 
-        // 重组返回内容
-        $data = [
-            'code'=> 0 , // ajax请求次数，作为标识符
-            'msg'=>"",  // 获取到的结果数(每页显示数量)
-            'count'=>$cnt, // 符合条件的总数据量
-            'data'=>$data, //获取到的数据结果
-        ];
         return json($data);
     }
 }

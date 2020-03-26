@@ -12,45 +12,41 @@ use think\facade\Route;
 
 // 系统设置systembase
 Route::group('/', function () {
-	    Route::rule('','systembase/edit','get');		# 系统配置页面
-	    Route::rule('update/<id>','systembase/update','put');		# 配置更新
-	    
+	    Route::rule('', 'SystemBase/edit', 'get');		# 系统配置页面
+	    Route::rule('update/<id>', 'SystemBase/update', 'put');		# 配置更新
 	});
 
 // 文件管理
 Route::group('file', function () {
-	    Route::rule('','fields/index','get');		# 文件列表
-		Route::rule('data','fields/ajaxdata','post');			# 获取数据
-		Route::rule('delete/<id>','fields/delete','delete');		# 删除记录
-		Route::rule('download/<id>','fields/download','get');		# 文件下载
+	    Route::rule('','Fields/index', 'get');		# 文件列表
+		Route::rule('data','Fields/ajaxData', 'post');			# 获取数据
+		Route::rule('delete/<id>', 'Fields/delete', 'delete');		# 删除记录
+		Route::rule('download/<id>', 'Fields/download', 'get');		# 文件下载
 	});
-
 
 // 单位管理
 Route::group('school', function () {
-	    Route::rule('','school/index','get');						# 信息列表
-	    Route::rule('data','school/ajaxdata','post');				# 获取数据
-	    Route::rule('create','school/create','get');				# 添加信息
-	    Route::rule('save','school/save','post');					# 保存信息
-	    // Route::rule('read/<id>','school/read','get');				# 读取信息
-	    Route::rule('edit/<id>','school/edit','get');				# 修改信息
-	    Route::rule('update/<id>','school/update','put');			# 更新信息
-	    Route::rule('delete/<id>','school/delete','delete');		# 删除信息
-	    Route::rule('status','school/setStatus','post');		# 删除信息
+	    Route::rule('', 'School/index', 'get');						# 信息列表
+	    Route::rule('data', 'School/ajaxData', 'post');				# 获取数据
+	    Route::rule('create', 'School/create', 'get');				# 添加信息
+	    Route::rule('save', 'School/save', 'post');					# 保存信息
+	    Route::rule('edit/<id>', 'School/edit', 'get');				# 修改信息
+	    Route::rule('update/<id>', 'School/update', 'put');			# 更新信息
+	    Route::rule('delete/<id>', 'School/delete', 'delete');		# 删除信息
+	    Route::rule('status', 'School/setStatus', 'post');		# 删除信息
+        Route::rule('kaoshi', 'School/setKaoshi', 'post');        # 删除信息
 	});
-
 
 // 类别管理
 Route::group('category', function () {
-	    Route::rule('','category/index','get');						# 信息列表
-	    Route::rule('data','category/ajaxdata','post');				# 获取数据
-	    Route::rule('create','category/create','get');				# 添加信息
-	    Route::rule('save','category/save','post');					# 保存信息
-	    // Route::rule('read/<id>','category/read','get');				# 读取信息
-	    Route::rule('edit/<id>','category/edit','get');				# 修改信息
-	    Route::rule('update/<id>','category/update','put');			# 更新信息
-	    Route::rule('delete/<id>','category/delete','delete');		# 删除信息
-	    Route::rule('status','category/setStatus','post');		# 删除信息
+	    Route::rule('', 'Category/index', 'get');						# 信息列表
+	    Route::rule('data', 'Category/ajaxData', 'post');				# 获取数据
+	    Route::rule('create', 'Category/create', 'get');				# 添加信息
+	    Route::rule('save', 'Category/save', 'post');					# 保存信息
+	    Route::rule('edit/<id>', 'Category/edit', 'get');				# 修改信息
+	    Route::rule('update/<id>', 'Category/update', 'put');			# 更新信息
+	    Route::rule('delete/<id>', 'Category/delete', 'delete');		# 删除信息
+	    Route::rule('status', 'Category/setStatus', 'post');		# 删除信息
 	});
 
 

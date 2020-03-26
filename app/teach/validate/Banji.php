@@ -13,6 +13,7 @@ class Banji extends Validate
      * @var array
      */
 	protected $rule = [
+        'id|ID'         =>     'require:number',
         'school_id|学校'     =>      'require|number',
         'ruxuenian|年级'  =>      'require|number',
         'bjsum|班级数'    =>      'require|number'
@@ -25,4 +26,12 @@ class Banji extends Validate
      * @var array
      */
     protected $message = [];
+
+    protected $scene = [
+        'create'  =>  [
+            'school_id'
+            ,'ruxuenian'
+            ,'bjsum'
+        ],
+    ];
 }

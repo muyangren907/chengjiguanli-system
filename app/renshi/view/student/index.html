@@ -21,39 +21,28 @@
       </div>
     </div>
     <div class="layui-form-item">
-	    <label for="school" class="layui-form-label" style="height: 100%">学校</label>
+	    <label for="school_id" class="layui-form-label" style="height: 100%">学校</label>
 	    <div class="layui-input-block">
-	    	{php} $schoollist = schlist('校级','校级',$xueduan=['小学','中小学']);{/php}
+	    	{php} $schoollist = schoolList('校级','校级',$xueduan=['小学','中小学']);{/php}
 	    	{volist name="schoollist" id="vo"}
-	    		<input type="checkbox" name="school[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" lay-filter="src">
+	    		<input type="radio" name="school_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" lay-filter="src" {eq name="i" value="1"}checked{/eq} >
 	    	{/volist}
 	    </div>
 	</div>
 	<div class="layui-form-item">
 	    <label for="ruxuenian" class="layui-form-label" style="height: 100%">年级 </label>
 	    <div class="layui-input-block">
-	    	{php} $njlist = nianjiList();{/php}
-	    	{foreach $njlist as $key=>$vo}
-	    		<input type="checkbox" name="ruxuenian[]" title="{$vo}" value="{$key}" lay-skin="primary"  lay-filter="src">
-	    	{/foreach}
+	    	{php} $njlist = nianJiNameList();{/php}
+        {volist name="njlist" id="vo"}
+	    		<input type="radio" name="ruxuenian" title="{$vo}" value="{$key}" lay-skin="primary"  lay-filter="src" {eq name="i" value="1"}checked{/eq} >
+	    	{/volist}
 	    </div>
 	</div>
 	<div class="layui-form-item" style="margin-bottom: 0;">
-	    <label for="paixu" class="layui-form-label" style="height: 100%">班级</label>
-	    <div class="layui-input-block">
-	    	{php}
-	    		$banji = new \app\teach\model\Banji;
-	    		$ruxuenian = array_keys($njlist);
-	    		$paixu = $banji->where('status',1)
-	    				->where('ruxuenian','in',$ruxuenian)
-	    				->max('paixu');
-	    		$bjlist = banjinamelist();
-	    	{/php}
-	    	{for start="1" end="$paixu+1" }
-	    		<input type="checkbox" name="paixu[]" title="{$bjlist[$i]}" value="{$i}" lay-skin="primary"  lay-filter="src">
-	    	{/for}
-	    </div>
-	</div>
+    <label for="banji_id" class="layui-form-label" style="height: 100%">班级</label>
+    <div class="layui-input-block" id="banji_id">
+    </div>
+  </div>
 {/block}
 {block name="table"}
 	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
@@ -99,14 +88,6 @@
 			{field: "shengri",title: '周岁',sort: true,templet:function(d){
 				return d.age;
 			}},
-			{field: 'school', title: '学校',minWidth:200,sort: true,templet:function(d){
-				var str='';
-				if(d.stuSchool)
-				{
-					str = d.stuSchool.title;
-				}
-				return str;
-			}} ,
 			{field: 'banji', title: '班级',sort: true,templet:function(d){
 				var str='';
 				if(d.stuBanji)
@@ -124,6 +105,10 @@
     layui.use(['table','cjgl'],function(){
       var table = layui.table
           cjgl = layui.cjgl;
+
+      // 添加班级
+      addBanji();
+
       //表头工具栏事件
       table.on('toolbar(mytable)', function(obj){
         switch(obj.event){
@@ -169,6 +154,25 @@
 	          break;
         };
       });
+
+      // 监听表单提交
+      form.on('radio', function(data){
+        addBanji();
+        $("#srcsubmit").click();
+      });
+
+      // 添加班级列表
+      function addBanji(){
+          // 获取参数
+          var formval;
+          formval = formval = form.val("search");
+          if(formval.school == '')
+          {
+            $('#banji_id').children().remove();
+          }else{
+            cjgl.createCheckbox('banji_id',formval,'/teach/banji/mybanji','banji_id','banTitle');
+          }
+      }
     });
 </script>
 {/block}

@@ -10,81 +10,77 @@ class School extends BaseModel
     // 教师数据模型关联
     public function dwTeacher()
     {
-        return $this->hasMany('\app\renshi\model\Teacher','danwei','id');
+        return $this->hasMany('\app\renshi\model\Teacher', 'danwei_id', 'id');
     }
 
     // 单位性质数据模型关联
     public function  dwXingzhi()
     {
-        return $this->belongsTo('\app\system\model\Category','xingzhi','id');
+        return $this->belongsTo('\app\system\model\Category', 'xingzhi_id', 'id');
     }
 
 
     // 单位级别数模型关联
     public function  dwJibie()
     {
-        return $this->belongsTo('\app\system\model\Category','jibie','id');
+        return $this->belongsTo('\app\system\model\Category', 'jibie_id', 'id');
     }
 
 
     // 单位学段数模型关联
     public function  dwXueduan()
     {
-        return $this->belongsTo('\app\system\model\Category','xueduan','id');
+        return $this->belongsTo('\app\system\model\Category', 'xueduan_id', 'id');
     }
-
 
 
     // 查询所有单位
     public function search($srcfrom)
     {
+        // 整理参数
         $src = [
-            'field'=>'paixu',
-            'order'=>'asc',
-            'jibie'=>array(),
-            'xingzhi'=>array(),
+            'jibie_id'=>array(),
+            'xingzhi_id'=>array(),
+            'xueduan_id'=>array(),
+            'kaoshi'=>'',
             'searchval'=>''
         ];
-        // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
-
-
-
-
-        // 整理变量
-        $xingzhi = $src['xingzhi'];
-        $jibie = $src['jibie'];
-        $searchval = $src['searchval'];
 
         // 查询数据
         $data = $this
-            ->order([$src['field'] =>$src['order']])
-            ->when(count($xingzhi)>0,function($query) use($xingzhi){
-                    $query->where('xingzhi','in',$xingzhi);
+            ->when(count($src['xingzhi_id']) > 0, function($query) use($src){
+                    $query->where('xingzhi_id', 'in', $src['xingzhi_id']);
                 })
-            ->when(count($jibie)>0,function($query) use($jibie){
-                    $query->where('jibie','in',$jibie);
+            ->when(count($src['xueduan_id']) > 0, function($query) use($src){
+                    $query->where('xueduan_id', 'in', $src['xueduan_id']);
                 })
-            ->when(strlen($searchval)>0,function($query) use($searchval){
-                    $query->where('title|jiancheng','like','%'.$searchval.'%');
+            ->when(count($src['jibie_id']) > 0, function($query) use($src){
+                    $query->where('jibie_id', 'in', $src['jibie_id']);
+                })
+            ->when(strlen($src['searchval']) > 0, function($query) use($src){
+                    $query->where('title|jiancheng', 'like', '%' . $src['searchval'] . '%');
+                })
+            ->when(strlen($src['kaoshi']) > 0, function($query) use($src){
+                    $query->where('kaoshi', $src['kaoshi']);
                 })
             ->with(
                 [
-                    'dwXingzhi'=>function($query){
-                        $query->field('id,title');
+                    'dwXingzhi' => function($query){
+                        $query->field('id, title');
                     },
-                    'dwJibie'=>function($query){
-                        $query->field('id,title');
+                    'dwJibie' => function($query){
+                        $query->field('id, title');
                     },
-                    'dwXueduan'=>function($query){
-                        $query->field('id,title');
+                    'dwXueduan' => function($query){
+                        $query->field('id, title');
                     },
                 ]
             )
             ->withCount(
                 [
-                    'dwTeacher'=>function($query){
-                        $query->where('status',1);
+                    'dwTeacher' => function($query){
+                        $query->where('status', 1);
                     }
                 ]
             )

@@ -906,7 +906,8 @@ abstract class PDOConnection extends Connection implements ConnectionInterface
             return 0;
         }
 
-        $query->parseOptions();
+        $options = $query->parseOptions();
+        $replace = !empty($options['replace']);
 
         if (0 === $limit && count($dataSet) >= 5000) {
             $limit = 1000;
@@ -921,7 +922,7 @@ abstract class PDOConnection extends Connection implements ConnectionInterface
                 $count = 0;
 
                 foreach ($array as $item) {
-                    $sql = $this->builder->insertAll($query, $item);
+                    $sql = $this->builder->insertAll($query, $item, $replace);
                     $count += $this->execute($query, $sql, $query->getBind());
                 }
 
@@ -935,7 +936,7 @@ abstract class PDOConnection extends Connection implements ConnectionInterface
             return $count;
         }
 
-        $sql = $this->builder->insertAll($query, $dataSet);
+        $sql = $this->builder->insertAll($query, $dataSet, $replace);
 
         return $this->execute($query, $sql, $query->getBind());
     }
@@ -1118,10 +1119,10 @@ abstract class PDOConnection extends Connection implements ConnectionInterface
         if (!empty($options['cache'])) {
             // 判断查询缓存
             $cacheItem = $this->parseCache($query, $options['cache']);
-            $key       = $cacheItem->getKey();
+            $name      = $cacheItem->getKey();
 
-            if ($this->cache->has($key)) {
-                return $this->cache->get($key);
+            if ($this->cache->has($name)) {
+                return $this->cache->get($name);
             }
         }
 
@@ -1144,8 +1145,9 @@ abstract class PDOConnection extends Connection implements ConnectionInterface
         } elseif (('*' == $column || strpos($column, ',')) && $key) {
             $result = array_column($resultSet, null, $key);
         } else {
-            $fields = array_keys($resultSet[0]);
-            $key    = $key ?: array_shift($fields);
+            if (empty($key)) {
+                $key = null;
+            }
 
             if (strpos($column, ',')) {
                 $column = null;
@@ -1153,7 +1155,7 @@ abstract class PDOConnection extends Connection implements ConnectionInterface
                 [$alias, $column] = explode('.', $column);
             }
 
-            if (strpos($key, '.')) {
+            if (is_string($key) && strpos($key, '.')) {
                 [$alias, $key] = explode('.', $key);
             }
 

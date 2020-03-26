@@ -21,60 +21,60 @@
       </div>
     </div>
     <div class="layui-form-item">
-	    <label for="lxdanweiid" class="layui-form-label" style="height: 100%">立项单位</label>
+	    <label for="lxdanwei_id" class="layui-form-label" style="height: 100%">立项单位</label>
 	    <div class="layui-input-block">
 	    	{php} $school = schlist('区级','其它级'); {/php}
 	    	{volist name="school" id="vo"}
-	    		<input type="checkbox" name="lxdanweiid[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="checkbox" name="lxdanwei_id[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
     <div class="layui-form-item">
-	    <label for="lxcategory" class="layui-form-label" style="height: 100%">立项类别</label>
+	    <label for="lxcategory_id" class="layui-form-label" style="height: 100%">立项类别</label>
 	    <div class="layui-input-block">
-	    	{php} $category = getCategory('课题立项类型');{/php}
+	    	{php} $category = getCategory(115);{/php}
 	    	{volist name="category" id="vo"}
-	    		<input type="checkbox" name="lxcategory[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="checkbox" name="lxcategory_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
 	<div class="layui-form-item">
-	    <label for="fzdanweiid" class="layui-form-label" style="height: 100%">负责单位</label>
+	    <label for="fzdanwei_id" class="layui-form-label" style="height: 100%">负责单位</label>
 	    <div class="layui-input-block">
 	    	{php} $school = schlist('校级','区级'); {/php}
 	    	{volist name="school" id="vo"}
-	    		<input type="checkbox" name="fzdanweiid[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="checkbox" name="fzdanwei_id[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
 	<div class="layui-form-item">
-	    <label for="subject" class="layui-form-label" style="height: 100%">所属学科</label>
+	    <label for="subject_id" class="layui-form-label" style="height: 100%">所属学科</label>
 	    <div class="layui-input-block">
-	    	{php} $category = getCategory('课题研究所属学科分类');{/php}
+	    	{php} $category = getCategory(116);{/php}
 	    	{volist name="category" id="vo"}
-	    		<input type="checkbox" name="subject[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="checkbox" name="subject_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
 	<div class="layui-form-item">
-	    <label for="category" class="layui-form-label" style="height: 100%">研究类别</label>
+	    <label for="category_id" class="layui-form-label" style="height: 100%">研究类别</label>
 	    <div class="layui-input-block">
-	    	{php} $category = getCategory('研究类型');{/php}
+	    	{php} $category = getCategory(117);{/php}
 	    	{volist name="category" id="vo"}
-	    		<input type="checkbox" name="category[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="checkbox" name="category_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
 	<div class="layui-form-item" style="margin-bottom: 0;">
-	    <label for="jddengji" class="layui-form-label" style="height: 100%">鉴定结果</label>
+	    <label for="jddengji_id" class="layui-form-label" style="height: 100%">鉴定结果</label>
 	    <div class="layui-input-block">
-	    		<input type="checkbox" name="jddengji[]" title="研究中" value="0" lay-skin="primary">
-	    		<input type="checkbox" name="jddengji[]" title="合格" value="1" lay-skin="primary">
-	    		<input type="checkbox" name="jddengji[]" title="优秀" value="2" lay-skin="primary">
-	    		<input type="checkbox" name="jddengji[]" title="流失" value="3" lay-skin="primary">
-	    </div>
+        {php} $category = getCategory(118);{/php}
+        {volist name="category" id="vo"}
+          <input type="checkbox" name="jddengji_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+        {/volist}
+      </div>
 	</div>
-	<input type="hidden" name="ketice" value="{$list.ketice}">
+	<input type="hidden" name="ketice_id" value="{$list.ketice_id}">
 {/block}
 {block name="table"}
 	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>

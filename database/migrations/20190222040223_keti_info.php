@@ -42,7 +42,7 @@ class KetiInfo extends Migrator
             ->addColumn('category_id','integer',['limit'=>11,'null'=>true,'comment'=>'研究类型'])
             ->addColumn('jhjtshijian','integer',['limit'=>11,'null'=>true,'comment'=>'计划结题时间'])
             ->addColumn('jtshijian','integer',['limit'=>11,'null'=>true,'comment'=>'结题时间'])
-            ->addColumn('jddengji','integer',['limit'=>1,'null'=>false,'default'=>0,'comment'=>'鉴定等级'])
+            ->addColumn('jddengji_id','integer',['limit'=>1,'null'=>false,'default'=>0,'comment'=>'鉴定等级'])
             ->addColumn('jtpic','string',['limit'=>100,'null'=>true,'comment'=>'结题证书图片'])
             ->addColumn('create_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'更新时间'])

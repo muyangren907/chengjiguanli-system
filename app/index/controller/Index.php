@@ -9,69 +9,19 @@ use app\system\model\SystemBase as  sysbasemod;
 
 class Index extends BaseController
 {
-
     // 主页
     public function index()
     {
-        //实例化系统数据模型
-        $sysbasemod = new sysbasemod();
-
-        // 查询系统信息
-        $list = $sysbasemod
-            ->order(['id' => 'desc'])
-            ->field('id, keywords, description')
-            ->find();
-
-
-        // 获取系统名称和版本号
-        $list['webtitle'] = config('shangma.webtitle');
-        $list['version'] = config('shangma.version');
-        // 获取用户姓名
-        $ad = new \app\admin\model\Admin;
-        $list->xingming = $ad->where('id',session('userid'))->value('xingming');
-        // 查询用户拥有的权限
-        $admininfo = $ad->where('id',session('userid'))
-                        ->field('id')
-                        ->with([
-                            'glGroup'=>function($query){
-                                $query->where('status', 1)
-                                    ->field('title, rules, miaoshu');
-                            }
-                        ])
-                        ->find();
-        $rules = '';
-        foreach ($admininfo->gl_group as $key => $value) {
-            if($key == 0){
-                $rules = $value->rules;
-            }else{
-                $rules = $rules . ',' . $value->rules;
-            }
-        }
-
-
-        // 实例化权限数据模型
-        $authrule = new \app\admin\model\AuthRule;
-        // 获取用户拥有权限的菜单
-        $list['menu'] = $authrule
-                        ->where('pid', 0)
-                        ->where('status&ismenu', 1)
-                        ->when(session('userid') > 2, function($query) use($rules){
-                            $query->where('id', 'in', $rules);
-                        })
-                        ->field('id, title, font, name, pid')
-                        ->with([
-                            'authCid' => function($query) use($rules){
-                                $query->where('status&ismenu', 1)
-                                    ->when(session('userid') > 2, function($query) use($rules)
-                                    {
-                                        $query->where('id', 'in', $rules);
-                                    })
-                                    ->field('id, title, name, pid, url');
-                            },
-                        ])
-                        ->order(['paixu'])
-                        ->select()
-                        ->toArray();
+        // 获取信息
+        $sysbasemod = new sysbasemod();     # 关键字
+        $list = $sysbasemod::sysInfo();     # 描述
+        $list['webtitle'] = config('shangma.webtitle'); # 系统名称
+        $list['version'] = config('shangma.version');   # 版本号
+        $ad = new \app\admin\model\Admin;   # 获取用户姓名
+        $list->xingming = $ad->where('id', session('userid'))->value('xingming');
+        $auth = new \app\admin\model\AuthRule;      # 菜单
+        $menu = $auth->menu(session('userid'));
+        $list['menu'] = $menu;
 
         // 模版赋值
         $this->view->assign('list',$list);
@@ -129,11 +79,9 @@ class Index extends BaseController
         $con = new \app\renshi\model\Teacher;
         $list['teacher'] =  $con->count();
         // 学生数
-        $njlist = nianjiList();
-        $njlist = array_keys($njlist);
         $con = new \app\teach\model\Banji;
-        $bjids = $con->where('ruxuenian', 'in', $njlist)
-            ->column('id');
+        $tempsrc['ruxuenian'] = array_keys(nianJiNameList());
+        $bjids = $con->search($tempsrc)->column('id');
         $con = new \app\renshi\model\Student;
         $list['student'] =  $con->where('banji_id', 'in', $bjids)
             ->count();

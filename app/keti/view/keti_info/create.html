@@ -63,7 +63,7 @@
           </div>
           <div class="layui-form-item">
               <label for="bianhao" class="layui-form-label">
-                  课题编号 
+                  课题编号
               </label>
               <div class="layui-input-block">
                   <input type="text" id="bianhao" name="bianhao"
@@ -90,15 +90,15 @@
               </div>
           </div>
           <div class="layui-form-item">
-            <label for="fzdanweiid" class="layui-form-label"><span class="x-red">*</span>负责单位</label>
+            <label for="fzdanwei_id" class="layui-form-label"><span class="x-red">*</span>负责单位</label>
             <div class="layui-input-block">
               {php} $school = schlist('校级','区级');{/php}
-              <select name="fzdanweiid" lay-verify="required">
+              <select name="fzdanwei_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="school" id="vo"}
                   <option value="{$vo.id}"
-                  {present name="$list.data.fzdanweiid"}
-                    {eq name="$list.data.fzdanweiid" value="$vo.id" }
+                  {present name="$list.data.fzdanwei_id"}
+                    {eq name="$list.data.fzdanwei_id" value="$vo.id" }
                       selected
                     {/eq}
                   {/present}>
@@ -109,15 +109,15 @@
             </div>
           </div>
           <div class="layui-form-item">
-    		    <label for="subject" class="layui-form-label"><span class="x-red">*</span>所属学科 </label>
+    		    <label for="subject_id" class="layui-form-label"><span class="x-red">*</span>所属学科 </label>
     		    <div class="layui-input-block">
     		    	{php}$subject = getCategory('课题研究所属学科分类');{/php}
-    		      <select name="subject" lay-verify="required">
+    		      <select name="subject_id" lay-verify="required">
     		      	<option value=""></option>
     		      	{volist name="subject" id="vo"}
                   <option value="{$vo.id}"
-                  {present name="$list.data.subject"}
-                    {eq name="$list.data.subject" value="$vo.id" }
+                  {present name="$list.data.subject_id"}
+                    {eq name="$list.data.subject_id" value="$vo.id" }
                       selected
                     {/eq}
                   {/present}>
@@ -128,15 +128,15 @@
     		    </div>
     		  </div>
           <div class="layui-form-item">
-            <label for="category" class="layui-form-label"><span class="x-red">*</span>研究类型 </label>
+            <label for="category_id" class="layui-form-label"><span class="x-red">*</span>研究类型 </label>
             <div class="layui-input-block">
               {php} $category = getCategory('研究类型');{/php}
-              <select name="category" lay-verify="required">
+              <select name="category_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="category" id="vo"}
                   <option value="{$vo.id}"
-                  {present name="$list.data.category"}
-                    {eq name="$list.data.category" value="$vo.id" }
+                  {present name="$list.data.category_id"}
+                    {eq name="$list.data.category_id" value="$vo.id" }
                       selected
                     {/eq}
                   {/present}>
@@ -155,7 +155,7 @@
                   autocomplete="off" class="layui-input " value="{$list.data.jhjtshijian|default=''}" placeholder="计划结题时间">
               </div>
           </div>
-          <input type="hidden" name="ketice"  id="ketice" value="{$list.set.ketice|default=''}">
+          <input type="hidden" name="ketice_id"  id="ketice_id" value="{$list.set.ketice_id|default=''}">
           <div class="layui-form-item" style="text-align: right;">
               <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
                   {$list.set.butname}
@@ -238,6 +238,6 @@
   }
 
 
-</script>  
+</script>
 {/block}
 

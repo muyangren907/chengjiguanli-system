@@ -42,7 +42,7 @@
               </label>
               <div class="layui-input-block">
                   <input type="text" id="username" name="username" lay-verify="required"
-                  autocomplete="off" class="layui-input" value="{$list.data.username|default=''}" placeholder="由字母、数字-_组成 6-12个字符" 
+                  autocomplete="off" class="layui-input" value="{$list.data.username|default=''}" placeholder="由字母、数字-_组成 6-12个字符"
                   {eq name="$list.set.formpost" value="PUT" }
                      disabled
                   {/eq}>
@@ -57,15 +57,15 @@
               </div>
           </div>
           <div class="layui-form-item">
-            <label for="school" class="layui-form-label"><span class="x-red">*</span>所在单位</label>
+            <label for="school_id" class="layui-form-label"><span class="x-red">*</span>所在单位</label>
             <div class="layui-input-block">
               {php} $schlist = schlist('校级','区级');{/php}
-              <select name="school" lay-verify="required">
+              <select name="school_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="schlist" id="vo"}
                   <option value="{$vo.id}"
-                  {present name="$list.data.school"}
-                    {eq name="$list.data.school" value="$vo.id" }
+                  {present name="$list.data.school_id"}
+                    {eq name="$list.data.school_id" value="$vo.id" }
                       selected
                     {/eq}
                   {/present}>
@@ -103,14 +103,14 @@
           <div class="layui-form-item" pane>
             <label for="sex" class="layui-form-label"><span class="x-red">*</span>性别</label>
             <div class="layui-input-block">
-              <input type="radio" name="sex" value="1" title="男" 
+              <input type="radio" name="sex" value="1" title="男"
                 {present name="$list.data.sex"}
                 {$list.data.sex}
                     {eq name="$list.data.sex" value="男" }
                      checked
                     {/eq}
                 {/present}>
-              <input type="radio" name="sex" value="0" title="女" 
+              <input type="radio" name="sex" value="0" title="女"
                 {present name="$list.data.sex"}
                     {eq name="list.data.sex" value="女" }
                      checked
@@ -169,6 +169,6 @@
         cjgl.selectOnfocus1(this,val,'teacher_id');
       },
     });
-</script>  
+</script>
 {/block}
 

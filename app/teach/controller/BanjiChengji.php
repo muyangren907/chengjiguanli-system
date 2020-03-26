@@ -50,7 +50,6 @@ class BanjiChengji extends BaseController
                 ,'enddate'=>''
             ],'POST');
 
-
         // 根据条件获取班级成绩
         $bjcjmod = new \app\chengji\model\TongjiBj;
         $data = $bjcjmod->srcBanjiChengji($src);

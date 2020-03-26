@@ -21,29 +21,29 @@
       </div>
     </div>
     <div class="layui-form-item">
-	    <label for="xingzhi" class="layui-form-label" style="height: 100%">荣誉类别</label>
+	    <label for="category_id" class="layui-form-label" style="height: 100%">荣誉类别</label>
 	    <div class="layui-input-block">
 	    	{php} $category = getCategory(114);{/php}
 	    	{volist name="category" id="vo"}
-	    		<input type="checkbox" name="category[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="checkbox" name="category_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
 	<div class="layui-form-item">
-	    <label for="fzschool" class="layui-form-label" style="height: 100%">颁奖单位</label>
+	    <label for="fzschool_id" class="layui-form-label" style="height: 100%">颁奖单位</label>
 	    <div class="layui-input-block">
 	    	{php} $school = schlist('区级','其它级'); {/php}
 	    	{volist name="school" id="vo"}
-	    		<input type="checkbox" name="fzschool[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="checkbox" name="fzschool_id[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
 	<div class="layui-form-item" style="margin-bottom: 0;">
-	    <label for="hjschool" class="layui-form-label" style="height: 100%">获奖单位</label>
+	    <label for="hjschool_id" class="layui-form-label" style="height: 100%">获奖单位</label>
 	    <div class="layui-input-block">
 	    	{php} $school = schlist('校级','区级'); {/php}
 	    	{volist name="school" id="vo"}
-	    		<input type="checkbox" name="hjschool[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="checkbox" name="hjschool_id[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
@@ -70,7 +70,7 @@
 	// 设置列
   options.cols=[[ //表头
 			{type:'checkbox', fixed: 'left'},
-			{title: '荣誉册',minWidth:180,templet:function(d){
+			{title: 'rongyuce_id',minWidth:180,templet:function(d){
 				var str='';
 				if(d.ryTuce)
 				{
@@ -94,7 +94,7 @@
 				}
 				return str;
 			}},
-			{field: "jiangxiang",title: '奖项',minWidth:100,sort: true,templet:function(d){
+			{field: "jiangxiang_id",title: '奖项',minWidth:100,sort: true,templet:function(d){
 				var str='';
 				if(d.jxCategory)
 				{
@@ -102,7 +102,7 @@
 				}
 				return str;
 			}},
-			{title: '颁奖单位项',minWidth:260,sort: true,templet:function(d){
+			{title: 'fzschool_id',minWidth:260,sort: true,templet:function(d){
 				var str='';
 				if(d.ryTuce)
 				{

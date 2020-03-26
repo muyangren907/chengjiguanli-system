@@ -80,14 +80,14 @@
           <div class="layui-form-item" pane>
             <label for="ismenu" class="layui-form-label"><span class="x-red">*</span>是否是菜单</label>
             <div class="layui-input-block">
-              <input type="radio" name="ismenu" value="1" title="是" 
+              <input type="radio" name="ismenu" value="1" title="是"
                 {present name="$list.data.ismenu"}
                 {$list.data.ismenu}
                     {eq name="$list.data.ismenu" value="1" }
                      checked
                     {/eq}
                 {/present}>
-              <input type="radio" name="ismenu" value="0" title="否" 
+              <input type="radio" name="ismenu" value="0" title="否"
                 {present name="$list.data.ismenu"}
                     {eq name="list.data.ismenu" value="0" }
                      checked
@@ -146,7 +146,7 @@
               btmOnclick(id,ischecked);
               break;
           };
-        });        
+        });
       });
 
       // 顶层按钮

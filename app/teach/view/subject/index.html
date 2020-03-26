@@ -54,10 +54,10 @@
       {type:'checkbox', fixed: 'left'},
       {field: 'title', title: '名称',sort: true, minWidth:240},
       {field: 'jiancheng', title: '简称', minWidth:100,sort: true},
-      {field: "category",title: '类别',sort: true,templet:function(d){
+      {field: "category_id",title: '类别',sort: true,templet:function(d){
         var str='';
-        if(d.sbj_category){
-          str = d.sbj_category.title;
+        if(d.sbjCategory){
+          str = d.sbjCategory.title;
         }
         return str;
       }},

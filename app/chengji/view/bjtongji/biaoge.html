@@ -87,7 +87,6 @@
 		options.cols[0].push({title: xk[index].title+'('+xk[index].fenshuxian.manfen+')',colspan:4,align:'center'});
 		$.each(xiangmu,function(i,val){
 			var colname = xk[index].lieming;
-    		// console.log(colname + ' ' + i);
     		var colinfo = {
     			title:val
     			,minWidth:100
@@ -176,7 +175,6 @@
       $("#srcsubmit").click();
     });
 
-
   	// 监听表单提交
   	form.on('checkbox', function(data){
   		getAvg();
@@ -187,8 +185,6 @@
       $("#srcsubmit").click();
     });
 
-
-
   	// 添加班级列表
     function addBanji(){
         // 获取参数
@@ -198,7 +194,7 @@
         {
         	$('#paixu').children().remove();
         }else{
-        	cjgl.createCheckbox('paixu',formval,'/kaoshi/index/cybanji','banji','banTitle');
+        	cjgl.createCheckbox('paixu', formval, '/kaoshi/index/cybanji', 'banji', 'banTitle');
         }
     }
 
@@ -209,7 +205,7 @@
       var val = form.val('search');
       val.xiangmu = 'avg';
       var title = '平均分';
-      createTiaoxing(id,url,val,title);
+      createTiaoxing(id, url, val, title);
     }
 
     // 条形统计图--及格率
@@ -219,7 +215,7 @@
       var val = form.val('search');
       val.xiangmu = 'jige';
       var title = '及格率';
-      createTiaoxing(id,url,val,title);
+      createTiaoxing(id, url, val, title);
     }
 
     // 条形统计图--优秀率
@@ -229,7 +225,7 @@
       var val = form.val('search');
       val.xiangmu = 'youxiu';
       var title = '优秀率';
-      createTiaoxing(id,url,val,title);
+      createTiaoxing(id, url, val, title);
     }
 
     // 条形统计图--标准差
@@ -239,9 +235,8 @@
       var val = form.val('search');
       val.xiangmu = 'biaozhuncha';
       var title = '标准差';
-      createTiaoxing(id,url,val,title);
+      createTiaoxing(id, url, val, title);
     }
-
 
     // 箱线图--差异
     function getChayi(){
@@ -249,10 +244,11 @@
       var url = '/chengji/bjtj/myxiangti';
       var val = form.val('search');
       var title = '差异';
-      createXiangti(id,url,val,title);
+      createXiangti(id, url, val, title);
     }
 
   });
+
 
   /**
     * 异步获取图表中的数据
@@ -264,7 +260,7 @@
     * @param val 图表标题
     * @return array 返回类型
     */
-    function createTiaoxing(id,url,val,title)
+    function createTiaoxing(id, url, val, title)
     {
       var myTiaoxing = echarts.init(document.getElementById(id));
       $.post(url,val).done(function (data) {
@@ -329,7 +325,6 @@
    }
 
 
-
   	/**
     * 异步获取箱线图表中的数据
     *
@@ -340,7 +335,7 @@
     * @param title 图表标题
     * @return array 返回类型
     */
-    function createXiangti(id,url,val,title)
+    function createXiangti(id, url, val, title)
     {
     	$.post(url,val).done(function (data) {
        axisData = data.axisData;
@@ -441,8 +436,6 @@
          myXiangti.setOption(option);
        });
     }
-
-
 
 
     function formatter(param) {

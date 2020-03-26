@@ -13,15 +13,15 @@
               </div>
           </div>
           <div class="layui-form-item">
-    		    <label for="category" class="layui-form-label"><span class="x-red">*</span>荣誉类型</label>
+    		    <label for="category_id" class="layui-form-label"><span class="x-red">*</span>荣誉类型</label>
     		    <div class="layui-input-block">
     		    	{php} $category = getCategory('教师荣誉类型');{/php}
-    		      <select name="category" lay-verify="required">
+    		      <select name="category_id" lay-verify="required">
     		      	<option value=""></option>
     		      	{volist name="category" id="vo"}
                   <option value="{$vo.id}"
-                  {present name="$list.data.category"}
-                    {eq name="$list.data.category" value="$vo.id" }
+                  {present name="$list.data.category_id"}
+                    {eq name="$list.data.category_id" value="$vo.id" }
                       selected
                     {/eq}
                   {/present}>
@@ -32,15 +32,15 @@
     		    </div>
     		  </div>
           <div class="layui-form-item">
-            <label for="jibie" class="layui-form-label"><span class="x-red">*</span>颁奖单位</label>
+            <label for="fzschool_id" class="layui-form-label"><span class="x-red">*</span>颁奖单位</label>
             <div class="layui-input-block">
               {php} $school = schlist('区级','其它级');{/php}
               <select name="fzschool" lay-verify="required">
                 <option value=""></option>
                 {volist name="school" id="vo"}
                   <option value="{$vo.id}"
-                  {present name="$list.data.fzschool"}
-                    {eq name="$list.data.fzschool" value="$vo.id" }
+                  {present name="$list.data.fzschool_id"}
+                    {eq name="$list.data.fzschool_id" value="$vo.id" }
                       selected
                     {/eq}
                   {/present}>
@@ -79,6 +79,6 @@
       ,trigger: 'click' //采用click弹出
     });
   });
-</script>  
+</script>
 {/block}
 

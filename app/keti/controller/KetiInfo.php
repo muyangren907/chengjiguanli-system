@@ -13,7 +13,6 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class KetiInfo extends BaseController
 {
-    // use \liliuwei\think\Jump;
     /**
      * 显示资源列表
      *
@@ -23,10 +22,11 @@ class KetiInfo extends BaseController
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = '课题列表';
-        $list['dataurl'] = 'ketiinfo/data';
+        $list['dataurl'] = '/keti/ketiinfo/data';
+        $list['status'] = '/keti/ketiinfo/status';
 
         // 模板赋值
-        $this->view->assign('list',$list);
+        $this->view->assign('list', $list);
 
         // 渲染模板
         return $this->view->fetch();
@@ -39,22 +39,21 @@ class KetiInfo extends BaseController
      * @param  int  $id
      * @return \think\Response
      */
-    public function ketiList($ketice)
+    public function ketiList($ketice_id)
     {
 
         $kt = new \app\keti\model\Keti;
         // 设置要给模板赋值的信息
-        $list['webtitle'] = $kt->where('id',$ketice)->value('title').' 列表';
-        $list['ketice'] = $ketice;
+        $list['webtitle'] = $kt->where('id', $ketice_id)->value('title') . ' 列表';
+        $list['ketice_id'] = $ketice_id;
         $list['dataurl'] = '/keti/ketiinfo/data';
 
         // 模板赋值
-        $this->view->assign('list',$list);
+        $this->view->assign('list', $list);
 
         // 渲染模板
         return $this->view->fetch();
     }
-
 
 
     /**
@@ -67,46 +66,27 @@ class KetiInfo extends BaseController
         // 获取参数
         $src = $this->request
                 ->only([
-                    'page'=>'1',
-                    'limit'=>'10',
-                    'field'=>'update_time',
-                    'order'=>'desc',
-                    'lxdanweiid'=>array(),
-                    'lxcategory'=>array(),
-                    'fzdanweiid'=>array(),
-                    'subject'=>array(),
-                    'category'=>array(),
-                    'jddengji'=>array(),
-                    'ketice'=>'',
-                    'searchval'=>''
+                    'page'=>'1'
+                    ,'limit'=>'10'
+                    ,'field'=>'update_time'
+                    ,'order'=>'desc'
+                    ,'lxdanwei_id'=>array()
+                    ,'lxcategory_id'=>array(),
+                    ,'fzdanwe_id'=>array()
+                    ,'subject_id'=>array()
+                    ,'category_id'=>array()
+                    ,'jddengji_id'=>array()
+                    ,'ketice_id'=>''
+                    ,'searchval'=>''
                 ],'POST');
-
 
         // 实例化
         $ktinfo = new ktinfo;
-
-        // 查询要显示的数据
         $data = $ktinfo->search($src);
-        // 获取符合条件记录总数
-        $cnt = $data->count();
-        // 获取当前页数据
-        $limit_start = $src['page'] * $src['limit'] - $src['limit'];
-        $limit_length = $src['limit'];
-        $data = $data->slice($limit_start,$limit_length);
-
-        // 重组返回内容
-        $data = [
-            'code'=> 0 , // ajax请求次数，作为标识符
-            'msg'=>"",  // 获取到的结果数(每页显示数量)
-            'count'=>$cnt, // 符合条件的总数据量
-            'data'=>$data, //获取到的数据结果
-        ];
-
+        $data = reSetObject($data, $src);
 
         return json($data);
     }
-
-
 
 
     /**
@@ -114,7 +94,7 @@ class KetiInfo extends BaseController
      *
      * @return \think\Response
      */
-    public function create($ketice=0)
+    public function create($ketice_id=0)
     {
         // 设置页面标题
         $list['set'] = array(
@@ -122,14 +102,15 @@ class KetiInfo extends BaseController
             'butname'=>'添加',
             'formpost'=>'POST',
             'url'=>'/keti/ketiinfo/save',
-            'ketice'=>$ketice
+            'ketice_id'=>$ketice_id
         );
 
         // 模板赋值
-        $this->view->assign('list',$list);
+        $this->view->assign('list', $list);
         // 渲染
         return $this->view->fetch('create');
     }
+
 
     /**
      * 保存新建的资源
@@ -140,20 +121,29 @@ class KetiInfo extends BaseController
     public function save()
     {
         // 获取表单数据
-        $list = request()->only(['ketice','title','bianhao','fzdanweiid','subject','category','jhjtshijian','hjteachers','lxpic'],'POST');
+        $list = request()->only([
+            'ketice_id'
+            ,'title'
+            ,'bianhao'
+            ,'fzdanwei_id'
+            ,'subject_id'
+            ,'category_id'
+            ,'jhjtshijian'
+            ,'hjteachers'
+            ,'lxpic'
+        ], 'POST');
 
 
         // 实例化验证类
         $validate = new \app\keti\validate\KetiInfo;
         // 验证表单数据
-        $result = $validate->scene('add')->check($list);
+        $result = $validate->scene('create')->check($list);
         $msg = $validate->getError();
 
         // 如果验证不通过则停止保存
         if(!$result){
-            return json(['msg'=>$msg,'val'=>0]);
+            return json(['msg' => $msg, 'val' => 0]);
         }
-
 
         // 更新数据
         $data = ktinfo::create($list);
@@ -163,20 +153,19 @@ class KetiInfo extends BaseController
             // 循环组成获奖教师信息
             foreach ($list['hjteachers'] as $key => $value) {
                 $canyulist[] = [
-                    'teacherid' => $value,
-                    'category' => 1,
+                    'teacher_id' => $value,
+                    ,'category_id' => 1
                 ];
             }
-
 
         // 添加新的获奖人与参与人信息
         $cy = $data->ktZcr()->saveAll($canyulist);
 
         // 根据更新结果设置返回提示信息
         if($cy){
-            $data=['msg'=>'添加成功','val'=>1];
+            $data = ['msg' => '添加成功', 'val' => 1];
         }else{
-            $data=['msg'=>'数据处理错误','val'=>0];
+            $data = ['msg' => '数据处理错误', 'val' => 0];
             $data->delete(true);
         }
 
@@ -186,24 +175,25 @@ class KetiInfo extends BaseController
 
 
     // 批量上传立项通知书
-    public function createAll($ketice)
+    public function createAll($ketice_id)
     {
         // 设置页面标题
         $list['set'] = array(
-            'webtitle'=>'批量添加课题信息',
-            'butname'=>'批传',
-            'formpost'=>'POST',
-            'url'=>'/keti/ketiinfo/saveall/'.$ketice,
+            'webtitle'=>'批量添加课题信息,'
+            ,'butname'=>'批传'
+            ,'formpost'=>'POST'
+            ,'url'=>'/keti/ketiinfo/saveall/' . $ketice_id
         );
 
         // 模板赋值
-        $this->view->assign('list',$list);
+        $this->view->assign('list', $list);
         // 渲染
         return $this->view->fetch();
     }
 
+
     // 批量保存图片
-    public function saveAll($ketice)
+    public function saveAll($ketice_id)
     {
         // 获取文件信息
         $list['text'] = $this->request->post('text');
@@ -212,36 +202,25 @@ class KetiInfo extends BaseController
         // 获取表单上传文件
         $file = request()->file('file');
         // 上传文件并返回结果
-        $data = saveFileInfo($file,$list,false);
+        $data = saveFileInfo($file, $list, false);
 
         if($data['val'] != 1)
         {
-            $data=['msg'=>'添加失败','val'=>0];
+            $data = ['msg' => '添加失败', 'val' => 0];
         }
 
         $data = ktinfo::create([
-            'lxpic'=>$data['url']
-            ,'title'=>'批传立项'
-            ,'ketice'=>$ketice
+            'lxpic' => $data['url']
+            ,'title' => '批传立项'
+            ,'ketice_id' => $ketice_id
         ]);
 
-        $data ? $data=['msg'=>'批传成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data ? $data = ['msg' => '批传成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         return json($data);
     }
 
-
-
-    /**
-     * 显示指定的资源
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function read($id)
-    {
-        //
-    }
 
     /**
      * 显示编辑资源表单页.
@@ -253,33 +232,33 @@ class KetiInfo extends BaseController
     {
         // 获取课题信息
         $list['data'] = ktinfo::where('id',$id)
-                ->field('id,title,fzdanweiid,bianhao,subject,category,jhjtshijian,lxpic')
+                ->field('id, title, fzdanwei_id, bianhao, subject_id, category_id, jhjtshijian, lxpic')
                 ->with([
                     'ktZcr'=>function($query){
-                        $query->field('ketiinfoid,teacherid')
+                        $query->field('ketiinfo_id,teacher_id')
                             ->with([
                                 'teacher'=>function($q){
-                                    $q->field('id,xingming');
+                                    $q->field('id, xingming');
                                 }
                             ]);
                     },
                 ])
                 ->find();
 
-
         // 设置页面标题
         $list['set'] = array(
             'webtitle'=>'编辑课题',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'/keti/ketiinfo/update/'.$id,
+            'url'=>'/keti/ketiinfo/update/' . $id,
         );
 
         // 模板赋值
-        $this->view->assign('list',$list);
+        $this->view->assign('list', $list);
         // 渲染
         return $this->view->fetch('create');
     }
+
 
     /**
      * 保存更新的资源
@@ -291,21 +270,27 @@ class KetiInfo extends BaseController
     public function update($id)
     {
         // 获取表单数据
-        $list = request()->only(['title','bianhao','fzdanweiid','subject','category','jhjtshijian','hjteachers','lxpic'],'PUT');
+        $list = request()->only([
+            'title'
+            ,'bianhao'
+            ,'fzdanwei_id'
+            ,'subject_id'
+            ,'category_id'
+            ,'jhjtshijian'
+            ,'hjteachers'
+            ,'lxpic'
+        ], 'PUT');
         $list['id'] = $id;
 
-
-        // 实例化验证类
+        // 验证数据
         $validate = new \app\keti\validate\KetiInfo;
-        // 验证表单数据
         $result = $validate->scene('edit')->check($list);
         $msg = $validate->getError();
 
         // 如果验证不通过则停止保存
         if(!$result){
-            return json(['msg'=>$msg,'val'=>0]);
+            return json(['msg' => $msg, 'val' => 0]);
         }
-
 
         // 更新数据
         $data = ktinfo::update($list);
@@ -317,21 +302,22 @@ class KetiInfo extends BaseController
             // 循环组成获奖教师信息
             foreach ($list['hjteachers'] as $key => $value) {
                 $canyulist[] = [
-                    'teacherid' => $value,
-                    'category' => 1,
+                    'teacherid' => $value
+                    ,'category' => 1
                 ];
             }
-
 
         // 添加新的获奖人与参与人信息
         $data = $data->ktZcr()->saveAll($canyulist);
 
         // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data ? $data = ['msg' => '更新成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息
         return json($data);
     }
+
 
     /**
      * 删除指定资源
@@ -342,37 +328,34 @@ class KetiInfo extends BaseController
     public function delete($id)
     {
 
-        if($id == 'm')
-        {
-            $id = request()->delete('ids');// 获取delete请求方式传送过来的数据并转换成数据
-        }
-
+        // 整理数据
+        $id = request()->delete('id');
         $id = explode(',', $id);
 
         $data = ktinfo::destroy($id);
 
         // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'删除成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data ? $data = ['msg' => '删除成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息
         return json($data);
     }
 
 
-
     // 设置荣誉状态
     public function setStatus()
     {
-
         //  获取id变量
         $id = request()->post('id');
         $value = request()->post('value');
 
         // 获取学生信息
-        $data = ktinfo::where('id',$id)->update(['status'=>$value]);
+        $data = ktinfo::where('id', $id)->update(['status' => $value]);
 
         // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data ? $data = ['msg' => '状态设置成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息
         return json($data);
@@ -383,13 +366,13 @@ class KetiInfo extends BaseController
     public function jieTi($id)
     {
         // 获取课题信息
-        $list['data'] = ktinfo::where('id',$id)
-                ->field('id,title,jddengji,jtshijian,jtpic')
+        $list['data'] = ktinfo::where('id', $id)
+                ->field('id, title, jddengji_id, jtshijian, jtpic')
                 ->with([
                     'ktCy'=>function($query){
-                        $query->field('ketiinfoid,teacherid')
+                        $query->field('ketiinfo_id,teacher_id')
                         ->with(['teacher'=>function($query){
-                            $query->field('id,xingming');
+                            $query->field('id, xingming');
                         }]);
                     },
                 ])
@@ -397,14 +380,14 @@ class KetiInfo extends BaseController
 
         // 设置页面标题
         $list['set'] = array(
-            'webtitle'=>'编辑结题',
-            'butname'=>'修改',
-            'formpost'=>'PUT',
-            'url'=>'/keti/ketiinfo/jietiupdate/'.$id,
+            'webtitle'=>'编辑结题'
+            ,'butname'=>'修改'
+            ,'formpost'=>'PUT'
+            ,'url'=>'/keti/ketiinfo/jietiupdate/' . $id
         );
 
         // 模板赋值
-        $this->view->assign('list',$list);
+        $this->view->assign('list', $list);
         // 渲染
         return $this->view->fetch();
     }
@@ -414,22 +397,21 @@ class KetiInfo extends BaseController
     public function jtUpdate($id)
     {
         // 获取表单数据
-        $list = request()->only(['jtpic','jddengji','jtshijian','cyteachers'],'PUT');
+        $list = request()->only([
+            'jtpic'
+            ,'jddengji'
+            ,'jtshijian'
+            ,'cyteachers'
+        ], 'PUT');
         $list['id'] = $id;
-
 
         // 实例化验证类
         $validate = new \app\keti\validate\KetiInfo;
-        // 验证表单数据
         $result = $validate->scene('jieti')->check($list);
         $msg = $validate->getError();
-
-        // 如果验证不通过则停止保存
         if(!$result){
-            return json(['msg'=>$msg,'val'=>0]);
+            return json(['msg' => $msg, 'val' => 0]);
         }
-
-
         // 更新数据
         $data = ktinfo::update($list);
 
@@ -440,25 +422,21 @@ class KetiInfo extends BaseController
             // 循环组成获奖教师信息
             foreach ($list['cyteachers'] as $key => $value) {
                 $canyulist[] = [
-                    'teacherid' => $value,
-                    'category' => 2,
+                    'teacher_id' => $value
+                    ,'category_id' => 2
                 ];
             }
-
 
         // 添加新的获奖人与参与人信息
         $data = $data->ktCy()->saveAll($canyulist);
 
         // 根据更新结果设置返回提示信息
-        $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data ? $data = ['msg' => '更新成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息
         return json($data);
-
-
     }
-
-
 
 
     // 下载课题信息表
@@ -467,16 +445,14 @@ class KetiInfo extends BaseController
         $ketiinfo = new ktinfo();
         $list = $ketiinfo->srcKeti($ketice);
 
-
         if($list->isEmpty())
         {
             $this->error('兄弟，没有要下载的信息呀~');
-            // return '没有找到记录，下载失败';
         }else{
            $keticename = $list[0]['KtCe']['title'];
            $lxdanwei = $list[0]['KtCe']['ktLxdanwei']['title'];
            $lxshijian = strtotime($list[0]['KtCe']['lxshijian']);
-           $lxshijian = date('Ym',$lxshijian);
+           $lxshijian = date('Ym', $lxshijian);
         }
 
         //通过工厂模式创建内容
@@ -484,14 +460,14 @@ class KetiInfo extends BaseController
         $worksheet = $spreadsheet->getActiveSheet();
 
         $worksheet->getCell('A1')->setValue($keticename);
-        $worksheet->getCell('A2')->setValue('发证单位:'.$lxdanwei);
-        $worksheet->getCell('G2')->setValue('发证时间:'.$list[0]['KtCe']['lxshijian']);
+        $worksheet->getCell('A2')->setValue('发证单位:' . $lxdanwei);
+        $worksheet->getCell('G2')->setValue('发证时间:' . $list[0]['KtCe']['lxshijian']);
         // 循环为excel每行赋值
         foreach ($list as $key => $value) {
             $myrowid = $key + 4;
-            $worksheet->getCell('A'.$myrowid)->setValue($key+1);
-            $worksheet->getCell('B'.$myrowid)->setValue($value->title);
-            $worksheet->getCell('C'.$myrowid)->setValue($value->bianhao);
+            $worksheet->getCell('A' . $myrowid)->setValue($key + 1);
+            $worksheet->getCell('B' . $myrowid)->setValue($value->title);
+            $worksheet->getCell('C' . $myrowid)->setValue($value->bianhao);
             // 课题主持人
             if($value->ktZcr){
                 $str = '';
@@ -500,14 +476,14 @@ class KetiInfo extends BaseController
                     {
                         $str = $val->teacher->xingming;
                     }else{
-                        $str = $str.'、'.$val->teacher->xingming;
+                        $str = $str . '、' . $val->teacher->xingming;
                     }
                 }
-                $worksheet->getCell('D'.$myrowid)->setValue($str);
+                $worksheet->getCell('D' . $myrowid)->setValue($str);
             }
             // 课题负责单位
             if($value->fzSchool){
-                $worksheet->getCell('E'.$myrowid)->setValue($value->fzSchool->jiancheng);
+                $worksheet->getCell('E' . $myrowid)->setValue($value->fzSchool->jiancheng);
             }
             // 课题参与人
             if($value->ktCy){
@@ -517,12 +493,12 @@ class KetiInfo extends BaseController
                     {
                         $str = $val->teacher->xingming;
                     }else{
-                        $str = $str.'、'.$val->teacher->xingming;
+                        $str = $str . '、' . $val->teacher->xingming;
                     }
                 }
-                $worksheet->getCell('F'.$myrowid)->setValue($str);
+                $worksheet->getCell('F' . $myrowid)->setValue($str);
             }
-            $worksheet->getCell('G'.$myrowid)->setValue($value->jddengji);
+            $worksheet->getCell('G' . $myrowid)->setValue($value->jddengji);
         }
 
         // 给单元格加边框
@@ -535,12 +511,12 @@ class KetiInfo extends BaseController
             ],
         ];
 
-        if($key+4>9)
+        if($key + 4 > 9)
         {
 
-            $worksheet->getStyle('A10:H'.($key+4))->applyFromArray($styleArray);
+            $worksheet->getStyle('A10:H' . ($key + 4))->applyFromArray($styleArray);
             // 设置行高
-            for($i = 10;  $i<=($key+4); $i++){
+            for($i = 10;  $i <= ($key + 4); $i ++){
                 $worksheet->getRowDimension($i)->setRowHeight(30);
             }
 
@@ -551,15 +527,10 @@ class KetiInfo extends BaseController
         //告诉浏览器输出07Excel文件
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         //告诉浏览器输出浏览器名称
-        header('Content-Disposition: attachment;filename="'.$keticename .$lxshijian.'.xlsx"');
+        header('Content-Disposition: attachment;filename="' . $keticename . $lxshijian . '.xlsx"');
         //禁止缓存
         header('Cache-Control: max-age=0');
         $writer = new Xlsx($spreadsheet);
         $writer->save('php://output');
-
-
     }
-
-
-
 }

@@ -24,12 +24,12 @@
     		    <label for="category" class="layui-form-label"><span class="x-red">*</span>类别</label>
     		    <div class="layui-input-block">
     		    	{php} $category = getCategory('108');{/php}
-    		      <select name="category" lay-verify="required">
+    		      <select name="category_id" lay-verify="required">
     		      	<option value=""></option>
     		      	{volist name="category" id="vo"}
                   <option value="{$vo.id}"
-                  {present name="$list.data.category"}
-                    {eq name="$list.data.category" value="$vo.id" }
+                  {present name="$list.data.category_id"}
+                    {eq name="$list.data.category_id" value="$vo.id" }
                       selected
                     {/eq}
                   {/present}>

@@ -838,7 +838,7 @@ class Rule extends Seeder
             ['id' => 6
                 ,'title'  => '管理员管理'
                 ,'name' => 'admin'
-                ,'paixu'  => 5
+                ,'paixu'  => 9
                 ,'ismenu'  => 1
                 ,'font' => '&#xe6b8;'
             ],
@@ -846,7 +846,7 @@ class Rule extends Seeder
             ['id' => 601
                 ,'title' => '管理员列表'
                 ,'name' => 'admin/Index/index'
-                ,'paixu' => 1
+                ,'paixu' => 3
                 ,'ismenu'  => 1
                 ,'pid'  => 6
                 ,'url' => '/admin/index'
@@ -903,7 +903,7 @@ class Rule extends Seeder
             ['id' => 602
                 ,'title' => '权限列表'
                 ,'name' => 'admin/AuthRule/index'
-                ,'paixu' => 2
+                ,'paixu' => 1
                 ,'ismenu'  => 1
                 ,'pid'  => 6
                 ,'url' => '/admin/Authrule'
@@ -954,7 +954,7 @@ class Rule extends Seeder
             ['id' => 603
                 ,'title' => '角色列表'
                 ,'name' => 'admin/AuthGroup/index'
-                ,'paixu' => 3
+                ,'paixu' => 2
                 ,'ismenu'  => 1
                 ,'pid'  => 6
                 ,'url' => '/admin/authgroup'
@@ -1008,7 +1008,7 @@ class Rule extends Seeder
             ['id' => 7
                 ,'title' => '系统管理'
                 ,'name'  => 'system'
-                ,'paixu'  => 8
+                ,'paixu'  => 10
                 ,'ismenu'  => 1
                 ,'font'  => '&#xe6ae;'
             ],
@@ -1113,6 +1113,12 @@ class Rule extends Seeder
                     ,'paixu' => 7
                     ,'pid' => 702
                 ],
+                ['id' => 70208
+                    ,'title' => '能否组织考试'
+                    ,'name' => 'system/School/setKaoshi'
+                    ,'paixu' => 8
+                    ,'pid' => 702
+                ],
             ['id' => 703
                 ,'title' => '文件管理'
                 ,'name' => 'system/Fields/index'
@@ -1154,7 +1160,7 @@ class Rule extends Seeder
             ['id' => 8
                 ,'title' => '荣誉管理'
                 ,'name'  => 'rongyu'
-                ,'paixu'  => 6
+                ,'paixu'  => 5
                 ,'ismenu'  => 1
                 ,'font'  => '&#xe6e4;'
                 ,'status' => 0
@@ -1355,7 +1361,7 @@ class Rule extends Seeder
             ['id' => 9
                 ,'title' => '课题管理'
                 ,'name'  => 'keti'
-                ,'paixu'  => 7
+                ,'paixu'  => 6
                 ,'ismenu'  => 1
                 ,'font'  => '&#xe6b3;'
                 ,'status' => 0

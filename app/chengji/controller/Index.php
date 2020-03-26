@@ -156,11 +156,8 @@ class Index extends BaseController
     public function delete($id)
     {
 
-        if($id == 'm')
-        {
-            $id = request()->delete('ids');// 获取delete请求方式传送过来的数据并转换成数据
-        }
-
+        // 整理数据
+        $id = request()->delete('id');
         $id = explode(',', $id);
 
         $khid = Chengji::where('id',$id['0'])->value('kaohao_id');

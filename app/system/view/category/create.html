@@ -15,12 +15,12 @@
     		    <label for="pid" class="layui-form-label"><span class="x-red">*</span>父级类别</label>
     		    <div class="layui-input-block">
     		    	{php} $category = getCategory(0);{/php}
-    		      <select name="pid">
+    		      <select name="p_id">
     		      	<option value="">顶级类别</option>
     		      	{volist name="category" id="vo"}
                   <option value="{$vo.id}"
-                  {present name="$list.data.pid"}
-                    {eq name="$list.data.pid" value="$vo.id" }
+                  {present name="$list.data.p_id"}
+                    {eq name="$list.data.p_id" value="$vo.id" }
                       selected
                     {/eq}
                   {/present}>
@@ -48,6 +48,6 @@
 {/block}
 
 {block name="myjs"}
-    
+
 {/block}
 
