@@ -72,42 +72,21 @@
               </div>
           </div>
           <div class="layui-form-item">
-            <label for="jddengji" class="layui-form-label"><span class="x-red">*</span>结题鉴定</label>
+            <label for="jddengji_id" class="layui-form-label"><span class="x-red">*</span>结题鉴定 </label>
             <div class="layui-input-block">
-              <select name="jddengji" lay-verify="required">
+              {php}$jddengji = getCategory(118);{/php}
+              <select name="jddengji_id" lay-verify="required">
                 <option value=""></option>
-                  <option value="0"
-                  {present name="$list.data.jddengji"}
-                    {eq name="$list.data.jddengji" value="研究中" }
+                {volist name="jddengji" id="vo"}
+                  <option value="{$vo.id}"
+                  {present name="$list.data.jddengji_id"}
+                    {eq name="$list.data.jddengji_id" value="$vo.id" }
                       selected
                     {/eq}
                   {/present}>
-                    研究中
+                    {$vo.title}
                   </option>
-                  <option value="1"
-                  {present name="$list.data.jddengji"}
-                    {eq name="$list.data.jddengji" value="合格" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    合格
-                  </option>
-                  <option value="2"
-                  {present name="$list.data.jddengji"}
-                    {eq name="$list.data.jddengji" value="优秀" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    优秀
-                  </option>
-                  <option value="3"
-                  {present name="$list.data.jddengji"}
-                    {eq name="$list.data.jddengji" value="流失" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    流失
-                  </option>
+                {/volist}
               </select>
             </div>
           </div>
@@ -185,7 +164,6 @@
       }
     },
   })
-
 
   // 图片放大
   function imgMax(obj,max=false)

@@ -12,11 +12,13 @@ class Keti extends BaseModel
     public function search($srcfrom)
     {
     	$src = [
-            'lxdanwei_id' => array(),
-            ,'category_id' => array(),
+            'lxdanwei_id' => array()
+            ,'category_id' => array()
             ,'searchval' => ''
         ];
         $src = array_cover($srcfrom, $src);
+        $src['lxdanwei_id'] = strToArray($src['lxdanwei_id']);
+        $src['category_id'] = strToArray($src['category_id']);
 
     	$data = $this
     		->when(count($src['lxdanwei_id']) > 0, function($query) use($src){

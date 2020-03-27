@@ -23,7 +23,7 @@
     <div class="layui-form-item">
 	    <label for="lxdanwei_id" class="layui-form-label" style="height: 100%">立项单位</label>
 	    <div class="layui-input-block">
-	    	{php} $school = schlist('区级','其它级'); {/php}
+	    	{php} $school = schoolList('区级','其它级'); {/php}
 	    	{volist name="school" id="vo"}
 	    		<input type="checkbox" name="lxdanwei_id[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
@@ -41,7 +41,7 @@
 	<div class="layui-form-item">
 	    <label for="fzdanwei_id" class="layui-form-label" style="height: 100%">负责单位</label>
 	    <div class="layui-input-block">
-	    	{php} $school = schlist('校级','区级'); {/php}
+	    	{php} $school = schoolList('校级','区级'); {/php}
 	    	{volist name="school" id="vo"}
 	    		<input type="checkbox" name="fzdanwei_id[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
@@ -69,7 +69,7 @@
 	    <label for="jddengji_id" class="layui-form-label" style="height: 100%">鉴定结果</label>
 	    <div class="layui-input-block">
 	    		{php} $category = getCategory(118);{/php}
-          {volist name="jddengji" id="vo"}
+          {volist name="category" id="vo"}
             <input type="checkbox" name="jddengji_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
           {/volist}
 	    </div>
@@ -115,7 +115,14 @@
 				}
 				return str;
 			}},
-			{field: 'jddengji', title: '鉴定结果', sort: true},
+			{field: 'jddengji_id', title: '鉴定结果', sort: true,templet:function(d){
+        var str='';
+        if(d.ktJdDengji)
+        {
+          str = d.ktJdDengji.title;
+        }
+        return str;
+      }},
 			{field: 'jhjtshijian', title: '计划结题', sort: true},
 			{field: 'jtshijian', title: '结题时间', sort: true},
 			{field: 'status', title: '状态',templet:'#status', sort: true},

@@ -23,7 +23,7 @@
     <div class="layui-form-item">
 	    <label for="lxdanwei_id" class="layui-form-label" style="height: 100%">立项单位</label>
 	    <div class="layui-input-block">
-	    	{php} $school = schlist('区级','其它级'); {/php}
+	    	{php} $school = schoolList('区级', '其它级'); {/php}
 	    	{volist name="school" id="vo"}
 	    		<input type="checkbox" name="lxdanwei_id[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
@@ -41,7 +41,7 @@
 	<div class="layui-form-item">
 	    <label for="fzdanwei_id" class="layui-form-label" style="height: 100%">负责单位</label>
 	    <div class="layui-input-block">
-	    	{php} $school = schlist('校级','区级'); {/php}
+	    	{php} $school = schoolList('校级','区级'); {/php}
 	    	{volist name="school" id="vo"}
 	    		<input type="checkbox" name="fzdanwei_id[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
@@ -107,7 +107,7 @@
   			{type:'checkbox', fixed: 'left'},
 			{field: 'title', title: '课题名称',sort: true, minWidth:240},
 			{field: 'bianhao', title: '课题编号 ',sort: true},
-			{title: '主持人',templet:function(d){
+			{title: '主持人', minWidth:120,templet:function(d){
 				var str='';
 				if(d.ktZcr)
 				{
@@ -121,7 +121,7 @@
 				}
 				return str;
 			}},
-			{title: '参与人',templet:function(d){
+			{title: '参与人', minWidth:120,templet:function(d){
 				var str='';
 				if(d.ktCy)
 				{
@@ -138,7 +138,7 @@
 				}
 				return str;
 			}},
-			{field: "subject",title: '所属学科',sort: true,templet:function(d){
+			{field: "subject",title: '所属学科',sort: true, minWidth:150,templet:function(d){
 				var str='';
 				if(d.ktSubject)
 				{
@@ -146,7 +146,7 @@
 				}
 				return str;
 			}},
-			{field: "category",title: '奖研究类型',sort: true,templet:function(d){
+			{field: "category",title: '奖研究类型',sort: true, minWidth:150,templet:function(d){
 				var str='';
 				if(d.ktCategory)
 				{
@@ -154,15 +154,19 @@
 				}
 				return str;
 			}},
-			{field: 'jddengji', title: '鉴定结果', sort: true},
-			{field: 'jhjtshijian', title: '计划结题', sort: true},
-			{field: 'jtshijian', title: '结题时间', sort: true},
+			{field: 'jddengji_id', title: '鉴定结果', sort: true, minWidth:100,templet:function(d){
+        var str='';
+        if(d.ktJdDengji)
+        {
+          str = d.ktJdDengji.title;
+        }
+        return str;
+      }},
+			{field: 'jhjtshijian', title: '计划结题', minWidth:100, sort: true},
+			{field: 'jtshijian', title: '结题时间', minWidth:100, sort: true},
 			{field: 'status', title: '状态',templet:'#status', sort: true},
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
 		]];
-	options.where = {
-		ketice : "{$list.ketice}"
-	};
 
   // 提交搜索条件后重载表格
     layui.use(['table','cjgl'],function(){
@@ -176,10 +180,10 @@
             cjgl.delAll(checkStatus,'/keti/ketiinfo/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加课题','/keti/ketiinfo/create/'+"{$list.ketice}",'','',true);
+            cjgl.add('添加课题','/keti/ketiinfo/create/'+"{$list.ketice_id}",'','',true);
             break;
           case 'download':
-            cjgl.add('下载课题信息','/keti/ketiinfo/download/'+"{$list.ketice}",'600','400',false);
+            cjgl.add('下载课题信息','/keti/ketiinfo/download/'+"{$list.ketice_id}",'600','400',false);
             break;
         };
       });

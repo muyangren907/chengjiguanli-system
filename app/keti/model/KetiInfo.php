@@ -11,17 +11,23 @@ class KetiInfo extends BaseModel
     public function search($srcfrom)
     {
     	$src = [
-            'lxdanwei_id'=>array()
-            ,'lxcategory_id'=>array()
-            ,'fzdanwei_idid'=>array()
-            ,'subject_id_id'=>array()
-            ,'category_id'=>array()
-            ,'jddengji_id'=>array()
-            ,'ketice_id'=>''
-            ,'searchval'=>''
+            'lxdanwei_id' => array()
+            ,'lxcategory_id' => array()
+            ,'fzdanwei_id' => array()
+            ,'subject_id' => array()
+            ,'category_id' => array()
+            ,'jddengji_id' => array()
+            ,'ketice_id' => ''
+            ,'searchval' => ''
         ];
         // 用新值替换初始值
         $src = array_cover($srcfrom, $src);
+        $src['lxdanwei_id'] = strToArray($src['lxdanwei_id']);
+        $src['lxcategory_id'] = strToArray($src['lxcategory_id']);
+        $src['fzdanwei_id'] = strToArray($src['fzdanwei_id']);
+        $src['subject_id'] = strToArray($src['subject_id']);
+        $src['category_id'] = strToArray($src['category_id']);
+        $src['jddengji_id'] = strToArray($src['jddengji_id']);
 
     	$data = $this
     		->when(count($src['lxdanwei_id']) > 0, function($query) use($src){
@@ -54,10 +60,10 @@ class KetiInfo extends BaseModel
                 })
             ->with(
                 [
-                    'fzSchool'=>function($query){
+                    'fzSchool' => function($query){
                         $query->field('id, jiancheng');
                     },
-                    'KtCe'=>function($query){
+                    'KtCe' => function($query){
                         $query->field('id, lxdanwei_id, category_id, lxshijian')
                             ->with([
                                 'ktCategory' => function($q){
@@ -68,27 +74,30 @@ class KetiInfo extends BaseModel
                                 }
                             ]);
                     },
-                    'ktCategory'=>function($query){
+                    'ktCategory' => function($query){
                         $query->field('id, title');
                     },
-                    'ktSubject'=>function($query){
+                    'ktSubject' => function($query){
                         $query->field('id, title');
                     },
-                    'ktZcr'=>function($query){
+                    'ktZcr' => function($query){
                         $query->field('ketiinfo_id, teacher_id')
                             ->with([
-                                'teacher'=>function($q){
+                                'teacher' => function($q){
                                     $q->field('id, xingming');
                                 }
                             ]);
                     },
-                    'ktCy'=>function($query){
+                    'ktCy' => function($query){
                         $query->field('ketiinfo_id, teacher_id')
                             ->with([
-                                'teacher'=>function($q){
+                                'teacher' => function($q){
                                     $q->field('id, xingming');
                                 }
                             ]);
+                    }
+                    ,'ktJdDengji' => function($query){
+                        $query->field('id, title');
                     }
                 ])
     		->select();
@@ -152,7 +161,7 @@ class KetiInfo extends BaseModel
     public function ktZcr()
     {
         return $this->hasMany('\app\keti\model\KetiCanyu', 'ketiinfo_id', 'id')
-            ->where('category_id',1);
+            ->where('category_id', 1);
     }
 
 
@@ -160,7 +169,7 @@ class KetiInfo extends BaseModel
     public function ktCy()
     {
         return $this->hasMany('\app\keti\model\KetiCanyu', 'ketiinfo_id', 'id')
-            ->where('category_id',2);
+            ->where('category_id', 2);
     }
 
 
@@ -182,6 +191,13 @@ class KetiInfo extends BaseModel
     public function ktSubject()
     {
          return $this->belongsTo('\app\system\model\Category', 'subject_id', 'id');
+    }
+
+
+    // 结题等级关联
+    public function ktJdDengji()
+    {
+         return $this->belongsTo('\app\system\model\Category', 'jddengji_id', 'id');
     }
 
 

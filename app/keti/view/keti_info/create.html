@@ -92,7 +92,7 @@
           <div class="layui-form-item">
             <label for="fzdanwei_id" class="layui-form-label"><span class="x-red">*</span>负责单位</label>
             <div class="layui-input-block">
-              {php} $school = schlist('校级','区级');{/php}
+              {php} $school = schoolList('校级','区级');{/php}
               <select name="fzdanwei_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="school" id="vo"}
@@ -111,7 +111,7 @@
           <div class="layui-form-item">
     		    <label for="subject_id" class="layui-form-label"><span class="x-red">*</span>所属学科 </label>
     		    <div class="layui-input-block">
-    		    	{php}$subject = getCategory('课题研究所属学科分类');{/php}
+    		    	{php}$subject = getCategory(116);{/php}
     		      <select name="subject_id" lay-verify="required">
     		      	<option value=""></option>
     		      	{volist name="subject" id="vo"}
@@ -130,7 +130,7 @@
           <div class="layui-form-item">
             <label for="category_id" class="layui-form-label"><span class="x-red">*</span>研究类型 </label>
             <div class="layui-input-block">
-              {php} $category = getCategory('研究类型');{/php}
+              {php} $category = getCategory(117);{/php}
               <select name="category_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="category" id="vo"}

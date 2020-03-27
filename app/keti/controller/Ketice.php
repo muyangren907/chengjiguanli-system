@@ -22,7 +22,6 @@ class Ketice extends BaseController
         $list['dataurl'] = '/keti/ketice/data';
         $list['status'] = '/keti/ketice/data';
 
-
         // 模板赋值
         $this->view->assign('list', $list);
 
@@ -49,7 +48,6 @@ class Ketice extends BaseController
                 ,'category_id' => array()
                 ,'searchval' => ''
             ], 'POST');
-
 
         // 根据条件查询数据
         $keti = new keti;
@@ -95,12 +93,12 @@ class Ketice extends BaseController
             'title'
             ,'category_id'
             ,'lxshijian'
-            ,'lxdanweiid'
+            ,'lxdanwei_id'
         ], 'post');
 
         // 实例化验证模型
         $validate = new \app\keti\validate\Keti;
-        $result = $validate->check($list);
+        $result = $validate->scene('create')->check($list);
         $msg = $validate->getError();
         if(!$result){
             return json(['msg' => $msg, 'val' => 0]);;
@@ -108,8 +106,6 @@ class Ketice extends BaseController
 
         // 保存数据
         $data = keti::create($list);
-
-        // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '添加成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
@@ -166,7 +162,7 @@ class Ketice extends BaseController
 
         // 实例化验证类
         $validate = new \app\keti\validate\Keti;
-        $result = $validate->check($list);
+        $result = $validate->scene('edit')->check($list);
         $msg = $validate->getError();
         if(!$result){
             return json(['msg' => $msg, 'val' => 0]);;
@@ -174,8 +170,6 @@ class Ketice extends BaseController
 
         // 更新数据
         $data = keti::update($list);
-
-        // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '更新成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
@@ -197,8 +191,6 @@ class Ketice extends BaseController
         $id = explode(',', $id);
 
         $data = keti::destroy($id);
-
-        // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '删除成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 

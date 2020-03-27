@@ -47,6 +47,7 @@ class KetiInfo extends BaseController
         $list['webtitle'] = $kt->where('id', $ketice_id)->value('title') . ' 列表';
         $list['ketice_id'] = $ketice_id;
         $list['dataurl'] = '/keti/ketiinfo/data';
+        $list['status'] = '/keti/ketiinfo/status';
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -71,8 +72,8 @@ class KetiInfo extends BaseController
                     ,'field'=>'update_time'
                     ,'order'=>'desc'
                     ,'lxdanwei_id'=>array()
-                    ,'lxcategory_id'=>array(),
-                    ,'fzdanwe_id'=>array()
+                    ,'lxcategory_id'=>array()
+                    ,'fzdanwei_id'=>array()
                     ,'subject_id'=>array()
                     ,'category_id'=>array()
                     ,'jddengji_id'=>array()
@@ -133,14 +134,10 @@ class KetiInfo extends BaseController
             ,'lxpic'
         ], 'POST');
 
-
         // 实例化验证类
         $validate = new \app\keti\validate\KetiInfo;
-        // 验证表单数据
         $result = $validate->scene('create')->check($list);
         $msg = $validate->getError();
-
-        // 如果验证不通过则停止保存
         if(!$result){
             return json(['msg' => $msg, 'val' => 0]);
         }
@@ -153,7 +150,7 @@ class KetiInfo extends BaseController
             // 循环组成获奖教师信息
             foreach ($list['hjteachers'] as $key => $value) {
                 $canyulist[] = [
-                    'teacher_id' => $value,
+                    'teacher_id' => $value
                     ,'category_id' => 1
                 ];
             }
@@ -286,29 +283,23 @@ class KetiInfo extends BaseController
         $validate = new \app\keti\validate\KetiInfo;
         $result = $validate->scene('edit')->check($list);
         $msg = $validate->getError();
-
-        // 如果验证不通过则停止保存
         if(!$result){
             return json(['msg' => $msg, 'val' => 0]);
         }
 
         // 更新数据
-        $data = ktinfo::update($list);
-
-        // 删除原来的获奖人与参与人信息
-        $data->ktZcr()->delete(true);
+        $data = ktinfo::update($list); # 更新课题信息
+        $data->ktZcr->delete(true);  # 删除原来课题主持人信息
         // 声明教师数组
             $teacherlist = [];
             // 循环组成获奖教师信息
             foreach ($list['hjteachers'] as $key => $value) {
                 $canyulist[] = [
-                    'teacherid' => $value
-                    ,'category' => 1
+                    'teacher_id' => $value
+                    ,'category_id' => 1
                 ];
             }
-
-        // 添加新的获奖人与参与人信息
-        $data = $data->ktZcr()->saveAll($canyulist);
+        $data = $data->ktZcr()->saveAll($canyulist); # 添加新课题主持人
 
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '更新成功', 'val' => 1]
@@ -333,8 +324,6 @@ class KetiInfo extends BaseController
         $id = explode(',', $id);
 
         $data = ktinfo::destroy($id);
-
-        // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '删除成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
@@ -399,7 +388,7 @@ class KetiInfo extends BaseController
         // 获取表单数据
         $list = request()->only([
             'jtpic'
-            ,'jddengji'
+            ,'jddengji_id'
             ,'jtshijian'
             ,'cyteachers'
         ], 'PUT');
@@ -416,7 +405,7 @@ class KetiInfo extends BaseController
         $data = ktinfo::update($list);
 
         // 删除原来的获奖人与参与人信息
-        $data->ktCy()->delete(true);
+        $data->ktCy->delete(true);
         // 声明教师数组
             $teacherlist = [];
             // 循环组成获奖教师信息
@@ -447,7 +436,7 @@ class KetiInfo extends BaseController
 
         if($list->isEmpty())
         {
-            $this->error('兄弟，没有要下载的信息呀~');
+            $this->error('兄弟，没有要下载的信息呀~', '/login/err');
         }else{
            $keticename = $list[0]['KtCe']['title'];
            $lxdanwei = $list[0]['KtCe']['ktLxdanwei']['title'];
