@@ -127,7 +127,7 @@
 
 
 	// 单位列表
-	function schoolList($low = '班级', $high = '其它级')
+	function schoolList($low = '班级', $high = '其它级', $order = 'asc')
 	{
 		// 实例化单位模型
 		$sch = new \app\system\model\School;
@@ -141,7 +141,7 @@
 		// 查询学校
 		$schlist = $sch->where('jibie_id', 'between', [$catlist[$low], $catlist[$high]])
             ->where('status', 1)
-			->order(['paixu'])
+			->order(['jibie_id'=>$order,'paixu'])
 			->field('id, title, jiancheng')
 			->select();
 

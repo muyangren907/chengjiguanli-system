@@ -19,13 +19,13 @@
           <div class="layui-form-item">
             <label for="school" class="layui-form-label"><span class="x-red">*</span>现工作单位</label>
             <div class="layui-input-block">
-              {php} $schoollist = schlist('校级','区级');{/php}
-              <select name="school" lay-verify="required">
+              {php} $schoollist = schoolList('校级', '区级', 'asc');{/php}
+              <select name="school_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="schoollist" id="vo"}
                   <option value="{$vo.id}"
-                  {present name="$list.data.school"}
-                    {eq name="$list.data.school" value="$vo.id" }
+                  {present name="$list.data.school_id"}
+                    {eq name="$list.data.school_id" value="$vo.id" }
                       selected
                     {/eq}
                   {/present}>

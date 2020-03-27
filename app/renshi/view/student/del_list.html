@@ -34,7 +34,7 @@
 	    <div class="layui-input-block">
 	    	{php} $njlist = nianJiNameList();{/php}
         {volist name="njlist" id="vo"}
-	    		<input type="radio" name="ruxuenian[]" title="{$vo}" value="{$key}" lay-skin="primary" {eq name="i" value="1"}checked{/eq}>
+	    		<input type="radio" name="ruxuenian" title="{$vo}" value="{$key}" lay-skin="primary" {eq name="i" value="1"}checked{/eq}>
         {/volist}
 	    </div>
 	</div>

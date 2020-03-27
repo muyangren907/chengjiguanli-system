@@ -21,29 +21,29 @@
       </div>
     </div>
     <div class="layui-form-item">
-	    <label for="danwei" class="layui-form-label" style="height: 100%">单位</label>
+	    <label for="danwei_id" class="layui-form-label" style="height: 100%">单位</label>
 	    <div class="layui-input-block">
-	    	{php} $schoollist = schoolList('校级','校级');{/php}
+	    	{php} $schoollist = schoolList('校级', '区级');{/php}
 	    	{volist name="schoollist" id="vo"}
-	    		<input type="checkbox" name="danwei[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="radio" name="danwei_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" {eq name="i" value="1"}checked{/eq}>
 	    	{/volist}
 	    </div>
 	</div>
 	<div class="layui-form-item">
-	    <label for="zhiwu" class="layui-form-label" style="height: 100%">职务</label>
+	    <label for="zhiwu_id" class="layui-form-label" style="height: 100%">职务</label>
 	    <div class="layui-input-block">
 	    	{php} $category = getCategory(107);{/php}
 	    	{volist name="category" id="vo"}
-	    		<input type="checkbox" name="zhiwu[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="checkbox" name="zhiwu_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
 	<div class="layui-form-item" style="margin-bottom: 0;">
-	    <label for="xueli" class="layui-form-label" style="height: 100%">学历</label>
+	    <label for="xueli_id" class="layui-form-label" style="height: 100%">学历</label>
 	    <div class="layui-input-block">
 	    	{php} $category = getCategory(105);{/php}
 	    	{volist name="category" id="vo"}
-	    		<input type="checkbox" name="xueli[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="checkbox" name="xueli_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
@@ -92,7 +92,7 @@
 			{field: "shengri",title: '周岁',sort: true,templet:function(d){
 				return d.age;
 			}},
-			{field: 'xueli', title: '学历',sort: true,templet:function(d){
+			{field: 'xueli_id', title: '学历',sort: true,templet:function(d){
 				var str='';
 				if(d.jsXueli)
 				{
@@ -105,7 +105,7 @@
 				return d.gongling;
 			}},
 			{field: 'zhuanye', title: '专业', sort: true},
-			{field: 'danwei', title: '单位', sort: true,templet:function(d){
+			{field: 'danwei_id', title: '单位', sort: true,templet:function(d){
 				var str='';
 				if(d.jsDanwei)
 				{

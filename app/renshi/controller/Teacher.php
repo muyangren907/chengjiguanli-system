@@ -15,7 +15,8 @@ class Teacher extends BaseController
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = '教师列表';
-        $list['dataurl'] = 'teacher/data';
+        $list['dataurl'] = '/renshi/teacher/data';
+        $list['status'] = '/renshi/teacher/status';
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -35,21 +36,33 @@ class Teacher extends BaseController
         // 获取参数
         $src = $this->request
             ->only([
-                'page'=>'1'
-                ,'limit'=>'10'
-                ,'field'=>'update_time'
-                ,'order'=>'desc'
-                ,'zhiwu'=>array()
-                ,'danwei'=>array()
-                ,'xueli'=>array()
-                ,'tuixiu'=>0
-                ,'searchval'=>''
+                'page' => '1'
+                ,'limit' => '10'
+                ,'field' => 'update_time'
+                ,'order' => 'desc'
+                ,'zhiwu_id' => array()
+                ,'danwei_id' => array()
+                ,'xueli_id' => array()
+                ,'tuixiu' => 0
+                ,'searchval' => ''
             ], 'POST');
-
 
         // 实例化
         $teacher = new TC;
-        $data = $teacher->search($src);
+        $data = $teacher->search($src)
+            ->visible([
+                'id'
+                ,'xingming'
+                ,'sex'
+                ,'jsXueli' => ['title']
+                ,'jsZhiwu' => ['title']
+                ,'jsZhicheng' => ['title']
+                ,'jsDanwei' => ['jiancheng']
+                ,'biye'
+                ,'zhuanye'
+                ,'status'
+                ,'update_time'
+            ]);
         $data = reSetObject($data, $src);
 
         return json($data);
@@ -86,15 +99,27 @@ class Teacher extends BaseController
                 ,'limit' => '10'
                 ,'field' => 'update_time'
                 ,'order' => 'desc'
-                ,'zhiwu' => array()
-                ,'danwei' => array()
-                ,'xueli' => array()
+                ,'zhiwu_id' => array()
+                ,'danwei_id' => array()
+                ,'xueli_id' => array()
                 ,'searchval' => ''
             ], 'POST');
 
         // 实例化
         $teacher = new TC;
-        $data = $teacher->searchDel($src);
+        $data = $teacher->searchDel($src)
+            ->visible([
+                'id'
+                ,'xingming'
+                ,'sex'
+                ,'jsXueli' => ['title']
+                ,'jsZhiwu' => ['title']
+                ,'jsZhicheng' => ['title']
+                ,'jsDanwei' => ['jiancheng']
+                ,'biye'
+                ,'zhuanye'
+                ,'update_time'
+            ]);
         $data = reSetObject($data, $src);
 
         return json($data);
@@ -129,33 +154,29 @@ class Teacher extends BaseController
             ,'quanpin'
             ,'shoupin'
             ,'shengri'
-            ,'zhiwu'
-            ,'zhicheng'
-            ,'xueli'
+            ,'zhiwu_id'
+            ,'zhicheng_id'
+            ,'xueli_id'
             ,'biye'
             ,'worktime'
             ,'zhuanye'
-            ,'danwei'
+            ,'danwei_id'
             ,'tuixiu'
         ], 'POST');
 
         // 验证表单数据
         $validate = new \app\renshi\validate\Teacher;
-        $result = $validate->check($list);
+        $result = $validate->scene('create')->check($list);
         $msg = $validate->getError();
-
-        $list['quanpin'] = trim(strtolower(str_replace(' ', '', $list['quanpin'])));
-        $list['shoupin'] = trim(strtolower($list['shoupin']));
-
-        // 如果验证不通过则停止保存
         if(!$result){
             return json(['msg' => $msg, 'val' => 0]);;
         }
 
+        $list['quanpin'] = trim(strtolower(str_replace(' ', '', $list['quanpin'])));
+        $list['shoupin'] = trim(strtolower($list['shoupin']));
+
         // 保存数据
         $data = TC::create($list);
-
-        // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '添加成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
@@ -192,7 +213,7 @@ class Teacher extends BaseController
             ->append(['age', 'gongling'])
             ->limit(1)
             ->select();
-            $myInfo = $myInfo[0];
+        $myInfo = $myInfo[0];
         // 设置页面标题
         $myInfo['webtitle'] = $myInfo->xingming . '信息';
 
@@ -206,17 +227,16 @@ class Teacher extends BaseController
     // 修改教师信息
     public function edit($id)
     {
-
         // 获取教师信息
-        $list['data'] = TC::field('id, xingming, sex, quanpin, shoupin, shengri, zhiwu, zhicheng, xueli, biye, worktime, zhuanye, danwei, tuixiu')
+        $list['data'] = TC::field('id, xingming, sex, quanpin, shoupin, shengri, zhiwu_id, zhicheng_id, xueli_id, biye, worktime, zhuanye, danwei_id, tuixiu')
             ->find($id);
 
         // 设置页面标题
         $list['set'] = array(
-            'webtitle'=>'编辑教师'
-            ,'butname'=>'修改'
-            ,'formpost'=>'PUT'
-            ,'url'=>'/renshi/teacher/update/' . $id
+            'webtitle' => '编辑教师'
+            ,'butname' => '修改'
+            ,'formpost' => 'PUT'
+            ,'url' => '/renshi/teacher/update/' . $id
         );
 
         // 模板赋值
@@ -236,19 +256,20 @@ class Teacher extends BaseController
             ,'quanpin'
             ,'shoupin'
             ,'shengri'
-            ,'zhiwu'
-            ,'zhicheng'
-            ,'xueli'
+            ,'zhiwu_id'
+            ,'zhicheng_id'
+            ,'xueli_id'
             ,'biye'
             ,'worktime'
             ,'zhuanye'
-            ,'danwei'
+            ,'danwei_id'
             ,'tuixiu'
         ], 'PUT');
+        $list['id'] = $id;
 
         // 验证表单数据
         $validate = new \app\renshi\validate\Teacher;
-        $result = $validate->check($list);
+        $result = $validate->scene('edit')->check($list);
         $msg = $validate->getError();
         if(!$result){
             return json(['msg' => $msg, 'val' => 0]);;
@@ -259,21 +280,19 @@ class Teacher extends BaseController
         // 更新数据
         $teacher = new TC();
         $teacherlist = $teacher->find($id);
-
         $teacherlist->xingming = $list['xingming'];
         $teacherlist->sex = $list['sex'];
         $teacherlist->quanpin = $list['quanpin'];
         $teacherlist->shoupin = $list['shoupin'];
         $teacherlist->shengri = $list['shengri'];
-        $teacherlist->zhiwu = $list['zhiwu'];
-        $teacherlist->zhicheng = $list['zhicheng'];
-        $teacherlist->xueli = $list['xueli'];
+        $teacherlist->zhiwu_id = $list['zhiwu_id'];
+        $teacherlist->zhicheng_id = $list['zhicheng_id'];
+        $teacherlist->xueli_id = $list['xueli_id'];
         $teacherlist->biye = $list['biye'];
         $teacherlist->worktime = $list['worktime'];
         $teacherlist->zhuanye = $list['zhuanye'];
-        $teacherlist->danwei = $list['danwei'];
+        $teacherlist->danwei_id = $list['danwei_id'];
         $teacherlist->tuixiu = $list['tuixiu'];
-
         $data = $teacherlist->save();
 
         // 根据更新结果设置返回提示信息
@@ -360,7 +379,7 @@ class Teacher extends BaseController
     {
         // 获取表单数据
         $list = request()->only([
-            'school'
+            'school_id'
             ,'url'
         ], 'POST');
 
@@ -369,53 +388,14 @@ class Teacher extends BaseController
         $teacherinfo = $excel->readXls(public_path() . 'public\\uploads\\' . $list['url']);
 
         // 判断表格是否正确
-        if($teacherinfo[0][1] != "教师基本情况表" )
+        if("教师基本情况表" != $teacherinfo[0][0] || '姓名*' != $teacherinfo[2][1] || '性别*' != $teacherinfo[2][2])
         {
             $this->error('请使用模板上传', '/login/err');
             return json($data);
         }
 
-        $pinyin = new \Overtrue\Pinyin\Pinyin;
-
-        // 删除标题行
-        array_splice($teacherinfo, 0, 4);
-        $teacherinfo = array_filter($teacherinfo,function($item){
-                return $item[1] !== null && $item[2] !== null && $item[3] !== null ;
-            });
-
-        // 整理数据
-        $i = 0;
-        $teacherlist = array();
-
-        foreach ($teacherinfo as $key => $value) {
-
-            // 整理数据
-            $teacherlist[$i]['xingming'] = $value[1];
-            $teacherlist[$i]['sex'] = srcSex($value[2]);
-            $teacherlist[$i]['shengri'] = $value[3];
-            $teacherlist[$i]['worktime'] = $value[4];
-            $teacherlist[$i]['zhiwu'] = srcZw($value[5]);
-            $teacherlist[$i]['zhicheng'] = srcZc($value[6]);
-            $teacherlist[$i]['danwei'] = $list['school'];
-            $teacherlist[$i]['biye'] = $value[8];
-            $teacherlist[$i]['subject'] = srcSubject($value[7]);
-            $teacherlist[$i]['zhuanye'] = $value[9];
-            $teacherlist[$i]['xueli'] = srcXl($value[10]);
-            $quanpin = $pinyin->sentence($value[1]);
-            $jianpin = $pinyin->abbr($value[1]);
-            $teacherlist[$i]['quanpin'] = trim(strtolower(str_replace(' ', '', $quanpin)));
-            $teacherlist[$i]['shoupin'] = trim(strtolower($jianpin));
-
-            $i++;
-        }
-
-        // 实例化学生信息数据模型
-        $teacher = new TC();
-
-        // 保存或更新信息
-        $data = $teacher->saveAll($teacherlist);
-
-        // 返回添加结果
+        $teacher = new TC;
+        $data = $teacher->createAll($teacherinfo, $list['school_id']);
         $data ? $data = ['msg' => '数据上传成功', 'val' => 1]
             : ['msg' => '数据上传失败', 'val' => 0];
 
@@ -435,19 +415,9 @@ class Teacher extends BaseController
             return json($data);
         }
 
-        // 如果有数据则查询教师信息
-        $list = TC::field('id, xingming, danwei, shengri, sex')
-            ->whereOr('xingming', 'like', '%' . $str . '%')
-            ->whereOr('shoupin','like',$str.'%')
-            ->with(
-                [
-                    'jsDanwei' => function($query){
-                        $query->field('id, jiancheng');
-                    },
-                ]
-            )
-            ->append(['age'])
-            ->select();
+        $teacher = new TC();
+        $list = $teacher->strSrcTeachers($str);
+
         return json($list);
     }
 
@@ -470,119 +440,42 @@ class Teacher extends BaseController
     // 下载表格模板
     public function downloadXls()
     {
-        $url = public_path().'public\\uploads\\teacher\\TeacherInfo.xlsx';
-        return download($url,'教师名单模板.xlsx');
+        $url = public_path() . 'public\\uploads\\teacher\\TeacherInfo.xlsx';
+        return download($url, '教师名单模板.xlsx');
     }
 
 
     // 查询教师荣誉
-    public function srcRy($teacherid)
+    public function srcRy($teacher_id)
     {
-        // 实例化荣誉数据模型
-        $ry = new \app\rongyu\model\JsRongyuInfo;
-
-        // 查询荣誉信息
-        $data = $ry->where('status', 1)
-                ->where('id', 'in', function($query) use($teacherid){
-                    $query->name('jsRongyuCanyu')
-                        ->where('teacherid', $teacherid)
-                        ->field('rongyuid');
-                })
-                ->with(
-                [
-                    'jxCategory'=>function($query){
-                        $query->field('id, title');
-                    },
-                    'ryTuce'=>function($query){
-                        $query->field('id, title, fzschool, category')
-                            ->with([
-                                    'fzSchool'=>function($query){
-                                        $query->field('id, jiancheng, jibie')
-                                        ->with(['dwJibie'=>function($q){
-                                            $q->field('id, title');
-                                        }]);
-                                    },
-                                    'lxCategory'=>function($query){
-                                        $query->field('id, title');
-                                    },
-
-                                ]);
-                    },
-                    'hjJsry'=>function($query){
-                        $query->field('rongyuid, teacherid')
-                        ->with(['teacher'=>function($query){
-                            $query->field('id, xingming');
-                        }]);
-                    },
-                ])
-                ->field('id, rongyuce, jiangxiang, hjshijian, title')
-                ->order('hjshijian')
-                ->select();
-
-       // 获取符合条件记录总数
-        $cnt = $data->count();
-
-        // 重组返回内容
-        $data = [
-            'code'=> 0 , // ajax请求次数，作为标识符
-            'msg'=>"",  // 获取到的结果数(每页显示数量)
-            'count'=>$cnt, // 符合条件的总数据量
-            'data'=>$data, //获取到的数据结果
+        // 查询数据
+        $teacher = new TC();
+        $data = $teacher->srcRongyu($teacher_id);
+        $src = [
+            'field' => 'update_time'
+            ,'order' => 'desc'
+            ,'page' => 1
+            ,'limit' => 10
         ];
-
+        $data = reSetObject($data, $src);
 
         return json($data);
     }
 
 
     // 查询教师课题
-    public function srcKt($teacherid)
+    public function srcKt($teacher_id)
     {
-        // 实例化荣誉数据模型
-        $ry = new \app\keti\model\KetiInfo;
-
-        // 查询荣誉信息
-        $data = $ry->where('status',1)
-                ->where('id','in',function($query) use($teacherid){
-                    $query->name('KetiCanyu')
-                        ->where('teacherid',$teacherid)
-                        ->field('ketiinfoid');
-                })
-                ->with(
-                [
-                    'fzSchool'=>function($query){
-                        $query->field('id,jiancheng,jibie')
-                            ->with(['dwJibie'=>function($q){
-                                $q->field('id,title');
-                            }]);
-                    },
-                    'ktCategory'=>function($query){
-                        $query->field('id,title');
-                    },
-                      'ktZcr'=>function($query){
-                        $query->field('ketiinfoid,teacherid')
-                            ->with([
-                                'teacher'=>function($q){
-                                    $q->field('id,xingming');
-                                }
-                            ]);
-                    }
-                ])
-                ->field('id,title,fzdanweiid,category,jddengji')
-                ->order('id')
-                ->select();
-
-       // 获取符合条件记录总数
-        $cnt = $data->count();
-
-        // 重组返回内容
-        $data = [
-            'code'=> 0 , // ajax请求次数，作为标识符
-            'msg'=>"",  // 获取到的结果数(每页显示数量)
-            'count'=>$cnt, // 符合条件的总数据量
-            'data'=>$data, //获取到的数据结果
+        // 查询数据
+        $teacher = new TC();
+        $data = $teacher->srcKeti($teacher_id);
+        $src = [
+            'field' => 'update_time'
+            ,'order' => 'desc'
+            ,'page' => 1
+            ,'limit' => 10
         ];
-
+        $data = reSetObject($data, $src);
 
         return json($data);
     }

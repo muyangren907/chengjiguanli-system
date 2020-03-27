@@ -57,15 +57,15 @@
               </div>
           </div>
           <div class="layui-form-item">
-            <label for="danwei" class="layui-form-label"><span class="x-red">*</span>现工作单位</label>
+            <label for="danwei_id" class="layui-form-label"><span class="x-red">*</span>现工作单位</label>
             <div class="layui-input-block">
-              {php} $schoollist = schoolList('校级','区级');{/php}
-              <select name="danwei" lay-verify="required">
+              {php} $schoollist = schoolList('校级', '区级', 'asc');{/php}
+              <select name="danwei_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="schoollist" id="vo"}
                   <option value="{$vo.id}"
-                  {present name="$list.data.danwei"}
-                    {eq name="$list.data.danwei" value="$vo.id" }
+                  {present name="$list.data.danwei_id"}
+                    {eq name="$list.data.danwei_id" value="$vo.id" }
                       selected
                     {/eq}
                   {/present}>
@@ -76,17 +76,17 @@
             </div>
           </div>
           <div class="layui-form-item">
-            <label for="zhiwu" class="layui-form-label">
+            <label for="zhiwu_id" class="layui-form-label">
               职务
             </label>
             <div class="layui-input-block">
               {php} $category = getCategory(107);{/php}
-              <select name="zhiwu">
+              <select name="zhiwu_id">
                 <option value=""></option>
                 {volist name="category" id="vo"}
                   <option value="{$vo.id}"
-                  {present name="$list.data.zhiwu"}
-                    {eq name="$list.data.zhiwu" value="$vo.id" }
+                  {present name="$list.data.zhiwu_id"_id}
+                    {eq name="$list.data.zhiwu_id" value="$vo.id" }
                       selected
                     {/eq}
                   {/present}>
@@ -97,17 +97,17 @@
             </div>
           </div>
           <div class="layui-form-item">
-            <label for="zhicheng" class="layui-form-label">
+            <label for="zhicheng_id" class="layui-form-label">
               职称
             </label>
             <div class="layui-input-block">
               {php} $category = getCategory(106);{/php}
-              <select name="zhicheng">
+              <select name="zhicheng_id">
                 <option value=""></option>
                 {volist name="category" id="vo"}
                   <option value="{$vo.id}"
-                  {present name="$list.data.zhicheng"}
-                    {eq name="$list.data.zhicheng" value="$vo.id" }
+                  {present name="$list.data.zhicheng_id"}
+                    {eq name="$list.data.zhicheng_id" value="$vo.id" }
                       selected
                     {/eq}
                   {/present}>
@@ -118,17 +118,17 @@
             </div>
           </div>
           <div class="layui-form-item">
-            <label for="xueli" class="layui-form-label">
+            <label for="xueli_id" class="layui-form-label">
               学历
             </label>
             <div class="layui-input-block">
               {php} $category = getCategory(105);{/php}
-              <select name="xueli">
+              <select name="xueli_id">
                 <option value=""></option>
                 {volist name="category" id="vo"}
                   <option value="{$vo.id}"
-                  {present name="$list.data.xueli"}
-                    {eq name="$list.data.xueli" value="$vo.id" }
+                  {present name="$list.data.xueli_id"}
+                    {eq name="$list.data.xueli_id" value="$vo.id" }
                       selected
                     {/eq}
                   {/present}>
