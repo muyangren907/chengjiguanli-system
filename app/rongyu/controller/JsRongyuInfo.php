@@ -342,7 +342,7 @@ class JsRongyuInfo extends BaseController
         $data = ryinfo::update($list);
 
         // 删除原来的获奖人与参与人信息
-        $data->allJsry->where('rongyu_id', $id)->delete(true);
+        $data->allJsry->delete(true);
         // 声明教师数组
             $teacherlist = [];
             // 循环组成获奖教师信息

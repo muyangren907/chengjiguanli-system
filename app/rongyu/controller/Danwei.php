@@ -103,7 +103,7 @@ class Danwei extends BaseController
 
         // 实例化验证模型
         $validate = new \app\rongyu\validate\DwRongyu;
-        $result = $validate->scene('add')->check($list);
+        $result = $validate->scene('create')->check($list);
         $msg = $validate->getError();
         if(!$result){
             return json(['msg'=>$msg,'val'=>0]);
@@ -118,7 +118,7 @@ class Danwei extends BaseController
            $teachers[]['teacher_id'] = $value;
         }
 
-        $data->cyDwry->saveAll($teachers);
+        $data->cyDwry()->saveAll($teachers);
 
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '添加成功', 'val' => 1]
@@ -288,7 +288,7 @@ class Danwei extends BaseController
         $data = DW::update($list);
 
         // 删除原来的参与教师
-        $data->cyDwry()->where('rongyu_id' ,$id)->delete(true);
+        $data->cyDwry->delete(true);
 
         // 声明参与教师数组
         $canyulist = [];

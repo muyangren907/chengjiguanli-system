@@ -17,8 +17,10 @@ class DwRongyu extends BaseModel
             ,'category_id'=>array()
             ,'searchval'=>''
         ];
-        // 用新值替换初始值
         $src = array_cover($srcfrom, $src);
+        $src['fzschool_id'] = strToArray($src['fzschool_id']);
+        $src['hjschool_id'] = strToArray($src['hjschool_id']);
+        $src['category_id'] = strToArray($src['category_id']);
 
         // 查询数据
         $data = $this
@@ -36,21 +38,21 @@ class DwRongyu extends BaseModel
                 })
             ->with(
                 [
-                    'hjSchool'=>function($query){
+                    'hjSchool' => function($query){
                         $query->field('id, jiancheng');
                     },
-                    'fzSchool'=>function($query){
-                        $query->field('id, jiancheng, jibie')
+                    'fzSchool' => function($query){
+                        $query->field('id, jiancheng, jibie_id')
                             ->with([
-                                'dwJibie'=>function($query){
+                                'dwJibie' => function($query){
                                     $query->field('id, title');
                                 },
                             ]);
                     },
-                    'lxCategory'=>function($query){
+                    'lxCategory' => function($query){
                         $query->field('id, title');
                     },
-                    'jxCategory'=>function($query){
+                    'jxCategory' => function($query){
                         $query->field('id, title');
                     }
                 ]
