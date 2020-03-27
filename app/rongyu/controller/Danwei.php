@@ -118,7 +118,7 @@ class Danwei extends BaseController
            $teachers[]['teacher_id'] = $value;
         }
 
-        $data->cyDwry()->saveAll($teachers);
+        $data->cyDwry->saveAll($teachers);
 
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '添加成功', 'val' => 1]

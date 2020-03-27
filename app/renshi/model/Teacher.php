@@ -228,47 +228,6 @@ class Teacher extends BaseModel
     }
 
 
-    // 查询教师荣誉
-    public function srcKeti($teacher_id)
-    {
-        // 实例化荣誉数据模型
-        $ry = new \app\keti\model\KetiInfo;
-
-        // 查询荣誉信息
-        $data = $ry->where('status', 1)
-            ->where('id', 'in', function($query) use($teacher_id){
-                $query->name('KetiCanyu')
-                    ->where('teacher_id', $teacher_id)
-                    ->field('ketiinfo_id');
-            })
-            ->with(
-            [
-                'fzSchool' => function($query){
-                    $query->field('id, jiancheng, jibie_id')
-                        ->with(['dwJibie' => function($q){
-                            $q->field('id, title');
-                        }]);
-                },
-                'ktCategory' => function($query){
-                    $query->field('id, title');
-                },
-                  'ktZcr' => function($query){
-                    $query->field('ketiinfo_id, teacher_id')
-                        ->with([
-                            'teacher' => function($q){
-                                $q->field('id, xingming');
-                            }
-                        ]);
-                }
-            ])
-            ->field('id, title, fzdanwei_id, category_id, jddengji_id')
-            ->order('id')
-            ->select();
-
-        return $data;
-    }
-
-
     // 职务关联模型
     public function jsZhiwu()
     {

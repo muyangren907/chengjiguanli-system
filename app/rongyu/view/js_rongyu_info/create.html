@@ -111,7 +111,7 @@
           <div class="layui-form-item">
             <label for="hjschool_id" class="layui-form-label"><span class="x-red">*</span>所属单位</label>
             <div class="layui-input-block">
-              {php} $school = schlist('校级','区级');{/php}
+              {php} $school = schoolList('校级','区级');{/php}
               <select name="hjschool_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="school" id="vo"}
@@ -131,8 +131,7 @@
     		    <label for="subject_id" class="layui-form-label"><span class="x-red">*</span>所属学科 </label>
     		    <div class="layui-input-block">
     		    	{php}
-                $subject = new \app\teach\model\Subject;
-                $subjectlist = $subject->where('status',1)->order(['paixu'])->select();
+                $subjectlist = subjectList();
               {/php}
     		      <select name="subject_id" lay-verify="required">
     		      	<option value=""></option>
@@ -152,7 +151,7 @@
           <div class="layui-form-item">
             <label for="jiangxiang_id" class="layui-form-label"><span class="x-red">*</span>奖项 </label>
             <div class="layui-input-block">
-              {php} $jiangxiang = getCategory('荣誉奖项');{/php}
+              {php} $jiangxiang = getCategory(113);{/php}
               <select name="jiangxiang_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="jiangxiang" id="vo"}
@@ -176,7 +175,7 @@
                   <input type="text" id="hjshijian" name="hjshijian" autocomplete="off" class="layui-input " value="{$list.data.hjshijian|default=''}" placeholder="默认获奖时间与荣誉册获奖时间相同">
               </div>
           </div>
-          <input type="hidden" name="rongyuce"  id="rongyuce" value="{$list.set.rongyuce|default=''}">
+          <input type="hidden" name="rongyuce_id"  id="rongyuce_id" value="{$list.set.rongyuce|default=''}">
           <div class="layui-form-item" style="text-align: right;">
               <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
                   {$list.set.butname}

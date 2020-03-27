@@ -20,20 +20,20 @@
       </div>
     </div>
     <div class="layui-form-item">
-	    <label for="xingzhi" class="layui-form-label" style="height: 100%">荣誉类别</label>
+	    <label for="xingzhi_id" class="layui-form-label" style="height: 100%">荣誉类别</label>
 	    <div class="layui-input-block">
 	    	{php} $category = getCategory(114);{/php}
 	    	{volist name="category" id="vo"}
-	    		<input type="checkbox" name="category[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="checkbox" name="category_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
 	<div class="layui-form-item" style="margin-bottom: 0;">
-	    <label for="fzschool" class="layui-form-label" style="height: 100%">颁奖单位</label>
+	    <label for="fzschool_id" class="layui-form-label" style="height: 100%">颁奖单位</label>
 	    <div class="layui-input-block">
-	    	{php} $school = schlist('区级','其它级'); {/php}
+	    	{php} $school = schoolList('区级','其它级'); {/php}
 	    	{volist name="school" id="vo"}
-	    		<input type="checkbox" name="fzschool[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="checkbox" name="fzschool_id[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
@@ -66,7 +66,7 @@
   options.cols=[[ //表头
 			{type:'checkbox', fixed: 'left'},
 			{field: 'title', title: '荣誉名称',sort: true, minWidth:240},
-			{field: 'fzschool', title: '颁奖单位',sort: true,templet:function(d){
+			{field: 'fzschool_id', title: '颁奖单位',sort: true,templet:function(d){
 				var str='';
 				if(d.fzSchool)
 				{
@@ -74,7 +74,7 @@
 				}
 				return str;
 			}},
-			{field: "category",title: '荣誉类别',sort: true,templet:function(d){
+			{field: "category_id",title: '荣誉类别',sort: true,templet:function(d){
 				var str='';
 				if(d.lxCategory)
 				{
@@ -82,7 +82,7 @@
 				}
 				return str;
 			}},
-			{field: "category",title: '级别',templet:function(d){
+			{field: "fzschool_id",title: '级别',templet:function(d){
 				var str='';
 				if(d.fzSchool)
 				{

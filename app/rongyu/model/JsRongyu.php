@@ -17,42 +17,37 @@ class JsRongyu extends BaseModel
             'searchval'=>''
         ];
         // 用新值替换初始值
-        $src = array_cover( $srcfrom , $src ) ;
-
-        // 整理参数
-        $hjschool = $src['hjschool'];
-        $fzschool = $src['fzschool'];
-        $category = $src['category'];
-        $searchval = $src['searchval'];
+        $src = array_cover($srcfrom, $src);
+        $src['fzschool_id'] = strToArray($src['fzschool_id']);
+        $src['hjschool_id'] = strToArray($src['hjschool_id']);
+        $src['category_id'] = strToArray($src['category_id']);
 
     	$data = $this
-            ->order([$src['field'] =>$src['order']])
-    		->when(count($fzschool)>0,function($query) use($fzschool){
-                	$query->where('fzschool','in',$fzschool);
+    		->when(count($src['fzschool_id']) > 0, function($query) use($src){
+                	$query->where('fzschool_id', 'in', $src['fzschool_id']);
                 })
-    		->when(count($category)>0,function($query) use($category){
-                	$query->where('category','in',$category);
+    		->when(count($src['category_id']) > 0, function($query) use($src){
+                	$query->where('category_id', 'in', $src['category_id']);
                 })
-    		->when(strlen($searchval)>0,function($query) use($searchval){
-                	$query->where('title','like','%'.$searchval.'%');
+    		->when(strlen($src['searchval']) > 0, function($query) use($src){
+                	$query->where('title', 'like', '%' . $src['searchval'] . '%');
                 })
             ->with(
                 [
-                    'fzSchool'=>function($query){
-                        $query->field('id,jiancheng,jibie')
-                        ->with(['dwJibie'=>function($q){
-                            $q->field('id,title');
+                    'fzSchool' => function($query){
+                        $query->field('id, jiancheng, jibie_id')
+                        ->with(['dwJibie' => function($q){
+                            $q->field('id, title');
                         }]);
                     },
-                    'lxCategory'=>function($query){
-                        $query->field('id,title');
+                    'lxCategory' => function($query){
+                        $query->field('id, title');
                     },
 
                 ]
             )
-            ->withCount(['ryInfo'=>'count'])
+            ->withCount(['ryInfo' => 'count'])
     		->select();
-
 
     	return $data;
     }
@@ -61,21 +56,21 @@ class JsRongyu extends BaseModel
     // 颁奖单位关联
     public function fzSchool()
     {
-         return $this->belongsTo('\app\system\model\School', 'fzschool', 'id');
+         return $this->belongsTo('\app\system\model\School', 'fzschool_id', 'id');
     }
 
 
     // 荣誉类型关联
     public function lxCategory()
     {
-         return $this->belongsTo('\app\system\model\Category', 'category', 'id');
+         return $this->belongsTo('\app\system\model\Category', 'category_id', 'id');
     }
 
 
     // 荣誉信息关联
     public function ryInfo()
     {
-    	return $this->hasMany('JsRongyuInfo', 'rongyuce', 'id');
+    	return $this->hasMany('JsRongyuInfo', 'rongyuce_id', 'id');
     }
 
 
@@ -95,7 +90,7 @@ class JsRongyu extends BaseModel
     // 发证时间获取器
     public function getFzshijianAttr($value)
     {
-        $value>0 ? $value = date('Y-m-d',$value) : $value = "";
+        $value > 0 ? $value = date('Y-m-d', $value) : $value = "";
 
         return $value;
     }

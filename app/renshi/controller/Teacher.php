@@ -212,8 +212,8 @@ class Teacher extends BaseController
             )
             ->append(['age', 'gongling'])
             ->limit(1)
-            ->select();
-        $myInfo = $myInfo[0];
+            ->find();
+
         // 设置页面标题
         $myInfo['webtitle'] = $myInfo->xingming . '信息';
 
@@ -448,15 +448,30 @@ class Teacher extends BaseController
     // 查询教师荣誉
     public function srcRy($teacher_id)
     {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'page' => '1'
+                ,'limit' => '10'
+                ,'field' => 'update_time'
+                ,'order' => 'desc'
+                ,'teacher_id' => ''
+            ], 'POST');
+
         // 查询数据
-        $teacher = new TC();
-        $data = $teacher->srcRongyu($teacher_id);
-        $src = [
-            'field' => 'update_time'
-            ,'order' => 'desc'
-            ,'page' => 1
-            ,'limit' => 10
-        ];
+        $rongyu = new \app\rongyu\model\JsRongyuInfo;
+        $data = $rongyu->srcTeacherRongyu($src['teacher_id'])
+            ->visible([
+                'id'
+                ,'title'
+                ,'ryTuce' => [
+                    'title'
+                    ,'fzSchool'
+                ]
+                ,'jiangxiang_id'
+                ,'hjshijian'
+                ,'update_time'
+            ]);
         $data = reSetObject($data, $src);
 
         return json($data);
@@ -464,17 +479,21 @@ class Teacher extends BaseController
 
 
     // 查询教师课题
-    public function srcKt($teacher_id)
+    public function srcKt()
     {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'page' => '1'
+                ,'limit' => '10'
+                ,'field' => 'update_time'
+                ,'order' => 'desc'
+                ,'teacher_id' => ''
+            ], 'POST');
+
         // 查询数据
-        $teacher = new TC();
-        $data = $teacher->srcKeti($teacher_id);
-        $src = [
-            'field' => 'update_time'
-            ,'order' => 'desc'
-            ,'page' => 1
-            ,'limit' => 10
-        ];
+        $keti = new \app\keti\model\KetiInfo;
+        $data = $keti->srcTeacherKeti($src['teacher_id']);
         $data = reSetObject($data, $src);
 
         return json($data);

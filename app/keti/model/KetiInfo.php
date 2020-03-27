@@ -56,7 +56,7 @@ class KetiInfo extends BaseModel
                     $query->where('ketice_id', $src['ketice_id']);
                 })
     		->when(strlen($src['searchval']) > 0, function($query) use($src){
-                	$query->where('title', 'like', $src['searchval']);
+                	$query->where('title', 'like', '%' . $src['searchval'] . '%');
                 })
             ->with(
                 [
@@ -106,55 +106,96 @@ class KetiInfo extends BaseModel
     }
 
 
-    //搜索课题册
-    public function srcKeti($ketice_id)
+    // 搜索教师参与的课题
+    public function srcTeacherKeti($teacher_id)
     {
-        $data = $this
-            ->where('ketice_id', $ketice_id)
+        // 查询信息
+        $data = self::where('status', 1)
+            ->where('id', 'in', function($query) use($teacher_id){
+                $query->name('KetiCanyu')
+                    ->where('teacher_id', $teacher_id)
+                    ->field('ketiinfo_id');
+            })
             ->with(
-                [
-                    'fzSchool' => function($query){
-                        $query->field('id, jiancheng');
-                    },
-                    'KtCe' => function($query){
-                        $query->field('id, title, lxdanwei_id, category_id, lxshijian')
-                            ->with([
-                                'ktCategory' => function($q){
-                                    $q->field('id, title');
-                                },
-                                'ktLxdanwei' => function($q){
-                                    $q->field('id, jiancheng_id, title');
-                                }
-                            ]);
-                    },
-                    'ktCategory'=>function($query){
+            [
+                'fzSchool' => function($query){
+                    $query->field('id, jiancheng, jibie_id')
+                        ->with(['dwJibie' => function($q){
+                            $q->field('id, title');
+                        }]);
+                },
+                'ktCategory' => function($query){
+                    $query->field('id, title');
+                },
+                  'ktZcr' => function($query){
+                    $query->field('ketiinfo_id, teacher_id')
+                        ->with([
+                            'teacher' => function($q){
+                                $q->field('id, xingming');
+                            }
+                        ]);
+                },
+                'ktJdDengji' => function($query){
                         $query->field('id, title');
-                    },
-                    'ktSubject'=>function($query){
-                        $query->field('id, title');
-                    },
-                    'ktZcr'=>function($query){
-                        $query->field('ketiinfo_id, teacher_id')
-                            ->with([
-                                'teacher'=>function($q){
-                                    $q->field('id, xingming');
-                                }
-                            ]);
-                    },
-                    'ktCy'=>function($query){
-                        $query->field('ketiinfo_id, teacher_id')
-                            ->with([
-                                'teacher'=>function($q){
-                                    $q->field('id, xingming');
-                                }
-                            ]);
                     }
-                ]
-            )
+            ])
+            ->field('id, title, fzdanwei_id, category_id, jddengji_id, bianhao')
+            ->order('id')
             ->select();
 
         return $data;
     }
+
+
+    // //搜索课题册
+    // public function srcKeti($ketice_id)
+    // {
+    //     $data = $this
+    //         ->where('ketice_id', $ketice_id)
+    //         ->with(
+    //             [
+    //                 'fzSchool' => function($query){
+    //                     $query->field('id, jiancheng');
+    //                 },
+    //                 'KtCe' => function($query){
+    //                     $query->field('id, title, lxdanwei_id, category_id, lxshijian')
+    //                         ->with([
+    //                             'ktCategory' => function($q){
+    //                                 $q->field('id, title');
+    //                             },
+    //                             'ktLxdanwei' => function($q){
+    //                                 $q->field('id, jiancheng_id, title');
+    //                             }
+    //                         ]);
+    //                 },
+    //                 'ktCategory'=>function($query){
+    //                     $query->field('id, title');
+    //                 },
+    //                 'ktSubject'=>function($query){
+    //                     $query->field('id, title');
+    //                 },
+    //                 'ktZcr'=>function($query){
+    //                     $query->field('ketiinfo_id, teacher_id')
+    //                         ->with([
+    //                             'teacher'=>function($q){
+    //                                 $q->field('id, xingming');
+    //                             }
+    //                         ]);
+    //                 },
+    //                 'ktCy'=>function($query){
+    //                     $query->field('ketiinfo_id, teacher_id')
+    //                         ->with([
+    //                             'teacher'=>function($q){
+    //                                 $q->field('id, xingming');
+    //                             }
+    //                         ]);
+    //                 }
+    //             ]
+    //         )
+    //         ->select();
+
+    //     return $data;
+    // }
 
 
     // 课题主持人关联

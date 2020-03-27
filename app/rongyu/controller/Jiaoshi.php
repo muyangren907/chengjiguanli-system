@@ -45,9 +45,9 @@ class Jiaoshi extends BaseController
                     ,'limit' => '10'
                     ,'field' => 'update_time'
                     ,'order' => 'desc'
-                    ,'fzschool' => array()
-                    ,'hjschool' => array()
-                    ,'category' => array()
+                    ,'fzschool_id' => array()
+                    ,'hjschool_id' => array()
+                    ,'category_id' => array()
                     ,'searchval' => ''
                 ],'POST');
 
@@ -108,7 +108,7 @@ class Jiaoshi extends BaseController
         $data = jsry::create($list);
 
         // 根据更新结果设置返回提示信息
-        $data ? $data = ['msg' = >'添加成功', 'val' => 1]
+        $data ? $data = ['msg' =>'添加成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息

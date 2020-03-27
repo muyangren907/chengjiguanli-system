@@ -45,16 +45,16 @@ Route::group('jiaoshi', function () {
 Route::group('jsryinfo', function () {
 	    Route::rule('','JsRongyuInfo/index','get');						# 信息列表
 	    Route::rule('data','JsRongyuInfo/ajaxdata','post');				# 获取数据
-	    Route::rule('create/<rongyuce>','JsRongyuInfo/create','get');				# 添加信息
+	    Route::rule('create/<rongyuce_id>','JsRongyuInfo/create','get');				# 添加信息
 	    Route::rule('save','JsRongyuInfo/save','post');					# 保存信息
 	    Route::rule('edit/<id>','JsRongyuInfo/edit','get');				# 修改信息
 	    Route::rule('update/<id>','JsRongyuInfo/update','put');			# 更新信息
 	    Route::rule('delete/<id>','JsRongyuInfo/delete','delete');		# 删除信息
 	    Route::rule('status','JsRongyuInfo/setStatus','post');		# 删除信息
-	    Route::rule('createall/<rongyuce>','JsRongyuInfo/createAll','get');				# 批量导入
-	    Route::rule('saveall/<rongyuce>','JsRongyuInfo/saveAll','post');					# 批量保存
-	    Route::rule('list/<rongyuce>','JsRongyuInfo/rongyuList','get');					# 批量保存
-	    Route::rule('outxlsx/<rongyuce>','JsRongyuInfo/outXlsx','get');					# 批量保存
+	    Route::rule('createall/<rongyuce_id>','JsRongyuInfo/createAll','get');				# 批量导入
+	    Route::rule('saveall/<rongyuce_id>','JsRongyuInfo/saveAll','post');					# 批量保存
+	    Route::rule('list/<rongyuce_id>','JsRongyuInfo/rongyuList','get');					# 批量保存
+	    Route::rule('outxlsx/<rongyuce_id>','JsRongyuInfo/outXlsx','get');					# 批量保存
 
 
 	});

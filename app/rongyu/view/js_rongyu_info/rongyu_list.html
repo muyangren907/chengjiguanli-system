@@ -35,13 +35,13 @@
 	<div class="layui-form-item" style="margin-bottom: 0;">
 	    <label for="hjschool_id" class="layui-form-label" style="height: 100%">获奖单位</label>
 	    <div class="layui-input-block">
-	    	{php} $school = schlist('校级','区级'); {/php}
+	    	{php} $school = schoolList('校级','区级'); {/php}
 	    	{volist name="school" id="vo"}
 	    		<input type="checkbox" name="hjschool_id[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
-	<input type="hidden" name="rongyuce_id" value="{$list.rongyuce}">
+	<input type="hidden" name="rongyuce_id" value="{$list.rongyuce_id}">
 {/block}
 {block name="table"}
 	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
@@ -123,9 +123,6 @@
 			{field: 'status', title: '状态', minWidth:80,templet:'#status', sort: true},
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
 		]];
-	options.where = {
-		rongyuce : "{$list.rongyuce}"
-	};
 
   // 提交搜索条件后重载表格
     layui.use(['table','cjgl'],function(){
@@ -139,10 +136,10 @@
             cjgl.delAll(checkStatus,'/rongyu/jsryinfo/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加荣誉','/rongyu/jsryinfo/create/'+"{$list.rongyuce}",'','',true);
+            cjgl.add('添加荣誉','/rongyu/jsryinfo/create/'+"{$list.rongyuce_id}",'','',true);
             break;
           case 'download':
-          	window.open('/rongyu/jsryinfo/outxlsx/'+"{$list.rongyuce}");
+          	window.open('/rongyu/jsryinfo/outxlsx/'+"{$list.rongyuce_id}");
             break;
         };
       });

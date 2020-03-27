@@ -20,6 +20,10 @@ class JsRongyuInfo extends BaseModel
         ];
         // 用新值替换初始值
         $src = array_cover($srcfrom, $src);
+        $src['fzschool_id'] = strToArray($src['fzschool_id']);
+        $src['hjschool_id'] = strToArray($src['hjschool_id']);
+        $src['category_id'] = strToArray($src['category_id']);
+        $src['subject_id'] = strToArray($src['subject_id']);
 
     	$data = $this
     		->when(strlen($src['rongyuce_id']) > 0, function($query) use($src){
@@ -51,12 +55,12 @@ class JsRongyuInfo extends BaseModel
                 });
             })
             ->when(strlen($src['searchval']) > 0, function($query) use($src){
-                $query->where(function($z) use($searchval){
+                $query->where(function($z) use($src){
                     $z->whereOr('title|bianhao', 'like', '%' . $src['searchval'] . '%')
                         ->whereOr('id', 'in', function($q) use($src){
                             $q->name('JsRongyuCanyu')
                                 ->distinct(true)
-                                ->where('teacherid', 'in', function($w) use($src){
+                                ->where('teacher_id', 'in', function($w) use($src){
                                     $w->name('Teacher')
                                         ->where('xingming', 'like', '%' . $src['searchval'] . '%')
                                         ->field('id');
@@ -106,96 +110,93 @@ class JsRongyuInfo extends BaseModel
     }
 
 
-    // 获取需要下载的荣誉信息
-    public function srcTuceRy($id)
+    // // 获取需要下载的荣誉信息
+    // public function srcTuceRy($id)
+    // {
+    //     // 查询数据
+    //     $data =$this->where('rongyuce', $id)
+    //             ->field('id, rongyuce_id, title, bianhao, hjschool_id, subject_id, jiangxiang_id, hjshijian, pic')
+    //             ->with([
+    //                 'hjJsry' => function($query){
+    //                     $query->field('rongyu_id, teacher_id')
+    //                         ->with([
+    //                             'teacher' => function($query){
+    //                                 $query->field('id, xingming');
+    //                             }
+    //                         ]);
+    //                 },
+    //                 'cyJsry' => function($query){
+    //                     $query->field('rongyu_id, teacher_id')
+    //                         ->with([
+    //                             'teacher' => function($query){
+    //                                 $query->field('id, xingming');
+    //                             }]
+    //                         );
+    //                 },
+    //                 'ryTuce' => function($query){
+    //                     $query->field('id, title, fzshijian, fzschool_id')
+    //                         ->with([
+    //                             'fzSchool' => function($q){
+    //                                 $q->field('id, title');
+    //                             }
+    //                         ]);
+    //                 },
+    //                 'rySubject' => function($query){
+    //                     $query->field('id,title');
+    //                 },
+    //                 'hjSchool' => function($query){
+    //                     $query->field('id, jiancheng');
+    //                 },
+    //                 'jxCategory' => function($query){
+    //                     $query->field('id, title');
+    //                 }
+    //             ])
+    //             ->order(['hjschool'])
+    //             ->append(['hjJsName', 'cyJsName'])
+    //             ->select();
+
+    //     return $data;
+    // }
+
+
+    //搜索教师荣誉
+    public function srcTeacherRongyu($teacher_id)
     {
         // 查询数据
-        $data =$this->where('rongyuce', $id)
-                ->field('id, rongyuce_id, title, bianhao, hjschool_id, subject_id, jiangxiang_id, hjshijian, pic')
-                ->with([
-                    'hjJsry' => function($query){
-                        $query->field('rongyu_id, teacher_id')
-                            ->with([
-                                'teacher' => function($query){
-                                    $query->field('id, xingming');
-                                }
-                            ]);
-                    },
-                    'cyJsry' => function($query){
-                        $query->field('rongyu_id, teacher_id')
-                            ->with([
-                                'teacher' => function($query){
-                                    $query->field('id, xingming');
-                                }]
-                            );
-                    },
-                    'ryTuce' => function($query){
-                        $query->field('id, title, fzshijian, fzschool_id')
-                            ->with([
-                                'fzSchool' => function($q){
-                                    $q->field('id, title');
-                                }
-                            ]);
-                    },
-                    'rySubject' => function($query){
-                        $query->field('id,title');
-                    },
-                    'hjSchool' => function($query){
-                        $query->field('id, jiancheng');
-                    },
-                    'jxCategory' => function($query){
-                        $query->field('id, title');
-                    }
-                ])
-                ->order(['hjschool'])
-                ->append(['hjJsName', 'cyJsName'])
-                ->select();
-
-        return $data;
-    }
-
-
-    //搜索单位获奖荣誉
-    public function srcTeacher($srcfrom)
-    {
-        // 获取参数
-        $src = [
-            'teacher_id' => array()
-            ,'field' => array()
-            ,'order' => array()
-        ];
-        $src = array_cover($srcfrom, $src);
-
-        $data = $this->order([$src['field'] =>$src['order']])
-            ->where('id', 'in', function($query) use($src){
+        $data = $this->where('id', 'in', function($query) use($teacher_id){
                 $query->name('JsRongyuCanyu')
-                    ->where('category_id',1)
-                    ->where('teacher_id',$teacher_id)
+                    ->where('category_id', 1)
+                    ->where('teacher_id', $teacher_id)
                     ->field('rongyu_id');
             })
             ->where('status', 1)
             ->with(
                 [
-                    'hjSchool'=>function($query){
+                    'hjSchool' => function($query){
                         $query->field('id, jiancheng');
                     },
-                    'rySubject'=>function($query){
+                    'rySubject' => function($query){
                         $query->field('id, title');
                     },
-                    'jxCategory'=>function($query){
+                    'jxCategory' => function($query){
                         $query->field('id, title');
                     },
-                    'ryTuce'=>function($query){
-                        $query->field('id, title')
+                    'ryTuce' => function($query){
+                        $query->field('id, title, fzschool_id')
                             ->with([
-                                'fzSchool'=>function($query){
-                                    $query->field('id, title, jibie');
+                                'fzSchool' => function($q){
+                                    $q->field('id, title, jibie_id')
+                                        ->with([
+                                            'dwJibie' => function($w){
+                                                $w->field('id,title');
+                                            }
+                                        ]);
                                 }
                             ]);
                     },
-                    'hjJsry'=>function($query){
+                    'hjJsry' => function($query){
                         $query->field('rongyu_id, teacher_id')
-                        ->with(['teacher'=>function($query){
+                        ->with(['teacher' => function($query){
                             $query->field('id, xingming');
                         }]);
                     },
@@ -203,7 +204,6 @@ class JsRongyuInfo extends BaseModel
             )
             ->append(['hjJsName', 'cyJsName'])
             ->select();
-
 
         return $data;
     }

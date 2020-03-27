@@ -17,7 +17,7 @@
     </head>
     <body>
     <div class="x-body">
-  
+
         <fieldset class="layui-elem-field">
             <legend>个人信息</legend>
             <div class="layui-field-box">
@@ -78,20 +78,68 @@
         </fieldset>
     </div>
     <script>
+        //config的设置是全局的
+        layui.config({
+            base: "__XADMIN__/js/" //假设这是你存放拓展模块的根目录
+        });
+
+        // 设置表格初始变量
+        options = {
+          elem: '#tabledemo',
+          toolbar: '#toolbarDemo',
+          url:"{$list['dataurl']}",
+          method:"POST",   //数据接口
+          page: true, //开启分页
+          loading:true,
+          autoSort:false,
+          id:'mytable',
+          defaultToolbar:['filter'],
+          limits:[10,25,50,75,100],
+          limit:10,
+        };
+
         layui.use('table', function(){
           var table = layui.table;
-          
+
+          // 监听排序
+          table.on('sort(rongyu)', function(obj){
+            var val = {
+              'field': obj.field
+              ,'order': obj.type
+              ,'teacher_id': "{$list.id}"
+            };
+            ry.reload({
+              initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+              ,where: val
+            })
+          });
+
+          // 监听排序
+          table.on('sort(keti)', function(obj){
+            var val = {
+              'field': obj.field
+              ,'order': obj.type
+              ,'teacher_id': "{$list.id}"
+            };
+            kt.reload({
+              initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+              ,where: val
+            })
+          });
+
           //第一个实例
           var ry =table.render({
             elem: '#rongyu'
             ,method:"POST"   //数据接口
-            ,url: '/renshi/teacher/srcry/'+"{$list.id}" //数据接口
-            ,page: false //开启分页
-            ,width:1050
+            ,url: '/renshi/teacher/srcry' //数据接口
+            ,page: true //开启分页
+            ,where:{
+              'teacher_id': "{$list.id}"
+            }
             ,cols: [[ //表头
                {type:'numbers',sort:true,width:50,title:'序号'}
               ,{field: 'title',sort:true, title: '荣誉标题', minWidth:250}
-              ,{title: '所属荣誉册',sort:true,width:250,templet:function(d){
+              ,{field: 'rongyuce_id',title: '所属荣誉册',sort:true,width:250,templet:function(d){
                     var str='';
                     if(d.ryTuce)
                     {
@@ -113,7 +161,7 @@
                     }
                     return str;
                 }}
-              ,{title: '级别',sort:true,width:100,templet:function(d){
+              ,{title: '级别',width:100,templet:function(d){
                     var str='';
                     if(d.ryTuce)
                     {
@@ -121,7 +169,7 @@
                     }
                     return str;
                 }}
-              ,{title: '奖项',sort:true,width:100,templet:function(d){
+              ,{field: 'jiangxiang_id',title: '奖项',sort:true,width:100,templet:function(d){
                     var str='';
                     if(d.jxCategory)
                     {
@@ -129,8 +177,8 @@
                     }
                     return str;
                 }}
-              ,{field: 'hjshijian',sort:true,width:120, title: '获奖时间'} 
-              ,{title: '发证单位',sort:true, minWidth: 177,templet:function(d){
+              ,{field: 'hjshijian',sort:true,width:120, title: '获奖时间'}
+              ,{title: '发证单位', minWidth: 177,templet:function(d){
                     var str='';
                     if(d.ryTuce)
                     {
@@ -142,14 +190,18 @@
           });
 
         //第二个实例
+        kt = table.render(options);  //获取数据并渲染
           var kt =table.render({
             elem: '#keti'
             ,method:"POST"   //数据接口
-            ,url: '/renshi/teacher/srckt/'+"{$list.id}" //数据接口
-            ,page: false //开启分页
-            ,width:1050
+            ,url: '/renshi/teacher/srckt' //数据接口
+            ,page:true
+            // ,width:1050
+            ,where:{
+              'teacher_id': "{$list.id}"
+            }
             ,cols: [[ //表头
-               {type:'numbers',sort:true,width:100,title:'序号'}
+               {field:'id', type:'numbers',sort:true,width:100,title:'序号'}
               ,{field: 'title',sort:true, title: '课题名称', minWidth:200}
               ,{field: 'bianhao',sort:true, title: '课题编号'}
               ,{title: '主持人',templet:function(d){
@@ -166,7 +218,7 @@
                 }
                 return str;
             }}
-              ,{title: '立项单位',sort:true, minWidth: 177,templet:function(d){
+              ,{field:'fzschool_id', title: '立项单位',sort:true, minWidth: 177,templet:function(d){
                     var str='';
                     if(d.fzSchool)
                     {
@@ -174,7 +226,7 @@
                     }
                     return str;
                 }}
-              ,{title: '级别',sort:true, minWidth: 177,templet:function(d){
+              ,{title: '级别', minWidth: 177,templet:function(d){
                     var str='';
                     if(d.fzSchool)
                     {
@@ -182,7 +234,14 @@
                     }
                     return str;
                 }}
-              ,{field: 'jddengji',sort:true, title: '课题状态'}
+              ,{field: 'jddengji_id', title: '鉴定结果', sort: true, minWidth:100,templet:function(d){
+                  var str='';
+                  if(d.ktJdDengji)
+                  {
+                    str = d.ktJdDengji.title;
+                  }
+                  return str;
+                }},
             ]]
           });
         });

@@ -31,7 +31,7 @@
 	<div class="layui-form-item">
 	    <label for="fzschool_id" class="layui-form-label" style="height: 100%">颁奖单位</label>
 	    <div class="layui-input-block">
-	    	{php} $school = schlist('区级','其它级'); {/php}
+	    	{php} $school = schoolList('区级','其它级'); {/php}
 	    	{volist name="school" id="vo"}
 	    		<input type="checkbox" name="fzschool_id[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
@@ -40,7 +40,7 @@
 	<div class="layui-form-item" style="margin-bottom: 0;">
 	    <label for="hjschool_id" class="layui-form-label" style="height: 100%">获奖单位</label>
 	    <div class="layui-input-block">
-	    	{php} $school = schlist('校级','区级'); {/php}
+	    	{php} $school = schoolList('校级','区级'); {/php}
 	    	{volist name="school" id="vo"}
 	    		<input type="checkbox" name="hjschool_id[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
@@ -75,9 +75,9 @@
 	// 设置列
   options.cols=[[ //表头
 			{type:'checkbox', fixed: 'left'},
-			{field: 'project', title: '项目名称',sort: true, minWidth:240},
-			{field: 'title', title: '荣誉名称',sort: true, minWidth:240},
-			{field: 'hjschool_id', title: '获奖单位', minWidth:100,sort: true,templet:function(d){
+			{field: 'project', title: '项目名称', sort: true},
+			{field: 'title', title: '荣誉名称', sort: true, minWidth:240},
+			{field: 'hjschool_id', title: '获奖单位', minWidth:100, sort: true, templet:function(d){
 				var str='';
 				if(d.hjSchool)
 				{
@@ -109,7 +109,7 @@
 				}
 				return str;
 			}},
-			{title: 'fzschool_id', minWidth:100,templet:function(d){
+			{field:'fzschool_id', title: '荣誉级别', minWidth:100,templet:function(d){
 				var str='';
 				if(d.fzSchool)
 				{
@@ -118,11 +118,11 @@
 				return str;
 			}},
 			{field: 'fzshijian', minWidth:100, title: '发证时间', sort: true},
-			{field: 'status', minWidth:100, title: '状态',templet:'#status', sort: true},
-			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
+			{field: 'status', minWidth:100, title: '状态', templet:'#status', sort: true},
+			{field: 'id', title:'操作', toolbar: '#barDemo', minWidth:140}
 		]];
 
-  // 提交搜索条件后重载表格
+    // 提交搜索条件后重载表格
     layui.use(['table','cjgl'],function(){
       var table = layui.table
           cjgl = layui.cjgl;
@@ -131,13 +131,13 @@
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'danwei/delete','mytable');
+            cjgl.delAll(checkStatus, 'danwei/delete', 'mytable');
             break;
           case 'add':
-            cjgl.add('添加单位荣誉','danwei/create','','',true);
+            cjgl.add('添加单位荣誉', 'danwei/create', '', '', true);
             break;
           case 'more':
-            cjgl.add('批传','danwei/createall','300','200');
+            cjgl.add('批传', 'danwei/createall', '300', '200');
             break;
         };
       });
@@ -152,10 +152,10 @@
 	          layer.msg('查看' + data.id);
 	          break;
 	        case 'del':// 删除
-	          cjgl.del(obj,"danwei/delete");
+	          cjgl.del(obj, "danwei/delete");
 	          break;
 	        case 'edit':// 编辑
-	          cjgl.add('编辑单位荣誉','danwei/edit/'+obj.data.id,'','',true);
+	          cjgl.add('编辑单位荣誉', 'danwei/edit/' + obj.data.id, '', '', true);
 	          break;
         };
       });
