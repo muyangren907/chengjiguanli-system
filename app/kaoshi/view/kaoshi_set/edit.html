@@ -20,7 +20,7 @@
               </label>
               <div class="layui-input-block">
                   <input type="text" id="manfen" name="manfen" lay-verify="required"
-                  autocomplete="off" class="layui-input " value="{$list.data.manfen|default=''}" placeholder="2-25个字符">
+                  autocomplete="off" class="layui-input " value="{$list.data.manfen|default=''}" placeholder="2-25个字符" onchange="addFenShuXian()">
               </div>
           </div>
           <div class="layui-form-item">
@@ -58,6 +58,18 @@
     var form = layui.form;
 
     });
+
+  function addFenShuXian()
+  {
+    manfen = $('#manfen').val();
+    var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+    if(regPos.test(manfen)){
+      $('#youxiu').val(manfen * 0.9);
+      $('#jige').val(manfen * 0.6);
+    }else{
+        layer.msg('请填写数字');
+    }
+  }
 
 </script>
 {/block}

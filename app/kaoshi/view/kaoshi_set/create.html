@@ -3,11 +3,11 @@
 {block name="form"}
     <form class="layui-form layui-form-pane" lay-filter="myform">
           <div class="layui-form-item">
-            <label for="school" class="layui-form-label"><span class="x-red">*</span>参考年级</label>
+            <label for="nianji" class="layui-form-label"><span class="x-red">*</span>参考年级</label>
             <div class="layui-input-block">
               <select name="nianji" lay-verify="required">
                 <option value="">请选择年级</option>
-                {foreach $list.set.nianji as $key=>$vo } 
+                {foreach $list.set.nianji as $key=>$vo }
                   <option value="{$key}">
                     {$vo}
                   </option>
@@ -17,7 +17,7 @@
             </div>
           </div>
           <div class="layui-form-item">
-            <label for="school" class="layui-form-label"><span class="x-red">*</span>学科分数线</label>
+            <label for="sbjtable" class="layui-form-label"><span class="x-red">*</span>学科分数线</label>
             <div class="layui-input-block">
               {php} $subject = subjectList(); {/php}
               <table class="layui-table" lay-skin="line" lay-size="sm" id="sbjtable">
@@ -33,13 +33,13 @@
                       <th>满分</th>
                       <th>优秀分数线</th>
                       <th>及格分数线</th>
-                    </tr> 
+                    </tr>
                   </thead>
                   <tbody>
                     {volist name="subject" id="vo"}
                       <tr>
                         <td>
-                          <input type="checkbox" id="{$vo.lieming}" action="btmOnclick" name="subject[{$vo.id}]" lay-skin="primary" value="{$vo.id}">
+                          <input type="checkbox" id="{$vo.lieming}" action="btmOnclick" name="subject_id[{$vo.id}]" lay-skin="primary" value="{$vo.id}">
 <!--                           <input id="lieming" name="lieming[{$vo.id}]" value="{$vo.lieming}" type="hidden">
  -->                        </td>
                         <td>{$vo.title}</td>
@@ -52,7 +52,7 @@
               </table>
             </div>
           </div>
-          <input id="kaoshi" name="kaoshi" value="{$list.set.kaoshi}" type="hidden">
+          <input id="kaoshi_id" name="kaoshi_id" value="{$list.set.kaoshi_id}" type="hidden">
           <div class="layui-form-item" style="text-align: right;">
               <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
                   {$list.set.butname}
@@ -96,10 +96,10 @@
         $(mydiv).find("td:eq(3)").children("input:eq(0)").val('');
         $(mydiv).find("td:eq(4)").children("input:eq(0)").val('');
       }
-      
+
       // 重载表格
       form.render();
-      
+
     });
 
 
@@ -147,7 +147,7 @@
     }else{
         return false;
     }
-} 
+}
 
 
 

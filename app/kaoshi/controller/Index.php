@@ -4,11 +4,10 @@ namespace app\kaoshi\controller;
 
 // 引用控制器基类
 use app\BaseController;
+
 // 引用考试数据模型类
 use app\kaoshi\model\Kaoshi as KS;
-
 use app\middleware\KaoshiStatus;
-
 
 
 class Index extends BaseController
@@ -18,13 +17,12 @@ class Index extends BaseController
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = '考试列表';
-        $list['dataurl'] = 'index/data';
+        $list['dataurl'] = '/kaoshi/index/data';
         $list['status'] = '/kaoshi/index/status';
         $list['luru'] = '/kaoshi/index/luru';
 
         // 模板赋值
         $this->view->assign('list', $list);
-
         // 渲染模板
         return $this->view->fetch();
     }
@@ -36,19 +34,17 @@ class Index extends BaseController
         // 获取参数
         $src = $this->request
             ->only([
-                'xueqi'=>''
-                ,'category_id'=>''
-                ,'page'=>'1'
-                ,'limit'=>'10'
-                ,'field'=>'id'
-                ,'order'=>'desc'
-                ,'searchval'=>''
+                'xueqi_id' => ''
+                ,'category_id' => ''
+                ,'page' => '1'
+                ,'limit' => '10'
+                ,'field' => 'id'
+                ,'order' => 'desc'
+                ,'searchval' => ''
             ], 'POST');
 
-        // 实例化
+        // 根据条件查询数据
         $ks = new KS;
-
-        // 查询要显示的数据
         $data = $ks->search($src);
         $data = reSetObject($data, $src);
 
@@ -61,10 +57,10 @@ class Index extends BaseController
     {
         // 设置页面标题
         $list['set'] = array(
-            'webtitle'=>'新建考试'
-            ,'butname'=>'创建'
-            ,'formpost'=>'POST'
-            ,'url'=>'save'
+            'webtitle' => '新建考试'
+            ,'butname' => '创建'
+            ,'formpost' => 'POST'
+            ,'url' => '/kaoshi/index/save'
         );
 
         // 模板赋值
@@ -98,8 +94,6 @@ class Index extends BaseController
         // 保存数据
         $ks = new KS();
         $ksdata = $ks->create($list);
-
-        // 根据更新结果设置返回提示信息
         $ksdata ? $data = ['msg' => '添加成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
@@ -114,15 +108,15 @@ class Index extends BaseController
         // 获取考试信息
         $list['data'] = KS::where('id', $id)
             ->field('id, title, xueqi_id, category_id, bfdate, enddate, zuzhi_id')
-            ->append(['nianjiids','manfenedit'])
+            ->append(['nianjiids', 'manfenedit'])
             ->find();
 
         // 设置页面标题
         $list['set'] = array(
-            'webtitle'=>'编辑考试'
-            ,'butname'=>'修改'
-            ,'formpost'=>'PUT'
-            ,'url'=>'/kaoshi/index/update/' . $id
+            'webtitle' => '编辑考试'
+            ,'butname' => '修改'
+            ,'formpost' => 'PUT'
+            ,'url' => '/kaoshi/index/update/' . $id
         );
 
         // 模板赋值
@@ -149,10 +143,8 @@ class Index extends BaseController
 
         // 验证表单数据
         $validate = new \app\kaoshi\validate\Kaoshi;
-        $result = $validate->check($list);
+        $result = $validate->scene('edit')->check($list);
         $msg = $validate->getError();
-
-        // 如果验证不通过则停止保存
         if(!$result){
             return json(['msg' => $msg, 'val' => 0]);
         }
@@ -160,8 +152,6 @@ class Index extends BaseController
         // 更新数据
         $ks = new KS();
         $ksdata = $ks::update($list);
-
-        // 根据更新结果设置返回提示信息
         $ksdata ? $data = ['msg' => '更新成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
@@ -178,8 +168,6 @@ class Index extends BaseController
         $id = explode(',', $id);
 
         $data = KS::destroy($id);
-
-        // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '删除成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
@@ -216,8 +204,6 @@ class Index extends BaseController
 
         // 获取考试信息
         $data = KS::where('id', $id)->update(['luru' => $value]);
-
-        // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '状态设置成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
@@ -227,18 +213,16 @@ class Index extends BaseController
 
 
     // 考试更多操作页面
-    public function moreAction($kaoshi)
+    public function moreAction($kaoshi_id)
     {
         // 获取考试信息
-        $kaoshi = KS::where('id', $kaoshi)
+        $kaoshi = KS::where('id', $kaoshi_id)
             ->field('id, title, bfdate, enddate')
             ->find();
 
         // 设置页面标题
-        $list['webtitle'] = $kaoshi['title']  . '（' .  $kaoshi['bfdate'] . '~' . $kaoshi['enddate'] . '）';
-        $list['kaoshi'] = $kaoshi['id'];
-
-        // 模板赋值
+        $list['webtitle'] = $kaoshi->title  . '（' .  $kaoshi->bfdate . '~' . $kaoshi->enddate . '）';
+        $list['kaoshi_id'] = $kaoshi->id;
         $this->view->assign('list', $list);
         // 渲染
         return $this->view->fetch();
@@ -249,11 +233,12 @@ class Index extends BaseController
     public function cySchool()
     {
         // 获取变量
-        $src['kaoshi'] = input('post.kaoshi');
+        $src['kaoshi_id'] = input('post.kaoshi_id');
         $src['ruxuenian'] = input('post.ruxuenian');
 
         $kh = new \app\kaoshi\model\Kaohao;
         $school = $kh->cySchool($src);
+        halt($school->toArray());
         $cnt = count($school);
 
         // 重组返回内容
@@ -270,9 +255,9 @@ class Index extends BaseController
     public function cyNianji()
     {
         // 获取变量
-        $kaoshi = input('post.kaoshi');
+        $kaoshi_id = input('post.kaoshi_id');
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $nianji = $ksset->srcNianji($kaoshi);
+        $nianji = $ksset->srcNianji($kaoshi_id);
         $cnt = count($nianji);
 
         // 重组返回内容
@@ -289,9 +274,9 @@ class Index extends BaseController
     public function cyBanji()
     {
         // 获取变量
-        $src['school'] = input('post.school');
+        $src['school_id'] = input('post.school_id');
         $src['ruxuenian'] = input('post.ruxuenian');
-        $src['kaoshi'] = input('post.kaoshi');
+        $src['kaoshi_id'] = input('post.kaoshi_id');
 
         $kh = new \app\kaoshi\model\Kaohao;
         $bj = $kh->cyBanji($src);
@@ -311,11 +296,11 @@ class Index extends BaseController
     public function cySubject()
     {
         // 获取变量
-        $kaoshi = input('post.kaoshi');
+        $kaoshi_id = input('post.kaoshi_id');
         $nianji = input('post.ruxuenian');
 
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $sbj = $ksset->srcSubject($kaoshi,'',$nianji);
+        $sbj = $ksset->srcSubject($kaoshi_id, '', $nianji);
         $cnt = count($sbj);
 
         // 重组返回内容

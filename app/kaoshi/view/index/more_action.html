@@ -34,7 +34,7 @@
       <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
         <i class="iconfont" style="line-height:30px">&#xe6aa;</i></a>
     </div>
-	{php}$kaoshiid =$list['kaoshiid']; {/php}
+	{php}$kaoshi_id =$list['kaoshi_id']; {/php}
 	<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
 	  <ul class="layui-tab-title">
 	    <li class="layui-this">一、前期操作</li>
@@ -48,20 +48,20 @@
         <div class="layui-row" style="margin-top:30px">
           <div class="layui-container">
             <a href="javascript:void(0);"
-            onclick="addteb('考试设置','/kaoshi/kaoshiset/index/{$kaoshiid}')" class="x-admin-backlog-body">
+            onclick="addteb('考试设置','/kaoshi/kaoshiset/index/{$kaoshi_id}')" class="x-admin-backlog-body">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
                 <i class="layui-icon layui-icon-set" style="font-size: 100px;"></i>
                 <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">考试设置</div>
               </div>
             </a>
             <a href="javascript:void(0);"
-            onclick="addlayer('生成考号','/kaoshi/kaohao/createall/{$kaoshiid}','800','400')" class="x-admin-backlog-body">
+            onclick="addlayer('生成考号','/kaoshi/kaohao/createall/{$kaoshi_id}','800','400')" class="x-admin-backlog-body">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
                 <i class="layui-icon layui-icon-note" style="font-size: 100px;"></i>
                 <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">生成考号</div>
               </div>
             </a>
-            <a href="javascript:void(0);" onclick="addlayer('下载试卷标签数据','/kaoshi/kaohao/biaoqian/{$kaoshiid}','600','300')" class="x-admin-backlog-body">
+            <a href="javascript:void(0);" onclick="addlayer('下载试卷标签数据','/kaoshi/kaohao/biaoqian/{$kaoshi_id}','600','300')" class="x-admin-backlog-body">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
                 <i class="layui-icon layui-icon-template" style="font-size: 100px;"></i>
                 <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">下载试卷标签数据</div>
@@ -74,13 +74,13 @@
         <!-- 内容开始 -->
         <div class="layui-row" style="margin-top:30px">
           <div class="layui-container">
-            <a href="javascript:void(0);" onclick="addlayer('下载成绩录入表格','/kaoshi/kaohao/caiji/{$kaoshiid}','600','400')" class="x-admin-backlog-body">
+            <a href="javascript:void(0);" onclick="addlayer('下载成绩录入表格','/kaoshi/kaohao/caiji/{$kaoshi_id}','600','400')" class="x-admin-backlog-body">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
                 <i class="layui-icon layui-icon-template-1" style="font-size: 100px;"></i>
                 <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">下载成绩录入表格</div>
               </div>
             </a>
-            <a href="javascript:void(0);" onclick="addteb('已录成绩数量','/chengji/tongji/yilucnt/{$kaoshiid}')" class="x-admin-backlog-body">
+            <a href="javascript:void(0);" onclick="addteb('已录成绩数量','/chengji/tongji/yilucnt/{$kaoshi_id}')" class="x-admin-backlog-body">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
                 <i class="layui-icon layui-icon-chart-screen" style="font-size: 100px;"></i>
                 <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">已录成绩数量</div>
@@ -144,25 +144,25 @@
         <!-- 内容开始 -->
         <div class="layui-row" style="margin-top: 30px">
           <div class="layui-container">
-            <a href="javascript:void(0);" onclick="addteb('检测统计结果是否是最新结果','/kaoshi/tjlog/index/{$kaoshiid}')" class="x-admin-backlog-body">
+            <a href="javascript:void(0);" onclick="addteb('检测统计结果是否是最新结果','/kaoshi/tjlog/index/{$kaoshi_id}')" class="x-admin-backlog-body">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
                 <i class="layui-icon layui-icon-layouts" style="font-size: 100px;"></i>
                 <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">检测统计结果是否是最新结果</div>
               </div>
             </a>
-            <a href="javascript:void(0);" onclick="addteb('学生成绩列表','/chengji/index/list/{$kaoshiid}')" class="x-admin-backlog-body">
+            <a href="javascript:void(0);" onclick="addteb('学生成绩列表','/chengji/index/list/{$kaoshi_id}')" class="x-admin-backlog-body">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
                 <i class="layui-icon layui-icon-log" style="font-size: 100px;"></i>
                 <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">学生成绩列表</div>
               </div>
             </a>
-            <a href="javascript:void(0);" onclick="addteb('各班级成绩统计','/chengji/bjtj/biaoge/{$kaoshiid}')" class="x-admin-backlog-body">
+            <a href="javascript:void(0);" onclick="addteb('各班级成绩统计','/chengji/bjtj/biaoge/{$kaoshi_id}')" class="x-admin-backlog-body">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
                 <i class="layui-icon layui-icon-tree" style="font-size: 100px;"></i>
                 <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">各班级成绩统计表</div>
               </div>
             </a>
-            <a href="javascript:void(0);" onclick="addteb('各学校成绩统计表','/chengji/njtj/biaoge/{$kaoshiid}')" class="x-admin-backlog-body">
+            <a href="javascript:void(0);" onclick="addteb('各学校成绩统计表','/chengji/njtj/biaoge/{$kaoshi_id}')" class="x-admin-backlog-body">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
                 <i class="layui-icon layui-icon-release" style="font-size: 100px;"></i>
                 <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">各学校成绩统计表</div>
@@ -197,7 +197,7 @@
       type:'POST',
       async: true,
       data:{
-          kaoshi:"{$kaoshiid}"
+          kaoshi:"{$kaoshi_id}"
       },
       beforeSend: function () {
          $("body").append('<div id="load" style="position:fixed;top:30%;z-index:1200;background:url(__XADMIN__/images/timg.gif) top center no-repeat;width:100%;height:140px;margin:auto auto;"></div>');

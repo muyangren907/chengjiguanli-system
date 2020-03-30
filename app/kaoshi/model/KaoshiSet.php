@@ -19,30 +19,27 @@ class KaoshiSet extends BaseModel
     {
     	// 初始化参数
         $src = array(
-            'kaoshi'=>'0',
-            'nianji'=>array(),
-            'subject'=>array(),
-            'searchval'=>'',
-            'field'=>'update_time',
-            'order'=>'desc',
+            'kaoshi_id' => '0'
+            ,'nianji' => array()
+            ,'subject_id' => array()
+            ,'searchval' => ''
+            ,'field' => 'update_time'
+            ,'order' => 'desc'
         );
-        // 用新值替换初始值
-        $src = array_cover( $srcfrom , $src ) ;
+        $src = array_cover($srcfrom, $src);
+        $src['nianji'] = strToarray($src['nianji']);
+        $src['subject_id'] = strToarray($src['subject_id']);
 
-        $nianji = strToarray($src['nianji']);
-        $subject = strToarray($src['subject']);
-
-        $data = $this->where('kaoshi_id',$src['kaoshi'])
-        	->order([$src['field'] =>$src['order']])
-            ->when(count($nianji)>0,function($query)use($nianji){
-                $query->where('nianji','in',$nianji);
+        $data = $this->where('kaoshi_id', $src['kaoshi_id'])
+            ->when(count($src['nianji']) > 0, function($query) use($src){
+                $query->where('nianji', 'in', $src['nianji']);
             })
-            ->when(count($subject)>0,function($query)use($subject){
-                $query->where('subject_id','in',$subject);
+            ->when(count($src['subject_id']) > 0, function($query) use($src){
+                $query->where('subject_id', 'in', $src['subject_id']);
             })
         	->with([
-        		'subjectName'=>function($query){
-        			$query->field('id,title,jiancheng');
+        		'subjectName' => function($query){
+        			$query->field('id, title, jiancheng');
         		}
         	])
         	->select();

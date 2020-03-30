@@ -3,6 +3,7 @@ namespace app\kaoshi\controller;
 
 // 引用控制器基类
 use app\BaseController;
+
 // 引用考号数据模型类
 use app\kaoshi\model\KaoshiSet as ksset;
 // 考试控制器
@@ -17,17 +18,18 @@ class KaoshiSet extends BaseController
      * @return \think\Response
      */
     // 显示考试列表
-    public function index($kaoshi)
+    public function index($kaoshi_id)
     {
 
         // 设置要给模板赋值的信息
         $list['webtitle'] = '参加考试学科';
         $list['dataurl'] = '/kaoshi/kaoshiset/data';
-        $list['kaoshi'] = $kaoshi;
+        $list['kaoshi_id'] = $kaoshi_id;
+        $list['status'] = '/kaoshi/kaoshiset/status';
 
         $ksset = new ksset;
-        $list['subject'] = $ksset->srcSubject($kaoshi);
-        $nj = $ksset->srcNianji($kaoshi);
+        $list['subject'] = $ksset->srcSubject($kaoshi_id);
+        $nj = $ksset->srcNianji($kaoshi_id);
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -43,16 +45,16 @@ class KaoshiSet extends BaseController
 
         // 获取参数
         $src = $this->request
-                ->only([
-                    'kaoshi'=>0
-                    ,'nianji'=>array()
-                    ,'subject'=>array()
-                    ,'page'=>'1'
-                    ,'limit'=>'10'
-                    ,'field'=>'id'
-                    ,'order'=>'desc'
-                    ,'searchval'=>''
-                ],'POST');
+            ->only([
+                'kaoshi_id' => 0
+                ,'nianji' => array()
+                ,'subject_id' => array()
+                ,'page' => '1'
+                ,'limit' => '10'
+                ,'field' => 'id'
+                ,'order' => 'desc'
+                ,'searchval' => ''
+            ], 'POST');
 
         // 根据条件查询数据
         $kssbj = new ksset;
@@ -68,25 +70,25 @@ class KaoshiSet extends BaseController
      *
      * @return \think\Response
      */
-    public function create($kaoshi)
+    public function create($kaoshi_id)
     {
 
         // 设置页面标题
         $list['set'] = array(
-            'webtitle'=>'设置考试'
-            ,'butname'=>'设置'
-            ,'formpost'=>'POST'
-            ,'url'=>'/kaoshi/kaoshiset/save'
-            ,'kaoshi'=>$kaoshi
+            'webtitle' => '设置考试'
+            ,'butname' => '设置'
+            ,'formpost' => 'POST'
+            ,'url' => '/kaoshi/kaoshiset/save'
+            ,'kaoshi_id' => $kaoshi_id
         );
 
         // 获取参加考试年级
         $ks = new \app\kaoshi\model\Kaoshi;
-        $ksend = $ks->where('id', $kaoshi)->value('enddate');
-        $list['set']['nianji'] = nianjiList($ksend);
+        $ksend = $ks->where('id', $kaoshi_id)->value('enddate');
+        $list['set']['nianji'] = nianJiNameList($ksend);
 
         // 模板赋值
-        $this->view->assign('list',$list);
+        $this->view->assign('list', $list);
         // 渲染
         return $this->view->fetch();
     }
@@ -103,16 +105,16 @@ class KaoshiSet extends BaseController
         // 获取参数
         $src = $this->request
                 ->only([
-                    'kaoshi'
+                    'kaoshi_id'
                     ,'nianji'
                     ,'nianjiname'
-                    ,'subject' => array()
+                    ,'subject_id' => array()
                     ,'manfen' => array()
                     ,'youxiu' => array()
                     ,'jige' => array()
                 ], 'POST');
 
-        event('kslu', $src['kaoshi']);
+        event('kslu', $src['kaoshi_id']);
 
         // 验证表单数据
         $validate = new \app\kaoshi\validate\Kaoshiset;
@@ -125,9 +127,9 @@ class KaoshiSet extends BaseController
 
         // 整理参数
         $list = array();
-        foreach ($src['subject'] as $key  =>  $value) {
+        foreach ($src['subject_id'] as $key  =>  $value) {
             $list[] = [
-                'kaoshi_id' => $src['kaoshi'],
+                'kaoshi_id' => $src['kaoshi_id'],
                 'nianji' => $src['nianji'],
                 'nianjiname' => $src['nianjiname'],
                 'subject_id' => $value,
@@ -140,11 +142,11 @@ class KaoshiSet extends BaseController
         // 查询已经存在数据删除并添加新数据
         $ksset = new ksset;
         $nianji = $src['nianji'];
-        $kaoshi_id = $src['kaoshi'];
+        $kaoshi_id = $src['kaoshi_id'];
 
-        ksset::destroy(function($query)use($nianji,$kaoshi_id){
-            $query->where('kaoshi_id',$kaoshi_id)
-                ->where('nianji',$nianji);
+        ksset::destroy(function($query)use($nianji, $kaoshi_id){
+            $query->where('kaoshi_id', $kaoshi_id)
+                ->where('nianji', $nianji);
             ;
         },true);
 

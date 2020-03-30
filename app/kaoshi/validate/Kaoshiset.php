@@ -13,10 +13,11 @@ class Kaoshiset extends Validate
      * @var
      */
 	protected $rule = [
-        'kaoshi|考试ID'      =>  'require|integer',
+        'id|ID'         =>     'require:number',
+        'kaoshi_id|考试ID'      =>  'require|integer',
         'nianji|年级'      =>  'require|integer',
         'nianjiname|年级名称'      =>  'require|chs',
-        'subject|学科'      =>  'require|array',
+        'subject_id|学科'      =>  'require|array',
         'manfen|满分'      =>  'require|array',
         'youxiu|优秀'      =>  'require|array',
         'jige|及格'      =>  'require|array',
@@ -32,6 +33,7 @@ class Kaoshiset extends Validate
     protected $message = [];
 
     protected $scene = [
-        'create'  =>  ['kaoshi','nianji','nianjiname','subject','manfen','youxiu','jige'],
+        'create'  =>  ['kaoshi_id', 'nianji','nianjiname', 'subject_id', 'manfen', 'youxiu', 'jige'],
+        'edit'  =>  ['id', 'kaoshi_id', 'nianji','nianjiname', 'subject_id', 'manfen', 'youxiu', 'jige'],
     ];
 }

@@ -72,6 +72,7 @@ class AuthRule extends BaseModel
             ->with([
                 'authCid' => function($query){
                     $query->order(['paixu'])
+                        ->where('status&ismenu', 1)
                         ->field('id, pid, title, url');
                 }
             ])

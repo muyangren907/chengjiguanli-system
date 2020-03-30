@@ -433,7 +433,7 @@ class Kaohao extends BaseModel
     {
         // 初始化参数
         $src = array(
-            'kaoshi'=>'',
+            'kaoshi_id'=>'',
             'ruxuenian'=>'',
         );
         // 用新值替换初始值
@@ -443,7 +443,7 @@ class Kaohao extends BaseModel
         $schoolList = $this->when(count($ruxuenian)>0,function($query) use($ruxuenian){
                     $query->where('ruxuenian','in',$ruxuenian);
                 })
-                ->where('kaoshi',$src['kaoshi'])
+                ->where('kaoshi',$src['kaoshi_id'])
                 ->with(['cjSchool'=>function($query){
                         $query->field('id,jiancheng,paixu,title')->order(['paixu'=>'asc']);
                     }
@@ -481,21 +481,17 @@ class Kaohao extends BaseModel
     */
     public function cyBanji($srcfrom)
     {
-
         // 初始化参数
         $src = array(
             'kaoshi'=>'',
             'ruxuenian'=>array(),
-            'school'=>array(),
-            'banji'=>array(),
+            'school_id'=>array(),
+            'banji_id'=>array(),
         );
-
-
-        // 用新值替换初始值
-        $src = array_cover( $srcfrom , $src ) ;
-        $school = strToarray($src['school']);
-        $banji = strToarray($src['banji']);
-        $ruxuenian = strToarray($src['ruxuenian']);
+        $src = array_cover($srcfrom, $src);
+        $src['school_id'] = strToarray($src['school_id']);
+        $src['banji_id'] = strToarray($src['banji_id']);
+        $src['ruxuenian'] = strToarray($src['ruxuenian']);
 
 
         // 获取考试时间
@@ -504,19 +500,19 @@ class Kaohao extends BaseModel
 
         // 通过给定参数，从考号表中获取参加考试的班级
         $bjids = $this
-                ->when(count($ruxuenian)>0,function($query) use($ruxuenian){
-                    $query->where('ruxuenian','in',$ruxuenian);
+                ->when(count($src['ruxuenian'] )>0,function($query) use($src){
+                    $query->where('ruxuenian','in',$src['ruxuenian'] );
                 })
                 ->where('kaoshi',$src['kaoshi'])
-                ->when(count($school)>0,function($query) use($school){
-                    $query->where('school','in',$school);
+                ->when(count($src['school_i']d)>0,function($query) use($src){
+                    $query->where('school_id','in',$src['school_i']d);
                 })
-                ->when(count($banji)>0,function($query) use($banji){
-                    $query->where('banji','in',$banji);
+                ->when(count($src['banji_id'])>0,function($query) use($src){
+                    $query->where('banji_id','in',$src['banji_id']);
                 })
                 ->with([
                     'cjSchool'=>function($query){
-                        $query->field('id,jiancheng,title');
+                        $query->field('id, jiancheng, title');
                     }
                 ])
                 // ->cache(true)
@@ -526,7 +522,7 @@ class Kaohao extends BaseModel
                     ,any_value(paixu) as paixu
                     ,any_value(school) as school')
                 ->group('banji')
-                ->append(['banjiTitle','banTitle'])
+                ->append(['banjiTitle', 'banTitle'])
                 ->select();
 
         $bj = new \app\teach\model\Banji;

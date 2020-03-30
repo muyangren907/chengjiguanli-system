@@ -10,20 +10,20 @@
 </span>
 {/block}
 {block name="search"}
-<input type="hidden" name="kaoshi" id="kaoshi" value="{$list.kaoshi}">
+<input type="hidden" name="kaoshi_id" id="kaoshi_id" value="{$list.kaoshi_id}">
 <div class="layui-form-item">
 	<label for="nianji" class="layui-form-label" style="height: 100%">年级 </label>
 	<div class="layui-input-block">
-		<input type="radio" name="nianji" title="无" value="" lay-skin="primary">
-		{php} $njlist = nianjiList();{/php}
+		<input type="radio" name="nianji" title="无" value="" lay-skin="primary" checked="true">
+		{php} $njlist = nianJiNameList();{/php}
 		{foreach $njlist as $key=>$vo}
 		<input type="radio" name="nianji" title="{$vo}" value="{$key}" lay-skin="primary">
 		{/foreach}
 	</div>
 </div>
 <div class="layui-form-item">
-	<label for="subject" class="layui-form-label" style="height: 100%">学科</label>
-	<div class="layui-input-block" id="subject">
+	<label for="subject_id" class="layui-form-label" style="height: 100%">学科</label>
+	<div class="layui-input-block" id="subject_id">
 
 	</div>
 </div>
@@ -92,7 +92,7 @@
 		            cjgl.delAll(checkStatus,'/kaoshi/kaoshiset/delete','mytable');
 		            break;
 	            case 'add':
-		            cjgl.add('添加参考学科','/kaoshi/kaoshiset/create/'+"{$list.kaoshi}",'','',true);
+		            cjgl.add('添加参考学科','/kaoshi/kaoshiset/create/'+"{$list.kaoshi_id}",'','',true);
 		            break;
 	        };
 	    });
@@ -124,7 +124,7 @@
 	    	// 获取参数
 	    	formval = form.val("search");
 	    	formval.ruxuenian = formval.nianji;
-	    	cjgl.createCheckbox('subject',formval,'/kaoshi/index/cysubject','subject');
+	    	cjgl.createCheckbox('subject_id',formval,'/kaoshi/index/cysubject','subject_id');
 	    }
 	});
 </script>

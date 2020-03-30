@@ -149,6 +149,20 @@
 	}
 
 
+    // 可以组织考试的单位列表
+    function kaoshiSchoolList()
+    {
+        // 实例化单位模型
+        $sch = new \app\system\model\School;
+        $schlist = $sch->where('status&kaoshi', 1)
+            ->order(['paixu'])
+            ->field('id, title, jiancheng')
+            ->select();
+
+        return $schlist;
+    }
+
+
 	// 整理教师名
 	function teacherNames($list = array())
 	{
