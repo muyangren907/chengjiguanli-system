@@ -151,7 +151,6 @@ class Student extends BaseModel
     }
 
 
-
     // 整理表格上传数据并保存
     public function tongBu($stuinfo,$school_id)
     {

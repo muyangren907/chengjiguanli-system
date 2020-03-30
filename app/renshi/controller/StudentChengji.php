@@ -13,19 +13,21 @@ use \app\renshi\model\StudentChengji as STUCJ;
 
 class StudentChengji extends BaseController
 {
-
     // 学生信息页
     public function index($id)
     {
         // 查询学生信息
         $myInfo = STU::withTrashed()
-            ->where('id',$id)
+            ->where('id', $id)
             ->with([
                 'stuBanji'=>function($query){
-                    $query->field('id, school, ruxuenian, paixu')->append(['banjiTitle']);
-                },
-                'stuSchool'=>function($query){
-                    $query->field('id, title');
+                    $query->field('id, school_id, ruxuenian, paixu')
+                        ->with([
+                            'glSchool' => function($q){
+                                $q->field('id,title,jiancheng');
+                            }
+                        ])
+                        ->append(['banjiTitle']);
                 }
             ])
             ->find();
@@ -36,7 +38,7 @@ class StudentChengji extends BaseController
 
         $myInfo['sbj'] = $ksSbj;
         // 设置页面标题
-        $myInfo['webtitle'] = $myInfo->xingming . '－成绩';
+        $myInfo['webtitle'] = $myInfo->xingming . ' － 成绩';
         $myInfo['dataurl'] = '/renshi/studentcj/data';
         $myInfo['student'] = $id;
 
@@ -51,16 +53,15 @@ class StudentChengji extends BaseController
     public function ajaxData()
     {
         // 获取表单参数
-        // 获取参数
         $src = $this->request
             ->only([
                 'page' => '1'
                 ,'limit' => '10'
-                ,'field' => 'kaoshiId'
+                ,'field' => 'kaoshi_id'
                 ,'order' => 'desc'
-                ,'student' => ''
-                ,'category' => ''
-                ,'xueqi' => ''
+                ,'student_id' => ''
+                ,'category_id' => ''
+                ,'xueqi_id' => ''
                 ,'bfdate' => ''
                 ,'enddate' => ''
             ], 'POST');
@@ -68,9 +69,7 @@ class StudentChengji extends BaseController
         // 获取学生成绩
         $stucj = new STUCJ;
         $khList = $stucj->oneStudentChengjiList($src);
-
-        // 获取符合条件记录总数
-        $cnt = count($khList);
+        halt($khList);
         $data = reSetArray($data, $src);
 
         return json($data);
@@ -86,10 +85,10 @@ class StudentChengji extends BaseController
             ->only([
                 'field' => 'kaoshiId'
                 ,'order' => 'asc'
-                ,'student' => ''
-                ,'subject' => ''
-                ,'category' => ''
-                ,'xueqi' => ''
+                ,'student_id' => ''
+                ,'subject_id' => ''
+                ,'category_id' => ''
+                ,'xueqi_id' => ''
                 ,'bfdate' => ''
                 ,'enddate' => ''
             ], 'POST');
@@ -109,7 +108,7 @@ class StudentChengji extends BaseController
         // 获取参数
         $src = $this->request
             ->only([
-                'kaohaoid' => '',
+                'kaohao_id' => '',
             ], 'POST');
 
         // 获取学生成绩

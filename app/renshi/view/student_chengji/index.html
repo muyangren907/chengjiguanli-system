@@ -22,21 +22,21 @@
   </div>
 </div>
 <div class="layui-form-item">
-  <label for="xueqi" class="layui-form-label" style="height: 100%">学期</label>
+  <label for="xueqi_id" class="layui-form-label" style="height: 100%">学期</label>
   <div class="layui-input-block">
-    <input type="radio" name="xueqi" title="无" value="" lay-skin="primary">
-    {php} $category = getCategory('学期');{/php}
+    <input type="radio" name="xueqi" title="无" value="" lay-skin="primary" checked="true">
+    {php} $category = getCategory(108);{/php}
     {volist name="category" id="vo"}
-    <input type="radio" name="xueqi" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+    <input type="radio" name="xueqi_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
     {/volist}
   </div>
 </div>
 <div class="layui-form-item">
-  <label for="category" class="layui-form-label" style="height: 100%">考试类型</label>
+  <label for="category_id" class="layui-form-label" style="height: 100%">考试类型</label>
   <div class="layui-input-block">
-    {php} $category = getCategory('考试');{/php}
+    {php} $category = getCategory(109);{/php}
     {volist name="category" id="vo"}
-      <input type="checkbox" name="category[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+      <input type="checkbox" name="category_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
     {/volist}
   </div>
 </div>

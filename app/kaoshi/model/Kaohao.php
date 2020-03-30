@@ -19,33 +19,32 @@ class Kaohao extends BaseModel
     {
         // 获取考试标签
         $data = $this->where('kaoshi',$kaoshi)
-                    ->where('banji','in',$banji)
-                    ->field('banji,school')
-                    ->order(['banji'])
-                    ->group('banji,school')
-                    ->with([
-                        'cjBanji'=>function($query){
-                            $query->field('id,school,ruxuenian,paixu')
-                                    ->append(['banjiTitle','numTitle']);
-                        }
-                        ,
-                        'cjSchool'=>function($query){
-                            $query->field('id,jiancheng');
-                        }
-                        ,
-                        'banjiKaohao'=>function($query) use($kaoshi){
-                            $query->field('id,student,banji')
-                                ->where('kaoshi',$kaoshi)
-                                ->order(['banji','id'])
-                                ->with([
-                                    'cjStudent'=>function($q){
-                                        $q->field('id,xingming,sex');
-                                    }
-                            ]);
-                        }
-                    ])
-                    ->select();
-
+            ->where('banji','in',$banji)
+            ->field('banji,school')
+            ->order(['banji'])
+            ->group('banji,school')
+            ->with([
+                'cjBanji'=>function($query){
+                    $query->field('id,school,ruxuenian,paixu')
+                            ->append(['banjiTitle','numTitle']);
+                }
+                ,
+                'cjSchool'=>function($query){
+                    $query->field('id,jiancheng');
+                }
+                ,
+                'banjiKaohao'=>function($query) use($kaoshi){
+                    $query->field('id,student,banji')
+                        ->where('kaoshi',$kaoshi)
+                        ->order(['banji','id'])
+                        ->with([
+                            'cjStudent'=>function($q){
+                                $q->field('id,xingming,sex');
+                            }
+                    ]);
+                }
+            ])
+            ->select();
 
         $stu = new \app\renshi\model\Student;
         // 找出已经被删除学生，并添加该学生信息
@@ -86,8 +85,7 @@ class Kaohao extends BaseModel
         );
 
         // 用新值替换初始值
-        $src = array_cover( $srcfrom , $src ) ;
-
+        $src = array_cover($srcfrom, $src);
         $khlist = self::search($src);
 
         // 成绩整理
@@ -98,7 +96,7 @@ class Kaohao extends BaseModel
 
         // 获取参考学科
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $ksSubject = $ksset->srcSubject($src['kaoshi'],'','');
+        $ksSubject = $ksset->srcSubject($src['kaoshi'], '', '');
 
         if(count($ksSubject)==0)
         {
@@ -112,11 +110,8 @@ class Kaohao extends BaseModel
 
         // 实例化学生数据模型
         $stu = new \app\renshi\model\Student;
-
-        // 整理数据
         $data = array();
         foreach ($khlist as $key => $value) {
-
             $data[$key]['id'] = $value->id;
             $data[$key]['school'] = $value->cjSchool->jiancheng;
             if($value->cjStudent != Null){
@@ -163,26 +158,14 @@ class Kaohao extends BaseModel
     }
 
 
-
-    /**
-    * 按考号查询学生成绩，整理出学生每个学科成绩
-    * 计划在成绩排序中使用
-    * 信息包括：成绩id,排序，位置
-    * @access public
-    * @param array $src 参数数组
-    * @param number $src['kaoshi'] 考试ID
-    * @param array $src['banji'] 班级数组
-    * @param number $src['searchval'] 关键字
-    * @return array 返回类型
-    */
-
+    // 查询学生各学科成绩
     public function srcChengjiSubject($srcfrom)
     {
         // 初始化参数
         $src = array(
-            'kaoshi'=>'0',
-            'banji'=>array(),
-            'searchval'=>''
+            'kaoshi_id' => '0',
+            'banji_id' => array(),
+            'searchval' => ''
         );
 
         // 用新值替换初始值
@@ -268,14 +251,15 @@ class Kaohao extends BaseModel
     {
         // 初始化参数
         $src = array(
-            'student' => '',
-            'category' => '',
-            'xueqi' => '',
-            'kaoshi' => '',
+            'student_id' => '',
+            'category_id' => '',
+            'xueqi_id' => '',
+            'kaoshi_id' => '',
         );
-
-        // 用新值替换初始值
-        $src = array_cover( $srcfrom , $src ) ;
+        $src = array_cover($srcfrom, $src);
+        $src['category_id'] = strToArray($src['category_id']);
+        $src['xueqi_id'] = strToArray($src['xueqi_id']);
+        $src['kaoshi_id'] = strToArray($src['kaoshi_id']);
 
         if(isset($srcfrom['bfdate']) && strlen($srcfrom['bfdate'])>0)
         {
@@ -291,59 +275,54 @@ class Kaohao extends BaseModel
             $src['enddate'] = date("Y-m-d",strtotime("+1 day"));
         }
 
-        $src['category'] = strToarray($src['category']);
-        $src['xueqi'] = strToarray($src['xueqi']);
-        $src['kaoshi'] = strToarray($src['kaoshi']);
-
-
-        $stuCj = $this->where('student',$src['student'])
-            ->when(count($src['category'])>0, function($query) use($src){
-                $query->where('kaoshi','in',function($q) use($src){
+        $stuCj = $this->where('student_id',$src['student_id'])
+            ->when(count($src['category_id'])>0, function($query) use($src){
+                $query->where('kaoshi_id','in',function($q) use($src){
                     $q->name('kaoshi')
-                    ->where('category','in',$src['category'])
+                    ->where('category_id','in',$src['category_id'])
                     ->field('id');
                 });
             })
-            ->when(count($src['xueqi'])>0, function($query) use($src){
-                $query->where('kaoshi','in',function($q) use($src){
+            ->when(count($src['xueqi_id'])>0, function($query) use($src){
+                $query->where('kaoshi_id','in',function($q) use($src){
                     $q->name('kaoshi')
-                        ->where('xueqi','in',function($w) use($src){
+                        ->where('xueqi_id','in',function($w) use($src){
                             $w->name('xueqi')
-                                ->where('category','in',$src['xueqi'])
+                                ->where('category_id','in',$src['xueqi_id'])
                                 ->field('id');
                         })
                         ->field('id');
                 });
             })
-            ->when(count($src['kaoshi'])>0, function($query) use($src){
-                $query->where('kaoshi', 'in', $src['kaoshi']);
+            ->when(count($src['kaoshi_id'])>0, function($query) use($src){
+                $query->where('kaoshi_id', 'in', $src['kaoshi_id']);
             })
-            ->where('kaoshi','in',function($query) use($src){
+            ->where('kaoshi_id', 'in', function($query) use($src){
                 $query->name('kaoshi')
-                    ->whereTime('bfdate|enddate','between',[ $src['bfdate'],$src['enddate'] ])
+                    ->whereTime('bfdate|enddate', 'between', [ $src['bfdate'],$src['enddate'] ])
                     ->field('id');
             })
             ->with([
                 'ksChengji'=>function($query){
-                    $query->field('id,kaohao_id,subject_id,defen,defenlv,bweizhi,xweizhi,qweizhi');
+                    $query->field('id, kaohao_id, subject_id, defen, defenlv, bweizhi, xweizhi, qweizhi');
                 }
-                ,'cjSchool'=>function($query){
-                    $query->field('id,jiancheng');
+                ,'cjSchool' => function($query){
+                    $query->field('id, jiancheng');
                 }
-                ,'cjKaoshi'=>function($query){
-                    $query->field('id,title,zuzhi,xueqi,category,bfdate,enddate')
+                ,'cjKaoshi' => function($query){
+                    $query->field('id, title, zuzhi_id, xueqi_id, category_id, bfdate, enddate')
                         ->with([
-                            'ksCategory'=>function($q){
-                                $q->field('id,title');
+                            'ksCategory' => function($q){
+                                $q->field('id, title');
                             }
-                            ,'ksZuzhi'=>function($q)
+                            ,'ksZuzhi' => function($q)
                             {
-                                $q->field('id,title,jiancheng');
+                                $q->field('id, title, jiancheng');
                             }
                     ]);
                 }
             ])
-            ->field('id,kaoshi,student,ruxuenian,nianji,banji,paixu')
+            ->field('id ,kaoshi_id, student_id, ruxuenian, nianji, banji_id, paixu')
             ->append(['banjiTitle'])
             ->select();
 

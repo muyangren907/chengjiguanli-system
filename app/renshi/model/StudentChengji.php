@@ -16,40 +16,37 @@ class StudentChengji extends BaseModel
     {
         // 初始化参数
         $src = array(
-            'student'=>'',
-            'kaoshi'=>array(),
-            'category'=>'',
-            'xueqi'=>'',
-            'bfdate'=>'',
-            'enddate'=>'',
+            'student_id' => ''
+            ,'category_id' => ''
+            ,'xueqi_id' => ''
+            ,'bfdate' => ''
+            ,'enddate' => ''
         );
+        $src = array_cover($srcfrom, $src);
 
-        // 用新值替换初始值
-        $src = array_cover( $srcfrom , $src );
-
+        // 查询成绩
         $kh = new \app\kaoshi\model\Kaohao;
         $stuCj = $kh->srcOneStudentChengji($src);
 
-
         // 获取可以参加考试的学科
         $sbj = new \app\teach\model\Subject;
-        $sbjList = $sbj->where('kaoshi',1)
-                        ->where('status',1)
-                        ->field('id,lieming')
-                        ->column('lieming','id');
+        $sbjList = $sbj->where('kaoshi', 1)
+                        ->where('status', 1)
+                        ->field('id, lieming')
+                        ->column('lieming', 'id');
 
         // 整理数据
         $data = array();
         foreach ($stuCj as $key => $value) {
             $data[$key] = [
-                'kaoshiId'=>$value->kaoshi,
-                'kaoshiTitle'=>$value->cjKaoshi->title,
-                'kaohaoId'=>$value->id,
-                'banjiTitle'=>$value->banjiTitle,
-                'zuzhi'=>$value->cjKaoshi->ksZuzhi->jiancheng,
-                'category'=>$value->cjKaoshi->ksCategory->title,
-                'bfdate'=>$value->cjKaoshi->bfdate,
-                'enddate'=>$value->cjKaoshi->enddate,
+                'kaoshi_id' => $value->kaoshi,
+                'kaoshiTitle' => $value->cjKaoshi->title,
+                'kaohao_idd' => $value->id,
+                'banjiTitle' => $value->banjiTitle,
+                'zuzhi_id' => $value->cjKaoshi->ksZuzhi->jiancheng,
+                'category_id' => $value->cjKaoshi->ksCategory->title,
+                'bfdate' => $value->cjKaoshi->bfdate,
+                'enddate' => $value->cjKaoshi->enddate,
             ];
 
             $cjcnt = count($value->ksChengji);
@@ -91,17 +88,14 @@ class StudentChengji extends BaseModel
     {
         // 初始化参数
         $src = array(
-            'student'=>'',
-            'kaoshi'=>array(),
-            'subject'=>'',
-            'category'=>'',
-            'xueqi'=>'',
-            'bfdate'=>'',
-            'enddate'=>'',
+            'student_id' => ''
+            ,'kaoshi_id' => array()
+            ,'subject_id' => ''
+            ,'category_id' => ''
+            ,'xueqi_id' => ''
+            ,'bfdate' => ''
+            ,'enddate' => ''
         );
-
-
-        // 用新值替换初始值
         $src = array_cover( $srcfrom , $src );
 
         $kh = new \app\kaoshi\model\Kaohao;
@@ -158,28 +152,34 @@ class StudentChengji extends BaseModel
         }
 
         $data = [
-            'xAxis' => $xAxis,
-            'series' => $series,
-            'legend' => ['得分率%','班级位置%','学校位置%','全部位置%'],
+            'xAxis' => $xAxis
+            ,'series' => $series
+            ,'legend' => [
+                '得分率%'
+                ,'班级位置%'
+                ,'学校位置%'
+                ,'全部位置%'
+            ]
         ];
 
         return $data;
     }
+
 
     // 一个学生一个学科历次成绩
     public function oneStudentLeiDa($srcfrom)
     {
         // 初始化参数
         $src = array(
-            'kaohaoid'=>'',
+            'kaohao_id' => '',
         );
 
         // 用新值替换初始值
-        $src = array_cover( $srcfrom , $src );
+        $src = array_cover($srcfrom, $src);
 
         $kh = new \app\kaoshi\model\Kaohao;
         // 考号信息
-        $khInfo = $kh->where('id', $src['kaohaoid'])
+        $khInfo = $kh->where('id', $src['kaohao_id'])
                     ->with([
                         'ksChengji'=>function($query){
                             $query->field('id,kaohao_id,subject_id,defen');
@@ -264,14 +264,14 @@ class StudentChengji extends BaseModel
         }
 
         $data = [
-            'title' => '学生成绩',
-            'legend' => $legend,
-            'indicator' => $indicator,
-            'series' => [
-                'name'=>'成绩',
-                'type' => 'radar',
-                'data' => [$bjcj,$qcj],
-            ],
+            'title' => '学生成绩'
+            ,'legend' => $legend
+            ,'indicator' => $indicator
+            ,'series' => [
+                'name'=>'成绩'
+                ,'type' => 'radar'
+                ,'data' => [$bjcj, $qcj]
+            ]
         ];
 
         return $data;

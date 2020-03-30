@@ -214,7 +214,9 @@ class Student extends BaseController
         $list['shoupin'] =  trim(strtolower($list['shoupin']));
 
         // 查询数据是否重复
-        $chongfu = STU::withTrashed()->where('shenfenzhenghao', $list['shenfenzhenghao'])->find();
+        $chongfu = STU::withTrashed()
+            ->where('shenfenzhenghao', $list['shenfenzhenghao'])
+            ->find();
         // 保存或更新数据
         $stu = new STU;
         if($chongfu == Null)
@@ -330,15 +332,17 @@ class Student extends BaseController
     {
         // 查询教师信息
         $myInfo = STU::withTrashed()
-            ->where('id',$id)
+            ->where('id', $id)
             ->with([
                 'stuBanji' => function($query){
                     $query->field('id, school_id, ruxuenian, paixu')
+                        ->with([
+                            'glSchool' => function($q){
+                                $q->field('id,title,jiancheng');
+                            }
+                        ])
                         ->append(['banjiTitle']);
                 },
-                'stuSchool' => function($query){
-                    $query->field('id,title');
-                }
             ])
             ->find();
         // 设置页面标题
@@ -349,10 +353,6 @@ class Student extends BaseController
         // 渲染模板
         return $this->view->fetch();
     }
-
-
-
-
 
 
     // 删除学生
@@ -380,15 +380,12 @@ class Student extends BaseController
         $user = STU::onlyTrashed()->find($id);
         $data = $user->restore();
 
-
         // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'恢复成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);
     }
-
-
 
 
     // 设置学生状态
@@ -401,8 +398,6 @@ class Student extends BaseController
 
         // 获取学生信息
         $data = STU::where('id',$id)->update(['status'=>$value]);
-
-        // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
@@ -413,22 +408,17 @@ class Student extends BaseController
     // 设置学生状态
     public function setKaoshi()
     {
-
         //  获取id变量
         $id = request()->post('id');
         $value = request()->post('value');
 
         // 获取学生信息
         $data = STU::where('id',$id)->update(['kaoshi'=>$value]);
-
-        // 根据更新结果设置返回提示信息
         $data ? $data=['msg'=>'状态设置成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
 
         // 返回信息
         return json($data);
     }
-
-
 
 
     // 使用上传的表格进行校对，表格中不存在的数据删除
@@ -492,7 +482,6 @@ class Student extends BaseController
 
         // 定义数据起始行号
         $i = 4;
-
         foreach ($delStuList as $key => $val) {
             $j = $i + $key;
             $sheet->setCellValue('A' . $j, $key + 1);
@@ -616,8 +605,4 @@ class Student extends BaseController
                     ->select();
         return json($list);
     }
-
-
-
-
 }
