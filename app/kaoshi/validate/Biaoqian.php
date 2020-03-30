@@ -11,18 +11,31 @@ class Biaoqian extends Validate
      * 格式：'字段名'	=>	['规则1','规则2'...]
      *
      * @var array
-     */	
+     */
 	protected $rule = [
-        'banjiids|班级'      =>  'require|array',
-        'kaoshi|考试'      =>  'require|number',
-        'subject|学科'      =>  'require|array',
+        'banji_id|班级'      =>  'require|array',
+        'kaoshi_id|考试'      =>  'require|number',
+        'subject_id|学科'      =>  'require|array',
     ];
-    
+
     /**
      * 定义错误信息
      * 格式：'字段名.规则名'	=>	'错误信息'
      *
      * @var array
-     */	
+     */
     protected $message = [];
+
+    protected $scene = [
+        'biaoqian'  =>  [
+            'banji_id'
+            ,'kaoshi_id'
+            ,'subject_id'
+        ],
+        'caiji'  =>  [
+            'banji_id'
+            ,'kaoshi_id'
+            ,'subject_id'
+        ]
+    ];
 }

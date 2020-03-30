@@ -3,12 +3,12 @@
 {block name="form"}
 <form class="layui-form layui-form-pane" lay-filter="myform">
   <div class="layui-form-item">
-    <label for="school" class="layui-form-label"><span class="x-red">*</span>学校</label>
+    <label for="school_id" class="layui-form-label"><span class="x-red">*</span>学校</label>
     <div class="layui-input-block">
-      <select name="school" id="school" lay-verify="required">
+      <select name="school_id" id="school_id" lay-verify="required">
         {volist name="list.data.school" id="vo"}
         <option value="{$vo.id}"
-        {eq name="$list.data.school" value="$vo.id" }
+        {eq name="$i" value="1" }
         selected
         {/eq}
         >
@@ -31,23 +31,23 @@
   </div>
 </div>
 <div class="layui-form-item">
-  <label for="banji" class="layui-form-label">
+  <label for="banji_id" class="layui-form-label">
     <span class="x-red">*</span>班级
   </label>
   <div class="layui-input-block" id="banji">
   </div>
 </div>
 <div class="layui-form-item">
-  <label for="mysubject" class="layui-form-label">
+  <label for="subject_id" class="layui-form-label">
     <span class="x-red">*</span>学科
   </label>
-  <div class="layui-input-block" id="subject">
+  <div class="layui-input-block" id="subject_id">
 
   </div>
 </div>
 
 
-<input type="hidden" name="kaoshi" id="kaoshi" value="{$list.set.kaoshi}">
+<input type="hidden" name="kaoshi_id" id="kaoshi_id" value="{$list.set.kaoshi_id}">
 <div class="layui-form-item" style="text-align: right;">
   <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
     {$list.set.butname}
@@ -65,7 +65,7 @@
     // 加载页面时添加班级和学科
     addBanji();
     addSubject();
-    
+
     // 监听选择按钮
     form.on('select', function(data){
       addBanji();
@@ -76,14 +76,14 @@
     function addSubject(){
       // 获取参数
       formval = form.val("myform");
-      cjgl.createCheckbox('subject',formval,'/kaoshi/index/cysubject','subject');
+      cjgl.createCheckbox('subject_id', formval, '/kaoshi/index/cysubject', 'subject_id');
     }
 
     // 添加班级列表
     function addBanji(){
       // 获取参数
       formval = form.val("myform");
-      cjgl.createCheckbox('banji',formval,'/kaoshi/index/cybanji','banjiids','banTitle');
+      cjgl.createCheckbox('banji', formval, '/kaoshi/index/cybanji', 'banji_id', 'banTitle');
     }
 
   });

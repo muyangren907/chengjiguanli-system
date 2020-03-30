@@ -58,9 +58,7 @@ class Banji extends BaseModel
         $src = [
             'school_id' => ''
             ,'ruxuenian' => ''
-            ,'status' => ''
-            ,'field' => 'paixu'
-            ,'order' => 'asc'
+            ,'status' => '1'
         ];
         $src = array_cover($srcfrom, $src) ;
         $src['ruxuenian'] = strToarray($src['ruxuenian']);
@@ -69,7 +67,7 @@ class Banji extends BaseModel
         $data = self:: where('school_id', $src['school_id'])
         ->where('ruxuenian', 'in', $src['ruxuenian'])
         ->where('status', $src['status'])
-        ->group('ruxuenian')
+        ->distinct(true)
         ->field('ruxuenian')
         ->with([
             'njBanji'=>function($query)use($src){
@@ -81,7 +79,6 @@ class Banji extends BaseModel
                 ->append(['banjiTitle', 'banTitle']);
             }
         ])
-        ->order([$src['field'] => $src['order']])
         ->select();
 
         return $data;
@@ -104,7 +101,7 @@ class Banji extends BaseModel
     public function getNumTitleAttr()
     {
     	// 获取基础信息
-        $njname = nianjilist();     # 年级名对应表
+        $njname = nianJiNameList();     # 年级名对应表
     	$nj = $this->getAttr('ruxuenian');
     	$bj = $this->getAttr('paixu');
         $numnj = array_flip(array_keys($njname));

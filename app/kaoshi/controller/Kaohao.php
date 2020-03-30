@@ -3,6 +3,7 @@ namespace app\kaoshi\controller;
 
 // 引用控制器基类
 use app\BaseController;
+
 // 引用考试数据模型类
 use app\kaoshi\model\Kaoshi as KS;
 // 引用考号数据模型类
@@ -23,12 +24,11 @@ use think\Validate;
 class Kaohao extends BaseController
 {
     // 生成考号
-    public function createAll($kaoshi)
+    public function createAll($kaoshi_id)
     {
-
         // 获取参考年级
         $ksset = new ksset;
-        $list['data']['nianji'] = $ksset->srcNianji($kaoshi);
+        $list['data']['nianji'] = $ksset->srcNianji($kaoshi_id);
         $list['data']['nianjiNum'] = array_column($list['data']['nianji'], 'nianji');
 
         // 设置页面标题
@@ -37,7 +37,7 @@ class Kaohao extends BaseController
             ,'butname' => '生成'
             ,'formpost' => 'POST'
             ,'url' => '/kaoshi/kaohao/saveall'
-            ,'kaoshi' => $kaoshi
+            ,'kaoshi_id' => $kaoshi_id
         );
 
         // 模板赋值
@@ -52,45 +52,48 @@ class Kaohao extends BaseController
     {
         // 获取表单数据
         $list = request()->only([
-            'school'
-            ,'kaoshi'
-            ,'banjiids'
+            'school_id'
+            ,'kaoshi_id'
+            ,'banji_id'
         ], 'POST');
-        event('kslu', $list['kaoshi']);
 
+        event('kslu', $list['kaoshi_id']);
         // 验证表单数据
         $validate = new \app\kaoshi\validate\Kaohao;
         $result = $validate->check($list);
         $msg = $validate->getError();
-
-        // 如果验证不通过则停止保存
         if(!$result){
             return ['msg' => $msg, 'val' => 0];
         }
 
-        // 获取实例化学生数据模型
-        $stu = new \app\renshi\model\Student;
         // 获取参加考试学生名单
-        $stulist = $stu::where('school', $list['school'])
-                        ->where('banji', 'in', $list['banjiids'])
-                        ->where('kaoshi', 1)
-                        ->field('id, school, banji')
-                        ->with([
-                            'stuBanji' => function($query){
-                                $query->field('id, ruxuenian, paixu');
-                            }
-                        ])
-                        ->select();
+        $stu = new \app\renshi\model\Student;
+        $src = [
+            'banji_id' => $list['banji_id']
+            ,'kaoshi' => 1
+            ,'status' => 1
+        ];
+        $stulist = $stu->search($src)
+            ->visible([
+                'id'
+                ,'school_id'
+                ,'banji_id'
+                ,'stuBanji' => [
+                    'id'
+                    ,'ruxuenian'
+                    ,'paixu'
+                ]
+            ]);
 
         // 获取参加考试年级数组
-        $bfdate = KS::where('id', $list['kaoshi'])->value('bfdate');
-        $njlist = nianjiList($bfdate);
+        $bfdate = KS::where('id', $list['kaoshi_id'])->value('bfdate');
+        $njlist = nianJiNameList($bfdate);
         // 重新组合学生信息
         $kaohao = array();
         foreach ($stulist as $key => $value) {
             $check = KH::withTrashed()
-                        ->where('kaoshi', $list['kaoshi'])
-                        ->where('student', $value->id)
+                        ->where('kaoshi_id', $list['kaoshi_id'])
+                        ->where('student_id', $value->id)
                         ->find();
             if($check)
             {
@@ -105,13 +108,13 @@ class Kaohao extends BaseController
                 }
                 continue;
             }
-            $kaohao[$key]['student'] = $value->id;
-            $kaohao[$key]['school'] = $list['school'];
+            $kaohao[$key]['student_id'] = $value->id;
+            $kaohao[$key]['school_id'] = $list['school_id'];
             $kaohao[$key]['ruxuenian'] = $value->stuBanji->ruxuenian;
             $kaohao[$key]['nianji'] = $njlist[$kaohao[$key]['ruxuenian']];
-            $kaohao[$key]['banji'] = $value->stuBanji->id;
+            $kaohao[$key]['banji_id'] = $value->stuBanji->id;
             $kaohao[$key]['paixu'] = $value->stuBanji->paixu;
-            $kaohao[$key]['kaoshi'] = $list['kaoshi'];
+            $kaohao[$key]['kaoshi_id'] = $list['kaoshi_id'];
         }
 
         // 保存考号
@@ -119,12 +122,12 @@ class Kaohao extends BaseController
         $data = $kh
             ->allowField([ # 不是最佳实践
                 'id'
-                ,'kaoshi'
-                ,'student'
-                ,'school'
+                ,'kaoshi_id'
+                ,'student_id'
+                ,'school_id'
                 ,'ruxuenian'
                 ,'nianji'
-                ,'banji'
+                ,'banji_id'
                 ,'paixu'
                 ,'create_time'
                 ,'update_time'
@@ -141,13 +144,13 @@ class Kaohao extends BaseController
 
 
     // 添加单条考号
-    public function create($kaoshi)
+    public function create($kaoshi_id)
     {
         // 获取参考年级、学科
         $ksset = new ksset;
-        $list['data']['nianji'] = $ksset->srcNianji($kaoshi);
+        $list['data']['nianji'] = $ksset->srcNianji($kaoshi_id);
         $kh = new KH;
-        $src['kaoshi'] = $kaoshi;
+        $src['kaoshi_id'] = $kaoshi_id;
         if(count($list['data']['nianji']) > 0){
             $src['ruxuenian'] = $list['data']['nianji'][0];
         } else {
@@ -160,7 +163,7 @@ class Kaohao extends BaseController
             ,'butname' => '添加'
             ,'formpost' => 'POST'
             ,'url' => '/kaoshi/kaohao/saveOne'
-            ,'kaoshi' => $kaoshi
+            ,'kaoshi' => $kaoshi_id
         );
 
         // 模板赋值
@@ -175,18 +178,18 @@ class Kaohao extends BaseController
     {
         // 获取表单数据
         $list = request()->only([
-            'kaoshi'
+            'kaoshi_id'
             ,'banji'
             ,'student_id'
         ], 'POST');
         $list['student_id'] = explode(' ', $list['student_id']);
         $list['student_id'] = $list['student_id'][1];
 
-        event('kslu', $list['kaoshi']);
+        event('kslu', $list['kaoshi_id']);
 
         // 查询考号是否存在
         $ks = KH::withTrashed()
-                ->where('kaoshi', $list['kaoshi'])
+                ->where('kaoshi_id', $list['kaoshi_id'])
                 ->where('student_id', $list['student_id'])
                 ->find();
 
@@ -201,13 +204,13 @@ class Kaohao extends BaseController
             $data = ['msg' => '生成成功', 'val' => 1];
         }else{
             // 获取参加考试年级数组
-            $bfdate = KS::where('id', $list['kaoshi'])->value('bfdate');
+            $bfdate = KS::where('id', $list['kaoshi_id'])->value('bfdate');
             $njlist = nianjiList($bfdate);
 
             // 获取班级信息
             $bj = new \app\teach\model\Banji;
-            $bjinfo = $bj->where('id', $list['banji'])->find();
-            $list['school'] = $bjinfo->school;
+            $bjinfo = $bj->where('id', $list['banji_id'])->find();
+            $list['school_id'] = $bjinfo->school;
             $list['ruxuenian'] = $bjinfo->ruxuenian;
             $list['nianji'] = $njlist[$bjinfo->ruxuenian];
             $list['paixu'] = $bjinfo->paixu;
@@ -255,107 +258,14 @@ class Kaohao extends BaseController
     }
 
 
-    /**
-     * 生成指定网址的二维码
-     * @param string $url 二维码中所代表的网址
-    */
-    public function create_qrcode($url='127.0.0.1')
-    {
-        $qrCode = new QrCode($url);
-        header("Content-type: image/jpg");
-        return $qrCode->writeString();
-    }
-
-
-    // 生成试卷标签二维码可以换成pdf格式
-    public function biaoqiandoc($id)
-    {
-        // 获取数据库信息
-        $chengjiinfo = Chengji::where('kaoshi',$id)
-                        ->where('ruxuenian',2017)
-                        ->append([
-                            'cjSchool.jiancheng'
-                            ,'cjStudent.xingming'
-                            ,'banjiNumname'
-                        ])
-                        ->select();
-
-        // 获取学科信息
-        $xks = KS::get($id);
-        $xks = $xks->Subjectids;
-
-        $subject = new \app\teach\model\Subject();
-        $xks = $subject->where('id', 'in', $xks)->column('id, title');
-
-        // Word处理
-        // 实例化类
-        $phpWord = new \PhpOffice\PhpWord\PhpWord();
-
-        // 设置页面格式
-        $sectionStyle = array(
-            'pageSizeW' => 2 * 567
-            ,'pageSizeH' => 3 * 567
-            ,'orientation' => 'landscape'
-            ,'marginLeft' => 80
-            ,'marginRight' => 80
-            ,'marginTop' => 100
-            ,'marginBottom' => 100
-        );
-        $section = $phpWord->createSection($sectionStyle);
-
-        // 设置图片格式
-        $imageStyle = [
-            'width'=>45
-            ,'height'=>45
-            ,'align'=>'left'
-        ];
-
-        // 学生信息样式
-        $myStyle = 'myStyle';
-        $phpWord->addFontStyle(
-            $myStyle,
-            [
-                'name' => '宋体'
-                ,'size' => 6.5
-                ,'color' => '000000'
-                ,'bold' => true
-            ]
-        );
-
-        // 循环写出信息
-        foreach ($chengjiinfo as $key => $value) {
-            foreach ($xks as $xkkey => $val) {
-                // 创建表格
-                $table = $section->addTable($key);
-                $table->addRow(1500);
-                $img = $this->create_qrcode($value['id'] . ',' . $xkkey);
-                $table->addCell(850)->addImage($img,$imageStyle);
-                $info = $table->addCell(650);
-                $info->addText($value['cjSchool']['jiancheng'],$myStyle);
-                $info->addText($value['banjiNumname'],$myStyle);
-                $info->addText($value['cjStudent']['xingming'],$myStyle);
-                $info->addText($val,$myStyle);
-            }
-        }
-
-        // 保存文件
-        $filename = '试卷标签.docx';
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="' . $filename . '"');
-        header('Cache-Control: max-age=0');
-        $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
-        $objWriter->save('php://output');
-    }
-
-
     // 标签下载
-    public function biaoqian($kaoshi)
+    public function biaoqian($kaoshi_id)
     {
         // 获取参考年级、学科
         $ksset = new ksset;
-        $list['data']['nianji'] = $ksset->srcNianji($kaoshi);
+        $list['data']['nianji'] = $ksset->srcNianji($kaoshi_id);
         $kh = new KH;
-        $src['kaoshi'] = $kaoshi;
+        $src['kaoshi_id'] = $kaoshi_id;
         if(count($list['data']['nianji']) > 0){
             $src['ruxuenian'] = $list['data']['nianji'][0];
         } else {
@@ -368,7 +278,7 @@ class Kaohao extends BaseController
             ,'butname' => '下载'
             ,'formpost' => 'POST'
             ,'url' => '/kaoshi/kaohao/biaoqianxls'
-            ,'kaoshi' => $kaoshi
+            ,'kaoshi_id' => $kaoshi_id
         );
 
         // 模板赋值
@@ -383,34 +293,38 @@ class Kaohao extends BaseController
     {
         // 获取表单数据
         $list = request()->only([
-            'banjiids'=>array()
-            ,'kaoshi'
-            ,'subject'=>array()
+            'banji_id'=>array()
+            ,'kaoshi_id'
+            ,'subject_id'=>array()
         ], 'POST');
-        event('kslu', $list['kaoshi']);
-        $kaoshi = $list['kaoshi'];
-        $banji = $list['banjiids'];
-        $subject = $list['subject'];
+        event('kslu', $list['kaoshi_id']);
+        $kaoshi_id = $list['kaoshi_id'];
+        $banji_id = $list['banji_id'];
+        $subject = $list['subject_id'];
 
         // 实例化验证模型
         $validate = new \app\kaoshi\validate\Biaoqian;
-        $result = $validate->check($list);
+        $result = $validate->scene('biaoqian')->check($list);
         $msg = $validate->getError();
         if(!$result){
             $this->error($msg);
         }
 
         $ks = new KS();
-        $kslist = $ks::where('id', $kaoshi)
+        $kslist = $ks::where('id', $kaoshi_id)
                     ->field('id, title')
                     ->find();
         // 获取参考学科
         $ksset = new ksset();
-        $ksSubject = $ksset->srcSubject($kaoshi, $list['subject'], '');
+        $ksSubject = $ksset->srcSubject($kaoshi_id, $list['subject_id'], '');
 
+        // 查询考号
         $kh = new KH();
-        // 获取考试信息
-        $kaohao = $kh->srcKaohaoBanji($kaoshi, $banji);
+        $src = [
+            'kaoshi_id' => $kaoshi_id
+            ,'banji_id' => $banji_id
+        ];
+        $kaohao = $kh->srcBanjiKaohao($src);
 
         $thistime = date("Y-m-d h:i:sa");
         // 创建表格
@@ -480,13 +394,13 @@ class Kaohao extends BaseController
 
 
     // 下载考试成绩采集表
-    public function caiji($kaoshi)
+    public function caiji($kaoshi_id)
     {
         // 获取参考年级、学科
         $ksset = new ksset;
-        $list['data']['nianji'] = $ksset->srcNianji($kaoshi);
+        $list['data']['nianji'] = $ksset->srcNianji($kaoshi_id);
         $kh = new KH;
-        $src['kaoshi'] = $kaoshi;
+        $src['kaoshi_id'] = $kaoshi_id;
         if(count($list['data']['nianji']) > 0){
             $src['ruxuenian'] = $list['data']['nianji'][0];
         } else {
@@ -500,7 +414,7 @@ class Kaohao extends BaseController
             ,'butname'=>'下载'
             ,'formpost'=>'POST'
             ,'url'=>'/kaoshi/kaohao/dwcaiji'
-            ,'kaoshi'=>$kaoshi
+            ,'kaoshi_id'=>$kaoshi_id
         );
 
         // 模板赋值
@@ -515,42 +429,43 @@ class Kaohao extends BaseController
     {
         // 获取表单数据
         $list = request()->only([
-            'banjiids'=>array()
+            'banji_id' => array()
             ,'ruxuenian'
-            ,'kaoshi'
-            ,'subject'=>array()
+            ,'kaoshi_id'
+            ,'subject_id' => array()
         ], 'POST');
-        event('kslu', $list['kaoshi']);
+        event('kslu', $list['kaoshi_id']);
 
-        $kaoshi = $list['kaoshi'];
-        $banji = $list['banjiids'];
-        $subject = $list['subject'];
+        $kaoshi_id = $list['kaoshi_id'];
+        $banji_id = $list['banji_id'];
+        $subject_id = $list['subject_id'];
 
         // 验证表单数据
         $validate = new \app\kaoshi\validate\Biaoqian;
-        $result = $validate->check($list);
+        $result = $validate->scene('caiji')->check($list);
         $msg = $validate->getError();
-
-        // 如果验证不通过则停止保存
         if(!$result){
             $this->error($msg);
         }
 
         $ks = new KS();
-        $kslist = $ks::where('id', $kaoshi)
+        $kslist = $ks::where('id', $kaoshi_id)
                     ->field('id, title')
                     ->find();
         // 获取参加考试学科
         $ksset = new ksset();
-        $ksSubject = $ksset->srcSubject($kaoshi, $list['subject']);
+        $ksSubject = $ksset->srcSubject($kaoshi_id, $list['subject_id']);
 
+        // 查询考号
         $kh = new KH();
-        // 获取考试信息
-        $kaohao = $kh->srcKaohaoBanji($kaoshi, $banji);
+        $src = [
+            'kaoshi_id' => $kaoshi_id
+            ,'banji_id' => $banji_id
+        ];
+        $kaohao = $kh->srcBanjiKaohao($src);
 
         // 获取电子表格列名
-        $lieming = excelLieming();
-
+        $lieming = excelColumnName();
         // 创建表格
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -567,7 +482,7 @@ class Kaohao extends BaseController
         // 设置表格标题与表头信息
         $sheet->setCellValue('A1',$kslist->title . ' 成绩采集表');
 
-        $sheet->setCellValue('A2', $kaoshi);
+        $sheet->setCellValue('A2', $kaoshi_id);
         $sheet->setCellValue('B2', $list['ruxuenian']);
         $sheet->setCellValue('A3', '序号');
         $sheet->setCellValue('B3', '编号');

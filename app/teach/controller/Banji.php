@@ -305,7 +305,15 @@ class Banji extends BaseController
 
         // 查询班级
         $bj = new bjmod;
-        $list = $bj->searchNjGroup($src);  # 查询数据
+        $list = $bj->searchNjGroup($src)
+            ->visible([
+                'ruxuenian'
+                ,'njBanji' => [
+                    'id'
+                    ,'banjiTitle'
+                    ,'banTitle'
+                ]
+            ]);  # 查询数据
 
         // 返回数据
         return json($list);

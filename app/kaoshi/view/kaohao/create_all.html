@@ -24,7 +24,7 @@
  </div>
  {/foreach}
 </div>
-<input type="hidden" name="kaoshi" id="kaoshi" value="{$list.set.kaoshi}">
+<input type="hidden" name="kaoshi_id" id="kaoshi_id" value="{$list.set.kaoshi_id}">
 <div class="layui-form-item" style="text-align: right;">
   <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
     {$list.set.butname}
@@ -37,15 +37,15 @@
 <script>
   layui.use('form', function(){
     var form = layui.form;
-    form.on('select(school)', function(data){
+    form.on('select(school_id)', function(data){
 	  // 声明变量
-	  var school = data.value;
+	  var school_id = data.value;
     var nianji = "<?php echo json_encode($list['data']['nianjiNum']);?>";
       // 获取数据
       $.post(
         "/teach/banji/mybanjis",
         {
-          "school_id":school
+          "school_id":school_id
           ,"ruxuenian":eval(nianji)
         },
         function(data,status){
@@ -60,7 +60,7 @@
           for (var i in data) {
                   // $('#'+data[i]['ruxuenian']).nextAll().remove();
                   for(x in data[i]['njBanji']){
-                    $('#'+data[i]['ruxuenian']).append('<input type="checkbox" name="banjiids[]" value="'+data[i]['njBanji'][x]['id']+'" title="'+data[i]['njBanji'][x]['banTitle']+'" lay-skin="primary" checkall="c">');
+                    $('#'+data[i]['ruxuenian']).append('<input type="checkbox" name="banji_id[]" value="'+data[i]['njBanji'][x]['id']+'" title="'+data[i]['njBanji'][x]['banTitle']+'" lay-skin="primary" checkall="c">');
                   }
                 }
                 form.render('checkbox');

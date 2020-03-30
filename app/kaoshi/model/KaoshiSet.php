@@ -10,12 +10,12 @@ class KaoshiSet extends BaseModel
     // 关联学科
     public function subjectName()
     {
-    	return $this->belongsTo('\app\teach\model\Subject','subject_id','id');
+    	return $this->belongsTo('\app\teach\model\Subject', 'subject_id', 'id');
     }
 
 
     // 查询参加考试学科
-    public function search($srcfrom=array())
+    public function search($srcfrom = array())
     {
     	// 初始化参数
         $src = array(
@@ -23,8 +23,6 @@ class KaoshiSet extends BaseModel
             ,'nianji' => array()
             ,'subject_id' => array()
             ,'searchval' => ''
-            ,'field' => 'update_time'
-            ,'order' => 'desc'
         );
         $src = array_cover($srcfrom, $src);
         $src['nianji'] = strToarray($src['nianji']);
@@ -56,16 +54,16 @@ class KaoshiSet extends BaseModel
      * @return \think\Response
      */
     // 显示考试列表
-    public function srcSubject($kaoshi,$subject=array(),$nianji='')
+    public function srcSubject($kaoshi_id, $subject_id = array(), $nianji = '')
     {
-        $subject = strToarray($subject);
+        $subject_id = strToarray($subject_id);
 
-        $sbjList = $this->where('kaoshi_id',$kaoshi)
-            ->when(count($subject)>0,function($query)use($subject){
-                $query->where('subject_id','in',$subject);
+        $sbjList = $this->where('kaoshi_id', $kaoshi_id)
+            ->when(count($subject_id) > 0, function($query) use($subject_id){
+                $query->where('subject_id', 'in', $subject_id);
             })
-            ->when($nianji>0,function($query)use($nianji){
-                $query->where('nianji',$nianji);
+            ->when($nianji > 0, function($query) use($nianji){
+                $query->where('nianji', $nianji);
             })
             ->group('subject_id')
             ->field("subject_id
@@ -74,10 +72,10 @@ class KaoshiSet extends BaseModel
                 ,any_value(jige) as jige")
             ->with([
                 'subjectName'=>function($query){
-                    $query->field('id,title,jiancheng,paixu,lieming');
+                    $query->field('id, title, jiancheng, paixu, lieming');
                 }
             ])
-            ->where('status',1)
+            ->where('status', 1)
             ->select();
 
 

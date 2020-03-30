@@ -71,6 +71,7 @@ class Student extends BaseModel
             'banji_id' => array()
             ,'searchval' => ''
             ,'status' => ''
+            ,'kaoshi' => ''
         ];
 
         $src = array_cover($srcfrom, $src);
@@ -91,6 +92,11 @@ class Student extends BaseModel
                 ->when(strlen($src['status']) > 0, function($query) use($src){
                         $query
                             ->where('status', $src['status'])
+                            ->field('id');
+                })
+                ->when(strlen($src['kaoshi']) > 0, function($query) use($src){
+                        $query
+                            ->where('kaoshi', $src['kaoshi'])
                             ->field('id');
                 })
                 ->with([
