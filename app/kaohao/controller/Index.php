@@ -49,7 +49,7 @@ class Index extends BaseController
 
         event('kslu', $list['kaoshi_id']);
         // 验证表单数据
-        $validate = new \app\kaoshi\validate\Kaohao;
+        $validate = new \app\kaohao\validate\Kaohao;
         $result = $validate->check($list);
         $msg = $validate->getError();
         if(!$result){

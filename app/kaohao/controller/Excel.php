@@ -15,7 +15,7 @@ use think\Validate;
 use app\kaohao\model\KaohaoSearch as khSear;
 
 
-class KaohaoExcel extends BaseController
+class Excel extends BaseController
 {
     // 标签下载
     public function biaoqian($kaoshi_id)
@@ -36,7 +36,7 @@ class KaohaoExcel extends BaseController
             'webtitle' => '下载考号'
             ,'butname' => '下载'
             ,'formpost' => 'POST'
-            ,'url' => '/kaoshi/kaohao/biaoqianxls'
+            ,'url' => '/kaohao/excel/biaoqianxls'
             ,'kaoshi_id' => $kaoshi_id
         );
 
@@ -172,7 +172,7 @@ class KaohaoExcel extends BaseController
             'webtitle'=>'下载成绩采集表'
             ,'butname'=>'下载'
             ,'formpost'=>'POST'
-            ,'url'=>'/kaoshi/kaohao/dwcaiji'
+            ,'url'=>'/kaohao/excel/dwcaiji'
             ,'kaoshi_id'=>$kaoshi_id
         );
 

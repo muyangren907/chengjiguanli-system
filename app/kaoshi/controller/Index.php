@@ -281,8 +281,8 @@ class Index extends BaseController
                 ,'kaoshi_id' => '1'
             ], 'POST');
 
-        $kh = new \app\kaoshi\model\Kaohao;
-        $bj = $kh->cyBanji($src);
+        $khSrc = new \app\kaohao\model\KaohaoSearch;
+        $bj = $khSrc->cyBanji($src);
         $cnt = count($bj);
 
         // 重组返回内容

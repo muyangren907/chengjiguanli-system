@@ -23,8 +23,8 @@ Route::group('index', function () {
 
 // 考号管理
 Route::group('excel', function () {
-    Route::rule('biaoqian/<kaoshi_id>', 'KaohaoExcel/biaoqian', 'get'); # 信息列表
-    Route::rule('biaoqianxls', 'KaohaoExcel/biaoqianXls', 'post');  # 信息列表
-    Route::rule('caiji/<kaoshi_id>', 'KaohaoExcel/caiji', 'get');   # 成绩采集下载页面
-    Route::rule('dwcaiji', 'KaohaoExcel/dwcaiji', 'post');  # 成绩采集下载
+    Route::rule('biaoqian/<kaoshi_id>', 'Excel/biaoqian', 'get'); # 信息列表
+    Route::rule('biaoqianxls', 'Excel/biaoqianXls', 'post');  # 信息列表
+    Route::rule('caiji/<kaoshi_id>', 'Excel/caiji', 'get');   # 成绩采集下载页面
+    Route::rule('dwcaiji', 'Excel/dwcaiji', 'post');  # 成绩采集下载
 });

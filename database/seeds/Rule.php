@@ -5,7 +5,7 @@ use think\migration\Seeder;
 class Rule extends Seeder
 {
     /**
-     * Run Method.
+     * run Method.
      *
      * Write your database seeder using this method.
      *
@@ -37,13 +37,13 @@ class Rule extends Seeder
             ],
                 ['id' => 10101
                     ,'title' => '扫码查询'
-                    ,'name' => 'Chengji/Luru/read'
+                    ,'name' => 'chengji/Luru/read'
                     ,'paixu'  => 1
                     ,'pid' => 101
                 ]
                 ,['id' => 10102
                     ,'title' => '扫码保存'
-                    ,'name' => 'Chengji/Luru/malusave'
+                    ,'name' => 'chengji/luru/malusave'
                     ,'paixu'  => 2
                     ,'pid' => 101
                 ],
@@ -57,13 +57,13 @@ class Rule extends Seeder
             ],
                 ['id' => 10201
                     ,'title' => '表格保存'
-                    ,'name' => 'Chengji/Luru/saveAll'
+                    ,'name' => 'chengji/luru/saveall'
                     ,'paixu'  => 1
                     ,'pid' => 102
                 ],
                 ['id' => 10202
                     ,'title' => '表格上传'
-                    ,'name' => 'Chengji/Luru/upload'
+                    ,'name' => 'chengji/luru/upload'
                     ,'paixu'  => 2
                     ,'pid' => 102
                 ],
@@ -77,14 +77,14 @@ class Rule extends Seeder
             ],
                 ['id' => 10301
                     ,'title' => '成绩更新'
-                    ,'name' => 'Chengji/Luru/update'
+                    ,'name' => 'chengji/luru/update'
                     ,'paixu'  => 1
                     ,'pid' => 103
                 ],
                 // 成绩状态
                 ['id' => 10302
                     ,'title' => '成绩状态'
-                    ,'name' => 'Chengji/Index/setStatus'
+                    ,'name' => 'chengji/index/setstatus'
                     ,'paixu' => 2
                     ,'pid' => 103
                 ],
@@ -101,7 +101,7 @@ class Rule extends Seeder
             ],
             ['id' => 301
                 ,'title' => '考试列表'
-                ,'name' => 'kaoshi/Index/index'
+                ,'name' => 'kaoshi/index/index'
                 ,'paixu' => 1
                 ,'ismenu'  => 1
                 ,'pid'  => 3
@@ -109,49 +109,49 @@ class Rule extends Seeder
             ],
                 ['id' => 30101
                     ,'title' => '添加'
-                    ,'name' => 'Kaoshi/Index/create'
+                    ,'name' => 'kaoshi/index/create'
                     ,'paixu'  => 1
                     ,'pid' => 301
                 ],
                 ['id' => 30102
                     ,'title' => '删除'
-                    ,'name' => 'Kaoshi/Index/delete'
+                    ,'name' => 'kaoshi/index/delete'
                     ,'paixu' => 2
                     ,'pid' => 301
                 ],
                 ['id' => 30103
                     ,'title' => '编辑'
-                    ,'name' => 'Kaoshi/Index/edit'
+                    ,'name' => 'kaoshi/index/edit'
                     ,'paixu' => 3
                     ,'pid' => 301
                 ],
                 ['id' => 30104
                     ,'title' => '更新'
-                    ,'name' => 'Kaoshi/Index/update'
+                    ,'name' => 'kaoshi/index/update'
                     ,'paixu' => 4
                     ,'pid' => 301
                 ],
                 ['id' => 30105
                     ,'title' => '保存'
-                    ,'name' => 'Kaoshi/Index/save'
+                    ,'name' => 'kaoshi/index/save'
                     ,'paixu' => 5
                     ,'pid' => 301
                 ],
                 ['id' => 30106
                     ,'title' => '状态'
-                    ,'name' => 'Kaoshi/Index/setStatus'
+                    ,'name' => 'kaoshi/index/setstatus'
                     ,'paixu' => 6
                     ,'pid' => 301
                 ],
                 ['id' => 30107
                     ,'title' => '操作成绩权限'
-                    ,'name' => 'Kaoshi/Index/luru'
+                    ,'name' => 'kaoshi/index/luru'
                     ,'paixu' => 7
                     ,'pid' => 301
                 ],
             ['id' => 302
                 ,'title' => '考试操作'
-                ,'name' => 'Kaoshi/Index/MoreAction'
+                ,'name' => 'kaoshi/index/moreaction'
                 ,'paixu' => 2
                 ,'ismenu'  => 0
                 ,'pid'  => 3
@@ -206,13 +206,13 @@ class Rule extends Seeder
                         ],
                         ['id' => 302010107
                             ,'title' => '状态'
-                            ,'name' => 'kaoshi/kaoshiset/setStatus'
+                            ,'name' => 'kaoshi/kaoshiset/setstatus'
                             ,'paixu' => 6
                             ,'pid' => 3020101
                         ],
                     ['id' => 3020102
                         ,'title' => '生成考号'
-                        ,'name' => 'Kaohao/index/createall'
+                        ,'name' => 'kaohao/index/createall'
                         ,'paixu' => 1
                         ,'pid' => 30201
                     ],
@@ -225,7 +225,7 @@ class Rule extends Seeder
 
                     ['id' => 3020103
                         ,'title' => '下载试卷标签信息'
-                        ,'name' => 'Kaohao/KaohaoExcel/biaoqian'
+                        ,'name' => 'kaohao/excel/biaoqian'
                         ,'paixu' => 4
                         ,'pid' => 30201
                     ],
@@ -244,13 +244,13 @@ class Rule extends Seeder
                     // 录入成绩
                     ['id' => 3020201
                         ,'title' => '下载成绩采集表'
-                        ,'name' => 'Kaohao/KaohaoExcel/caiji'
+                        ,'name' => 'kaohao/excel/caiji'
                         ,'paixu' => 1
                         ,'pid' => 30202
                     ],
                     ['id' => 3020202
                         ,'title' => '已录成绩数量'
-                        ,'name' => 'Chengji/Tongji/yiluCnt'
+                        ,'name' => 'chengji/tongji/yilucnt'
                         ,'paixu' => 2
                         ,'pid' => 30202
                     ],
@@ -262,37 +262,37 @@ class Rule extends Seeder
                 ],
                     ['id' => 3020301
                         ,'title' => '以班级为单位统计成绩'
-                        ,'name' => 'chengji/Bjtongji/tongji'
+                        ,'name' => 'chengji/bjtongji/tongji'
                         ,'paixu' => 1
                         ,'pid' => 30203
                     ],
                     ['id' => 3020302
                         ,'title' => '以学校为单位统计成绩'
-                        ,'name' => 'chengji/Njtongji/tongji'
+                        ,'name' => 'chengji/njtongji/tongji'
                         ,'paixu' => 2
                         ,'pid' => 30203
                     ],
                     ['id' => 3020303
                         ,'title' => '以全部成绩为单位统计成绩'
-                        ,'name' => 'chengji/Schtongji/tongji'
+                        ,'name' => 'chengji/schtongji/tongji'
                         ,'paixu' => 3
                         ,'pid' => 30203
                     ],
                     ['id' => 3020304
                         ,'title' => '统计学生成绩在班级位置'
-                        ,'name' => 'chengji/Bjtongji/bjorder'
+                        ,'name' => 'chengji/bjtongji/bjorder'
                         ,'paixu' => 4
                         ,'pid' => 30203
                     ],
                     ['id' => 3020305
                         ,'title' => '统计学生成绩在学校位置'
-                        ,'name' => 'chengji/Njtongji/njorder'
+                        ,'name' => 'chengji/njtongji/njorder'
                         ,'paixu' => 5
                         ,'pid' => 30203
                     ],
                     ['id' => 3020306
                         ,'title' => '统计学生成绩在区位置'
-                        ,'name' => 'chengji/Schtongji/schorder'
+                        ,'name' => 'chengji/schtongji/schorder'
                         ,'paixu' => 6
                         ,'pid' => 30203
                     ],
@@ -310,55 +310,55 @@ class Rule extends Seeder
                 ],
                     ['id' => 3020401
                         ,'title' => '学生成绩'
-                        ,'name' => 'Chengji/Index/index'
+                        ,'name' => 'chengji/index/index'
                         ,'paixu' => 1
                         ,'pid' => 30204
                     ],
                         ['id' => 302040101
                             ,'title' => '录入人信息'
-                            ,'name' => 'Chengji/Index/readAdd'
+                            ,'name' => 'chengji/index/readadd'
                             ,'paixu' => 1
                             ,'pid' => 3020401
                         ],
                         ['id' => 302040102
                             ,'title' => '考号删除'
-                            ,'name' => 'kaoshi/Kaohao/delete'
+                            ,'name' => 'kaoshi/kaohao/delete'
                             ,'paixu' => 2
                             ,'pid' => 3020401
                         ],
                             ['id' => 30204011
                                 ,'title' => '批量删除成绩'
-                                ,'name' => 'Chengji/Index/delete'
+                                ,'name' => 'chengji/index/delete'
                                 ,'paixu' => 3
                                 ,'pid' => 3020401
                             ],
                         ['id' => 302040103
                             ,'title' => '批量删除界面'
-                            ,'name' => 'Chengji/Index/deletecjs'
+                            ,'name' => 'chengji/index/deletecjs'
                             ,'paixu' => 4
                             ,'pid' => 3020401
                         ],
                         ['id' => 302040104
                             ,'title' => '批量删除'
-                            ,'name' => 'Chengji/Index/deletecjmore'
+                            ,'name' => 'chengji/index/deletecjmore'
                             ,'paixu' => 5
                             ,'pid' => 3020401
                         ],
                         ['id' => 302040105
                             ,'title' => '下载学生成绩条'
-                            ,'name' => 'Chengji/Index/dwChengjitiao'
+                            ,'name' => 'chengji/index/dwchengjitiao'
                             ,'paixu' => 6
                             ,'pid' => 3020401
                         ],
                         ['id' => 302040106
                             ,'title' => '添加单个考号'
-                            ,'name' => 'Kaoshi/Kaohao/create'
+                            ,'name' => 'kaoshi/kaohao/create'
                             ,'paixu' => 7
                             ,'pid' => 3020401
                         ],
                         ['id' => 302040107
                             ,'title' => '保存单个考号'
-                            ,'name' => 'Kaoshi/Kaohao/save'
+                            ,'name' => 'kaoshi/kaohao/save'
                             ,'paixu' => 8
                             ,'pid' => 3020401
                         ],
@@ -370,7 +370,7 @@ class Rule extends Seeder
                         ],
                         ['id' => 302040109
                             ,'title' => '下载学生成绩'
-                            ,'name' => 'chengji/Index/dwChengji'
+                            ,'name' => 'chengji/index/dwchengji'
                             ,'paixu' => 10
                             ,'pid' => 3020401
                         ],
@@ -383,25 +383,25 @@ class Rule extends Seeder
                     ],
                         ['id' => 302040201
                             ,'title' => '班级成绩统计'
-                            ,'name' => 'Chengji/Bjtongji/biaoge'
+                            ,'name' => 'chengji/bjtongji/biaoge'
                             ,'paixu' => 1
                             ,'pid' => 3020402
                         ],
                         ['id' => 302040202
                             ,'title' => '下载班级成绩统计表'
-                            ,'name' => 'chengji/Bjtongji/dwBiaoge'
+                            ,'name' => 'chengji/bjtongji/dwBiaoge'
                             ,'paixu' => 2
                             ,'pid' => 3020402
                         ],
                         ['id' => 302040203
                             ,'title' => '条形统计图'
-                            ,'name' => 'chengji/Bjtongji/myavg'
+                            ,'name' => 'chengji/bjtongji/myavg'
                             ,'paixu' => 3
                             ,'pid' => 3020402
                         ],
                         ['id' => 302040204
                             ,'title' => '箱体图'
-                            ,'name' => 'chengji/Bjtongji/myxiangti'
+                            ,'name' => 'chengji/bjtongji/myxiangti'
                             ,'paixu' => 4
                             ,'pid' => 3020402
                         ],
@@ -414,32 +414,32 @@ class Rule extends Seeder
                     ],
                         ['id' => 302040301
                             ,'title' => '年级成绩统计'
-                            ,'name' => 'Chengji/Njtongji/biaoge'
+                            ,'name' => 'chengji/njtongji/biaoge'
                             ,'paixu' => 1
                             ,'pid' => 3020403
                         ],
                         ['id' => 302040302
                             ,'title' => '下载年级成绩统计表'
-                            ,'name' => 'chengji/Njtongji/dwBiaoge'
+                            ,'name' => 'chengji/njtongji/dwBiaoge'
                             ,'paixu' => 2
                             ,'pid' => 3020403
                         ],
                         ['id' => 302040303
                             ,'title' => '条形统计图'
-                            ,'name' => 'chengji/Njtongji/myavg'
+                            ,'name' => 'chengji/njtongji/myavg'
                             ,'paixu' => 3
                             ,'pid' => 3020403
                         ],
                         ['id' => 302040304
                             ,'title' => '箱体图'
-                            ,'name' => 'chengji/Njtongji/myxiangti'
+                            ,'name' => 'chengji/njtongji/myxiangti'
                             ,'paixu' => 4
                             ,'pid' => 3020403
                         ],
                     // 统计记录
                     ['id' => 3020404
                         ,'title' => '统计记录'
-                        ,'name' => 'kaoshi/TongjiLog/index'
+                        ,'name' => 'kaoshi/tongjiLog/index'
                         ,'paixu' => 4
                         ,'pid' => 30204
                     ],
@@ -456,7 +456,7 @@ class Rule extends Seeder
             ],
             ['id' => 401
                 ,'title' => '学生列表'
-                ,'name' => 'renshi/Student/index'
+                ,'name' => 'renshi/student/index'
                 ,'paixu' => 1
                 ,'ismenu'  => 1
                 ,'pid'  => 4
@@ -465,92 +465,92 @@ class Rule extends Seeder
                 // 学生管理权限
                 ['id' => 40101
                     ,'title' => '添加'
-                    ,'name' => 'renshi/Student/create'
+                    ,'name' => 'renshi/student/create'
                     ,'paixu'  => 1
                     ,'pid' => 401
                 ],
                 ['id' => 40102
                     ,'title' => '保存'
-                    ,'name' => 'renshi/Student/save'
+                    ,'name' => 'renshi/student/save'
                     ,'paixu' => 2
                     ,'pid' => 401
                 ],
                 ['id' => 40103
                     ,'title' => '删除'
-                    ,'name' => 'renshi/Student/delete'
+                    ,'name' => 'renshi/student/delete'
                     ,'paixu' => 3
                     ,'pid' => 401
                 ],
                 ['id' => 40104
                     ,'title' => '编辑'
-                    ,'name' => 'renshi/Student/edit'
+                    ,'name' => 'renshi/student/edit'
                     ,'paixu' => 4
                     ,'pid' => 401
                 ],
                 ['id' => 40105
                     ,'title' => '更新'
-                    ,'name' => 'renshi/Student/update'
+                    ,'name' => 'renshi/student/update'
                     ,'paixu' => 5
                     ,'pid' => 401
                 ],
                 ['id' => 40106
                     ,'title' => '查看信息'
-                    ,'name' => 'renshi/Student/read'
+                    ,'name' => 'renshi/student/read'
                     ,'paixu' => 6
                     ,'pid' => 401
                 ]
                 ,['id' => 40107
                    ,'title' => '状态'
-                    ,'name' => 'renshi/Student/setStatus'
+                    ,'name' => 'renshi/student/setstatus'
                     ,'paixu' => 7
                     ,'pid' => 401
                 ],
                 ['id' => 40108
                     ,'title' => '是否参加考试'
-                    ,'name' => 'renshi/Student/setKaoshi'
+                    ,'name' => 'renshi/student/setkaoshi'
                     ,'paixu' => 8
                     ,'pid' => 401
                 ],
                 ['id' => 40109
                     ,'title' => '下载模板'
-                    ,'name' => 'renshi/Student/download'
+                    ,'name' => 'renshi/student/download'
                     ,'paixu' => 9
                     ,'pid' => 401
                 ],
                 ['id' => 40110
                     ,'title' => '校对导入'
-                    ,'name' => 'renshi/Student/createAll'
+                    ,'name' => 'renshi/student/createall'
                     ,'paixu' => 10
                     ,'pid' => 401
                 ],
                 ['id' => 4011
                     ,'title' => '批量保存'
-                    ,'name' => 'renshi/Student/saveAll'
+                    ,'name' => 'renshi/student/saveall'
                     ,'paixu' => 11
                     ,'pid' => 401
                 ],
                 ['id' => 40112
                     ,'title' => '表格删除页面'
-                    ,'name' => 'renshi/Student/deletes'
+                    ,'name' => 'renshi/student/deletes'
                     ,'paixu' => 12
                     ,'pid' => 401
                 ],
                 ['id' => 40113
                     ,'title' => '表格删除数据'
-                    ,'name' => 'renshi/Student/deleteXlsx'
+                    ,'name' => 'renshi/student/deletexlsx'
                     ,'paixu' => 13
                     ,'pid' => 401
                 ],
                 ['id' => 40114
                     ,'title' => '查看成绩'
-                    ,'name' => 'renshi/StudentChengji/index'
+                    ,'name' => 'renshi/studentchengji/index'
                     ,'paixu' => 14
                     ,'pid' => 401
                 ],
             // 师生名单
             ['id' => 402
                 ,'title' => '毕业学生'
-                ,'name' => 'renshi/Student/byList'
+                ,'name' => 'renshi/student/bylist'
                 ,'paixu' => 2
                 ,'ismenu'  => 1
                 ,'pid'  => 4
@@ -566,7 +566,7 @@ class Rule extends Seeder
             // 师生名单
             ['id' => 403
                 ,'title' => '删除学生'
-                ,'name' => 'renshi/Student/delList'
+                ,'name' => 'renshi/student/dellist'
                 ,'paixu' => 3
                 ,'ismenu'  => 1
                 ,'pid'  => 4
@@ -575,13 +575,13 @@ class Rule extends Seeder
                 // 删除学生
                 ['id' => 40301
                     ,'title' => '恢复删除'
-                    ,'name' => 'renshi/Student/reDel'
+                    ,'name' => 'renshi/student/redel'
                     ,'paixu' => 1
                     ,'pid' => 403
                 ],
             ['id' => 404
                 ,'title' => '教师列表'
-                ,'name' => 'renshi/Teacher/index'
+                ,'name' => 'renshi/teacher/index'
                 ,'paixu' => 4
                 ,'ismenu'  => 1
                 ,'pid'  => 4
@@ -590,73 +590,73 @@ class Rule extends Seeder
                 // 教师管理权限
                 ['id' => 40401
                     ,'title' => '添加'
-                    ,'name' => 'renshi/Teacher/create'
+                    ,'name' => 'renshi/teacher/create'
                     ,'paixu'  => 1
                     ,'pid' => 404
                 ],
                 ['id' => 40402
                     ,'title' => '保存'
-                    ,'name' => 'renshi/Teacher/save'
+                    ,'name' => 'renshi/teacher/save'
                     ,'paixu'  => 2
                     ,'pid' => 404
                 ],
                 ['id' => 40403
                     ,'title' => '删除'
-                    ,'name' => 'renshi/Teacher/delete'
+                    ,'name' => 'renshi/teacher/delete'
                     ,'paixu' => 3
                     ,'pid' => 404
                 ],
                 ['id' => 40404
                     ,'title' => '编辑'
-                    ,'name' => 'renshi/Teacher/edit'
+                    ,'name' => 'renshi/teacher/edit'
                     ,'paixu' => 4
                     ,'pid' => 404
                 ],
                 ['id' => 40405
                     ,'title' => '更新'
-                    ,'name' => 'renshi/Teacher/update'
+                    ,'name' => 'renshi/teacher/update'
                     ,'paixu'  => 5
                     ,'pid' => 404
                 ],
                 ['id' => 40406
                     ,'title' => '查看'
-                    ,'name' => 'renshi/Teacher/read'
+                    ,'name' => 'renshi/teacher/read'
                     ,'paixu' => 6
                     ,'pid' => 404
                 ],
                 ['id' => 40407
                     ,'title' => '状态'
-                    ,'name' => 'renshi/Teacher/setStatus'
+                    ,'name' => 'renshi/teacher/setstatus'
                     ,'paixu' => 7
                     ,'pid' => 404
                 ],
                 ['id' => 40408
                     ,'title' => '查询教师'
-                    ,'name' => 'renshi/Teacher/srcTeacher'
+                    ,'name' => 'renshi/teacher/srcteacher'
                     ,'paixu' => 8
                     ,'pid' => 404
                 ],
                 ['id' => 40409
                     ,'title' => '批量上传'
-                    ,'name' => 'renshi/Teacher/createAll'
+                    ,'name' => 'renshi/teacher/createall'
                     ,'paixu' => 9
                     ,'pid' => 404
                 ],
                 ['id' => 40410
                     ,'title' => '批量保存'
-                    ,'name' => 'renshi/Teacher/saveAll'
+                    ,'name' => 'renshi/teacher/saveall'
                     ,'paixu' => 10
                     ,'pid' => 404
                 ],
                 ['id' => 40411
                     ,'title' => '表格模板下载'
-                    ,'name' => 'renshi/Teacher/downloadXls'
+                    ,'name' => 'renshi/teacher/downloadxls'
                     ,'paixu' => 11
                     ,'pid' => 404
                 ],
             ['id' => 405
                 ,'title' => '删除教师'
-                ,'name' => 'renshi/Teacher/delList'
+                ,'name' => 'renshi/teacher/dellist'
                 ,'paixu' => 5
                 ,'ismenu'  => 1
                 ,'pid'  => 4
@@ -665,7 +665,7 @@ class Rule extends Seeder
                 // 删除教师
                 ['id' => 40501
                     ,'title' => '恢复删除'
-                    ,'name' => 'renshi/Teacher/reDel'
+                    ,'name' => 'renshi/teacher/redel'
                     ,'paixu' => 1
                     ,'pid' => 405
                 ],
@@ -682,7 +682,7 @@ class Rule extends Seeder
             ],
             ['id' => 501
                 ,'title' => '学期列表'
-                ,'name' => 'teach/Xueqi/index'
+                ,'name' => 'teach/xueqi/index'
                 ,'paixu' => 1
                 ,'ismenu'  => 1
                 ,'pid'  => 5
@@ -690,49 +690,49 @@ class Rule extends Seeder
             ],
                 ['id' => 50101
                     ,'title' => '添加'
-                    ,'name' => 'teach/Xueqi/create'
+                    ,'name' => 'teach/xueqi/create'
                     ,'paixu'  => 1
                     ,'pid' => 501
                 ],
                 ['id' => 50102
                     ,'title' => '保存'
-                    ,'name' => 'teach/Xueqi/save'
+                    ,'name' => 'teach/xueqi/save'
                     ,'paixu'  => 2
                     ,'pid' => 501
                 ],
                 ['id' => 50103
                     ,'title' => '删除'
-                    ,'name' => 'teach/Xueqi/delete'
+                    ,'name' => 'teach/xueqi/delete'
                     ,'paixu' => 3
                     ,'pid' => 501
                 ],
                 ['id' => 50104
                     ,'title' => '编辑'
-                    ,'name' => 'teach/Xueqi/edit'
+                    ,'name' => 'teach/xueqi/edit'
                     ,'paixu' => 4
                     ,'pid' => 501
                 ],
                 ['id' => 50105
                     ,'title' => '更新'
-                    ,'name' => 'teach/Xueqi/update'
+                    ,'name' => 'teach/xueqi/update'
                     ,'paixu'  => 5
                     ,'pid' => 501
                 ],
                 ['id' => 50106
                     ,'title' => '查看'
-                    ,'name' => 'teach/Xueqi/read'
+                    ,'name' => 'teach/xueqi/read'
                     ,'paixu' => 6
                     ,'pid' => 501
                 ],
                 ['id' => 50107
                     ,'title' => '状态'
-                    ,'name' => 'teach/Xueqi/setStatus'
+                    ,'name' => 'teach/xueqi/setstatus'
                     ,'paixu' => 7
                     ,'pid' => 501
                 ],
             ['id' => 502
                 ,'title' => '班级列表'
-                ,'name' => 'teach/Banji/index'
+                ,'name' => 'teach/banji/index'
                 ,'paixu' => 2
                 ,'ismenu'  => 1
                 ,'pid'  => 5
@@ -740,43 +740,43 @@ class Rule extends Seeder
             ],
                 ['id' => 500201
                     ,'title' => '添加'
-                    ,'name' => 'teach/Banji/create'
+                    ,'name' => 'teach/banji/create'
                     ,'paixu'  => 1
                     ,'pid' => 502
                 ],
                 ['id' => 500202
                     ,'title' => '保存'
-                    ,'name' => 'teach/Banji/save'
+                    ,'name' => 'teach/banji/save'
                     ,'paixu'  => 2
                     ,'pid' => 502
                 ],
                 ['id' => 500203
                     ,'title' => '移动'
-                    ,'name' => 'teach/Banji/yidong'
+                    ,'name' => 'teach/banji/yidong'
                     ,'paixu' => 3
                     ,'pid' => 502
                 ],
                 ['id' => 500204
                     ,'title' => '删除'
-                    ,'name' => 'teach/Banji/delete'
+                    ,'name' => 'teach/banji/delete'
                     ,'paixu' => 4
                     ,'pid' => 502
                 ],
                 ['id' => 500205
                     ,'title' => '状态'
-                    ,'name' => 'teach/Banji/setStatus'
+                    ,'name' => 'teach/banji/setstatus'
                     ,'paixu' => 5
                     ,'pid' => 502
                 ],
                 ['id' => 500206
                     ,'title' => '成绩查看'
-                    ,'name' => 'teach/BanjiChengji/index'
+                    ,'name' => 'teach/banjichengji/index'
                     ,'paixu' => 6
                     ,'pid' => 502
                 ],
             ['id' => 503
                 ,'title' => '学科列表'
-                ,'name' => 'teach/Subject/index'
+                ,'name' => 'teach/subject/index'
                 ,'paixu' => 3
                 ,'ismenu'  => 1
                 ,'pid'  => 5
@@ -785,43 +785,43 @@ class Rule extends Seeder
                 // 学科列表权限
                 ['id' => 50301
                     ,'title' => '添加'
-                    ,'name' => 'teach/Subject/create'
+                    ,'name' => 'teach/subject/create'
                     ,'paixu'  => 1
                     ,'pid' => 503
                 ],
                 ['id' => 50302
                     ,'title' => '保存'
-                    ,'name' => 'teach/Subject/save'
+                    ,'name' => 'teach/subject/save'
                     ,'paixu'  => 2
                     ,'pid' => 503
                 ],
                 ['id' => 50303
                     ,'title' => '删除'
-                    ,'name' => 'teach/Subject/delete'
+                    ,'name' => 'teach/subject/delete'
                     ,'paixu' => 3
                     ,'pid' => 503
                 ],
                 ['id' => 50304
                     ,'title' => '编辑'
-                    ,'name' => 'teach/Subject/edit'
+                    ,'name' => 'teach/subject/edit'
                     ,'paixu' => 4
                     ,'pid' => 503
                 ],
                 ['id' => 50305
                     ,'title' => '更新'
-                    ,'name' => 'teach/Subject/update'
+                    ,'name' => 'teach/subject/update'
                     ,'paixu'  => 5
                     ,'pid' => 503
                 ],
                 ['id' => 50306
                     ,'title' => '查看'
-                    ,'name' => 'teach/Subject/read'
+                    ,'name' => 'teach/subject/read'
                     ,'paixu' => 6
                     ,'pid' => 503
                 ],
                 ['id' => 50307
                     ,'title' => '状态'
-                    ,'name' => 'teach/Subject/setStatus'
+                    ,'name' => 'teach/subject/setstatus'
                     ,'paixu' => 7
                     ,'pid' => 503
                 ],
@@ -845,7 +845,7 @@ class Rule extends Seeder
             /*====================================*/
             ['id' => 601
                 ,'title' => '管理员列表'
-                ,'name' => 'admin/Index/index'
+                ,'name' => 'admin/index/index'
                 ,'paixu' => 3
                 ,'ismenu'  => 1
                 ,'pid'  => 6
@@ -854,106 +854,106 @@ class Rule extends Seeder
                 // 管理员列表权限
                 ['id' => 60101
                     ,'title' => '添加'
-                    ,'name' => 'admin/Index/create'
+                    ,'name' => 'admin/index/create'
                     ,'paixu'  => 1
                     ,'pid' => 601
                 ],
                 ['id' => 60102
                     ,'title' => '保存'
-                    ,'name' => 'admin/Index/save'
+                    ,'name' => 'admin/index/save'
                     ,'paixu'  => 2
                     ,'pid' => 601
                 ],
                 ['id' => 60103
                     ,'title' => '删除'
-                    ,'name' => 'admin/Index/delete'
+                    ,'name' => 'admin/index/delete'
                     ,'paixu' => 3
                     ,'pid' => 601
                 ],
                 ['id' => 60104
                     ,'title' => '编辑'
-                    ,'name' => 'admin/Index/edit'
+                    ,'name' => 'admin/index/edit'
                     ,'paixu' => 4
                     ,'pid' => 601
                 ],
                 ['id' => 60105
                     ,'title' => '更新'
-                    ,'name' => 'admin/Index/update'
+                    ,'name' => 'admin/index/update'
                     ,'paixu'  => 5
                     ,'pid' => 601
                 ],
                 ['id' => 60106
                     ,'title' => '查看'
-                    ,'name' => 'admin/Index/read'
+                    ,'name' => 'admin/index/read'
                     ,'paixu' => 6
                     ,'pid' => 601
                 ],
                 ['id' => 60107
                     ,'title' => '状态'
-                    ,'name' => 'admin/Index/setStatus'
+                    ,'name' => 'admin/index/setstatus'
                     ,'paixu' => 7
                     ,'pid' => 601
                 ],
                 ['id' => 60108
                     ,'title' => '重置密码'
-                    ,'name' => 'admin/Index/resetpassword'
+                    ,'name' => 'admin/index/resetpassword'
                     ,'paixu'  => 8
                     ,'pid' => 601
                 ],
             ['id' => 602
                 ,'title' => '权限列表'
-                ,'name' => 'admin/AuthRule/index'
+                ,'name' => 'admin/authrule/index'
                 ,'paixu' => 1
                 ,'ismenu'  => 1
                 ,'pid'  => 6
-                ,'url' => '/admin/Authrule'
+                ,'url' => '/admin/authrule'
             ],
                 ['id' => 60201
                     ,'title' => '添加'
-                    ,'name' => 'admin/AuthRule/create'
+                    ,'name' => 'admin/authrule/create'
                     ,'paixu'  => 1
                     ,'pid' => 602
                 ],
                 ['id' => 60202
                     ,'title' => '保存'
-                    ,'name' => 'admin/AuthRule/save'
+                    ,'name' => 'admin/authrule/save'
                     ,'paixu'  => 2
                     ,'pid' => 602
                 ],
                 ['id' => 60203
                     ,'title' => '删除'
-                    ,'name' => 'admin/AuthRule/delete'
+                    ,'name' => 'admin/authrule/delete'
                     ,'paixu' => 3
                     ,'pid' => 602
                 ],
                 ['id' => 60204
                     ,'title' => '编辑'
-                    ,'name' => 'admin/AuthRule/edit'
+                    ,'name' => 'admin/authrule/edit'
                     ,'paixu' => 4
                     ,'pid' => 602
                 ],
                 ['id' => 60205
                     ,'title' => '更新'
-                    ,'name' => 'admin/AuthRule/update'
+                    ,'name' => 'admin/authrule/update'
                     ,'paixu'  => 5
                     ,'pid' => 602
                 ],
                 ['id' => 60206
                     ,'title' => '查看'
-                    ,'name' => 'admin/AuthRule/read'
+                    ,'name' => 'admin/authrule/read'
                     ,'paixu' => 6
                     ,'pid' => 602
                 ],
                 ['id' => 60207
                     ,'title' => '状态'
-                    ,'name' => 'admin/AuthRule/setStatus'
+                    ,'name' => 'admin/authrule/setstatus'
                     ,'paixu' => 7
                     ,'pid' => 602
                 ],
 
             ['id' => 603
                 ,'title' => '角色列表'
-                ,'name' => 'admin/AuthGroup/index'
+                ,'name' => 'admin/authgroup/index'
                 ,'paixu' => 2
                 ,'ismenu'  => 1
                 ,'pid'  => 6
@@ -961,43 +961,43 @@ class Rule extends Seeder
             ],
                 ['id' => 60301
                     ,'title' => '添加'
-                    ,'name' => 'admin/AuthGroup/create'
+                    ,'name' => 'admin/authgroup/create'
                     ,'paixu'  => 1
                     ,'pid' => 603
                 ],
                 ['id' => 60302
                     ,'title' => '保存'
-                    ,'name' => 'admin/AuthGroup/save'
+                    ,'name' => 'admin/authgroup/save'
                     ,'paixu'  => 2
                     ,'pid' => 603
                 ],
                 ['id' => 60303
                     ,'title' => '删除'
-                    ,'name' => 'admin/AuthGroup/delete'
+                    ,'name' => 'admin/authgroup/delete'
                     ,'paixu' => 3
                     ,'pid' => 603
                 ],
                 ['id' => 60304
                     ,'title' => '编辑'
-                    ,'name' => 'admin/AuthGroup/edit'
+                    ,'name' => 'admin/authgroup/edit'
                     ,'paixu' => 4
                     ,'pid' => 603
                 ],
                 ['id' => 60305
                     ,'title' => '更新'
-                    ,'name' => 'admin/AuthGroup/update'
+                    ,'name' => 'admin/authgroup/update'
                     ,'paixu'  => 5
                     ,'pid' => 603
                 ],
                 ['id' => 60306
                     ,'title' => '查看'
-                    ,'name' => 'admin/AuthGroup/read'
+                    ,'name' => 'admin/authgroup/read'
                     ,'paixu' => 6
                     ,'pid' => 603
                 ],
                 ['id' => 60307
                     ,'title' => '状态'
-                    ,'name' => 'admin/AuthGroup/setStatus'
+                    ,'name' => 'admin/authgroup/setstatus'
                     ,'paixu' => 7
                     ,'pid' => 603
                 ],
@@ -1015,7 +1015,7 @@ class Rule extends Seeder
             /*====================================*/
             ['id' => 701
                 ,'title' => '类别管理'
-                ,'name' => 'system/Category/index'
+                ,'name' => 'system/category/index'
                 ,'paixu' => 1
                 ,'ismenu'  => 1
                 ,'pid'  => 7
@@ -1023,49 +1023,49 @@ class Rule extends Seeder
             ],
                 ['id' => 70101
                     ,'title' => '添加'
-                    ,'name' => 'system/Category/create'
+                    ,'name' => 'system/category/create'
                     ,'paixu'  => 1
                     ,'pid' => 701
                 ],
                 ['id' => 70102
                     ,'title' => '保存'
-                    ,'name' => 'system/Category/save'
+                    ,'name' => 'system/category/save'
                     ,'paixu'  => 2
                     ,'pid' => 701
                 ],
                 ['id' => 70103
                     ,'title' => '删除'
-                    ,'name' => 'system/Category/delete'
+                    ,'name' => 'system/category/delete'
                     ,'paixu' => 3
                     ,'pid' => 701
                 ],
                 ['id' => 70104
                     ,'title' => '编辑'
-                    ,'name' => 'system/Category/edit'
+                    ,'name' => 'system/category/edit'
                     ,'paixu' => 4
                     ,'pid' => 701
                 ],
                 ['id' => 70105
                     ,'title' => '更新'
-                    ,'name' => 'system/Category/update'
+                    ,'name' => 'system/category/update'
                     ,'paixu'  => 5
                     ,'pid' => 701
                 ],
                 ['id' => 70106
                     ,'title' => '查看'
-                    ,'name' => 'system/Category/read'
+                    ,'name' => 'system/category/read'
                     ,'paixu' => 6
                     ,'pid' => 701
                 ],
                 ['id' => 70107
                     ,'title' => '状态'
-                    ,'name' => 'system/Category/setStatus'
+                    ,'name' => 'system/category/setstatus'
                     ,'paixu' => 7
                     ,'pid' => 701
                 ],
             ['id' => 702
                 ,'title' => '单位管理'
-                ,'name' => 'system/School/index'
+                ,'name' => 'system/school/index'
                 ,'paixu' => 2
                 ,'ismenu'  => 1
                 ,'pid'  => 7
@@ -1073,55 +1073,55 @@ class Rule extends Seeder
             ],
                 ['id' => 70201
                     ,'title' => '添加'
-                    ,'name' => 'system/School/create'
+                    ,'name' => 'system/school/create'
                     ,'paixu'  => 1
                     ,'pid' => 702
                 ],
                 ['id' => 70202
                     ,'title' => '保存'
-                    ,'name' => 'system/School/save'
+                    ,'name' => 'system/school/save'
                     ,'paixu'  => 2
                     ,'pid' => 702
                 ],
                 ['id' => 70203
                     ,'title' => '删除'
-                    ,'name' => 'system/School/delete'
+                    ,'name' => 'system/school/delete'
                     ,'paixu' => 3
                     ,'pid' => 702
                 ],
                 ['id' => 70204
                     ,'title' => '编辑'
-                    ,'name' => 'system/School/edit'
+                    ,'name' => 'system/school/edit'
                     ,'paixu' => 4
                     ,'pid' => 702
                 ],
                 ['id' => 70205
                     ,'title' => '更新'
-                    ,'name' => 'system/School/update'
+                    ,'name' => 'system/school/update'
                     ,'paixu'  => 5
                     ,'pid' => 702
                 ],
                 ['id' => 70206
                     ,'title' => '查看'
-                    ,'name' => 'system/School/read'
+                    ,'name' => 'system/school/read'
                     ,'paixu' => 6
                     ,'pid' => 702
                 ],
                 ['id' => 70207
                     ,'title' => '状态'
-                    ,'name' => 'system/School/setStatus'
+                    ,'name' => 'system/school/setstatus'
                     ,'paixu' => 7
                     ,'pid' => 702
                 ],
                 ['id' => 70208
                     ,'title' => '能否组织考试'
-                    ,'name' => 'system/School/setKaoshi'
+                    ,'name' => 'system/school/setkaoshi'
                     ,'paixu' => 8
                     ,'pid' => 702
                 ],
             ['id' => 703
                 ,'title' => '文件管理'
-                ,'name' => 'system/Fields/index'
+                ,'name' => 'system/fields/index'
                 ,'paixu' => 3
                 ,'ismenu'  => 1
                 ,'pid'  => 7
@@ -1129,19 +1129,19 @@ class Rule extends Seeder
             ],
                 ['id' => 70301
                     ,'title' => '删除'
-                    ,'name' => 'system/Fields/delete'
+                    ,'name' => 'system/fields/delete'
                     ,'paixu' => 1
                     ,'pid' => 703
                 ],
                 ['id' => 70302
                     ,'title' => '下载'
-                    ,'name' => 'system/Fields/download'
+                    ,'name' => 'system/fields/download'
                     ,'paixu' => 2
                     ,'pid' => 703
                 ],
             ['id' => 704
                 ,'title' => '系统设置'
-                ,'name' => 'system/SystemBase/edit'
+                ,'name' => 'system/systembase/edit'
                 ,'paixu' => 10
                 ,'ismenu'  => 1
                 ,'pid'  => 7
@@ -1149,7 +1149,7 @@ class Rule extends Seeder
             ],
                 ['id' => 70401
                     ,'title' => '更新'
-                    ,'name' => 'system/SystemBase/update'
+                    ,'name' => 'system/systembase/update'
                     ,'paixu' => 1
                     ,'pid'  => 704
                 ],
@@ -1168,7 +1168,7 @@ class Rule extends Seeder
             /*====================================*/
             ['id' => 801
                 ,'title' => '单位荣誉'
-                ,'name' => 'rongyu/Danwei/index'
+                ,'name' => 'rongyu/danwei/index'
                 ,'paixu' => 1
                 ,'ismenu'  => 1
                 ,'pid'  => 8
@@ -1176,61 +1176,61 @@ class Rule extends Seeder
             ],
                 ['id' => 80101
                     ,'title' => '添加'
-                    ,'name' => 'rongyu/Danwei/create'
+                    ,'name' => 'rongyu/danwei/create'
                     ,'paixu'  => 1
                     ,'pid' => 801
                 ],
                 ['id' => 80102
                     ,'title' => '保存'
-                    ,'name' => 'rongyu/Danwei/save'
+                    ,'name' => 'rongyu/danwei/save'
                     ,'paixu'  => 2
                     ,'pid' => 801
                 ],
                 ['id' => 80103
                     ,'title' => '删除'
-                    ,'name' => 'rongyu/Danwei/delete'
+                    ,'name' => 'rongyu/danwei/delete'
                     ,'paixu' => 3
                     ,'pid' => 801
                 ],
                 ['id' => 80104
                     ,'title' => '编辑'
-                    ,'name' => 'rongyu/Danwei/edit'
+                    ,'name' => 'rongyu/danwei/edit'
                     ,'paixu' => 4
                     ,'pid' => 801
                 ],
                 ['id' => 80105
                     ,'title' => '更新'
-                    ,'name' => 'rongyu/Danwei/update'
+                    ,'name' => 'rongyu/danwei/update'
                     ,'paixu'  => 5
                     ,'pid' => 801
                 ],
                 ['id' => 80106
                     ,'title' => '查看'
-                    ,'name' => 'rongyu/Danwei/read'
+                    ,'name' => 'rongyu/danwei/read'
                     ,'paixu' => 6
                     ,'pid' => 801
                 ],
                 ['id' => 80107
                     ,'title' => '状态'
-                    ,'name' => 'rongyu/Danwei/setStatus'
+                    ,'name' => 'rongyu/danwei/setstatus'
                     ,'paixu' => 7
                     ,'pid' => 801
                 ]
                 ,['title' => '批量上传'
                     ,'id' => 80108
-                    ,'name' => 'rongyu/Danwei/createAll'
+                    ,'name' => 'rongyu/danwei/createall'
                     ,'paixu' => 8
                     ,'pid' => 801
                 ],
                 ['id' => 80109
                     ,'title' => '批量保存'
-                    ,'name' => 'rongyu/Danwei/saveAll'
+                    ,'name' => 'rongyu/danwei/saveall'
                     ,'paixu' => 9
                     ,'pid' => 801
                 ],
             ['id' => 802
                 ,'title' => '教师荣誉册'
-                ,'name' => 'rongyu/Jiaoshi/index'
+                ,'name' => 'rongyu/jiaoshi/index'
                 ,'paixu' => 2
                 ,'ismenu'  => 1
                 ,'pid'  => 8
@@ -1238,61 +1238,61 @@ class Rule extends Seeder
             ],
                 ['id' => 80201
                     ,'title' => '添加'
-                    ,'name' => 'rongyu/Jiaoshi/create'
+                    ,'name' => 'rongyu/jiaoshi/create'
                     ,'paixu'  => 1
                     ,'pid' => 802
                 ],
                 ['id' => 80202
                     ,'title' => '保存'
-                    ,'name' => 'rongyu/Jiaoshi/save'
+                    ,'name' => 'rongyu/jiaoshi/save'
                     ,'paixu'  => 2
                     ,'pid' => 802
                 ],
                 ['id' => 80203
                     ,'title' => '删除'
-                    ,'name' => 'rongyu/Jiaoshi/delete'
+                    ,'name' => 'rongyu/jiaoshi/delete'
                     ,'paixu' => 3
                     ,'pid' => 802
                 ],
                 ['id' => 80204
                     ,'title' => '编辑'
-                    ,'name' => 'rongyu/Jiaoshi/edit'
+                    ,'name' => 'rongyu/jiaoshi/edit'
                     ,'paixu' => 4
                     ,'pid' => 802
                 ],
                 ['id' => 80205
                     ,'title' => '更新'
-                    ,'name' => 'rongyu/Jiaoshi/update'
+                    ,'name' => 'rongyu/jiaoshi/update'
                     ,'paixu'  => 5
                     ,'pid' => 802
                 ],
                 ['id' => 80206
                     ,'title' => '查看'
-                    ,'name' => 'rongyu/Jiaoshi/read'
+                    ,'name' => 'rongyu/jiaoshi/read'
                     ,'paixu' => 6
                     ,'pid' => 802
                 ],
                 ['id' => 80207
                     ,'title' => '状态'
-                    ,'name' => 'rongyu/Jiaoshi/setStatus'
+                    ,'name' => 'rongyu/jiaoshi/setstatus'
                     ,'paixu' => 6
                     ,'pid' => 802
                 ],
                 ['id' => 80208
                     ,'title' => '查看荣誉信息'
-                    ,'name' => 'rongyu/JsRongyuInfo/rongyuList'
+                    ,'name' => 'rongyu/jsrongyuinfo/rongyulist'
                     ,'paixu' => 7
                     ,'pid' => 802
                 ],
                 ['id' => 80209
                     ,'title' => '下载表格'
-                    ,'name' => 'rongyu/JsRongyuInfo/outXlsx'
+                    ,'name' => 'rongyu/jsrongyuinfo/outxlsx'
                     ,'paixu' => 8
                     ,'pid' => 802
                 ],
             ['id' => 803
                 ,'title' => '教师荣誉信息'
-                ,'name' => 'rongyu/JsRongyuInfo/index'
+                ,'name' => 'rongyu/jsrongyuinfo/index'
                 ,'paixu' => 3
                 ,'ismenu'  => 1
                 ,'pid'  => 8
@@ -1300,55 +1300,55 @@ class Rule extends Seeder
             ],
                 ['id' => 80301
                     ,'title' => '添加'
-                    ,'name' => 'rongyu/JsRongyuInfo/create'
+                    ,'name' => 'rongyu/jsrongyuinfo/create'
                     ,'paixu'  => 1
                     ,'pid' => 803
                 ],
                 ['id' => 80302
                     ,'title' => '保存'
-                    ,'name' => 'rongyu/JsRongyuInfo/save'
+                    ,'name' => 'rongyu/jsrongyuinfo/save'
                     ,'paixu'  => 2
                     ,'pid' => 803
                 ],
                 ['id' => 80303
                     ,'title' => '删除'
-                    ,'name' => 'rongyu/JsRongyuInfo/delete'
+                    ,'name' => 'rongyu/jsrongyuinfo/delete'
                     ,'paixu' => 3
                     ,'pid' => 803
                 ],
                 ['id' => 80304
                     ,'title' => '编辑'
-                    ,'name' => 'rongyu/JsRongyuInfo/edit'
+                    ,'name' => 'rongyu/jsrongyuinfo/edit'
                     ,'paixu' => 4
                     ,'pid' => 803
                 ],
                 ['id' => 80305
                     ,'title' => '更新'
-                    ,'name' => 'rongyu/JsRongyuInfo/update'
+                    ,'name' => 'rongyu/jsrongyuinfo/update'
                     ,'paixu'  => 5
                     ,'pid' => 803
                 ],
                 ['id' => 80306
                     ,'title' => '查看'
-                    ,'name' => 'rongyu/JsRongyuInfo/read'
+                    ,'name' => 'rongyu/jsrongyuinfo/read'
                     ,'paixu' => 6
                     ,'pid' => 803
                 ],
                 ['id' => 80307
                     ,'title' => '状态'
-                    ,'name' => 'rongyu/JsRongyuInfo/setStatus'
+                    ,'name' => 'rongyu/jsrongyuinfo/setstatus'
                     ,'paixu' => 7
                     ,'pid' => 803
                 ],
                 ['id' => 80308
                     ,'title' => '批量上传'
-                    ,'name' => 'rongyu/JsRongyuInfo/createAll'
+                    ,'name' => 'rongyu/jsrongyuinfo/createall'
                     ,'paixu' => 8
                     ,'pid' => 803
                 ],
                 ['id' => 80309
                     ,'title' => '批量保存'
-                    ,'name' => 'rongyu/JsRongyuInfo/saveAll'
+                    ,'name' => 'rongyu/jsrongyuinfo/saveall'
                     ,'paixu' => 9
                     ,'pid' => 803
                 ],
@@ -1369,7 +1369,7 @@ class Rule extends Seeder
             /*====================================*/
             ['id' => 901
                 ,'title' => '课题册'
-                ,'name' => 'keti/Ketice/index'
+                ,'name' => 'keti/ketice/index'
                 ,'paixu' => 1
                 ,'ismenu'  => 1
                 ,'pid'  => 9
@@ -1377,55 +1377,55 @@ class Rule extends Seeder
             ],
                 ['id' => 90101
                     ,'title' => '添加'
-                    ,'name' => 'keti/Ketice/create'
+                    ,'name' => 'keti/ketice/create'
                     ,'paixu'  => 1
                     ,'pid' => 901
                 ],
                 ['id' => 90102
                     ,'title' => '保存'
-                    ,'name' => 'keti/Ketice/save'
+                    ,'name' => 'keti/ketice/save'
                     ,'paixu'  => 2
                     ,'pid' => 901
                 ],
                 ['id' => 90103
                     ,'title' => '删除'
-                    ,'name' => 'keti/Ketice/delete'
+                    ,'name' => 'keti/ketice/delete'
                     ,'paixu' => 3
                     ,'pid' => 901
                 ],
                 ['id' => 90104
                     ,'title' => '编辑'
-                    ,'name' => 'keti/Ketice/edit'
+                    ,'name' => 'keti/ketice/edit'
                     ,'paixu' => 4
                     ,'pid' => 901
                 ],
                 ['id' => 90105
                     ,'title' => '更新'
-                    ,'name' => 'keti/Ketice/update'
+                    ,'name' => 'keti/ketice/update'
                     ,'paixu'  => 5
                     ,'pid' => 901
                 ],
                 ['id' => 90106
                     ,'title' => '查看'
-                    ,'name' => 'keti/Ketice/read'
+                    ,'name' => 'keti/ketice/read'
                     ,'paixu' => 6
                     ,'pid' => 901
                 ],
                 ['id' => 90107
                     ,'title' => '状态'
-                    ,'name' => 'keti/Ketice/setStatus'
+                    ,'name' => 'keti/ketice/setstatus'
                     ,'paixu' => 7
                     ,'pid' => 901
                 ],
                 ['id' => 90108
                     ,'title' => '查看课题信息'
-                    ,'name' => 'keti/ketiinfo/ketiList'
+                    ,'name' => 'keti/ketiinfo/ketilist'
                     ,'paixu' => 8
                     ,'pid' => 901
                 ],
             ['id' => 902
                 ,'title' => '课题列表'
-                ,'name' => 'keti/KetiInfo/index'
+                ,'name' => 'keti/ketiinfo/index'
                 ,'paixu' => 2
                 ,'ismenu'  => 1
                 ,'pid'  => 9
@@ -1470,37 +1470,37 @@ class Rule extends Seeder
                 ],
                 ['id' => 90207
                     ,'title' => '状态'
-                    ,'name' => 'keti/ketiinfo/setStatus'
+                    ,'name' => 'keti/ketiinfo/setstatus'
                     ,'paixu' => 7
                     ,'pid' => 902
                 ],
                 ['id' => 90208
                     ,'title' => '批量上传'
-                    ,'name' => 'keti/ketiinfo/createAll'
+                    ,'name' => 'keti/ketiinfo/createall'
                     ,'paixu' => 8
                     ,'pid' => 902
                 ],
                 ['id' => 90209
                     ,'title' => '批量保存'
-                    ,'name' => 'keti/ketiinfo/saveAll'
+                    ,'name' => 'keti/ketiinfo/saveall'
                     ,'paixu' => 9
                     ,'pid' => 902
                 ],
                 ['id' => 90210
                     ,'title' => '结题编辑'
-                    ,'name' => 'keti/ketiinfo/jieTi'
+                    ,'name' => 'keti/ketiinfo/jieti'
                     ,'paixu' => 10
                     ,'pid' => 902
                 ],
                 ['id' => 90211
                     ,'title' => '结题更新'
-                    ,'name' => 'keti/ketiinfo/jtUpdate'
+                    ,'name' => 'keti/ketiinfo/jtupdate'
                     ,'paixu' => 11
                     ,'pid' => 902
                 ],
                 ['id' => 90212
                     ,'title' => '下载'
-                    ,'name' => 'keti/KetiInfo/outXlsx'
+                    ,'name' => 'keti/ketiinfo/outxlsx'
                     ,'paixu' => 12
                     ,'pid' => 902
                 ],

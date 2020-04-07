@@ -56,7 +56,7 @@ class Kaohao extends BaseModel
     // 班级成绩关联
     public function banjiKaohao()
     {
-        return $this->hasMany('\app\kaoshi\model\Kaohao', 'banji_id', 'banji_id');
+        return $this->hasMany('\app\kaohao\model\Kaohao', 'banji_id', 'banji_id');
     }
 
 
