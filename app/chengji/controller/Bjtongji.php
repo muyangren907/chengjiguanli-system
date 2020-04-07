@@ -54,7 +54,6 @@ class Bjtongji extends BaseController
                     'banji'=>array(),
                 ],'POST');
 
-
         if(count($src['banji'])==0)
         {
             // 获取参与考试的班级
@@ -81,6 +80,7 @@ class Bjtongji extends BaseController
 
         return json($data);
     }
+
 
     // 年级、班级学生成绩统计结果下载界面
     public function dwBiaoge($kaoshi)

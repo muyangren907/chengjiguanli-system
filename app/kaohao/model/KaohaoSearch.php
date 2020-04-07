@@ -1,72 +1,16 @@
 <?php
 // 命令空间
-namespace app\kaoshi\model;
+namespace app\kaohao\model;
 
 // 引用数据模型基类
 use app\BaseModel;
 
-class Kaohao extends BaseModel
+// 引用数据模型
+use \app\kaohao\model\Kaohao as kh;
+
+class KaohaoSearch extends BaseModel
 {
-    // 查询各班级考号
-    public function srcBanjiKaohao($srcfrom)
-    {
-        // 初始化参数
-        $src = array(
-            'kaoshi_id' => '0'
-            ,'banji_id' => array()
-        );
-        // 用新值替换初始值
-        $src = array_cover($srcfrom, $src);
-        $src['banji_id'] = strToArray($src['banji_id']);
-
-        // 获取考试标签
-        $data = $this->where('kaoshi_id', $src['kaoshi_id'])
-            ->where('banji_id', 'in', $src['banji_id'])
-            ->field('banji_id, school_id')
-            ->order(['banji_id'])
-            ->group('banji_id, school_id')
-            ->with([
-                'cjBanji' => function($query){
-                    $query->field('id, school_id, ruxuenian, paixu')
-                            ->append(['banjiTitle', 'numTitle']);
-                }
-                ,
-                'cjSchool' => function($query){
-                    $query->field('id, jiancheng');
-                }
-                ,
-                'banjiKaohao' => function($query) use($src){
-                    $query->field('id, student_id, banji_id')
-                        ->where('kaoshi_id', $src['kaoshi_id'])
-                        ->order(['banji_id', 'id'])
-                        ->with([
-                            'cjStudent' => function($q){
-                                $q->field('id, xingming, sex');
-                            }
-                    ]);
-                }
-            ])
-            ->select();
-
-        $stu = new \app\renshi\model\Student;
-        // 找出已经被删除学生，并添加该学生信息
-        foreach ($data as $key => $value) {
-            foreach ($value->banjiKaohao as $k => $val) {
-                if($val->cjStudent == Null)
-                {
-                    $stuinof = $stu::withTrashed()
-                        ->where('id', $val->student)
-                        ->field('id, xingming')
-                        ->find();
-                    $data[$key]->banjiKaohao[$key]->cjStudent = array('id' => $stuinof->id, 'xingming' => $stuinof->xingming);
-                }
-            }
-        }
-        return $data;
-    }
-
-
-    // 查询学生成绩信息
+    // 查询学生成绩详细信息
     public function srcChengjiList($srcfrom)
     {
         // 初始化参数
@@ -77,7 +21,9 @@ class Kaohao extends BaseModel
         );
         // 用新值替换初始值
         $src = array_cover($srcfrom, $src);
-        $khlist = self::search($src);
+
+        $kh = new kh;
+        $khlist = $kh->search($src);
         if($khlist->isEmpty())
         {
             return $data = array();
@@ -145,7 +91,67 @@ class Kaohao extends BaseModel
     }
 
 
-    // 查询学生各学科成绩
+    // 查询各班级考号，并以班级进行分组
+    public function srcBanjiKaohao($srcfrom)
+    {
+        // 初始化参数
+        $src = array(
+            'kaoshi_id' => '0'
+            ,'banji_id' => array()
+        );
+        // 用新值替换初始值
+        $src = array_cover($srcfrom, $src);
+        $src['banji_id'] = strToArray($src['banji_id']);
+
+        // 获取考试标签
+        $kh = new kh;
+        $data = $kh->where('kaoshi_id', $src['kaoshi_id'])
+            ->where('banji_id', 'in', $src['banji_id'])
+            ->field('banji_id, school_id')
+            ->order(['banji_id'])
+            ->group('banji_id, school_id')
+            ->with([
+                'cjBanji' => function($query){
+                    $query->field('id, school_id, ruxuenian, paixu')
+                            ->append(['banjiTitle', 'numTitle']);
+                }
+                ,
+                'cjSchool' => function($query){
+                    $query->field('id, jiancheng');
+                }
+                ,
+                'banjiKaohao' => function($query) use($src){
+                    $query->field('id, student_id, banji_id')
+                        ->where('kaoshi_id', $src['kaoshi_id'])
+                        ->order(['banji_id', 'id'])
+                        ->with([
+                            'cjStudent' => function($q){
+                                $q->field('id, xingming, sex');
+                            }
+                    ]);
+                }
+            ])
+            ->select();
+
+        $stu = new \app\renshi\model\Student;
+        // 找出已经被删除学生，并添加该学生信息
+        foreach ($data as $key => $value) {
+            foreach ($value->banjiKaohao as $k => $val) {
+                if($val->cjStudent == Null)
+                {
+                    $stuinof = $stu::withTrashed()
+                        ->where('id', $val->student)
+                        ->field('id, xingming')
+                        ->find();
+                    $data[$key]->banjiKaohao[$key]->cjStudent = array('id' => $stuinof->id, 'xingming' => $stuinof->xingming);
+                }
+            }
+        }
+        return $data;
+    }
+
+
+    // 查询各学科成绩精简版
     public function srcChengjiSubject($srcfrom)
     {
         // 初始化参数
@@ -156,7 +162,8 @@ class Kaohao extends BaseModel
         );
         $src = array_cover($srcfrom ,$src);
 
-        $khlist = self::search($src);
+        $kh = new kh;
+        $khlist = $kh->search($src);
 
         // 成绩整理
         if($khlist->isEmpty())
@@ -171,57 +178,10 @@ class Kaohao extends BaseModel
         }
 
         return $data;
-
     }
 
 
-    // 列出成绩原始数据，其它数据模型中的方法以此方法为基础进行数据整理
-    public function search($srcfrom)
-    {
-        // 初始化参数
-        $src = array(
-            'kaoshi_id' => '0'
-            ,'banji_id' => array()
-            ,'searchval' => ''
-        );
-
-        // 用新值替换初始值
-        $src = array_cover($srcfrom, $src) ;
-        $src['banji_id'] = strToarray($src['banji_id']);
-
-        // 查询成绩
-        $data = $this->where('kaoshi_id', $src['kaoshi_id'])
-                ->field('id, school_id, student_id, ruxuenian, paixu, kaoshi_id')
-                ->where('banji_id', 'in', $src['banji_id'])
-                ->when(strlen($src['searchval']) > 0, function($query) use($src){
-                    $query->where(function($w) use ($src){
-                        $w
-                        ->whereOr('student_id', 'in', function($q)use($src){
-                            $q->name('student')
-                                ->where('xingming', 'like', '%' . $src['searchval'] . '%')
-                                ->field('id');
-                        });
-                    });
-                })
-                ->with([
-                    'ksChengji' => function($query){
-                        $query->field('id, kaohao_id, subject_id, defen');
-                    }
-                    ,'cjSchool' => function($query){
-                        $query->field('id, jiancheng');
-                    }
-                    ,'cjStudent' => function($query){
-                        $query->field('id, xingming, sex');
-                    }
-                ])
-                ->append(['banjiTitle'])
-                ->select();
-
-        return $data;
-    }
-
-
-    // 获取单个学生考试成绩
+    // 获取单个学生历次考试成绩
     public function srcOneStudentChengji($srcfrom)
     {
         // 初始化参数
@@ -250,7 +210,8 @@ class Kaohao extends BaseModel
             $src['enddate'] = date("Y-m-d",strtotime("+1 day"));
         }
 
-        $stuCj = $this->where('student_id',$src['student_id'])
+        $kh = new kh;
+        $stuCj = $kh->where('student_id',$src['student_id'])
             ->when(count($src['category_id'])>0, function($query) use($src){
                 $query->where('kaoshi_id','in',function($q) use($src){
                     $q->name('kaoshi')
@@ -305,86 +266,46 @@ class Kaohao extends BaseModel
     }
 
 
-    // 根据考号查询成绩
-    public function khSrcChengji($id)
-    {
-        $stuCj = self::where('id', $id)
-            ->with([
-                'ksChengji'=>function($query){
-                    $query
-                        ->with([
-                            'subjectName'=>function($q){
-                                $q->field('id, title');
-                            }
-                        ])
-                        ->field('id, kaohao_id, subject_id, defen, defenlv, bweizhi, xweizhi, qweizhi');
-                }
-            ])
-            ->field('id, kaoshi_id, student_id, ruxuenian, nianji, banji_id, paixu')
-            ->append(['banjiTitle'])
-            ->find();
+    // // 根据考号查询成绩
+    // public function khSrcChengji($id)
+    // {
+    //     $kh = new kh;
+    //     $stuCj = $kh::where('id', $id)
+    //         ->with([
+    //             'ksChengji'=>function($query){
+    //                 $query
+    //                     ->with([
+    //                         'subjectName'=>function($q){
+    //                             $q->field('id, title');
+    //                         }
+    //                     ])
+    //                     ->field('id, kaohao_id, subject_id, defen, defenlv, bweizhi, xweizhi, qweizhi');
+    //             }
+    //         ])
+    //         ->field('id, kaoshi_id, student_id, ruxuenian, nianji, banji_id, paixu')
+    //         ->append(['banjiTitle'])
+    //         ->find();
 
-        return $stuCj;
-    }
-
-
-    // 获取考试成绩最后更新时间
-    public function lastUpdateTime($kaoshi_id)
-    {
-        // 获取考号
-        $kaohaoids = self::where('kaoshi', $kaoshi_id)
-            ->cache(true)
-            ->column('id');
-
-        $cj = new \app\chengji\model\Chengji;
-        $lastcj = $cj->where('kaohao_id', 'in', $kaohaoids)
-                    ->order(['update_time' => 'desc'])
-                    ->find();
-
-        return $lastcj;
-    }
+    //     return $stuCj;
+    // }
 
 
-    // 满分
-    public function banjiKaohao()
-    {
-        return $this->hasMany('\app\kaoshi\model\Kaohao', 'banji_id', 'banji_id');
-    }
+    // // 获取考试成绩最后更新时间
+    // public function lastUpdateTime($kaoshi_id)
+    // {
+    //     // 获取考号
+    //     $kh = new kh;
+    //     $kaohaoids = $kh->where('kaoshi', $kaoshi_id)
+    //         ->cache(true)
+    //         ->column('id');
 
+    //     $cj = new \app\chengji\model\Chengji;
+    //     $lastcj = $cj->where('kaohao_id', 'in', $kaohaoids)
+    //                 ->order(['update_time' => 'desc'])
+    //                 ->find();
 
-    // 学校信息关联表
-    public function cjSchool()
-    {
-    	return $this->belongsTo('\app\system\model\School', 'school_id', 'id');
-    }
-
-
-    // 班级信息关联表
-    public function cjBanji()
-    {
-    	return $this->belongsTo('\app\teach\model\Banji', 'banji_id', 'id');
-    }
-
-
-    // 学生信息关联
-    public function cjStudent()
-    {
-    	return $this->belongsTo('\app\renshi\model\Student', 'student_id', 'id');
-    }
-
-
-    // 考试关联
-    public function cjKaoshi()
-    {
-    	return $this->belongsTo('\app\kaoshi\model\Kaoshi', 'kaoshi_id', 'id');
-    }
-
-
-    // 考试成绩
-    public function ksChengji()
-    {
-        return $this->hasMany('\app\chengji\model\Chengji', 'kaohao_id', 'id');
-    }
+    //     return $lastcj;
+    // }
 
 
     // 获取参加考试学校
@@ -398,7 +319,8 @@ class Kaohao extends BaseModel
         $src = array_cover($srcfrom, $src);
         $src['ruxuenian'] = strToarray($src['ruxuenian']);
 
-        $schoolList = $this->where('kaoshi_id', $src['kaoshi_id'])
+        $kh = new kh;
+        $schoolList = $kh->where('kaoshi_id', $src['kaoshi_id'])
                 ->when(count($src['ruxuenian']) > 0, function($query) use($src){
                     $query->where('ruxuenian', 'in', $src['ruxuenian']);
                 })
@@ -454,7 +376,8 @@ class Kaohao extends BaseModel
         $src['ruxuenian'] = strToarray($src['ruxuenian']);
 
         // 通过给定参数，从考号表中获取参加考试的班级
-        $bjids = $this
+        $kh = new kh;
+        $bjids = $kh
                 ->where('kaoshi_id', $src['kaoshi_id'])
                 ->when(count($src['ruxuenian'] ) > 0, function($query) use($src){
                     $query->where('ruxuenian', 'in', $src['ruxuenian'] );
@@ -501,28 +424,6 @@ class Kaohao extends BaseModel
         return $data;
     }
 
-
-    // 获取参加考试的班级全名
-    public function getBanjiTitleAttr()
-    {
-        $bj = banJiNamelist();
-        $title = $this->getAttr('nianji') . $bj[$this->getAttr('paixu')];
-        return $title;
-    }
-
-    /**
-    * 获取参加考试的班级全名
-    * @access public
-    * @param number $kaoshi 考试id
-    * @param number $ruxuenian 入学年
-    * @return array 返回类型
-    */
-    public function getBanTitleAttr()
-    {
-        $bj = banJiNamelist();
-        $title = $bj[$this->getAttr('paixu')];
-        return $title;
-    }
 
     // 转置成绩数组
     private function zzcj($array = array())

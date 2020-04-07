@@ -1,0 +1,74 @@
+{extend name=".././view/create.html" /}
+
+{block name="form"}
+<form class="layui-form layui-form-pane" lay-filter="myform">
+  <div class="layui-form-item">
+    <label for="school_id" class="layui-form-label"><span class="x-red">*</span>参考学校</label>
+    <div class="layui-input-block">
+      {php}$schoolList = schoolList('校级','校级'){/php}
+      <select name="school_id" id="school_id" lay-filter="school_id" lay-verify="required">
+        <option value="">请选择学校</option>
+        {foreach $schoolList as $key=>$vo }
+        <option value="{$vo.id}">
+        {$vo.title}
+      </option>
+      {/foreach}
+    </select>
+  </div>
+</div>
+<div class="layui-form-item">
+  {foreach $list.data.nianji as $key=>$vo }
+  <label for="title" class="layui-form-label" title="nianji">{$vo.nianjiname}</label>
+  <div class="layui-input-block" id="{$vo.nianji}">
+   <input type="checkbox" title="全选" lay-skin="primary"  checkall="p">
+ </div>
+ {/foreach}
+</div>
+<input type="hidden" name="kaoshi_id" id="kaoshi_id" value="{$list.set.kaoshi_id}">
+<div class="layui-form-item" style="text-align: right;">
+  <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
+    {$list.set.butname}
+  </button>
+</div>
+</form>
+{/block}
+
+{block name="myjs"}
+<script>
+  layui.use('form', function(){
+    var form = layui.form;
+    form.on('select(school_id)', function(data){
+	  // 声明变量
+	  var school_id = data.value;
+    var nianji = "<?php echo json_encode($list['data']['nianjiNum']);?>";
+      // 获取数据
+      $.post(
+        "/teach/banji/mybanjis",
+        {
+          "school_id":school_id
+          ,"ruxuenian":eval(nianji)
+        },
+        function(data,status){
+          $('input[title="全选"]').each(function(){
+            $(this).nextAll().remove();
+          });
+          $('input[title="全选"]').prop('checked',false);
+          if($.isEmptyObject(data))
+          {
+            return true;
+          }
+          for (var i in data) {
+                  // $('#'+data[i]['ruxuenian']).nextAll().remove();
+                  for(x in data[i]['njBanji']){
+                    $('#'+data[i]['ruxuenian']).append('<input type="checkbox" name="banji_id[]" value="'+data[i]['njBanji'][x]['id']+'" title="'+data[i]['njBanji'][x]['banTitle']+'" lay-skin="primary" checkall="c">');
+                  }
+                }
+                form.render('checkbox');
+              }
+              );
+    });
+});
+
+</script>
+{/block}
+

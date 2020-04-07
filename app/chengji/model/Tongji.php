@@ -9,15 +9,14 @@ class Tongji extends BaseModel
 {
 
     // 统计成绩
-    public function tongjiCnt($cj=array(),$subject)
+    public function tongjiCnt($cj = array(), $subject_id)
     {
         $data = array();
-
         // 循环统计各学科成绩
-        foreach ($subject as $key => $value) {
-            $cjcol = array_column($cj,$value['lieming']);
+        foreach ($subject_id as $key => $value) {
+            $cjcol = array_column($cj, $value['lieming']);
 
-            $cjcol = array_filter($cjcol,function($item){
+            $cjcol = array_filter($cjcol, function($item){
                 return $item != null;
             });
             $temp = array();
@@ -34,31 +33,29 @@ class Tongji extends BaseModel
 
 
     // 统计成绩
-    public function tongjiSubject($cj=array(),$subject)
+    public function tongjiSubject($cj = array(), $subject)
     {
-
         // 设置默认值
         $tempNull = [
-            'xkcnt'=>0,
-            'sum'=>null,
-            'biaozhuncha'=>null,
-            'avg'=>null,
-            'youxiu'=>null,
-            'jige'=>null,
-            'sifenwei'=>[
-                '0'=>null,
-                '1'=>null,
-                '2'=>null
-            ],
-            'max'=>null,
-            'min'=>null,
-            'zhongshu'=>null,
-            'defenlv'=>null,
+            'xkcnt' => 0
+            ,'sum' => null
+            ,'biaozhuncha' => null
+            ,'avg' => null
+            ,'youxiu' => null
+            ,'jige' => null
+            ,'sifenwei' => [
+                '0' => null
+                ,'1' => null
+                ,'2' => null
+            ]
+            ,'max' => null
+            ,'min' => null
+            ,'zhongshu' => null
+            ,'defenlv' => null
         ];
 
         $data = array();
         $sbjdefencnt = 0;   #记录试卷满分
-
 
         // 循环统计各学科成绩
         foreach ($subject as $key => $value) {

@@ -212,7 +212,7 @@ class Rule extends Seeder
                         ],
                     ['id' => 3020102
                         ,'title' => '生成考号'
-                        ,'name' => 'kaoshi/Kaohao/createall'
+                        ,'name' => 'Kaohao/index/createall'
                         ,'paixu' => 1
                         ,'pid' => 30201
                     ],
@@ -225,7 +225,7 @@ class Rule extends Seeder
 
                     ['id' => 3020103
                         ,'title' => '下载试卷标签信息'
-                        ,'name' => 'kaoshi/Kaohao/biaoqian'
+                        ,'name' => 'Kaohao/KaohaoExcel/biaoqian'
                         ,'paixu' => 4
                         ,'pid' => 30201
                     ],
@@ -244,7 +244,7 @@ class Rule extends Seeder
                     // 录入成绩
                     ['id' => 3020201
                         ,'title' => '下载成绩采集表'
-                        ,'name' => 'kaoshi/Kaohao/caiji'
+                        ,'name' => 'Kaohao/KaohaoExcel/caiji'
                         ,'paixu' => 1
                         ,'pid' => 30202
                     ],

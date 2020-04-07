@@ -14,11 +14,10 @@
 {/block}
 {block name="search"}
 <div class="layui-form-item">
-	<label for="school" class="layui-form-label" style="height: 100%">学校</label>
+	<label for="school_id" class="layui-form-label" style="height: 100%">学校</label>
 	<div class="layui-input-block">
-		<input type="radio" name="school" title="无" value="" lay-skin="primary" lay-filter="school" checked="true">
-		{foreach $list.school as $key=>$vo}
-		<input type="radio" name="school" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" lay-filter="src">
+		{foreach $list.school_id as $key=>$vo}
+		<input type="radio" name="school_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" lay-filter="src" {eq name="$key" value="0"} checked {/eq}>
 		{/foreach}
 	</div>
 </div>
@@ -32,11 +31,11 @@
 	</div>
 </div>
 <div class="layui-form-item" style="margin-bottom: 0;">
-	<label for="paixu" class="layui-form-label" style="height: 100%">班级</label>
-	<div class="layui-input-block" id="paixu">
+	<label for="banji" class="layui-form-label" style="height: 100%">班级</label>
+	<div class="layui-input-block" id="banji">
 	</div>
 </div>
-<input type="hidden" name="kaoshi" value="{$list.kaoshi}">
+<input type="hidden" name="kaoshi_id" value="{$list.kaoshi_id}">
 {/block}
 {block name="table"}
 <table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
@@ -62,9 +61,9 @@
 <script>
 	//设置列
     options.cols=[[ //表头
-    {field:'id',type:'numbers',title:'序号',align:'center'},
-    {field: 'school', title: '学校',align:'center',sort: false,width:80,rowspan:2},
-    {field: 'banji', title: '班级',align:'center',sort: false,width:130,rowspan:2},
+    {field:'banji_id',type:'numbers',title:'序号',align:'center',sort: true,width:80},
+    {field: 'school_id', title: '学校',align:'center',sort: true,width:80,rowspan:2},
+    {field: 'banji_id', title: '班级',align:'center',sort: true,width:130,rowspan:2},
     {field: 'id',title: '班级人数',align:'center',minWidth:100,templet:function(d){
     	var str='';
     	if(d.chengji)
@@ -76,7 +75,7 @@
     ]];
 
 	// 获取学科
-	var xk = '<?php echo json_encode($list["subject"]);?>';
+	var xk = '<?php echo json_encode($list["subject_id"]);?>';
 	xk = eval(decodeURIComponent(xk));
 
 	$.each(xk,function(index,value){
@@ -152,16 +151,16 @@
 	      // 获取参数
 	      var formval;
 	      formval = formval = form.val("search");
-	      if(formval.school == '')
+	      if(formval.school_id == '')
 	      {
-	      	$('#paixu').children().remove();
+	      	$('#banji').children().remove();
 	      }else{
-	      	cjgl.createCheckbox('paixu',formval,'/kaoshi/index/cybanji','banji','banTitle');
+	      	cjgl.createCheckbox('banji', formval, '/kaoshi/index/cybanji', 'banji_id', 'banTitle');
 	      }
 	    }
 	});
 
 
-  	
+
 </script>
 {/block}

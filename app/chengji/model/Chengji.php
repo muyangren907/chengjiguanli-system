@@ -151,7 +151,7 @@ class Chengji extends BaseModel
         $kh = new \app\kaoshi\model\Kaohao;
 
         // 以考号为基础查询成绩
-        $chengjilist = $kh->srcChengji($src);
+        $chengjilist = $kh->srcChengjiList($src);
 
 
         // 按条件排序
