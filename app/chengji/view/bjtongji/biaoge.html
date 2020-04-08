@@ -16,9 +16,9 @@
 <div class="layui-form-item">
 	<label for="school" class="layui-form-label" style="height: 100%">学校</label>
 	<div class="layui-input-block">
-		<input type="radio" name="school" title="无" value="" checked="true" lay-skin="primary" >
-		{volist name="$list.school" id="vo"}
-		<input type="radio" name="school" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" >
+		<input type="radio" name="school_id" title="无" value="" checked="true" lay-skin="primary" >
+		{volist name="$list.school_id" id="vo"}
+		<input type="radio" name="school_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" >
 		{/volist}
 	</div>
 </div>
@@ -33,11 +33,11 @@
 	</div>
 </div>
 <div class="layui-form-item" style="margin-bottom: 0;">
-	<label for="paixu" class="layui-form-label" style="height: 100%">班级</label>
-	<div class="layui-input-block" id="paixu">
+	<label for="banji_id" class="layui-form-label" style="height: 100%">班级</label>
+	<div class="layui-input-block" id="banji_id">
 	</div>
 </div>
-<input type="hidden" name="kaoshi" value="{$list.kaoshi}">
+<input type="hidden" name="kaoshi_id" value="{$list.kaoshi_id}">
 {/block}
 {block name="table"}
   <table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
@@ -73,13 +73,13 @@
 	// 设置列
   	options.cols=[[ //表头
     	{type:'numbers',title:'序号',rowspan:2},
-    	{field: 'school', title: '学校',sort: false,minWidth:80,rowspan:2},
-    	{field: 'title', title: '班级',sort: false,minWidth:100,rowspan:2},
+    	{field: 'school_jiancheng', title: '学校',sort: false,minWidth:80,rowspan:2},
+    	{field: 'banji_title', title: '班级',sort: false,minWidth:100,rowspan:2},
     ]
     ,[]
     ];
 	// 获取学科
-	var xk = '<?php echo json_encode($list["subject"]);?>';
+	var xk = '<?php echo json_encode($list["subject_id"]);?>';
 	xk = eval(decodeURIComponent(xk));
 	var xiangmu = {cjCnt:'人数',avg:'平均分',jige:'及格率%',youxiu:'优秀率%'};		// 要显示哪些统计结果
 
@@ -138,7 +138,7 @@
 	        cjgl.add('添加单位','/school/create','650','500');
 	        break;
 	        case 'download':
-	        cjgl.add('下载成绩','/chengji/bjtj/dwbiaoge/{$list.kaoshi}','650','300');
+	        cjgl.add('下载成绩','/chengji/bjtj/dwbiaoge/{$list.kaoshi_id}','650','300');
 	        break;
        };
      });
@@ -190,11 +190,11 @@
         // 获取参数
         var formval;
         formval = formval = form.val("search");
-        if(formval.school == '')
+        if(formval.school_id == '')
         {
-        	$('#paixu').children().remove();
+        	$('#banji_id').children().remove();
         }else{
-        	cjgl.createCheckbox('paixu', formval, '/kaoshi/index/cybanji', 'banji', 'banTitle');
+        	cjgl.createCheckbox('banji_id', formval, '/kaoshi/index/cybanji', 'banji_id', 'banTitle');
         }
     }
 

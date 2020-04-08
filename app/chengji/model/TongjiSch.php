@@ -10,44 +10,36 @@ use app\chengji\model\Tongji as TJ;
  */
 class TongjiSch extends BaseModel
 {
-    /**
-    * 统计各学校的指定个年级的成绩
-    * 统计项目参考tongji方法
-    * @access public
-    * @param number $kaoshi 考试id
-    * @param number $ruxuenian 入学年
-    * @return array 返回类型
-    */
-    public function tjSchool($kaoshi)
+    // 统计参加本次考试所有学校成绩
+    public function tjSchool($kaoshi_id)
     {
-        $src['kaoshi'] = $kaoshi;
-        // // 查询要统计的学校
-        $kh = new \app\kaoshi\model\Kaohao;
-        // $subjectList = $kh->cySchool($src);
+        $src['kaoshi_id'] = $kaoshi_id;
+        // 查询要统计的学校
+        $khSrc = new \app\kaohao\model\Search;
         // 查询要统计的年级
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $njList = $ksset->srcNianji($kaoshi);
+        $njList = $ksset->srcNianji($kaoshi_id);
 
         // 实例化学生成绩统计类
         $tj = new TJ;
             foreach ($njList as $k => $nianji) {
                 $src = [
-                    'kaoshi'=>$kaoshi,
-                    'ruxuenian'=>$nianji['nianji'],
+                    'kaoshi_id' => $kaoshi_id
+                    ,'ruxuenian' => $nianji['nianji']
                 ];
-                $src['banji'] = array_column($kh->cyBanji($src),'id');
-                $subject = $ksset->srcSubject($kaoshi,'',$nianji['nianji']);
-                $temp = $kh->srcChengji($src);
-                $temp = $tj->tongjiSubject($temp,$subject);
+                $src['banji'] = array_column($khSrc->cyBanji($src), 'id');
+                $subject = $ksset->srcSubject($kaoshi_id, '', $nianji['nianji']);
+                $temp = $khSrc->srcChengjiList($src);
+                $temp = $tj->tongjiSubject($temp, $subject);
                 foreach ($temp['cj'] as $k => $cj) {
                     // 查询该班级该学科成绩是否存在
-                    $tongjiJg = $this->where('kaoshi_id',$src['kaoshi'])
-                                    ->where('ruxuenian',$nianji['nianji'])
-                                    ->where('subject_id',$cj['id'])
-                                    ->find();
+                    $tongjiJg = $this->where('kaoshi_id', $src['kaoshi_id'])
+                        ->where('ruxuenian', $nianji['nianji'])
+                        ->where('subject_id', $cj['id'])
+                        ->find();
                     if($tongjiJg)
                     {
-                        $tongjiJg->kaoshi_id = $src['kaoshi'];
+                        $tongjiJg->kaoshi_id = $src['kaoshi_id'];
                         $tongjiJg->ruxuenian = $nianji['nianji'];
                         $tongjiJg->subject_id = $cj['id'];
                         $tongjiJg->stu_cnt = $cj['stucnt'];
@@ -68,164 +60,142 @@ class TongjiSch extends BaseModel
                     }else{
                         // 重新组合统计结果
                         $tongjiJg = [
-                            'kaoshi_id'=>$src['kaoshi'],
-                            'ruxuenian'=>$nianji['nianji'],
-                            'subject_id'=>$cj['id'],
-                            'stu_cnt'=>$cj['stucnt'],
-                            'chengji_cnt'=>$cj['xkcnt'],
-                            'sum'=>$cj['sum'],
-                            'avg'=>$cj['avg'],
-                            'biaozhuncha'=>$cj['biaozhuncha'],
-                            'youxiu'=>$cj['youxiu'],
-                            'jige'=>$cj['jige'],
-                            'max'=>$cj['max'],
-                            'min'=>$cj['min'],
-                            'q1'=>$cj['sifenwei'][0],
-                            'q2'=>$cj['sifenwei'][1],
-                            'q3'=>$cj['sifenwei'][2],
-                            'zhongshu'=>$cj['zhongshu'],
-                            'defenlv'=>$cj['defenlv'],
+                            'kaoshi_id' => $src['kaoshi_id']
+                            ,'ruxuenian' => $nianji['nianji']
+                            ,'subject_id' => $cj['id']
+                            ,'stu_cnt' => $cj['stucnt']
+                            ,'chengji_cnt' => $cj['xkcnt']
+                            ,'sum' => $cj['sum']
+                            ,'avg' => $cj['avg']
+                            ,'biaozhuncha' => $cj['biaozhuncha']
+                            ,'youxiu' => $cj['youxiu']
+                            ,'jige' => $cj['jige']
+                            ,'max' => $cj['max']
+                            ,'min' => $cj['min']
+                            ,'q1' => $cj['sifenwei'][0]
+                            ,'q2' => $cj['sifenwei'][1]
+                            ,'q3' => $cj['sifenwei'][2]
+                            ,'zhongshu' => $cj['zhongshu']
+                            ,'defenlv' => $cj['defenlv']
                         ];
-
                         $data = $this::create($tongjiJg);
                     }
                 }
-
         }
 
         return true;
     }
 
 
-    /**
-    * 年级成绩统计结果查询
-    * 从数据库中取出数据
-    * @access public
-    * @param number $kaoshi 考试id
-    * @param number $ruxuenian 入学年
-    * @return array 返回类型
-    */
+    // 根据条件查询学校成绩
     public function search($srcfrom)
     {
-
         // 初始化参数
         $src = array(
-            'kaoshi'=>'',
-            'ruxuenian'=>'',
+            'kaoshi_id' => ''
+            ,'ruxuenian' => ''
         );
 
         // 用新值替换初始值
-        $src = array_cover( $srcfrom , $src ) ;
-
-        $kaoshi = $src['kaoshi'];
-
+        $src = array_cover($srcfrom, $src);
+        $kaoshi_id = $src['kaoshi_id'];
 
         $tongjiJg = $this
-            ->where('kaoshi_id',$src['kaoshi'])
-            ->where('ruxuenian',$src['ruxuenian'])
-            ->field('kaoshi_id,ruxuenian')
+            ->where('kaoshi_id', $src['kaoshi_id'])
+            ->where('ruxuenian', $src['ruxuenian'])
+            ->field('kaoshi_id, ruxuenian')
             ->with([
-                'schJieguo'=>function($query)use($kaoshi){
-                    $query->field('subject_id,ruxuenian,chengji_cnt,avg,youxiu,jige')
-                        ->where('kaoshi_id',$kaoshi)
+                'schJieguo' => function ($query) use ($src) {
+                    $query->field('subject_id, ruxuenian, chengji_cnt, avg, youxiu, jige')
+                        ->where('kaoshi_id', $src['kaoshi_id'])
                         ->with([
-                            'schSubject'=>function($query){
-                                $query->field('id,lieming,jiancheng');
+                            'schSubject' => function($query){
+                                $query->field('id, lieming, jiancheng');
                             },
                         ])
                         ->order(['subject_id']);
                 }
-
             ])
-            ->group('kaoshi_id,ruxuenian')
+            ->group('kaoshi_id, ruxuenian')
             ->select();
 
-
-
-        // 初始化数组
-        $data = array();
-
         // 重组数据
+        $data = array();
         foreach ($tongjiJg as $key => $value) {
-            $data['all']=[
-                'id'=>$value->id,
-                'school'=>'全区',
-                'schoolpaixu'=>999,
+            $data['all'] = [
+                'id' => $value->id
+                ,'school_id' => '全区'
+                ,'schoolpaixu' => 999
             ];
             foreach ($value->schJieguo as $k => $val) {
-                if($val->subject_id>0){
+                if ($val->subject_id > 0) {
                     $data['all']['chengji'][$val->schSubject->lieming] = [
-                        'avg'=>$val->avg,
-                        'youxiu'=>$val->youxiu,
-                        'jige'=>$val->jige,
-                        'cjCnt'=>$val->chengji_cnt,
+                        'avg' => $val->avg
+                        ,'youxiu' => $val->youxiu
+                        ,'jige' => $val->jige
+                        ,'cjCnt' => $val->chengji_cnt
                     ];
                 }else{
                     $data['all']['quanke'] = [
-                        'avg'=>$val->avg,
-                        'jige'=>$val->jige,
+                        'avg' => $val->avg
+                        ,'jige' => $val->jige
                     ];
                 }
-
             }
         }
-
         return $data;
     }
 
 
 
     // 成绩排序
-    public function schOrder($kaoshi)
+    public function schOrder($kaoshi_id)
     {
-        $src = array('kaoshi'=>$kaoshi);
+        $src = array('kaoshi_id' => $kaoshi_id);
         // 实例化学生成绩统计类
-        $kh = new \app\kaoshi\model\Kaohao;
+        $khSrc = new \app\kaohao\model\Search;
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $cj = new \app\chengji\model\Chengji;
-        $nianji = $ksset->srcNianji($kaoshi);
-
-
-        // 初始化统计结果
-        $data = array();
+        $nianji = $ksset->srcNianji($kaoshi_id);
 
         // 循环年级
+        $data = array();
         foreach ($nianji as $njkey => $value) {
             // 获取参加考试班级
             $src['ruxuenian'] = $value['nianji'];
-            $subject = $ksset->srcSubject($kaoshi,'',$value['nianji']);
-            $banji = $kh->cyBanji($src);
-            $col = ['qpaixu','qweizhi'];
-
-           // 获取成绩
-           $srcfrom = [
-                'kaoshi'=>$kaoshi,
-                'ruxuenian'=>$value['nianji'],
-                'banji'=>array_column($banji, 'id'),
+            $subject = $ksset->srcSubject($kaoshi_id, '', $value['nianji']);
+            $banji = $khSrc->cyBanji($src);
+            $col = [
+                'qpaixu'
+                ,'qweizhi'
             ];
-            $temp = $kh->srcChengjiSubject($srcfrom);
+
+            // 获取成绩
+            $srcfrom = [
+                'kaoshi_id' => $kaoshi_id
+                ,'ruxuenian' => $value['nianji']
+                ,'banji_id' => array_column($banji, 'id')
+            ];
+            $temp = $khSrc->srcChengjiSubject($srcfrom);
             // 循环计算成绩排序
             foreach ($temp as $key => $value) {
-                $cj->saveOrder($value,$col);
+                $cj->saveOrder($value, $col);
             }
         }
-
         return true;
     }
-
-
 
 
     // 学科关联
     public function schSubject()
     {
-        return $this->belongsTo('\app\teach\model\Subject','subject_id','id');
+        return $this->belongsTo('\app\teach\model\Subject', 'subject_id', 'id');
     }
+
+
     // 成绩统计结果关联
     public function schJieguo()
     {
-        return $this->hasMany('\app\chengji\model\TongjiSch','ruxuenian','ruxuenian');
+        return $this->hasMany('\app\chengji\model\TongjiSch', 'ruxuenian', 'ruxuenian');
     }
-
-
 }

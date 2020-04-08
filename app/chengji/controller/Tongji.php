@@ -26,7 +26,7 @@ class Tongji extends BaseController
         // 获取参与学校
         if(count($list['nianji']) > 0)
         {
-            $khSrc = new \app\kaohao\model\KaohaoSearch;
+            $khSrc = new \app\kaohao\model\Search;
             $src['ruxuenian'] = [$list['nianji'][0]['nianji']];
             $src['kaoshi_id'] = $kaoshi_id;
             $list['school_id'] = $khSrc->cySchool($src);
@@ -97,12 +97,12 @@ class Tongji extends BaseController
         // 获取参数
         $src = $this->request
             ->only([
-                'kaoshi' => '',
+                'kaoshi_id' => '',
             ],'POST');
 
         // 实例化考号
-        $kh = new \app\kaoshi\model\Kaohao;
-        $lastcj = $kh->lastUpdateTime($src['kaoshi']);
+        $khSrc = new \app\kaohao\model\Search;
+        $lastcj = $khSrc->lastUpdateTime($src['kaoshi_id']);
         $logLastTime = $lastcj->getData('update_time');
 
         $log = new \app\kaoshi\model\TongjiLog;

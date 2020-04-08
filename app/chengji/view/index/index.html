@@ -23,10 +23,10 @@
           </div>
         </div>
         <div class="layui-form-item">
-		    <label for="school" class="layui-form-label" style="height: 100%">学校</label>
+		    <label for="school_id" class="layui-form-label" style="height: 100%">学校</label>
 		    <div class="layui-input-block">
-		    	{volist name="list.set.school" id="vo"}
-		    		<input type="radio" name="school" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary"
+		    	{volist name="list.set.school_id" id="vo"}
+		    		<input type="radio" name="school_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary"
             {eq name="key" value="0"} checked=true {/eq} >
 		    	{/volist}
 		    </div>
@@ -41,11 +41,11 @@
 		    </div>
 		</div>
 		<div class="layui-form-item" style="margin-bottom: 0;">
-		    <label for="banji" class="layui-form-label" style="height: 100%">班级</label>
-		    <div class="layui-input-block" id="banji">
+		    <label for="banji_id" class="layui-form-label" style="height: 100%">班级</label>
+		    <div class="layui-input-block" id="banji_id">
 		    </div>
 		</div>
-		<input type="hidden" id="kaoshi" name="kaoshi" value="{$list.kaoshi}">
+		<input type="hidden" id="kaoshi_id" name="kaoshi_id" value="{$list.kaoshi_id}">
 
 {/block}
 {block name="table"}
@@ -83,14 +83,14 @@
 	// 设置列
 	options.cols=[[ //表头
 		{type:'checkbox', fixed: 'left'},
-		{field: 'school', title: '学校', minWidth:100,sort: true},
+		{field: 'school_jiancheng', title: '学校', minWidth:100,sort: true},
 		// {field: 'nianji', title: '年级 ', minWidth:100,sort: true},
-		{field: "banji",title: '班级',sort: true},
-		{field: "student",title: '学生姓名',sort: true, minWidth:100},
+		{field: "ban_title",title: '班级',sort: true},
+		{field: "student_xingming", title: '学生姓名',sort: true, minWidth:100},
 	]];
 
 
-	var xk = '<?php echo json_encode($list["set"]["subject"]);?>';
+	var xk = '<?php echo json_encode($list["set"]["subject_id"]);?>';
 	xk = eval(decodeURIComponent(xk));
 	for(x in xk)
   {
@@ -100,12 +100,12 @@
   options.cols[0].push({field: 'sum', title: '总分', minWidth:100,sort: true});
   options.cols[0].push({field: 'id', title: '操作',toolbar: '#barDemo',minWidth:125});
 
-	// 设置查询条件
-	options.where = {
-		kaoshi:"{$list.kaoshi}"
-    ,school:$("input[name='school']:checked").val()
-    ,ruxuenian:$("input[name='ruxuenian']:checked").val()
-	}
+	// // 设置查询条件
+	// options.where = {
+	// 	kaoshi:"{$list.kaoshi_id}"
+ //    ,school:$("input[name='school']:checked").val()
+ //    ,ruxuenian:$("input[name='ruxuenian']:checked").val()
+	// }
 
 	// 设置每页显示条数
 	options.limit = 10;
@@ -123,20 +123,20 @@
       table.on('toolbar(mytable)', function(obj){
       	switch(obj.event){
       		case 'add':
-            cjgl.add('添加考号','/kaoshi/kaohao/create/{$list.kaoshi}','650','400');
+            cjgl.add('添加考号','/kaohao/index/create/{$list.kaoshi_id}','650','400');
             break;
           case 'dels':
 	      		var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-	      		cjgl.delAll(checkStatus,'/kaoshi/kaohao/delete','mytable');
+	      		cjgl.delAll(checkStatus,'/kaohao/index/delete','mytable');
       			break;
       		case 'download':
-      			cjgl.add('下载成绩列表','/chengji/index/dwchengji/{$list.kaoshi}','650','300');
+      			cjgl.add('下载成绩列表','/chengji/index/dwchengji/{$list.kaoshi_id}','650','300');
       			break;
           case 'downloadcjtiao':
-            cjgl.add('下载成绩条','/chengji/index/dwchengjitiao/{$list.kaoshi}','650','300');
+            cjgl.add('下载成绩条','/chengji/index/dwchengjitiao/{$list.kaoshi_id}','650','300');
             break;
           case 'delcj':
-            parent.xadmin.add_tab('删除成绩','/chengji/index/deletecjs/{$list.kaoshi}',true);
+            parent.xadmin.add_tab('删除成绩','/chengji/index/deletecjs/{$list.kaoshi_id}',true);
             break;
       	};
       });
@@ -148,13 +148,13 @@
       	var tr = obj.tr; //获得当前行 tr 的DOM对象
       	switch(layEvent){
       		case 'detail':// 查看
-            cjgl.add(obj.data.student+' 成绩录入信息','/chengji/index/readcjadd/'+obj.data.id,'','',true);
+            cjgl.add(obj.data.student + ' 成绩录入信息','/chengji/index/readcjadd/' + obj.data.id, '', '', true);
             break;
           case 'chengji':// 查看
-            cjgl.add(obj.data.student+' 成绩图表','/kaoshi/kaohao/read/'+obj.data.id,'','',true);
+            cjgl.add(obj.data.student + ' 成绩图表','kaohao/index/read/' + obj.data.id, '', '', true);
             break;
       		case 'del':// 删除
-	      		cjgl.del(obj,"/kaoshi/kaohao/delete");
+	      		cjgl.del(obj,"/kaohao/index/delete");
 	      		break;
       	};
       });
@@ -198,7 +198,7 @@
       function addBanji(){
         // 获取参数
         var formval = form.val('search');
-        cjgl.createCheckbox('banji',formval,'/kaoshi/index/cybanji','banji','banTitle');
+        cjgl.createCheckbox('banji_id',formval,'/kaoshi/index/cybanji','banji_id','banTitle');
       }
 
 

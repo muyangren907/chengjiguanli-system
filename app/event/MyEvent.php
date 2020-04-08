@@ -20,13 +20,13 @@ class MyEvent
 
 
     // 添加考试统计日志
-    public function addTongjiLog($kaoshi_id, $category)
+    public function addTongjiLog($kaoshi_id, $category_id)
     {
         // 添加统计日志
         $tjLog = new TongjiLog;
         $log = $tjLog::withTrashed()
                 ->where('kaoshi_id', $kaoshi_id)
-                ->where('category', $category)
+                ->where('category_id', $category_id)
                 ->find();
 
         if(true == $log)
@@ -41,12 +41,13 @@ class MyEvent
         }else{
             $data = $tjLog->save([
                 'kaoshi_id' => $kaoshi_id,
-                'category' => $category,
+                'category_id' => $category_id,
                 'user_id' => session('userid'),
             ]);
         }
 
-        $data ? $data=['msg'=>'更新成功','val'=>1] : $data=['msg'=>'数据处理错误','val'=>0];
+        $data ? $data = ['msg' => '更新成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         return $data;
     }

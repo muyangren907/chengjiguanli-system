@@ -14,26 +14,25 @@ use \app\teach\model\Subject;
 class Index extends BaseController
 {
     // 成绩列表
-    public function index($kaoshi)
+    public function index($kaoshi_id)
     {
-
-         // 设置要给模板赋值的信息
+        // 设置要给模板赋值的信息
         $list['webtitle'] = '学生成绩列表';
 
         // 获取参加考试的年级和学科
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['set']['nianji'] = $ksset->srcNianji($kaoshi);
-        $list['set']['subject'] = $ksset->srcSubject($kaoshi);
+        $list['set']['nianji'] = $ksset->srcNianji($kaoshi_id);
+        $list['set']['subject_id'] = $ksset->srcSubject($kaoshi_id);
         if(count($list['set']['nianji'])>0){
             $src['ruxuenian']=$list['set']['nianji'][0];
         } else {
             $src['ruxuenian']=array();
         }
-        $src['kaoshi'] = $kaoshi;
-        $kh = new Kaohao;
-        $list['set']['school'] = $kh->cySchool($src);
+        $src['kaoshi_id'] = $kaoshi_id;
+        $khSrc = new \app\kaohao\model\Search;
+        $list['set']['school_id'] = $khSrc->cySchool($src);
 
-        $list['kaoshi'] = $kaoshi;
+        $list['kaoshi_id'] = $kaoshi_id;
         $list['dataurl'] = '/chengji/index/data';
 
         // 模板赋值
@@ -44,47 +43,40 @@ class Index extends BaseController
     }
 
 
-
     // 获取成绩信息
     public function ajaxData()
     {
         // 获取参数
         $src = $this->request
-                ->only(['page','limit','field','order','kaoshi','school','ruxuenian','banji'=>array(),'searchval'
-                ],'POST');
+            ->only([
+                'page'
+                ,'limit'
+                ,'field' => 'id'
+                ,'order' => 'asc'
+                ,'kaoshi_id'
+                ,'school_id'
+                ,'ruxuenian'
+                ,'banji_id' => array()
+                ,'searchval'
+            ], 'POST');
 
         // 获取参与考试的班级
-        if(count($src['banji'])==0){
-            $kh = new \app\kaoshi\model\Kaohao;
-            $src['banji']= array_column($kh->cyBanji($src), 'id');
+        if(count($src['banji_id'])==0){
+            $khSrc = new \app\kaohao\model\Search;
+            $src['banji_id']= array_column($khSrc->cyBanji($src), 'id');
         }
 
         // 实例化并查询成绩
         $cj = new Chengji;
         $data = $cj->search($src);
-
-        // 获取符合条件记录总数
-        $cnt = count($data);
-        // 获取当前页数据
-        $limit_start = $src['page'] * $src['limit'] - $src['limit'];
-        $limit_length = $src['limit'];
-        $data = array_slice($data,$limit_start,$limit_length);
-
-        // 重组返回内容
-        $data = [
-            'code'=> 0 , // ajax请求次数，作为标识符
-            'msg'=>"",  // 获取到的结果数(每页显示数量)
-            'count'=>$cnt, // 符合条件的总数据量
-            'data'=>$data, //获取到的数据结果
-        ];
-
+        $data = reSetArray($data, $src);
 
         return json($data);
     }
 
 
     // 批量删除成绩
-    public function deletecjs($kaoshi)
+    public function deletecjs($kaoshi_id)
     {
 
         // 设置页面标题
@@ -93,15 +85,15 @@ class Index extends BaseController
             'butname'=>'删除',
             'formpost'=>'POST',
             'url'=>'/chengji/index/deletecjmore',
-            'kaoshi'=>$kaoshi
+            'kaoshi_id'=>$kaoshi_id
         );
 
         // 获取参加考试的学校和年级
         $kh = new \app\kaoshi\model\Kaohao;
-        $src['kaoshi'] = $kaoshi;
+        $src['kaoshi_id'] = $kaoshi_id;
         $list['school'] = $kh->cySchool($src);
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['nianji'] = $ksset->srcNianji($kaoshi);
+        $list['nianji'] = $ksset->srcNianji($kaoshi_id);
 
 
         // 模板赋值
@@ -116,16 +108,16 @@ class Index extends BaseController
     {
         // 获取参数
         $src = $this->request
-                ->only(['kaoshi','banjiids','subject'],'POST');
+                ->only(['kaoshi_id','banjiids','subject'],'POST');
         $banji = $src['banjiids'];
         $subject = $src['subject'];
 
         // 判断考试状态
-        event('kslu',$src['kaoshi']);
+        event('kslu',$src['kaoshi_id']);
 
         // 获取要删除成绩的考号
         $kaohao = new \app\kaoshi\model\Kaohao;
-        $kaohaolist = $kaohao::where('kaoshi',$src['kaoshi'])
+        $kaohaolist = $kaohao::where('kaoshi_id',$src['kaoshi_id'])
                             ->where('banji','in',$banji)
                             ->column('id');
 
@@ -136,9 +128,9 @@ class Index extends BaseController
         });
 
         if($data){
-            $this->success($msg = '删除成功',  $url = '/chengji/index/deletecjs/'.$src['kaoshi'], $data = '',  $wait = 3,  $header = []);
+            $this->success($msg = '删除成功',  $url = '/chengji/index/deletecjs/'.$src['kaoshi_id'], $data = '',  $wait = 3,  $header = []);
         }else{
-            $this->error($msg = '删除失败',  $url = '/chengji/index/deletecjs/'.$src['kaoshi'], $wait = 3);
+            $this->error($msg = '删除失败',  $url = '/chengji/index/deletecjs/'.$src['kaoshi_id'], $wait = 3);
         }
 
         // 根据更新结果设置返回提示信息
@@ -161,10 +153,10 @@ class Index extends BaseController
         $id = explode(',', $id);
 
         $khid = Chengji::where('id',$id['0'])->value('kaohao_id');
-        $kaoshiid = Kaohao:: where('id',$khid)->value('Kaoshi');
+        $kaoshi_idid = Kaohao:: where('id',$khid)->value('Kaoshi_id');
 
         // 判断考试状态
-        event('kslu',$kaoshiid);
+        event('kslu',$kaoshi_idid);
 
 
         $data = Chengji::destroy($id);
@@ -187,8 +179,8 @@ class Index extends BaseController
         $value = request()->post('value');
 
         $khid = Chengji::where('id',$id)->value('kaohao_id');
-        $kaoshiid = Kaohao:: where('id',$khid)->value('Kaoshi');
-        event('kslu',$kaoshiid);
+        $kaoshi_idid = Kaohao:: where('id',$khid)->value('Kaoshi_id');
+        event('kslu',$kaoshi_idid);
 
         // 获取考试信息
         $data = Chengji::where('id',$id)->update(['status'=>$value]);
@@ -203,7 +195,7 @@ class Index extends BaseController
 
 
     // 下载成绩表格
-    public function dwChengji($kaoshi)
+    public function dwChengji($kaoshi_id)
     {
 
         // 设置页面标题
@@ -212,15 +204,15 @@ class Index extends BaseController
             'butname'=>'下载',
             'formpost'=>'POST',
             'url'=>'/chengji/index/dwxlsx',
-            'kaoshi'=>$kaoshi
+            'kaoshi_id'=>$kaoshi_id
         );
 
         // 获取参加考试的学校和年级
         $kh = new \app\kaoshi\model\Kaohao;
-        $src['kaoshi'] = $kaoshi;
+        $src['kaoshi_id'] = $kaoshi_id;
         $list['school'] = $kh->cySchool($src);
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['nianji'] = $ksset->srcNianji($kaoshi);
+        $list['nianji'] = $ksset->srcNianji($kaoshi_id);
 
         // 模板赋值
         $this->view->assign('list',$list);
@@ -238,7 +230,7 @@ class Index extends BaseController
         // 获取参数
         $src = $this->request
                 ->only([
-                    'kaoshi'=>'1',
+                    'kaoshi_id'=>'1',
                     'banji'=>array(),
                     'school',
                     'ruxuenian',
@@ -265,11 +257,11 @@ class Index extends BaseController
         $kh = new \app\kaoshi\model\Kaohao;
         $chengjiinfo = $kh->srcChengji($src);
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $subject = $ksset->srcSubject($src['kaoshi'],$src['subject'],$src['ruxuenian']);
+        $subject = $ksset->srcSubject($src['kaoshi_id'],$src['subject'],$src['ruxuenian']);
 
         // 获取考试标题
         $ks = new \app\kaoshi\model\Kaoshi;
-        $ks = $ks->where('id',$src['kaoshi'])
+        $ks = $ks->where('id',$src['kaoshi_id'])
                 ->field('id,title,bfdate')
                 ->find();
 
@@ -431,7 +423,7 @@ class Index extends BaseController
 
 
     // 下载成绩表格
-    public function dwChengjitiao($kaoshi)
+    public function dwChengjitiao($kaoshi_id)
     {
 
         // 设置页面标题
@@ -440,15 +432,15 @@ class Index extends BaseController
             'butname'=>'下载',
             'formpost'=>'POST',
             'url'=>'/chengji/index/dwcjtiaoxlsx',
-            'kaoshi'=>$kaoshi
+            'kaoshi_id'=>$kaoshi_id
         );
 
         // 获取参加考试的学校和年级
         $kh = new \app\kaoshi\model\Kaohao;
-        $src['kaoshi'] = $kaoshi;
+        $src['kaoshi_id'] = $kaoshi_id;
         $list['school'] = $kh->cySchool($src);
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['nianji'] = $ksset->srcNianji($kaoshi);
+        $list['nianji'] = $ksset->srcNianji($kaoshi_id);
 
         // 模板赋值
         $this->view->assign('list',$list);
@@ -466,7 +458,7 @@ class Index extends BaseController
         // 获取参数
         $src = $this->request
                 ->only([
-                    'kaoshi'=>'1',
+                    'kaoshi_id'=>'1',
                     'banji'=>array(),
                     'school',
                     'ruxuenian',
@@ -492,11 +484,11 @@ class Index extends BaseController
         $kh = new \app\kaoshi\model\Kaohao;
         $chengjiinfo = $kh->srcChengji($src);
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $subject = $ksset->srcSubject($src['kaoshi'],$src['subject'],$src['ruxuenian']);
+        $subject = $ksset->srcSubject($src['kaoshi_id'],$src['subject'],$src['ruxuenian']);
 
         $tj = new \app\chengji\model\Tongji;
         $srcAll = [
-            'kaoshi'=>$src['kaoshi'],
+            'kaoshi_id'=>$src['kaoshi_id'],
             'ruxuenian'=>$src['ruxuenian']
         ];
         $srcAll['banji']= array_column($kh->cyBanji($srcAll), 'id');
@@ -506,7 +498,7 @@ class Index extends BaseController
 
         // 获取考试标题
         $ks = new \app\kaoshi\model\Kaoshi;
-        $ks = $ks->where('id',$src['kaoshi'])
+        $ks = $ks->where('id',$src['kaoshi_id'])
                 ->field('id,title,bfdate')
                 ->find();
 

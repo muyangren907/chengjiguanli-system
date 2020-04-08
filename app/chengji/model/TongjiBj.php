@@ -12,44 +12,36 @@ use app\chengji\model\Tongji as TJ;
  */
 class TongjiBj extends BaseModel
 {
-    /**
-    * 统计指定个年级的各班级成绩
-    * 统计项目参考tongji方法
-    * @access public
-    * @param number $kaoshi_id 考试id
-    * @param number $ruxuenian 入学年
-    * @return array 返回类型
-    */
+    // 统计参加本次考试所有班级的成绩并保存
     public function tjBanji($kaoshi_id)
     {
         $src = array('kaoshi_id' => $kaoshi_id);
         // 实例化学生成绩统计类
         $tj = new TJ;
-        $kh = new Kaohao;
+        $khSrc = new \app\kaohao\model\Search;
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $nianji = $ksset->srcNianji($kaoshi_id);
-        // 初始化统计结果
-        $data = array();
 
-        // 循环年级
+        // 循环年级统计结果
+        $data = array();
         foreach ($nianji as $njkey => $value) {
             // 获取参加考试班级
             $src['ruxuenian'] = $value['nianji'];
-            $banji = $kh->cyBanji($src);
+            $banji = $khSrc->cyBanji($src);
             $subject = $ksset->srcSubject($kaoshi_id, '', $value['nianji']);
 
             // 循环班级，获取并统计成绩
             foreach ($banji as $bjkey => $val) {
-               $srcfrom = [
-                    'kaoshi_id'=>$kaoshi_id
-                    ,'banji_id'=>$val['id']
+                $srcfrom = [
+                    'kaoshi_id' => $kaoshi_id
+                    ,'banji_id' => $val['id']
                 ];
-                $temp = $kh->srcChengjiList($srcfrom);
+                $temp = $khSrc->srcChengjiList($srcfrom);
                 $temp = $tj->tongjiSubject($temp, $subject);
 
                 // 循环更新或写入成绩
                 foreach ($temp['cj'] as $cjkey => $cj) {
-                    $tongjiJg = $this->where('kaoshi_id', $src['kaoshi'])
+                    $tongjiJg = $this->where('kaoshi_id', $src['kaoshi_id'])
                         ->where('banji_id', $val['id'])
                         ->where('subject_id', $cj['id'])
                         ->find();
@@ -104,14 +96,7 @@ class TongjiBj extends BaseModel
     }
 
 
-    /**
-    * 统计指定个年级的各班级成绩
-    * 统计项目参考tongji方法
-    * @access public
-    * @param number $kaoshi_id 考试id
-    * @param number $ruxuenian 入学年
-    * @return array 返回类型
-    */
+    // 统计参加本次考试的各班级成绩数
     public function tjBanjiCnt($srcfrom)
     {
         // 初始化参数
@@ -129,7 +114,7 @@ class TongjiBj extends BaseModel
 
         // 实例化学生成绩统计类
         $tj = new TJ;
-        $khSrc = new \app\kaohao\model\KaohaoSearch;
+        $khSrc = new \app\kaohao\model\Search;
         $ksset = new \app\kaoshi\model\KaoshiSet;
 
         // 获取参加考试学科
@@ -165,72 +150,63 @@ class TongjiBj extends BaseModel
     }
 
 
-    /**
-    * 班级成绩统计结果查询
-    * 从数据库中取出数据
-    * @access public
-    * @param number $kaoshi_id 考试id
-    * @param number $ruxuenian 入学年
-    * @return array 返回类型
-    */
+    // 根据条件查询各班级成绩
     public function search($srcfrom)
     {
         // 初始化参数
         $src = array(
-            'kaoshi' => ''
-            ,'banji' => array()
+            'kaoshi_id' => ''
+            ,'banji_id' => array()
         );
-
-        // 用新值替换初始值
         $src = array_cover($srcfrom, $src);
-        $src['banji'] = strToarray($src['banji']);
+        $src['banji_id'] = strToarray($src['banji_id']);
+        $kaoshi_id = $src['kaoshi_id'];
 
-        if(count($src['banji']) == 0){
+        if(count($src['banji_id']) == 0){
             return array();
         }
 
-        $kaoshi_id = $src['kaoshi'];
-
         $tongjiJg = $this
-            ->where('kaoshi_id', $src['kaoshi'])
-            ->where('banji_id', 'in', $src['banji'])
+            ->where('kaoshi_id', $src['kaoshi_id'])
+            ->where('banji_id', 'in', $src['banji_id'])
             ->field('banji_id, kaoshi_id')
             ->with([
                 'bjBanji'=>function($query){
-                    $query->field('id,school,paixu')
+                    $query
+                        ->field('id, school_id, paixu')
                         ->with([
                             'glSchool'=>function($query){
-                                $query->field('id,jiancheng,paixu');
+                                $query->field('id, jiancheng, paixu');
                             },
                         ]);
                 },
                 'bjJieguo'=>function($query){
-                    $query->field('subject_id,banji_id,stu_cnt,chengji_cnt,avg,youxiu,jige,biaozhuncha,max,min,q1,q2,q3')
+                    $query->field('subject_id, banji_id, stu_cnt,
+                        chengji_cnt, avg, youxiu, jige, biaozhuncha,
+                        max, min, q1, q2, q3')
                         ->with([
-                            'bjSubject'=>function($query){
-                                $query->field('id,lieming,jiancheng,title');
+                            'bjSubject' => function($query){
+                                $query->field('id, lieming, jiancheng, title');
                             },
                         ])
                         ->order(['subject_id']);
                 }
             ])
             // ->cache(true)
-            ->group('banji_id,kaoshi_id')
+            ->group('banji_id, kaoshi_id')
             ->append(['banjiTitle'])
             ->select();
 
-        // 初始化数组
-        $data = array();
-
         // 重组数据
+        $data = array();
         foreach ($tongjiJg as $key => $value) {
             $data[$value->banji_id] = [
                 'id' => $value->id
-                ,'school' => $value->bjBanji->glSchool->jiancheng
-                ,'schoolpaixu' => $value->bjBanji->glSchool->paixu
-                ,'title' => $value->banjiTitle
-                ,'banjipaixu' => $value->bjBanji->paixu
-                ,'stuCnt' => $value->stuCnt
+                ,'school_jiancheng' => $value->bjBanji->glSchool->jiancheng
+                ,'school_paixu' => $value->bjBanji->glSchool->paixu
+                ,'banji_title' => $value->banjiTitle
+                ,'banji_paixu' => $value->bjBanji->paixu
+                ,'stu_cnt' => $value->stuCnt
             ];
             foreach ($value->bjJieguo as $k => $val) {
                 if($val->subject_id > 0){
@@ -239,7 +215,7 @@ class TongjiBj extends BaseModel
                         ,'youxiu' => $val->youxiu * 1
                         ,'jige' => $val->jige * 1
                         ,'cjCnt' => $val->chengji_cnt
-                        ,'title' => $val->bjSubject->title
+                        ,'banji_title' => $val->bjSubject->title
                         ,'jiancheng' => $val->bjSubject->jiancheng
                         ,'biaozhuncha' => $val->biaozhuncha * 1
                         ,'sifenwei' => [
@@ -261,7 +237,7 @@ class TongjiBj extends BaseModel
         }
         if(count($data)>0)
         {
-            $data = sortArrByManyField($data, 'schoolpaixu', SORT_ASC, 'banjipaixu', SORT_ASC);
+            $data = sortArrByManyField($data, 'school_paixu', SORT_ASC, 'banji_paixu', SORT_ASC);
         }
 
         return $data;
@@ -275,55 +251,55 @@ class TongjiBj extends BaseModel
     {
         // 初始化参数
         $src = array(
-            'banji' => '',
-            'category_id' => '',
-            'xueqi' => '',
-            'searchval' => ''
+            'banji_id' => ''
+            ,'category_id' => ''
+            ,'xueqi_id' => ''
+            ,'searchval' => ''
         );
-        $src = array_cover( $srcfrom , $src ) ;
-        $src['xueqi'] = strToarray($src['xueqi']);
+        $src = array_cover($srcfrom, $src);
+        $src['xueqi_id'] = strToarray($src['xueqi_id']);
         $src['category_id'] = strToarray($src['category_id']);
-        if(isset($srcfrom['bfdate']) && strlen($srcfrom['bfdate'])>0)
+        if(isset($srcfrom['bfdate']) && strlen($srcfrom['bfdate']) > 0)
         {
             $src['bfdate'] = $srcfrom['bfdate'];
         }else{
-            $src['bfdate'] = date("Y-m-d",strtotime("-1 year"));
+            $src['bfdate'] = date("Y-m-d", strtotime("-1 year"));
         }
-        if(isset($srcfrom['enddate']) && strlen($srcfrom['enddate'])>0)
+        if(isset($srcfrom['enddate']) && strlen($srcfrom['enddate']) > 0)
         {
             $src['enddate'] = $srcfrom['enddate'];
         }else{
-            $src['enddate'] = date("Y-m-d",strtotime("+1 day"));
+            $src['enddate'] = date("Y-m-d", strtotime("+1 day"));
         }
 
         $data = $this
-            ->where('banji_id', $src['banji'])
-            ->where('kaoshi_id', 'in', function($query) use($src){
+            ->where('banji_id', $src['banji_id'])
+            ->where('kaoshi_id', 'in', function ($query) use ($src) {
                 $query->name('kaoshi')
                     ->whereTime('bfdate|enddate', 'between', [$src['bfdate'], $src['enddate']])
-                    ->when(count($src['xueqi']) > 0, function($q) use($src){
-                        $q->where('xueqi', 'in', function($w) use($src){
+                    ->when(count($src['xueqi']) > 0, function($q) use ($src) {
+                        $q->where('xueqi_id', 'in', function($w) use ($src) {
                             $w->name('xueqi')
-                                ->where('category_id', 'in', $src['xueqi'])
+                                ->where('category_id', 'in', $src['xueqi_id'])
                                 ->field('id');
                         });
                     })
-                    ->when(count($src['category_id']) > 0, function($q) use($src){
+                    ->when(count($src['category_id']) > 0, function($q) use ($src) {
                         $q->where('category_id', 'in', $src['category_id']);
                     })
-                    ->when(strlen($src['searchval']) > 0, function($q) use($src){
-                        $q->where('title', 'like', '%'.$src['searchval'].'%');
+                    ->when(strlen($src['searchval']) > 0, function($q) use ($src) {
+                        $q->where('title', 'like', '%' . $src['searchval'] . '%');
                     })
                     ->field('id');
             })
             ->with([
-                'bjKaoshi' => function($query){
+                'bjKaoshi' => function ($query) {
                     $query->field('id, title, bfdate');
                 },
-                'bjSubject' => function($query){
+                'bjSubject' => function ($query) {
                     $query->field('id, title, jiancheng, paixu, lieming');
                 },
-                'quJieguo' => function($query){
+                'quJieguo' => function ($query) {
                     $query->field('id, kaoshi_id, subject_id, defenlv');
                 }
             ])
@@ -336,9 +312,9 @@ class TongjiBj extends BaseModel
     // 成绩排序
     public function bjOrder($kaoshi_id)
     {
-        $src = array('kaoshi' => $kaoshi_id);
+        $src = array('kaoshi_id' => $kaoshi_id);
         // 实例化学生成绩统计类
-        $kh = new Kaohao;
+        $khSrc = new \app\kaohao\model\Search;
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $cj = new \app\chengji\model\Chengji;
         $nianji = $ksset->srcNianji($kaoshi_id);
@@ -349,20 +325,20 @@ class TongjiBj extends BaseModel
         foreach ($nianji as $njkey => $value) {
             // 获取参加考试班级
             $src['ruxuenian'] = $value['nianji'];
-            $banji = $kh->cyBanji($src);
-            $subject = $ksset->srcSubject($kaoshi_id,'',$value['nianji']);
+            $banji = $khSrc->cyBanji($src);
+            $subject = $ksset->srcSubject($kaoshi_id, '', $value['nianji']);
 
             // 循环班级，获取并统计成绩
             foreach ($banji as $bjkey => $val) {
-               // 获取成绩
-               $srcfrom = [
-                    'kaoshi'=>$kaoshi_id,
-                    'banji'=>$val['id'],
+                // 获取成绩
+                $srcfrom = [
+                    'kaoshi_id' => $kaoshi_id,
+                    'banji_id' => $val['id'],
                 ];
-                $temp = $kh->srcChengjiSubject($srcfrom);
+                $temp = $khSrc->srcChengjiSubject($srcfrom);
                 // 循环计算成绩排序
                 foreach ($temp as $key => $value) {
-                    $cj->saveOrder($value,$col);
+                    $cj->saveOrder($value, $col);
                 }
             }
         }
@@ -370,32 +346,33 @@ class TongjiBj extends BaseModel
     }
 
 
-
     // 考试关联
     public function bjKaoshi()
     {
-        return $this->belongsTo('\app\kaoshi\model\Kaoshi','kaoshi_id','id');
+        return $this->belongsTo('\app\kaoshi\model\Kaoshi', 'kaoshi_id', 'id');
     }
 
 
     // 班级关联
     public function bjBanji()
     {
-        return $this->belongsTo('\app\teach\model\Banji','banji_id','id');
+        return $this->belongsTo('\app\teach\model\Banji', 'banji_id', 'id');
     }
+
 
     // 学科关联
     public function bjSubject()
     {
-        return $this->belongsTo('\app\teach\model\Subject','subject_id','id');
+        return $this->belongsTo('\app\teach\model\Subject', 'subject_id', 'id');
     }
+
 
     // 成绩统计结果关联
     public function bjJieguo()
     {
         $ksid = $this->getAttr('kaoshi_id');
-        return $this->hasMany('\app\chengji\model\TongjiBj','banji_id','banji_id')
-                ->where('kaoshi_id',$ksid);
+        return $this->hasMany('\app\chengji\model\TongjiBj', 'banji_id', 'banji_id')
+                ->where('kaoshi_id', $ksid);
     }
 
 
@@ -403,23 +380,21 @@ class TongjiBj extends BaseModel
     public function quJieguo()
     {
         $sbjid = $this->getAttr('subject_id');
-        return $this->belongsTo('\app\chengji\model\TongjiSch','kaoshi_id','kaoshi_id')
-                ->where('subject_id',$sbjid);
+        return $this->belongsTo('\app\chengji\model\TongjiSch', 'kaoshi_id', 'kaoshi_id')
+                ->where('subject_id', $sbjid);
     }
 
 
     // 获取班级名称
     public function getBanjiTitleAttr()
     {
-        $kh = new \app\kaoshi\model\Kaohao;
+        $khSrc = new \app\kaohao\model\Search;
         $src = [
-            'kaoshi'=>$this->getAttr('kaoshi_id'),
-            'banji'=>$this->getAttr('banji_id'),
+            'kaoshi_id' => $this->getAttr('kaoshi_id'),
+            'banji_id' => $this->getAttr('banji_id'),
         ];
 
-        $bj = $kh->cyBanji($src);
+        $bj = $khSrc->cyBanji($src);
         return $bj[0]['banjiTitle'];
     }
-
-
 }

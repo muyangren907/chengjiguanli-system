@@ -8,7 +8,7 @@ use app\BaseModel;
 // 引用数据模型
 use \app\kaohao\model\Kaohao as kh;
 
-class KaohaoSearch extends BaseModel
+class Search extends BaseModel
 {
     // 查询学生成绩详细信息
     public function srcChengjiList($srcfrom)
@@ -46,19 +46,19 @@ class KaohaoSearch extends BaseModel
         $data = array();
         foreach ($khlist as $key => $value) {
             $data[$key]['id'] = $value->id;
-            $data[$key]['school_id'] = $value->cjSchool->jiancheng;
+            $data[$key]['school_jiancheng'] = $value->cjSchool->jiancheng;
             if($value->cjStudent != Null){
-                $data[$key]['student_id'] = $value->cjStudent->xingming;
+                $data[$key]['student_xingming'] = $value->cjStudent->xingming;
                 $data[$key]['sex'] = $value->cjStudent->sex;
             }else{
                 $stuinfo = $stu::withTrashed()
                         ->where('id', $value->student)
                         ->field('id, xingming, sex')
                         ->find();
-                $data[$key]['student_id'] = $stuinfo->xingming;
+                $data[$key]['student_xingming'] = $stuinfo->xingming;
                 $data[$key]['sex'] = $stuinfo->sex;
             }
-            $data[$key]['banji'] = $value->banjiTitle;
+            $data[$key]['ban_title'] = $value->banjiTitle;
             $dfsum = 0;
             $sbjcnt = 0;
 
@@ -160,7 +160,7 @@ class KaohaoSearch extends BaseModel
             ,'banji_id' => array()
             ,'searchval' => ''
         );
-        $src = array_cover($srcfrom ,$src);
+        $src = array_cover($srcfrom, $src);
 
         $kh = new kh;
         $khlist = $kh->search($src);

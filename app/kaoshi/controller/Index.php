@@ -281,7 +281,7 @@ class Index extends BaseController
                 ,'kaoshi_id' => '1'
             ], 'POST');
 
-        $khSrc = new \app\kaohao\model\KaohaoSearch;
+        $khSrc = new \app\kaohao\model\Search;
         $bj = $khSrc->cyBanji($src);
         $cnt = count($bj);
 

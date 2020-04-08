@@ -10,32 +10,30 @@ use app\chengji\model\TongjiNj as NTJ;
 class Njtongji extends BaseController
 {
     // 获取各学校、各年级考试成绩
-    public function biaoge($kaoshi)
+    public function biaoge($kaoshi_id)
     {
-
         // 获取考试信息
         $ks = new \app\kaoshi\model\Kaoshi;
-        $ksinfo = $ks->where('id',$kaoshi)
-            ->field('id,title')
+        $ksinfo = $ks->where('id', $kaoshi_id)
+            ->field('id, title')
             ->find();
         // 获取参与学校
-        $kh = new \app\kaoshi\model\Kaohao;
-        $src['kaoshi'] = $kaoshi;
-        $list['school'] = $kh->cySchool($src);
+        $khSrc = new \app\kaohao\model\Search;
+        $src['kaoshi'] = $kaoshi_id;
+        $list['school'] = $khSrc->cySchool($src);
         // 获取年级与学科
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['nianji'] = $ksset->srcNianji($kaoshi);
-        $list['subject'] = $ksset->srcSubject($kaoshi,'','');
+        $list['nianji'] = $ksset->srcNianji($kaoshi_id);
+        $list['subject'] = $ksset->srcSubject($kaoshi_id, '', '');
 
         // 设置要给模板赋值的信息
         $list['webtitle'] = '各学校的年级成绩统计表';
-        $list['kaoshi'] = $kaoshi;
+        $list['kaoshi'] = $kaoshi_id;
         $list['kaoshititle'] = $ksinfo->title;
         $list['dataurl'] = '/chengji/njtj/data';
 
-
         // 模板赋值
-        $this->view->assign('list',$list);
+        $this->view->assign('list', $list);
 
         // 渲染模板
         return $this->view->fetch();
@@ -47,34 +45,23 @@ class Njtongji extends BaseController
     {
         // 获取参数
         $src = $this->request
-                ->only([
-                    'page'=>'1',
-                    'limit'=>'10',
-                    'kaoshi'=>'',
-                    'ruxuenian'=>'',
-                ],'POST');
-
+            ->only([
+                'page'=>'1',
+                'limit'=>'30',
+                'kaoshi_id'=>'',
+                'ruxuenian'=>'',
+            ],'POST');
 
         // 统计成绩
         $ntj = new NTJ;
         $data = $ntj->search($src);
+        $data = reSetArray($data);
         $schtj = new \app\chengji\model\TongjiSch;
         $dataAll = $schtj->search($src);
-        count($dataAll)>0 ? $data[] = $dataAll['all'] : $data;
-
-        // 获取记录数
-        $cnt = count($data);
-        // 截取当前页数据
-        $data = array_slice($data,($src['page']-1)*$src['limit'],$src['limit']);
-
-        // 重组返回内容
-        $data = [
-            'code'=> 0 , // ajax请求次数，作为标识符
-            'msg'=>"",  // 获取到的结果数(每页显示数量)
-            'count'=>$cnt, // 符合条件的总数据量
-            'data'=>$data, //获取到的数据结果
-        ];
-
+        if (count($dataAll) > 0) {
+            $data['data'][] = $dataAll['all'];
+            $data['count'] = $data['count'] + 1;
+        }
 
         return json($data);
     }
@@ -82,24 +69,23 @@ class Njtongji extends BaseController
 
 
     // 年级、班级学生成绩统计结果下载界面
-    public function dwBiaoge($kaoshi)
+    public function dwBiaoge($kaoshi_id)
     {
-
         // 设置页面标题
         $list['set'] = array(
-            'webtitle'=>'各年级成绩汇总表下载',
-            'butname'=>'下载',
-            'formpost'=>'POST',
-            'url'=>'/chengji/njtj/dwxlsx',
-            'kaoshi'=>$kaoshi
+            'webtitle' => '各年级成绩汇总表下载'
+            ,'butname' => '下载'
+            ,'formpost' => 'POST'
+            ,'url' => '/chengji/njtj/dwxlsx'
+            ,'kaoshi_id' => $kaoshi_id
         );
 
         // 获取年级与学科
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['set']['nianji'] = $ksset->srcNianji($kaoshi);
+        $list['set']['nianji'] = $ksset->srcNianji($kaoshi_id);
 
         // 模板赋值
-        $this->view->assign('list',$list);
+        $this->view->assign('list', $list);
         // 渲染
         return $this->view->fetch();
 
@@ -112,36 +98,36 @@ class Njtongji extends BaseController
 
         // 获取参数
         $src = $this->request
-                ->only([
-                    'page'=>'1',
-                    'limit'=>'10',
-                    'kaoshi'=>'',
-                    'ruxuenian'=>'',
-                ],'POST');
+            ->only([
+                'page' => '1'
+                ,'limit' => '10'
+                ,'kaoshi_id' => ''
+                ,'ruxuenian' => ''
+            ], 'POST');
 
         // 统计成绩
         $ntj = new NTJ;
         $data = $ntj->search($src);
         $schtj = new \app\chengji\model\TongjiSch;
         $dataAll = $schtj->search($src);
-        count($dataAll)>0 ? $data['all'] = $dataAll['all'] : $data;
-
+        if (count($dataAll) > 0) {
+            $data['all'] = $dataAll['all'];
+        }
 
         // 获取参考学科
         $ks = new \app\kaoshi\model\Kaoshi;
-        $ksinfo = $ks->where('id',$src['kaoshi'])
-                    ->field('id,title,bfdate')
+        $ksinfo = $ks->where('id', $src['kaoshi_id'])
+                    ->field('id, title, bfdate')
                     ->find();
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $xk = $ksset->srcSubject($src['kaoshi'],'',$src['ruxuenian']);
+        $xk = $ksset->srcSubject($src['kaoshi_id'], '', $src['ruxuenian']);
 
         // 获取考试年级名称
         $njlist = nianjiList($ksinfo->getData('bfdate'));
         $nianji = $njlist[$src['ruxuenian']];
 
         // 获取要下载成绩的学校和年级信息
-        $tabletitle = $ksinfo->title.' '.$nianji.'各学校成绩汇总';
-
+        $tabletitle = $ksinfo->title . ' ' . $nianji . '各学校成绩汇总';
 
         // 创建表格
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -158,14 +144,18 @@ class Njtongji extends BaseController
             ->setKeywords("尚码 成绩管理") //关键字
             ->setCategory("成绩管理"); //分类
 
-        $sbjcol = ['cjCnt'=>'人数','avg'=>'平均分','jige'=>'及格率%','youxiu'=>'优秀率%'];
+        $sbjcol = [
+            'cjCnt' => '人数'
+            ,'avg' => '平均分'
+            ,'jige' => '及格率%'
+            ,'youxiu' => '优秀率%'
+        ];
         $sbjcolcnt = count($sbjcol);
         $colname = excelLieming();
-        $colcnt = $sbjcolcnt*count($xk)+3;
-
+        $colcnt = $sbjcolcnt * count($xk) + 3;
 
         // 设置表头信息
-        $sheet->mergeCells('A1:'.$colname[$colcnt].'1');
+        $sheet->mergeCells('A1:' . $colname[$colcnt] . '1');
         $sheet->setCellValue('A1', $tabletitle);
         $sheet->mergeCells('A3:A4');
         $sheet->setCellValue('A3', '序号');
@@ -174,35 +164,35 @@ class Njtongji extends BaseController
         $col = 2;
         foreach ($xk as $key => $value) {
             $colend = $col + $sbjcolcnt - 1;
-            $sheet->mergeCells($colname[$col].'3:'.$colname[$colend].'3');
-            $sheet->setCellValue($colname[$col].'3', $value['title'].' ('.$value['fenshuxian']['manfen'].')');
+            $sheet->mergeCells($colname[$col] . '3:' . $colname[$colend] . '3');
+            $sheet->setCellValue($colname[$col] . '3', $value['title'] . ' (' . $value['fenshuxian']['manfen'] . ')');
             foreach ($sbjcol as $k => $val) {
-                 $sheet->setCellValue($colname[$col].'4', $val);
+                 $sheet->setCellValue($colname[$col] . '4', $val);
                  $col++;
             }
         }
-        $sheet->mergeCells($colname[$col].'3:'.$colname[$col].'4');
-        $sheet->setCellValue($colname[$col].'3', '全科及格率%');
+        $sheet->mergeCells($colname[$col] . '3:' . $colname[$col] . '4');
+        $sheet->setCellValue($colname[$col] . '3', '全科及格率%');
         $col++;
-        $sheet->mergeCells($colname[$col].'3:'.$colname[$col].'4');
-        $sheet->setCellValue($colname[$col].'3', '总平均分');
-        $sheet->getStyle('C3:'.$colname[$col].'4')->getAlignment()->setWrapText(true);
+        $sheet->mergeCells($colname[$col] . '3:' . $colname[$col] . '4');
+        $sheet->setCellValue($colname[$col] . '3', '总平均分');
+        $sheet->getStyle('C3:' . $colname[$col] . '4')->getAlignment()->setWrapText(true);
 
         $row = 5;
         foreach ($data as $key => $value) {
             $col = 2;
-            $sheet->setCellValue('A'.$row, $row-4);
-            $sheet->setCellValue('B'.$row, $value['school']);
+            $sheet->setCellValue('A' . $row, $row - 4);
+            $sheet->setCellValue('B' . $row, $value['school']);
             foreach ($xk as $ke => $val) {
                 foreach ($sbjcol as $k => $v) {
-                     $sheet->setCellValue($colname[$col].$row, $value['chengji'][$val['lieming']][$k]);
-                     $col++;
+                     $sheet->setCellValue($colname[$col] . $row, $value['chengji'][$val['lieming']][$k]);
+                     $col ++;
                 }
             }
-            $sheet->setCellValue($colname[$col].$row, $value['quanke']['jige']);
-            $col++;
-            $sheet->setCellValue($colname[$col].$row, $value['quanke']['avg']);
-            $row++;
+            $sheet->setCellValue($colname[$col] . $row, $value['quanke']['jige']);
+            $col ++;
+            $sheet->setCellValue($colname[$col] . $row, $value['quanke']['avg']);
+            $row ++;
         }
 
         // 居中
@@ -212,7 +202,7 @@ class Njtongji extends BaseController
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, //垂直居中
             ],
         ];
-        $sheet->getStyle('A1:'.$colname[$col].($row-1))->applyFromArray($styleArray);
+        $sheet->getStyle('A1:' . $colname[$col] . ($row - 1))->applyFromArray($styleArray);
 
         // 加边框
         $styleArray = [
@@ -223,7 +213,7 @@ class Njtongji extends BaseController
                 ],
             ],
         ];
-        $sheet->getStyle('A3:'.$colname[$col].($row-1))->applyFromArray($styleArray);
+        $sheet->getStyle('A3:' . $colname[$col] . ($row - 1))->applyFromArray($styleArray);
         // 修改标题字号
         $sheet->getStyle('A1')->getFont()->setBold(true)->setName('宋体')->setSize(20);
         // 设置行高
@@ -233,7 +223,6 @@ class Njtongji extends BaseController
         $sheet->getDefaultColumnDimension()->setWidth(8.3);
         $sheet->getColumnDimension('A')->setWidth(5);
         $sheet->getColumnDimension('B')->setWidth(10.5);
-
 
         // 页面设置
         $sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
@@ -246,10 +235,8 @@ class Njtongji extends BaseController
         $sheet->getPageSetup()->setHorizontalCentered(true);
         $sheet->getPageSetup()->setVerticalCentered(false);
 
-
-
         // 保存文件
-        $filename = $tabletitle.date('ymdHis').'.xlsx';
+        $filename = $tabletitle . date('ymdHis') . '.xlsx';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
@@ -263,23 +250,29 @@ class Njtongji extends BaseController
     public function tongji()
     {
         // 获取变量
-        $kaoshi = input('post.kaoshi');
+        $kaoshi_id = input('post.kaoshi');
         // 判断考试状态
-        event('ksjs',$kaoshi);
+        event('ksjs', $kaoshi_id);
         // 统计成绩
         $ntj = new NTJ;
-        $data = $ntj->tjNianji($kaoshi);
+        $data = $ntj->tjNianji($kaoshi_id);
 
         if(true == $data)
         {
-            $data=['msg'=>'各学校年级成绩统计完成','val'=>1];
+            $data = [
+                'msg'=>'各学校年级成绩统计完成'
+                ,'val'=>1
+            ];
             $src = [
-                'kaoshi_id' => $kaoshi,
-                'category' => 'njtj',
+                'kaoshi_id' => $kaoshi_id
+                ,'category_id' => 'njtj'
             ];
             event('tjlog', $src);
         }else{
-            $data=['msg'=>'数据处理错误','val'=>0];
+            $data = [
+                'msg' => '数据处理错误'
+                ,'val' => 0
+            ];
         }
 
         return json($data);
@@ -290,24 +283,34 @@ class Njtongji extends BaseController
     public function njOrder()
     {
         // 获取变量
-        $kaoshi = input('post.kaoshi');
+        $kaoshi_id = input('post.kaoshi_id');
         // 判断考试状态
-        event('ksjs',$kaoshi);
+        event('ksjs', $kaoshi_id);
+
+        halt($kaoshi_id);
 
         // 统计成绩
         $ntj = new NTJ;
-        $data = $ntj->njOrder($kaoshi);
+        $data = $ntj->njOrder($kaoshi_id);
+
+        halt($data);
 
         if(true == $data)
         {
-            $data=['msg'=>'学生成绩在学校年级位置统计完成。','val'=>1];
+            $data = [
+                'msg' => '学生成绩在学校年级位置统计完成。'
+                ,'val' => 1
+            ];
             $src = [
-                'kaoshi_id' => $kaoshi,
-                'category' => 'njwz',
+                'kaoshi_id' => $kaoshi_id
+                ,'category_id' => 'njwz'
             ];
             event('tjlog', $src);
         }else{
-            $data=['msg'=>'数据处理错误','val'=>0];
+            $data = [
+                'msg' => '数据处理错误'
+                ,'val' => 0
+            ];
         }
 
         return json($data);
@@ -315,39 +318,37 @@ class Njtongji extends BaseController
 
 
     // 统计平均分优秀率及格率
-    public function myAvg($kaoshi)
+    public function myAvg()
     {
-
         // 获取参数
         $src = $this->request
-                ->only([
-                    'kaoshi'=>'',
-                    'ruxuenian'=>'',
-                    'school'=>array(),
-                    'xiangmu'=>'',
-                ],'POST');
+            ->only([
+                'kaoshi_id' => ''
+                ,'ruxuenian' => ''
+                ,'school_id' => array()
+                ,'xiangmu' => ''
+            ],'POST');
 
         // 统计成绩
         $ntj = new NTJ;
         $data = $ntj->search($src);
         $ntj = new \app\chengji\model\TongjiBj;
-        $data = tiaoxingOnexiangmu($data,$src['xiangmu']);
+        $data = tiaoxingOnexiangmu($data, $src['xiangmu']);
 
         return json($data);
     }
 
 
-
     // 统计平均分优秀率及格率
-    public function myXiangti($kaoshi)
+    public function myXiangti()
     {
         // 获取参数
         $src = $this->request
-                ->only([
-                    'kaoshi'=>'',
-                    'ruxuenian'=>'',
-                    'school'=>array(),
-                ],'POST');
+            ->only([
+                'kaoshi_id' => ''
+                ,'ruxuenian' => ''
+                ,'school_id' => array()
+            ], 'POST');
 
 
         // 统计成绩
@@ -358,7 +359,5 @@ class Njtongji extends BaseController
 
         return json($data);
     }
-
-
 
 }

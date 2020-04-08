@@ -6,7 +6,7 @@ use app\BaseController;
 
 // 引用数据模型类
 use app\kaoshi\model\Kaoshi as KS;
-use app\kaohao\model\KaohaoSearch as khSrc;
+use app\kaohao\model\Search as khSrc;
 use app\kaoshi\model\KaoshiSet as ksset;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use \Endroid\QrCode\QrCode;

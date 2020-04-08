@@ -8,13 +8,12 @@ use app\BaseModel;
 
 class Chengji extends BaseModel
 {
-
-
     // 学科关联
     public function subjectName()
     {
         return $this->belongsTo('\app\teach\model\Subject','subject_id','id');
     }
+
 
     // 学科关联
     public function userName()
@@ -22,12 +21,12 @@ class Chengji extends BaseModel
         return $this->belongsTo('\app\admin\model\Admin','user_id','id');
     }
 
+
     // 考号关联
     public function cjKaohao()
     {
         return $this->belongsTo('\app\kaoshi\model\Kaohao','kaohao_id','id');
     }
-
 
 
     // 列出已录成绩列表
@@ -37,145 +36,114 @@ class Chengji extends BaseModel
         $src = array(
             'field'=>'update_time',
             'order'=>'desc',
-            'kaoshi'=>'0',
-            'banji'=>array(),
+            'kaoshi_id'=>'0',
+            'banji_id'=>array(),
             'subject_id'=>'',
             'searchval'=>'',
             'user_id'=>session('userid'),
         );
-
-        // 用新值替换初始值
         $src = array_cover( $srcfrom , $src ) ;
-        $src['banji'] = strToarray($src['banji']);
-        // $subject_id = $src['subject_id'];
-        // $kaoshi = $src['kaoshi'];
-        // $searchval = $src['searchval'];
+        $src['banji_id'] = strToarray($src['banji_id']);
 
         $stu = new \app\renshi\model\Student;
         $stuid = $stu
-                    ->when(strlen($src['searchval'])>0,function($query)use($src){
-                        $query->where('xingming','like','%'.$src['searchval'].'%')
-                            ->field('id');
-                    })
-                    ->column('id');
-
+            ->when(strlen($src['searchval']) > 0, function ($query) use ($src) {
+                $query->where('xingming', 'like', '%' . $src['searchval'] . '%')
+                    ->field('id');
+            })
+            ->column('id');
 
         $nianji = nianjiList();
         $cjList = $this
-                ->whereMonth('update_time')
-                ->where('user_id',$src['user_id'])
-                ->when(is_numeric($src['subject_id']),function($query)use($src){
-                    $query->where('subject_id',$src['subject_id']);
-                })
-                ->when(count($stuid)>0,function($query)use($stuid){
-                    $query->where('kaohao_id','in',function($q)use($stuid){
-                        $q->name('kaohao')
-                            ->where('student','in',$stuid)
-                            ->whereTime('update_time','-480 hours')
-                            ->field('id');
-                    });
-                })
-                ->with([
-                    'subjectName'=>function($query){
-                        $query->field('id,title,lieming');
-                    }
-                    ,'cjKaohao'=>function($query){
-                        $query->field('id,kaoshi,school,ruxuenian,nianji,banji,paixu,student')
-                            ->append(['banjiTitle'])
-                            ->with([
-                            'cjSchool'=>function($query){
-                                $query->field('id,jiancheng,paixu');
-                            }
-                            ,'cjStudent'=>function($query){
-                                $query->field('id,xingming,sex');
-                            }
-                            ,'cjKaoshi'=>function($query){
-                                $query->field('id,title');
-                            }
-                        ]);
-                    }
-                ])
-                ->select();
+            ->whereMonth('update_time')
+            ->where('user_id', $src['user_id'])
+            ->when(is_numeric($src['subject_id']), function ($query) use ($src) {
+                $query->where('subject_id', $src['subject_id']);
+            })
+            ->when(count($stuid) > 0, function ($query) use ($stuid) {
+                $query->where('kaohao_id', 'in', function ($q) use ($stuid) {
+                    $q->name('kaohao')
+                        ->where('student', 'in', $stuid)
+                        ->whereTime('update_time', '-480 hours')
+                        ->field('id');
+                });
+            })
+            ->with([
+                'subjectName' => function($query){
+                    $query->field('id, title, lieming');
+                }
+                ,'cjKaohao' => function($query){
+                    $query->field('id, kaoshi_id, school_id, ruxuenian, nianji_id, banji_id, paixu, student_id')
+                        ->append(['banjiTitle'])
+                        ->with([
+                        'cjSchool' => function($query){
+                            $query->field('id, jiancheng, paixu');
+                        }
+                        ,'cjStudent' => function($query){
+                            $query->field('id, xingming, sex');
+                        }
+                        ,'cjKaoshi' => function($query){
+                            $query->field('id, title');
+                        }
+                    ]);
+                }
+            ])
+            ->select();
 
         // 重新整理成绩
         $data = array();
         foreach ($cjList as $key => $value) {
             $data[$key] = [
-                'id'=>$value->id,
-                'kaoshi'=>$value->cjKaohao->cjKaoshi->title,
-                'kaoshiid'=>$value->cjKaohao->cjKaoshi->id,
-                'kaohaoid'=>$value->cjKaohao->id,
-                'school'=>$value->cjKaohao->cjSchool->jiancheng,
-                'schoolid'=>$value->cjKaohao->cjSchool->paixu,
-                'banji'=>$value->cjKaohao->banjiTitle,
-                'banjiid'=>$value->cjKaohao->banji,
-                'subject'=>$value->subjectName->title,
-                'subjectid'=>$value->id,
-                'subjectname'=>$value->subjectName->lieming,
-                'defen'=>$value->defen,
-                'status'=>$value->status,
-                'update_time'=>$value->update_time,
+                'id' => $value->id
+                ,'kaoshi_title' => $value->cjKaohao->cjKaoshi->title
+                ,'kaoshi_id' => $value->cjKaohao->cjKaoshi->id
+                ,'kaohao_id' => $value->cjKaohao->id
+                ,'school_jiancheng' => $value->cjKaohao->cjSchool->jiancheng
+                ,'school_id' => $value->cjKaohao->cjSchool->paixu
+                ,'banji_title' => $value->cjKaohao->banjiTitle
+                ,'banji_id' => $value->cjKaohao->banji
+                ,'subject_title' => $value->subjectName->title
+                ,'subject_id' => $value->id
+                ,'subject_lieming' => $value->subjectName->lieming
+                ,'defen' => $value->defen
+                ,'status' => $value->status
+                ,'update_time' => $value->update_time
             ];
             $value->cjKaohao->cjStudent ? $data[$key]['student']=$value->cjKaohao->cjStudent->xingming : $data[$key]['student']= '';
         }
 
         // 按条件排序
-        $src['order'] == 'desc' ? $src['order'] =SORT_DESC :$src['order'] = SORT_ASC;
-        if(count($data)>0){
-            $data = sortArrByManyField($data,$src['field'],$src['order']);
+        $src['order'] == 'desc' ? $src['order'] =SORT_DESC : $src['order'] = SORT_ASC;
+        if (count($data) > 0) {
+            $data = sortArrByManyField($data, $src['field'], $src['order']);
         }
-
 
         return $data;
     }
 
 
 
-    // 列出要显示的学生所有学科成绩
+    // 根据条件查询学生所有学科成绩
     public function search($srcfrom)
     {
-
         // 初始化参数
         $src = array(
-            'field'=>'banji',
-            'order'=>'desc',
-            'kaoshi'=>'',
-            'banji'=>array(),
-            'searchval'=>''
+            'kaoshi_id' => ''
+            ,'banji_id' => array()
+            ,'searchval' => ''
         );
-
-        // 用新值替换初始值
-        $src = array_cover( $srcfrom , $src ) ;
+        $src = array_cover($srcfrom, $src);
 
         // 实例化考号数据模型
-        $kh = new \app\kaoshi\model\Kaohao;
-
-        // 以考号为基础查询成绩
-        $chengjilist = $kh->srcChengjiList($src);
-
-
-        // 按条件排序
-        $src['order'] == 'desc' ? $src['order'] =SORT_DESC :$src['order'] = SORT_ASC;
-        if(count($chengjilist)>0){
-            $chengjilist = sortArrByManyField($chengjilist,$src['field'],$src['order']);
-        }
+        $khSrc = new \app\kaohao\model\Search;
+        $chengjilist = $khSrc->srcChengjiList($src);
 
         return $chengjilist;
-
     }
 
 
-
-    /**
-    * 把给定的成绩进行排序
-    * @access public
-    * @param array $cj 要计算的一维数组成绩
-    * @param array $col 0=>paixu,1=>weizhi
-    * @param int $xm 项目 0=>学科得分,1=>平均分,2=>总分
-    * @param int $jibie 级别  1=>班级，2=>年级，3=>区
-    * @return array $result 返回成绩排序结果
-    */
-    public function saveOrder($cj,$col)
+    // 成绩排序
+    public function saveOrder($cj, $col)
     {
         $cnt = count($cj);      # 获取元素数量
         if($cnt == 0)

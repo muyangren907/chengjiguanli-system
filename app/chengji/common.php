@@ -1,41 +1,36 @@
 <?php
 
 // 分数验证
-function manfenvalidate($defen,$manfen)
+function manfenvalidate($defen, $manfen)
 {
 	$data['val'] = 1;
 	$data['msg'] = '验证通过';
 
-	if($manfen == "")
-	{
+	if ($manfen == "") {
 		$data['val'] = 0;
 		$data['msg'] = '本学科不参加考试';
 		return $data;
 	}
 
-	if(is_numeric($defen) == false)
-	{
+	if (is_numeric($defen) == false) {
 		$data['val'] = 0;
 		$data['msg'] = '得分必须是数字';
 		return $data;
 	}
 
-	if( $defen < 0 )
-	{
+	if ( $defen < 0 ) {
 		$data['val'] = 0;
 		$data['msg'] = '得分必须大于等于0';
 		return $data;
 	}
 
-	if($defen > $manfen)
-	{
+	if ($defen > $manfen) {
 		$data['val'] = 0;
 		$data['msg'] = '得分必须必须小于等于'.$manfen;
 		return $data;
 	}
 
-	if( ($defen*10)%5 != 0 )
-	{
+	if ( ($defen*10)%5 != 0 ) {
 		$data['val'] = 0;
 		$data['msg'] = '得分必须只能是x.5';
 		return $data;
@@ -54,25 +49,25 @@ function manfenvalidate($defen,$manfen)
     * @param xm 要统计的项目
     * @return array 返回类型
     */
-    function tiaoxingOnexiangmu($jg,$xm)
+    function tiaoxingOnexiangmu($jg, $xm)
     {
         $chengji = array();
         $series = array();
         foreach ($jg as $key => $value) {
             if($key ==0)
             {
-                $chengji[$key][]='项目';
+                $chengji[$key][] = '项目';
                 foreach ($value['chengji'] as $k => $val) {
-                    $chengji[$key][] = $val['title'];
+                    $chengji[$key][] = $val['banji_title'];
                     $series[] = ['type'=>'bar'];
                 }
             }
             # code...
-            if( isset($value['title']))
+            if( isset($value['banji_title']))
             {
-                $temp = $value['school'].$value['title'];
+                $temp = $value['school_jiancheng'].$value['banji_title'];
             }else{
-                $temp = $value['school'];
+                $temp = $value['school_jiancheng'];
             }
             $chengji[$key+1][] = $temp;
             foreach ($value['chengji'] as $k => $val) {
@@ -108,7 +103,7 @@ function manfenvalidate($defen,$manfen)
             if($key ==0)
             {
                 foreach ($value['chengji'] as $k => $val) {
-                    $category[$k] = $val['title'];
+                    $category[$k] = $val['banji_title'];
                 }
             }
 
@@ -120,11 +115,11 @@ function manfenvalidate($defen,$manfen)
                 $chengji[$k][$key][4] = $val['sifenwei']['max'];
             }
 
-            if( isset($value['title']))
+            if( isset($value['banji_title']))
             {
-                $temp = $value['school'].$value['title'];
+                $temp = $value['school_jiancheng'].$value['banji_title'];
             }else{
-                $temp = $value['school'];
+                $temp = $value['school_jiancheng'];
             }
 
             $axisData[] = $temp;
@@ -132,9 +127,9 @@ function manfenvalidate($defen,$manfen)
 
 
         $data = [
-            'axisData'=>$axisData,
-            'boxData'=>$chengji,
-            'category'=>$category,
+            'axisData' => $axisData
+            ,'boxData' => $chengji
+            ,'category' => $category
         ];
 
         return $data;

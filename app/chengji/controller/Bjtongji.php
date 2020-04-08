@@ -9,31 +9,31 @@ use app\chengji\model\TongjiBj as BTJ;
 
 class Bjtongji extends BaseController
 {
-    // 年级成绩汇总
-    public function biaoge($kaoshi)
+    // 班级成绩汇总
+    public function biaoge($kaoshi_id)
     {
         // 获取考试信息
         $ks = new \app\kaoshi\model\Kaoshi;
-        $ksinfo = $ks->where('id',$kaoshi)
-            ->field('id,title')
+        $ksinfo = $ks->where('id', $kaoshi_id)
+            ->field('id, title')
             ->find();
         // 获取参与学校
-        $kh = new \app\kaoshi\model\Kaohao;
-        $src['kaoshi'] = $kaoshi;
-        $list['school'] = $kh->cySchool($src);
+        $khSrc = new \app\kaohao\model\Search;
+        $src['kaoshi_id'] = $kaoshi_id;
+        $list['school_id'] = $khSrc->cySchool($src);
 
         // 获取年级与学科
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['nianji'] = $ksset->srcNianji($kaoshi);
-        $list['subject'] = $ksset->srcSubject($kaoshi,'','');
+        $list['nianji'] = $ksset->srcNianji($kaoshi_id);
+        $list['subject_id'] = $ksset->srcSubject($kaoshi_id, '', '');
         // 设置要给模板赋值的信息
         $list['webtitle'] = '各年级的班级成绩列表';
-        $list['kaoshi'] = $kaoshi;
+        $list['kaoshi_id'] = $kaoshi_id;
         $list['kaoshititle'] = $ksinfo->title;
         $list['dataurl'] = '/chengji/bjtj/data';
 
         // 模板赋值
-        $this->view->assign('list',$list);
+        $this->view->assign('list', $list);
 
         // 渲染模板
         return $this->view->fetch();
@@ -45,20 +45,20 @@ class Bjtongji extends BaseController
     {
         // 获取参数
         $src = $this->request
-                ->only([
-                    'page'=>'1',
-                    'limit'=>'10',
-                    'kaoshi'=>'',
-                    'ruxuenian'=>'',
-                    'school'=>array(),
-                    'banji'=>array(),
-                ],'POST');
+            ->only([
+                'page' => '1'
+                ,'limit' => '10'
+                ,'kaoshi_id' => ''
+                ,'ruxuenian' => ''
+                ,'school_id' => array()
+                ,'banji_id' => array()
+            ], 'POST');
 
-        if(count($src['banji'])==0)
+        if(count($src['banji_id'])==0)
         {
             // 获取参与考试的班级
-            $kh = new \app\kaoshi\model\Kaohao;
-            $src['banji']= array_column($kh->cyBanji($src),'id');
+            $khSrc = new \app\kaohao\model\Search;
+            $src['banji_id']= array_column($khSrc->cyBanji($src),'id');
         }
 
         // 统计成绩
@@ -68,7 +68,7 @@ class Bjtongji extends BaseController
         // 获取记录总数
         $cnt = count($data);
         // 截取当前页数据
-        $data = array_slice($data,($src['page']-1)*$src['limit'],$src['limit']);
+        $data = array_slice($data, ($src['page'] - 1) * $src['limit'], $src['limit']);
 
         // 重组返回内容
         $data = [
@@ -83,7 +83,7 @@ class Bjtongji extends BaseController
 
 
     // 年级、班级学生成绩统计结果下载界面
-    public function dwBiaoge($kaoshi)
+    public function dwBiaoge($kaoshi_id)
     {
         // 设置页面标题
         $list['set'] = array(
@@ -91,15 +91,15 @@ class Bjtongji extends BaseController
             'butname'=>'下载',
             'formpost'=>'POST',
             'url'=>'/chengji/bjtj/dwxlsx',
-            'kaoshi'=>$kaoshi
+            'kaoshi'=>$kaoshi_id
         );
         // 获取参与学校
-        $kh = new \app\kaoshi\model\Kaohao;
-        $src['kaoshi'] = $kaoshi;
-        $list['set']['school'] = $kh->cySchool($src);
+        $khSrc = new \app\kaoshi\model\KaohaoSearch;
+        $src['kaoshi'] = $kaoshi_id;
+        $list['set']['school'] = $khSrc->cySchool($src);
         // 获取年级与学科
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['set']['nianji'] = $ksset->srcNianji($kaoshi);
+        $list['set']['nianji'] = $ksset->srcNianji($kaoshi_id);
 
         // 模板赋值
         $this->view->assign('list',$list);
@@ -289,19 +289,19 @@ class Bjtongji extends BaseController
     public function tongji()
     {
         // 获取变量
-        $kaoshi = input('post.kaoshi');
+        $kaoshi_id = input('post.kaoshi');
         // 判断考试状态
-        event('ksjs',$kaoshi);
+        event('ksjs',$kaoshi_id);
 
         // 统计成绩
         $btj = new BTJ;
-        $data = $btj->tjBanji($kaoshi);
+        $data = $btj->tjBanji($kaoshi_id);
 
         if(true == $data)
         {
             $data = ['msg' => '各班级成绩统计完成', 'val' => 1];
             $src = [
-                'kaoshi_id' => $kaoshi,
+                'kaoshi_id' => $kaoshi_id,
                 'category' => 'bjtj',
             ];
             event('tjlog', $src);
@@ -318,24 +318,24 @@ class Bjtongji extends BaseController
     public function bjOrder()
     {
         // 获取变量
-        $kaoshi = input('post.kaoshi');
+        $kaoshi_id = input('post.kaoshi');
         // 判断考试状态
-        event('ksjs',$kaoshi);
+        event('ksjs', $kaoshi_id);
 
         // 统计成绩
         $btj = new BTJ;
-        $data = $btj->bjOrder($kaoshi);
+        $data = $btj->bjOrder($kaoshi_id);
 
         if(true == $data)
         {
             $data=['msg'=>'学生成绩在班级位置统计完成。','val'=>1];
             $src = [
-                'kaoshi_id' => $kaoshi,
-                'category' => 'bjwz',
+                'kaoshi_id' => $kaoshi_id
+                ,'category_id' => 'bjwz'
             ];
             event('tjlog', $src);
         }else{
-            $data=['msg'=>'数据处理错误','val'=>0];
+            $data = ['msg' => '数据处理错误', 'val' => 0];
         }
 
         return json($data);
@@ -343,31 +343,30 @@ class Bjtongji extends BaseController
 
 
     // 统计平均分优秀率及格率
-    public function myAvg($kaoshi)
+    public function myAvg($kaoshi_id)
     {
 
         // 获取参数
         $src = $this->request
-                ->only([
-                    'kaoshi'=>'',
-                    'ruxuenian'=>'',
-                    'school'=>array(),
-                    'banji'=>array(),
-                    'xiangmu'=>'',
-                ],'POST');
+            ->only([
+                'kaoshi_id' => ''
+                ,'ruxuenian' => ''
+                ,'school_id' => array()
+                ,'banji_id' => array()
+                ,'xiangmu' => ''
+            ], 'POST');
 
-        if(count($src['banji'])==0)
-        {
+        if (count($src['banji_id']) == 0) {
             // 获取参与考试的班级
-            $kh = new \app\kaoshi\model\Kaohao;
-            $src['banji']= array_column($kh->cyBanji($src),'id');
+            $khSrc = new \app\kaohao\model\Search;
+            $src['banji_id']= array_column($khSrc->cyBanji($src), 'id');
         }
 
         // 统计成绩
         $btj = new BTJ;
         $data = $btj->search($src);
 
-        $data = tiaoxingOnexiangmu($data,$src['xiangmu']);
+        $data = tiaoxingOnexiangmu($data, $src['xiangmu']);
 
         return json($data);
     }
@@ -375,28 +374,26 @@ class Bjtongji extends BaseController
 
 
     // 统计平均分优秀率及格率
-    public function myXiangti($kaoshi)
+    public function myXiangti($kaoshi_id)
     {
         // 获取参数
         $src = $this->request
-                ->only([
-                    'kaoshi'=>'',
-                    'ruxuenian'=>'',
-                    'school'=>array(),
-                    'banji'=>array(),
-                ],'POST');
+            ->only([
+                'kaoshi_id' => ''
+                ,'ruxuenian' => ''
+                ,'school_id' => array()
+                ,'banji_id' => array()
+            ],'POST');
 
-        if(count($src['banji'])==0)
-        {
+        if (count($src['banji_id']) == 0) {
             // 获取参与考试的班级
-            $kh = new \app\kaoshi\model\Kaohao;
-            $src['banji']= array_column($kh->cyBanji($src),'id');
+            $khSrc = new \app\kaohao\model\Search;
+            $src['banji']= array_column($khSrc->cyBanji($src), 'id');
         }
 
         // 统计成绩
         $btj = new BTJ;
         $data = $btj->search($src);
-
         $data = xiangti($data);
 
         return json($data);
