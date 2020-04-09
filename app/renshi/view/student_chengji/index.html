@@ -24,7 +24,7 @@
 <div class="layui-form-item">
   <label for="xueqi_id" class="layui-form-label" style="height: 100%">学期</label>
   <div class="layui-input-block">
-    <input type="radio" name="xueqi" title="无" value="" lay-skin="primary" checked="true">
+    <input type="radio" name="xueqi_id" title="无" value="" lay-skin="primary" checked="true">
     {php} $category = getCategory(108);{/php}
     {volist name="category" id="vo"}
     <input type="radio" name="xueqi_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
@@ -55,7 +55,7 @@
 </div>
 
 
-<input type="hidden" name="student" value="{$list.student}">
+<input type="hidden" name="student_id" value="{$list.student_id}">
 {/block}
 {block name="table"}
   <table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
@@ -92,9 +92,8 @@
     endate = d.bfdate + '～' + endate;
     return endate;
   }}
-  ,{field:'zuzhi',title: '组织单位',sort:true, minWidth:100}
+  ,{field:'zuzhi_id',title: '组织单位',sort:true, minWidth:100}
   ]];
-
 
   var xk = '<?php echo json_encode($list["sbj"]);?>';
   xk = eval(decodeURIComponent(xk));
@@ -104,7 +103,6 @@
   }
   options.cols[0].push({field: 'avg', title: '平均分', minWidth:100,sort: true});
   options.cols[0].push({field: 'sum', title: '总分', minWidth:100,sort: true});
-
 
   // 提交搜索条件后重载表格
   layui.use(['table','cjgl','laydate','element'],function(){
@@ -169,11 +167,10 @@
           cjgl.add('添加单位','/school/create','650','500');
           break;
         case 'download':
-          cjgl.add('下载成绩','/chengji/bjtj/dwbiaoge/{$list.kaoshi}','650','300');
+          cjgl.add('下载成绩','/chengji/bjtj/dwbiaoge/{$list.kaoshi_id}','650','300');
           break;
         };
       });
-
 
 
     //监听行工具条
@@ -183,11 +180,10 @@
       var tr = obj.tr; //获得当前行 tr 的DOM对象
       switch(layEvent){
         case 'detail':// 查看
-          cjgl.add(obj.data.kaoshiTitle + '考试成绩','/kaoshi/kaohao/read/'+obj.data.kaohaoId,'','',true);
+          cjgl.add(obj.data.kaoshiTitle + '考试成绩','/kaohao/index/read/' + obj.data.kaohao_id,'','',true);
           break;
       };
     });
-
 
 
     // 监听表单提交
@@ -213,13 +209,13 @@
 
 
    // 条形统计图--平均分
-   function getDefenlv(sbjid,sbjlieming,sbjtitle){
+   function getDefenlv(sbjid, sbjlieming, sbjtitle){
     var id = sbjlieming;
     var url = '/renshi/studentcj/chengjitubiao';
     var val = form.val('search');
-    val.subject = sbjid;
+    val.subject_id = sbjid;
     var title = sbjtitle;
-    createZhexian(id,url,val,title);
+    createZhexian(id, url, val, title);
   }
 
 });
@@ -234,7 +230,7 @@
   * @param val 图表标题
   * @return array 返回类型
   */
-  function createZhexian(id,url,val,title)
+  function createZhexian(id, url, val, title)
   {
     var myZhexian = echarts.init(document.getElementById(id));
     $.post(url,val).done(function (data) {

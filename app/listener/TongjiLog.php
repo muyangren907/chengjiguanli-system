@@ -16,12 +16,12 @@ class TongjiLog
     {
         $src = [
             'kaoshi_id' => '',
-            'category' => '',
+            'category_id' => '',
         ];
         // 用新值替换初始值
         $src = array_cover($srcfrom, $src) ;
         $event = new MyEvent;
-        $tjLog = $event->addTongjiLog($src['kaoshi_id'], $src['category']);
+        $tjLog = $event->addTongjiLog($src['kaoshi_id'], $src['category_id']);
 
         return true;
     }

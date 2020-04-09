@@ -27,7 +27,7 @@ class TongjiSch extends BaseModel
                     'kaoshi_id' => $kaoshi_id
                     ,'ruxuenian' => $nianji['nianji']
                 ];
-                $src['banji'] = array_column($khSrc->cyBanji($src), 'id');
+                $src['banji_id'] = array_column($khSrc->cyBanji($src), 'id');
                 $subject = $ksset->srcSubject($kaoshi_id, '', $nianji['nianji']);
                 $temp = $khSrc->srcChengjiList($src);
                 $temp = $tj->tongjiSubject($temp, $subject);
@@ -95,8 +95,6 @@ class TongjiSch extends BaseModel
             'kaoshi_id' => ''
             ,'ruxuenian' => ''
         );
-
-        // 用新值替换初始值
         $src = array_cover($srcfrom, $src);
         $kaoshi_id = $src['kaoshi_id'];
 
@@ -124,8 +122,8 @@ class TongjiSch extends BaseModel
         foreach ($tongjiJg as $key => $value) {
             $data['all'] = [
                 'id' => $value->id
-                ,'school_id' => '全区'
-                ,'schoolpaixu' => 999
+                ,'school_jiancheng' => '全区'
+                ,'school_paixu' => 9999
             ];
             foreach ($value->schJieguo as $k => $val) {
                 if ($val->subject_id > 0) {

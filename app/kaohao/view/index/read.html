@@ -100,11 +100,11 @@
   getLeiDa("{$list.id}");
 
   // 条形统计图--平均分
-  function getLeiDa(kaohaoid){
+  function getLeiDa(kaohao_id){
     var url = '/renshi/studentcj/chengjileida';
     var title = '学科成绩雷达图';
     var val = {
-      kaohaoid:kaohaoid
+      kaohao_id: kaohao_id
     };
     createLeiDa(url,val,title);
   }
@@ -121,10 +121,10 @@
   * @param val 图表标题
   * @return array 返回类型
   */
-  function createLeiDa(url,val,title)
+  function createLeiDa(url, val, title)
   {
     var myLeiDa = echarts.init(document.getElementById('leida'));
-    $.post(url,val).done(function (data) {
+    $.post(url, val).done(function (data) {
       myLeiDa.setOption({
         title: {
           text:'',

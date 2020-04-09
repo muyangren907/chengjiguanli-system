@@ -25,23 +25,23 @@ class StudentChengji extends BaseModel
         $src = array_cover($srcfrom, $src);
 
         // 查询成绩
-        $kh = new \app\kaoshi\model\Kaohao;
-        $stuCj = $kh->srcOneStudentChengji($src);
+        $khSrc = new \app\kaohao\model\Search;
+        $stuCj = $khSrc->srcOneStudentChengji($src);
 
         // 获取可以参加考试的学科
         $sbj = new \app\teach\model\Subject;
         $sbjList = $sbj->where('kaoshi', 1)
-                        ->where('status', 1)
-                        ->field('id, lieming')
-                        ->column('lieming', 'id');
+            ->where('status', 1)
+            ->field('id, lieming')
+            ->column('lieming', 'id');
 
         // 整理数据
         $data = array();
         foreach ($stuCj as $key => $value) {
             $data[$key] = [
-                'kaoshi_id' => $value->kaoshi,
+                'kaoshi_id' => $value->kaoshi_id,
                 'kaoshiTitle' => $value->cjKaoshi->title,
-                'kaohao_idd' => $value->id,
+                'kaohao_id' => $value->id,
                 'banjiTitle' => $value->banjiTitle,
                 'zuzhi_id' => $value->cjKaoshi->ksZuzhi->jiancheng,
                 'category_id' => $value->cjKaoshi->ksCategory->title,
@@ -98,8 +98,8 @@ class StudentChengji extends BaseModel
         );
         $src = array_cover( $srcfrom , $src );
 
-        $kh = new \app\kaoshi\model\Kaohao;
-        $stuCj = $kh->srcOneStudentChengji($src);
+        $khSrc = new \app\kaohao\model\Search;
+        $stuCj = $khSrc->srcOneStudentChengji($src);
 
 
         // 获取可以参加考试的学科
@@ -139,7 +139,7 @@ class StudentChengji extends BaseModel
             if($cjcnt > 0)
             {
                 foreach ($value->ksChengji as $sbj_k => $sbj_val) {
-                    if($src['subject'] == $sbj_val->subject_id)
+                    if($src['subject_id'] == $sbj_val->subject_id)
                     {
                         $xAxis[] = $value->cjKaoshi->title;
                         $series['0']['data'][] = $sbj_val->defenlv;
@@ -177,7 +177,7 @@ class StudentChengji extends BaseModel
         // 用新值替换初始值
         $src = array_cover($srcfrom, $src);
 
-        $kh = new \app\kaoshi\model\Kaohao;
+        $kh = new \app\kaohao\model\Kaohao;
         // 考号信息
         $khInfo = $kh->where('id', $src['kaohao_id'])
                     ->with([

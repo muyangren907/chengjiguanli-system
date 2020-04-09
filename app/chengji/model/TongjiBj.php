@@ -215,7 +215,7 @@ class TongjiBj extends BaseModel
                         ,'youxiu' => $val->youxiu * 1
                         ,'jige' => $val->jige * 1
                         ,'cjCnt' => $val->chengji_cnt
-                        ,'banji_title' => $val->bjSubject->title
+                        ,'title' => $val->bjSubject->title
                         ,'jiancheng' => $val->bjSubject->jiancheng
                         ,'biaozhuncha' => $val->biaozhuncha * 1
                         ,'sifenwei' => [

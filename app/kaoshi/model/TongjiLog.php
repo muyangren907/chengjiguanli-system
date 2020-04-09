@@ -15,17 +15,16 @@ class TongjiLog extends BaseModel
     public function search($srcfrom)
     {
         $src = [
-            'kaoshi' => '',
+            'kaoshi_id' => '',
             'cjlast' => 0,
         ];
-        // 用新值替换初始值
         $src = array_cover($srcfrom, $src) ;
         $src['date'] = date('Y-m-d h:i:s', $src['cjlast']);
 
-        $logList = self::where('kaoshi_id',$src['kaoshi'])
+        $logList = self::where('kaoshi_id',$src['kaoshi_id'])
                     ->with([
                         'userName'=>function($query){
-                            $query->field('id,xingming');
+                            $query->field('id, xingming');
                         }
                     ])
                     ->append(['url'])
@@ -39,15 +38,15 @@ class TongjiLog extends BaseModel
     }
 
     // 开始时间获取器
-    public function getCategoryAttr($value)
+    public function getCategoryIdAttr($value)
     {
         $src = [
-            'bjtj' => '班级统计',
-            'njtj' => '年级统计',
-            'schtj' => '区统计',
-            'bjwz' => '班级位置',
-            'njwz' => '年级位置',
-            'schwz' => '区位置',
+            'bjtj' => '班级统计'
+            ,'njtj' => '年级统计'
+            ,'schtj' => '区统计'
+            ,'bjwz' => '班级位置'
+            ,'njwz' => '年级位置'
+            ,'schwz' => '区位置'
         ];
 
         return $src[$value];
@@ -65,7 +64,7 @@ class TongjiLog extends BaseModel
             'schwz' => '/chengji/schtj/schorder',
         ];
 
-        $val = $this->getData('category');
+        $val = $this->getData('category_id');
 
         return $src[$val];
     }
@@ -73,7 +72,7 @@ class TongjiLog extends BaseModel
     // 学科关联
     public function userName()
     {
-        return $this->belongsTo('\app\admin\model\Admin','user_id','id');
+        return $this->belongsTo('\app\admin\model\Admin', 'user_id', 'id');
     }
 
 }

@@ -40,7 +40,7 @@ class StudentChengji extends BaseController
         // 设置页面标题
         $myInfo['webtitle'] = $myInfo->xingming . ' － 成绩';
         $myInfo['dataurl'] = '/renshi/studentcj/data';
-        $myInfo['student'] = $id;
+        $myInfo['student_id'] = $id;
 
         // 模板赋值
         $this->view->assign('list', $myInfo);
@@ -69,8 +69,7 @@ class StudentChengji extends BaseController
         // 获取学生成绩
         $stucj = new STUCJ;
         $khList = $stucj->oneStudentChengjiList($src);
-        halt($khList);
-        $data = reSetArray($data, $src);
+        $data = reSetArray($khList, $src);
 
         return json($data);
     }

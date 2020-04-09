@@ -11,7 +11,7 @@ class MyEvent
 {
 
     // 获取考试状态
-    public function ksInfo($kaoshi_id=0)
+    public function ksInfo($kaoshi_id = 0)
     {
         $kaoshi = new Kaoshi;
         $ksinfo = $kaoshi->kaoshiInfo($kaoshi_id);

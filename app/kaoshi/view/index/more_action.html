@@ -197,7 +197,7 @@
       type:'POST',
       async: true,
       data:{
-          kaoshi:"{$kaoshi_id}"
+          kaoshi_id:"{$kaoshi_id}"
       },
       beforeSend: function () {
          $("body").append('<div id="load" style="position:fixed;top:30%;z-index:1200;background:url(__XADMIN__/images/timg.gif) top center no-repeat;width:100%;height:140px;margin:auto auto;"></div>');
@@ -209,7 +209,7 @@
           layer.msg(result.msg);
       },
       error:function(result){
-          layer.msg('数据扔半道，回不来啦。',function(){});
+          layer.msg('数据扔半道，回不来啦。', function(){});
       },
     });
   }

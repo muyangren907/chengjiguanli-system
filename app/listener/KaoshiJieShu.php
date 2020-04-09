@@ -22,7 +22,7 @@ class KaoshiJieShu
         $ksInfo = $event->ksInfo($kaoshi_id);
         if($ksInfo->status == 0)
         {
-            return $this->error('本次考试已经结束，不能操作！','/login/err');
+            return $this->error('本次考试已经结束，不能操作！', '/login/err');
         }
 
         return $ksInfo;

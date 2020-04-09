@@ -223,7 +223,7 @@ class Index extends BaseController
         $list['dataurl'] = '/renshi/studentcj/chengjilist';
         $list['id'] = $id;
 
-        $stucj = new KH;
+        $stucj = new \app\kaohao\model\Search;
         $defen = $stucj->khSrcChengji($id);
         $color = [
             'layui-bg-red'

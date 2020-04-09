@@ -22,7 +22,7 @@
     <div class="layui-form-item">
 	    <label for="xueqi_id" class="layui-form-label" style="height: 100%">学期</label>
 	    <div class="layui-input-block">
-	    	<input type="radio" name="xueqi" title="无" value="" lay-skin="primary" checked="">
+	    	<input type="radio" name="xueqi_id" title="无" value="" lay-skin="primary" checked="">
 	    	{php} $category = getCategory(108);{/php}
 	    	{volist name="category" id="vo"}
 	    		<input type="radio" name="xueqi_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
@@ -96,10 +96,10 @@
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'index/delete','mytable');
+            cjgl.delAll(checkStatus, 'index/delete', 'mytable');
             break;
           case 'add':
-            cjgl.add('新建考试','index/create','','',true);
+            cjgl.add('新建考试', 'index/create', '', '', true);
             break;
         };
       });
@@ -111,13 +111,13 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
 	        case 'del':// 删除
-	          cjgl.del(obj,"index/delete");
+	          cjgl.del(obj, "index/delete");
 	          break;
 	        case 'edit':// 编辑
-	          cjgl.add('编辑考试','index/edit/'+obj.data.id,'','',true);
+	          cjgl.add('编辑考试', 'index/edit/' + obj.data.id, '', '', true);
 	          break;
 	        case 'more':// 状态
-	          parent.xadmin.add_tab(obj.data.title + ' 操作','/kaoshi/index/more/'+obj.data.id,true);
+	          parent.xadmin.add_tab(obj.data.title + ' 操作', '/kaoshi/index/more/' + obj.data.id, true);
 	          break;
         };
       });

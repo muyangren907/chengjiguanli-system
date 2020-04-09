@@ -13,7 +13,7 @@
 </span>
 {/block}
 {block name="search"}
-<input type="hidden" name="kaoshi" value="{$list.kaoshi}">
+<input type="hidden" name="kaoshi_id" value="{$list.kaoshi_id}">
 {/block}
 {block name="table"}
 <table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
@@ -34,9 +34,8 @@
 	//设置列
     options.cols=[[ //表头
       {field:'id',type:'numbers',title:'序号',align:'center'},
-      {field: 'category', title: '统计项目',align:'center',sort: false,minWidth:80,rowspan:2},
+      {field: 'category_id', title: '统计项目',align:'center',sort: false,minWidth:80,rowspan:2},
       {field: 'update_time', title: '最后统计时间',align:'center',sort: false,minWidth:130,rowspan:2},
-      {field: 'cjlast', title: '最后更新成绩时间',align:'center',sort: false,minWidth:130,rowspan:2},
       {field: 'cjlast', title: '统计人',align:'center',sort: false,minWidth:130,rowspan:2,templet:function(d){
           str = '';
           if(d.userName)
@@ -62,7 +61,7 @@
         switch(layEvent){
           case 'tongji':// 删除
             val = {
-              kaoshi:obj.data.kaoshi_id,
+              kaoshi_id:obj.data.kaoshi_id,
             };
             cjgl.tongjiCj(obj.data.url,val);
             break;

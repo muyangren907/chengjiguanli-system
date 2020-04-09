@@ -266,46 +266,46 @@ class Search extends BaseModel
     }
 
 
-    // // 根据考号查询成绩
-    // public function khSrcChengji($id)
-    // {
-    //     $kh = new kh;
-    //     $stuCj = $kh::where('id', $id)
-    //         ->with([
-    //             'ksChengji'=>function($query){
-    //                 $query
-    //                     ->with([
-    //                         'subjectName'=>function($q){
-    //                             $q->field('id, title');
-    //                         }
-    //                     ])
-    //                     ->field('id, kaohao_id, subject_id, defen, defenlv, bweizhi, xweizhi, qweizhi');
-    //             }
-    //         ])
-    //         ->field('id, kaoshi_id, student_id, ruxuenian, nianji, banji_id, paixu')
-    //         ->append(['banjiTitle'])
-    //         ->find();
+    // 根据考号查询成绩
+    public function khSrcChengji($id)
+    {
+        $kh = new kh;
+        $stuCj = $kh::where('id', $id)
+            ->with([
+                'ksChengji'=>function($query){
+                    $query
+                        ->with([
+                            'subjectName'=>function($q){
+                                $q->field('id, title');
+                            }
+                        ])
+                        ->field('id, kaohao_id, subject_id, defen, defenlv, bweizhi, xweizhi, qweizhi');
+                }
+            ])
+            ->field('id, kaoshi_id, student_id, ruxuenian, nianji, banji_id, paixu')
+            ->append(['banjiTitle'])
+            ->find();
 
-    //     return $stuCj;
-    // }
+        return $stuCj;
+    }
 
 
-    // // 获取考试成绩最后更新时间
-    // public function lastUpdateTime($kaoshi_id)
-    // {
-    //     // 获取考号
-    //     $kh = new kh;
-    //     $kaohaoids = $kh->where('kaoshi', $kaoshi_id)
-    //         ->cache(true)
-    //         ->column('id');
+    // 获取考试成绩最后更新时间
+    public function lastUpdateTime($kaoshi_id)
+    {
+        // 获取考号
+        $kh = new kh;
+        $kaohaoids = $kh->where('kaoshi_id', $kaoshi_id)
+            ->cache(true)
+            ->column('id');
 
-    //     $cj = new \app\chengji\model\Chengji;
-    //     $lastcj = $cj->where('kaohao_id', 'in', $kaohaoids)
-    //                 ->order(['update_time' => 'desc'])
-    //                 ->find();
+        $cj = new \app\chengji\model\Chengji;
+        $lastcj = $cj->where('kaohao_id', 'in', $kaohaoids)
+                    ->order(['update_time' => 'desc'])
+                    ->find();
 
-    //     return $lastcj;
-    // }
+        return $lastcj;
+    }
 
 
     // 获取参加考试学校

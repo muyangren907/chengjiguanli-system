@@ -12,19 +12,19 @@ class Schtongji
     public function tongji()
     {
         // 获取变量
-        $kaoshi = input('post.kaoshi');
+        $kaoshi_id = input('post.kaoshi_id');
         // 判断考试状态
-        event('ksjs',$kaoshi);
+        event('ksjs', $kaoshi_id);
         // 统计成绩
         $schtj = new SCHTJ;
-        $data = $schtj->tjSchool($kaoshi);
+        $data = $schtj->tjSchool($kaoshi_id);
 
         if(true == $data)
         {
             $data=['msg'=>'全区年级统计完成','val'=>1];
             $src = [
-                'kaoshi_id' => $kaoshi,
-                'category' => 'schtj',
+                'kaoshi_id' => $kaoshi_id,
+                'category_id' => 'schtj',
             ];
             event('tjlog', $src);
         }else{
@@ -39,20 +39,20 @@ class Schtongji
     public function schOrder()
     {
         // 获取变量
-        $kaoshi = input('post.kaoshi');
+        $kaoshi_id = input('post.kaoshi_id');
         // 判断考试状态
-        event('ksjs',$kaoshi);
+        event('ksjs', $kaoshi_id);
 
         // 统计成绩
         $schtj = new SCHTJ;
-        $data = $schtj->schOrder($kaoshi);
+        $data = $schtj->schOrder($kaoshi_id);
 
         if(true == $data)
         {
             $data=['msg'=>'学生成绩在全区位置统计完成','val'=>1];
             $src = [
-                'kaoshi_id' => $kaoshi,
-                'category' => 'schwz',
+                'kaoshi_id' => $kaoshi_id,
+                'category_id' => 'schwz',
             ];
             event('tjlog', $src);
         }else{

@@ -17,12 +17,12 @@
 	    <label for="nianji" class="layui-form-label" style="height: 100%">年级 </label>
 	    <div class="layui-input-block" pane>
 			{foreach $list.nianji as $key=>$vo}
-	            <input type="radio" name="ruxuenian" value="{$vo.nianji}" title="{$vo.nianjiname}" 
+	            <input type="radio" name="ruxuenian" value="{$vo.nianji}" title="{$vo.nianjiname}"
 	            {eq name="$key" value="0"} checked {/eq} >
 			{/foreach}
 	    </div>
 	</div>
-	<input type="hidden" name="kaoshi" value="{$list.kaoshi}">
+	<input type="hidden" name="kaoshi_id" value="{$list.kaoshi_id}">
 {/block}
 {block name="table"}
 	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
@@ -75,7 +75,7 @@
 					return str;
 				}
 	    	};
-	    	
+
 	    	options.cols[1].push(colinfo);
 		});
 	});
@@ -89,7 +89,7 @@
 				}});
 
 
-	
+
 	// 设置查询条件
 	options.where = {
 		kaoshi:"{$list.kaoshi}"

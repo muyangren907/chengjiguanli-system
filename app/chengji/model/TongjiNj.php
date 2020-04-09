@@ -35,7 +35,7 @@ class TongjiNj extends BaseModel
                     ,'school_id' => $school['id']
                     ,'ruxuenian' => $nianji['nianji']
                 ];
-                $src['banji'] = array_column($khSrc->cyBanji($src), 'id');
+                $src['banji_id'] = array_column($khSrc->cyBanji($src), 'id');
                 $subject = $ksset->srcSubject($kaoshi_id, '', $nianji['nianji']);
                 $temp = $khSrc->srcChengjiList($src);
                 $temp = $tj->tongjiSubject($temp, $subject);
@@ -155,8 +155,8 @@ class TongjiNj extends BaseModel
         foreach ($tongjiJg as $key => $value) {
             $data[$value->school_id] = [
                 'id' => $value->id
-                ,'school_id' => $value->njSchool->jiancheng
-                ,'schoolpaixu' => $value->njSchool->paixu
+                ,'school_jiancheng' => $value->njSchool->jiancheng
+                ,'school_paixu' => $value->njSchool->paixu
                 ,'stuCnt' => $value->stu_cnt
                 // 'title'=>$value->banjiTitle,
                 // 'banjipaixu'=>$value->bjBanji->paixu,
@@ -188,7 +188,7 @@ class TongjiNj extends BaseModel
 
             }
         }
-        $data = sortArrByManyField($data, 'schoolpaixu', SORT_ASC);
+        $data = sortArrByManyField($data, 'school_paixu', SORT_ASC);
 
         return $data;
     }

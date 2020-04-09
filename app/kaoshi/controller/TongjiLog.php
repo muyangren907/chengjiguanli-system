@@ -23,7 +23,7 @@ class TongjiLog extends BaseController
 
         // 设置要给模板赋值的信息
         $list['webtitle'] = '最新统计结果状态';
-        $list['kaoshi'] = $kaoshi_id;
+        $list['kaoshi_id'] = $kaoshi_id;
         $list['kaoshititle'] = $ksinfo->title;
         $list['dataurl'] = '/kaoshi/tjlog/data';
 
@@ -40,12 +40,12 @@ class TongjiLog extends BaseController
     {
         $src = $this->request
             ->only([
-                'kaoshi' => '',
+                'kaoshi_id' => '',
             ], 'POST');
 
         // 实例化考号
-        $kh = new \app\kaoshi\model\Kaohao;
-        $lastcj = $kh->lastUpdateTime($src['kaoshi']);
+        $khSrc = new \app\kaohao\model\Search;
+        $lastcj = $khSrc->lastUpdateTime($src['kaoshi_id']);
         $cjLastTime = $lastcj->getData('update_time');
         $src['cjlast'] = $cjLastTime;
 

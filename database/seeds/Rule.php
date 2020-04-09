@@ -322,7 +322,7 @@ class Rule extends Seeder
                         ],
                         ['id' => 302040102
                             ,'title' => '考号删除'
-                            ,'name' => 'kaoshi/kaohao/delete'
+                            ,'name' => 'kaohao/index/delete'
                             ,'paixu' => 2
                             ,'pid' => 3020401
                         ],
@@ -352,19 +352,19 @@ class Rule extends Seeder
                         ],
                         ['id' => 302040106
                             ,'title' => '添加单个考号'
-                            ,'name' => 'kaoshi/kaohao/create'
+                            ,'name' => 'kaohao/index/create'
                             ,'paixu' => 7
                             ,'pid' => 3020401
                         ],
                         ['id' => 302040107
                             ,'title' => '保存单个考号'
-                            ,'name' => 'kaoshi/kaohao/save'
+                            ,'name' => 'kaohao/index/save'
                             ,'paixu' => 8
                             ,'pid' => 3020401
                         ],
                         ['id' => 302040108
                             ,'title' => '学生成绩图表'
-                            ,'name' => 'kaoshi/kaohao/read'
+                            ,'name' => 'kaohao/index/read'
                             ,'paixu' => 9
                             ,'pid' => 3020401
                         ],

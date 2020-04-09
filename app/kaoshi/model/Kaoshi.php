@@ -63,15 +63,14 @@ class Kaoshi extends BaseModel
 
 
     // 考试参加考试的学校、学科、年级、班级
-    public function kaoshiInfo($kaoshi = 0)
+    public function kaoshiInfo($id = 0)
     {
         // 获取参考年级
-        $kaoshiList = $this->where('id', $kaoshi)
+        $kaoshiList = $this->where('id', $id)
                 ->field('id, title, status, luru')
                 ->find();
         return $kaoshiList;
     }
-
 
 
     // 开始时间修改器

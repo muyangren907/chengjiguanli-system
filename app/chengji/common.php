@@ -58,7 +58,7 @@ function manfenvalidate($defen, $manfen)
             {
                 $chengji[$key][] = '项目';
                 foreach ($value['chengji'] as $k => $val) {
-                    $chengji[$key][] = $val['banji_title'];
+                    $chengji[$key][] = $val['title'];
                     $series[] = ['type'=>'bar'];
                 }
             }
@@ -93,17 +93,15 @@ function manfenvalidate($defen, $manfen)
     */
     function xiangti($jg)
     {
-
         $data = array();
         $axisData = array();
         $chengji = array();
         $category = array();
 
         foreach ($jg as $key => $value) {
-            if($key ==0)
-            {
+            if ($key ==0) {
                 foreach ($value['chengji'] as $k => $val) {
-                    $category[$k] = $val['banji_title'];
+                    $category[$k] = $val['title'];
                 }
             }
 
@@ -115,16 +113,14 @@ function manfenvalidate($defen, $manfen)
                 $chengji[$k][$key][4] = $val['sifenwei']['max'];
             }
 
-            if( isset($value['banji_title']))
-            {
-                $temp = $value['school_jiancheng'].$value['banji_title'];
-            }else{
+            if (isset($value['banji_title'])) {
+                $temp = $value['school_jiancheng'] . $value['banji_title'];
+            } else {
                 $temp = $value['school_jiancheng'];
             }
 
             $axisData[] = $temp;
         }
-
 
         $data = [
             'axisData' => $axisData
@@ -143,10 +139,9 @@ function manfenvalidate($defen, $manfen)
     */
     function tjOrder($cj,$type = 'desc')
     {
-        if($type == 'desc')
-        {
+        if ($type == 'desc') {
             arsort($cj);
-        }else{
+        } else {
             asort($cj);
         }
 
