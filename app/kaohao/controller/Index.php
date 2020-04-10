@@ -152,8 +152,8 @@ class Index extends BaseController
             'webtitle' => '添加考号'
             ,'butname' => '添加'
             ,'formpost' => 'POST'
-            ,'url' => '/kaohao/index/saveOne'
-            ,'kaoshi' => $kaoshi_id
+            ,'url' => '/kaohao/index/save'
+            ,'kaoshi_id' => $kaoshi_id
         );
 
         // 模板赋值
@@ -169,7 +169,7 @@ class Index extends BaseController
         // 获取表单数据
         $list = request()->only([
             'kaoshi_id'
-            ,'banji'
+            ,'banji_id'
             ,'student_id'
         ], 'POST');
         $list['student_id'] = explode(' ', $list['student_id']);
@@ -195,12 +195,11 @@ class Index extends BaseController
         }else{
             // 获取参加考试年级数组
             $bfdate = KS::where('id', $list['kaoshi_id'])->value('bfdate');
-            $njlist = nianjiList($bfdate);
+            $njlist = nianJiNameList($bfdate);
 
             // 获取班级信息
             $bj = new \app\teach\model\Banji;
             $bjinfo = $bj->where('id', $list['banji_id'])->find();
-            $list['school_id'] = $bjinfo->school;
             $list['ruxuenian'] = $bjinfo->ruxuenian;
             $list['nianji'] = $njlist[$bjinfo->ruxuenian];
             $list['paixu'] = $bjinfo->paixu;

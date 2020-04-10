@@ -158,7 +158,7 @@ class Student extends BaseModel
 
 
     // 整理表格上传数据并保存
-    public function tongBu($stuinfo,$school_id)
+    public function tongBu($stuinfo, $school_id)
     {
         // 整理数据
         array_splice($stuinfo, 0, 3);       # 删除标题行

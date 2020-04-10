@@ -574,7 +574,7 @@ class Student extends BaseController
         // 声明结果数组
         $data = array();
         $str = input("post.str");
-        $banji = input("post.banji");
+        $banji_id = input("post.banji_id");
         $kaoshi = input("post.kaoshi");
 
         // 判断是否存在数据，如果没有数据则返回。
@@ -583,22 +583,24 @@ class Student extends BaseController
         }
 
         // 如果有数据则查询教师信息
-        $list = STU::field('id,xingming,school,shengri,sex')
-                    ->whereOr('xingming','like','%'.$str.'%')
-                    ->when(strlen($banji),function($query)use($banji){
-                        $query->where('banji',$banji);
+        $list = STU::field('id, xingming, shengri, sex')
+                    ->whereOr('xingming|shoupin', 'like', '%' . $str . '%')
+                    ->when(strlen($banji_id) > 0, function ($query) use ($banji_id) {
+                        $query->where('banji_id', $banji_id);
                     })
-                    ->when(strlen($kaoshi),function($query)use($kaoshi){
-                        $query->where('kaoshi',$kaoshi);
+                    ->when(strlen($kaoshi) > 0, function ($query) use ($kaoshi) {
+                        $query->where('kaoshi', $kaoshi);
                     })
                     ->with(
                         [
-                            'stuSchool'=>function($query){
-                                $query->field('id,jiancheng');
-                            },
-                            'stuBanji'=>function($query){
-                                $query->field('id,jiancheng');
-                            },
+                            'stuBanji' => function ($query) {
+                                $query->field('id, jiancheng')
+                                    ->with([
+                                        'glSchool'=>function($query){
+                                            $query->field('id, title, jiancheng');
+                                        },
+                                    ]);
+                            }
                         ]
                     )
                     ->append(['age'])
