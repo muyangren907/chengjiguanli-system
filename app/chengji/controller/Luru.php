@@ -19,7 +19,7 @@ class Luru extends BaseController
 
         // 获取学科列表
         $sbj = new \app\teach\model\Subject;
-        $list['subject'] = $sbj->where('kaoshi_id', 1)
+        $list['subject_id'] = $sbj->where('kaoshi', 1)
             ->where('status', 1)
             ->field('id, title, jiancheng')
             ->select();
@@ -40,7 +40,7 @@ class Luru extends BaseController
                 'page'
                 ,'limit'
                 ,'field' => 'update_time'
-                ,'type' => 'desc'
+                ,'order' => 'desc'
                 ,'subject_id' => ''
                 ,'searchval'
             ], 'POST');
@@ -48,7 +48,7 @@ class Luru extends BaseController
         // 根据条件查询数据
         $cj = new Chengji;
         $data = $cj->searchLuru($src);
-        $data = reSetObject($data, $src);
+        $data = reSetArray($data, $src);
 
         return json($data);
     }
@@ -83,7 +83,8 @@ class Luru extends BaseController
         ], 'POST');
 
         // 判断考试状态
-        $kaoshi_id = Kaohao::where('id', $list['kaohao_id'])->value('kaoshi_id');
+        $kh = new \app\kaohao\model\Kaohao;
+        $kaoshi_id = $kh::where('id', $list['kaohao_id'])->value('kaoshi_id');
         event('kslu', $kaoshi_id);
 
         // 获取本学科满分
@@ -109,8 +110,7 @@ class Luru extends BaseController
             ->find();
 
         // 如果存在成绩则更新，不存在则添加
-        if($cjone)
-        {
+        if ($cjone) {
             // 判断记录是否被删除
             if ($cjone->delete_time > 0) {
                 $cjone->restore();
@@ -155,7 +155,7 @@ class Luru extends BaseController
         // 判断考试结束时间是否已过
         $kh = new \app\kaohao\model\Kaohao;
         $kaoshi_id = $kh::where('id', $list['kaohao_id'])->value('kaoshi_id');
-        event('kslu',$kaoshi_id);
+        event('kslu', $kaoshi_id);
 
         // 获取学科id
         $subject = new \app\teach\model\Subject;
@@ -218,7 +218,6 @@ class Luru extends BaseController
     }
 
 
-
     // 根据考号获取学生信息
     public function read()
     {
@@ -226,43 +225,13 @@ class Luru extends BaseController
         $val = input('post.val');
         // 实例化系统设置类
         $md5 = new \app\system\controller\Encrypt;
-
         $val = $md5->decrypt($val, 'dlbz');
         $list = explode('|', $val);
-        $sbj = $list[1];
+        $id = $list[0];
+        $subject_id = $list[1];
 
-        $cjlist = Kaohao::where('id', $list[0])
-            ->field('id ,banji_id, school_id, student_id')
-            ->with([
-                'ksChengji' => function($q) use($sbj){
-                    $q->where('subject_id',$sbj)
-                        ->field('kaohao_id, subject_id, defen');
-                }
-                ,'cjBanji' => function($q){
-                    $q->field('id, paixu, ruxuenian')
-                        ->append(['numTitle', 'banjiTitle']);
-                }
-                ,'cjSchool' => function($q){
-                    $q->field('id, jiancheng');
-                }
-                ,'cjStudent' => function($q){
-                    $q->field('id, xingming');
-                }
-            ])
-            ->find();
-        if($cjlist->cjStudent == Null)
-        {
-            $stu = new \app\renshi\model\Student;
-            $stuinfo = $stu::withTrashed()
-                ->where('id', $cjlist->student)
-                ->field('id, xingming, sex')
-                ->find();
-            $cjlist->cjStudent = array(
-                'id' => $stuinfo->id
-                ,'xingming' => $stuinfo->xingming
-            );
-        }
-        $cjlist->sbj = Subject::where('id', $sbj)->field('id, title')->find();
+        $khSrc = new \app\kaohao\model\Search;
+        $cjlist = $khSrc->khSrcOneSubjectChengji($id, $subject_id);
 
         // 获取列名
         return json($cjlist);
@@ -284,7 +253,7 @@ class Luru extends BaseController
             'webtitle' => '表格录入'
             ,'butname' => '下载'
             ,'formpost' => 'POST'
-            ,'url' => '/kaoshi/kaohao/dwcaiji'
+            ,'url' => '/kaohao/excel/dwcaiji'
         );
 
         // 模板赋值
@@ -396,18 +365,4 @@ class Luru extends BaseController
         // 返回成绩结果
         return json($data);
     }
-
-    // // 上传成绩采集表格
-    // public function upload()
-    // {
-    //     // 获取文件信息
-    //     $list['text'] = $this->request->post('text');
-    //     $list['serurl'] = $this->request->post('serurl');
-
-    //     // 上传文件并返回结果
-    //     $file = request()->file('file');
-    //     $data = upload($list, $file, true);
-
-    //     return json($data);
-    // }
 }

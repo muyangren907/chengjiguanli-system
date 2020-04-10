@@ -25,7 +25,7 @@ class Chengji extends BaseModel
     // 考号关联
     public function cjKaohao()
     {
-        return $this->belongsTo('\app\kaoshi\model\Kaohao','kaohao_id','id');
+        return $this->belongsTo('\app\kaohao\model\Kaohao','kaohao_id','id');
     }
 
 
@@ -53,7 +53,7 @@ class Chengji extends BaseModel
             })
             ->column('id');
 
-        $nianji = nianjiList();
+        $nianji = nianJiNameList();
         $cjList = $this
             ->whereMonth('update_time')
             ->where('user_id', $src['user_id'])
@@ -63,7 +63,7 @@ class Chengji extends BaseModel
             ->when(count($stuid) > 0, function ($query) use ($stuid) {
                 $query->where('kaohao_id', 'in', function ($q) use ($stuid) {
                     $q->name('kaohao')
-                        ->where('student', 'in', $stuid)
+                        ->where('student_id', 'in', $stuid)
                         ->whereTime('update_time', '-480 hours')
                         ->field('id');
                 });
@@ -73,7 +73,7 @@ class Chengji extends BaseModel
                     $query->field('id, title, lieming');
                 }
                 ,'cjKaohao' => function($query){
-                    $query->field('id, kaoshi_id, school_id, ruxuenian, nianji_id, banji_id, paixu, student_id')
+                    $query->field('id, kaoshi_id, school_id, ruxuenian, nianji, banji_id, paixu, student_id')
                         ->append(['banjiTitle'])
                         ->with([
                         'cjSchool' => function($query){
@@ -101,15 +101,15 @@ class Chengji extends BaseModel
                 ,'school_jiancheng' => $value->cjKaohao->cjSchool->jiancheng
                 ,'school_id' => $value->cjKaohao->cjSchool->paixu
                 ,'banji_title' => $value->cjKaohao->banjiTitle
-                ,'banji_id' => $value->cjKaohao->banji
+                ,'banji_id' => $value->cjKaohao->banji_id
                 ,'subject_title' => $value->subjectName->title
-                ,'subject_id' => $value->id
+                ,'subject_id' => $value->subjectName->id
                 ,'subject_lieming' => $value->subjectName->lieming
                 ,'defen' => $value->defen
                 ,'status' => $value->status
                 ,'update_time' => $value->update_time
             ];
-            $value->cjKaohao->cjStudent ? $data[$key]['student']=$value->cjKaohao->cjStudent->xingming : $data[$key]['student']= '';
+            $value->cjKaohao->cjStudent ? $data[$key]['student_name']=$value->cjKaohao->cjStudent->xingming : $data[$key]['student_name']= '';
         }
 
         // 按条件排序
@@ -146,8 +146,7 @@ class Chengji extends BaseModel
     public function saveOrder($cj, $col)
     {
         $cnt = count($cj);      # 获取元素数量
-        if($cnt == 0)
-        {
+        if ($cnt == 0) {
             return true;
         }
 

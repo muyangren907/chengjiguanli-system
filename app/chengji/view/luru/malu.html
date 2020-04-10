@@ -31,7 +31,7 @@
       </div>
     </div>
 
-    
+
 {/block}
 
 {block name="myjs"}
@@ -59,22 +59,21 @@
          $('#xsschool').text(data.cjSchool.jiancheng);
          $('#xsbanji').text(data.cjBanji.banjiTitle);
          $('#xsxingming').text(data.cjStudent['xingming']);
-         $('#xsxueke').text(data.sbj.title);
+         $('#xsxueke').text(data.ksChengji[0].subjectName.title);
 
          $('#kaohao_id').val(data.id);
-         $('#subject_id').val(data.sbj.id);
+         $('#subject_id').val(data.ksChengji[0].subjectName.id);
          $('#nianji').val(data.cjBanji.ruxuenian);
          if(data.ksChengji[0]){
           $('#defen').val(data.ksChengji[0].defen);
          }
          $('#saoma').val('');
-         // $('#xianshi').append(school + banji + student + subject);
          $('#defen').focus();
         },
         error:function(data) {
           layer.msg('数据走丢了');
         },
-      }); 
+      });
     }
   });
 
@@ -107,12 +106,12 @@
          }else{
           layer.msg(data.msg);
          }
-         
+
         },
         error:function(data) {
           layer.msg('数据走丢了');
         },
-      }); 
+      });
     return false;
     }
   });

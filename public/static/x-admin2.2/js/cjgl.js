@@ -304,8 +304,6 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
     */
     createSelectOption:function(id, val, url, cloval='id', cloname='title', checkval=null){
       $('#' + id).children().remove();
-      console.log(id);
-      console.log(checkval);
       $.post(
         url,
         val,
@@ -326,7 +324,6 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
           form.render();
         }
       );
-      console.log(checkval);
     },
 
 

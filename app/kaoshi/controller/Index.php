@@ -236,9 +236,8 @@ class Index extends BaseController
         $src['kaoshi_id'] = input('post.kaoshi_id');
         $src['ruxuenian'] = input('post.ruxuenian');
 
-        $kh = new \app\kaoshi\model\Kaohao;
-        $school = $kh->cySchool($src);
-        halt($school->toArray());
+        $khSrc = new \app\kaohao\model\Search;
+        $school = $khSrc->cySchool($src);
         $cnt = count($school);
 
         // 重组返回内容

@@ -22,9 +22,9 @@
             <div class="layui-card-body" style="min-height: 300px;">
               <form class="layui-form layui-form-pane" lay-filter="dwform" method="{$list.set.formpost}" action="{$list.set.url}">
                 <div class="layui-form-item">
-                  <label for="kaoshi" class="layui-form-label"><span class="x-red">*</span>考试</label>
+                  <label for="kaoshi_id" class="layui-form-label"><span class="x-red">*</span>考试</label>
                   <div class="layui-input-block">
-                    <select name="kaoshi" id="kaoshi" lay-verify="required" lay-filter="kaoshi">
+                    <select name="kaoshi_id" id="kaoshi_id" lay-verify="required" lay-filter="kaoshi_id">
                       {volist name="list.data" id="vo"}
                         <option value="{$vo.id}"> {$vo.title} </option>
                       {/volist}
@@ -32,9 +32,9 @@
                   </div>
                 </div>
                 <div class="layui-form-item">
-                  <label for="school" class="layui-form-label"><span class="x-red">*</span>学校</label>
+                  <label for="school_id" class="layui-form-label"><span class="x-red">*</span>学校</label>
                   <div class="layui-input-block">
-                    <select name="school" id="school" lay-verify="required" lay-filter="school">
+                    <select name="school_id" id="school_id" lay-verify="required" lay-filter="school_id">
                       <option value="">请选择学校</option>
                     </select>
                   </div>
@@ -50,17 +50,17 @@
                   </div>
                 </div>
                 <div class="layui-form-item">
-                  <label for="banji" class="layui-form-label">
+                  <label for="banji_id" class="layui-form-label">
                     <span class="x-red">*</span>班级
                   </label>
-                  <div class="layui-input-block" id="banji">
+                  <div class="layui-input-block" id="banji_id">
                   </div>
                 </div>
                 <div class="layui-form-item">
-                  <label for="mysubject" class="layui-form-label">
+                  <label for="subject_id" class="layui-form-label">
                     <span class="x-red">*</span>学科
                   </label>
-                  <div class="layui-input-block" id="subject">
+                  <div class="layui-input-block" id="subject_id">
                   </div>
                 </div>
                 <div class="layui-form-item" style="text-align: center;">
@@ -107,11 +107,7 @@
 
     </div>
 
-
-
-
 {/block}
-
 {block name="myjs"}
 <script>
 // 日期控件
@@ -136,26 +132,26 @@ layui.use(['form','upload','cjgl'], function(){
       }
       ,data: {
         category_id: '11103'
-        ,serurl:'chengji'
+        ,serurl: 'chengji'
 
       }
-      ,acceptMime:'.xls,.xlsx'
-      ,exts:'xls|xlsx'
-      ,auto:true
+      ,acceptMime: '.xls,.xlsx'
+      ,exts: 'xls|xlsx'
+      ,auto: true
       ,error: function(){
         //请求异常回调
       }
     });
 
     // 上传
-    form.on('submit(upload)', function(data){
-      url=$("#url").val();
+    form.on('submit(upload)', function (data) {
+      url = $("#url").val();
       if(url.length==0)
       {
         layer.msg('请先上传文件。');
         return false;
       }
-      $.post("/chengji/luru/saveall",{"url":url},function(result){
+      $.post("/chengji/luru/saveall", {"url":url}, function (result) {
         if(result.val == 1)
         {
           $("#url").val('');
@@ -166,16 +162,16 @@ layui.use(['form','upload','cjgl'], function(){
     });
 
     // 监听学校下拉菜单
-    form.on('select(kaoshi)',function(data){
+    form.on('select(kaoshi_id)', function (data) {
       addSchool();
     })
 
     // 监听学校下拉菜单
-    form.on('select(school)',function(data){
+    form.on('select(school_id)', function (data) {
       addNianji();
     })
     // 监听学校下拉菜单
-    form.on('select(ruxuenian)',function(data){
+    form.on('select(ruxuenian)', function (data) {
       addBanji();
       addSubject();
     })
@@ -184,21 +180,21 @@ layui.use(['form','upload','cjgl'], function(){
     function addSchool(){
       // 获取参数
       formval = form.val("dwform");
-      cjgl.createSelectOption('school',formval,'/kaoshi/index/cyschool','id','title');
+      cjgl.createSelectOption('school_id', formval, '/kaoshi/index/cyschool', 'id', 'title');
     }
 
     // 添加年级
     function addNianji(){
       // 获取参数
       formval = form.val("dwform");
-      cjgl.createSelectOption('ruxuenian',formval,'/kaoshi/index/cynianji','nianji','nianjiname');
+      cjgl.createSelectOption('ruxuenian', formval, '/kaoshi/index/cynianji', 'nianji', 'nianjiname');
     }
 
     // 添加学科
     function addBanji(){
       // 获取参数
       formval = form.val("dwform");
-      cjgl.createCheckbox('banji',formval,'/kaoshi/index/cybanji','banjiids','banTitle');
+      cjgl.createCheckbox('banji_id', formval, '/kaoshi/index/cybanji', 'banji_id', 'banTitle');
     }
 
 
@@ -206,7 +202,7 @@ layui.use(['form','upload','cjgl'], function(){
     function addSubject(){
       // 获取参数
       formval = form.val("dwform");
-      cjgl.createCheckbox('subject',formval,'/kaoshi/index/cysubject','subject','title');
+      cjgl.createCheckbox('subject_id', formval, '/kaoshi/index/cysubject', 'subject_id', 'title');
     }
 
 });

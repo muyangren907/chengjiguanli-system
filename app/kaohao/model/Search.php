@@ -281,10 +281,66 @@ class Search extends BaseModel
                         ])
                         ->field('id, kaohao_id, subject_id, defen, defenlv, bweizhi, xweizhi, qweizhi');
                 }
+                ,'cjBanji' => function($q){
+                    $q->field('id, paixu, ruxuenian')
+                        ->append(['numTitle', 'banjiTitle']);
+                }
+                ,'cjSchool' => function($q){
+                    $q->field('id, jiancheng');
+                }
+                ,'cjStudent' => function($q){
+                    $q->field('id, xingming');
+                }
             ])
             ->field('id, kaoshi_id, student_id, ruxuenian, nianji, banji_id, paixu')
             ->append(['banjiTitle'])
             ->find();
+
+        return $stuCj;
+    }
+
+
+    // 根据考号查询成绩
+    public function khSrcOneSubjectChengji($id, $subject_id)
+    {
+        $kh = new kh;
+        $stuCj = $kh::where('id', $id)
+            ->field('id ,banji_id, school_id, student_id')
+            ->with([
+                'ksChengji' => function($q) use($subject_id){
+                    $q->where('subject_id',$subject_id)
+                        ->field('kaohao_id, subject_id, defen')
+                        ->with([
+                            'subjectName' => function ($W) {
+                                $W->field('id,title');
+                            }
+                        ]);
+                }
+                ,'cjBanji' => function($q){
+                    $q->field('id, paixu, ruxuenian')
+                        ->append(['numTitle', 'banjiTitle']);
+                }
+                ,'cjSchool' => function($q){
+                    $q->field('id, jiancheng');
+                }
+                ,'cjStudent' => function($q){
+                    $q->field('id, xingming');
+                }
+            ])
+            ->find();
+
+        if($stuCj->cjStudent == Null)
+        {
+            $stu = new \app\renshi\model\Student;
+            $stuinfo = $stu::withTrashed()
+                ->where('id', $cjlist->student)
+                ->field('id, xingming, sex')
+                ->find();
+            $stuCj->cjStudent = array(
+                'id' => $stuinfo->id
+                ,'xingming' => $stuinfo->xingming
+            );
+        }
 
         return $stuCj;
     }

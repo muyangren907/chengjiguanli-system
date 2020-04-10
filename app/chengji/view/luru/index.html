@@ -20,10 +20,10 @@
 	</div>
 </div>
 <div class="layui-form-item">
-	<label for="subject" class="layui-form-label" style="height: 100%">学科</label>
+	<label for="subject_id" class="layui-form-label" style="height: 100%">学科</label>
 	<div class="layui-input-block">
 		<input type="radio" name="subject_id" title="无" value="" lay-skin="primary" lay-filter="subject" checked="true">
-		{foreach $list.subject as $key=>$vo}
+		{foreach $list.subject_id as $key=>$vo}
 		<input type="radio" name="subject_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 		{/foreach}
 	</div>
@@ -50,36 +50,36 @@
 	// 设置列
     options.cols=[[ //表头
     {type:'checkbox', fixed: 'left'},
-    {field: 'kaoshiid', title: '考试',sort: true, minWidth:180,templet:function(d){
+    {field: 'kaoshi_id', title: '考试',sort: true, minWidth:180,templet:function(d){
     	var str ='';
-    	if(d.kaoshi)
+    	if(d.kaoshi_title)
     	{
-    		str = d.kaoshi;
+    		str = d.kaoshi_title;
     	}
     	return str;
     }},
-    {field: 'schoolid', title: '学校',sort: true, minWidth:70,templet:function(d){
+    {field: 'school_id', title: '学校',sort: true, minWidth:70,templet:function(d){
     	var str ='';
-    	if(d.school)
+    	if(d.school_jiancheng)
     	{
-    		str = d.school;
+    		str = d.school_jiancheng;
     	}
     	return str;
     }},
-    {field: 'banjiid', title: '班级',sort: true,templet:function(d){
+    {field: 'banji_id', title: '班级',sort: true,templet:function(d){
     	var str='';
-    	if(d.banji)
+    	if(d.banji_title)
     	{
-    		str = d.banji;
+    		str = d.banji_title;
     	}
     	return str;
     }},
-    {field: 'student', title: '姓名',sort: true},
-    {field: "subjectid",title: '学科',sort: true,templet:function(d){
+    {field: 'student_name', title: '姓名',sort: true},
+    {field: "subject_id",title: '学科',sort: true,templet:function(d){
     	var str='';
-    	if(d.subject)
+    	if(d.subject_title)
     	{
-    		str = d.subject;
+    		str = d.subject_title;
     	}
     	return str;
     }},
@@ -123,16 +123,16 @@
         table.on('edit(mytable)',function(obj){
         	//声明变量
         	var newdefen = obj.value
-        	,colname = obj.data.subjectname
-        	,id = obj.data.kaohaoid;
+        	,colname = obj.data.subject_lieming
+        	,id = obj.data.kaohao_id;
 
 	      	// 修改服务器数据
 	      	$.ajax({
-	      		url:"/chengji/luru/update/"+id,
+	      		url:"/chengji/luru/update/" + id,
 	      		type:'PUT',
 	      		data:{
-	      			"colname":colname
-	      			,"newdefen":newdefen
+	      			"colname": colname
+	      			,"newdefen": newdefen
 	      		},
 	      		success:function(result){
 	      			if(result.val == 0 || result.code==0)
