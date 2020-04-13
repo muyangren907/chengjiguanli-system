@@ -36,7 +36,7 @@
         <div class="layui-input-block" id="subject">
         </div>
       </div>
-      <input type="hidden" id="kaoshi" name="kaoshi" value="{$list.set.kaoshi}">
+      <input type="hidden" id="kaoshi_id" name="kaoshi_id" value="{$list.set.kaoshi_id}">
       <div class="layui-form-item" style="text-align: right;">
           <button  class="layui-btn" lay-filter="" lay-submit="">
               {$list.set.butname}
@@ -110,14 +110,14 @@ layui.use(['form','cjgl'], function(){
  //    }
 
  //    form.render('checkbox');
- //  });        
+ //  });
 
 	// //获取班级列表并更新
 	// function mybanji(){
 	// 	// 获取表单值
 	// 	var school = $('#school').val()
 	// 	,ruxuenian = $('#ruxuenian').val();
-		
+
 	// 	// 获取节点
 	// 	var bj = $("#banjidiv");
 
@@ -130,7 +130,7 @@ layui.use(['form','cjgl'], function(){
 	// 	    data:{
 	// 	    	school:school
 	// 	    	,ruxuenian:ruxuenian
- //          ,kaoshi:"{$list.set.kaoshi}"
+ //          ,kaoshi_id:"{$list.set.kaoshi_id}"
 	// 	    },
 	// 	    dataType:'json',
 	// 	    success:function(result){

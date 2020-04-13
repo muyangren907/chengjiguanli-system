@@ -58,7 +58,9 @@ class Search extends BaseModel
                 $data[$key]['student_xingming'] = $stuinfo->xingming;
                 $data[$key]['sex'] = $stuinfo->sex;
             }
+
             $data[$key]['ban_title'] = $value->banjiTitle;
+            $data[$key]['banji_title'] = $value->banTitle;
             $dfsum = 0;
             $sbjcnt = 0;
 

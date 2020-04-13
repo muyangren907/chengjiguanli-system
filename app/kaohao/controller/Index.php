@@ -254,11 +254,13 @@ class Index extends BaseController
         $id = request()->delete('id');
         $id = explode(',', $id);
 
-        // 判断考试结束时间是否已过
-        $ksid = KH::where('id', $id[0])->value('kaoshi');
-        event('kslu',$ksid);
+        foreach ($id as $key => $value) {
+            // 判断考试结束时间是否已过
+            $ksid = KH::where('id', $value)->value('kaoshi_id');
+            event('kslu', $ksid);
+            $data = KH::destroy($id);
+        }
 
-        $data = KH::destroy($id);
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '删除成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];

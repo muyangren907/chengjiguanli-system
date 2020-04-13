@@ -23,7 +23,7 @@ class Kaohao extends BaseModel
 
         // 查询成绩
         $data = $this->where('kaoshi_id', $src['kaoshi_id'])
-            ->field('id, school_id, student_id, ruxuenian, paixu, kaoshi_id')
+            ->field('id, school_id, student_id, ruxuenian, paixu, kaoshi_id, nianji')
             ->where('banji_id', 'in', $src['banji_id'])
             ->when(strlen($src['searchval']) > 0, function($query) use($src){
                 $query->where(function($w) use ($src){
@@ -46,7 +46,7 @@ class Kaohao extends BaseModel
                     $query->field('id, xingming, sex');
                 }
             ])
-            ->append(['banjiTitle'])
+            ->append(['banjiTitle', 'banTitle'])
             ->select();
 
         return $data;
@@ -104,13 +104,7 @@ class Kaohao extends BaseModel
     }
 
 
-    /**
-    * 获取参加考试的班级全名
-    * @access public
-    * @param number $kaoshi 考试id
-    * @param number $ruxuenian 入学年
-    * @return array 返回类型
-    */
+    // 获取不带年级的班级名
     public function getBanTitleAttr()
     {
         $bj = banJiNamelist();

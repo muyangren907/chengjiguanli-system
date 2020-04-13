@@ -29,10 +29,10 @@ class KaoshiSet extends BaseModel
         $src['subject_id'] = strToarray($src['subject_id']);
 
         $data = $this->where('kaoshi_id', $src['kaoshi_id'])
-            ->when(count($src['nianji']) > 0, function($query) use($src){
+            ->when(count($src['nianji']) > 0, function($query) use ($src) {
                 $query->where('nianji', 'in', $src['nianji']);
             })
-            ->when(count($src['subject_id']) > 0, function($query) use($src){
+            ->when(count($src['subject_id']) > 0, function($query) use ($src) {
                 $query->where('subject_id', 'in', $src['subject_id']);
             })
         	->with([
@@ -58,10 +58,10 @@ class KaoshiSet extends BaseModel
         $subject_id = strToarray($subject_id);
 
         $sbjList = $this->where('kaoshi_id', $kaoshi_id)
-            ->when(count($subject_id) > 0, function($query) use($subject_id){
+            ->when(count($subject_id) > 0, function ($query) use ($subject_id) {
                 $query->where('subject_id', 'in', $subject_id);
             })
-            ->when($nianji > 0, function($query) use($nianji){
+            ->when($nianji > 0, function ($query) use ($nianji) {
                 $query->where('nianji', $nianji);
             })
             ->group('subject_id')
@@ -70,7 +70,7 @@ class KaoshiSet extends BaseModel
                 ,any_value(youxiu) as youxiu
                 ,any_value(jige) as jige")
             ->with([
-                'subjectName'=>function($query){
+                'subjectName' => function ($query) {
                     $query->field('id, title, jiancheng, paixu, lieming');
                 }
             ])
@@ -83,22 +83,22 @@ class KaoshiSet extends BaseModel
         foreach ($sbjList as $key => $value) {
             # code...
             $data[$value->subjectName->id] = [
-                'id'=>$value->subjectName->id,
-                'title'=>$value->subjectName->title,
-                'jiancheng'=>$value->subjectName->jiancheng,
-                'paixu'=>$value->subjectName->paixu,
-                'lieming'=>$value->subjectName->lieming,
-                'fenshuxian'=>[
-                    'manfen'=>$value->manfen,
-                    'youxiu'=>$value->youxiu,
-                    'jige'=>$value->jige,
+                'id' => $value->subjectName->id,
+                'title' => $value->subjectName->title,
+                'jiancheng' => $value->subjectName->jiancheng,
+                'paixu' => $value->subjectName->paixu,
+                'lieming' => $value->subjectName->lieming,
+                'fenshuxian' => [
+                    'manfen' => $value->manfen,
+                    'youxiu' => $value->youxiu,
+                    'jige' => $value->jige,
                 ],
             ];
         }
 
         // 按条件排序
-        if(count($data)>0){
-            $data = sortArrByManyField($data,'paixu',SORT_ASC);
+        if(count($data) > 0){
+            $data = sortArrByManyField($data, 'paixu', SORT_ASC);
         }
         return $data;
     }
@@ -110,9 +110,9 @@ class KaoshiSet extends BaseModel
      * @return \think\Response
      */
     // 显示考试列表
-    public function srcNianji($kaoshi)
+    public function srcNianji($kaoshi_id)
     {
-        $njList = $this->where('kaoshi_id',$kaoshi)
+        $njList = $this->where('kaoshi_id', $kaoshi_id)
             ->group('nianji')
             ->field("nianji
                 ,any_value(nianjiname) as nianjiname")
@@ -124,13 +124,13 @@ class KaoshiSet extends BaseModel
         foreach ($njList as $key => $value) {
             # code...
             $data[] = [
-                'nianji'=>$value->nianji,
-                'nianjiname'=>$value->nianjiname
+                'nianji' => $value->nianji,
+                'nianjiname' => $value->nianjiname
             ];
         }
         // 按条件排序
-        if(count($data)>0){
-            $data = sortArrByManyField($data,'nianji',SORT_ASC);
+        if(count($data) > 0){
+            $data = sortArrByManyField($data, 'nianji', SORT_ASC);
         }
         return $data;
     }
