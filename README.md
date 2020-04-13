@@ -126,11 +126,7 @@
 
 
 ## 演示地址
-[http://www.dl-sm.cn](http://www.dl-sm.cn)  时间到2023年
-或
-[http://www.lncxd.cn](http://www.lncxd.cn) 
-或
-[154.8.193.178](154.8.193.178)
+[http://www.dl-sm.cn](http://www.dl-sm.cn)
 
 帐号   test1    密码  123456
 
@@ -143,7 +139,7 @@
     修改删除方法
     全部整理代码重排版，规范字段、方法命名,部分数据操作放到数据模型中、拆分几个控制器 
 
-	更多更新日志（http://www.www.dl-sm.cn.cn/login/log 或 http://www.lncxd.cn/login/log）
+	更多更新日志（http://www.www.dl-sm.cn.cn/login/log）
 ## 升级提示
   v1.3.2升级到v1.3.4版本时，为了遵循TP开发规范，修改了数据库字段。需要重新建表。
 
