@@ -126,7 +126,7 @@
 
 
 ## 演示地址
-[http://www.dl-sm.cn](http://www.dl-sm.cn)
+[http://www.dl-sm.cn](http://www.dl-sm.cn) 或 [112.126.57.79](112.126.57.79)
 
 帐号   test1    密码  123456
 
