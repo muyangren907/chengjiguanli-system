@@ -20,7 +20,7 @@ class SystemBase extends Seeder
             'update_time'   =>  time(),
             'keywords'      =>  '码蚁成绩,成绩统计,成绩管理,成绩分析,成绩查询',
             'description'   =>  '前端采用X-admin，后端采用Thinkphp。寻找最方便的录入成绩方法，提供最丰富的统计项目。',
-            'thinks'        =>  'ThinkPHP,X-admin,百度Echarts,jquery。',
+            'thinks'        =>  'ThinkPHP,X-admin,百度Echarts,jquwery。',
             'danwei'        =>  '大连长岛经济区',
         ];
         // 保存数据
