@@ -15,7 +15,7 @@
 	<label for="nianji" class="layui-form-label" style="height: 100%">年级 </label>
 	<div class="layui-input-block">
 		<input type="radio" name="nianji" title="无" value="" lay-skin="primary" checked="true">
-		{php} $njlist = nianJiNameList();{/php}
+		{php} $njlist = nianJiNameList($list['sj']);{/php}
 		{foreach $njlist as $key=>$vo}
 		<input type="radio" name="nianji" title="{$vo}" value="{$key}" lay-skin="primary">
 		{/foreach}

@@ -30,6 +30,8 @@ class KaoshiSet extends BaseController
         $ksset = new ksset;
         $list['subject'] = $ksset->srcSubject($kaoshi_id);
         $nj = $ksset->srcNianji($kaoshi_id);
+        $kaoshi = new \app\kaoshi\model\Kaoshi;
+        $list['sj']  = $kaoshi::where('id', $kaoshi_id)->value('bfdate');
 
         // 模板赋值
         $this->view->assign('list', $list);
