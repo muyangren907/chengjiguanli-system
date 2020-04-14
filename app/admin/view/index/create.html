@@ -59,10 +59,10 @@
           <div class="layui-form-item">
             <label for="school_id" class="layui-form-label"><span class="x-red">*</span>所在单位</label>
             <div class="layui-input-block">
-              {php} $schlist = schooLlist('校级','区级');{/php}
+              {php} $schlist = schoolList('校级', '区级');{/php}
               <select name="school_id" lay-verify="required">
                 <option value=""></option>
-                {volist name="schoolList" id="vo"}
+                {volist name="schlist" id="vo"}
                   <option value="{$vo.id}"
                   {present name="$list.data.school_id"}
                     {eq name="$list.data.school_id" value="$vo.id" }
