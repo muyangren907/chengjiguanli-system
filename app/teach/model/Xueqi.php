@@ -37,7 +37,7 @@ class Xueqi extends BaseModel
         return $this->belongsTo('\app\system\model\Category', 'category_id', 'id');
     }
 
-    // 查询所有单位
+    // 根据条件查询学期
     public function search($srcfrom)
     {
         // 整理变量
@@ -57,7 +57,7 @@ class Xueqi extends BaseModel
         {
             $src['enddate'] = $srcfrom['enddate'];
         }else{
-            $src['enddate'] = date("Y-m-d", strtotime("+1 day"));
+            $src['enddate'] = date("Y-m-d", strtotime("+10 year"));
         }
 
         // 查询数据
