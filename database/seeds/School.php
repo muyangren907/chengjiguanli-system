@@ -18,7 +18,7 @@ class School extends Seeder
         $rows= [
             [
                 'id' => 1
-                ,'title' => '大连长兴岛经济区文教中心'
+                ,'title' => '大连长岛经济区文教中心'
                 ,'jiancheng' => '文教中心'
                 ,'biaoshi' => ''
                 ,'jibie_id' => 10204
