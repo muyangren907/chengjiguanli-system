@@ -66,7 +66,7 @@ class Subject extends Seeder
                 ,'jiancheng' => '理'
                 ,'category_id' => 11006
                 ,'lieming' => 'wuli'
-                ,'kaoshi' => 1
+                ,'kaoshi' => 0
                 ,'paixu' => 7
             ],
             ['id'=>108
@@ -74,7 +74,7 @@ class Subject extends Seeder
                 ,'jiancheng' => '化'
                 ,'category_id' => 11006
                 ,'lieming' => 'huaxue'
-                ,'kaoshi' => 1
+                ,'kaoshi' => 0
                 ,'paixu' => 8
             ],
             ['id'=>109
