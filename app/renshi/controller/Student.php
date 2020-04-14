@@ -306,7 +306,6 @@ class Student extends BaseController
             ])
             ->find();
 
-
         if($stuinfo){
             return json([
                 'msg' => '此身份证号与　' . $stuinfo->stuSchool->jiancheng . ':' . $stuinfo->xingming . '　重复。'
