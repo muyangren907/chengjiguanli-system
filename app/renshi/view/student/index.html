@@ -172,7 +172,7 @@
           {
             $('#banji_id').children().remove();
           }else{
-            cjgl.createCheckbox('banji_id', formval, '/teach/banji/mybanji', 'banji_id', 'banTitle', 'id');
+            cjgl.createCheckbox('banji_id', formval, '/teach/banji/mybanji', 'banji_id', 'banTitle', "{$list.data.banji_id}");
           }
       }
     });
