@@ -251,7 +251,7 @@ class Student extends BaseController
                             ->append(['banTitle']);
                     }
                 ])
-            ->find($id)->toArray();
+            ->find($id);
 
         // 设置页面标题
         $list['set'] = array(
