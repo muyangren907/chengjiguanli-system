@@ -46,12 +46,14 @@ class Kaoshi extends BaseModel
                 })
             ->with(
                 [
-                    'ksCategory' => function($query){
+                    'ksCategory' => function ($query) {
                         $query->field('id, title');
                     }
-                    ,'ksZuzhi' => function($q)
-                    {
-                        $q->field('id, title, jiancheng');
+                    ,'ksZuzhi' => function ($query) {
+                        $query->field('id, title, jiancheng');
+                    }
+                    ,'ksXueqi' => function ($query) {
+                        $query->field('id, title');
                     }
                 ]
             )
@@ -161,6 +163,13 @@ class Kaoshi extends BaseModel
     public function ksZuzhi()
     {
         return $this->belongsTo('\app\system\model\School', 'zuzhi_id', 'id');
+    }
+
+
+    // 学期
+    public function ksXueqi()
+    {
+        return $this->belongsTo('\app\teach\model\Xueqi', 'xueqi_id', 'id');
     }
 
 

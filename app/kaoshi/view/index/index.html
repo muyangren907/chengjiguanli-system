@@ -69,12 +69,20 @@
 
   // 设置列
   options.cols=[[ //表头
-			{type:'checkbox', fixed: 'left'},
-			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:80},
-			{field: 'title', title: '考试名称',sort: true, minWidth:240},
-			{field: "ckNianji",title: '参考年级', minWidth:180},
-			{field: 'ckSubject', title: '参考学科', minWidth:100} ,
-			{field: 'bfdate', title: '考试时间', minWidth:150,sort: true,templet:function(d){
+			{type:'checkbox', fixed:'left'},
+			{field:'id', title:'操作', toolbar:'#barDemo', minWidth:100},
+			{field:'title', title:'考试名称', sort:true, minWidth:240},
+      {field:'xueqi_id', title:'学期', sort:true, minWidth:200, templet:function(d){
+        var str;
+        if(d.ksXueqi)
+        {
+          str = d.ksXueqi.title;
+        }
+        return str;
+      }},
+			{field:"ckNianji", title:'参考年级', minWidth:180},
+			{field:'ckSubject', title:'参考学科', minWidth:100} ,
+			{field:'bfdate', title:'考试时间', minWidth:150, sort:true, templet:function(d){
 				var date;
 				date = d.enddate.split('-');
 
@@ -82,13 +90,13 @@
 				endate = d.bfdate + '～' + endate;
 				return endate;
 			}},
-      {field: 'luru', title: '成绩操作', minWidth:80,templet:'#luru', sort: true},
-			{field: 'status', title: '状态', minWidth:80,templet:'#status', sort: true},
+      {field:'luru', title:'成绩操作', minWidth:80, templet:'#luru', sort:true},
+			{field:'status', title:'状态', minWidth:80, templet:'#status', sort:true},
 
 		]];
 
   // 提交搜索条件后重载表格
-    layui.use(['table','cjgl'],function(){
+    layui.use(['table', 'cjgl'], function(){
       var table = layui.table
           cjgl = layui.cjgl;
       //表头工具栏事件

@@ -45,7 +45,19 @@ class Index extends BaseController
 
         // 根据条件查询数据
         $ks = new KS;
-        $data = $ks->search($src);
+        $data = $ks->search($src)
+            ->visible([
+                'id'
+                ,'title'
+                ,'bfdate'
+                ,'enddate'
+                ,'status'
+                ,'luru'
+                ,'ksCategory' => ['id', 'title']
+                ,'ksZuzhi' => ['id', 'title']
+                ,'ksXueqi' => ['id', 'title']
+                ,'update_time'
+            ]);
         $data = reSetObject($data, $src);
 
         return json($data);
