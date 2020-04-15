@@ -88,6 +88,7 @@
                     <input type="text" id="url" name="url" autocomplete="off" class="layui-input " value="" placeholder="地址" readonly>
                   </div>
                 </div>
+                {:token_meta()}
               </form>
               <div class="layui-card-body layui-upload-drag" id="upload" style="min-height: 125px; width: 90%">
                 <i class="layui-icon"></i>
@@ -157,7 +158,7 @@ layui.use(['form','upload','cjgl'], function(){
           data:{
             "url":url
           },
-          async:false,
+          // async:true,
           success:function(result){
             if(result.val == 1)
             {

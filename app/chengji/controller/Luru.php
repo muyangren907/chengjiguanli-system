@@ -266,13 +266,14 @@ class Luru extends BaseController
     // 保存表格批量上传的成绩
     public function saveAll()
     {
-        // set_time_limit(0);
-        // 获以电子表格存储位置
-        $url = input('post.url');
+        // 获取表单数据
+        $list = $this->request->only([
+            'url'
+        ], 'POST');
 
         // 读取表格数据
         $excel = new \app\renshi\controller\Myexcel;
-        $cjinfo = $excel->readXls(public_path() . 'public\\uploads\\' . $url);
+        $cjinfo = $excel->readXls(public_path() . 'public\\uploads\\' . $list['url']);
 
         $kaoshi_id = $cjinfo[1][0];  #获取考号
         $nianji = $cjinfo[1][1];  #获取年级
