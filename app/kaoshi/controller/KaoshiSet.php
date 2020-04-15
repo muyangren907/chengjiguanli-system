@@ -53,8 +53,8 @@ class KaoshiSet extends BaseController
                 ,'subject_id' => array()
                 ,'page' => '1'
                 ,'limit' => '10'
-                ,'field' => 'id'
-                ,'order' => 'desc'
+                ,'field' => 'subject_id'
+                ,'order' => 'asc'
                 ,'searchval' => ''
             ], 'POST');
 
