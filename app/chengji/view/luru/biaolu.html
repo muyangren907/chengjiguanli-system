@@ -151,13 +151,26 @@ layui.use(['form','upload','cjgl'], function(){
         layer.msg('请先上传文件。');
         return false;
       }
-      $.post("/chengji/luru/saveall", {"url":url}, function (result) {
-        if(result.val == 1)
-        {
-          $("#url").val('');
-        }
-        layer.msg(result.msg);
-      });
+      $.ajax({
+          url:"/chengji/luru/saveall",
+          type:'POST',
+          data:{
+            "url":url
+          },
+          async:false,
+          success:function(result){
+            if(result.val == 1)
+            {
+              $("#url").val('');
+            }
+            layer.msg(result.msg);
+          },
+          error:function(result){
+            layer.msg('数据扔半道啦。',function(){});
+          },
+        });
+
+
       return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
     });
 
