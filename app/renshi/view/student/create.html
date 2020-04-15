@@ -169,7 +169,7 @@ layui.use(['laydate','form','cjgl'], function(){
         school_id: formval.school_id
         ,ruxuenian: formval.ruxuenian
       }
-    checkval = "{$list.data.banji_id|default=''}"
+    checkval = "{$list.data.banji_id|default=''}";
     cjgl.createSelectOption('banji_id', val, '/teach/banji/mybanji', 'id', 'banTitle', checkval);
   }
 
