@@ -30,12 +30,13 @@ class Admin
         $old = new \app\admin\model\Admin;
 
         // 整理数据
-        // $oldId = $old->select()->toArray();
+        $oldId = $old->select();
         $oldId = $old->column('id');
         $new->where('id', '>', 0)->delete();
         $i = 0;
         foreach ($oldId as $key => $value) {
-            $oldList = $old->find($value)->getData();
+            $oldList = $value->getData();
+            $oldList['school_id'] = $oldList['school'];
             $newList = $new->create($oldList);
             if ($newList) {
                 $i ++;
@@ -53,12 +54,11 @@ class Admin
         $old = new \app\teach\model\Banji;
 
         // 整理数据
-        // $oldId = $old->select()->toArray();
-        $oldId = $old->column('id');
+        $oldId = $old->select();
         $new->where('id', '>', 0)->delete();
         $i = 0;
         foreach ($oldId as $key => $value) {
-            $oldList = $old->find($value)->getData();
+            $oldList = $value->getData();
             $oldList['school_id'] = $oldList['school'];
             $oldList['xueduan_id'] = 10302;
             $newList = $new->create($oldList);
