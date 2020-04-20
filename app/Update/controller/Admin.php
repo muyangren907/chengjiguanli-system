@@ -31,7 +31,6 @@ class Admin
 
         // 整理数据
         $oldId = $old->select();
-        $oldId = $old->column('id');
         $new->where('id', '>', 0)->delete();
         $i = 0;
         foreach ($oldId as $key => $value) {
