@@ -1,0 +1,210 @@
+
+{extend name=".././view/list.html" /}
+{block name="jsset"}
+
+{/block}
+{block name="nav"}
+  <span class="layui-breadcrumb">
+    <a href="">系统管理</a>
+    <a href="">文件管理</a>
+    <a><cite>文件列表</cite></a>
+  </span>
+{/block}
+{block name="search"}
+  <div class="layui-form-item">
+    <label for="searchval" class="layui-form-label">
+        关键字
+    </label>
+    <div class="layui-input-block">
+        <input type="text" id="searchval" name="searchval"
+        autocomplete="off" class="layui-input">
+    </div>
+  </div>
+{/block}
+{block name="table"}
+<table class="layui-table">
+  <colgroup>
+    <col>
+  </colgroup>
+  <thead>
+    <tr>
+      <th>数据库</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <a href="javascript:void(0);" onclick="addlayer('Admin','/update/admin/admin','600','400')">
+          <div class="layui-col-xs12 layui-col-sm12 layui-col-md12" align="center">
+            Admin
+          </div>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="javascript:void(0);" onclick="addlayer('Banji','/update/admin/banji','600','400')">
+          <div class="layui-col-xs12 layui-col-sm12 layui-col-md12" align="center">
+            Banji
+          </div>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="javascript:void(0);" onclick="addlayer('Chengji','/update/admin/chengji','600','400')">
+          <div class="layui-col-xs12 layui-col-sm12 layui-col-md12" align="center">
+            Chengji
+          </div>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="javascript:void(0);" onclick="addlayer('DwRongyu','/update/admin/dwrongyu','600','400')">
+          <div class="layui-col-xs12 layui-col-sm12 layui-col-md12" align="center">
+            DwRongyu
+          </div>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="javascript:void(0);" onclick="addlayer('DwRongyuCanyu','/update/admin/dwrongyucanyu','600','400')">
+          <div class="layui-col-xs12 layui-col-sm12 layui-col-md12" align="center">
+            DwRongyuCanyu
+          </div>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="javascript:void(0);" onclick="addlayer('Fields','/update/admin/fields','600','400')">
+          <div class="layui-col-xs12 layui-col-sm12 layui-col-md12" align="center">
+            Fields
+          </div>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="javascript:void(0);" onclick="addlayer('JsRongyu','/update/admin/jsrongyu','600','400')">
+          <div class="layui-col-xs12 layui-col-sm12 layui-col-md12" align="center">
+            JsRongyu
+          </div>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="javascript:void(0);" onclick="addlayer('jsrongyucanyu','/update/admin/jsrongyucanyu','600','400')">
+          <div class="layui-col-xs12 layui-col-sm12 layui-col-md12" align="center">
+            jsrongyucanyu
+          </div>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="javascript:void(0);" onclick="addlayer('jsrongyuinfo','/update/admin/jsrongyuinfo','600','400')">
+          <div class="layui-col-xs12 layui-col-sm12 layui-col-md12" align="center">
+            jsrongyuinfo
+          </div>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="javascript:void(0);" onclick="addlayer('kaohao','/update/admin/kaohao','600','400')">
+          <div class="layui-col-xs12 layui-col-sm12 layui-col-md12" align="center">
+            kaohao
+          </div>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="javascript:void(0);" onclick="addlayer('kaoshi','/update/admin/kaoshi','600','400')">
+          <div class="layui-col-xs12 layui-col-sm12 layui-col-md12" align="center">
+            kaoshi
+          </div>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="javascript:void(0);" onclick="addlayer('keti','/update/admin/keti','600','400')">
+          <div class="layui-col-xs12 layui-col-sm12 layui-col-md12" align="center">
+            keti
+          </div>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="javascript:void(0);" onclick="addlayer('keticanyu','/update/admin/keticanyu','600','400')">
+          <div class="layui-col-xs12 layui-col-sm12 layui-col-md12" align="center">
+            keticanyu
+          </div>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="javascript:void(0);" onclick="addlayer('ketiinfo','/update/admin/ketiinfo','600','400')">
+          <div class="layui-col-xs12 layui-col-sm12 layui-col-md12" align="center">
+            ketiinfo
+          </div>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="javascript:void(0);" onclick="addlayer('school','/update/admin/school','600','400')">
+          <div class="layui-col-xs12 layui-col-sm12 layui-col-md12" align="center">
+            school
+          </div>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="javascript:void(0);" onclick="addlayer('student','/update/admin/student','600','400')">
+          <div class="layui-col-xs12 layui-col-sm12 layui-col-md12" align="center">
+            student
+          </div>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="javascript:void(0);" onclick="addlayer('teacher','/update/admin/teacher','600','400')">
+          <div class="layui-col-xs12 layui-col-sm12 layui-col-md12" align="center">
+            teacher
+          </div>
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="javascript:void(0);" onclick="addlayer('xueqi','/update/admin/xueqi','600','400')">
+          <div class="layui-col-xs12 layui-col-sm12 layui-col-md12" align="center">
+            xueqi
+          </div>
+        </a>
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+
+{/block}
+{block name="myjs"}
+<script>
+  // 弹窗
+  function addlayer(title,url,width='',height='',max=false)
+  {
+    parent.xadmin.open(title,url,width,height,max);
+  }
+</script>
+{/block}
