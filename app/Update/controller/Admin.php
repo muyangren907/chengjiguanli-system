@@ -30,7 +30,7 @@ class Admin
         $old = new \app\admin\model\Admin;
 
         // 整理数据
-        $oldId = $old->select();
+        $oldId = $old::withTrashed()->select();
         $new->where('id', '>', 0)->delete();
         $i = 0;
         foreach ($oldId as $key => $value) {
@@ -53,7 +53,7 @@ class Admin
         $old = new \app\teach\model\Banji;
 
         // 整理数据
-        $oldId = $old->select();
+        $oldId = $old::withTrashed()->select();
         $new->where('id', '>', 0)->delete();
         $i = 0;
         foreach ($oldId as $key => $value) {
@@ -78,7 +78,7 @@ class Admin
         $old = new \app\chengji\model\Chengji;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
@@ -107,7 +107,7 @@ class Admin
         $old = new \app\rongyu\model\DwRongyu;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
@@ -137,7 +137,7 @@ class Admin
         $old = new \app\rongyu\model\DwRongyuCanyu;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
@@ -169,7 +169,7 @@ class Admin
         $old = new \app\system\model\Fields;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
@@ -197,7 +197,7 @@ class Admin
         $old = new \app\rongyu\model\JsRongyu;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
@@ -225,7 +225,7 @@ class Admin
         $old = new \app\rongyu\model\JsRongyuCanyu;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
@@ -258,7 +258,7 @@ class Admin
         $old = new \app\rongyu\model\JsRongyuInfo;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
@@ -290,7 +290,7 @@ class Admin
 
         // 整理数据
         dump('第'.$page.'页');
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->page($page, 500)
             ->select();
         // $new->where('id', '>', 0)->delete();
@@ -320,7 +320,7 @@ class Admin
         $old = new \app\Kaoshi\model\Kaoshi;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
@@ -350,7 +350,7 @@ class Admin
         $old = new \app\Keti\model\Keti;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
@@ -378,7 +378,7 @@ class Admin
         $old = new \app\Keti\model\KetiCanyu;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
@@ -412,7 +412,7 @@ class Admin
         $old = new \app\Keti\model\KetiInfo;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
@@ -443,7 +443,7 @@ class Admin
         $old = new \app\system\model\School;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
@@ -474,7 +474,7 @@ class Admin
 
         // 整理数据
         dump('第'.$page.'页');
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->page($page, 500)
             ->select();
         // $new->where('id', '>', 0)->delete();
@@ -508,7 +508,7 @@ class Admin
 
         // 整理数据
         dump('第'.$page.'页');
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->page($page, 500)
             ->select();
         // $new->where('id', '>', 0)->delete();
@@ -543,7 +543,7 @@ class Admin
         $old = new \app\teach\model\Xueqi;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
