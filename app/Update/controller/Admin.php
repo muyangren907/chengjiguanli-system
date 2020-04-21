@@ -282,18 +282,18 @@ class Admin
 
 
     // Kaohao
-    public function kaohao()
+    public function kaohao($page)
     {
         set_time_limit(0);
         $new = new \app\update\model\Kaohao;
         $old = new \app\kaohao\model\Kaohao;
 
         // 整理数据
+        dump('第'.$page.'页');
         $oldId = $old
-            // ->limit(10)
+            ->page($page, 500)
             ->select();
-
-        $new->where('id', '>', 0)->delete();
+        // $new->where('id', '>', 0)->delete();
 
         $i = 0;
         foreach ($oldId as $key => $value) {
@@ -405,7 +405,7 @@ class Admin
 
 
     // KetiInfo
-    public function KetiINfo()
+    public function KetiInfo()
     {
         set_time_limit(0);
         $new = new \app\update\model\KetiInfo;
@@ -465,7 +465,7 @@ class Admin
     }
 
     // Student
-    public function Student()
+    public function Student($page)
     {
         set_time_limit(0);
         $new = new \app\update\model\Student;
@@ -473,10 +473,11 @@ class Admin
         $pinyin = new \Overtrue\Pinyin\Pinyin;
 
         // 整理数据
+        dump('第'.$page.'页');
         $oldId = $old
+            ->page($page, 500)
             ->select();
-
-        $new->where('id', '>', 0)->delete();
+        // $new->where('id', '>', 0)->delete();
 
         $i = 0;
         foreach ($oldId as $key => $value) {
@@ -498,7 +499,7 @@ class Admin
 
 
     // Teacher
-    public function Teacher()
+    public function Teacher($page)
     {
         set_time_limit(0);
         $new = new \app\update\model\Teacher;
@@ -506,10 +507,11 @@ class Admin
         $pinyin = new \Overtrue\Pinyin\Pinyin;
 
         // 整理数据
+        dump('第'.$page.'页');
         $oldId = $old
+            ->page($page, 500)
             ->select();
-
-        $new->where('id', '>', 0)->delete();
+        // $new->where('id', '>', 0)->delete();
 
         $i = 0;
         foreach ($oldId as $key => $value) {
