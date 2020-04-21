@@ -88,6 +88,7 @@ class Admin
             $oldList = $value->getData();
             unset($oldList['id']);
             $oldList['defenlv'] = $oldList['defen'];
+            $oldList['subject_id'] = getNewSubject($oldList['subject_id']);
             $newList[] = $oldList;
         }
 
