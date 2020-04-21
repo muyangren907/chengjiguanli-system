@@ -41,7 +41,7 @@ class AuthRule extends Migrator
             ->addColumn('ismenu','boolean',['limit'=>1,'default'=>0,'null'=>false,'comment'=>'是否是菜单'])
             ->addColumn('font','string',['limit'=>40,'null'=>true,'comment'=>'菜单字体'])
             ->addColumn('url','string',['limit'=>40,'null'=>true,'comment'=>'菜单地址'])
-            ->addColumn('pid','integer',['limit'=>3,'default'=>0,'null'=>false,'comment'=>'父ID'])
+            ->addColumn('pid','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'父ID'])
             ->addColumn('type','boolean',['limit'=>1,'default'=>1,'null'=>false,'comment'=>'备用'])
             ->addColumn('create_time','integer',['limit'=>11,'default'=>1539158918,'null'=>false,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'default'=>1539158918,'null'=>false,'comment'=>'更新时间'])

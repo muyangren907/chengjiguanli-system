@@ -34,7 +34,7 @@ class TongjiLog extends Migrator
         // 添加当前表字段
         $table
             ->addColumn('kaoshi_id','integer',['limit'=>11,'default'=>'0','null'=>false,'comment'=>'考试ID'])
-            ->addColumn('category_id','string',['limit'=>25,'default'=>'a','null'=>false,'comment'=>'统计项目'])
+            ->addColumn('category','string',['limit'=>25,'default'=>'a','null'=>false,'comment'=>'统计项目'])
             ->addColumn('user_id','integer',['limit'=>11,'default'=>'0','null'=>false,'comment'=>'统计人ID'])
             ->addColumn('create_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'更新时间'])

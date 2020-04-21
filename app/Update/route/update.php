@@ -29,8 +29,8 @@ Route::group('admin', function () {
         Route::rule('keticanyu','admin/keticanyu','get');                      # 信息列表
         Route::rule('ketiinfo','admin/ketiinfo','get');                      # 信息列表
         Route::rule('school','admin/school','get');                      # 信息列表
-        Route::rule('student','admin/student','get');                      # 信息列表
-        Route::rule('teacher','admin/teacher','get');                      # 信息列表
+        Route::rule('student/<page>','admin/student','get');                      # 信息列表
+        Route::rule('teacher/<page>','admin/teacher','get');                      # 信息列表
         Route::rule('xueqi','admin/xueqi','get');                      # 信息列表
 	});
 
