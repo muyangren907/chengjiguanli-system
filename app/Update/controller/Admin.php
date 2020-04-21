@@ -87,7 +87,6 @@ class Admin
         foreach ($oldId as $key => $value) {
             $oldList = $value->getData();
             unset($oldList['id']);
-            $oldList['subject_id'] = getNewSubject($oldList['subject_id']);
             $oldList['defenlv'] = $oldList['defen'];
             $newList[] = $oldList;
         }
@@ -290,12 +289,10 @@ class Admin
 
         // 整理数据
         $oldId = $old
-            // ->page(6,1000)
+            // ->limit(10)
             ->select();
-        halt($oldId->count());
 
-        // $new->where('id', '>', 0)->delete();
-        // halt('aa');
+        $new->where('id', '>', 0)->delete();
 
         $i = 0;
         foreach ($oldId as $key => $value) {
@@ -467,7 +464,7 @@ class Admin
     }
 
     // Student
-    public function Student($page)
+    public function Student()
     {
         set_time_limit(0);
         $new = new \app\update\model\Student;
@@ -475,14 +472,10 @@ class Admin
         $pinyin = new \Overtrue\Pinyin\Pinyin;
 
         // 整理数据
-        dump('第' . $page . '页');
         $oldId = $old
-            ->page($page,200)
             ->select();
-        // halt($oldId->count());
 
-        // $new->where('id', '>', 0)->delete();
-        // halt('aa');
+        $new->where('id', '>', 0)->delete();
 
         $i = 0;
         foreach ($oldId as $key => $value) {
@@ -504,7 +497,7 @@ class Admin
 
 
     // Teacher
-    public function Teacher($page)
+    public function Teacher()
     {
         set_time_limit(0);
         $new = new \app\update\model\Teacher;
@@ -512,14 +505,10 @@ class Admin
         $pinyin = new \Overtrue\Pinyin\Pinyin;
 
         // 整理数据
-        dump('第' . $page . '页');
         $oldId = $old
-            ->page($page,200)
             ->select();
-        // halt($oldId->count());
 
-        // $new->where('id', '>', 0)->delete();
-        // halt('aa');
+        $new->where('id', '>', 0)->delete();
 
         $i = 0;
         foreach ($oldId as $key => $value) {
