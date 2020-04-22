@@ -52,7 +52,7 @@ class Search extends BaseModel
                 $data[$key]['sex'] = $value->cjStudent->sex;
             }else{
                 $stuinfo = $stu::withTrashed()
-                        ->where('id', $value->student)
+                        ->where('id', $value->student_id)
                         ->field('id, xingming, sex')
                         ->find();
                 $data[$key]['student_xingming'] = $stuinfo->xingming;
