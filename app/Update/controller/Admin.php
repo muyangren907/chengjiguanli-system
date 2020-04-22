@@ -361,7 +361,7 @@ class Admin
         foreach ($oldId as $key => $value) {
             $oldList = $value->getData();
             $oldList['lxdanwei_id'] = $oldList['lxdanweiid'];
-            $oldList['category_id'] = $oldList['category'];
+            $oldList['category_id'] = getNewCategory($oldList['category']);
             $newList = $new->create($oldList);
             if ($newList) {
                 $i ++;
