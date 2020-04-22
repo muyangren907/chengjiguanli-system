@@ -474,7 +474,7 @@ class Admin
 
         // 整理数据
         dump('第'.$page.'页');
-        $oldId = $old::withTrashed()
+        $oldId = $old->withTrashed()
             ->page($page, 500)
             ->select();
         // $new->where('id', '>', 0)->delete();
