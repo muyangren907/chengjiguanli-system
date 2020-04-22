@@ -264,7 +264,7 @@ class Njtongji extends BaseController
             ];
             $src = [
                 'kaoshi_id' => $kaoshi_id
-                ,'category' => 'njtj'
+                ,'category_id' => 12003
             ];
             event('tjlog', $src);
         } else {
@@ -297,7 +297,7 @@ class Njtongji extends BaseController
             ];
             $src = [
                 'kaoshi_id' => $kaoshi_id
-                ,'category' => 'njwz'
+                ,'category_id' => 12004
             ];
             event('tjlog', $src);
         } else {

@@ -64,7 +64,7 @@ class TongjiLog extends BaseModel
             'schwz' => '/chengji/schtj/schorder',
         ];
 
-        $val = $this->getData('category_id');
+        $val = $this->getData('category');
 
         return $src[$val];
     }
