@@ -207,6 +207,7 @@ class Admin
             $oldList = $value->getData();
             $oldList['fzschool_id'] = $oldList['fzschool'];
             $oldList['category_id'] = getNewCategory($oldList['category']);
+            $oldList['subject_id'] = getNewSubject($oldList['subject']);
             $newList = $new->create($oldList);
             if ($newList) {
                 $i ++;

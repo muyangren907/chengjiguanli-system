@@ -131,7 +131,7 @@
     		    <label for="subject_id" class="layui-form-label"><span class="x-red">*</span>所属学科 </label>
     		    <div class="layui-input-block">
     		    	{php}
-                $subjectlist = subjectList();
+                $subjectlist = subjectList(1, '');
               {/php}
     		      <select name="subject_id" lay-verify="required">
     		      	<option value=""></option>

@@ -318,11 +318,11 @@
      * 获取参加考试的学科
      * 返回 $data
      * */
-    function subjectList()
+    function subjectList($status = '', $kaoshi = '')
     {
     	$src = [
-            'status' => 1
-            ,'kaoshi' =>1
+            'status' => $status
+            ,'kaoshi' => $kaoshi
         ];
 
         $sbj = new \app\teach\model\Subject;
