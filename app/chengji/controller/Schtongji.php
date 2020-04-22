@@ -24,7 +24,7 @@ class Schtongji
             $data=['msg'=>'全区年级统计完成','val'=>1];
             $src = [
                 'kaoshi_id' => $kaoshi_id,
-                'category_id' => 'schtj',
+                'category' => 'schtj',
             ];
             event('tjlog', $src);
         }else{
@@ -52,7 +52,7 @@ class Schtongji
             $data=['msg'=>'学生成绩在全区位置统计完成','val'=>1];
             $src = [
                 'kaoshi_id' => $kaoshi_id,
-                'category_id' => 'schwz',
+                'category' => 'schwz',
             ];
             event('tjlog', $src);
         }else{

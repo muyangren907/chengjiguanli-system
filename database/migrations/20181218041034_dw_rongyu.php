@@ -40,7 +40,7 @@ class DwRongyu extends Migrator
             ->addColumn('fzshijian','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'发证时间'])
             ->addColumn('url','string',['limit'=>100,'default'=>'a','null'=>false,'comment'=>'荣誉图片'])
             ->addColumn('jiangxiang_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'奖项'])
-            ->addColumn('category_id','integer',['limit'=>15,'default'=>0,'null'=>false,'comment'=>'荣誉类型'])
+            ->addColumn('category_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'荣誉类型'])
             ->addColumn('create_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'更新时间'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])

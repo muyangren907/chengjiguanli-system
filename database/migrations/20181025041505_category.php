@@ -34,7 +34,7 @@ class Category extends Migrator
         // 添加当前表字段
         $table
             ->addColumn('title','string',['limit'=>50,'default'=>'a','null'=>false,'comment'=>'类型标题'])
-            ->addColumn('p_id','integer',['limit'=>4,'default'=>'0','null'=>false,'comment'=>'父级ID'])
+            ->addColumn('p_id','integer',['limit'=>11,'default'=>'0','null'=>false,'comment'=>'父级ID'])
             ->addColumn('status','boolean',['limit'=>1,'default'=>'1','null'=>false,'comment'=>'0=禁用，1=正常'])
             ->addColumn('paixu','integer',['limit'=>4,'default'=>'999','null'=>false,'comment'=>'排序'])
             ->addColumn('isupdate','boolean',['limit'=>1,'default'=>'1','null'=>false,'comment'=>'0=不允许更新，1=允许更新'])

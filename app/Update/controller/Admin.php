@@ -30,12 +30,12 @@ class Admin
         $old = new \app\admin\model\Admin;
 
         // 整理数据
-        // $oldId = $old->select()->toArray();
-        $oldId = $old->column('id');
+        $oldId = $old::withTrashed()->select();
         $new->where('id', '>', 0)->delete();
         $i = 0;
         foreach ($oldId as $key => $value) {
-            $oldList = $old->find($value)->getData();
+            $oldList = $value->getData();
+            $oldList['school_id'] = $oldList['school'];
             $newList = $new->create($oldList);
             if ($newList) {
                 $i ++;
@@ -53,12 +53,11 @@ class Admin
         $old = new \app\teach\model\Banji;
 
         // 整理数据
-        // $oldId = $old->select()->toArray();
-        $oldId = $old->column('id');
+        $oldId = $old::withTrashed()->select();
         $new->where('id', '>', 0)->delete();
         $i = 0;
         foreach ($oldId as $key => $value) {
-            $oldList = $old->find($value)->getData();
+            $oldList = $value->getData();
             $oldList['school_id'] = $oldList['school'];
             $oldList['xueduan_id'] = 10302;
             $newList = $new->create($oldList);
@@ -79,7 +78,7 @@ class Admin
         $old = new \app\chengji\model\Chengji;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
@@ -89,6 +88,7 @@ class Admin
             $oldList = $value->getData();
             unset($oldList['id']);
             $oldList['defenlv'] = $oldList['defen'];
+            $oldList['subject_id'] = getNewSubject($oldList['subject_id']);
             $newList[] = $oldList;
         }
 
@@ -107,7 +107,7 @@ class Admin
         $old = new \app\rongyu\model\DwRongyu;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
@@ -137,7 +137,7 @@ class Admin
         $old = new \app\rongyu\model\DwRongyuCanyu;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
@@ -169,7 +169,7 @@ class Admin
         $old = new \app\system\model\Fields;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
@@ -197,7 +197,7 @@ class Admin
         $old = new \app\rongyu\model\JsRongyu;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
@@ -225,7 +225,7 @@ class Admin
         $old = new \app\rongyu\model\JsRongyuCanyu;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
@@ -258,7 +258,7 @@ class Admin
         $old = new \app\rongyu\model\JsRongyuInfo;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
@@ -282,18 +282,18 @@ class Admin
 
 
     // Kaohao
-    public function kaohao()
+    public function kaohao($page)
     {
         set_time_limit(0);
         $new = new \app\update\model\Kaohao;
         $old = new \app\kaohao\model\Kaohao;
 
         // 整理数据
-        $oldId = $old
-            // ->limit(10)
+        dump('第'.$page.'页');
+        $oldId = $old::withTrashed()
+            ->page($page, 500)
             ->select();
-
-        $new->where('id', '>', 0)->delete();
+        // $new->where('id', '>', 0)->delete();
 
         $i = 0;
         foreach ($oldId as $key => $value) {
@@ -320,7 +320,7 @@ class Admin
         $old = new \app\Kaoshi\model\Kaoshi;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
@@ -350,7 +350,7 @@ class Admin
         $old = new \app\Keti\model\Keti;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
@@ -378,7 +378,7 @@ class Admin
         $old = new \app\Keti\model\KetiCanyu;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
@@ -405,14 +405,14 @@ class Admin
 
 
     // KetiInfo
-    public function KetiINfo()
+    public function KetiInfo()
     {
         set_time_limit(0);
         $new = new \app\update\model\KetiInfo;
         $old = new \app\Keti\model\KetiInfo;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
@@ -443,7 +443,7 @@ class Admin
         $old = new \app\system\model\School;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();
@@ -465,7 +465,7 @@ class Admin
     }
 
     // Student
-    public function Student()
+    public function Student($page)
     {
         set_time_limit(0);
         $new = new \app\update\model\Student;
@@ -473,10 +473,11 @@ class Admin
         $pinyin = new \Overtrue\Pinyin\Pinyin;
 
         // 整理数据
-        $oldId = $old
+        dump('第'.$page.'页');
+        $oldId = $old->withTrashed()
+            ->page($page, 500)
             ->select();
-
-        $new->where('id', '>', 0)->delete();
+        // $new->where('id', '>', 0)->delete();
 
         $i = 0;
         foreach ($oldId as $key => $value) {
@@ -498,7 +499,7 @@ class Admin
 
 
     // Teacher
-    public function Teacher()
+    public function Teacher($page)
     {
         set_time_limit(0);
         $new = new \app\update\model\Teacher;
@@ -506,10 +507,11 @@ class Admin
         $pinyin = new \Overtrue\Pinyin\Pinyin;
 
         // 整理数据
-        $oldId = $old
+        dump('第'.$page.'页');
+        $oldId = $old::withTrashed()
+            ->page($page, 500)
             ->select();
-
-        $new->where('id', '>', 0)->delete();
+        // $new->where('id', '>', 0)->delete();
 
         $i = 0;
         foreach ($oldId as $key => $value) {
@@ -541,7 +543,7 @@ class Admin
         $old = new \app\teach\model\Xueqi;
 
         // 整理数据
-        $oldId = $old
+        $oldId = $old::withTrashed()
             ->select();
 
         $new->where('id', '>', 0)->delete();

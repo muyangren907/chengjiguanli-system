@@ -23,14 +23,14 @@ Route::group('admin', function () {
         Route::rule('jsrongyu','admin/jsrongyu','get');                      # 信息列表
         Route::rule('jsrongyucanyu','admin/jsrongyucanyu','get');                      # 信息列表
         Route::rule('jsrongyuinfo','admin/jsrongyuinfo','get');                      # 信息列表
-        Route::rule('kaohao','admin/kaohao','get');                      # 信息列表
+        Route::rule('kaohao/<page>','admin/kaohao','get');                      # 信息列表
         Route::rule('kaoshi','admin/kaoshi','get');                      # 信息列表
         Route::rule('keti','admin/keti','get');                      # 信息列表
         Route::rule('keticanyu','admin/keticanyu','get');                      # 信息列表
         Route::rule('ketiinfo','admin/ketiinfo','get');                      # 信息列表
         Route::rule('school','admin/school','get');                      # 信息列表
-        Route::rule('student','admin/student','get');                      # 信息列表
-        Route::rule('teacher','admin/teacher','get');                      # 信息列表
+        Route::rule('student/<page>','admin/student','get');                      # 信息列表
+        Route::rule('teacher/<page>','admin/teacher','get');                      # 信息列表
         Route::rule('xueqi','admin/xueqi','get');                      # 信息列表
 	});
 

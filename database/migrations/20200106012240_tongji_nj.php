@@ -36,7 +36,7 @@ class TongjiNj extends Migrator
             ->addColumn('school_id','integer',['limit'=>11,'null'=>false,'default'=>0,'comment'=>'学校'])
             ->addColumn('kaoshi_id','integer',['limit'=>11,'null'=>false,'default'=>0,'comment'=>'考试'])
             ->addColumn('ruxuenian','integer',['limit'=>11,'null'=>false,'default'=>0,'comment'=>'入学年'])
-            ->addColumn('subject_id','string',['limit'=>11,'null'=>false,'default'=>0,'comment'=>'学科'])
+            ->addColumn('subject_id','integer',['limit'=>11,'null'=>false,'default'=>0,'comment'=>'学科'])
             ->addColumn('stu_cnt','integer',['limit'=>11,'null'=>true,'comment'=>'参加考试人数'])
             ->addColumn('chengji_cnt','integer',['limit'=>11,'null'=>true,'comment'=>'有成绩数'])
             ->addColumn('sum','decimal',['precision'=>10,'scale'=>1,'null'=>true,'comment'=>'总分'])

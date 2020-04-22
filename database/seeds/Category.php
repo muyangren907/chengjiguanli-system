@@ -171,6 +171,7 @@ class Category extends Seeder
                 //  单位荣誉分类
                 ['id' => 11201,'title' => '科研','p_id' => 112,'paixu' => 1,'isupdate' => 0],
                 ['id' => 11202,'title' => '特色','p_id' => 112,'paixu' => 2,'isupdate' => 0],
+                ['id' => 11203,'title' => '教研','p_id' => 112,'paixu' => 3,'isupdate' => 0],
             ['id' => 113
                 ,'title' => '荣誉奖项'
                 ,'p_id' => 0
@@ -197,7 +198,9 @@ class Category extends Seeder
                 ['id' => 11402,'title' => '技能大赛','p_id' => 114,'paixu' => 2,'isupdate' => 0],
                 ['id' => 11403,'title' => '论文','p_id' => 114,'paixu' => 3,'isupdate' => 0],
                 ['id' => 11404,'title' => '教科研','p_id' => 114,'paixu' => 4,'isupdate' => 0],
-                ['id' => 114055,'title' => '荣誉称号','p_id' => 114,'paixu' => 4,'isupdate' => 0],
+                ['id' => 11405,'title' => '荣誉称号','p_id' => 114,'paixu' => 5,'isupdate' => 0],
+                ['id' => 11406,'title' => '培训','p_id' => 114,'paixu' => 6,'isupdate' => 0],
+                ['id' => 11407,'title' => '展示课','p_id' => 114,'paixu' => 7,'isupdate' => 0],
             ['id' => 115
                 ,'title' => '课题立项类型'
                 ,'p_id' => 0

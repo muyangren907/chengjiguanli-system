@@ -34,8 +34,8 @@ class Chengji extends Migrator
         // 添加当前表字段
         $table
             ->addColumn('kaohao_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'考试'])
-            ->addColumn('subject_id','integer',['limit'=>4,'default'=>0,'null'=>false,'comment'=>'学科'])
-            ->addColumn('user_id','string',['limit'=>4,'default'=>0,'null'=>false,'comment'=>'学生'])
+            ->addColumn('subject_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'学科'])
+            ->addColumn('user_id','string',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'学生'])
             ->addColumn('defen','decimal',['precision'=>5,'scale'=>1,'default'=>Null,'null'=>false,'comment'=>'得分'])
             ->addColumn('defenlv','decimal',['precision'=>6,'scale'=>2,'default'=>Null,'null'=>false,'comment'=>'得分率'])
 

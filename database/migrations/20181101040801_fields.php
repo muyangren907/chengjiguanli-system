@@ -33,7 +33,7 @@ class Fields extends Migrator
 
         // 添加当前表字段
         $table
-            ->addColumn('category_id','string',['limit'=>100,'default'=>0,'null'=>false,'comment'=>'文件分类'])
+            ->addColumn('category_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'文件分类'])
             ->addColumn('oldname','string',['limit'=>100,'default'=>'a','null'=>false,'comment'=>'原文件名'])
             ->addColumn('bianjitime','integer',['limit'=>11,'null'=>true,'comment'=>'最后编辑时间'])
             ->addColumn('newname','string',['limit'=>100,'default'=>'a','null'=>false,'comment'=>'新文件名'])

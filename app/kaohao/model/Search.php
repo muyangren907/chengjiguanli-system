@@ -141,8 +141,8 @@ class Search extends BaseModel
             foreach ($value->banjiKaohao as $k => $val) {
                 if($val->cjStudent == Null)
                 {
-                    $stuinof = $stu::withTrashed()
-                        ->where('id', $val->student)
+                    $stuinof = $stu::onlyTrashed()
+                        ->where('id', $val->student_id)
                         ->field('id, xingming')
                         ->find();
                     $data[$key]->banjiKaohao[$key]->cjStudent = array('id' => $stuinof->id, 'xingming' => $stuinof->xingming);
