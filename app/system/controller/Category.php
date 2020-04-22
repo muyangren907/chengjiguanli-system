@@ -50,6 +50,7 @@ class Category extends BaseController
                 ,'paixu'
                 ,'glPid' => ['title']
                 ,'isupdate'
+                ,'flCategory' => ['id','title']
                 ,'status'
                 ,'update_time'
             ]);

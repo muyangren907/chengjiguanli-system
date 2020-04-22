@@ -60,11 +60,13 @@ class Fields extends BaseModel
         return $data;
     }
 
+
     // 上传人数据关联
     public function  flUser()
     {
         return $this->belongsTo('\app\admin\model\Admin', 'user_id', 'id');
     }
+
 
     // 文件种类数模型关联
     public function  flCategory()
