@@ -202,7 +202,7 @@ class KetiInfo extends BaseModel
     public function ktZcr()
     {
         return $this->hasMany('\app\keti\model\KetiCanyu', 'ketiinfo_id', 'id')
-            ->where('category_id', 1);
+            ->where('category_id', 11901);
     }
 
 
@@ -210,7 +210,7 @@ class KetiInfo extends BaseModel
     public function ktCy()
     {
         return $this->hasMany('\app\keti\model\KetiCanyu', 'ketiinfo_id', 'id')
-            ->where('category_id', 2);
+            ->where('category_id', 11902);
     }
 
 

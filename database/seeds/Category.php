@@ -236,7 +236,7 @@ class Category extends Seeder
             ['id' => 118
                 ,'title' => '课题状态'
                 ,'p_id' => 0
-                ,'paixu' => 17
+                ,'paixu' => 18
                 ,'isupdate' => 0
             ],
                 //  结题等级类型
@@ -247,7 +247,7 @@ class Category extends Seeder
             ['id' => 119
                 ,'title' => '课题或荣誉角色'
                 ,'p_id' => 0
-                ,'paixu' => 17
+                ,'paixu' => 19
                 ,'isupdate' => 0
             ],
                 //  课题或荣誉角色

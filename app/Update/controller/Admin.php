@@ -206,7 +206,7 @@ class Admin
         foreach ($oldId as $key => $value) {
             $oldList = $value->getData();
             $oldList['fzschool_id'] = $oldList['fzschool'];
-            $oldList['category_id'] = $oldList['category'];
+            $oldList['category_id'] = getNewCategory($oldList['category']);
             $newList = $new->create($oldList);
             if ($newList) {
                 $i ++;
@@ -237,7 +237,8 @@ class Admin
             unset($oldList['update_time']);
             unset($oldList['create_time']);
             unset($oldList['delete_time']);
-            $oldList['category_id'] = $oldList['category'];
+            $oldList['category'] === 1 ? $oldList['category_id'] = 11901
+                : $oldList['category_id'] = 11902;
             $oldList['rongyu_id'] = $oldList['rongyuid'];
             $oldList['teacher_id'] = $oldList['teacherid'];
             $newList[] = $oldList;
@@ -392,7 +393,8 @@ class Admin
             unset($oldList['delete_time']);
             $oldList['ketiinfo_id'] = $oldList['ketiinfoid'];
             $oldList['teacher_id'] = $oldList['teacherid'];
-            $oldList['category_id'] = $oldList['category'];
+            $oldList['category'] === 1 ? $oldList['category_id'] = 11901
+                : $oldList['category_id'] = 11902;
             $newList[] = $oldList;
         }
 

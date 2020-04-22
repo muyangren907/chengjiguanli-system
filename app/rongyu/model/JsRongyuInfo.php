@@ -243,7 +243,7 @@ class JsRongyuInfo extends BaseModel
     // 获奖人信息关联
     public function hjJsry()
     {
-        return $this->hasMany('\app\rongyu\model\JsRongyuCanyu', 'rongyu_id', 'id')->where('category_id',1);
+        return $this->hasMany('\app\rongyu\model\JsRongyuCanyu', 'rongyu_id', 'id')->where('category_id',11901);
     }
 
 
@@ -257,7 +257,7 @@ class JsRongyuInfo extends BaseModel
     // 参与人关联
     public function cyJsry()
     {
-        return $this->hasMany('\app\rongyu\model\JsRongyuCanyu', 'rongyu_id', 'id')->where('category_id',2);
+        return $this->hasMany('\app\rongyu\model\JsRongyuCanyu', 'rongyu_id', 'id')->where('category_id', 11902);
     }
 
 
