@@ -428,6 +428,9 @@ class Admin
             $oldList['fzdanwei_id'] = getNewCategory($oldList['fzdanweiid']);
             $oldList['jddengji_id'] = getNewDengji($oldList['jddengji']);
             $oldList['category_id'] = getNewCategory($oldList['category']);
+            $oldList['subject_id'] = getNewCategory($oldList['subject']);
+            $oldList['lxpic'] = 'keti/lixiang/'.$oldList['lxpic'];
+            $oldList['jtpic'] = 'keti/jieti/'.$oldList['jtpic'];
             $newList = $new->create($oldList);
             if ($newList) {
                 $i ++;
