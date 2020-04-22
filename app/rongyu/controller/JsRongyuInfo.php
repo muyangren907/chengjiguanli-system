@@ -162,7 +162,7 @@ class JsRongyuInfo extends BaseController
         foreach ($list['hjteachers'] as $key => $value) {
             $canyulist[] = [
                 'teacher_id' => $value
-                ,'category_id' => 1
+                ,'category_id' => 11901
             ];
         }
         if(!empty($list['cyteachers'])){
@@ -170,7 +170,7 @@ class JsRongyuInfo extends BaseController
             foreach ($list['cyteachers'] as $key => $value) {
                 $canyulist[] = [
                     'teacher_id' => $value
-                    ,'category_id' => 2
+                    ,'category_id' => 11902
                 ];
             }
         }
@@ -349,7 +349,7 @@ class JsRongyuInfo extends BaseController
             foreach ($list['hjteachers'] as $key => $value) {
                 $canyulist[] = [
                     'teacher_id' => $value
-                    ,'category_id' => 1
+                    ,'category_id' => 11901
                 ];
             }
             if(!empty($list['cyteachers'])){
@@ -357,7 +357,7 @@ class JsRongyuInfo extends BaseController
                 foreach ($list['cyteachers'] as $key => $value) {
                     $canyulist[] = [
                         'teacher_id' => $value
-                        ,'category_id' => 2
+                        ,'category_id' => 11902
                     ];
                 }
             }

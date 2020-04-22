@@ -151,7 +151,7 @@ class KetiInfo extends BaseController
             foreach ($list['hjteachers'] as $key => $value) {
                 $canyulist[] = [
                     'teacher_id' => $value
-                    ,'category_id' => 1
+                    ,'category_id' => 11901
                 ];
             }
 
@@ -296,7 +296,7 @@ class KetiInfo extends BaseController
             foreach ($list['hjteachers'] as $key => $value) {
                 $canyulist[] = [
                     'teacher_id' => $value
-                    ,'category_id' => 1
+                    ,'category_id' => 11901
                 ];
             }
         $data = $data->ktZcr()->saveAll($canyulist); # 添加新课题主持人
@@ -412,7 +412,7 @@ class KetiInfo extends BaseController
             foreach ($list['cyteachers'] as $key => $value) {
                 $canyulist[] = [
                     'teacher_id' => $value
-                    ,'category_id' => 2
+                    ,'category_id' => 11902
                 ];
             }
 

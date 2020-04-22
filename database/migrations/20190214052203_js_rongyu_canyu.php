@@ -33,7 +33,7 @@ class JsRongyuCanyu extends Migrator
 
         // 添加当前表字段
         $table
-            ->addColumn('category_id','integer',['limit'=>1,'null'=>false,'default'=>0,'comment'=>'获奖人或参与人'])
+            ->addColumn('category_id','integer',['limit'=>11,'null'=>false,'default'=>0,'comment'=>'获奖人或参与人'])
             ->addColumn('rongyu_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'荣誉id'])// rongyuid应该改成rongyuinfoid
             ->addColumn('teacher_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'教师id'])
             ->addColumn('create_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'创建时间'])

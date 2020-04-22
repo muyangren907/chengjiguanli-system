@@ -237,7 +237,7 @@ class Admin
             unset($oldList['update_time']);
             unset($oldList['create_time']);
             unset($oldList['delete_time']);
-            $oldList['category'] === 1 ? $oldList['category_id'] = 11901
+            $oldList['category'] == 1 ? $oldList['category_id'] = 11901
                 : $oldList['category_id'] = 11902;
             $oldList['rongyu_id'] = $oldList['rongyuid'];
             $oldList['teacher_id'] = $oldList['teacherid'];
@@ -393,7 +393,7 @@ class Admin
             unset($oldList['delete_time']);
             $oldList['ketiinfo_id'] = $oldList['ketiinfoid'];
             $oldList['teacher_id'] = $oldList['teacherid'];
-            $oldList['category'] === 1 ? $oldList['category_id'] = 11901
+            $oldList['category'] == 1 ? $oldList['category_id'] = 11901
                 : $oldList['category_id'] = 11902;
             $newList[] = $oldList;
         }
