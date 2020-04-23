@@ -23,8 +23,11 @@ class TongjiLog extends BaseModel
 
         $logList = self::where('kaoshi_id',$src['kaoshi_id'])
                     ->with([
-                        'userName'=>function($query){
+                        'userName' => function ($query) {
                             $query->field('id, xingming');
+                        }
+                        ,'tjCategory' => function ($query) {
+                            $query->field('id, title');
                         }
                     ])
                     ->append(['url'])
@@ -37,42 +40,36 @@ class TongjiLog extends BaseModel
         return $logList;
     }
 
-    // 开始时间获取器
-    public function getCategoryIdAttr($value)
-    {
-        $src = [
-            'bjtj' => '班级统计'
-            ,'njtj' => '年级统计'
-            ,'schtj' => '区统计'
-            ,'bjwz' => '班级位置'
-            ,'njwz' => '年级位置'
-            ,'schwz' => '区位置'
-        ];
-
-        return $src[$value];
-    }
 
     // 开始时间获取器
     public function getUrlAttr()
     {
         $src = [
-            'bjtj' => '/chengji/bjtj/tongji',
-            'njtj' => '/chengji/njtj/tongji',
-            'schtj' => '/chengji/schtj/tongji',
-            'bjwz' => '/chengji/bjtj/bjorder',
-            'njwz' => '/chengji/njtj/njorder',
-            'schwz' => '/chengji/schtj/schorder',
+            12001 => '/chengji/bjtj/tongji',
+            12003 => '/chengji/njtj/tongji',
+            12005 => '/chengji/schtj/tongji',
+            12002 => '/chengji/bjtj/bjorder',
+            12004 => '/chengji/njtj/njorder',
+            12004 => '/chengji/schtj/schorder',
         ];
 
-        $val = $this->getData('category');
+        $val = $this->getData('category_id');
 
         return $src[$val];
     }
+
 
     // 学科关联
     public function userName()
     {
         return $this->belongsTo('\app\admin\model\Admin', 'user_id', 'id');
+    }
+
+
+    // 考试成绩关联表
+    public function tjCategory()
+    {
+        return $this->belongsTo('\app\system\model\Category', 'category_id', 'id');
     }
 
 }
