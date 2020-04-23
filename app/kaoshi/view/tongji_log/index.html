@@ -34,7 +34,14 @@
 	//设置列
     options.cols=[[ //表头
       {field:'id',type:'numbers',title:'序号',align:'center'},
-      {field: 'category_id', title: '统计项目',align:'center',sort: false,minWidth:80,rowspan:2},
+      {field: 'category_id', title: '统计项目',align:'center',sort: false,minWidth:80,rowspan:2,templet:function(d){
+          str = '';
+          if(d.tjCategory)
+          {
+            str = d.tjCategory.title;
+          }
+        return str;
+      }},
       {field: 'update_time', title: '最后统计时间',align:'center',sort: false,minWidth:130,rowspan:2},
       {field: 'cjlast', title: '统计人',align:'center',sort: false,minWidth:130,rowspan:2,templet:function(d){
           str = '';
