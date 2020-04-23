@@ -122,6 +122,7 @@ class Njtongji extends BaseController
         }
 
         // 获取信息
+        ob_start();
         $ks = new \app\kaoshi\model\Kaoshi; # 获取参考学科
         $ksinfo = $ks->where('id', $src['kaoshi_id'])
                     ->field('id, title, bfdate')

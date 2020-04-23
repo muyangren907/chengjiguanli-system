@@ -237,6 +237,7 @@ class Index extends BaseController
         }
 
         // 获取参与考试的班级
+        ob_start();
         $khSrc = new \app\kaohao\model\Search;
         $chengjiinfo = $khSrc->srcChengjiList($src);
         $ksset = new \app\kaoshi\model\KaoshiSet;
@@ -443,6 +444,7 @@ class Index extends BaseController
         }
 
         // 获取参与考试的班级
+        ob_start();
         $khSrc = new \app\kaohao\model\Search;
         $chengjiinfo = $khSrc->srcChengjiList($src);
         $ksset = new \app\kaoshi\model\KaoshiSet;

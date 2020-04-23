@@ -120,6 +120,7 @@ class Bjtongji extends BaseController
         $src['school_id'] = strToarray($src['school_id']);
 
         // 获取相关参数
+        ob_start();
         $khSrc = new \app\kaohao\model\Search;  # 参考班级
         $src['banji_id']= array_column($khSrc->cyBanji($src), 'id');
         $btj = new BTJ;     # 成绩统计结果

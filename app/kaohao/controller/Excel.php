@@ -69,6 +69,7 @@ class Excel extends BaseController
             $this->error($msg);
         }
 
+        ob_start();
         $ks = new KS();
         $kslist = $ks::where('id', $kaoshi_id)
                     ->field('id, title')
@@ -147,6 +148,7 @@ class Excel extends BaseController
         header('Cache-Control: max-age=0');
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save('php://output');
+        // halt('aa');
         ob_flush();
         flush();
     }
@@ -207,6 +209,7 @@ class Excel extends BaseController
             $this->error($msg);
         }
 
+        ob_start();
         $ks = new KS();
         $kslist = $ks::where('id', $kaoshi_id)
                     ->field('id, title')
