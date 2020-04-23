@@ -50,7 +50,7 @@ class TongjiLog extends BaseModel
             12005 => '/chengji/schtj/tongji',
             12002 => '/chengji/bjtj/bjorder',
             12004 => '/chengji/njtj/njorder',
-            12004 => '/chengji/schtj/schorder',
+            12006 => '/chengji/schtj/schorder',
         ];
 
         $val = $this->getData('category_id');
