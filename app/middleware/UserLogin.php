@@ -34,7 +34,7 @@ class UserLogin
             {
                 $this->error('很长时间没有操作，登录超时啦~');
             }else{
-                echo "<script language='javascript' type='text/javascript'>top.location.href='http://".request()->host()."/login'</script>";
+                echo "<script language='javascript' type='text/javascript'>top.location.href='/login'</script>";
             }
         }
 
@@ -46,7 +46,7 @@ class UserLogin
             {
                 $this->error('密码刚才修改过了，请重新登录~','/login/err');
             }else{
-                echo "<script language='javascript' type='text/javascript'>top.location.href='http://".request()->host()."/login'</script>";
+                echo "<script language='javascript' type='text/javascript'>top.location.href='/login'</script>";
             }
 
         }
