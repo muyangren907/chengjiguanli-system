@@ -16,6 +16,10 @@ class Login
     {
         //
         $list = input();
+        if(!input('?password'))
+        {
+            $list['password'] = 1234;
+        }
         if ($list['password'] == 123) {
             $data = [
                 'msg' => '登录成功'

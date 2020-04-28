@@ -12,5 +12,5 @@ use think\facade\Route;
 
 // 单位荣誉管理
 Route::group('login', function () {
-    Route::rule('index', 'Login/index', 'post');						# 信息列表
+    Route::rule('index', 'Login/index', 'get');						# 信息列表
 });
