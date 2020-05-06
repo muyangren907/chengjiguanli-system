@@ -20,7 +20,7 @@ class Kaoshi extends BaseModel
             ,'searchval' => ''
         ];
         // 用新值替换初始值
-        $src = array_cover( $srcfrom , $src ) ;
+        $src = array_cover($srcfrom, $src);
         $src['zuzhi_id'] = strToarray($src['zuzhi_id']);
         $src['xueqi_id'] = strToarray($src['xueqi_id']);
         $src['category_id'] = strToarray($src['category_id']);

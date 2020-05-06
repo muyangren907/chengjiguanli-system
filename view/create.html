@@ -50,6 +50,7 @@
 
         //监听提交
         form.on('submit(mysubmit)', function(data){
+          console.log(data.field)
           $.ajax({
             url:"{$list.set.url}",
             type:"{$list.set.formpost}",

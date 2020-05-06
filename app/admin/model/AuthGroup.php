@@ -26,5 +26,4 @@ class AuthGroup extends BaseModel
 
         return $data;
     }
-
 }

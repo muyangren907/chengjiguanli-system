@@ -25,6 +25,7 @@ Route::group('index', function () {
     Route::rule('editpassword', 'Index/editPassword', 'get');		# 修改密码
     Route::rule('updatepassword/<id>', 'Index/updatePassword', 'put');		# 更新密码
     Route::rule('myinfo', 'Index/myinfo', 'get');		# 用户信息
+    Route::rule('adminlist', 'Index/adminList', 'post');       # 用户信息
 });
 
 
@@ -52,4 +53,14 @@ Route::group('authgroup', function () {
     Route::rule('update/<id>','AuthGroup/update','put');			# 更新信息
     Route::rule('delete/<id>','AuthGroup/delete','delete');		# 删除信息
     Route::rule('status','AuthGroup/setStatus','post');		# 删除信息
+});
+
+
+// 角色用户对应表
+Route::group('authgroupaccess', function () {
+    Route::rule('index/<group_id>','AuthGroupAccess/index','get');                        # 信息列表
+    Route::rule('data','AuthGroupAccess/ajaxData','post');                # 获取数据
+    Route::rule('create/<group_id>','AuthGroupAccess/create','get');             # 添加信息
+    Route::rule('save','AuthGroupAccess/save','post');                    # 保存信息
+    Route::rule('delete/<id>','AuthGroupAccess/delete','delete');     # 删除信息
 });

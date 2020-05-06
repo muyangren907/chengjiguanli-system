@@ -176,7 +176,6 @@ class Index extends BaseController
     //
     public function edit($id)
     {
-
         // 获取用户信息
        $list['data'] = AD::where('id',$id)
             ->field('id, school_id, username, xingming, teacher_id, sex, shengri, phone, beizhu')
@@ -365,6 +364,28 @@ class Index extends BaseController
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息
+        return json($data);
+    }
+
+
+    // 查询管理员
+    public function adminList()
+    {
+        $src = request()->only([
+            'searchval'
+        ],'POST');
+
+        $ad = new AD;
+        $list = $ad->search($src);
+        $cnt = $list->count();
+        $data = array();
+        foreach ($list as $key => $value) {
+            $data[] = [
+                'xingming' => $value->adSchool->jiancheng . ' -- ' .$value->xingming
+                ,'id' => $value->id
+            ];
+        }
+
         return json($data);
     }
 
