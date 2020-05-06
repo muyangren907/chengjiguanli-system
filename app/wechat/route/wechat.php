@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 use think\facade\Route;
 
-// 单位荣誉管理
-Route::group('login', function () {
-    Route::rule('index', 'Login/index', 'post');						# 信息列表
+Route::group('index', function () {
+    Route::rule('index', 'Index/index', 'post');						# 信息列表
+    Route::rule('create', 'Index/create', 'get');						# 信息列表
 });

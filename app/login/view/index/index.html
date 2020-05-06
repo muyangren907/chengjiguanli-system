@@ -82,7 +82,7 @@
           }
 
           if(yz){
-            $.post("/login",data.field,function(data,status){
+            $.post("/login/yz",data.field,function(data,status){
                   if(status != 'success')
                   {
                     layer.msg('数据传输错误');

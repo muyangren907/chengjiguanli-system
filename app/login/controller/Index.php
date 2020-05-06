@@ -19,13 +19,6 @@ use think\facade\Config;
 
 class Index
 {
-    // protected $request;
-
-    // public function __construct(Request $request)
-    // {
-    //     $this->request = $request;
-    // }
-
     // 显示登录界面
     public function index()
     {
@@ -57,14 +50,11 @@ class Index
         $data = request()->only(['username','password','captcha','online']);
 
         // 验证表单数据
-        try {
-            // 实例化验证模型
-            $validate = new \app\login\validate\Yanzheng;
-            validate(Yanzheng::class)->check($data);
-        } catch (ValidateException $e) {
-            // 验证失败 输出错误信息
-            $data=['msg'=>$e->getError(),'status'=>0];
-            return json($data);
+        $validate = new \app\login\validate\Yanzheng;
+        $result = $validate->check($data);
+        $msg = $validate->getError();
+        if(!$result){
+            return json(['msg' => $msg, 'val' => 0]);;
         }
 
         // 验证用户名和密码

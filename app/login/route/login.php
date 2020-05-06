@@ -18,7 +18,7 @@ use think\facade\Route;
 // 系统设置systembase
 Route::group('', function () {
 		Route::rule('','index/index','get');
-		Route::rule('','index/yanzheng','post');
+		Route::rule('yz','index/yanzheng','post');
 		Route::rule('log','index/shangmaLog','get');		# 配置更新
 		Route::rule('err','index/myerror','get');			//错误页
 
