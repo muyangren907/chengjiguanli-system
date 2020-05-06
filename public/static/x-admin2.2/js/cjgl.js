@@ -11,6 +11,10 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
     add: function(title,url,width='',height='',max=false){
       xadmin.open(title,url,width,height,max);
     },
+    // 新建Tab
+    addTab: function(title,url,max=false){
+      parent.xadmin.add_tab(title,url,max);
+    },
 
     // 删除单条记录
     del:function(obj,url){

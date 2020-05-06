@@ -125,7 +125,7 @@
 	          cjgl.add('编辑考试', 'index/edit/' + obj.data.id, '', '', true);
 	          break;
 	        case 'more':// 状态
-	          parent.xadmin.add_tab(obj.data.title + ' 操作', '/kaoshi/index/more/' + obj.data.id, true);
+	          cjgl.addTab(obj.data.title + ' 操作', '/kaoshi/index/more/' + obj.data.id, true);
 	          break;
         };
       });
