@@ -1001,7 +1001,32 @@ class Rule extends Seeder
                     ,'paixu' => 7
                     ,'pid' => 603
                 ],
-
+            ['id' => 604
+                ,'title' => '角色用户对应表'
+                ,'name' => 'admin/authgroupaccess/index'
+                ,'paixu' => 2
+                ,'ismenu'  => 0
+                ,'pid'  => 6
+                ,'url' => '/admin/authgroupaccess'
+            ],
+                ['id' => 60401
+                    ,'title' => '添加'
+                    ,'name' => 'admin/authgroupaccess/create'
+                    ,'paixu'  => 1
+                    ,'pid' => 604
+                ],
+                ['id' => 60402
+                    ,'title' => '保存'
+                    ,'name' => 'admin/authgroupaccess/save'
+                    ,'paixu'  => 2
+                    ,'pid' => 604
+                ],
+                ['id' => 60403
+                    ,'title' => '删除'
+                    ,'name' => 'admin/authgroupaccess/delete'
+                    ,'paixu' => 3
+                    ,'pid' => 604
+                ],
             /*======================================================================
              * 考试管理
              */

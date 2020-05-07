@@ -41,6 +41,7 @@ class AuthGroupAccess extends BaseModel
                     });
                 
             })
+            ->where('uid','<>', session('userid'))
         	->with([
         		'jsUser' => function($query) use($src) {
         			$query->field('id,xingming,school_id,username')
