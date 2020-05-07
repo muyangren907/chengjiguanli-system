@@ -19,7 +19,6 @@ use think\facade\Route;
 Route::group('', function () {
 		Route::rule('','Index/index','get');
 		Route::rule('','Index/yanzheng','post');
-		Route::rule('admin','Index/admin','get');
 		Route::rule('log','Index/shangmaLog','get');		# 配置更新
 		Route::rule('err','Index/myerror','get');			//错误页
 
