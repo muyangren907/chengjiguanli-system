@@ -1,0 +1,82 @@
+{extend name=".././view/create.html" /}
+{block name="jscss"}
+<style>
+/*mycheckbox
+{
+    style:{
+      padding-left: 10px;
+      padding-right: 10px;
+  };
+}*/
+
+</style>
+
+{/block}
+{block name="form"}
+    <form class="layui-form layui-form-pane" lay-filter="myform">
+          <div class="layui-form-item" style="margin-top: 10px;">
+              <label for="title" class="layui-form-label" style="height: 38px">
+                  <span style="height: 38px" class="x-red">*</span>管理员姓名
+              </label>
+              <div class="layui-input-block" id="search">
+              </div>
+          </div>
+          <input type="hidden" id="group_id" name="group_id" value="{$list.set.group_id}">
+          <div class="layui-form-item" style="text-align: right;">
+              <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
+                  {$list.set.butname}
+              </button>
+          </div>
+    </form>
+{/block}
+
+{block name="myjs"}
+  {load href="__XADMIN__/js/xm-select.js" /}
+    <script type="text/javascript">
+      // 监测复选框按钮
+      layui.use(['form'], function(){
+        var form = layui.form;
+        var formSelects = layui.formSelects;
+        
+      });
+      
+
+      var demo1 = xmSelect.render({
+        el: '#search', 
+        autoRow: true,
+        toolbar: { show: true },
+        filterable: true,
+        remoteSearch: true,
+        tips: '请选择管理员',
+        style: {
+          height: '30px',
+        },
+        prop: {
+          name: 'xingming',
+          value: 'id',
+        },
+        remoteMethod: function(val, cb, show){
+          //这里如果val为空, 则不触发搜索
+          if(!val){
+            return cb([]);
+          }
+
+          $.ajax({
+            url:'/admin/index/adminlist',
+            type:'POST',
+            data:{
+              searchval:val
+            },
+            success:function(result){
+              cb(result)
+            },
+            error:function(result){
+              layer.msg('数据扔半道啦。',function(){});
+            },
+          });
+        },
+      })
+
+    </script>
+{/block}
+

@@ -57,6 +57,7 @@ class Auth
             'admin/index/myinfo',   # 个人信息
             'admin/index/editpassword',   # 编辑密码
             'admin/index/updatepassword',   # 更新密码
+            'admin/index/adminlist',   # 更新密码
             // Teach应用
             'teach/banji/mybanji',  # 获取班级数据
             'teach/banji/banjilist',  # 获取班级数据

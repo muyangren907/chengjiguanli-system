@@ -38,6 +38,7 @@
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
 	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
+  <a class="layui-btn-xs" lay-event="adduser" title="分配用户"><i class="layui-icon">&#xe770;</i></a>
 	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
 </script>
 <!-- 表格操作 -->
@@ -76,10 +77,13 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
           case 'del':// 删除
-            cjgl.del(obj,"authgroup/delete");
+            cjgl.del(obj,"/admin/authgroup/delete");
             break;
           case 'edit':// 编辑
-            cjgl.add('编辑角色','authgroup/edit/'+obj.data.id,'','',true);
+            cjgl.add('编辑角色','/admin/authgroup/edit/'+obj.data.id,'','',true);
+            break;
+          case 'adduser':// 分配用户
+            cjgl.addTab('分配用户','/admin/authgroupaccess/index/'+obj.data.id,true);
             break;
         };
       });

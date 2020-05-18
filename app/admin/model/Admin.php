@@ -71,11 +71,11 @@ class Admin extends BaseModel
     }
 
 
-    // 用户角色获取器
-    public function userGroup()
-    {
-        return $this->belongsToMany('AuthGroup', 'AuthGroupAccess', 'id', 'uid');
-    }
+    // // 用户角色获取器
+    // public function userGroup()
+    // {
+    //     return $this->belongsToMany('AuthGroup', 'AuthGroupAccess', 'id', 'uid');
+    // }
 
 
     // 获取密码
@@ -139,12 +139,12 @@ class Admin extends BaseModel
     }
 
 
-    // 角色关联
-    public function authGroup()
-    {
-        return $this->hasMany('AuthGroupAccess', 'uid', 'id')
-            ->field('id, uid, group_id');
-    }
+    // // 角色关联
+    // public function authGroup()
+    // {
+    //     return $this->hasMany('AuthGroupAccess', 'uid', 'id')
+    //         ->field('id, uid, group_id');
+    // }
 
 
     // 获取角色名称
