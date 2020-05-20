@@ -19,11 +19,6 @@ use think\facade\Config;
 
 class Index
 {
-<<<<<<< HEAD
-    // 显示登录界面
-=======
-    // 显示登录选择界面
->>>>>>> auth
     public function index()
     {
         $mobile = request()->isMobile();
