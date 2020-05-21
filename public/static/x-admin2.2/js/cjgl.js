@@ -186,12 +186,23 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
           {
             return true;
           }
+          var str;
           for (var i = data.length - 1; i >= 0; i--) {
-            mydl.append('<dd id="'+data[i].id+'" onclick="cjgl.addTeacher(this)" addname='+addname+' teachername="'+data[i].xingming+'">'+data[i].xingming+'　'+data[i].jsDanwei.jiancheng+'　'+data[i].shengri+'</dd>');
+            str = '';
+            str = '<dd ';
+            str = str + 'id=' + data[i].id + ' ';
+            str = str + 'onclick="cjgl.addTeacher(this)"' + ' ';
+            str = str + 'addname=' + addname + ' ';
+            str = str + 'teachername=' + data[i].xingming + ' ';
+            str = str + 'schoolID=' + data[i].jsDanwei.id + ' ';
+            str = str + 'schoolName=' + data[i].jsDanwei.jiancheng +'>';
+            str = str + data[i].xingming+'　'+data[i].jsDanwei.jiancheng+'　'+data[i].shengri;
+            str = str + '</dd>';
+            mydl.append(str);
           }
         }
-        );
-      },
+      );
+    },
 
     // 添加教师
     addTeacher:function(myobj){
@@ -200,10 +211,15 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
       ,addname = $(myobj).attr('addname')
       ,myTitle = $(myobj).text()
       ,myList = $(myobj).parent().parent()
-      ,myBut = $(myList).parent().parent();
-
+      ,myBut = $(myList).parent().parent()
+      ,schoolName =  $(myobj).attr('schoolName');
+      console.log(myobj);
       if(myId){
-        $(myBut).append('<div class="layui-input-inline" style="width:60px"><div onclick="cjgl.delTeacher(this)" class="layui-btn layui-btn-normal">'+teachername+'</div><input type="hidden" name="'+addname+'" value="'+myId+'"></div>');
+        var str = '<div class="layui-input-inline" style="width:60px" title="'+schoolName+'"> ';
+        str = str + '<div onclick="cjgl.delTeacher(this)" class="layui-btn layui-btn-normal">';
+        str = str + teachername;
+        str = str + '</div><input type="hidden" name="'+addname+'" value="'+myId+'"></div>'
+        $(myBut).append(str);
       }
       $(myList).prev().val('');
       $(myList).remove();
