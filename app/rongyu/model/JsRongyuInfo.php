@@ -165,7 +165,6 @@ class JsRongyuInfo extends BaseModel
         // 查询数据
         $data = $this->where('id', 'in', function($query) use($teacher_id){
                 $query->name('JsRongyuCanyu')
-                    ->where('category_id', 1)
                     ->where('teacher_id', $teacher_id)
                     ->field('rongyu_id');
             })
