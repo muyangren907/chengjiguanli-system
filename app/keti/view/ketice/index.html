@@ -101,7 +101,7 @@
             cjgl.delAll(checkStatus,'ketice/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加荣誉册','ketice/create','500','300');
+            cjgl.add('添加课题册','ketice/create','600','400');
             break;
         };
       });
@@ -119,7 +119,7 @@
 	          cjgl.del(obj,"ketice/delete");
 	          break;
 	        case 'edit':// 编辑
-	          cjgl.add('编辑荣誉册','ketice/edit/'+obj.data.id,'500','300');
+	          cjgl.add('编辑课题册','ketice/edit/'+obj.data.id,'600','400');
 	          break;
 	        case 'more':// 状态
 	          cjgl.add('批传','/keti/ketiinfo/createall/'+obj.data.id,'300','200');
