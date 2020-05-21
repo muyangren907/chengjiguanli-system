@@ -1,10 +1,27 @@
 {extend name=".././view/create.html" /}
-
+{block name="jscss"}
+<style type="text/css">
+  html, body{
+    height: 100%;
+    margin: 0px;
+  }
+  #upload{
+    width: 320px;
+    height: 80px;
+    padding-top: 80px;
+  }
+</style>
+{/block}
 {block name="form"}
-    <div class="layui-form-item">
-      <button type="button" class="layui-btn" id="upload">
-        <i class="layui-icon">&#xe67c;</i>上传文件
-      </button>
+    <div class="layui-fluid" style="text-align: center;">
+      <div class="layui-upload-drag" id="upload">
+        <i class="layui-icon"></i>
+        <p>点击上传，或将文件拖拽到此处</p>
+        <div class="layui-hide" id="uploadDemoView">
+          <hr>
+          <img src="" alt="上传成功后渲染" style="max-width: 196px;">
+        </div>
+      </div>
     </div>
 {/block}
 
