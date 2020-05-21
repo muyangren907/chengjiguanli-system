@@ -235,10 +235,9 @@
   // 搜索教师
   $('#hjSearch').bind({
     keyup:function(){
-      var val = $.trim($(this).val());
-      // if(val.length>0){
+      var val = $.trim($(this).val()),
+        schoolName =  $(this).attr('schoolName');
         cjgl.selectOnfocus(this,val,'hjteachers[]');
-      // }
     },
   })
 
