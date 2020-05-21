@@ -419,10 +419,10 @@ class JsRongyuInfo extends BaseController
 
 
     // 下载荣誉信息
-    public function outXlsx($rongyuce)
+    public function outXlsx($rongyuce_id)
     {
         $ryinfo = new ryinfo();
-        $list = $ryinfo->srcTuceRy($rongyuce);
+        $list = $ryinfo->srcTuceRy($rongyuce_id);
 
         if($list->isEmpty())
         {

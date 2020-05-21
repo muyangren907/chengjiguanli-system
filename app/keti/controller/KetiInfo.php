@@ -429,10 +429,10 @@ class KetiInfo extends BaseController
 
 
     // 下载课题信息表
-    public function outXlsx($ketice)
+    public function outXlsx($ketice_id)
     {
         $ketiinfo = new ktinfo();
-        $list = $ketiinfo->srcKeti($ketice);
+        $list = $ketiinfo->srcKeti($ketice_id);
 
         if($list->isEmpty())
         {

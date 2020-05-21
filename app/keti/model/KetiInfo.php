@@ -147,55 +147,55 @@ class KetiInfo extends BaseModel
     }
 
 
-    // //搜索课题册
-    // public function srcKeti($ketice_id)
-    // {
-    //     $data = $this
-    //         ->where('ketice_id', $ketice_id)
-    //         ->with(
-    //             [
-    //                 'fzSchool' => function($query){
-    //                     $query->field('id, jiancheng');
-    //                 },
-    //                 'KtCe' => function($query){
-    //                     $query->field('id, title, lxdanwei_id, category_id, lxshijian')
-    //                         ->with([
-    //                             'ktCategory' => function($q){
-    //                                 $q->field('id, title');
-    //                             },
-    //                             'ktLxdanwei' => function($q){
-    //                                 $q->field('id, jiancheng_id, title');
-    //                             }
-    //                         ]);
-    //                 },
-    //                 'ktCategory'=>function($query){
-    //                     $query->field('id, title');
-    //                 },
-    //                 'ktSubject'=>function($query){
-    //                     $query->field('id, title');
-    //                 },
-    //                 'ktZcr'=>function($query){
-    //                     $query->field('ketiinfo_id, teacher_id')
-    //                         ->with([
-    //                             'teacher'=>function($q){
-    //                                 $q->field('id, xingming');
-    //                             }
-    //                         ]);
-    //                 },
-    //                 'ktCy'=>function($query){
-    //                     $query->field('ketiinfo_id, teacher_id')
-    //                         ->with([
-    //                             'teacher'=>function($q){
-    //                                 $q->field('id, xingming');
-    //                             }
-    //                         ]);
-    //                 }
-    //             ]
-    //         )
-    //         ->select();
+    //搜索课题册
+    public function srcKeti($ketice_id)
+    {
+        $data = $this
+            ->where('ketice_id', $ketice_id)
+            ->with(
+                [
+                    'fzSchool' => function($query){
+                        $query->field('id, jiancheng');
+                    },
+                    'KtCe' => function($query){
+                        $query->field('id, title, lxdanwei_id, category_id, lxshijian')
+                            ->with([
+                                'ktCategory' => function($q){
+                                    $q->field('id, title');
+                                },
+                                'ktLxdanwei' => function($q){
+                                    $q->field('id, jiancheng, title');
+                                }
+                            ]);
+                    },
+                    'ktCategory'=>function($query){
+                        $query->field('id, title');
+                    },
+                    'ktSubject'=>function($query){
+                        $query->field('id, title');
+                    },
+                    'ktZcr'=>function($query){
+                        $query->field('ketiinfo_id, teacher_id')
+                            ->with([
+                                'teacher'=>function($q){
+                                    $q->field('id, xingming');
+                                }
+                            ]);
+                    },
+                    'ktCy'=>function($query){
+                        $query->field('ketiinfo_id, teacher_id')
+                            ->with([
+                                'teacher'=>function($q){
+                                    $q->field('id, xingming');
+                                }
+                            ]);
+                    }
+                ]
+            )
+            ->select();
 
-    //     return $data;
-    // }
+        return $data;
+    }
 
 
     // 课题主持人关联

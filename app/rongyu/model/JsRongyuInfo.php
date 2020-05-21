@@ -110,53 +110,53 @@ class JsRongyuInfo extends BaseModel
     }
 
 
-    // // 获取需要下载的荣誉信息
-    // public function srcTuceRy($id)
-    // {
-    //     // 查询数据
-    //     $data =$this->where('rongyuce', $id)
-    //             ->field('id, rongyuce_id, title, bianhao, hjschool_id, subject_id, jiangxiang_id, hjshijian, pic')
-    //             ->with([
-    //                 'hjJsry' => function($query){
-    //                     $query->field('rongyu_id, teacher_id')
-    //                         ->with([
-    //                             'teacher' => function($query){
-    //                                 $query->field('id, xingming');
-    //                             }
-    //                         ]);
-    //                 },
-    //                 'cyJsry' => function($query){
-    //                     $query->field('rongyu_id, teacher_id')
-    //                         ->with([
-    //                             'teacher' => function($query){
-    //                                 $query->field('id, xingming');
-    //                             }]
-    //                         );
-    //                 },
-    //                 'ryTuce' => function($query){
-    //                     $query->field('id, title, fzshijian, fzschool_id')
-    //                         ->with([
-    //                             'fzSchool' => function($q){
-    //                                 $q->field('id, title');
-    //                             }
-    //                         ]);
-    //                 },
-    //                 'rySubject' => function($query){
-    //                     $query->field('id,title');
-    //                 },
-    //                 'hjSchool' => function($query){
-    //                     $query->field('id, jiancheng');
-    //                 },
-    //                 'jxCategory' => function($query){
-    //                     $query->field('id, title');
-    //                 }
-    //             ])
-    //             ->order(['hjschool'])
-    //             ->append(['hjJsName', 'cyJsName'])
-    //             ->select();
+    // 获取需要下载的荣誉信息
+    public function srcTuceRy($id)
+    {
+        // 查询数据
+        $data =$this->where('rongyuce_id', $id)
+                ->field('id, rongyuce_id, title, bianhao, hjschool_id, subject_id, jiangxiang_id, hjshijian, pic')
+                ->with([
+                    'hjJsry' => function($query){
+                        $query->field('rongyu_id, teacher_id')
+                            ->with([
+                                'teacher' => function($query){
+                                    $query->field('id, xingming');
+                                }
+                            ]);
+                    },
+                    'cyJsry' => function($query){
+                        $query->field('rongyu_id, teacher_id')
+                            ->with([
+                                'teacher' => function($query){
+                                    $query->field('id, xingming');
+                                }]
+                            );
+                    },
+                    'ryTuce' => function($query){
+                        $query->field('id, title, fzshijian, fzschool_id')
+                            ->with([
+                                'fzSchool' => function($q){
+                                    $q->field('id, title');
+                                }
+                            ]);
+                    },
+                    'rySubject' => function($query){
+                        $query->field('id,title');
+                    },
+                    'hjSchool' => function($query){
+                        $query->field('id, jiancheng');
+                    },
+                    'jxCategory' => function($query){
+                        $query->field('id, title');
+                    }
+                ])
+                ->order(['hjschool_id'])
+                ->append(['hjJsName', 'cyJsName'])
+                ->select();
 
-    //     return $data;
-    // }
+        return $data;
+    }
 
 
     //搜索教师荣誉
