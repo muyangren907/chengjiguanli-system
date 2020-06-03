@@ -23,21 +23,23 @@
     <div class="layui-form-item">
 	    <label for="subject_id" class="layui-form-label" style="height: 100%">所属学科</label>
 	    <div class="layui-input-block">
+	    	<input type="radio" name="subject_id" title="无" value="" lay-skin="primary" checked>
 	    	{php}
 	    		$sbj = new \app\teach\model\Subject;
 	    		$subject = $sbj->field('id,title')->where('status',1)->order('paixu')->select();
 	    	{/php}
 	    	{volist name="subject" id="vo"}
-	    		<input type="checkbox" name="subject_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="radio" name="subject_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
 	<div class="layui-form-item" style="margin-bottom: 0;">
 	    <label for="hjschool_id" class="layui-form-label" style="height: 100%">获奖单位</label>
 	    <div class="layui-input-block">
+	    	<input type="radio" name="hjschool_id" title="无" value="" lay-skin="primary" checked>
 	    	{php} $school = schoolList('校级','区级'); {/php}
 	    	{volist name="school" id="vo"}
-	    		<input type="checkbox" name="hjschool_id[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
+	    		<input type="radio" name="hjschool_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
 	</div>
