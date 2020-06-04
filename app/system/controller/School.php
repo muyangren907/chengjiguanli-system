@@ -44,6 +44,8 @@ class School extends BaseController
         // 实例化
         $sch = new sch;
 
+        $data = $sch->search($src);
+
         // 查询要显示的数据
         $data = $sch->search($src)
             ->visible([

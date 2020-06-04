@@ -45,7 +45,10 @@ class School extends BaseModel
             'kaoshi'=>'',
             'searchval'=>''
         ];
-        $src = array_cover( $srcfrom , $src ) ;
+        $src = array_cover($srcfrom, $src);
+        $src['jibie_id'] = strToArray($src['jibie_id']);
+        $src['xingzhi_id'] = strToArray($src['xingzhi_id']);
+        $src['xueduan_id'] = strToArray($src['xueduan_id']);
 
         // 查询数据
         $data = $this
