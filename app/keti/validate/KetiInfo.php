@@ -40,6 +40,6 @@ class KetiInfo extends Validate
     protected $scene = [
         'create'  =>  ['ketice_id','title','bianhao','fzdanwei_id','subject_id','category','jhjtshijian','hjteachers'],
         'edit'  =>  ['id','title','hjteachers','hjschool_id','subject_id','hjshijian','jiangxiang'],
-        'jieti'  =>  ['id','jtpic','jddengji_id','jtshijian','cyteachers'],
+        'jieti'  =>  ['id','jtpic','jddengji_id','jtshijian'],
     ];
 }
