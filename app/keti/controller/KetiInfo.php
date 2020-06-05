@@ -390,7 +390,7 @@ class KetiInfo extends BaseController
             'jtpic'
             ,'jddengji_id'
             ,'jtshijian'
-            ,'cyteachers'
+            ,'cyteachers'=>array()
         ], 'PUT');
         $list['id'] = $id;
 
@@ -408,6 +408,7 @@ class KetiInfo extends BaseController
         $data->ktCy->delete(true);
         // 声明教师数组
             $teacherlist = [];
+            $canyulist = [];
             // 循环组成获奖教师信息
             foreach ($list['cyteachers'] as $key => $value) {
                 $canyulist[] = [
@@ -417,7 +418,12 @@ class KetiInfo extends BaseController
             }
 
         // 添加新的获奖人与参与人信息
-        $data = $data->ktCy()->saveAll($canyulist);
+        if (count($canyulist)>0) {
+            $data = $data->ktCy()->saveAll($canyulist);
+        }else{
+            $data = true;
+        }
+        
 
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '更新成功', 'val' => 1]
