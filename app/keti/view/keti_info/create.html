@@ -29,10 +29,13 @@
     <div class="layui-form-item" align="center">
       {eq name="$list.set.formpost" value="PUT" }
         {if strlen($list.data.lxpic)>0}
-          <img style="max-height: 300px;max-width: 500px" src="__UPLOAD__/{$list.data.lxpic}" onclick="imgMax(this,true)">
+          <img id="img" style="max-height: 300px;max-width: 500px" src="__UPLOAD__/{$list.data.lxpic}" onclick="imgMax(this,true)">
         {else /}
-          <img style="max-height: 300px;max-width: 500px" src="__UPLOAD__/rongyu_teacher/404.png" onclick="imgMax(this,true)">
+          <img id="img" style="max-height: 300px;max-width: 500px" src="__UPLOAD__/rongyu_teacher/404.png" onclick="imgMax(this,true)">
         {/if}
+      {/eq}
+      {eq name="$list.set.formpost" value="POST" }
+          <img id="img" style="max-height: 300px;max-width: 500px" src="" onclick="imgMax(this,true)">
       {/eq}
     </div>
     <form class="layui-form layui-form-pane" lay-filter="myform">
@@ -184,6 +187,7 @@
       ,done: function(res){
         if(res.val == 1){
           $('#lxpic').val(res.url);
+          document.getElementById("img").src="__UPLOAD__/"+res.url;
         }
         layer.msg(res.msg);
       }
