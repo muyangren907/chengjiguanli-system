@@ -356,7 +356,7 @@ class KetiInfo extends BaseController
     {
         // 获取课题信息
         $list['data'] = ktinfo::where('id', $id)
-                ->field('id, title, jddengji_id, jtshijian, jtpic')
+                ->field('id, title, jddengji_id, jtshijian, jtpic,beizhu')
                 ->with([
                     'ktCy'=>function($query){
                         $query->field('ketiinfo_id,teacher_id')
@@ -391,6 +391,7 @@ class KetiInfo extends BaseController
             ,'jddengji_id'
             ,'jtshijian'
             ,'cyteachers'=>array()
+            ,'beizhu'
         ], 'PUT');
         $list['id'] = $id;
 
@@ -398,8 +399,11 @@ class KetiInfo extends BaseController
         $validate = new \app\keti\validate\KetiInfo;
         $result = $validate->scene('jieti')->check($list);
         $msg = $validate->getError();
-        if(!$result){
+        if (!$result) {
             return json(['msg' => $msg, 'val' => 0]);
+        }
+        if ($list['jddengji_id'] == 11804 && $list['beizhu']=='') {
+            return json(['msg' => '流失的课题必须在备注中写明原因', 'val' => 0]);
         }
         // 更新数据
         $data = ktinfo::update($list);

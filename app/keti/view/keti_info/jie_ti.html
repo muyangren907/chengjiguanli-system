@@ -99,6 +99,14 @@
                   autocomplete="off" class="layui-input " value="{$list.data.jtshijian|default=''}" placeholder="结题时间">
               </div>
           </div>
+          <div class="layui-form-item">
+              <label for="beizhu" class="layui-form-label">
+                  备注
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="beizhu" name="beizhu" autocomplete="off" class="layui-input " value="{$list.data.beizhu|default=''}" placeholder="填写流失原因等情况">
+              </div>
+          </div>
           <div class="layui-form-item" style="text-align: right;">
               <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
                   {$list.set.butname}
