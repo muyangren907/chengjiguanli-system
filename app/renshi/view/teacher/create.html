@@ -59,7 +59,7 @@
           <div class="layui-form-item">
             <label for="danwei_id" class="layui-form-label"><span class="x-red">*</span>现工作单位</label>
             <div class="layui-input-block">
-              {php} $schoollist = schoolList('校级', '区级', 'asc');{/php}
+              {php} $schoollist = schoolList('校级', '市级', 'asc');{/php}
               <select name="danwei_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="schoollist" id="vo"}
