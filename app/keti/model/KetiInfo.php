@@ -56,7 +56,7 @@ class KetiInfo extends BaseModel
                     $query->where('ketice_id', $src['ketice_id']);
                 })
     		->when(strlen($src['searchval']) > 0, function($query) use($src){
-                	$query->where('title', 'like', '%' . $src['searchval'] . '%');
+                	$query->where('title|bianhao', 'like', '%' . $src['searchval'] . '%');
                 })
             ->with(
                 [

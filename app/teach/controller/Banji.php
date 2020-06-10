@@ -118,6 +118,9 @@ class Banji extends BaseController
         if($paixumax + $list['bjsum'] > 25) # 如果增加班级数超过2个，则少加班级
         {
             $list['bjsum'] = 25 - $paixumax;
+            if($list['bjsum'] == 0){
+                return json(['msg' => '已经超过同年级班级数的上线啦。', 'val' => 0]);
+            }
         }
         $i = 1;
         while($i <= $list['bjsum'])
