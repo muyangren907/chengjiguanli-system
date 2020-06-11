@@ -14,7 +14,7 @@ class Keti extends Validate
      */
 	protected $rule = [
         'id|ID'         =>     'require:number',
-        'title|课题册标题'     =>  'require|length:1,30',
+        'title|课题册标题'     =>  'require|length:1,100',
         'category_id|课题类型'     =>  'require|number',
         'lxshijian|立项时间'     =>  'require|date',
         'lxdanwei_id|立项单位'     =>  'require|number',

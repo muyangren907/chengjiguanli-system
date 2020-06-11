@@ -15,13 +15,14 @@ class DwRongyu extends Validate
 	protected $rule = [
         'url|请先上传荣誉图片'     =>  'require',
         'id|ID'     =>  'require',
-        'title|荣誉标题'     =>  'length:1,50',
+        'title|荣誉标题'     =>  'length:1,100',
         'category_id|荣誉类型'     =>  'require|number',
         'hjschool_id|获奖单位'     =>  'require|number',
         'fzshijian|发证时间'     =>  'require|date',
         'fzschool_id|发证单位'     =>  'require|number',
         'jiangxiang_id|奖项'     =>  'require|number',
         'teachers|参与人'      =>'array',
+        'project|项目'=>'length:1,100'
     ];
 
 
@@ -35,8 +36,8 @@ class DwRongyu extends Validate
 
     // 验证场景
     protected $scene = [
-        'create'  =>  ['url', 'title', 'category_id', 'hjschool_id', 'fzshijian', 'fzschool_id', 'jiangxiang_id'],
-        'edit'  =>  ['id', 'title', 'category_id', 'hjschool_id', 'fzshijian', 'fzschool_id', 'jiangxiang_id'],
+        'create'  =>  ['project','url', 'title', 'category_id', 'hjschool_id', 'fzshijian', 'fzschool_id', 'jiangxiang_id'],
+        'edit'  =>  ['project','id', 'title', 'category_id', 'hjschool_id', 'fzshijian', 'fzschool_id', 'jiangxiang_id'],
         'createall'  =>  ['title', 'url'],
     ];
 }

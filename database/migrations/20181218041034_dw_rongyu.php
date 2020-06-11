@@ -33,8 +33,8 @@ class DwRongyu extends Migrator
 
         // 添加当前表字段
         $table
-            ->addColumn('project','string',['limit'=>50,'default'=>'a','null'=>false,'comment'=>'项目名称'])
-            ->addColumn('title','string',['limit'=>50,'default'=>'a','null'=>false,'comment'=>'荣誉内容名称'])
+            ->addColumn('project','string',['limit'=>100,'default'=>'a','null'=>false,'comment'=>'项目名称'])
+            ->addColumn('title','string',['limit'=>100,'default'=>'a','null'=>false,'comment'=>'荣誉内容名称'])
             ->addColumn('hjschool_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'获奖单位'])
             ->addColumn('fzschool_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'发证单位'])
             ->addColumn('fzshijian','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'发证时间'])

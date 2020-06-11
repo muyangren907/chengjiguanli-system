@@ -33,7 +33,7 @@ class KetiInfo extends Migrator
 
         // 添加当前表字段
         $table
-            ->addColumn('title','string',['limit'=>60,'null'=>false,'default'=>'无标题','comment'=>'课题名称'])
+            ->addColumn('title','string',['limit'=>100,'null'=>false,'default'=>'无标题','comment'=>'课题名称'])
             ->addColumn('ketice_id','integer',['limit'=>11,'null'=>false,'default'=>0,'comment'=>'课题册id'])
             ->addColumn('bianhao','string',['limit'=>11,'null'=>true,'comment'=>'课题编号'])
             ->addColumn('lxpic','string',['limit'=>100,'null'=>true,'comment'=>'立项证书图片'])
