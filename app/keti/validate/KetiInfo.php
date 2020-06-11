@@ -16,7 +16,7 @@ class KetiInfo extends Validate
         'id|请先上传立项通知书图片'      =>    'require',
         'ketice_id|课题册ID丢失'      =>    'require',
         'title|课题名称'     =>  'require|length:1,100',
-        'bianhao|课题编号'     =>  'require|length:1,11',
+        'bianhao|课题编号'     =>  'require|length:1,50',
         'hjteachers|课题主持人'     =>  'require|array',
         'fzdanwei_id|课题负责单位'     =>  'require|number',
         'subject_id|课题所属学科'     =>  'require|number',
