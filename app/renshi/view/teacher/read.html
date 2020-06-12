@@ -218,12 +218,12 @@
                 }
                 return str;
             }}
-              ,{field:'ktLxdanwei', title: '立项单位',sort:true, minWidth: 177,templet:function(d){
+              ,{title: '立项单位',sort:true, minWidth: 177,templet:function(d){
                     var str='';
                     if(d.KtCe){
-                      if(d.ktLxdanwei)
+                      if(d.KtCe.ktLxdanwei)
                       {
-                          str = d.ktLxdanwei.jiancheng;
+                          str = d.KtCe.ktLxdanwei.jiancheng;
                       }
                     }
                     return str;
@@ -231,10 +231,10 @@
               ,{title: '级别', minWidth: 177,templet:function(d){
                     var str='';
                     if(d.KtCe){
-                      if(d.ktLxdanwei)
+                      if(d.KtCe.ktLxdanwei)
                       {
-                        if(d.ktLxdanwei.dwJibie){
-                          str = d.ktLxdanwei.dwJibie.title;
+                        if(d.KtCe.ktLxdanwei.dwJibie){
+                          str = d.KtCe.ktLxdanwei.dwJibie.title;
                         }
                       }
                     }
