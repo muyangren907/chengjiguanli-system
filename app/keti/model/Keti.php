@@ -28,7 +28,7 @@ class Keti extends BaseModel
                 	$query->where('category_id', 'in', $src['category_id']);
                 })
     		->when(strlen($src['searchval']) > 0, function($query) use($src){
-                	$query->where('title', 'like', $src['searchval']);
+                	$query->where('title', 'like', '%' . $src['searchval'] . '%');
                 })
             ->with(
                 [
