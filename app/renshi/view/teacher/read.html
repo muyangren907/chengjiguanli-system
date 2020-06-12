@@ -67,15 +67,15 @@
         <fieldset class="layui-elem-field">
             <legend>历年获奖情况</legend>
             <div class="layui-field-box">
-                <table id="rongyu" lay-filter="rongyu" lay-size="sm"></table>
+                <table id="rongyu" lay-filter="rongyu" lay-size="sm" class="layui-table"></table>
             </div>
         </fieldset>
         <fieldset class="layui-elem-field">
             <legend>历年参与课题情况</legend>
             <div class="layui-field-box">
-                <table id="keti" lay-filter="keti" lay-size="sm"></table>
+                <table id="keti" lay-filter="keti" lay-size="sm" class="layui-table"></table>
             </div>
-        </fieldset>
+        </fieldset>   
     </div>
     <script>
         //config的设置是全局的
@@ -83,20 +83,21 @@
             base: "__XADMIN__/js/" //假设这是你存放拓展模块的根目录
         });
 
-        // 设置表格初始变量
-        options = {
-          elem: '#tabledemo',
-          toolbar: '#toolbarDemo',
-          url:"{$list['dataurl']}",
-          method:"POST",   //数据接口
-          page: true, //开启分页
-          loading:true,
-          autoSort:false,
-          id:'mytable',
-          defaultToolbar:['filter'],
-          limits:[10,25,50,75,100],
-          limit:10,
-        };
+        // // 设置表格初始变量
+        // options = {
+        //   elem: '#tabledemo',
+        //   toolbar: '#toolbarDemo',
+        //   url:"{$list['dataurl']}",
+        //   method:"POST",   //数据接口
+        //   page: true, //开启分页
+        //   loading:true,
+        //   autoSort:false,
+        //   id:'mytable',
+        //   defaultToolbar:['filter'],
+        //   limits:[10,25,50,75,100],
+        //   limit:10,
+        //   width:1000,
+        // };
 
         layui.use('table', function(){
           var table = layui.table;
@@ -133,6 +134,8 @@
             ,method:"POST"   //数据接口
             ,url: '/renshi/teacher/srcry' //数据接口
             ,page: true //开启分页
+            ,loading:true
+            ,width:1100
             ,where:{
               'teacher_id': "{$list.id}"
             }
@@ -196,7 +199,8 @@
             ,method:"POST"   //数据接口
             ,url: '/renshi/teacher/srckt' //数据接口
             ,page:true
-            // ,width:1050
+            ,loading:true
+            ,width:1100
             ,where:{
               'teacher_id': "{$list.id}"
             }
