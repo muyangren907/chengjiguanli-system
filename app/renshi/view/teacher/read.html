@@ -218,19 +218,23 @@
                 }
                 return str;
             }}
-              ,{field:'fzschool_id', title: '立项单位',sort:true, minWidth: 177,templet:function(d){
+              ,{field:'ktLxdanwei', title: '立项单位',sort:true, minWidth: 177,templet:function(d){
                     var str='';
-                    if(d.fzSchool)
+                    if(d.ktLxdanwei)
                     {
-                        str = d.fzSchool.jiancheng;
+                        str = d.ktLxdanwei.jiancheng;
                     }
                     return str;
                 }}
               ,{title: '级别', minWidth: 177,templet:function(d){
                     var str='';
-                    if(d.fzSchool)
+                    console.log(d.ktLxdanwei);
+                    if(d.ktLxdanwei)
                     {
-                        str = d.fzSchool.dwJibie.title;
+                        if(d.ktLxdanwei.dwJibie){
+                          str = d.ktLxdanwei.dwJibie.title;
+                        }
+                        
                     }
                     return str;
                 }}

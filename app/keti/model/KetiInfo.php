@@ -127,7 +127,7 @@ class KetiInfo extends BaseModel
                 'ktCategory' => function($query){
                     $query->field('id, title');
                 },
-                  'ktZcr' => function($query){
+                'ktZcr' => function($query){
                     $query->field('ketiinfo_id, teacher_id')
                         ->with([
                             'teacher' => function($q){
@@ -136,10 +136,24 @@ class KetiInfo extends BaseModel
                         ]);
                 },
                 'ktJdDengji' => function($query){
-                        $query->field('id, title');
-                    }
+                    $query->field('id, title');
+                },
+                'KtCe' => function($query){
+                    $query->field('id, lxdanwei_id, category_id, lxshijian')
+                        ->with([
+                            'ktCategory' => function($q){
+                                $q->field('id, title');
+                            },
+                            'ktLxdanwei' => function($q){
+                                $q->field('id, jiancheng, title, jibie_id')
+                                    ->with(['dwJibie' => function($q){
+                                        $q->field('id, title');
+                                    }]);
+                            }
+                        ]);
+                },
             ])
-            ->field('id, title, fzdanwei_id, category_id, jddengji_id, bianhao')
+            ->field('id, title, fzdanwei_id, category_id, jddengji_id, bianhao, ketice_id')
             ->order('id')
             ->select();
 
@@ -164,7 +178,10 @@ class KetiInfo extends BaseModel
                                     $q->field('id, title');
                                 },
                                 'ktLxdanwei' => function($q){
-                                    $q->field('id, jiancheng, title');
+                                    $q->field('id, jiancheng, title, jibie_id')
+                                        ->with([
+
+                                        ]);
                                 }
                             ]);
                     },
