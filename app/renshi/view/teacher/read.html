@@ -83,21 +83,21 @@
             base: "__XADMIN__/js/" //假设这是你存放拓展模块的根目录
         });
 
-        // // 设置表格初始变量
-        // options = {
-        //   elem: '#tabledemo',
-        //   toolbar: '#toolbarDemo',
-        //   url:"{$list['dataurl']}",
-        //   method:"POST",   //数据接口
-        //   page: true, //开启分页
-        //   loading:true,
-        //   autoSort:false,
-        //   id:'mytable',
-        //   defaultToolbar:['filter'],
-        //   limits:[10,25,50,75,100],
-        //   limit:10,
-        //   width:1000,
-        // };
+        // 设置表格初始变量
+        options = {
+          elem: '#tabledemo',
+          toolbar: '#toolbarDemo',
+          url:"{$list['dataurl']}",
+          method:"POST",   //数据接口
+          page: true, //开启分页
+          loading:true,
+          autoSort:false,
+          id:'mytable',
+          defaultToolbar:['filter'],
+          limits:[10,25,50,75,100],
+          limit:10,
+          width:1100,
+        };
 
         layui.use('table', function(){
           var table = layui.table;
@@ -129,13 +129,11 @@
           });
 
           //第一个实例
+          ry = table.render(options);  //获取数据并渲染
           var ry =table.render({
             elem: '#rongyu'
             ,method:"POST"   //数据接口
             ,url: '/renshi/teacher/srcry' //数据接口
-            ,page: true //开启分页
-            ,loading:true
-            ,width:1100
             ,where:{
               'teacher_id': "{$list.id}"
             }
@@ -198,9 +196,6 @@
             elem: '#keti'
             ,method:"POST"   //数据接口
             ,url: '/renshi/teacher/srckt' //数据接口
-            ,page:true
-            ,loading:true
-            ,width:1100
             ,where:{
               'teacher_id': "{$list.id}"
             }
