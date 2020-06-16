@@ -66,13 +66,13 @@
    <!--      荣誉信息 -->
         <fieldset class="layui-elem-field">
             <legend>历年获奖情况</legend>
-            <div class="layui-field-box">
+            <div class="layui-field-box" style="width: 100%">
                 <table id="rongyu" lay-filter="rongyu" lay-size="sm" class="layui-table"></table>
             </div>
         </fieldset>
         <fieldset class="layui-elem-field">
             <legend>历年参与课题情况</legend>
-            <div class="layui-field-box">
+            <div class="layui-field-box" style="width: 100%">
                 <table id="keti" lay-filter="keti" lay-size="sm" class="layui-table"></table>
             </div>
         </fieldset>   
@@ -96,7 +96,7 @@
           defaultToolbar:['filter'],
           limits:[10,25,50,75,100],
           limit:10,
-          width:1100,
+          // width:1100,
         };
 
         layui.use('table', function(){

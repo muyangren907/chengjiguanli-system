@@ -78,7 +78,6 @@ class StudentChengji extends BaseModel
                 $data[$key]['avg'] = '';
             }
         }
-
         return $data;
     }
 

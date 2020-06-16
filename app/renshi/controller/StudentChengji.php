@@ -66,6 +66,7 @@ class StudentChengji extends BaseController
                 ,'enddate' => ''
             ], 'POST');
 
+
         // 获取学生成绩
         $stucj = new STUCJ;
         $khList = $stucj->oneStudentChengjiList($src);
