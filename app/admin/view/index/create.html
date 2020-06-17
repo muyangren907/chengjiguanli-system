@@ -166,7 +166,7 @@
     $('#teacher_id').bind({
       keyup:function(){
         var val = $.trim($(this).val());
-        cjgl.selectOnfocus1(this,val,'teacher_id');
+        cjgl.searchTeacher(this, val, 'teacher_id', 'addTeacherID');
       },
     });
 </script>

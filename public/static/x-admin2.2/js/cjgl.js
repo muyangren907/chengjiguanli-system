@@ -164,19 +164,19 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
     },
 
     // Select获取焦点
-    selectOnfocus:function(myobj,val,addname){
+    searchTeacher:function(myobj,val,addname,myfunction){
       // 声明变量
       var srcInput = $(myobj);
       // 删除原来列表
       srcInput.next().remove();
       // 添加列表div
-      srcInput.after('<div class="srcSelectStyly"><dl><dd onclick="cjgl.addTeacher(this)">请选择</dd></dl></div>');
+      srcInput.after('<div class="srcSelectStyly"><dl><dd onclick="cjgl.'+myfunction+'(this)">请选择</dd></dl></div>');
       // 声明变量
       var mydl = srcInput.next().children('dl');
 
       // 获取数据
       $.post(
-        "/renshi/teacher/srcteacher",
+        "/teacher/index/srcteacher",
         {
           "str":val,
         },
@@ -191,7 +191,7 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
             str = '';
             str = '<dd ';
             str = str + 'id=' + data[i].id + ' ';
-            str = str + 'onclick="cjgl.addTeacher(this)"' + ' ';
+            str = str + 'onclick="cjgl.'+myfunction+'(this)"' + ' ';
             str = str + 'addname=' + addname + ' ';
             str = str + 'teachername=' + data[i].xingming + ' ';
             str = str + 'schoolID=' + data[i].jsDanwei.id + ' ';
@@ -221,6 +221,19 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
         $(myBut).append(str);
       }
       $(myList).prev().val('');
+      $(myList).remove();
+    },
+
+    // 添加教师ID
+    addTeacherID:function(myobj){
+      var myId = $(myobj).attr('id')
+      ,teachername = $(myobj).attr('teachername')
+      ,addname = $(myobj).attr('addname')
+      ,myTitle = $(myobj).text()
+      ,myList = $(myobj).parent().parent()
+      ,myBut = $(myList).parent().parent();
+
+      $(myList).prev().val(myId);
       $(myList).remove();
     },
 
@@ -301,8 +314,6 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
       );
     },
 
-
-
     /**
     * 单击全选按钮，全部选中或取消选中后面的checkbox
     * 选中所有全部checkbox
@@ -382,8 +393,6 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
         },
       });
     },
-
-
 
   };
   //输出test接口

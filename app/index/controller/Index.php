@@ -71,18 +71,17 @@ class Index extends BaseController
         // 获取thinkphp版本
         $list->thinkphp = \think\facade\App::version();
 
-
         // 考试数
         $con = new \app\kaoshi\model\Kaoshi;
         $list['kaoshi'] = $con->count();
         // 教师数
-        $con = new \app\renshi\model\Teacher;
+        $con = new \app\teacher\model\Teacher;
         $list['teacher'] =  $con->count();
         // 学生数
         $con = new \app\teach\model\Banji;
         $tempsrc['ruxuenian'] = array_keys(nianJiNameList());
         $bjids = $con->search($tempsrc)->column('id');
-        $con = new \app\renshi\model\Student;
+        $con = new \app\student\model\Student;
         $list['student'] =  $con->where('banji_id', 'in', $bjids)
             ->count();
         // 管理员数
@@ -94,9 +93,6 @@ class Index extends BaseController
         // 课题数
         $con = new \app\keti\model\KetiInfo;
         $list['keti'] =  $con->count();
-
-
-
 
         $view = app('view');
         // 模版赋值

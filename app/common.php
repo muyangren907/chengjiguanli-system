@@ -231,9 +231,8 @@
 		    $list['oldname'] = $file->getOriginalName();
 		    $list['fieldsize'] = $file->getSize();
 		    $list['category_id'] = $list['category_id'];
-		    $list['bianjitime'] = $file->getMTime();
+		    $list['bianjitime'] = $file->getMTime( );
 		    $list['extension'] = $file->getOriginalExtension();
-
 	    	$saveinfo = $f::create($list);
 	    }
 

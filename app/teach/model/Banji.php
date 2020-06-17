@@ -93,7 +93,7 @@ class Banji extends BaseModel
 
     // 学校关联模型
     public function glStudent(){
-        return $this->hasMany('\app\renshi\model\Student', 'banji_id', 'id');
+        return $this->hasMany('\app\student\model\Student', 'banji_id', 'id');
     }
 
 

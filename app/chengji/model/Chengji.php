@@ -45,7 +45,7 @@ class Chengji extends BaseModel
         $src = array_cover( $srcfrom , $src ) ;
         $src['banji_id'] = strToarray($src['banji_id']);
 
-        $stu = new \app\renshi\model\Student;
+        $stu = new \app\student\model\Student;
         $stuid = $stu
             ->when(strlen($src['searchval']) > 0, function ($query) use ($src) {
                 $query->where('xingming', 'like', '%' . $src['searchval'] . '%')

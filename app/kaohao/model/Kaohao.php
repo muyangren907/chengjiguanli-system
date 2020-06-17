@@ -77,7 +77,7 @@ class Kaohao extends BaseModel
     // 学生信息关联
     public function cjStudent()
     {
-    	return $this->belongsTo('\app\renshi\model\Student', 'student_id', 'id');
+    	return $this->belongsTo('\app\student\model\Student', 'student_id', 'id');
     }
 
 

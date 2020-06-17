@@ -272,7 +272,7 @@ class Luru extends BaseController
         ], 'POST');
 
         // 读取表格数据
-        $excel = new \app\renshi\controller\Myexcel;
+        $excel = new \app\student\controller\Myexcel;
         $cjinfo = $excel->readXls(public_path() . 'public\\uploads\\' . $list['url']);
 
         $kaoshi_id = $cjinfo[1][0];  #获取考号

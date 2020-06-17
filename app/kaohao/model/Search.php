@@ -42,7 +42,7 @@ class Search extends BaseModel
         }
 
         // 实例化学生数据模型
-        $stu = new \app\renshi\model\Student;
+        $stu = new \app\student\model\Student;
         $data = array();
         foreach ($khlist as $key => $value) {
             $data[$key]['id'] = $value->id;
@@ -135,7 +135,7 @@ class Search extends BaseModel
             ])
             ->select();
 
-        $stu = new \app\renshi\model\Student;
+        $stu = new \app\student\model\Student;
         // 找出已经被删除学生，并添加该学生信息
         foreach ($data as $key => $value) {
             foreach ($value->banjiKaohao as $k => $val) {
@@ -333,7 +333,7 @@ class Search extends BaseModel
 
         if($stuCj->cjStudent == Null)
         {
-            $stu = new \app\renshi\model\Student;
+            $stu = new \app\student\model\Student;
             $stuinfo = $stu::withTrashed()
                 ->where('id', $cjlist->student)
                 ->field('id, xingming, sex')

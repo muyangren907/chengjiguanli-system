@@ -206,22 +206,12 @@
   });
 
   var cjgl = parent.layui.cjgl;
-
-  // 搜索教师
-  $('#cySearch').bind({
-    keyup:function(){
-      var val = $.trim($(this).val());
-      if(val.length>0){
-        cjgl.selectOnfocus(this,val,'cyteachers[]');
-      }
-    },
-  })
   // 搜索教师
   $('#hjSearch').bind({
     keyup:function(){
       var val = $.trim($(this).val());
       if(val.length>0){
-        cjgl.selectOnfocus(this,val,'hjteachers[]');
+        cjgl.searchTeacher(this, val, 'hjteachers[]', 'addTeacher');
       }
     },
   })

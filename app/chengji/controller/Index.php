@@ -596,7 +596,7 @@ class Index extends BaseController
                         $query->field('id,title');
                     },
                     'userName'=>function($query){
-                        $query->field('id,school,xingming')
+                        $query->field('id,school_id,xingming')
                             ->with([
                                 'adSchool'=>function($query){
                                     $query->field('id,jiancheng');

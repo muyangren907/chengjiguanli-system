@@ -195,9 +195,9 @@ class JsRongyuInfo extends BaseModel
                     },
                     'hjJsry' => function($query){
                         $query->field('rongyu_id, teacher_id')
-                        ->with(['teacher' => function($query){
-                            $query->field('id, xingming');
-                        }]);
+                            ->with(['teacher' => function($query){
+                                $query->field('id, xingming');
+                            }]);
                     },
                 ]
             )
