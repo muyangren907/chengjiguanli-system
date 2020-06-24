@@ -59,13 +59,13 @@
          $('#xsschool').text(data.cjSchool.jiancheng);
          $('#xsbanji').text(data.cjBanji.banjiTitle);
          $('#xsxingming').text(data.cjStudent['xingming']);
-         $('#xsxueke').text(data.ksChengji[0].subjectName.title);
+         $('#xsxueke').text(data.subjectName.title);
 
          $('#kaohao_id').val(data.id);
-         $('#subject_id').val(data.ksChengji[0].subjectName.id);
+         $('#subject_id').val(data.subjectName.id);
          $('#nianji').val(data.cjBanji.ruxuenian);
-         if(data.ksChengji[0]){
-          $('#defen').val(data.ksChengji[0].defen);
+         if(data.chengji){
+          $('#defen').val(data.chengji.defen);
          }
          $('#saoma').val('');
          $('#defen').focus();
@@ -115,6 +115,11 @@
     return false;
     }
   });
+
+  
+$("#defen").focus(function(){
+    $(this).select();
+});
 
 </script>
 {/block}

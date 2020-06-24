@@ -9,15 +9,15 @@ use app\student\model\Student as STU;
 // 引用phpspreadsheet类
 use app\student\controller\Myexcel;
 
-class Student extends BaseController
+class Index extends BaseController
 {
     // 显示学生列表
     public function index()
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = '学生列表';
-        $list['dataurl'] = 'student/data';
-        $list['status'] = '/reshi/student/status';
+        $list['dataurl'] = '/student/index/data';
+        $list['status'] = '/student/index/status';
         $list['kaoshi'] = '/student/index/kaoshi';
 
         // 模板赋值

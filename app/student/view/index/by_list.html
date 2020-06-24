@@ -7,11 +7,11 @@
 	<span class="layui-breadcrumb">
 		<a href="">师生名单</a>
 		<a href="">学生管理</a>
-		<a><cite>学生列表</cite></a>
+		<a><cite>毕业学生</cite></a>
 	</span>
 {/block}
 {block name="search"}
-	<div class="layui-form-item">
+	  <div class="layui-form-item">
       <label for="searchval" class="layui-form-label">
           关键字
       </label>
@@ -25,26 +25,27 @@
 	    <div class="layui-input-block">
 	    	{php} $schoollist = schoolList('校级', '校级');{/php}
 	    	{volist name="schoollist" id="vo"}
-	    		<input type="radio" name="school_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" lay-filter="src" {eq name="i" value="1"}checked{/eq} >
+	    		<input type="radio" name="school_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" {eq name="i" value="1"}checked{/eq}>
 	    	{/volist}
 	    </div>
-	</div>
-	<div class="layui-form-item">
-	    <label for="ruxuenian" class="layui-form-label" style="height: 100%">年级 </label>
-	    <div class="layui-input-block">
-	    	{php}
-          $njlist = nianJiNameList();
+	  </div>
+    <div class="layui-form-item">
+      <label for="ruxuenian" class="layui-form-label" style="height: 100%">入学年</label>
+      <div class="layui-input-block">
+        {php}
+          $thisTime = strtotime("-6 year");
+          $njlist = nianJiNameList($thisTime);
         {/php}
         {volist name="njlist" id="vo"}
-	    		<input type="radio" name="ruxuenian" title="{$vo}" value="{$key}" lay-skin="primary"  lay-filter="src" {eq name="i" value="1"}checked{/eq} >
-	    	{/volist}
-	    </div>
-	</div>
-	<div class="layui-form-item" style="margin-bottom: 0;">
-    <label for="banji_id" class="layui-form-label" style="height: 100%">班级</label>
-    <div class="layui-input-block" id="banji_id">
+          <input type="radio" name="ruxuenian" title="{$key}年" value="{$key}" lay-skin="primary"  lay-filter="src" {eq name="i" value="1"}checked{/eq} >
+        {/volist}
+      </div>
     </div>
-  </div>
+    <div class="layui-form-item" style="margin-bottom: 0;">
+      <label for="banji_id" class="layui-form-label" style="height: 100%">班级</label>
+      <div class="layui-input-block" id="banji_id">
+      </div>
+    </div>
 {/block}
 {block name="table"}
 	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
@@ -56,29 +57,12 @@
 		<button class="layui-btn layui-btn-danger" lay-event="dels">
 			<i class="iconfont">&#xe69d;</i> 批量删除
 		</button>
-		<button class="layui-btn" lay-event="add">
-			<i class="iconfont">&#xe6b9;</i> 添加
-		</button>
-		<button class="layui-btn" lay-event="upload">
-			<i class="iconfont">&#xe71d;</i> 校对导入
-		</button>
-		<button class="layui-btn" lay-event="download">
-			<i class="iconfont">&#xe714;</i> 下载模板
-		</button>
-		<button class="layui-btn" lay-event="jdsc">
-			<i class="iconfont">&#xe714;</i> 表格删除
-		</button>
 	</div>
-</script>
-<script type="text/html" id="kaoshi">
-  <input type="checkbox" myurl="{$list.kaoshi ? $list.kaoshi : url('kaoshi')}" {{d.kaoshi == "参加" ? "checked" :""}} id="{{d.id}}" lay-skin="switch" lay-filter="kaoshi" lay-text="参加|不参加">
 </script>
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
 	<a class="layui-btn-xs" lay-event="detail" title="查看"><i class="layui-icon layui-icon-search"></i></a>
   <a class="layui-btn-xs" lay-event="chengji" title="成绩"><i class="layui-icon layui-icon-chart-screen"></i></a>
-	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon layui-icon-edit"></i></a>
-	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
 </script>
 <!-- 表格操作 -->
 <script>
@@ -90,7 +74,7 @@
 			{field: "shengri",title: '周岁',sort: true,templet:function(d){
 				return d.age;
 			}},
-			{field: 'banji', title: '班级',sort: true,templet:function(d){
+			{field: 'banji_id', title: '班级',sort: true,templet:function(d){
 				var str='';
 				if(d.stuBanji)
 				{
@@ -98,7 +82,6 @@
 				}
 				return str;
 			}},
-			{field: 'status', title: '是否参加考试',templet:'#kaoshi', sort: true},
 			{field: 'status', title: '状态',templet:'#status', sort: true},
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
 		]];
@@ -115,20 +98,10 @@
       table.on('toolbar(mytable)', function(obj){
         switch(obj.event){
           case 'dels':
+          	layer.msg('这个～算了吧！');
+          	break;
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'student/delete','mytable');
-            break;
-          case 'add':
-            cjgl.add('添加学生','student/create','','',true);
-            break;
-          case 'upload':
-            cjgl.add('校对导入','student/createall','','',true);
-            break;
-          case 'download':
-          	window.open("/renshi/student/download");
-            break;
-          case 'jdsc':
-            cjgl.add('表格删除','student/deletes');
+            cjgl.delAll(checkStatus,'/student/index/delete','mytable');
             break;
         };
       });
@@ -140,20 +113,11 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
           case 'detail':// 查看
-	          cjgl.add(obj.data.xingming+'－信息','student/read/'+obj.data.id,'','',true);
+	          cjgl.add(obj.data.xingming+'信息','/student/index/read/'+obj.data.id,'','',true);
 	          break;
           case 'chengji':// 查看
-            parent.xadmin.add_tab(obj.data.xingming + ' － 成绩','/renshi/studentcj/'+obj.data.id,true);
+            cjgl.add(obj.data.xingming+'成绩','/student/studentcj/'+obj.data.id,'','',true);
             break;
-	        case 'del':// 删除
-	          cjgl.del(obj,"student/delete");
-	          break;
-	        case 'edit':// 编辑
-	          cjgl.add('编辑学生','student/edit/'+obj.data.id,'','',true);
-	          break;
-	        case 'status':// 状态
-	          cjgl.status(obj,"{:url('setstatus')}");
-	          break;
         };
       });
 
@@ -172,9 +136,11 @@
           {
             $('#banji_id').children().remove();
           }else{
-            cjgl.createCheckbox('banji_id', formval, '/teach/banji/mybanji', 'banji_id', 'banTitle');
+            cjgl.createCheckbox('banji_id',formval,'/teach/banji/mybanji','banji_id','banTitle');
           }
       }
+
+
     });
 </script>
 {/block}

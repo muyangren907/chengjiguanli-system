@@ -10,7 +10,7 @@ class School extends BaseModel
     // 教师数据模型关联
     public function dwTeacher()
     {
-        return $this->hasMany('\app\renshi\model\Teacher', 'danwei_id', 'id');
+        return $this->hasMany('\app\teacher\model\Teacher', 'danwei_id', 'id');
     }
 
     // 单位性质数据模型关联

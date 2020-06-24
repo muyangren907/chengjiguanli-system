@@ -70,6 +70,7 @@ class Luru extends BaseController
         // 渲染
         return $this->view->fetch();
     }
+    
 
     // 保存使用二维码录入的成绩
     public function malusave()
@@ -196,7 +197,8 @@ class Luru extends BaseController
             }
 
             $cjone->defen = $list['newdefen'];
-            $cjone->defenlv = $list['newdefen'] / $manfen * 100;
+            $cjone->defenlv = $list['newdefen'] / $manfen * 100; 
+            $cjone->user_id = session('userid'); 
             $data = $cjone->save();
         } else {
             $data = [
@@ -343,6 +345,7 @@ class Luru extends BaseController
                         $cjone->restore();
                         $cjone->defen = $defen;
                         $cjone->defenlv = $defen / $manfen * 100;
+                        $cjone->user_id = $user_id;
                         $cjone->save();
                     }
                 } else {

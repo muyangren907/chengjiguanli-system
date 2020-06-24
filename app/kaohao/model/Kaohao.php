@@ -37,7 +37,12 @@ class Kaohao extends BaseModel
             })
             ->with([
                 'ksChengji' => function($query){
-                    $query->field('id, kaohao_id, subject_id, defen');
+                    $query->field('id, kaohao_id, subject_id, defen, bweizhi, xweizhi, qweizhi')
+                        ->with([
+                            'subjectName' => function ($q) {
+                                $q->field('id, title, jiancheng, lieming');
+                            }
+                        ]);
                 }
                 ,'cjSchool' => function($query){
                     $query->field('id, jiancheng');
@@ -48,6 +53,10 @@ class Kaohao extends BaseModel
             ])
             ->append(['banjiTitle', 'banTitle'])
             ->select();
+
+            foreach ($data as $key => $value) {
+                $data[$key]->ksChengji = $this->zzcj($value->ksChengji);
+            }
 
         return $data;
     }
@@ -110,6 +119,18 @@ class Kaohao extends BaseModel
         $bj = banJiNamelist();
         $title = $bj[$this->getAttr('paixu')];
         return $title;
+    }
+
+
+    // 转置成绩数组
+    private function zzcj($array = array())
+    {
+        $arr = array();
+        foreach ($array as $key => $value) {
+            $array[$value->subjectName->lieming] = $value;
+            unset($array[$key]);
+        }
+        return $array;
     }
 
 }

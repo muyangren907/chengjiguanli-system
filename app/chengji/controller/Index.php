@@ -246,7 +246,7 @@ class Index extends BaseController
         // 获取考试标题
         $ks = new \app\kaoshi\model\Kaoshi;
         $ks = $ks->where('id', $src['kaoshi_id'])
-                ->field('id, title, bfdate')
+                ->field('id, title, bfdate, enddate')
                 ->find();
 
         // 获取考试年级名称
@@ -274,6 +274,8 @@ class Index extends BaseController
         $sheet->setCellValue('A1', $tabletitle);
         $hb = 5 + count($subject_id);
         $sheet->mergeCells('A1:' . $colname[$hb] . '1');
+        $sheet->mergeCells('A2:' . $colname[$hb] . '2');
+        $sheet->setCellValue('A2', '考试时间：' . $ks->bfdate . ' ~ '. $ks->enddate);
         $sheet->setCellValue('A3', '序号');
         $sheet->setCellValue('B3', '班级');
         $sheet->setCellValue('C3', '姓名');
@@ -327,6 +329,13 @@ class Index extends BaseController
             ],
         ];
         $sheet->getStyle('A1:'.$colname[$colcnt + 1] . ($i - 1))->applyFromArray($styleArrayJZ);
+        // 表格格式
+        $styleArrayJZ = [  # 居中
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+            ],
+        ];
+        $sheet->getStyle('A2:'.$colname[$colcnt + 1] . ($i - 1))->applyFromArray($styleArrayJZ);
         $styleArrayBK = [ # 加边框
             'borders' => [
                 'allBorders' => [
@@ -462,7 +471,7 @@ class Index extends BaseController
         // 获取考试标题
         $ks = new \app\kaoshi\model\Kaoshi;
         $ks = $ks->where('id', $src['kaoshi_id'])
-                ->field('id, title, bfdate')
+                ->field('id, title, bfdate, enddate')
                 ->find();
 
         // 获取考试年级名称
@@ -622,6 +631,5 @@ class Index extends BaseController
 
         return json($data);
     }
-
 
 }

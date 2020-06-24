@@ -299,7 +299,7 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
           cnt = data.count;
           mydata = data.data;
           if(cnt>0){
-            $('#' + id).append('<option value="">请选择</option>');
+            $('#' + id).append('<option value="" >请选择</option>');
           }
           for(x in mydata){
             if(mydata[x][cloval] == checkval)

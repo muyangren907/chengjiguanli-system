@@ -25,7 +25,7 @@
 	    <div class="layui-input-block">
 	    	{php} $schoollist = schoolList('校级', '校级');{/php}
 	    	{volist name="schoollist" id="vo"}
-	    		<input type="radio" name="school_id[]" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" {eq name="i" value="1"}checked{/eq}>
+	    		<input type="radio" name="school_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" {eq name="i" value="1"}checked{/eq}>
 	    	{/volist}
 	    </div>
 	</div>
@@ -99,7 +99,7 @@
           	layer.msg('这个～算了吧！');
           	break;
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/renshi/student/delete','mytable');
+            cjgl.delAll(checkStatus,'/student/index/delete','mytable');
             break;
         };
       });
@@ -111,13 +111,13 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
           case 'detail':// 查看
-	          cjgl.add(obj.data.xingming+'信息','/renshi/student/read/'+obj.data.id,'','',true);
+	          cjgl.add(obj.data.xingming+'信息','/student/index/read/'+obj.data.id,'','',true);
 	          break;
           case 'chengji':// 查看
-            cjgl.add(obj.data.xingming+'成绩','/renshi/studentcj/'+obj.data.id,'','',true);
+            cjgl.add(obj.data.xingming+'成绩','/student/studentcj/'+obj.data.id,'','',true);
             break;
 	        case 'huifu':// 恢复删除
-	          cjgl.redel(obj,"/renshi/student/redel");
+	          cjgl.redel(obj,"/student/index/redel");
 	          break;
         };
       });

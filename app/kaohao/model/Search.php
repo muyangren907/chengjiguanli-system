@@ -10,7 +10,7 @@ use \app\kaohao\model\Kaohao as kh;
 
 class Search extends BaseModel
 {
-    // 查询学生成绩详细信息
+    // 查询学生各学科成绩详细信息
     public function srcChengjiList($srcfrom)
     {
         // 初始化参数
@@ -64,25 +64,26 @@ class Search extends BaseModel
             $dfsum = 0;
             $sbjcnt = 0;
 
-            // 整理当前学生成绩
-            $cjarr = $this->zzcj($value->ksChengji);
-
-             // 初始化参数
-            $sbjcnt = 0;  #记录拥有成绩的学科数
-
-            foreach ($xk as $k => $val) {
-                if(array_key_exists($k,$cjarr))
-                {
-                    $data[$key][$val]=$cjarr[$k] * 1;
-                    $sbjcnt++;
-                }else{
+            if (!$value->ksChengji->isEmpty()) {
+                foreach ($xk as $k => $val) {
+                    if(isset($value->ksChengji[$val]))
+                    {
+                        $data[$key][$val]=$value->ksChengji[$val]->defen * 1;
+                        $dfsum = $dfsum + $data[$key][$val];
+                        $sbjcnt++;
+                    }else{
+                        $data[$key][$val]= null;
+                    }
+                }
+            }else{
+                foreach ($xk as $k => $val) {
                     $data[$key][$val]= null;
                 }
             }
 
             if($sbjcnt>0){
-                $data[$key]['sum'] = array_sum($cjarr);
-                $data[$key]['avg'] = round($data[$key]['sum']/$sbjcnt,1);
+                $data[$key]['sum'] = $dfsum;
+                $data[$key]['avg'] = round($dfsum / $sbjcnt, 1);
             }else{
                 $data[$key]['sum'] = null;
                 $data[$key]['avg'] = null;
@@ -309,16 +310,7 @@ class Search extends BaseModel
         $stuCj = $kh::where('id', $id)
             ->field('id ,banji_id, school_id, student_id')
             ->with([
-                'ksChengji' => function($q) use($subject_id){
-                    $q->where('subject_id',$subject_id)
-                        ->field('kaohao_id, subject_id, defen')
-                        ->with([
-                            'subjectName' => function ($W) {
-                                $W->field('id,title');
-                            }
-                        ]);
-                }
-                ,'cjBanji' => function($q){
+                'cjBanji' => function($q){
                     $q->field('id, paixu, ruxuenian')
                         ->append(['numTitle', 'banjiTitle']);
                 }
@@ -331,7 +323,7 @@ class Search extends BaseModel
             ])
             ->find();
 
-        if($stuCj->cjStudent == Null)
+        if($stuCj->cjStudent->isEmpty())
         {
             $stu = new \app\student\model\Student;
             $stuinfo = $stu::withTrashed()
@@ -343,6 +335,20 @@ class Search extends BaseModel
                 ,'xingming' => $stuinfo->xingming
             );
         }
+
+        $sbj = new \app\teach\model\Subject;
+        $sbjinfo = $sbj
+            ->where('id', $subject_id)
+            ->field('id, title, jiancheng')
+            ->find();
+        $stuCj->subjectName = $sbjinfo;
+
+        $cj = new \app\chengji\model\Chengji;
+        $cjinfo = $cj->where('kaohao_id', $id)
+                    ->where('subject_id', $subject_id)
+                    ->field('id,subject_id,kaohao_id,defen')
+                    ->find();
+         $stuCj->chengji = $cjinfo;
 
         return $stuCj;
     }
@@ -488,9 +494,10 @@ class Search extends BaseModel
     {
         $arr = array();
         foreach ($array as $key => $value) {
-            $arr[$value['subject_id']] = $value['defen'];
+            $array[$value->subjectName->lieming] = $value;
+            unset($array[$key]);
         }
-        return $arr;
+        return $array;
     }
 
 }

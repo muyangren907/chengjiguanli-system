@@ -70,6 +70,73 @@ class Tongji extends BaseController
     }
 
 
+    // 按学科重新计算得分率
+    public function editDefenlv($kaoshi_id) {
+
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'编辑课题',
+            'butname'=>'修改',
+            'formpost'=>'PUT',
+            'url'=>'/chengji/tongji/editdfl',
+            'kaoshi_id'=>$kaoshi_id
+        );
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+        // 渲染
+        return $this->view->fetch();
+    }
+
+
+    // 更新得分率
+    public function updateDefenLv() {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'kaoshi_id' => 0
+                ,'subject_id' => 0
+                ,'nianji' => 0
+            ], 'PUT');
+
+        // 获取满分
+        $ksSet = new \app\kaoshi\model\KaoshiSet;
+        $manfen = $ksSet->where('kaoshi_id', $src['kaoshi_id'])
+                    ->where('subject_id', $src['subject_id'])
+                    ->where('nianji', $src['nianji'])
+                    ->field('id,title')
+                    ->value('manfen');
+        // 获取考号
+        $kaohao = new \app\kaohao\model\Kaohao;
+        $kaohaoid = $kaohao->where('kaoshi_id', $src['kaoshi_id'])
+                        ->where('ruxuenian', $src['nianji'])
+                        ->column('id');
+        // 查询成绩
+        $cj = new \app\chengji\model\Chengji;
+        $cjList = $cj->where('kaohao_id', 'in', $kaohaoid)
+                    ->where('subject_id', $src['subject_id'])
+                    ->whereNotNull('defen')
+                    ->field('id, defen, defenlv')
+                    ->select();
+
+        $data = array();
+        foreach ($cjList as $key => $value) {
+           $data[] = [
+                'id' => $value->id
+                ,'defenlv' => $value->defen / $manfen *100
+           ];
+        }
+
+        $data = $cj->saveAll($data);
+
+        $data ? $data = ['msg' => '重新计算完成', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
     public function newJieguo($kaoshi_id)
     {
         // 获取考试信息

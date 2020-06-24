@@ -8,11 +8,10 @@ use app\BaseController;
 use app\kaoshi\model\Kaoshi as KS;
 use app\kaohao\model\Search as khSrc;
 use app\kaoshi\model\KaoshiSet as ksset;
+use app\kaohao\model\KaohaoSearch as khSear;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use \Endroid\QrCode\QrCode;
 use think\Validate;
-
-use app\kaohao\model\KaohaoSearch as khSear;
 
 
 class Excel extends BaseController
@@ -141,14 +140,6 @@ class Excel extends BaseController
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
         $writer->save('php://output');
 
-        // 保存文件
-        $filename = $kslist->title . ' 标签数据' . date('ymdHis') . '.xlsx';
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="' . $filename . '"');
-        header('Cache-Control: max-age=0');
-        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save('php://output');
-        // halt('aa');
         ob_flush();
         flush();
     }
@@ -303,7 +294,6 @@ class Excel extends BaseController
         $spreadsheet->getActiveSheet()->getRowDimension('1')->setRowHeight(25);
         // 设置筛选
         $sheet->setAutoFilter('A3:' . $col . ($i - 1));
-
 
         // 保存文件
         $filename = $kslist->title . '成绩采集表' . date('ymdHis') . '.xlsx';

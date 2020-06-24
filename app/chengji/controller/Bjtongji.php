@@ -130,7 +130,7 @@ class Bjtongji extends BaseController
         count($dataAll) > 0 ? $data['all'] = $dataAll[0] : $data;
         $ks = new \app\kaoshi\model\Kaoshi; # 参考学科
         $ksinfo = $ks->where('id', $src['kaoshi_id'])
-                    ->field('id, title, bfdate')
+                    ->field('id, title, bfdate, enddate')
                     ->find();
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $xk = $ksset->srcSubject($src['kaoshi_id'], '', $src['ruxuenian']);
@@ -166,6 +166,8 @@ class Bjtongji extends BaseController
         // 设置表头信息
         $sheet->mergeCells('A1:' . $colname[$colcnt] . '1');
         $sheet->setCellValue('A1', $tabletitle);
+        $sheet->mergeCells('A2:' . $colname[$colcnt] . '2');
+        $sheet->setCellValue('A2', '考试时间：' . $ksinfo->bfdate . ' ~ '. $ksinfo->enddate);
         $sheet->mergeCells('A3:A4');
         $sheet->setCellValue('A3', '序号');
         $sheet->mergeCells('B3:B4');
@@ -220,6 +222,12 @@ class Bjtongji extends BaseController
             ],
         ];
         $sheet->getStyle('A1:'.$colname[$col].($row-1))->applyFromArray($styleArray);
+        $styleArrayJZ = [  # 居中
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+            ],
+        ];
+        $sheet->getStyle('A2:'.$colname[$col].'2')->applyFromArray($styleArrayJZ);
         $styleArray = [ # 加边框
             'borders' => [
                 'allBorders' => [

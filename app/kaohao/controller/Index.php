@@ -57,7 +57,7 @@ class Index extends BaseController
         }
 
         // 获取参加考试学生名单
-        $stu = new \app\renshi\model\Student;
+        $stu = new \app\student\model\Student;
         $src = [
             'banji_id' => $list['banji_id']
             ,'kaoshi' => 1
@@ -171,6 +171,7 @@ class Index extends BaseController
             'kaoshi_id'
             ,'banji_id'
             ,'student_id'
+            ,'school_id'
         ], 'POST');
         $list['student_id'] = explode(' ', $list['student_id']);
         $list['student_id'] = $list['student_id'][1];
@@ -219,7 +220,7 @@ class Index extends BaseController
     public function read($id)
     {
         $list['webtitle'] ='成绩';
-        $list['dataurl'] = '/renshi/studentcj/chengjilist';
+        $list['dataurl'] = '/student/studentcj/chengjilist';
         $list['id'] = $id;
 
         $stucj = new \app\kaohao\model\Search;

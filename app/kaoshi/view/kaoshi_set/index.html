@@ -47,6 +47,7 @@
 <script type="text/html" id="barDemo">
 	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
 	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon layui-icon-edit"></i></a>
+	<a class="layui-btn-xs" lay-event="tongji" title="统计得分率"><i class="layui-icon layui-icon-chart"></i></a>
 </script>
 <!-- 表格操作 -->
 <script>
@@ -106,6 +107,9 @@
 		        case 'del':// 删除
 		        	cjgl.del(obj,"/kaoshi/kaoshiset/delete");
 		        	break;
+		        case 'tongji':// 编辑
+			        defenlv(obj.data);
+			        break;
 		        case 'edit':// 编辑
 			        cjgl.add('编辑','/kaoshi/kaoshiset/edit/'+obj.data.id,'','',true);
 			        break;
@@ -125,6 +129,23 @@
 	    	formval = form.val("search");
 	    	formval.ruxuenian = formval.nianji;
 	    	cjgl.createCheckbox('subject_id',formval,'/kaoshi/index/cysubject','subject_id');
+	    }
+
+	    // 统计成绩
+	    function defenlv(obj){
+	    	var val;
+	    	val = {
+	    		'kaoshi_id':obj.kaoshi_id
+	    		,'subject_id':obj.subject_id
+	    		,'nianji':obj.nianji
+	    	}
+	    	$.post(
+		        '/chengji/tongji/editdfl',
+		        val,
+		        function(data,status){
+		          layer.msg(data.msg);
+		        }
+		    );
 	    }
 	});
 </script>

@@ -66,7 +66,7 @@ layui.use(['form','cjgl'], function(){
   function addBanji(){
     // 获取参数
     formval = form.val("myform");
-    cjgl.createCheckbox('banji',formval,'/kaoshi/index/cybanji','banjiids','banTitle');
+    cjgl.createCheckbox('banji',formval,'/kaoshi/index/cybanji','banji_id','banTitle');
   }
 
 
@@ -74,82 +74,9 @@ layui.use(['form','cjgl'], function(){
   function addSubject(){
     // 获取参数
     formval = form.val("myform");
-    cjgl.createCheckbox('subject',formval,'/kaoshi/index/cysubject','subject','title');
+    cjgl.createCheckbox('subject',formval,'/kaoshi/index/cysubject','subject_id','title');
   }
 
-
-
-
-
-
-
-
-
-
-	// // 监听选择按钮
-	// form.on('select', function(data){
-	//   var myselectname = $(data.elem).attr('name');
-	//   if(myselectname == 'school' || myselectname == 'ruxuenian'){
-	//   	mybanji();
-	//   }
-	// });
-
- //  // 监听班级复选框
- //  form.on('checkbox(selectall)', function(data){
- //    if(data.elem.checked == true)
- //    {
- //      $(data.elem).nextAll('input').each(function()
- //        {
- //          $(this).attr('checked',true);
- //        });
- //    }else{
- //      $(data.elem).nextAll('input').each(function()
- //        {
- //          $(this).attr('checked',false);
- //        });
- //    }
-
- //    form.render('checkbox');
- //  });
-
-	// //获取班级列表并更新
-	// function mybanji(){
-	// 	// 获取表单值
-	// 	var school = $('#school').val()
-	// 	,ruxuenian = $('#ruxuenian').val();
-
-	// 	// 获取节点
-	// 	var bj = $("#banjidiv");
-
-	// 	// 删除原来已有值
-	// 	$(bj).children().remove();
-	// 	// 获取班级列表
-	// 	$.ajax({
-	// 	    url:"/kaoshi/index/cybanji",
-	// 	    type:"POST",
-	// 	    data:{
-	// 	    	school:school
-	// 	    	,ruxuenian:ruxuenian
- //          ,kaoshi_id:"{$list.set.kaoshi_id}"
-	// 	    },
-	// 	    dataType:'json',
-	// 	    success:function(result){
- //          $(bj).append('<input type="checkbox" name="banji[]" title="全选" value="" lay-skin="primary" onclick="selectAll(this)" lay-filter="selectall">');
-	// 	    	// if(result.length > 0){
-	// 	    		result.forEach(function(val,index){
- //              $(bj).append('<input type="checkbox" name="banji[]" title="'+val['banTitle']+'" value="'+val['id']+'" lay-skin="primary">');
-	// 	    		})
-	// 	    	// }
- //          form.render('checkbox');
-	// 	    },
-	// 	    error:function(xhr,status,error) {
-	// 	      layer.msg('数据处理错误',{
-	// 	          icon: 2,
-	// 	          time: 2000 //2秒关闭（如果不配置，默认是3秒）
-	// 	      });
-	// 	    }
-	// 	});
- //  }
 });
 </script>
 {/block}

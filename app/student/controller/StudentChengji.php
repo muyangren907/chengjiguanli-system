@@ -1,14 +1,14 @@
 <?php
 declare (strict_types = 1);
 
-namespace app\renshi\controller;
+namespace app\student\controller;
 
 // 引用控制器基类
 use app\BaseController;
 // 引用学生数据模型类
-use \app\renshi\model\Student as STU;
+use \app\student\model\Student as STU;
 // 引用学生数据模型类
-use \app\renshi\model\StudentChengji as STUCJ;
+use \app\student\model\StudentChengji as STUCJ;
 
 
 class StudentChengji extends BaseController
@@ -39,7 +39,7 @@ class StudentChengji extends BaseController
         $myInfo['sbj'] = $ksSbj;
         // 设置页面标题
         $myInfo['webtitle'] = $myInfo->xingming . ' － 成绩';
-        $myInfo['dataurl'] = '/renshi/studentcj/data';
+        $myInfo['dataurl'] = '/student/studentcj/data';
         $myInfo['student_id'] = $id;
 
         // 模板赋值

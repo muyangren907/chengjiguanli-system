@@ -1,7 +1,7 @@
 <?php
 declare (strict_types = 1);
 
-namespace app\Renshi\model;
+namespace app\student\model;
 
 // 引用数据模型基类
 use app\BaseModel;
@@ -187,7 +187,7 @@ class StudentChengji extends BaseModel
                     ->find();
 
         // 参加考试学科
-        $subject = subjectList();
+        $subject = subjectList(1,1); 
         // 获取参加考试学科满分
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $manfen = $ksset->srcSubject($khInfo->kaoshi, '', $khInfo->ruxuenian);
