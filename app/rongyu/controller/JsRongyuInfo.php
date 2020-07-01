@@ -436,6 +436,7 @@ class JsRongyuInfo extends BaseController
         }
 
         //通过工厂模式创建内容
+        ob_start();
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load("uploads/rongyu_teacher/js_rongyu.xlsx");
         $worksheet = $spreadsheet->getActiveSheet();
 
@@ -490,5 +491,8 @@ class JsRongyuInfo extends BaseController
         header('Cache-Control: max-age=0');
         $writer = new Xlsx($spreadsheet);
         $writer->save('php://output');
+        ob_flush();
+        flush();
+        exit();
     }
 }

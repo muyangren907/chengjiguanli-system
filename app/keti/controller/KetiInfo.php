@@ -455,6 +455,7 @@ class KetiInfo extends BaseController
         }
 
         //通过工厂模式创建内容
+        ob_start();
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('uploads/keti/keti.xlsx');
         $worksheet = $spreadsheet->getActiveSheet();
 
@@ -531,5 +532,8 @@ class KetiInfo extends BaseController
         header('Cache-Control: max-age=0');
         $writer = new Xlsx($spreadsheet);
         $writer->save('php://output');
+        ob_flush();
+        flush();
+        exit();
     }
 }

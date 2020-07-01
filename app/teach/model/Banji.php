@@ -184,8 +184,8 @@ class Banji extends BaseModel
             ->find();
 
         //获取班级、年级列表
-        $njlist = nianjiList($jdshijian);
-        $bjlist = banjinamelist();
+        $njlist = nianJiNameList($jdshijian); 
+        $bjlist = banJiNamelist();
 
         if(array_key_exists($bjinfo->ruxuenian, $njlist))
         {

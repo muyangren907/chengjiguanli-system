@@ -121,13 +121,6 @@ class Bjtongji extends BaseController
 
         // 获取相关参数
         ob_start();
-        $khSrc = new \app\kaohao\model\Search;  # 参考班级
-        $src['banji_id']= array_column($khSrc->cyBanji($src), 'id');
-        $btj = new BTJ;     # 成绩统计结果
-        $data = $btj->search($src);
-        $ntj = new \app\chengji\model\TongjiNj;
-        $dataAll = $ntj->search($src);
-        count($dataAll) > 0 ? $data['all'] = $dataAll[0] : $data;
         $ks = new \app\kaoshi\model\Kaoshi; # 参考学科
         $ksinfo = $ks->where('id', $src['kaoshi_id'])
                     ->field('id, title, bfdate, enddate')
@@ -138,7 +131,14 @@ class Bjtongji extends BaseController
         $nianji = $njlist[$src['ruxuenian']];
         $school = new \app\system\model\School; # 学校、年级信息
         $schoolname = $school->where('id', 'in', $src['school_id'])->value('jiancheng');
-        $tabletitle = $ksinfo->title . ' ' . $schoolname . ' ' .  $nianji . '各班级成绩汇总';
+        $tabletitle = $ksinfo->title . ' ' . $schoolname . $nianji . '各班级成绩汇总';
+        $khSrc = new \app\kaohao\model\Search;  # 参考班级
+        $src['banji_id']= array_column($khSrc->cyBanji($src), 'id');
+        $btj = new BTJ;     # 成绩统计结果
+        $data = $btj->search($src);
+        $ntj = new \app\chengji\model\TongjiNj;
+        $dataAll = $ntj->search($src);
+        count($dataAll) > 0 ? $data['all'] = $dataAll[0] : $data;
 
         // 将数据写入表格中
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet;  # 创建文档
@@ -265,6 +265,7 @@ class Bjtongji extends BaseController
         $writer->save('php://output');
         ob_flush();
         flush();
+        exit();
     }
 
 

@@ -161,8 +161,7 @@ class Admin extends BaseModel
             ->field('id')
             ->with([
                 'glGroup'=>function($query){
-                    $query->where('status', 1)
-                        ->field('title');
+                    $query->where('status', 1);
                 }
             ])
             ->find();

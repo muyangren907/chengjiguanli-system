@@ -405,6 +405,7 @@ class Index extends BaseController
         $writer->save('php://output');
         ob_flush();
         flush();
+        exit();
     }
 
 
@@ -569,6 +570,7 @@ class Index extends BaseController
         $writer->save('php://output');
         ob_flush();
         flush();
+        exit();
     }
 
 

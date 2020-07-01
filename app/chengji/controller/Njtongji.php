@@ -253,6 +253,7 @@ class Njtongji extends BaseController
         $writer->save('php://output');
         ob_flush();
         flush();
+        exit();
     }
 
 
