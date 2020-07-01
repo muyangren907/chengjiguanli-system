@@ -17,7 +17,7 @@
 	  </label>
 	  <div class="layui-input-block">
 	      <input type="text" id="searchval" name="searchval"
-	      autocomplete="off" class="layui-input" placeholder="输入关键字并回车">
+	      autocomplete="off" class="layui-input" placeholder="输入文件名并回车">
 	  </div>
 	</div>
 {/block}
@@ -101,7 +101,8 @@
           	cjgl.del(obj,"file/delete");
           	break;
           case 'download':// 编辑
-          	cjgl.add('下载文件','file/download/'+obj.data.id,'350','150');
+          	var data = cjgl.add('下载文件','file/download/'+obj.data.id,'350','150',false);
+          	console.log(data);
           	break;
         };
       });

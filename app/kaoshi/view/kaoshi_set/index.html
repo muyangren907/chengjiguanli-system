@@ -139,13 +139,17 @@
 	    		,'subject_id':obj.subject_id
 	    		,'nianji':obj.nianji
 	    	}
-	    	$.post(
-		        '/chengji/tongji/editdfl',
-		        val,
-		        function(data,status){
-		          layer.msg(data.msg);
-		        }
-		    );
+	    	$.ajax({
+	    		url:'/chengji/tongji/editdfl/'+ obj.kaoshi_id,
+	    		data:val,
+	    		type:'PUT',
+	    		success: function(data, status) {
+	    			layer.msg(data.msg);
+	    		},
+	    		error: function(data, status) {
+	    			layer.msg(data.msg);
+	    		},
+	    	});
 	    }
 	});
 </script>

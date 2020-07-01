@@ -117,4 +117,22 @@ class StudentChengji extends BaseController
 
         return json($data);
     }
+
+
+    // 获取单个学生单次考试成绩仪表图
+    public function ajaxOneStudentChengjiYiBiao()
+    {
+        // 获取表单参数
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'kaohao_id' => '',
+            ], 'POST');
+
+        // 获取学生成绩
+        $stucj = new STUCJ;
+        $data = $stucj->oneStudentYiBiao($src);
+
+        return json($data);
+    }
 }

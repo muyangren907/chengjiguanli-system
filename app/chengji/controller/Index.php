@@ -51,6 +51,7 @@ class Index extends BaseController
                 ,'banji_id' => array()
                 ,'searchval'
             ], 'POST');
+            
         // 获取参与考试的班级
         if (count($src['banji_id']) == 0) {
             $khSrc = new \app\kaohao\model\Search;
@@ -294,6 +295,9 @@ class Index extends BaseController
         $sheet->setCellValue($colname[$i] . '6', '优秀率%');
         $sheet->setCellValue($colname[$i] . '7', '及格率%');
         $sheet->setCellValue($colname[$i] . '8', '标准差');
+        $sheet->setCellValue($colname[$i] . '9', '中位数');
+        $sheet->setCellValue($colname[$i] . '10', '众数');
+
         $i ++;
         foreach ($subject_id as $key => $value) {
             $sheet->setCellValue($colname[$i] . '3', $value['title']);
@@ -358,17 +362,21 @@ class Index extends BaseController
             $sheet->setCellValue($colname[$colcnt] . '6', $temp['cj'][$value['lieming']]['youxiu']);
             $sheet->setCellValue($colname[$colcnt] . '7', $temp['cj'][$value['lieming']]['jige']);
             $sheet->setCellValue($colname[$colcnt] . '8', $temp['cj'][$value['lieming']]['biaozhuncha']);
+            $sheet->setCellValue($colname[$colcnt] . '9', $temp['cj'][$value['lieming']]['zhongweishu']);
+            $sheet->setCellValue($colname[$colcnt] . '10', $temp['cj'][$value['lieming']]['zhongshu']);
             $colcnt ++;
         }
 
-        $sheet->setCellValue($colname[$colBiankuang - 1] . '9', '总平均分');
-        $sheet->setCellValue($colname[$colBiankuang] . '9', $temp['cj']['all']['avg']);
-        $sheet->mergeCells($colname[$colBiankuang] . '9:' . $colname[$colcnt - 1] . '9');
-        $sheet->setCellValue($colname[$colBiankuang - 1] . '10', '全科及格率%');
-        $sheet->setCellValue($colname[$colBiankuang] . '10', $temp['cj']['all']['jige']);
-        $sheet->mergeCells($colname[$colBiankuang] . '10:' . $colname[$colcnt - 1] . '10');
-        $sheet->getStyle($colname[$colBiankuang - 1] . '3:' . $colname[$colcnt - 1] . '10')->applyFromArray($styleArrayJZ);
-        $sheet->getStyle($colname[$colBiankuang - 1] . '3:' . $colname[$colcnt - 1] . '10')->applyFromArray($styleArrayBK);
+
+        $sheet->setCellValue($colname[$colBiankuang - 1] . '11', '总平均分');
+        $sheet->setCellValue($colname[$colBiankuang] . '11', $temp['cj']['all']['avg']);
+        $sheet->mergeCells($colname[$colBiankuang] . '11:' . $colname[$colcnt - 1] . '11');
+        $sheet->setCellValue($colname[$colBiankuang - 1] . '12', '全科及格率%');
+        $sheet->setCellValue($colname[$colBiankuang] . '12', $temp['cj']['all']['jige']);
+        $sheet->mergeCells($colname[$colBiankuang] . '12:' . $colname[$colcnt - 1] . '12');
+        $sheet->getStyle($colname[$colBiankuang - 1] . '3:' . $colname[$colcnt - 1] . '12')->applyFromArray($styleArrayJZ);
+        $sheet->getStyle($colname[$colBiankuang - 1] . '3:' . $colname[$colcnt - 1] . '12')->applyFromArray($styleArrayBK);
+
 
         $sheet->getStyle('A1')->getFont()->setBold(true)->setName('宋体')->setSize(16); # 修改标题字号
         $sheet->getDefaultRowDimension()->setRowHeight(22.5); # 设置行高

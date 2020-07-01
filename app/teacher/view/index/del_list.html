@@ -93,7 +93,7 @@
           	layer.msg('这个～算了吧！');
           	break;
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/renshi/teacher/delete','mytable');
+            cjgl.delAll(checkStatus,'/teacher/index/delete','mytable');
             break;
         };
       });
@@ -105,10 +105,10 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
           	case 'detail':// 查看
-	          cjgl.add(obj.data.xingming+'信息','/renshi/teacher/read/'+obj.data.id,'','',true);
+	          cjgl.addTab(obj.data.xingming+'信息','/teacher/index/read/'+obj.data.id,true);
 	          break;
 	        case 'huifu':// 恢复删除
-	          cjgl.redel(obj,"/renshi/teacher/redel");
+	          cjgl.redel(obj,"/teacher/index/redel");
 	          break;
         };
       });

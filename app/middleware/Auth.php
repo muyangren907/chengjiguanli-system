@@ -72,15 +72,16 @@ class Auth
             'kaohao/excel/biaoqianxls',    # 下载试卷标签
             'kaohao/excel/dwcaiji',    # 下载成绩采集表
             // Renshi应用
-            'renshi/student/ajaxdataby',    # 获取毕业学生列表
-            'renshi/student/ajaxdatadel',    # 获取删除学生列表
-            'renshi/student/srcstudent',    # 查询学生名单
-            'renshi/studentchengji/ajaxonestudentchengjitubiao',    # 获取学生成绩拆线图数据
-            'renshi/studentchengji/ajaxonestudentchengjileida',    # 获取学生成绩雷达图数据
-            'renshi/teacher/ajaxdatadel',   # 获取删除教师列表
-            'renshi/teacher/srcteacher',    # 搜索教师
-            'renshi/teacher/srcry',    # 获取当前教师荣誉列表
-            'renshi/teacher/srckt',    # 获取当前教师课题列表
+            'student/index/ajaxdataby',    # 获取毕业学生列表
+            'student/index/ajaxdatadel',    # 获取删除学生列表
+            'student/index/srcstudent',    # 查询学生名单
+            'student/studentchengji/ajaxonestudentchengjitubiao',    # 获取学生成绩拆线图数据
+            'student/studentchengji/ajaxonestudentchengjileida',    # 获取学生成绩雷达图数据
+            'student/studentchengji/ajaxonestudentchengjiyibiao',    # 获取学生成绩雷达图数据
+            'teacher/index/ajaxdatadel',   # 获取删除教师列表
+            'teacher/index/srcteacher',    # 搜索教师
+            'teacher/index/srcry',    # 获取当前教师荣誉列表
+            'teacher/index/srckt',    # 获取当前教师课题列表
             // Chengji应用
             'chengji/index/ajaxaddinfo',    # 获取录入该学生成绩人员的信息
             'chengji/index/dwchengjixlsx',    # 下载学生成绩

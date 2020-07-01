@@ -65,6 +65,9 @@
 <script type="text/html" id="luru">
   <input type="checkbox" myurl="{$list.luru ? $list.luru : url('luru')}" {{d.luru == 1 ? "checked" :""}} id="{{d.id}}" lay-skin="switch" lay-filter="luru" lay-text="允许|不允许">
 </script>
+<script type="text/html" id="jieshu">
+  <input type="checkbox" myurl="{$list.status ? $list.status : url('status')}" {{d.status == 1 ? "checked" :""}} id="{{d.id}}" lay-skin="switch" lay-filter="status" lay-text="进行|结束">
+</script>
 <!-- 表格操作 -->
 <script>
 
@@ -72,15 +75,17 @@
   options.cols=[[ //表头
 			{type:'checkbox', fixed:'left'},
 			{field:'id', title:'操作', toolbar:'#barDemo', minWidth:120},
+			{field:'luru', title:'成绩编辑', minWidth:100, templet:'#luru', sort:true},
+			{field:'status', title:'状态', minWidth:80, templet:'#jieshu', sort:true},
 			{field:'title', title:'考试名称', sort:true, minWidth:240},
-      {field:'xueqi_id', title:'学期', sort:true, minWidth:200, templet:function(d){
-        var str;
-        if(d.ksXueqi)
-        {
-          str = d.ksXueqi.title;
-        }
-        return str;
-      }},
+		    {field:'xueqi_id', title:'学期', sort:true, minWidth:200, templet:function(d){
+		    	var str;
+		        if(d.ksXueqi)
+		        {
+		          str = d.ksXueqi.title;
+		        }
+		        return str;
+		      }},
 			{field:"ckNianji", title:'参考年级', minWidth:180},
 			{field:'ckSubject', title:'参考学科', minWidth:100} ,
 			{field:'bfdate', title:'考试时间', minWidth:150, sort:true, templet:function(d){
@@ -91,8 +96,7 @@
 				endate = d.bfdate + '～' + endate;
 				return endate;
 			}},
-      {field:'luru', title:'成绩操作', minWidth:80, templet:'#luru', sort:true},
-			{field:'status', title:'状态', minWidth:80, templet:'#status', sort:true},
+      		
 
 		]];
 

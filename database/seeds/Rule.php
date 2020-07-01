@@ -144,7 +144,7 @@ class Rule extends Seeder
                     ,'pid' => 301
                 ],
                 ['id' => 30107
-                    ,'title' => '操作成绩权限'
+                    ,'title' => '成绩编辑'
                     ,'name' => 'kaoshi/index/luru'
                     ,'paixu' => 7
                     ,'pid' => 301
@@ -208,6 +208,18 @@ class Rule extends Seeder
                             ,'title' => '状态'
                             ,'name' => 'kaoshi/kaoshiset/setstatus'
                             ,'paixu' => 6
+                            ,'pid' => 3020101
+                        ],
+                        ['id' => 302010108
+                            ,'title' => '统计得分率'
+                            ,'name' => 'chengji/tongji/editdefenlv'
+                            ,'paixu' => 4
+                            ,'pid' => 3020101
+                        ],
+                        ['id' => 302010109
+                            ,'title' => '更新得分率'
+                            ,'name' => 'chengji/tongji/updatedefenLv'
+                            ,'paixu' => 5
                             ,'pid' => 3020101
                         ],
                     ['id' => 3020102
@@ -445,116 +457,116 @@ class Rule extends Seeder
                     ],
 
             /*======================================================================
-             * 考试管理
+             * 学生管理
              */
             ['id' => 4
-                ,'title'  => '师生名单'
-                ,'name' => 'renshi'
+                ,'title'  => '学生管理'
+                ,'name' => 'student'
                 ,'paixu'  => 3
                 ,'ismenu'  => 1
-                ,'font' => '&#xe699;'
+                ,'font' => '&#xe753;'
             ],
             ['id' => 401
                 ,'title' => '学生列表'
-                ,'name' => 'renshi/student/index'
+                ,'name' => 'student/index/index'
                 ,'paixu' => 1
                 ,'ismenu'  => 1
                 ,'pid'  => 4
-                ,'url' => '/renshi/student'
+                ,'url' => '/student/index/index'
             ],
                 // 学生管理权限
                 ['id' => 40101
                     ,'title' => '添加'
-                    ,'name' => 'renshi/student/create'
+                    ,'name' => 'student/index/create'
                     ,'paixu'  => 1
                     ,'pid' => 401
                 ],
                 ['id' => 40102
                     ,'title' => '保存'
-                    ,'name' => 'renshi/student/save'
+                    ,'name' => 'student/index/save'
                     ,'paixu' => 2
                     ,'pid' => 401
                 ],
                 ['id' => 40103
                     ,'title' => '删除'
-                    ,'name' => 'renshi/student/delete'
+                    ,'name' => 'student/index/delete'
                     ,'paixu' => 3
                     ,'pid' => 401
                 ],
                 ['id' => 40104
                     ,'title' => '编辑'
-                    ,'name' => 'renshi/student/edit'
+                    ,'name' => 'student/index/edit'
                     ,'paixu' => 4
                     ,'pid' => 401
                 ],
                 ['id' => 40105
                     ,'title' => '更新'
-                    ,'name' => 'renshi/student/update'
+                    ,'name' => 'student/index/update'
                     ,'paixu' => 5
                     ,'pid' => 401
                 ],
                 ['id' => 40106
                     ,'title' => '查看信息'
-                    ,'name' => 'renshi/student/read'
+                    ,'name' => 'student/index/read'
                     ,'paixu' => 6
                     ,'pid' => 401
                 ]
                 ,['id' => 40107
                    ,'title' => '状态'
-                    ,'name' => 'renshi/student/setstatus'
+                    ,'name' => 'student/index/setstatus'
                     ,'paixu' => 7
                     ,'pid' => 401
                 ],
                 ['id' => 40108
                     ,'title' => '是否参加考试'
-                    ,'name' => 'renshi/student/setkaoshi'
+                    ,'name' => 'student/index/setkaoshi'
                     ,'paixu' => 8
                     ,'pid' => 401
                 ],
                 ['id' => 40109
                     ,'title' => '下载模板'
-                    ,'name' => 'renshi/student/download'
+                    ,'name' => 'student/index/download'
                     ,'paixu' => 9
                     ,'pid' => 401
                 ],
                 ['id' => 40110
                     ,'title' => '校对导入'
-                    ,'name' => 'renshi/student/createall'
+                    ,'name' => 'student/index/createall'
                     ,'paixu' => 10
                     ,'pid' => 401
                 ],
                 ['id' => 4011
                     ,'title' => '批量保存'
-                    ,'name' => 'renshi/student/saveall'
+                    ,'name' => 'student/index/saveall'
                     ,'paixu' => 11
                     ,'pid' => 401
                 ],
                 ['id' => 40112
                     ,'title' => '表格删除页面'
-                    ,'name' => 'renshi/student/deletes'
+                    ,'name' => 'student/index/deletes'
                     ,'paixu' => 12
                     ,'pid' => 401
                 ],
                 ['id' => 40113
                     ,'title' => '表格删除数据'
-                    ,'name' => 'renshi/student/deletexlsx'
+                    ,'name' => 'student/index/deletexlsx'
                     ,'paixu' => 13
                     ,'pid' => 401
                 ],
                 ['id' => 40114
                     ,'title' => '查看成绩'
-                    ,'name' => 'renshi/studentchengji/index'
+                    ,'name' => 'student/studentchengji/index' 
                     ,'paixu' => 14
                     ,'pid' => 401
                 ],
-            // 师生名单
+                        // 师生名单
             ['id' => 402
                 ,'title' => '毕业学生'
-                ,'name' => 'renshi/student/bylist'
+                ,'name' => 'student/index/bylist'
                 ,'paixu' => 2
                 ,'ismenu'  => 1
                 ,'pid'  => 4
-                ,'url' => '/renshi/student/bylist'
+                ,'url' => '/student/index/bylist'
             ],
                 // 毕业学生
                 ['id' => 40201
@@ -566,109 +578,21 @@ class Rule extends Seeder
             // 师生名单
             ['id' => 403
                 ,'title' => '删除学生'
-                ,'name' => 'renshi/student/dellist'
+                ,'name' => 'student/index/dellist'
                 ,'paixu' => 3
                 ,'ismenu'  => 1
                 ,'pid'  => 4
-                ,'url' => '/renshi/student/dellist'
+                ,'url' => '/student/index/dellist'
             ],
                 // 删除学生
                 ['id' => 40301
                     ,'title' => '恢复删除'
-                    ,'name' => 'renshi/student/redel'
+                    ,'name' => 'student/index/redel'
                     ,'paixu' => 1
                     ,'pid' => 403
                 ],
-            ['id' => 404
-                ,'title' => '教师列表'
-                ,'name' => 'renshi/teacher/index'
-                ,'paixu' => 4
-                ,'ismenu'  => 1
-                ,'pid'  => 4
-                ,'url' => '/renshi/teacher'
-            ],
-                // 教师管理权限
-                ['id' => 40401
-                    ,'title' => '添加'
-                    ,'name' => 'renshi/teacher/create'
-                    ,'paixu'  => 1
-                    ,'pid' => 404
-                ],
-                ['id' => 40402
-                    ,'title' => '保存'
-                    ,'name' => 'renshi/teacher/save'
-                    ,'paixu'  => 2
-                    ,'pid' => 404
-                ],
-                ['id' => 40403
-                    ,'title' => '删除'
-                    ,'name' => 'renshi/teacher/delete'
-                    ,'paixu' => 3
-                    ,'pid' => 404
-                ],
-                ['id' => 40404
-                    ,'title' => '编辑'
-                    ,'name' => 'renshi/teacher/edit'
-                    ,'paixu' => 4
-                    ,'pid' => 404
-                ],
-                ['id' => 40405
-                    ,'title' => '更新'
-                    ,'name' => 'renshi/teacher/update'
-                    ,'paixu'  => 5
-                    ,'pid' => 404
-                ],
-                ['id' => 40406
-                    ,'title' => '查看'
-                    ,'name' => 'renshi/teacher/read'
-                    ,'paixu' => 6
-                    ,'pid' => 404
-                ],
-                ['id' => 40407
-                    ,'title' => '状态'
-                    ,'name' => 'renshi/teacher/setstatus'
-                    ,'paixu' => 7
-                    ,'pid' => 404
-                ],
-                ['id' => 40408
-                    ,'title' => '查询教师'
-                    ,'name' => 'renshi/teacher/srcteacher'
-                    ,'paixu' => 8
-                    ,'pid' => 404
-                ],
-                ['id' => 40409
-                    ,'title' => '批量上传'
-                    ,'name' => 'renshi/teacher/createall'
-                    ,'paixu' => 9
-                    ,'pid' => 404
-                ],
-                ['id' => 40410
-                    ,'title' => '批量保存'
-                    ,'name' => 'renshi/teacher/saveall'
-                    ,'paixu' => 10
-                    ,'pid' => 404
-                ],
-                ['id' => 40411
-                    ,'title' => '表格模板下载'
-                    ,'name' => 'renshi/teacher/downloadxls'
-                    ,'paixu' => 11
-                    ,'pid' => 404
-                ],
-            ['id' => 405
-                ,'title' => '删除教师'
-                ,'name' => 'renshi/teacher/dellist'
-                ,'paixu' => 5
-                ,'ismenu'  => 1
-                ,'pid'  => 4
-                ,'url' => '/renshi/teacher/dellist'
-            ],
-                // 删除教师
-                ['id' => 40501
-                    ,'title' => '恢复删除'
-                    ,'name' => 'renshi/teacher/redel'
-                    ,'paixu' => 1
-                    ,'pid' => 405
-                ],
+
+            
 
             /*======================================================================
              * 考试管理
@@ -676,7 +600,7 @@ class Rule extends Seeder
             ['id' => 5
                 ,'title'  => '教务管理'
                 ,'name' => 'teach'
-                ,'paixu'  => 4
+                ,'paixu'  => 7
                 ,'ismenu'  => 1
                 ,'font' => '&#xe6da;'
             ],
@@ -838,7 +762,7 @@ class Rule extends Seeder
             ['id' => 6
                 ,'title'  => '管理员管理'
                 ,'name' => 'admin'
-                ,'paixu'  => 9
+                ,'paixu'  => 8
                 ,'ismenu'  => 1
                 ,'font' => '&#xe6b8;'
             ],
@@ -1536,6 +1460,105 @@ class Rule extends Seeder
                     ,'pid' => 902
                     ,'status' => 0
                 ],
+
+            // 教师管理
+            ['id' => 10
+                ,'title'  => '教师管理'
+                ,'name' => 'teacher'
+                ,'paixu'  => 4
+                ,'ismenu'  => 1
+                ,'font' => '&#xe83a;'
+            ],
+                ['id' => 1001
+                    ,'title' => '教师列表'
+                    ,'name' => 'teacher/index/index'
+                    ,'paixu' => 1
+                    ,'ismenu'  => 1
+                    ,'pid'  => 10
+                    ,'url' => '/teacher/index/index'
+                ],
+                    // 教师管理权限
+                    ['id' => 100101
+                        ,'title' => '添加'
+                        ,'name' => 'teacher/index/create'
+                        ,'paixu'  => 1
+                        ,'pid' => 1001
+                    ],
+                    ['id' => 100102
+                        ,'title' => '保存'
+                        ,'name' => 'teacher/index/save'
+                        ,'paixu'  => 2
+                        ,'pid' => 1001
+                    ],
+                    ['id' => 100103
+                        ,'title' => '删除'
+                        ,'name' => 'teacher/index/delete'
+                        ,'paixu' => 3
+                        ,'pid' => 1001
+                    ],
+                    ['id' => 100104
+                        ,'title' => '编辑'
+                        ,'name' => 'teacher/index/edit'
+                        ,'paixu' => 4
+                        ,'pid' => 1001
+                    ],
+                    ['id' => 100105
+                        ,'title' => '更新'
+                        ,'name' => 'teacher/index/update'
+                        ,'paixu'  => 5
+                        ,'pid' => 1001
+                    ],
+                    ['id' => 100106
+                        ,'title' => '查看'
+                        ,'name' => 'teacher/index/read'
+                        ,'paixu' => 6
+                        ,'pid' => 1001
+                    ],
+                    ['id' => 100107
+                        ,'title' => '状态'
+                        ,'name' => 'teacher/index/setstatus'
+                        ,'paixu' => 7
+                        ,'pid' => 1001
+                    ],
+                    ['id' => 100108
+                        ,'title' => '查询教师'
+                        ,'name' => 'teacher/index/srcteacher'
+                        ,'paixu' => 8
+                        ,'pid' => 1001
+                    ],
+                    ['id' => 100109
+                        ,'title' => '批量上传'
+                        ,'name' => 'teacher/index/createall'
+                        ,'paixu' => 9
+                        ,'pid' => 1001
+                    ],
+                    ['id' => 100110
+                        ,'title' => '批量保存'
+                        ,'name' => 'teacher/index/saveall'
+                        ,'paixu' => 10
+                        ,'pid' => 1001
+                    ],
+                    ['id' => 100111
+                        ,'title' => '表格模板下载'
+                        ,'name' => 'teacher/index/downloadxls'
+                        ,'paixu' => 11
+                        ,'pid' => 1001
+                    ],
+                ['id' => 1002
+                    ,'title' => '删除教师'
+                    ,'name' => 'teacher/index/dellist'
+                    ,'paixu' => 2
+                    ,'ismenu'  => 1
+                    ,'pid'  => 10
+                    ,'url' => '/teacher/index/dellist'
+                ],
+                    // 删除教师
+                    ['id' => 100201
+                        ,'title' => '恢复删除'
+                        ,'name' => 'teacher/index/redel'
+                        ,'paixu' => 1
+                        ,'pid' => 1002
+                    ],
 
         ];
         // 保存数据

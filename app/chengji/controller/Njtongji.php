@@ -262,7 +262,7 @@ class Njtongji extends BaseController
         // 获取变量
         $kaoshi_id = input('post.kaoshi_id');
         // 判断考试状态
-        event('ksjs', $kaoshi_id);
+        event('kstj', $kaoshi_id);
         // 统计成绩
         $ntj = new NTJ;
         $data = $ntj->tjNianji($kaoshi_id);
@@ -294,7 +294,7 @@ class Njtongji extends BaseController
         // 获取变量
         $kaoshi_id = input('post.kaoshi_id');
         // 判断考试状态
-        event('ksjs', $kaoshi_id);
+        event('kstj', $kaoshi_id);
 
         // 统计成绩
         $ntj = new NTJ;

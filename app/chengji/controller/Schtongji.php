@@ -14,7 +14,7 @@ class Schtongji
         // 获取变量
         $kaoshi_id = input('post.kaoshi_id');
         // 判断考试状态
-        event('ksjs', $kaoshi_id);
+        event('kstj', $kaoshi_id);
         // 统计成绩
         $schtj = new SCHTJ;
         $data = $schtj->tjSchool($kaoshi_id);
@@ -41,7 +41,7 @@ class Schtongji
         // 获取变量
         $kaoshi_id = input('post.kaoshi_id');
         // 判断考试状态
-        event('ksjs', $kaoshi_id);
+        event('kstj', $kaoshi_id);
 
         // 统计成绩
         $schtj = new SCHTJ;

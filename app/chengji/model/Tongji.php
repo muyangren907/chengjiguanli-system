@@ -46,6 +46,7 @@ class Tongji extends BaseModel
             ,'max' => null
             ,'min' => null
             ,'zhongshu' => null
+            ,'zhongweishu' => null
             ,'defenlv' => null
         ];
 
@@ -79,8 +80,10 @@ class Tongji extends BaseModel
                 $temp['max'] = max($cjcol);
                 $temp['min'] = min($cjcol);
                 $temp['sifenwei'] = $this->myquartile($cjcol);
-                $temp['zhongshu'] = '';
+                $temp['zhongshu'] = $this->zhongshu($cjcol);
+                $temp['zhongweishu'] = $this->zhongweishu($cjcol);
                 $temp['defenlv'] = round($temp['defenlv'] * 100, 2);
+                $temp['fenshuduan'] = $this->fenshuduan($cjcol, $value['fenshuxian']['manfen']);
             }
             $data['cj'][$value['lieming']] = $temp;
         }
@@ -108,8 +111,10 @@ class Tongji extends BaseModel
             $temp['youxiu'] = null;
             $temp['jige'] = $this->rateAll($cj, $subject); #全科及格率
             $temp['sifenwei'] = $this->myquartile($cjcol);
-            $temp['zhongshu'] = '';
+            $temp['zhongshu'] = $this->zhongshu($cjcol);
+            $temp['zhongweishu'] = $this->zhongweishu($cjcol);
             $temp['defenlv'] = round($temp['defenlv'] * 100, 2);
+            $temp['fenshuduan'] = $this->fenshuduan($cjcol, $value['fenshuxian']['manfen']);
         }
         $data['cj']['all'] = $temp;
 
@@ -216,10 +221,6 @@ class Tongji extends BaseModel
         $q[0] = 1 + ($length - 1 ) * 0.25;
         $q[1] = 1 + ($length - 1 ) * 0.5;
         $q[2] = 1 + ($length - 1 ) * 0.75;
-        // n+1方法结果也对，但是与excel不相同
-        // $q[0] = ($length + 1 ) * 0.25;
-        // $q[1] = ($length + 1 ) * 0.5;
-        // $q[2] = ($length + 1 ) * 0.75;
 
         // 计算每个位置对应的值
         foreach ($q as $key => $value) {
@@ -237,5 +238,110 @@ class Tongji extends BaseModel
         }
         return $result;
     }
+
+
+    // 计算中位数
+    public function zhongweishu($arr)
+    {
+        // 将数据排序
+        rsort($arr);
+        $zws = 0;
+
+        $cnt = count($arr);
+        if ($cnt = 1) {
+            $zws = $arr[0];
+        }elseif ($cnt  > 1) {
+            $mod = $cnt % 2;
+            if ($mod == 0) {
+                $i = $cnt / 2;
+                $zws = ($arr[$i] + $arr[$i + 1]) / 2;
+            }else{
+                $i = ($cnt + 1) / 2;
+                $zws = $arr[$i];
+            }
+        }else{
+            $zws = 0;
+        }
+
+        return $zws;
+    }
+
+
+    // 计算众数
+    public function zhongshu ($arr)
+    {
+        // 将数据排序
+        rsort($arr);
+        // 将数据填入数组
+        $data = array();
+        foreach ($arr as $key => $value) {
+            if (isset($data[$value])) {
+                $data[$value] = $data[$value] + 1;
+            }else{
+                $data[$value] = 1;
+            }
+        }
+        // 对数据进行降序排列
+        arsort($data);
+        $i = 0;
+        $zs = array();
+        $old = '';
+        foreach ($data as $key => $value) {
+            if ($value > 2 && $i===0) {
+                $zs[] = $key;
+            } elseif ($data[$key] === $old) {
+                $zs[] = $key;
+            }else{
+                continue;
+            }
+            $old = $value;
+            $i = $i + 1;
+        }
+        asort($zs);
+        $zs = implode($zs,'、');
+
+        return $zs;
+    }
+
+
+    // 分数段统计
+    public function fenshuduan($arr, $manfen)
+    {
+        // 计算分数段
+        $fenshuduan = array();
+        $long = 5;
+        $cnt = 0;
+        for($i = 0; $i <= $manfen; $i=$i+$long)
+        {
+            $fenshuduan[] = [
+                'low' => $i
+                ,'high' => $i + $long
+                ,'cnt' => 0
+            ];
+        }
+        
+        foreach ($arr as $key => $value) {
+            $xiabiao = intval($value / $long);
+            if (isset($fenshuduan[$xiabiao]))
+            {
+                $fenshuduan[$xiabiao]['cnt'] = $fenshuduan[$xiabiao]['cnt'] + 1;
+                $cnt = $cnt + 1;
+            }
+        }
+        $count = count($arr);
+        if ($count > $cnt)
+        {
+            $last = array_pop($fenshuduan);
+            $fenshuduan[] = [
+                'low' => $last['high']
+                ,'high' => $last['high'] + $long
+                ,'cnt' => $count - $cnt
+            ];
+        }
+
+        return $fenshuduan;
+    }
+
+
 
 }

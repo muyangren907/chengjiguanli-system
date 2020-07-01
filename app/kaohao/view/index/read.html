@@ -22,7 +22,13 @@
       <div class="layui-row layui-col-space10">
         <div class="layui-col-xs12 layui-col-sm12 layui-col-md6">
           <fieldset class="layui-elem-field" style="height:350px">
-            <legend>成绩列表</legend>
+            <legend>总分位置</legend>
+            <div id="yibiao" style="width:100%; height:400px;"></div>
+          </fieldset>
+        </div>
+        <div class="layui-col-xs12 layui-col-sm12 layui-col-md6">
+          <fieldset class="layui-elem-field" style="height:350px">
+            <legend>各学科成绩</legend>
             <table class="layui-table" lay-size="lg">
               <colgroup>
                 <col style="width: 10px;">
@@ -33,7 +39,7 @@
                 <tr>
                   <th>学科</th>
                   <th>得分</th>
-                  <th>得分率</th>
+                  <th>班级位置</th>
                 </tr>
               </thead>
               <tbody>
@@ -42,7 +48,7 @@
                     <tr>
                       <td>{$vo.title}</td>
                       <td>{$vo.defen}</td>
-                      <td>{$vo.defenlv}</td>
+                      <td>{$vo.bweizhi}</td>
                     </tr>
                   {/volist}
                 {else /}
@@ -58,7 +64,7 @@
         </div>
         <div class="layui-col-xs12 layui-col-sm12 layui-col-md6">
           <fieldset class="layui-elem-field" style="height:350px">
-            <legend>得分率</legend>
+            <legend>学科得分率</legend>
             {present name="list.cj"}
               {volist name="list.cj" id="vo"}
                 <div class="layui-form-item" style="margin-top: 15px;">
@@ -78,7 +84,7 @@
         </div>
         <div class="layui-col-xs12 layui-col-sm12 layui-col-md6">
           <fieldset class="layui-elem-field" style="height:350px">
-            <legend>雷达图</legend>
+            <legend>个人成绩与总平均分</legend>
             <div id="leida" style="width:100%; height:400px;"></div>
           </fieldset>
         </div>
@@ -98,8 +104,9 @@
   });
 
   getLeiDa("{$list.id}");
+  getYiBiao("{$list.id}");
 
-  // 条形统计图--平均分
+  // 雷达图
   function getLeiDa(kaohao_id){
     var url = '/student/studentcj/chengjileida';
     var title = '学科成绩雷达图';
@@ -107,6 +114,16 @@
       kaohao_id: kaohao_id
     };
     createLeiDa(url,val,title);
+  }
+
+  // 仪表图
+  function getYiBiao(kaohao_id){
+    var url = '/student/studentcj/chengjiyibiao';
+    var title = '总成绩仪表图';
+    var val = {
+      kaohao_id: kaohao_id
+    };
+    createYiBiao(url,val,title);
   }
 
 
@@ -160,6 +177,50 @@
           indicator: data.indicator
         },
         series: data.series
+      })
+    });
+  }
+
+
+  /**
+  * 异步获取图表中的数据
+  *
+  * @access public
+  * @param id 要添加数据的div
+  * @param url 异步地址
+  * @param val 异步时携带的参数
+  * @param val 图表标题
+  * @return array 返回类型
+  */
+  function createYiBiao(url, val, title)
+  {
+    var myYiBiao = echarts.init(document.getElementById('yibiao'));
+    $.post(url, val).done(function (data) {
+      myYiBiao.setOption({
+        title: {
+          text:'',
+        },
+        tooltip: {},
+        toolbox: {
+          id:'yibiao',
+          show:true,
+          orient:'horizontal',
+          showTitle:true,
+          feature: {
+            restore: { //重置
+              show: true
+            },
+            saveAsImage: { //保存文件
+              show: true
+            },
+          },
+        },
+        series: {
+          name:data.series.name
+          ,type:data.series.type
+          ,data:data.series.data
+          ,detail:{formatter: data.series.data[0].value + '%'}
+        }
       })
     });
   }

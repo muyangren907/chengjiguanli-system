@@ -6,7 +6,7 @@ namespace app\listener;
 // 实例化考试状态事件
 use \app\event\MyEvent;
 
-class KaoshiJieShu
+class KaoshiTongJi
 {
     /**
      * 事件监听处理
@@ -20,9 +20,13 @@ class KaoshiJieShu
     {
         $event = new MyEvent;
         $ksInfo = $event->ksInfo($kaoshi_id);
+        if($ksInfo->luru == 1)
+        {
+            return $this->error('请先禁止成绩编辑，再进行其它操作！', '/login/err');
+        }
         if($ksInfo->status == 0)
         {
-            return $this->error('本次考试已经结束，不能操作！', '/login/err');
+            return $this->error('本次考试已经结束，不能进行操作！', '/login/err');
         }
 
         return $ksInfo;

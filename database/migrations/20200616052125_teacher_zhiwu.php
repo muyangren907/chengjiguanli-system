@@ -29,7 +29,7 @@ class TeacherZhiwu extends Migrator
     public function up()
     {
         // 定义数据表名称
-        $table = $this->table('teacher');
+        $table = $this->table('teacher_zhiwu');
 
         // 添加当前表字段
         $table

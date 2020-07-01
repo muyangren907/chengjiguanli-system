@@ -38,17 +38,10 @@ Route::group('index', function () {
 
 // 学生成绩列表
 Route::group('studentcj', function () {
-    Route::rule('<id>','StudentChengji/index','get');              # 读取信息
+    Route::rule('index/<id>','StudentChengji/index','get');              # 读取信息
     Route::rule('data','StudentChengji/ajaxData','post');       # 获取学生成绩列表
     Route::rule('chengjitubiao','StudentChengji/ajaxOneStudentChengjiTuBiao','post');       # 获取学生成绩列表
     Route::rule('chengjileida','StudentChengji/ajaxOneStudentChengjiLeiDa','post');       # 获取学生成绩列表
+    Route::rule('chengjiyibiao','StudentChengji/ajaxOneStudentChengjiYiBiao','post');       # 获取学生成绩列表
 });
 
-
-// // 学生管理
-// Route::group('student', function () {
-//         Route::rule('bylist','Student/byList','get');                       # 信息列表
-//         Route::rule('databy','Student/ajaxdataBy','post');              # 获取数据
-//         Route::rule('dellist','Student/delList','get');                     # 信息列表
-//         Route::rule('datadel','Student/ajaxdataDel','post');                # 获取数据
-//     });

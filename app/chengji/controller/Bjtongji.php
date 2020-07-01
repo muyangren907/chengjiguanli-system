@@ -274,7 +274,7 @@ class Bjtongji extends BaseController
         // 获取变量
         $kaoshi_id = input('post.kaoshi_id');
         // 判断考试状态
-        event('ksjs', $kaoshi_id);
+        event('kstj', $kaoshi_id);
 
         // 统计成绩
         $btj = new BTJ;
@@ -301,7 +301,7 @@ class Bjtongji extends BaseController
         // 获取变量
         $kaoshi_id = input('post.kaoshi_id');
         // 判断考试状态
-        event('ksjs', $kaoshi_id);
+        event('kstj', $kaoshi_id);
 
         // 统计成绩
         $btj = new BTJ;

@@ -74,7 +74,14 @@ class Fields extends BaseController
         }
 
         $url = public_path() . 'public\\uploads\\' . $filist->url;
-        return download($url, $oldname);
+
+        $data = file_exists($url);
+        if ($data === true) {
+            return download($url, $oldname);
+        } else {
+           return $this->error('文件不存在！');
+        }
+        
 
     }
 

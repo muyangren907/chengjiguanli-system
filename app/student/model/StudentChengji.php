@@ -165,7 +165,7 @@ class StudentChengji extends BaseModel
     }
 
 
-    // 一个学生一个学科历次成绩
+    // 该学生本次考试各学科成绩雷达图
     public function oneStudentLeiDa($srcfrom)
     {
         // 初始化参数
@@ -195,7 +195,7 @@ class StudentChengji extends BaseModel
         // 查询区成绩
         $SchoolChengji = new \app\chengji\model\TongjiSch;
         $schcj = $SchoolChengji
-                    ->where('kaoshi_id',$khInfo->kaoshi)
+                    ->where('kaoshi_id',$khInfo->kaoshi_id)
                     ->where('ruxuenian',$khInfo->ruxuenian)
                     ->select();
 
@@ -234,14 +234,15 @@ class StudentChengji extends BaseModel
                     if($sbj_val['id'] == $cj_val->subject_id)
                     {
                         $bjcj['value'][$i] = $cj_val->defen;
+                        unset($khInfo->ksChengji[$cj_k]);
                         continue;
-                    }
-                    if(isset($bjcj['value'][$i]) == false)
-                    {
-                        $bjcj['value'][$i] = null;
                     }
                 }
             }
+            if(isset($bjcj['value'][$i]) == false)
+                    {
+                        $bjcj['value'][$i] = null;
+                    }
 
             // 班级成绩
             if(isset($qcj['value'][$i]) == false)
@@ -250,13 +251,15 @@ class StudentChengji extends BaseModel
                     if($sbj_val['id'] == $sch_val->subject_id)
                     {
                         $qcj['value'][$i] = $sch_val->avg;
+                        unset($schcj[$sch_k]);
                         continue;
                     }
-                    if(isset($qcj['value'][$i]) == false)
-                    {
-                        $qcj['value'][$i] = null;
-                    }
+                    
                 }
+            }
+            if(isset($qcj['value'][$i]) == false)
+            {
+                $qcj['value'][$i] = null;
             }
 
             $i++;
@@ -272,6 +275,64 @@ class StudentChengji extends BaseModel
                 ,'data' => [$bjcj, $qcj]
             ]
         ];
+
+        return $data;
+    }
+
+
+    // 该学生本次考试各学科成绩仪表图
+    public function oneStudentYiBiao($srcfrom)
+    {
+        // 初始化参数
+        $src = array(
+            'kaohao_id' => '',
+        );
+
+        // 用新值替换初始值
+        $src = array_cover($srcfrom, $src);
+        
+        // 成绩查询信息
+        $kh = new \app\kaohao\model\Kaohao;         #该考号对应的考试信息。
+        $khInfo = $kh->where('id', $src['kaohao_id'])
+                ->find();
+        $src['ruxuenian'] = $khInfo->ruxuenian;    #设置查询条件
+        $src['kaoshi_id'] = $khInfo->kaoshi_id;
+        $khSrc = new \app\kaohao\model\Search;
+        $src['banji_id'] = array_column($khSrc->cyBanji($src), 'id');
+
+        // 实例化并查询成绩
+        $cj = new \app\chengji\model\Chengji;
+        $data = $cj->search($src);
+        if (count($data)>0) {
+            $data = sortArrByManyField($data, 'sum', SORT_DESC);
+            $data = array_column($data, 'id');
+            $rank = array_search($src['kaohao_id'], $data);
+            $rank = round(($rank + 1) / count($data) * 100, 0);
+
+            $data = [
+                'title' => '学生成绩'
+                ,'series' => [
+                    'name'=>'总成绩位置'
+                    ,'type' => 'gauge'
+                    // ,'detail' => $rank . '%'
+                    ,'data' => [['value'=>$rank, 'name'=>'位置']]
+                ]
+            ];
+        } else {
+            $data = [
+                'title' => '学生成绩'
+                ,'series' => [
+                    'name'=>'总成绩位置'
+                    ,'type' => 'gauge'
+                    // ,'detail' => $rank . '%'
+                    ,'data' => [['value'=>0, 'name'=>'位置']]
+                ]
+            ];
+        }
+
+
+
+        
 
         return $data;
     }

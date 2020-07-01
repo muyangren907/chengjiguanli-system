@@ -237,6 +237,7 @@ class Index extends BaseController
         foreach ($defen->ksChengji as $key => $value) {
             $list['cj'][$value->subject_id]['defen'] = $value->defen * 1;
             $list['cj'][$value->subject_id]['defenlv'] = $value->defenlv * 1;
+            $list['cj'][$value->subject_id]['bweizhi'] = $value->bweizhi * 1 .'%';
             $list['cj'][$value->subject_id]['title'] = $value->subjectName->title;
             $list['cj'][$value->subject_id]['color'] = $color[$key % 5];
         }

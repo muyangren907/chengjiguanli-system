@@ -140,10 +140,10 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
           case 'detail':// 查看
-	          cjgl.add(obj.data.xingming+'－信息','/student/index/read/'+obj.data.id,'','',true);
+	          cjgl.addTab(obj.data.xingming+'－信息','/student/index/read/'+obj.data.id,true);
 	          break;
           case 'chengji':// 查看
-            parent.xadmin.add_tab(obj.data.xingming + ' － 成绩','/student/studentcj/'+obj.data.id,true);
+            cjgl.addTab(obj.data.xingming + ' － 成绩','/student/studentcj/index/'+obj.data.id,true);
             break;
 	        case 'del':// 删除
 	          cjgl.del(obj,"/student/index/delete");

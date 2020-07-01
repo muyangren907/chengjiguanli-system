@@ -21,9 +21,13 @@ class KaoshiLuru
         $event = new MyEvent;
         $ksInfo = $event->ksInfo($kaoshi_id);
         if($ksInfo){
+           if($ksInfo->status == 0)
+            {
+                return $this->error('本次考试已经结束！','/login/err');
+            } 
            if($ksInfo->luru == 0)
             {
-                return $this->error('本次考试已经不允许操作！','/login/err');
+                return $this->error('本次考试成绩已经不允许编辑！','/login/err');
             } 
         }else{
             return $this->error('没有找到考试。','/login/err');

@@ -17,8 +17,8 @@ return [
         'tjlog' => [
             '\app\listener\TongjiLog'
         ],
-        'ksjs' => [
-            '\app\listener\KaoshiJieShu'
+        'kstj' => [
+            '\app\listener\KaoshiTongJi'
         ],
     ],
     'subscribe' => [
