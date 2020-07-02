@@ -87,8 +87,8 @@
         // 选中复选框
         $(mydiv).find("td:eq(0)").children("input").prop('checked',true);
         // 设置优秀率和及格率
-        $(mydiv).find("td:eq(3)").children("input:eq(0)").val(val*0.9);
-        $(mydiv).find("td:eq(4)").children("input:eq(0)").val(val*0.6);
+        $(mydiv).find("td:eq(3)").children("input:eq(0)").val(Math.round(val*0.9));
+        $(mydiv).find("td:eq(4)").children("input:eq(0)").val(Math.round(val*0.6));
       }else{
         // 选中复选框
         $(mydiv).find("td:eq(0)").children("input").prop('checked',false);

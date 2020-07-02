@@ -385,8 +385,8 @@ class Index extends BaseController
         ], 'POST');
 
         // 实例化操作表格类
-        $excel = new \app\student\controller\Myexcel;;
-        $teacherinfo = $excel->readXls(public_path() . 'public\\uploads\\' . $list['url']);
+        $excel = new \app\student\controller\Myexcel;
+        $teacherinfo = $excel->readXls(public_path() . 'uploads\\' . $list['url']);
 
         // 判断表格是否正确
         if("教师基本情况表" != $teacherinfo[0][0] || '姓名*' != $teacherinfo[2][1] || '性别*' != $teacherinfo[2][2])
@@ -441,7 +441,8 @@ class Index extends BaseController
     // 下载表格模板
     public function downloadXls()
     {
-        $url = public_path() . 'public\\uploads\\teacher\\TeacherInfo.xlsx';
+        $url = public_path() . 'uploads\\teacher\\TeacherInfo.xlsx';
+        halt($url);
         return download($url, '教师名单模板.xlsx');
     }
 

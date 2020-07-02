@@ -450,7 +450,7 @@ class Index extends BaseController
 
         // 读取表格数据
         $excel = new Myexcel();
-        $stuinfo = $excel->readXls(public_path() . 'public\\uploads\\' . $list['url']);
+        $stuinfo = $excel->readXls(public_path() . 'uploads\\' . $list['url']);
         if($stuinfo[0][2] != "序号" && $stuinfo[1][2] != "姓名" && $stuinfo[2][2] != "身份证号")
         {
             $this->error('请使用模板上传', '/login/err'); #如果表格数据与模板不相符，则跳转。
@@ -530,7 +530,7 @@ class Index extends BaseController
 
         // 读取表中数据
         $excel = new Myexcel();
-        $stuinfo = $excel->readXls(public_path() . 'public\\uploads\\' . $list['url']);
+        $stuinfo = $excel->readXls(public_path() . 'uploads\\' . $list['url']);
 
         // 判断表格是否正确
         if($stuinfo[0][2] != "序号" && $stuinfo[1][2] != "ID" && $stuinfo[2][2] != "班级" && $stuinfo[3][2] != "姓名")
@@ -562,7 +562,7 @@ class Index extends BaseController
     // 下载表格模板
     public function download()
     {
-        $url = public_path() . 'public\\uploads\\student\\student_template.xlsx';
+        $url = public_path() . 'uploads\\student\\student_template.xlsx';
         return download($url,'学生名单模板.xlsx');
     }
 

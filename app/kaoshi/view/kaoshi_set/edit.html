@@ -64,10 +64,10 @@
     manfen = $('#manfen').val();
     var regPos = /^\d+(\.\d+)?$/; //非负浮点数
     if(regPos.test(manfen)){
-      $('#youxiu').val(manfen * 0.9);
-      $('#jige').val(manfen * 0.6);
+      $('#youxiu').val(Math.round(manfen * 0.9));
+      $('#jige').val(Math.round(manfen * 0.6));
     }else{
-        layer.msg('请填写数字');
+        layer.msg('请填写整数');
     }
   }
 

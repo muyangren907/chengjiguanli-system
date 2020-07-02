@@ -275,7 +275,7 @@ class Luru extends BaseController
 
         // 读取表格数据
         $excel = new \app\student\controller\Myexcel;
-        $cjinfo = $excel->readXls(public_path() . 'public\\uploads\\' . $list['url']);
+        $cjinfo = $excel->readXls(public_path() . 'uploads\\' . $list['url']);
 
         $kaoshi_id = $cjinfo[1][0];  #获取考号
         $nianji = $cjinfo[1][1];  #获取年级

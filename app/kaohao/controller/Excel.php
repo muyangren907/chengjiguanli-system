@@ -142,6 +142,7 @@ class Excel extends BaseController
 
         ob_flush();
         flush();
+        exit();
     }
 
 
@@ -304,5 +305,6 @@ class Excel extends BaseController
         $writer->save('php://output');
         ob_flush();
         flush();
+        exit();
     }
 }
