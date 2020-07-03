@@ -83,7 +83,6 @@ class Tongji extends BaseModel
                 $temp['zhongshu'] = $this->zhongshu($cjcol);
                 $temp['zhongweishu'] = $this->zhongweishu($cjcol);
                 $temp['defenlv'] = round($temp['defenlv'] * 100, 2);
-                $temp['fenshuduan'] = $this->fenshuduan($cjcol, $value['fenshuxian']['manfen']);
             }
             $data['cj'][$value['lieming']] = $temp;
         }
@@ -114,7 +113,6 @@ class Tongji extends BaseModel
             $temp['zhongshu'] = $this->zhongshu($cjcol);
             $temp['zhongweishu'] = $this->zhongweishu($cjcol);
             $temp['defenlv'] = round($temp['defenlv'] * 100, 2);
-            $temp['fenshuduan'] = $this->fenshuduan($cjcol, $value['fenshuxian']['manfen']);
         }
         $data['cj']['all'] = $temp;
 
@@ -304,8 +302,8 @@ class Tongji extends BaseModel
     }
 
 
-    // 分数段统计
-    public function fenshuduan($arr, $manfen)
+    // 根据给定数据统计分数段
+    public function fenshuduan($arr = array(), $manfen = 0)
     {
         // 计算分数段
         $fenshuduan = array();

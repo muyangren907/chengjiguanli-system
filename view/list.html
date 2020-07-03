@@ -130,6 +130,7 @@
           checkall = $(data.elem).attr('checkall');
           parentId = $(data.elem).parents("div").attr('id');
           if(checkall == 'p'){
+            console.log(checkall);
             cjgl.checkboxAll(parentId, data.elem.checked);
             $("#srcsubmit").click();
             return true;
@@ -165,6 +166,7 @@
           }
           return true;
         })
+        
 
         // 表格重载
         function tablereload()

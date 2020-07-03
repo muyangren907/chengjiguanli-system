@@ -150,6 +150,59 @@ class TongjiBj extends BaseModel
     }
 
 
+    // 统计各学科分数频率
+    public function tjBanjiFenshuduan($srcfrom)
+    {
+        // 初始化参数
+        $src = array(
+            'page' => '1'
+            ,'limit' => '10'
+            ,'kaoshi_id' => ''
+            ,'banji_id' => array()
+            ,'ruxuenian' => ''
+            ,'subject_id' => ''
+        );
+
+        $src = array_cover($srcfrom, $src);
+        $src['banji_id'] = strToArray($src['banji_id']);
+
+        // 实例化学生成绩统计类
+        $tj = new TJ;
+        $khSrc = new \app\kaohao\model\Search;
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+
+        // 获取参加考试学科
+        $subject = $ksset->srcSubject($src['kaoshi_id'], '', $src['ruxuenian']);
+        $fsx = 0;
+        $lieming = 'lieming';
+        foreach ($subject as $key => $value) {
+            if ($value['id'] == $src['subject_id'])
+            {
+                $fsx = $value['fenshuxian']['manfen'];
+                $lieming = $value['lieming'];
+            }
+        }
+
+        // 获取并统计各班级成绩
+        $data = array();
+        $cj = $khSrc->srcChengjiList($src);
+        if (array_key_exists($lieming, $cj[0]))
+        {
+            $cjcol = array_column($cj, $lieming);
+            $cjcol = array_filter($cjcol, function($item){
+                return $item !== null;
+            });
+            if (count($cjcol) > 0)
+            {
+                
+                $data = $tj->fenshuduan($cjcol, $fsx);
+            }
+        }
+
+        return $data;
+    }
+
+
     // 根据条件查询各班级成绩
     public function search($srcfrom)
     {

@@ -123,11 +123,7 @@
 
     // 添加班级
     addBanji();
-    getAvg();
-    getJige();
-    getYouxiu();
-    getBiaozhucha();
-    getChayi();
+    loadTubiao()
     //表头工具栏事件
     table.on('toolbar(mytable)', function(obj){
       switch(obj.event){
@@ -169,23 +165,36 @@
     // 监听表单提交
     form.on('radio', function(data){
       addBanji();
-      getAvg();
-      getJige();
-      getYouxiu();
-      getBiaozhucha();
-      getChayi();
+      loadTubiao()
       $("#srcsubmit").click();
     });
 
   	// 监听表单提交
   	form.on('checkbox', function(data){
-  		getAvg();
+      checkall = $(data.elem).attr('checkall');
+          parentId = $(data.elem).parents("div").attr('id');
+          if(checkall == 'p'){
+            cjgl.checkboxAll(parentId, data.elem.checked);
+            loadTubiao();
+            $("#srcsubmit").click();
+            return true;
+          }else if(checkall == 'c'){
+            cjgl.checkboxParent(parentId);
+            loadTubiao();
+            $("#srcsubmit").click();
+            return true;
+          }
+    });
+
+    // 加载图表
+    function loadTubiao()
+    {
+      getAvg();
       getJige();
       getYouxiu();
       getBiaozhucha();
       getChayi();
-      $("#srcsubmit").click();
-    });
+    }
 
   	// 添加班级列表
     function addBanji(){
@@ -247,6 +256,16 @@
       var val = form.val('search');
       var title = '差异';
       createXiangti(id, url, val, title);
+    }
+
+    // 折线统计图--分数段
+    function getFenshuduan(subjectObj){
+      var id = 'myFenshuduan' + subjectObj.lieming;
+      var url = '/chengji/bjtj/myfenshuduan';
+      var val = form.val('search');
+      var title = subjectObj.title + '分数段统计';
+      val['subject_id'] = subjectObj.id;
+      createFenshuduan(id, url, val, title);
     }
 
   });
@@ -438,7 +457,6 @@
          myXiangti.setOption(option);
        });
     }
-
 
     function formatter(param) {
      return [

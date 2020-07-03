@@ -46,8 +46,9 @@ Route::group('bjtj', function () {
     Route::rule('tongji','Bjtongji/tongji','post');		# 统计各班级成绩
     Route::rule('myavg','Bjtongji/myAvg','post');			# 扫码界面
     Route::rule('myxiangti','Bjtongji/myXiangti','post');			# 扫码界面
-    Route::rule('digui/<num>','Bjtongji/digui','get');			# 扫码界面
+     Route::rule('myfenshuduan','Bjtongji/myFenshuduan','post');          # 扫码界面
     Route::rule('bjorder','Bjtongji/bjOrder','post');		# 统计各班级成绩
+    Route::rule('fenshuduan/<kaoshi_id>','Bjtongji/fenshuduan','get');          # 班级表格
 });
 
 

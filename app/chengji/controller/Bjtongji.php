@@ -80,6 +80,37 @@ class Bjtongji extends BaseController
     }
 
 
+    // 班级成绩汇总
+    public function fenshuduan($kaoshi_id)
+    {
+        // 获取考试信息
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $ksinfo = $ks->where('id', $kaoshi_id)
+            ->field('id, title')
+            ->find();
+        // 获取参与学校
+        $khSrc = new \app\kaohao\model\Search;
+        $src['kaoshi_id'] = $kaoshi_id;
+        $list['school_id'] = $khSrc->cySchool($src);
+
+        // 获取年级与学科
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $list['nianji'] = $ksset->srcNianji($kaoshi_id);
+        $list['subject_id'] = $ksset->srcSubject($kaoshi_id, '', '');
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = '各年级的班级成绩列表';
+        $list['kaoshi_id'] = $kaoshi_id;
+        $list['kaoshititle'] = $ksinfo->title;
+        $list['dataurl'] = '/';
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+
+        // 渲染模板
+        return $this->view->fetch();
+    }
+
+
     // 年级、班级学生成绩统计结果下载界面
     public function dwBiaoge($kaoshi_id)
     {
@@ -374,6 +405,39 @@ class Bjtongji extends BaseController
         $data = $btj->search($src);
         $data = xiangti($data);
 
+        return json($data);
+    }
+
+
+    // 分数段
+    public function myFenshuduan($kaoshi_id)
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'kaoshi_id' => ''
+                ,'ruxuenian' => ''
+                ,'school_id' => array()
+                ,'banji_id' => array()
+                ,'subject_id' => ''
+            ], 'POST');
+
+        if (count($src['banji_id']) == 0) {
+            // 获取参与考试的班级
+            $khSrc = new \app\kaohao\model\Search;
+            $src['banji_id']= array_column($khSrc->cyBanji($src), 'id');
+        }
+
+        // 统计成绩
+        $btj = new BTJ;
+        $fsd = $btj->tjBanjiFenshuduan($src);
+
+        $data = array();
+        foreach ($fsd as $key => $value) {
+            $data['xAxis'][] = (string)$value['low'].'~'.$value['high'];
+            $data['series'][] = $value['cnt'];
+        }
+        
         return json($data);
     }
 

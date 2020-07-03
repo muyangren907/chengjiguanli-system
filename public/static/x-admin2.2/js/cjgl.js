@@ -324,7 +324,7 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
     * @return array 返回类型
     */
     checkboxAll:function(parentId,checked){
-      if(checked==true)
+      if(checked==true) 
       {
         $('#'+parentId).find("input[checkall='c']").prop('checked',true);
       }else{

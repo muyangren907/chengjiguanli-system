@@ -89,9 +89,11 @@ class Auth
             'chengji/bjtongji/dwbanjixls',    # 下载班级成绩统计表
             'chengji/bjtongji/myavg',    # 获取单项成绩数据
             'chengji/bjtongji/myxiangti',    # 获取成绩箱体图数据
+            'chengji/bjtongji/myfenshuduan',    # 获取成绩各分数段折线统计图数据
             'chengji/njtongji/dwnianjixlsx',    # 下载年级成绩统计表
             'chengji/njtongji/myavg',    # 获取单项成绩数据
             'chengji/njtongji/myxiangti',    # 获取成绩箱体图数据
+
         );
 
 

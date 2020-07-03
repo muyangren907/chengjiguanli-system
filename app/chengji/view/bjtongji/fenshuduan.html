@@ -1,0 +1,255 @@
+
+{extend name=".././view/list.html" /}
+{block name="jsset"}
+{load href="__STATIC__/echarts/echarts.js" /}
+{load href="__STATIC__/echarts/infographic.js" /}
+{/block}
+{block name="nav"}
+<span class="layui-breadcrumb">
+	<a href="">考试管理</a>
+	<a href="">更多操作</a>
+	<a href="">成绩查看</a>
+	<a href="">各分数段统计表</a>
+	<a><cite>{$list['kaoshititle']}</cite></a>
+</span>
+{/block}
+{block name="search"}
+<div class="layui-form-item">
+	<label for="school" class="layui-form-label" style="height: 100%">学校</label>
+	<div class="layui-input-block">
+		<input type="radio" name="school_id" title="无" value="" checked="true" lay-skin="primary" >
+		{volist name="$list.school_id" id="vo"}
+		<input type="radio" name="school_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" >
+		{/volist}
+	</div>
+</div>
+<div class="layui-form-item">
+	<label for="ruxuenian" class="layui-form-label" style="height: 100%">年级 </label>
+	<div class="layui-input-block" pane>
+		{volist name="$list.nianji" id="vo"}
+  		<input type="radio" name="ruxuenian" title="{$vo.nianjiname}" value="{$vo.nianji}" lay-skin="primary" {eq name="i" value="1" }
+  		checked="true"
+  		{/eq}>
+		{/volist}
+	</div>
+</div>
+<div class="layui-form-item" style="margin-bottom: 0;">
+	<label for="banji_id" class="layui-form-label" style="height: 100%">班级</label>
+	<div class="layui-input-block" id="banji_id">
+	</div>
+</div>
+<input type="hidden" name="kaoshi_id" value="{$list.kaoshi_id}">
+{/block}
+{block name="table"}
+{/block}
+{block name="echart"}
+<!-- <div class="layui-row" style="padding-top: 80px;"> -->
+  {volist name="list.subject_id" id="vo"}
+    <div class="layui-col-xs6" style="width: 100%;height:400px;" id="myFenshuduan{$vo.lieming}"></div>
+  {/volist}
+  
+  <!-- </div> -->
+{/block}
+{block name="myjs"}
+  <!-- 表格上面按钮模板 -->
+  <script type="text/html" id="toolbarDemo">
+   <div class="layui-btn-container">
+<!-- 		<button class="layui-btn layui-btn-danger" lay-event="dels">
+			<i class="iconfont">&#xe69d;</i> 批量删除
+		</button> -->
+		<button class="layui-btn" lay-event="download">
+			<i class="layui-icon layui-icon-download-circle"></i> 下载
+		</button>
+	</div>
+</script>
+<!-- 记录操作按钮模板 -->
+<script type="text/html" id="barDemo">
+	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
+	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
+</script>
+<!-- 表格操作 -->
+<script>
+	// 获取学科
+	var xk = '<?php echo json_encode($list["subject_id"]);?>';
+	xk = eval(decodeURIComponent(xk));
+
+  // 提交搜索条件后重载表格
+  layui.use(['table','cjgl'],function(){
+  	var table = layui.table
+  	cjgl = layui.cjgl
+  	form = layui.form;
+
+    // 添加班级
+    addBanji();
+    loadTubiao()
+
+    // 监听表单提交
+    form.on('radio', function(data){
+      addBanji();
+      loadTubiao()
+      $("#srcsubmit").click();
+    });
+
+  	// 监听表单提交
+  	form.on('checkbox', function(data){
+      checkall = $(data.elem).attr('checkall');
+          parentId = $(data.elem).parents("div").attr('id');
+          if(checkall == 'p'){
+            cjgl.checkboxAll(parentId, data.elem.checked);
+            loadTubiao();
+            $("#srcsubmit").click();
+            return true;
+          }else if(checkall == 'c'){
+            cjgl.checkboxParent(parentId);
+            loadTubiao();
+            $("#srcsubmit").click();
+            return true;
+          }
+    });
+
+    // 加载图表
+    function loadTubiao()
+    {
+      $.each(xk, function(index,element){
+        getFenshuduan(element);
+      });
+    }
+
+  	// 添加班级列表
+    function addBanji(){
+        // 获取参数
+        var formval;
+        formval = formval = form.val("search");
+        if(formval.school_id == '')
+        {
+        	$('#banji_id').children().remove();
+        }else{
+        	cjgl.createCheckbox('banji_id', formval, '/kaoshi/index/cybanji', 'banji_id', 'banTitle');
+        }
+    }
+
+
+    // 折线统计图--分数段
+    function getFenshuduan(subjectObj){
+      var id = 'myFenshuduan' + subjectObj.lieming;
+      var url = '/chengji/bjtj/myfenshuduan';
+      var val = form.val('search');
+      var title = subjectObj.title + '分数段统计';
+      val['subject_id'] = subjectObj.id;
+      createFenshuduan(id, url, val, title);
+    }
+
+  });
+  
+
+    /**
+    * 异步获取箱线图表中的数据
+    *
+    * @access public
+    * @param id 要添加数据的div
+    * @param url 异步地址
+    * @param val 异步时携带的参数
+    * @param title 图表标题
+    * @return array 返回类型
+    */
+    function createFenshuduan(id, url, val, title)
+    {
+      // var colors = ['#5793f3', '#d14a61', '#675bba'];
+      $.post(url,val).done(function (data) {
+
+        // 设置初始值
+        option = {
+          tooltip: {
+            show: true,
+            trigger: 'axis',
+          },
+          legend: {
+            top: '10%',
+            // data:data.legend
+          },
+          title: {
+            text: title,
+            left: 'center',
+          },
+          grid: {
+            left: '10%',
+            top: '20%',
+            right: '10%',
+            bottom: '15%'
+          },
+          toolbox: {
+            id:id,
+            show:true,
+            orient:'horizontal',
+            showTitle:true,
+            feature: {
+              restore: { //重置
+                show: true
+              },
+              saveAsImage: { //保存文件
+                show: true
+              },
+            },
+          },
+          xAxis: {
+            type: 'category',
+            boundaryGap: true,
+            nameGap: 30,
+            splitArea: {
+              show: true
+            },
+            splitLine: {
+              show: false
+            },
+            data: data.xAxis
+          },
+          yAxis: {
+            type: 'value',
+            name: '得分',
+            splitArea: {
+              show: false
+            }
+          },
+          dataZoom:[
+            {
+              type: 'inside',
+              start: 0,
+              end: 100
+            },
+            {
+              show: true,
+              height: 20,
+              type: 'slider',
+              top: '90%',
+              xAxisIndex: [0],
+              start: 0,
+              end: 100
+            }
+          ],
+          series: {
+            data: data.series,
+            type:'line',
+            // smooth: true
+          },
+        };
+
+        var myFenshuduan = echarts.init(document.getElementById(id), 'infographic');
+        myFenshuduan.setOption(option);
+      });
+    }
+
+
+    function formatter(param) {
+     return [
+     param.name,
+     '最低分: ' + param.data[1],
+     '25%: ' + param.data[2],
+     '50%: ' + param.data[3],
+     '75%: ' + param.data[4],
+     '最高: ' + param.data[5]
+     ].join('<br/>');
+   }
+
+
+ </script>
+ {/block}

@@ -455,6 +455,25 @@ class Rule extends Seeder
                         ,'paixu' => 4
                         ,'pid' => 30204
                     ],
+                        ['id' => 302040401
+                            ,'title' => '占位'
+                            ,'name' => 'tongjiLog1'
+                            ,'paixu' => 1
+                            ,'pid' => 3020404
+                        ],
+                    // 班级成绩统计表
+                    ['id' => 3020405
+                        ,'title' => '各分数段统计'
+                        ,'name' => 'chengji/bjtongji/fenshuduan'
+                        ,'paixu' => 5
+                        ,'pid' => 30204
+                    ],
+                        ['id' => 302040501
+                            ,'title' => '点位'
+                            ,'name' => 'fenshudua'
+                            ,'paixu' => 1
+                            ,'pid' => 3020405
+                        ],
 
             /*======================================================================
              * 学生管理
