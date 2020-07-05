@@ -63,6 +63,7 @@ class TongjiBj extends BaseModel
                         $tongjiJg->q2 = $cj['sifenwei'][1];
                         $tongjiJg->q3 = $cj['sifenwei'][2];
                         $tongjiJg->zhongshu = $cj['zhongshu'];
+                        $tongjiJg->zhongweishu = $cj['zhongweishu'];
                         $tongjiJg->defenlv = $cj['defenlv'];
                         $data = $tongjiJg->save();
                     }else{
@@ -84,6 +85,7 @@ class TongjiBj extends BaseModel
                             ,'q2' => $cj['sifenwei'][1]
                             ,'q3' => $cj['sifenwei'][2]
                             ,'zhongshu' => $cj['zhongshu']
+                            ,'zhongweishu' => $cj['zhongweishu']
                             ,'defenlv' => $cj['defenlv']
                         ];
                         $data = $this::create($tongjiJg);

@@ -65,6 +65,7 @@ class TongjiNj extends BaseModel
                         $tongjiJg->q2 = $cj['sifenwei'][1];
                         $tongjiJg->q3 = $cj['sifenwei'][2];
                         $tongjiJg->zhongshu = $cj['zhongshu'];
+                        $tongjiJg->zhongweishu = $cj['zhongweishu'];
                         $tongjiJg->defenlv = $cj['defenlv'];
                         $data = $tongjiJg->save();
                     }else{
@@ -87,6 +88,7 @@ class TongjiNj extends BaseModel
                             'q2' => $cj['sifenwei'][1],
                             'q3' => $cj['sifenwei'][2],
                             'zhongshu' => $cj['zhongshu'],
+                            'zhongweihu' => $cj['zhongweishu'],
                             'defenlv' => $cj['defenlv'],
                         ];
 
@@ -137,7 +139,7 @@ class TongjiNj extends BaseModel
                 },
                 'njJieguo' => function ($query) {
                     $query->field('subject_id, school_id, ruxuenian, stu_cnt, chengji_cnt,
-                        avg, youxiu, jige, biaozhuncha, max, min, q1, q2, q3')
+                        avg, youxiu, jige, biaozhuncha, max, min, q1, q2, q3, zhongshu, zhongweishu')
                         ->with([
                             'njSubject' => function($query){
                                 $query->field('id, lieming, jiancheng, title');
