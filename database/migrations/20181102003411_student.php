@@ -37,6 +37,7 @@ class Student extends Migrator
             ->addColumn('sex','boolean',['limit'=>1,'default'=>1,'null'=>false,'comment'=>'性别'])
             ->addColumn('shengri','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'生日'])
             ->addColumn('shenfenzhenghao','string',['limit'=>18,'default'=>'N1539158918','null'=>false,'comment'=>'身份证号'])
+            ->addColumn('password','string',['limit'=>137,'null'=>false,'default'=>'$apr1$RSUodBwI$zOhVq9RQWfQDOW2sbeCDS1','comment'=>'登录密码'])
             ->addColumn('banji_id','integer',['limit'=>11,'default'=>1,'null'=>false,'comment'=>'班级'])
             ->addColumn('kaoshi','boolean',['limit'=>1,'default'=>1,'null'=>false,'comment'=>'是否参加考试'])
             ->addColumn('quanpin','string',['limit'=>30,'default'=>'a','null'=>false,'comment'=>'全拼'])

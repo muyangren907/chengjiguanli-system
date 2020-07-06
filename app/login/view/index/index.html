@@ -31,7 +31,7 @@
         </script>
 </head>
 <body class="login-bg">
-    <div class="login layui-anim layui-anim-up">
+    <div class="login layui-anim layui-anim-up" style="margin-top: 50px;height: 500px;">
         <div class="message">{$list['webtitle']} {$list['version']}-管理员登录</div>
         <div id="darkbannerwrap"></div>
         <form method="post" class="layui-form" >
@@ -46,6 +46,8 @@
             {/neq}
             <hr class="hr15">
             <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
+            <hr class="hr15">
+            <a href="/index/index/index" class="layui-btn layui-btn-danger" style="width:100%;height: 48px;font-size: 14px;padding-top: 7px;">成绩查询传送门</a>
             <hr class="hr20" >
         </form>
     </div>
@@ -108,6 +110,14 @@
           return false;
         });
       })
+
+
+      function tiaozhuan()
+      {
+        layer.msg('');
+      }
+
+
     </script>
 
 
