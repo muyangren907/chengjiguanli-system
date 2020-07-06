@@ -307,25 +307,25 @@ class StudentChengji extends BaseModel
             $data = sortArrByManyField($data, 'sum', SORT_DESC);
             $data = array_column($data, 'id');
             $rank = array_search($src['kaohao_id'], $data);
-            $rank = round(($rank + 1) / count($data) * 100, 0);
+            $rank = 100 - round(($rank + 1) / count($data) * 100, 0);
 
             $data = [
                 'title' => '学生成绩'
                 ,'series' => [
-                    'name'=>'总成绩位置'
+                    'name'=>'总成绩'
                     ,'type' => 'gauge'
                     // ,'detail' => $rank . '%'
-                    ,'data' => [['value'=>$rank, 'name'=>'位置']]
+                    ,'data' => [['value'=>$rank, 'name'=>'超过']]
                 ]
             ];
         } else {
             $data = [
                 'title' => '学生成绩'
                 ,'series' => [
-                    'name'=>'总成绩位置'
+                    'name'=>'总成绩'
                     ,'type' => 'gauge'
                     // ,'detail' => $rank . '%'
-                    ,'data' => [['value'=>0, 'name'=>'位置']]
+                    ,'data' => [['value'=>0, 'name'=>'超过']]
                 ]
             ];
         }
