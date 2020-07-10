@@ -3,14 +3,68 @@
 namespace app\kaohao\model;
 
 // 引用数据模型基类
-use app\BaseModel;
+use \app\kaoshi\model\KaoshiBase;
 
 // 引用数据模型
 use \app\kaohao\model\Kaohao as kh;
 
-class Search extends BaseModel
+class SearchMore extends KaoshiBase
 {
-    // 查询学生各学科成绩详细信息
+    /* 
+    * 以班级为单位，列出本次考试成绩原始数据；
+    * 其它数据以此方法为基础进行数据整理
+    */
+    public function search($srcfrom)
+    {
+        // 初始化参数
+        $src = array(
+            'kaoshi_id' => '0'
+            ,'banji_id' => array()
+            ,'searchval' => ''
+        );
+
+        // 用新值替换初始值
+        $src = array_cover($srcfrom, $src) ;
+        $src['banji_id'] = strToarray($src['banji_id']);
+
+        // 查询成绩
+        $kh = new kh();
+        $data = $kh->where('kaoshi_id', $src['kaoshi_id'])
+            ->field('id, school_id, student_id, ruxuenian, paixu, kaoshi_id, nianji')
+            ->where('banji_id', 'in', $src['banji_id'])
+            ->when(strlen($src['searchval']) > 0, function($query) use($src){
+                $query->where(function($w) use ($src){
+                    $w
+                    ->whereOr('student_id', 'in', function($q)use($src){
+                        $q->name('student')
+                            ->where('xingming', 'like', '%' . $src['searchval'] . '%')
+                            ->field('id');
+                    });
+                });
+            })
+            ->with([
+                'ksChengji' => function($query){
+                    $query->field('id, kaohao_id, subject_id, defen, bweizhi, xweizhi, qweizhi')
+                        ->with([
+                            'subjectName' => function ($q) {
+                                $q->field('id, title, jiancheng, lieming');
+                            }
+                        ]);
+                }
+                ,'cjSchool' => function($query){
+                    $query->field('id, jiancheng');
+                }
+                ,'cjStudent' => function($query){
+                    $query->field('id, xingming, sex');
+                }
+            ])
+            ->append(['banjiTitle', 'banTitle'])
+            ->select();
+        return $data;
+    }
+
+
+    // 查询本次考试学生各学科成绩详细信息
     public function srcChengjiList($srcfrom)
     {
         // 初始化参数
@@ -22,24 +76,14 @@ class Search extends BaseModel
         // 用新值替换初始值
         $src = array_cover($srcfrom, $src);
 
-        $kh = new kh;
-        $khlist = $kh->search($src);
+        $khlist = $this->search($src);
         if($khlist->isEmpty())
         {
             return $data = array();
         }
 
-        // 获取参考学科
-        $ksset = new \app\kaoshi\model\KaoshiSet;
-        $ksSubject = $ksset->srcSubject($src['kaoshi_id'], '', '');
-        if(count($ksSubject)==0)
-        {
-            return $data = array();
-        }
-        $xk = array();
-        foreach ($ksSubject as $key => $value) {
-            $xk[$value['id']] = $value['lieming'];
-        }
+        $zl = new \app\zhengli\controller\CanKao;
+        $xk = $zl->cankaoSubjectIdAndLieming($src);
 
         // 实例化学生数据模型
         $stu = new \app\student\model\Student;
@@ -94,7 +138,7 @@ class Search extends BaseModel
     }
 
 
-    // 查询各班级考号，并以班级进行分组
+    // 查询本次考试各班级考号，并以班级进行分组
     public function srcBanjiKaohao($srcfrom)
     {
         // 初始化参数
@@ -185,7 +229,7 @@ class Search extends BaseModel
 
 
     // 获取单个学生历次考试成绩
-    public function srcOneStudentChengji($srcfrom)
+    public function srcOneStudentOldChengji($srcfrom)
     {
         // 初始化参数
         $src = array(
@@ -270,7 +314,7 @@ class Search extends BaseModel
 
 
     // 根据考号查询成绩
-    public function khSrcChengji($id)
+    public function oneKaohaoChengji($id)
     {
         $kh = new kh;
         $stuCj = $kh::where('id', $id)

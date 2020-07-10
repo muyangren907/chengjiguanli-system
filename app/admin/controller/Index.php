@@ -151,7 +151,7 @@ class Index extends BaseController
     // 读取用户信息
     public function myinfo()
     {
-        $id = session('userid');
+        $id = session('admin.userid');
         $ad = new AD;
         // 获取管理员信息
         $list = $ad->where('id', $id)
@@ -314,7 +314,7 @@ class Index extends BaseController
             'webtitle' => '修改密码'
             ,'butname' => '修改'
             ,'formpost' => 'PUT'
-            ,'url' => '/admin/index/updatepassword/' . session('userid')
+            ,'url' => '/admin/index/updatepassword/' . session('admin.userid')
         );
 
         // 模板赋值

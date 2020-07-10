@@ -289,29 +289,7 @@
     	return $covered;
     }
 
-
-    // /**
-    //  * 根据考试ID值，判断考试开始或者结束时间是否已过
-    //  * $kaoshiid 考试ID
-    //  * $str      统计项目
-    //  * 返回 $data
-    //  * */
-    // function kaoShiDate($kaoshiid, $str='enddate')
-    // {
-    // 	$ks = new app\kaoshi\model\Kaoshi;
-    //     $enddate = $ks->where('id', $kaoshiid)
-    //         ->value($str);
-
-    //     $thistime = time();
-    //     if( $thistime > $enddate )
-    //     {
-    //         $data = true;
-    //     }else{
-    //     	$data = false;
-    //     }
-    //     return $data;
-    // }
-
+    
 
     /**
      * 获取参加考试的学科

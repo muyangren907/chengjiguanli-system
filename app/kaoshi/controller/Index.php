@@ -42,7 +42,6 @@ class Index extends BaseController
                 ,'order' => 'desc'
                 ,'searchval' => ''
             ], 'POST');
-
         // 根据条件查询数据
         $ks = new KS;
         $data = $ks->search($src)
@@ -292,7 +291,7 @@ class Index extends BaseController
                 ,'kaoshi_id' => '1'
             ], 'POST');
 
-        $khSrc = new \app\kaohao\model\Search;
+        $khSrc = new \app\kaohao\model\SearchMore;
         $bj = $khSrc->cyBanji($src);
         $cnt = count($bj);
 

@@ -15,6 +15,15 @@
 {/block}
 {block name="search"}
 <div class="layui-form-item">
+  <label for="searchval" class="layui-form-label">
+      分数段数量
+  </label>
+  <div class="layui-input-block">
+      <input type="text" id="searchval" name="cishu"
+      autocomplete="off" class="layui-input" placeholder="默认分成20份">
+  </div>
+</div>
+<div class="layui-form-item">
 	<label for="school" class="layui-form-label" style="height: 100%">学校</label>
 	<div class="layui-input-block">
 		<input type="radio" name="school_id" title="无" value="" checked="true" lay-skin="primary" >
@@ -81,7 +90,7 @@
 
     // 添加班级
     addBanji();
-    loadTubiao()
+    loadTubiao();
 
     // 监听表单提交
     form.on('radio', function(data){
@@ -89,6 +98,15 @@
       loadTubiao()
       $("#srcsubmit").click();
     });
+
+    $('#searchval').on("keydown", function(e){
+      var e = e || window.event;
+      if(e.keyCode == 13){
+         loadTubiao();
+         return false;
+      }
+      return true;
+    })
 
   	// 监听表单提交
   	form.on('checkbox', function(data){

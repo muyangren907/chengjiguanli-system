@@ -23,7 +23,7 @@ class Auth
 
         $admins = Config::get('auth.auth_config.administrator');
         // 如果当前用户ID在配置排除的列表中，愚昧取消验证
-        if(in_array(session('userid'),$admins)){
+        if(in_array(session('admin.userid'),$admins)){
             $admin = true;
         }else{
             $admin = false;
@@ -46,7 +46,6 @@ class Auth
             'ajaxdata',     # 常规数据获取
             'saveall',  # 批量保存
         );
-
 
         // 排除指定模块下的指定方法
         $uneed_u = array(
@@ -108,7 +107,7 @@ class Auth
         $auth = new AuthHandle;
 
         // 验证方法
-        if( $auth->check($url, session('userid')) == false && $except == false && $admin == false ){// 第一个参数是规则名称,第二个参数是用户UID
+        if( $auth->check($url, session('admin.userid')) == false && $except == false && $admin == false ){// 第一个参数是规则名称,第二个参数是用户UID
             $this->error('哎哟~  因为权限不足', '/login/err');
         }
 

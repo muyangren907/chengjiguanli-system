@@ -20,3 +20,15 @@ Route::group('', function () {
 
 });
 
+// 学生查询成绩登录
+Route::group('student', function () {
+		Route::rule('','Student/index','get');
+		Route::rule('','Student/yanzheng','post');
+});
+
+// 学生查询成绩登录
+Route::group('teacher', function () {
+		Route::rule('','Teacher/index','get');
+		Route::rule('','Teacher/yanzheng','post');
+});
+

@@ -3,9 +3,9 @@
 namespace app\chengji\model;
 
 // 引用基类
-use app\BaseModel;
+use \app\kaoshi\model\KaoshiBase;
 
-class Tongji extends BaseModel
+class Tongji extends KaoshiBase
 {
     // 统计成绩
     public function tongjiCnt($cj = array(), $subject_id)
@@ -303,11 +303,16 @@ class Tongji extends BaseModel
 
 
     // 根据给定数据统计分数段
-    public function fenshuduan($arr = array(), $manfen = 0)
+    public function fenshuduan($arr = array(), $manfen = 0, $cishu = 30)
     {
+        $cishu == '' ? $cishu = 20 : true;
         // 计算分数段
-        $fenshuduan = array();
-        $long = 5;
+        $long = round($manfen / $cishu, 3);
+        $fenshuduan[] = [
+            'low' => '-'.$long
+            ,'high' => 0
+            ,'cnt' => 0
+        ];
         $cnt = 0;
         for($i = 0; $i <= $manfen; $i=$i+$long)
         {
@@ -320,9 +325,13 @@ class Tongji extends BaseModel
         
         foreach ($arr as $key => $value) {
             $xiabiao = intval($value / $long);
+            if($xiabiao < 0){
+                $fenshuduan[0]['cnt'] = $fenshuduan[0]['cnt'] + 1;
+                continue;
+            }
             if (isset($fenshuduan[$xiabiao]))
             {
-                $fenshuduan[$xiabiao]['cnt'] = $fenshuduan[$xiabiao]['cnt'] + 1;
+                $fenshuduan[$xiabiao + 1]['cnt'] = $fenshuduan[$xiabiao + 1]['cnt'] + 1;
                 $cnt = $cnt + 1;
             }
         }

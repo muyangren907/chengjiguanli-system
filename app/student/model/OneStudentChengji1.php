@@ -1,7 +1,7 @@
 <?php
 declare (strict_types = 1);
 
-namespace app\student\model;
+namespace app\chengji\model;
 
 // 引用数据模型基类
 use app\BaseModel;
@@ -9,7 +9,7 @@ use app\BaseModel;
 /**
  * @mixin think\Model
  */
-class StudentChengji extends BaseModel
+class OneStudentChengji extends BaseModel
 {
     // 一个学生所有学科成绩列表
     public function oneStudentChengjiList($srcfrom)
@@ -294,7 +294,16 @@ class StudentChengji extends BaseModel
         // 成绩查询信息
         $kh = new \app\kaohao\model\Kaohao;         #该考号对应的考试信息。
         $khInfo = $kh->where('id', $src['kaohao_id'])
+                ->with([
+                    ' ksChengji' => function ($query) {
+                        $query->field('id, kaohao_id, defen');
+                    }
+                ])
                 ->find();
+        $sum = 0;
+        foreach ($khInfo->ksChengji as $key => $value) {
+            $sum = $sum + $value->defen;
+        }
         $src['ruxuenian'] = $khInfo->ruxuenian;    #设置查询条件
         $src['kaoshi_id'] = $khInfo->kaoshi_id;
         $khSrc = new \app\kaohao\model\Search;
@@ -308,9 +317,8 @@ class StudentChengji extends BaseModel
             $data = array_column($data, 'id');
             $rank = array_search($src['kaohao_id'], $data);
             $rank = 100 - round(($rank + 1) / count($data) * 100, 0);
-
             $data = [
-                'title' => '学生成绩'
+                'title' => '总分：' . $sum
                 ,'series' => [
                     'name'=>'总成绩'
                     ,'type' => 'gauge'
@@ -320,7 +328,7 @@ class StudentChengji extends BaseModel
             ];
         } else {
             $data = [
-                'title' => '学生成绩'
+                'title' => '总分：' . $sum
                 ,'series' => [
                     'name'=>'总成绩'
                     ,'type' => 'gauge'
@@ -329,12 +337,59 @@ class StudentChengji extends BaseModel
                 ]
             ];
         }
+        return $data;
+    }
 
 
+    // 查询某个学生所有学科成绩
+    public function kaohaoSearch($srcfrom)
+    {
+        // 初始化参数
+        $src = array(
+            'kaohao_id' => '',
+        );
 
-        
+        // 用新值替换初始值
+        $src = array_cover($srcfrom, $src);
+
+        // 成绩查询信息
+        $kh = new \app\kaohao\model\Kaohao;         #该考号对应的考试信息。
+        $khInfo = $kh->where('id', $src['kaohao_id'])
+                ->with([
+                    'ksChengji' => function ($query) {
+                        $query->field('id, subject_id, defen, kaohao_id, defenlv, qweizhi')
+                            ->with([
+                                'subjectName' => function($q) {
+                                    $q->field('id, title');
+                                }
+                            ]);
+                    }
+                ])
+                ->find();
+                
+        $data = array();
+
+        $schtj = new \app\chengji\model\TongjiSch;
+        $schtjInfo = $schtj->where('kaoshi_id', $khInfo->kaoshi_id)
+                ->field('max,min,subject_id')
+                ->column(('max,min'),'subject_id');
+
+        foreach ($khInfo->ksChengji as $key => $value) {
+            $data[] = [
+                'id' => $value->id
+                ,'subject_name' => $value->subjectName->title
+                ,'subject_id' => $value->subject_id
+                ,'defen' => $value->defen
+                ,'defenlv' => $value->defenlv
+                ,'qweizhi' => $value->qweizhi
+                ,'max' => $schtjInfo[$value->subject_id]['max']
+                ,'min' => $schtjInfo[$value->subject_id]['min']
+            ];
+        }
 
         return $data;
     }
+
+
 
 }

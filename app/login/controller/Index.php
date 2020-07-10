@@ -45,7 +45,6 @@ class Index
     // 登录验证
     public function yanzheng()
     {
-
         // 获取表单数据
         $data = request()->only(['username','password','captcha','online']);
 
@@ -53,7 +52,7 @@ class Index
         try {
             // 实例化验证模型
             $validate = new \app\login\validate\Yanzheng;
-            validate(Yanzheng::class)->check($data);
+            validate(Yanzheng::class)->scene('admin')->check($data);
         } catch (ValidateException $e) {
             // 验证失败 输出错误信息
             $data=['msg'=>$e->getError(),'status'=>0];
@@ -122,10 +121,11 @@ class Index
         
         if($check)
         {
-            session(null);
-            session('userid', $userinfo->id);
-            session('username', $username);
-            session('password', $password);
+            session('admin', null);
+            session('onlineCategory', 'admin');
+            session('admin.userid', $userinfo->id);
+            session('admin.username', $username);
+            session('admin.password', $password);
 
             $data=['msg'=>'验证成功','status'=>1];
         }else{

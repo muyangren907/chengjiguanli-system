@@ -30,11 +30,11 @@ function manfenvalidate($defen, $manfen)
 		return $data;
 	}
 
-	if ( ($defen*10)%5 != 0 ) {
-		$data['val'] = 0;
-		$data['msg'] = '得分必须只能是x.5';
-		return $data;
-	}
+	// if ( ($defen*10)%5 != 0 ) {
+	// 	$data['val'] = 0;
+	// 	$data['msg'] = '得分必须只能是x.5';
+	// 	return $data;
+	// }
 
 	return $data;
 }

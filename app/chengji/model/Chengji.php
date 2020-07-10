@@ -3,10 +3,10 @@
 namespace app\chengji\model;
 
 // 引用基类
-use app\BaseModel;
+use \app\kaoshi\model\KaoshiBase;
 
 
-class Chengji extends BaseModel
+class Chengji extends KaoshiBase
 {
     // 学科关联
     public function subjectName()
@@ -135,7 +135,7 @@ class Chengji extends BaseModel
         $src = array_cover($srcfrom, $src);
 
         // 实例化考号数据模型
-        $khSrc = new \app\kaohao\model\Search;
+        $khSrc = new \app\kaohao\model\SearchMore;
         $chengjilist = $khSrc->srcChengjiList($src);
 
         return $chengjilist;

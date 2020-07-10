@@ -3,9 +3,9 @@
 namespace app\kaoshi\model;
 
 // 引用数据模型基类
-use app\BaseModel;
+use app\kaoshi\model\KaoshiBase;
 
-class KaoshiSet extends BaseModel
+class KaoshiSet extends KaoshiBase
 {
     // 关联学科
     public function subjectName()
@@ -53,16 +53,24 @@ class KaoshiSet extends BaseModel
      * @return \think\Response
      */
     // 显示考试列表
-    public function srcSubject($kaoshi_id, $subject_id = array(), $nianji = '')
+    public function srcSubject($srcfrom)
     {
-        $subject_id = strToarray($subject_id);
+        // 初始化参数
+        $src = array(
+            'kaoshi_id' => '0'
+            ,'nianji' => 0
+            ,'subject_id' => array()
+        );
 
-        $sbjList = $this->where('kaoshi_id', $kaoshi_id)
-            ->when(count($subject_id) > 0, function ($query) use ($subject_id) {
-                $query->where('subject_id', 'in', $subject_id);
+        $src = array_cover($srcfrom, $src);
+        $src['subject_id'] = strToarray($src['subject_id']);
+
+        $sbjList = $this->where('kaoshi_id', $src['kaoshi_id'])
+            ->when(count($src['subject_id']) > 0, function ($query) use ($src) {
+                $query->where('subject_id', 'in', $src['subject_id']);
             })
-            ->when($nianji > 0, function ($query) use ($nianji) {
-                $query->where('nianji', $nianji);
+            ->when($src['nianji'] > 0, function ($query) use ($src) {
+                $query->where('nianji', $src['nianji']);
             })
             ->group('subject_id')
             ->field("subject_id
@@ -76,7 +84,6 @@ class KaoshiSet extends BaseModel
             ])
             ->where('status', 1)
             ->select();
-
 
         // 重新整理学科信息
         $data = array();
@@ -110,7 +117,7 @@ class KaoshiSet extends BaseModel
      * @return \think\Response
      */
     // 显示考试列表
-    public function srcNianji($kaoshi_id)
+    public function srcGrade($kaoshi_id)
     {
         $njList = $this->where('kaoshi_id', $kaoshi_id)
             ->group('nianji')

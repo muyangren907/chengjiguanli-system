@@ -18,9 +18,9 @@ class Index extends BaseController
         $list['webtitle'] = config('shangma.webtitle'); # 系统名称
         $list['version'] = config('shangma.version');   # 版本号
         $ad = new \app\admin\model\Admin;   # 获取用户姓名
-        $list->xingming = $ad->where('id', session('userid'))->value('xingming');
+        $list->xingming = $ad->where('id', session('admin.userid'))->value('xingming');
         $auth = new \app\admin\model\AuthRule;      # 菜单
-        $menu = $auth->menu(session('userid'));
+        $menu = $auth->menu(session('admin.userid'));
         $list['menu'] = $menu;
 
         // 模版赋值
@@ -44,14 +44,14 @@ class Index extends BaseController
             ->find();
 
         // 查询用户登信息
-        $list['username'] = session('username');
+        $list['username'] = session('admin.username');
         $list['webtitle'] = config('shangma.webtitle');
 
         // 查询用户姓名及用户拥有的权限
         $admin = new \app\admin\model\Admin;
-        $list['xingming'] = $admin->where('id',session('userid'))
+        $list['xingming'] = $admin->where('id',session('admin.userid'))
             ->value('xingming');
-        $list['group'] = $admin->getGroupnames(session('userid'));
+        $list['group'] = $admin->getGroupnames(session('admin.userid'));
 
         $list['server'] = request()->server();
         // 获取系统版本号

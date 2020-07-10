@@ -129,7 +129,7 @@ class Luru extends BaseController
             $data = [
                 'kaohao_id' => $list['kaohao_id']
                 ,'subject_id' => $list['subject_id']
-                ,'user_id' => session('userid')
+                ,'user_id' => session('admin.userid')
                 ,'defen' => $list['defen']
                 ,'defenlv' => $list['defen'] / $manfen * 100
             ];
@@ -198,13 +198,13 @@ class Luru extends BaseController
 
             $cjone->defen = $list['newdefen'];
             $cjone->defenlv = $list['newdefen'] / $manfen * 100; 
-            $cjone->user_id = session('userid'); 
+            $cjone->user_id = session('admin.userid'); 
             $data = $cjone->save();
         } else {
             $data = [
                 'kaohao_id' => $list['kaohao_id']
                 ,'subject_id' => $subject_id
-                ,'user_id' => session('userid')
+                ,'user_id' => session('admin.userid')
                 ,'defen' => $list['newdefen']
                 ,'defenlv' => $list['newdefen'] / $manfen * 100
             ];
@@ -309,7 +309,7 @@ class Luru extends BaseController
             }
         }
 
-        $user_id = session('userid');   # 获取用户id
+        $user_id = session('admin.userid');   # 获取用户id
         $data = array();
 
         // 重新组合数组

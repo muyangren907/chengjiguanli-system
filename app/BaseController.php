@@ -8,6 +8,7 @@ use think\exception\ValidateException;
 use think\Validate;
 use app\middleware\UserLogin;
 use app\middleware\Auth;
+use app\middleware\Online;
 
 
 /**
@@ -15,7 +16,6 @@ use app\middleware\Auth;
  */
 abstract class BaseController
 {
-
     /**
      * Request实例
      * @var \think\Request
@@ -40,7 +40,9 @@ abstract class BaseController
      * @var array
      */
     protected $middleware = [
-       'login','auth'
+        'auth'
+        ,'login'
+
     ];
 
     /**

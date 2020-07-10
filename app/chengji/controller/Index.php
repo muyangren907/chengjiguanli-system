@@ -17,14 +17,15 @@ class Index extends BaseController
         // 获取参加考试的年级和学科
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $list['set']['nianji'] = $ksset->srcNianji($kaoshi_id);
-        $list['set']['subject_id'] = $ksset->srcSubject($kaoshi_id);
+        $src['kaohao_id'] = $kaoshi_id;
+        $list['set']['subject_id'] = $ksset->srcSubject($src);
         if (count($list['set']['nianji']) > 0) {
             $src['ruxuenian']=$list['set']['nianji'][0];
         } else {
             $src['ruxuenian']=array();
         }
         $src['kaoshi_id'] = $kaoshi_id;
-        $khSrc = new \app\kaohao\model\Search;
+        $khSrc = new \app\kaohao\model\SearchMore;
         $list['set']['school_id'] = $khSrc->cySchool($src);
         $list['kaoshi_id'] = $kaoshi_id;
         $list['dataurl'] = '/chengji/index/data';
@@ -54,7 +55,7 @@ class Index extends BaseController
             
         // 获取参与考试的班级
         if (count($src['banji_id']) == 0) {
-            $khSrc = new \app\kaohao\model\Search;
+            $khSrc = new \app\kaohao\model\SearchMore;
             $src['banji_id']= array_column($khSrc->cyBanji($src), 'id');
         }
 

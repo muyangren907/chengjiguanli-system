@@ -3,10 +3,10 @@
 namespace app\kaoshi\model;
 
 // 引用数据模型基类
-use app\BaseModel;
+use \app\kaoshi\model\KaoshiBase;
 
 
-class Kaoshi extends BaseModel
+class Kaoshi extends KaoshiBase
 {
     // 查询所有考试
     public function search($srcfrom)
@@ -64,15 +64,15 @@ class Kaoshi extends BaseModel
     }
 
 
-    // 考试参加考试的学校、学科、年级、班级
-    public function kaoshiInfo($id = 0)
-    {
-        // 获取参考年级
-        $kaoshiList = $this->where('id', $id)
-                ->field('id, title, status, luru')
-                ->find();
-        return $kaoshiList;
-    }
+    // // 考试参加考试的学校、学科、年级、班级
+    // public function kaoshiInfo($id = 0)
+    // {
+    //     // 获取参考年级
+    //     $kaoshiList = $this->where('id', $id)
+    //             ->field('id, title, status, luru')
+    //             ->find();
+    //     return $kaoshiList;
+    // }
 
 
     // 开始时间修改器
@@ -81,11 +81,13 @@ class Kaoshi extends BaseModel
         return strtotime($value);
     }
 
+
     // 开始时间获取器
     public function getBfdateAttr($value)
     {
         return date('Y-m-d', $value);
     }
+
 
     // 结束时间修改器
     public function setEnddateAttr($value)
@@ -95,18 +97,23 @@ class Kaoshi extends BaseModel
         return strtotime($sj);
     }
 
+
     // 结束时间获取器
     public function getEnddateAttr($value)
     {
         return date('Y-m-d', $value);
     }
 
+
     // 参考学科获取器
     public function getCkSubjectAttr($value)
     {
         // 查询参考学科
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $subject = $ksset->srcSubject($this->getAttr('id'), '', '');
+        $src = [
+            'kaoshi_id' => $this->getAttr('id')
+        ];
+        $subject = $ksset->srcSubject($src);
         // 重新整理数据
         $str = '';
         foreach ($subject as $key => $value) {
@@ -119,6 +126,7 @@ class Kaoshi extends BaseModel
         }
         return $str;
     }
+
 
     // 参考年级获取器
     public function getCkNianjiAttr($value)
@@ -140,6 +148,7 @@ class Kaoshi extends BaseModel
         return $str;
     }
 
+
     // 考试设置关联表
     public function ksSet()
     {
@@ -153,11 +162,13 @@ class Kaoshi extends BaseModel
         return $this->belongsTo('\app\system\model\Category', 'category_id', 'id');
     }
 
+
     // 考试成绩关联表
     public function ksChengji()
     {
         return $this->hasMany('\app\chengji\model\Chengji', 'kaoshi_id', 'id');
     }
+
 
     // 考试组织单位关联表
     public function ksZuzhi()

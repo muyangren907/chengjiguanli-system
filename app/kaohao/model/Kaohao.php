@@ -3,65 +3,10 @@
 namespace app\kaohao\model;
 
 // 引用数据模型基类
-use app\BaseModel;
+use \app\kaoshi\model\KaoshiBase;
 
-class Kaohao extends BaseModel
+class Kaohao extends KaoshiBase
 {
-    // 列出成绩原始数据，其它数据模型中的方法以此方法为基础进行数据整理
-    public function search($srcfrom)
-    {
-        // 初始化参数
-        $src = array(
-            'kaoshi_id' => '0'
-            ,'banji_id' => array()
-            ,'searchval' => ''
-        );
-
-        // 用新值替换初始值
-        $src = array_cover($srcfrom, $src) ;
-        $src['banji_id'] = strToarray($src['banji_id']);
-
-        // 查询成绩
-        $data = $this->where('kaoshi_id', $src['kaoshi_id'])
-            ->field('id, school_id, student_id, ruxuenian, paixu, kaoshi_id, nianji')
-            ->where('banji_id', 'in', $src['banji_id'])
-            ->when(strlen($src['searchval']) > 0, function($query) use($src){
-                $query->where(function($w) use ($src){
-                    $w
-                    ->whereOr('student_id', 'in', function($q)use($src){
-                        $q->name('student')
-                            ->where('xingming', 'like', '%' . $src['searchval'] . '%')
-                            ->field('id');
-                    });
-                });
-            })
-            ->with([
-                'ksChengji' => function($query){
-                    $query->field('id, kaohao_id, subject_id, defen, bweizhi, xweizhi, qweizhi')
-                        ->with([
-                            'subjectName' => function ($q) {
-                                $q->field('id, title, jiancheng, lieming');
-                            }
-                        ]);
-                }
-                ,'cjSchool' => function($query){
-                    $query->field('id, jiancheng');
-                }
-                ,'cjStudent' => function($query){
-                    $query->field('id, xingming, sex');
-                }
-            ])
-            ->append(['banjiTitle', 'banTitle'])
-            ->select();
-
-            foreach ($data as $key => $value) {
-                $data[$key]->ksChengji = $this->zzcj($value->ksChengji);
-            }
-
-        return $data;
-    }
-
-
     // 班级成绩关联
     public function banjiKaohao()
     {
@@ -120,19 +65,6 @@ class Kaohao extends BaseModel
         $title = $bj[$this->getAttr('paixu')];
         return $title;
     }
-
-
-    // 转置成绩数组
-    private function zzcj($array = array())
-    {
-        $arr = array();
-        foreach ($array as $key => $value) {
-            $array[$value->subjectName->lieming] = $value;
-            unset($array[$key]);
-        }
-        return $array;
-    }
-
 }
 
 

@@ -219,32 +219,20 @@ class Index extends BaseController
     // 学生信息
     public function read($id)
     {
-        $list['webtitle'] ='成绩';
-        $list['dataurl'] = '/student/studentcj/chengjilist';
-        $list['id'] = $id;
+        $kh = new \app\kaohao\model\Kaohao;
+        $khInfo = $kh->where('id', $id)
+            ->with([
+                'cjKaoshi' => function ($query) {
+                    $query->field('id, title, bfdate, enddate');
+                }
+            ])
+            ->find();
+        $list['webtitle'] = $khInfo->cjKaoshi->title;
+        $list['id'] = $khInfo->id;
 
-        $stucj = new \app\kaohao\model\Search;
-        $defen = $stucj->khSrcChengji($id);
-        $color = [
-            'layui-bg-red'
-            ,'layui-bg-orange'
-            ,'layui-bg-green'
-            ,'layui-bg-cyan'
-            ,'layui-bg-blue'
-            ,'layui-bg-black'
-        ];
-
-        foreach ($defen->ksChengji as $key => $value) {
-            $list['cj'][$value->subject_id]['defen'] = $value->defen * 1;
-            $list['cj'][$value->subject_id]['defenlv'] = $value->defenlv * 1;
-            $list['cj'][$value->subject_id]['bweizhi'] = round($value->bweizhi, 0) .'%';
-            $list['cj'][$value->subject_id]['title'] = $value->subjectName->title;
-            $list['cj'][$value->subject_id]['color'] = $color[$key % 5];
-        }
-
-        // // 模板赋值
+        // 模板赋值
         $this->view->assign('list', $list);
-        // 渲染模板
+
         return $this->view->fetch();
     }
 

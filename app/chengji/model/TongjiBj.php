@@ -2,7 +2,7 @@
 namespace app\chengji\model;
 
 // 引用基类
-use app\BaseModel;
+use \app\kaoshi\model\KaoshiBase;
 // 引用学生成绩统计类
 use app\chengji\model\Tongji as TJ;
 
@@ -10,7 +10,7 @@ use app\chengji\model\Tongji as TJ;
 /**
  * @mixin think\Model
  */
-class TongjiBj extends BaseModel
+class TongjiBj extends KaoshiBase
 {
     // 统计参加本次考试所有班级的成绩并保存
     public function tjBanji($kaoshi_id)
@@ -163,6 +163,7 @@ class TongjiBj extends BaseModel
             ,'banji_id' => array()
             ,'ruxuenian' => ''
             ,'subject_id' => ''
+            ,'cishu' => 20
         );
 
         $src = array_cover($srcfrom, $src);
@@ -196,8 +197,7 @@ class TongjiBj extends BaseModel
             });
             if (count($cjcol) > 0)
             {
-                
-                $data = $tj->fenshuduan($cjcol, $fsx);
+                $data = $tj->fenshuduan($cjcol, $fsx, $src['cishu']);
             }
         }
 

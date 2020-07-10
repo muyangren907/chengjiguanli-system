@@ -420,6 +420,7 @@ class Bjtongji extends BaseController
                 ,'school_id' => array()
                 ,'banji_id' => array()
                 ,'subject_id' => ''
+                ,'cishu' => 20
             ], 'POST');
 
         if (count($src['banji_id']) == 0) {

@@ -1,14 +1,14 @@
 <?php
 namespace app\chengji\model;
 // 引用基类
-use app\BaseModel;
+use \app\kaoshi\model\KaoshiBase;
 // 引用学生成绩统计类
 use app\chengji\model\Tongji as TJ;
 
 /**
  * @mixin think\Model
  */
-class TongjiNj extends BaseModel
+class TongjiNj extends KaoshiBase
 {
     // 统计所有参加本次考试年级的成绩
     public function tjNianji($kaoshi_id)

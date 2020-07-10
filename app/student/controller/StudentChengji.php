@@ -123,7 +123,6 @@ class StudentChengji extends BaseController
     public function ajaxOneStudentChengjiYiBiao()
     {
         // 获取表单参数
-        // 获取参数
         $src = $this->request
             ->only([
                 'kaohao_id' => '',

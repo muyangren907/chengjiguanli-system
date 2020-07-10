@@ -1,0 +1,427 @@
+<!doctype html>
+<html class="x-admin-sm">
+    <head>
+        <meta charset="UTF-8">
+        <title>{$list.webtitle}</title>
+        <meta name="renderer" content="webkit|ie-comp|ie-stand">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+        {load href="__XADMIN__/css/font.css" /}
+        {load href="__XADMIN__/css/xadmin.css" /}
+        {load href="__STATIC__/mayi/css/studentSearch.css" /}
+        {load href="__XADMIN__/js/jquery.min.js" /}
+        {load href="__XADMIN__/lib/layui/layui.js" /}
+        {load href="__XADMIN__/js/xadmin.js" /}
+        {load href="__XADMIN__/js/cookie.js" /}
+        {load href="__XADMIN__/js/md5.min.js" /}
+        {load href="__STATIC__/echarts/echarts.js" /}
+
+        <meta name="keywords" content="{php}echo $list['keywords']{/php}">
+        <meta name="description" content="{php}echo $list['description']{/php}">
+        <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+        <!--[if lt IE 9]>
+          <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+          <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <script>
+            // 是否开启刷新记忆tab功能
+            // var is_remember = false;
+        </script>
+        <!-- // 百度统计代码  -->
+        <script>
+          var _hmt = _hmt || [];
+          (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?6f65eecea5e089dae94d6b9cffec3623";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+          })();
+        </script>
+    </head>
+    <body>
+        <!-- 顶部开始 -->
+        <div class="container">
+            <div class="logo">
+                <a href="/studentsearchchengji/index/index">{$list['webtitle']}</a></div>
+            <ul class="layui-nav left fast-add" lay-filter="">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">快捷操作</a>
+                    <dl class="layui-nav-child">
+                      <!-- 二级菜单 -->
+                      <dd>
+                        <a onclick="xadmin.open('历史成绩','/chengji/luru/malu','','',true)">
+                            <i class="layui-icon layui-icon-search"></i>历史成绩</a></dd>
+                      <dd>
+                        <a onclick="xadmin.open('系统帮助','https://www.kancloud.cn/llblax/abcd/789222')">
+                            <i class="layui-icon layui-icon-username"></i>系统帮助</a></dd>
+                    </dl>
+                </li>
+            </ul>
+            <ul class="layui-nav right" lay-filter="">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">{$list.banjiTitle}&nbsp;&nbsp;{$list.xingming}</a>
+                    <dl class="layui-nav-child">
+                      <!-- 二级菜单 -->
+                      <dd>
+                        <!-- <a onclick="layer.msg('修改密码，请下载后本地测试。')">
+                            修改密码</a> -->
+                        <a onclick="xadmin.open('修改密码','/studentsearchchengji/index/editpassword','400','250')">
+                            修改密码</a>
+                          </dd>
+                      <dd>
+                        <a href="/login/student">切换帐号</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item to-index">
+                    <a href="/login/student">退了</a></li>
+            </ul>
+        </div>
+        {if ( session('student.password') == 123) }
+          <blockquote class="layui-elem-quote" style="margin-top: 10px;color: red;">
+            您现在使用的是默认密码，为了您的信息不被漏，请及时修改密码。
+          </blockquote>
+        {/if}
+        <div class="myrow">
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+              <legend>{$list.kaoshi_title}考试成绩（{$list.kaoshi_date}）</legend>
+            </fieldset>
+            <div class="layui-row layui-col-md12">
+                <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 mydivtop">
+                    <div class="mydivneirong">
+                        <div class="mydivtitle">
+                            各学科总分
+                        </div>
+                        <div class="mydivtubiao">
+                            <div id="yibiao" style="width:100%; height:100%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 mydivtop">
+                    <div class="mydivneirong">
+                        <div class="mydivtitle">
+                            各学科得分
+                        </div>
+                        <div class="mydivtubiao" style="width:300; height:300;">
+                          <table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 mydivtop">
+                    <div class="mydivneirong">
+                        <div class="mydivtitle">
+                            各学科得分率
+                        </div>
+                        <div class="mydivtubiao">
+                            <div id="myDefenlv" style="width:100%; height:100%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 mydivtop">
+                    <div class="mydivneirong">
+                        <div class="mydivtitle">
+                            各学科成绩与平均分对比
+                        </div>
+                        <div class="mydivtubiao">
+                            <div id="leida" style="width:100%; height:100%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 mydivtop">
+                    <div class="mydivneirong">
+                        <div class="mydivtitle">
+                            各学科成绩位置
+                        </div>
+                        <div class="mydivtubiao">
+                            <div id="myQweizhi" style="width:100%; height:100%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="hr20" >
+        <div class="myrow" style="height: 50px;">
+            <div class="layui-col-md12">
+                <blockquote class="layui-elem-quote layui-quote-nm">
+                    感谢{$list.thinks}提供技术支持。<br>
+                    本系统由{$list.danwei}负责管理
+                </blockquote>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript">
+        //config的设置是全局的
+  layui.config({
+      base: "__XADMIN__/js/" //假设这是你存放拓展模块的根目录
+    });
+
+  layui.use(['element','table'], function(){
+    var element = layui.element
+        table = layui.table
+
+    // 设置表格初始变量
+    defenOptions = {
+      elem: '#tabledemo',
+      toolbar: '#toolbarDemo',
+      url:"/studentsearchchengji/index/xkcj",
+      method:"POST",   //数据接口
+      page: false, //开启分页
+      loading:true,
+      autoSort:true,
+      id:'mytable',
+      defaultToolbar:[],
+      limits:[10,25,50,75,100],
+      limit:10,
+      toolbar:false,
+    };
+
+    defenOptions.where = {
+      kaohao_id:"{$list.id}"
+    };
+
+    // 设置列
+    defenOptions.cols=[[ //表头
+      {field: 'subject_name', title: '学科',sort: true},
+      {field: 'defen', title: '得分',sort: true},
+      {field: 'max', title: '最高分',sort: true},
+      {field: 'min', title: '最低分',sort: true},
+    ]];
+
+    defenTable = table.render(defenOptions);  //获取数据并渲染
+
+
+    // 历次考试成绩表
+    kaoshiOptions = {
+      elem: '#kaoshi',
+      toolbar: '#kaoshi',
+      url:"/studentsearchchengji/index/oldcj",
+      method:"POST",   //数据接口
+      page: false, //开启分页
+      loading:true,
+      autoSort:true,
+      id:'mytable',
+      defaultToolbar:[],
+      limits:[10,25,50,75,100],
+      limit:10,
+      toolbar:false,
+    };
+
+    kaoshiOptions.where = {
+      student_id:"{$list.student_id}"
+    };
+
+    kaoshiTable = table.render(kaoshiOptions);  //获取数据并渲染
+
+  });
+
+  getLeiDa("{$list.id}");
+  getYiBiao("{$list.id}");
+  getDefenlv("{$list.id}");
+  getQweizhi("{$list.id}");
+
+  // 雷达图
+  function getLeiDa(kaohao_id){
+    var url = '/studentsearchchengji/index/leida';
+    var title = '学科成绩雷达图';
+    var val = {
+      kaohao_id: kaohao_id
+    };
+    createLeiDa(url,val,title);
+  }
+
+  // 仪表图
+  function getYiBiao(kaohao_id){
+    var url = '/studentsearchchengji/index/yibiao';
+    var title = '总成绩仪表图';
+    var val = {
+      kaohao_id: kaohao_id
+    };
+    createYiBiao(url,val,title);
+  }
+
+
+  // 条形统计图--优秀率
+    function getDefenlv(kaohao_id){
+      var id = 'myDefenlv';
+      var url = '/studentsearchchengji/index/xkdfl';
+      var val = {
+        kaohao_id: kaohao_id
+      };
+      var title = '';
+      createTiaoxing(id, url, val, title);
+    }
+
+
+    // 条形统计图--优秀率
+    function getQweizhi(kaohao_id){
+      var id = 'myQweizhi';
+      var url = '/studentsearchchengji/index/xkwz';
+      var val = {
+        kaohao_id: kaohao_id
+      };
+      var title = '';
+      createTiaoxing(id, url, val, title);
+    }
+
+
+
+  /**
+  * 异步获取图表中的数据
+  *
+  * @access public
+  * @param id 要添加数据的div
+  * @param url 异步地址
+  * @param val 异步时携带的参数
+  * @param val 图表标题
+  * @return array 返回类型
+  */
+  function createLeiDa(url, val, title)
+  {
+    var myLeiDa = echarts.init(document.getElementById('leida'));
+    $.post(url, val).done(function (data) {
+      myLeiDa.setOption({
+        title: {
+          text:'',
+        },
+        tooltip: {},
+        legend: {
+          data: data.legend,
+          top:40,
+          left:0,
+          orient:'vertical',
+        },
+        grid: {
+          left: '10%',
+          right:'10%',
+          top:'30%',
+          bottom:'10%',
+          height: 'auto',
+        },
+        toolbox: {
+          id:'leida',
+          show:true,
+          orient:'horizontal',
+          showTitle:true,
+          feature: {
+            saveAsImage: { //保存文件
+              show: true
+            },
+          },
+        },
+        radar: {
+          // shape: 'circle',
+          name: {
+            textStyle: {
+              color: '#fff',
+              backgroundColor: '#999',
+              borderRadius: 3,
+              padding: [3, 5]
+            }
+          },
+          indicator: data.indicator
+        },
+        series: data.series
+      })
+    });
+  }
+
+
+  /**
+  * 异步获取图表中的数据
+  *
+  * @access public
+  * @param id 要添加数据的div
+  * @param url 异步地址
+  * @param val 异步时携带的参数
+  * @param val 图表标题
+  * @return array 返回类型
+  */
+  function createYiBiao(url, val, title)
+  {
+    var myYiBiao = echarts.init(document.getElementById('yibiao'));
+    $.post(url, val).done(function (data) {
+      myYiBiao.setOption({
+        title: {
+          text:data.title,
+        },
+        tooltip: {},
+        toolbox: {
+          id:'yibiao',
+          show:true,
+          orient:'horizontal',
+          showTitle:true,
+          feature: {
+            saveAsImage: { //保存文件
+              show: true
+            },
+          },
+        },
+        series: {
+          name:data.series.name
+          ,type:data.series.type
+          ,data:data.series.data
+          ,detail:{formatter: data.series.data[0].value + '%'}
+        }
+      })
+    });
+  }
+
+  /**
+    * 异步获取图表中的数据
+    *
+    * @access public
+    * @param id 要添加数据的div
+    * @param url 异步地址
+    * @param val 异步时携带的参数
+    * @param val 图表标题
+    * @return array 返回类型
+    */
+    function createTiaoxing(id, url, val, title)
+    {
+      var myTiaoxing = echarts.init(document.getElementById(id), 'infographic');
+      $.post(url,val).done(function (data) {
+        myTiaoxing.setOption({
+          title:{
+            text:title,
+            left: 'center',
+          },
+          legend: {
+            top: '10%',
+          },
+          grid: {
+            left: '10%',
+            top: '20%',
+            right: '10%',
+            bottom: '15%'
+          },
+          tooltip: {
+            show: true,
+            axisPointer: {
+              type: 'shadow'
+            }
+          },
+          toolbox: {
+            id:id,
+            show:true,
+            orient:'horizontal',
+            showTitle:true,
+            feature: {
+              saveAsImage: { //保存文件
+                show: true
+              },
+            },
+          },
+          dataset: {
+            source:data.data
+          },
+          xAxis: data.xAxis,
+          yAxis: data.yAxis,
+          series: data.series,
+        });
+    });
+   }
+
+
+    </script>
+</html>

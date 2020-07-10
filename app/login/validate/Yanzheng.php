@@ -19,6 +19,14 @@ class Yanzheng extends Validate
     ];
 
     protected $message = [
-
+        'admin'  =>  [
+            'username'
+            ,'password'
+        ],
+        'student'  =>  [
+            'username'
+            ,'password'
+            ,'shengfenzhenghao'
+        ]
     ];
 }
