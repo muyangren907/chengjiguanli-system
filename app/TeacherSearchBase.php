@@ -14,6 +14,7 @@ abstract class TeacherSearchBase  extends BaseController
      * @var array
      */
     protected $middleware = [
-        'terlogin'
+        'online'
+        ,'terlogin'
     ];
 }

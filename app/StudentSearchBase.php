@@ -14,6 +14,7 @@ abstract class StudentSearchBase  extends BaseController
      * @var array
      */
     protected $middleware = [
-        'stulogin'
+        'online'
+        ,'stulogin'
     ];
 }

@@ -40,9 +40,9 @@ abstract class BaseController
      * @var array
      */
     protected $middleware = [
-        'auth'
+        'online'
         ,'login'
-
+        ,'auth'
     ];
 
     /**
