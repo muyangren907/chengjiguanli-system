@@ -47,7 +47,10 @@
         var str='';
         if(d.userName)
         {
-          str = d.userName.adSchool.jiancheng + '　' + d.userName.xingming;
+          if(d.userName.adSchool)
+          {
+            str = d.userName.adSchool.jiancheng + '　' + d.userName.xingming;
+          }
         }
         return str;
       }},
@@ -115,9 +118,6 @@
                 },
             });
       }) 
-
-
-
     });
 </script>
 {/block}
