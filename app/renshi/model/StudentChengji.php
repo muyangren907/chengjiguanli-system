@@ -182,21 +182,21 @@ class StudentChengji extends BaseModel
         $khInfo = $kh->where('id', $src['kaohao_id'])
                     ->with([
                         'ksChengji'=>function($query){
-                            $query->field('id,kaohao_id,subject_id,defen');
+                            $query->field('id, kaohao_id, subject_id, defen');
                         }
                     ])
                     ->find();
 
         // 参加考试学科
-        $subject = subjectList();
+        $subject = subjectList(1,1); 
         // 获取参加考试学科满分
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $manfen = $ksset->srcSubject($khInfo->kaoshi, '', $khInfo->ruxuenian);
+        $manfen = $ksset->srcSubject($khInfo->kaoshi_id, '', $khInfo->ruxuenian);
 
         // 查询区成绩
         $SchoolChengji = new \app\chengji\model\TongjiSch;
         $schcj = $SchoolChengji
-                    ->where('kaoshi_id',$khInfo->kaoshi)
+                    ->where('kaoshi_id',$khInfo->kaoshi_id)
                     ->where('ruxuenian',$khInfo->ruxuenian)
                     ->select();
 
