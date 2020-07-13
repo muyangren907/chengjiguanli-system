@@ -442,7 +442,6 @@ class Index extends BaseController
     public function downloadXls()
     {
         $url = public_path() . 'uploads\\teacher\\TeacherInfo.xlsx';
-        halt($url);
         return download($url, '教师名单模板.xlsx');
     }
 

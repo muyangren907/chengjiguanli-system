@@ -1,5 +1,5 @@
 <?php
-namespace app;
+namespace app\base\contoller;
 
 // 引用控制器基类
 use app\BaseController;
@@ -7,7 +7,7 @@ use app\BaseController;
 /**
  * 控制器基础类
  */
-abstract class StudentSearchBase  extends BaseController 
+abstract class ToolsBase  extends BaseController 
 {
     /**
      * 控制器中间件
@@ -15,6 +15,5 @@ abstract class StudentSearchBase  extends BaseController
      */
     protected $middleware = [
         'online'
-        ,'stulogin'
     ];
 }

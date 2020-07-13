@@ -8,7 +8,7 @@ use think\Request;
 class CanKao
 {
     // 获取参考学科
-    public function cankaoSubjectIdAndLieming($srcfrom)
+    public function subjectIdLieming($srcfrom)
     {
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $ksSubject = $ksset->srcSubject($srcfrom);

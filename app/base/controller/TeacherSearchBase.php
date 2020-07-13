@@ -1,5 +1,5 @@
 <?php
-namespace app;
+namespace app\base\contoller;
 
 // 引用控制器基类
 use app\BaseController;
