@@ -6,10 +6,7 @@ namespace app;
 use think\App;
 use think\exception\ValidateException;
 use think\Validate;
-use app\middleware\UserLogin;
-use app\middleware\Auth;
 use app\middleware\Online;
-
 
 /**
  * 控制器基础类
@@ -40,8 +37,7 @@ abstract class BaseController
      * @var array
      */
     protected $middleware = [
-        'login'
-        ,'auth'
+        'online'
     ];
 
     /**

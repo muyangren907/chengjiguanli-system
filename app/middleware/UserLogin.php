@@ -14,7 +14,6 @@ class UserLogin
      */
     public function handle($request, \Closure $next)
     {
-        dump('userlogin');
         $category = session('onlineCategory');
         $isajax = $request->isAjax();
         if ($category != 'admin')

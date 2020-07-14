@@ -3,11 +3,11 @@
 namespace app\system\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 // 引用单位数据模型类
 use app\system\model\Fields as FL;
 
-class Fields extends BaseController
+class Fields extends AdminBase
 {
     /**
      * 显示资源列表

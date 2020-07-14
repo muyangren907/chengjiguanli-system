@@ -4,12 +4,12 @@ declare (strict_types = 1);
 namespace app\Kaoshi\model;
 
 // 引用数据模型基类
-use \app\kaoshi\model\KaoshiBase;
+use \app\BaseModel;
 
 /**
  * @mixin think\Model
  */
-class TongjiLog extends KaoshiBase
+class TongjiLog extends BaseModel
 {
     // 查询统计记录
     public function search($srcfrom)

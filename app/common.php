@@ -122,7 +122,7 @@
     function array_cover($cover = array(), $covered = array())
     {
     	$tools = new \app\tools\controller\Index;
-        $arr = $tools->($cover, $covered);
+        $arr = $tools->array_cover($cover, $covered);
     	return $arr;
     }
     

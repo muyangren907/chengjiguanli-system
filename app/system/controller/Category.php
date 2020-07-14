@@ -3,14 +3,12 @@
 namespace app\system\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 // 引用类别数据模型类
 use app\system\model\Category as CG;
 
-class Category extends BaseController
+class Category extends AdminBase
 {
-
-
     // 类别列表
     public function index()
     {

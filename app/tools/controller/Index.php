@@ -3,9 +3,7 @@ declare (strict_types = 1);
 
 namespace app\tools\controller;
 
-use \app\base\controller\ToolsBase
-
-class Index extends ToolsBase
+class Index
 {
     // // 将关联学生成绩转换成以学科列名为key得分为value的数组
     // public function subjectChengjiKeyAndValue($array = array())
@@ -113,7 +111,7 @@ class Index extends ToolsBase
         $obj = $obj->order($src['field'], $src['order']);
 
         $limit_start = $src['page'] * $src['limit'] - $src['limit'];
-        $limit_length = $src['limit'];
+        $limit_length = $src['limit'] * 1;
         $obj = $obj->slice($limit_start, $limit_length);
         $data = [
             'code' => 0  // ajax请求次数，作为标识符

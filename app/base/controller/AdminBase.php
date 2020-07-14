@@ -7,13 +7,13 @@ use app\BaseController;
 /**
  * 控制器基础类
  */
-abstract class ToolsBase  extends BaseController 
+abstract class AdminBase  extends BaseController 
 {
     /**
      * 控制器中间件
      * @var array
      */
     protected $middleware = [
-        'online'
+        'login'
     ];
 }

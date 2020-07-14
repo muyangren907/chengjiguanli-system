@@ -3,11 +3,11 @@
 namespace app\system\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 // 引用单位数据模型类
 use app\system\model\School as sch;
 
-class School extends BaseController
+class School extends AdminBase
 {
     // 单位列表
     public function index()
