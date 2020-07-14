@@ -14,6 +14,7 @@ class Online
      */
     public function handle($request, \Closure $next)
     {
+        dump('online');
         // 判断是否在线，如果不在线则跳转
         $online = session('?onlineCategory');
         if($online == false)

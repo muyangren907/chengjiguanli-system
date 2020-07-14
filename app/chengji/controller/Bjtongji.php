@@ -442,5 +442,4 @@ class Bjtongji extends BaseController
         return json($data);
     }
 
-
 }

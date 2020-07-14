@@ -38,7 +38,7 @@ class Subject extends BaseModel
     }
 
     // 获取参加考试的学科
-    public function searchKaoshi()
+    public function kaoshi()
     {
         $data = self::where('kaoshi', 1)
                 ->field('id, title, jiancheng, lieming')

@@ -14,6 +14,7 @@ class UserLogin
      */
     public function handle($request, \Closure $next)
     {
+        dump('userlogin');
         $category = session('onlineCategory');
         $isajax = $request->isAjax();
         if ($category != 'admin')
@@ -22,19 +23,11 @@ class UserLogin
             \app\facade\OnLine::jump('/login', '请使用管理员帐号登录');
         }
 
-        // 尝试从session中获取用户名和密码
-        $username = session('?admin.username') ? $username = session('admin.username') : $username = '';
-        $password = session('?admin.password') ? $password = session('admin.password') : $password = '';
-        // 尝试从cookie中获取用户名和密码
-        if (strlen($username) < 1 )
-        {
-            $username = cookie('?username') ? $username = cookie('username') : $username = '';
-            $password = cookie('?password') ? $password = cookie('password') : $password = '';
-        }
+        $userInfo = \app\facade\OnLine::getLoginInfo('admin');
 
         // 检验用户名或密码是否正确
         $yz = new \app\login\controller\Index;
-        $yz = $yz->check($username,$password);
+        $yz = $yz->check($userInfo['username'],$userInfo['password']);
 
         if($yz['status'] == 0){
             \app\facade\OnLine::jump('/login', '请使用新密码登录');

@@ -1,32 +1,12 @@
 <?php
 declare (strict_types = 1);
 
-namespace app\searchtools\controller;
+namespace app\tools\controller;
 
-// 引用PhpSpreadsheet类
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use PhpOffice\PhpSpreadsheet\IOFactory;
+use think\Request;
 
-class Excel
+class File
 {
-    /**读取数据**/
-    public function readXls($filename){
-        $path = $filename;
-        setlocale(LC_ALL, 'zh_CN');  //csv中文乱码
-        $inputFileType = IOFactory::identify($path);
-        $excelReader = IOFactory::createReader($inputFileType);
-        if ($inputFileType == 'Csv') {   //csv文件读取设置
-          $excelReader->setInputEncoding('GBK');
-          $excelReader->setDelimiter(',');
-        }
-        $phpexcel = $excelReader->load($path);
-        $activeSheet = $phpexcel->getActiveSheet();
-        $sheet = $activeSheet->toArray();
-        return $sheet;
-    }
-
-
     /**
      * 获取文件信息并保存
      *
@@ -40,7 +20,7 @@ class Excel
      *         str      $data['val']  返回信息
      *         str      $data['url']  文件路径
      */
-    function saveFileInfo($file, $list, $isSave = false)
+    public function saveFileInfo($file, $list, $isSave = false)
     {
         $hash = $file->hash('sha1');
         $f = new \app\system\model\Fields;
@@ -85,5 +65,28 @@ class Excel
         return $data;
     }
 
-    
+
+    /**读取电子表格数据**/
+    public function readXls($filename){
+        $path = $filename;
+        setlocale(LC_ALL, 'zh_CN');  //csv中文乱码
+        $inputFileType = IOFactory::identify($path);
+        $excelReader = IOFactory::createReader($inputFileType);
+        if ($inputFileType == 'Csv') {   //csv文件读取设置
+          $excelReader->setInputEncoding('GBK');
+          $excelReader->setDelimiter(',');
+        }
+        $phpexcel = $excelReader->load($path);
+        $activeSheet = $phpexcel->getActiveSheet();
+        $sheet = $activeSheet->toArray();
+        return $sheet;
+    }
+
+
+    // 定义EXCEL列名
+    public function excelColumnName()
+    {
+        $liemingarr = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM','BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW'];
+        return $liemingarr;
+    }
 }

@@ -7,6 +7,6 @@ class OnLine extends Facade
 {
     protected static function getFacadeClass()
     {
-    	return '\app\formattools\controller\OnLine';
+    	return '\app\tools\controller\OnLine';
     }
 }

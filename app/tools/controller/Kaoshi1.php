@@ -26,7 +26,5 @@ class Kaoshi extends ToolsBase
         $data =  $ksset->srcGrade($kaoshi_id);
         return $data;
     }
-
-
     
 }

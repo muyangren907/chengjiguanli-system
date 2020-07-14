@@ -236,4 +236,69 @@ class Banji extends BaseModel
     }
 
 
+    // 生成年级名
+    public function gradeName($riqi=0)
+    {
+        // 定义学年时间节点日期为每年的8月1日
+        // $yd = '8-1';
+        if($riqi == 0)
+        {
+            $jiedian = strtotime(date('Y') . '-8-1');
+            $thisday = time();
+            $nian = date('Y');
+        }else{
+            $jiedian = strtotime(date('Y', $riqi) . '-8-1');
+            $thisday = $riqi;
+            $nian = date('Y', $riqi);
+        }
+
+        $thisday <= $jiedian ? $str = 1 : $str = 0;
+        $nian = $nian - $str;
+
+        $njlist = array();
+        $njlist[$nian] = '一年级';
+        $njlist[$nian - 1] = '二年级';
+        $njlist[$nian - 2] = '三年级';
+        $njlist[$nian - 3] = '四年级';
+        $njlist[$nian - 4] = '五年级';
+        $njlist[$nian - 5] = '六年级';
+
+        return $njlist;
+    }
+
+
+    // 班级列表
+    public function className()
+    {
+        $bjarr = array(
+            '1' => '一班'
+            ,'2' => '二班'
+            ,'3' => '三班'
+            ,'4' => '四班'
+            ,'5' => '五班'
+            ,'6' => '六班'
+            ,'7' => '七班'
+            ,'8' => '八班'
+            ,'9' => '九班'
+            ,'10' => '十班'
+            ,'11' => '十一班'
+            ,'12' => '十二班'
+            ,'13' => '十三班'
+            ,'14' => '十四班'
+            ,'15' => '十五班'
+            ,'16' => '十六班'
+            ,'17' => '十七班'
+            ,'18' => '十八班'
+            ,'19' => '十九班'
+            ,'20' => '二十班'
+            ,'21' => '二十一班'
+            ,'22' => '二十二班'
+            ,'23' => '二十三班'
+            ,'24' => '二十四班'
+            ,'25' => '二十五班'
+        );
+        return $bjarr;
+    }
+
+
 }

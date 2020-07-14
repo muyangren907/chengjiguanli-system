@@ -90,4 +90,36 @@ class School extends BaseModel
             ->select();
         return $data;
     }
+
+
+    // 根据是否能组织考试查询单位
+    public function kaoshi()
+    {
+        $data = $this->where('kaoshi', 1)
+            ->order(['jibie_id', 'paixu'])
+            ->field('id, title, jiancheng')
+            ->select();
+        return $data;
+    }
+
+
+    // 根据级别查询单位
+    public function srcJibie($low = '班级', $high = '其它级', $order = 'asc')
+    {
+        // 实例化类别数据模型
+        $cat = new \app\system\model\Category;
+        // 获取获取级别列表
+        $catlist = $cat->where('p_id', 102)
+            ->where('status', 1)
+            ->column('id', 'title');
+
+        // 查询学校
+        $schlist = $this->where('jibie_id', 'between', [$catlist[$low], $catlist[$high]])
+            ->where('status', 1)
+            ->order(['jibie_id' => $order, 'paixu'])
+            ->field('id, title, jiancheng')
+            ->select();
+
+        return $schlist; 
+    }
 }

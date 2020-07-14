@@ -25,66 +25,20 @@
 
 	function nianJiNameList($riqi=0)
 	{
-		// 定义学年时间节点日期为每年的8月1日
-		// $yd = '8-1';
-		if($riqi == 0)
-		{
-			$jiedian = strtotime(date('Y') . '-8-1');
-			$thisday = time();
-			$nian = date('Y');
-		}else{
-			$jiedian = strtotime(date('Y', $riqi) . '-8-1');
-			$thisday = $riqi;
-			$nian = date('Y', $riqi);
-		}
-
-		$thisday <= $jiedian ? $str = 1 : $str = 0;
-		$nian = $nian - $str;
-
-		$njlist = array();
-		$njlist[$nian] = '一年级';
-		$njlist[$nian - 1] = '二年级';
-		$njlist[$nian - 2] = '三年级';
-		$njlist[$nian - 3] = '四年级';
-		$njlist[$nian - 4] = '五年级';
-		$njlist[$nian - 5] = '六年级';
-
-		return $njlist;
+		// 实例化年级控制器
+        $bj = new \app\teach\model\Banji;
+        $njList= $bj->gradeName($riqi);
+		return $njList;
 	}
 
 
 	// 班级列表
 	function banJiNamelist()
 	{
-		$bjarr = array(
-			'1' => '一班'
-			,'2' => '二班'
-			,'3' => '三班'
-			,'4' => '四班'
-			,'5' => '五班'
-			,'6' => '六班'
-			,'7' => '七班'
-			,'8' => '八班'
-			,'9' => '九班'
-			,'10' => '十班'
-			,'11' => '十一班'
-			,'12' => '十二班'
-			,'13' => '十三班'
-			,'14' => '十四班'
-			,'15' => '十五班'
-			,'16' => '十六班'
-			,'17' => '十七班'
-			,'18' => '十八班'
-			,'19' => '十九班'
-			,'20' => '二十班'
-			,'21' => '二十一班'
-			,'22' => '二十二班'
-			,'23' => '二十三班'
-			,'24' => '二十四班'
-			,'25' => '二十五班'
-		);
-
-		return $bjarr;
+		// 实例化年级控制器
+        $bj = new \app\tools\controller\Banji;
+        $njList= $bj->banJiNamelist();
+        return $njList;
 	}
 
 
@@ -93,27 +47,8 @@
 	* $type为1的时候是虚岁,2的时候是周岁
 	*/
 	function getAgeByBirth($date = 0, $type = 1){
-        $nowYear = date("Y", time());
-        $nowMonth = date("m", time());
-        $nowDay = date("d", time());
-        $birthYear = date("Y", $date);
-        $birthMonth = date("m", $date);
-        $birthDay = date("d", $date);
-        if($type == 1){
-            $age = $nowYear - ($birthYear - 1);
-        }elseif($type == 2){
-            if($nowMonth < $birthMonth){
-                $age = $nowYear - $birthYear - 1;
-            }elseif($nowMonth == $birthMonth){
-                if($nowDay < $birthDay){
-                    $age = $nowYear - $birthYear - 1;
-                }else{
-                    $age = $nowYear - $birthYear;
-                }
-            }else{
-                $age = $nowYear - $birthYear;
-            }
-        }
+        $tearch = new \app\teacher\model\Tearcher;
+        $age = $tearch->fBirth($data, $type);
 	   return $age;
 	}
 
@@ -121,8 +56,9 @@
 	// EXCEL表格列名
 	function excelColumnName()
 	{
-		$liemingarr = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM','BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW'];
-		return $liemingarr;
+		$excel = new \app\tools\controller\Excel;
+        $data = $excel->excelColumnName();
+        return $data;
 	}
 
 
@@ -131,21 +67,8 @@
 	{
 		// 实例化单位模型
 		$sch = new \app\system\model\School;
-		// 实例化类别数据模型
-		$cat = new \app\system\model\Category;
-		// 获取获取级别列表
-		$catlist = $cat->where('p_id', 102)
-			->where('status', 1)
-			->column('id', 'title');
-
-		// 查询学校
-		$schlist = $sch->where('jibie_id', 'between', [$catlist[$low], $catlist[$high]])
-            ->where('status', 1)
-			->order(['jibie_id'=>$order,'paixu'])
-			->field('id, title, jiancheng')
-			->select();
-
-		return $schlist;
+		$data = $sch->srcJibie($low, $high, $order);
+		return $data;
 	}
 
 
@@ -154,65 +77,39 @@
     {
         // 实例化单位模型
         $sch = new \app\system\model\School;
-        $schlist = $sch->where('status&kaoshi', 1)
-            ->order(['paixu'])
-            ->field('id, title, jiancheng')
-            ->select();
-
+        $schlist = $sch->kaoshi();
         return $schlist;
     }
 
 
-	// 整理教师名
-	function teacherNames($list = array())
-	{
-		if(count($list) == 0 )
-		{
-			return '';
-		}
+	// // 整理教师名
+	// function teacherNames($list = array())
+	// {
+	// 	if(count($list) == 0 )
+	// 	{
+	// 		return '';
+	// 	}
 
-		$names = '';
-		foreach ($list as $key => $value) {
-			if($key == 0)
-			{
-				$names = $value['teacher']['xingming'];
-			}else{
-				$names = $names . '、'. $value['teacher']['xingming'];
-			}
-		}
+	// 	$names = '';
+	// 	foreach ($list as $key => $value) {
+	// 		if($key == 0)
+	// 		{
+	// 			$names = $value['teacher']['xingming'];
+	// 		}else{
+	// 			$names = $names . '、'. $value['teacher']['xingming'];
+	// 		}
+	// 	}
 
-		return $names;
-	}
-
-
-    
+	// 	return $names;
+	// }
 
 
     // 给数组按多条件排序
     function sortArrByManyField(){
       $args = func_get_args();
-      if(empty($args)){
-        return null;
-      }
-      $arr = array_shift($args);
-      if(!is_array($arr)){
-        throw new Exception("第一个参数不为数组");
-      }
-
-      foreach($args as $key => $field){
-        if(is_string($field)){
-          $temp = array();
-          foreach($arr as $index => $val){
-            $temp[$index] = $val[$field];
-          }
-          $args[$key] = $temp;
-        }
-      }
-      $args[] = &$arr;//引用值
-      $keys = array_keys($args[0]);
-      call_user_func_array('array_multisort', $args);
-
-      return array_pop($args);;
+      $tools = new \app\tools\controller\Index;
+      $arr = $tools->sortArrByManyField($args);
+      return $arr;
     }
 
 
@@ -224,30 +121,20 @@
      * */
     function array_cover($cover = array(), $covered = array())
     {
-    	foreach ($cover as $key => $value) {
-    		if(isset($covered[$key]) == true)
-    		{
-    			$covered[$key] = $cover[$key];
-    		}
-    	}
-    	return $covered;
+    	$tools = new \app\tools\controller\Index;
+        $arr = $tools->($cover, $covered);
+    	return $arr;
     }
-
     
 
     /**
      * 获取参加考试的学科
      * 返回 $data
      * */
-    function subjectList($status = '', $kaoshi = '')
+    function subjectList()
     {
-    	$src = [
-            'status' => $status
-            ,'kaoshi' => $kaoshi
-        ];
-
         $sbj = new \app\teach\model\Subject;
-        $data = $sbj->search($src);
+        $data = $sbj->kaoshi();
 
         return $data;
     }
@@ -262,18 +149,9 @@
     */
     function strToArray($str)
     {
-    	// 如果str是字符串，则转换成数组
-    	if(is_array($str) == false)
-    	{
-    		$str = explode(',', $str);
-    	}
-    	// 循环数组，删除空元素
-    	foreach ($str as $key => $value) {
-    		if($value == "" && $value == null){
-    			unset($str[$key]);
-    		}
-    	}
-    	return $str;
+    	$tools = new \app\tools\controller\Index;
+        $data = $tools->strToArray($str);
+        return $data;
     }
 
 
@@ -285,31 +163,8 @@
     */
     function reSetObject($obj, $srcfrom)
     {
-        // 整理变量
-        $src = [
-            'field' => 'update_time'
-            ,'order' => 'desc'
-            ,'page' => 1
-            ,'limit' => 10
-        ];
-        $src = array_cover($srcfrom, $src) ;
-        $str1 = $src['field'];
-        $str2 = $src['order'];
-
-        // 整理数据
-        $cnt = $obj->count();
-        $obj = $obj->order($src['field'], $src['order']);
-
-        $limit_start = $src['page'] * $src['limit'] - $src['limit'];
-        $limit_length = $src['limit'];
-        $obj = $obj->slice($limit_start, $limit_length);
-        $data = [
-            'code' => 0  // ajax请求次数，作为标识符
-            ,'msg' => ""  // 获取到的结果数(每页显示数量)
-            ,'count' => $cnt // 符合条件的总数据量
-            ,'data' => $obj //获取到的数据结果
-        ];
-
+        $tools = new \app\tools\controller\Index;
+        $data = $tools->reSetObject($obj, $srcfrom);
         return $data;
     }
 
@@ -322,31 +177,7 @@
     */
     function reSetArray($arr, $srcfrom)
     {
-        // 整理变量
-        $src = [
-            'field' => 'update_time'
-            ,'order' => 'desc'
-            ,'page' => 1
-            ,'limit' => 10
-        ];
-        $src = array_cover($srcfrom, $src) ;
-
-        // 重新整理数据
-        $cnt = count($arr);    # 记录总数
-        if($cnt > 0){
-            $src['order'] == 'desc' ? $src['order'] = SORT_DESC
-                : $src['order'] = SORT_ASC;   # 数据排序
-            $arr = sortArrByManyField($arr, $src['field'], $src['order']);
-        }
-        $limit_start = $src['page'] * $src['limit'] - $src['limit']; # 获取当前页数据
-        $limit_length = $src['limit'];
-        $arr = array_slice($arr, $limit_start, $limit_length);
-        $data = [   # 数据合并
-            'code' => 0 , # ajax请求次数，作为标识符
-            'msg' => "",  # 获取到的结果数(每页显示数量)
-            'count' => $cnt, # 符合条件的总数据量
-            'data' => $arr, # 获取到的数据结果
-        ];
-
+        $tools = new \app\tools\controller\Index;
+        $data = $tools->reSetArray($arr, $srcfrom);
         return $data;
     }

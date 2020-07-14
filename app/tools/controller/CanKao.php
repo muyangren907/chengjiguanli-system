@@ -3,9 +3,9 @@ declare (strict_types = 1);
 
 namespace app\zhengli\controller;
 
-use think\Request;
+use app\base\controller\ToolsBase;
 
-class CanKao
+class CanKao extends BaseController 
 {
     // 获取参考学科
     public function subjectIdLieming($srcfrom)

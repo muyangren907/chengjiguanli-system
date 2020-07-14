@@ -56,6 +56,7 @@ class AuthGroupAccess extends BaseModel
 
         return $data;
     }
+    
 
     // 考试设置关联表
     public function jsUser()
