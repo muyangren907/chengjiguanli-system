@@ -12,7 +12,7 @@
 // 应用公共文件
 
 	// 获取类别列表
-	function getCategory($p_id = 0)
+	function categoryChildren($p_id = 0)
 	{
 		// 查询类别
         $category = new \app\system\model\Category;
@@ -63,13 +63,23 @@
 
 
 	// 单位列表
-	function schoolList($low = '班级', $high = '其它级', $order = 'asc')
+	function danweiJibie($low = '班级', $high = '其它级', $order = 'asc')
 	{
 		// 实例化单位模型
 		$sch = new \app\system\model\School;
 		$data = $sch->srcJibie($low, $high, $order);
 		return $data;
 	}
+
+
+    // 单位列表
+    function schoolXueduan($low = '幼儿园', $high = '其它学段', $order = 'asc')
+    {
+        // 实例化单位模型
+        $sch = new \app\system\model\School;
+        $data = $sch->srcSchool($low, $high, $order);
+        return $data;
+    }
 
 
     // 可以组织考试的单位列表

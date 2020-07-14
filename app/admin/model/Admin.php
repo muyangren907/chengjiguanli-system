@@ -27,9 +27,10 @@ class Admin extends BaseModel
                 'adSchool' => function($query){
                     $query->field('id, jiancheng');
                 }
-                ,'glGroup' => function($query){
-                    $query->where('status', 1)->field('title, rules, miaoshu');
-                }
+                ,'glGroup'
+                // ,'glGroup' => function($query){
+                //     $query->where('status', 1)->field('title, rules, miaoshu');
+                // }
             ])
             ->hidden([
                 'password'
@@ -67,7 +68,7 @@ class Admin extends BaseModel
 
     public function glGroup()
     {
-        return $this->belongsToMany('AuthGroup', 'AuthGroupAccess', 'group_id', 'uid');
+        return $this->belongsToMany('AuthGroup', 'AuthGroupAccess', 'uid', 'group_id');
     }
 
 

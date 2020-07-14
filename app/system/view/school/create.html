@@ -32,7 +32,7 @@
           <div class="layui-form-item">
     		    <label for="xingzhi_id" class="layui-form-label"><span class="x-red">*</span>单位性质</label>
     		    <div class="layui-input-block">
-    		    	{php} $category = getCategory(101);{/php}
+    		    	{php} $category = categoryChildren(101);{/php}
     		      <select name="xingzhi_id" lay-verify="required">
     		      	<option value=""></option>
     		      	{volist name="category" id="vo"}
@@ -51,7 +51,7 @@
           <div class="layui-form-item">
             <label for="jibie_id" class="layui-form-label"><span class="x-red">*</span>单位级别</label>
             <div class="layui-input-block">
-              {php} $category = getCategory(102);{/php}
+              {php} $category = categoryChildren(102);{/php}
               <select name="jibie_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="category" id="vo"}
@@ -72,7 +72,7 @@
               <span class="x-red">*</span>学段
             </label>
             <div class="layui-input-block">
-              {php} $category = getCategory(103);{/php}
+              {php} $category = categoryChildren(103);{/php}
               <select name="xueduan_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="category" id="vo"}

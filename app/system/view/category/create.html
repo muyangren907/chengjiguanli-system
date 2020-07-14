@@ -14,7 +14,7 @@
           <div class="layui-form-item">
     		    <label for="pid" class="layui-form-label"><span class="x-red">*</span>父级类别</label>
     		    <div class="layui-input-block">
-    		    	{php} $category = getCategory(0);{/php}
+    		    	{php} $category = categoryChildren(0);{/php}
     		      <select name="p_id">
     		      	<option value="">顶级类别</option>
     		      	{volist name="category" id="vo"}

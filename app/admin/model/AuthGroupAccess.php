@@ -4,8 +4,9 @@ namespace app\admin\model;
 
 // 引用用户数据模型
 use app\BaseModel;
+use think\model\Pivot;
 
-class AuthGroupAccess extends BaseModel
+class AuthGroupAccess extends Pivot
 {
     // 根据角色ID查询用户
     public function search($srcfrom)

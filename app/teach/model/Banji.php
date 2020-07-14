@@ -101,7 +101,7 @@ class Banji extends BaseModel
     public function getNumTitleAttr()
     {
     	// 获取基础信息
-        $njname = nianJiNameList();     # 年级名对应表
+        $njname = $this->gradeName();     # 年级名对应表
     	$nj = $this->getAttr('ruxuenian');
     	$bj = $this->getAttr('paixu');
         $numnj = array_flip(array_keys($njname));
@@ -121,8 +121,8 @@ class Banji extends BaseModel
     public function getBanjiTitleAttr()
     {
         //获取班级、年级列表
-        $njlist = nianJiNameList();
-        $bjlist = banJiNamelist();
+        $njlist = $this->gradeName();
+        $bjlist = $this->className();
 
         $nj = $this->getAttr('ruxuenian');
         $bj = $this->getAttr('paixu');
@@ -142,7 +142,7 @@ class Banji extends BaseModel
     // 班名获取器
     public function getBanTitleAttr()
     {
-        $bjname = banjinamelist();
+        $bjname = $this->className();
         $bj = $this->getAttr('paixu');
 
         // 获取班级名
@@ -184,8 +184,8 @@ class Banji extends BaseModel
             ->find();
 
         //获取班级、年级列表
-        $njlist = nianJiNameList($jdshijian); 
-        $bjlist = banJiNamelist();
+        $njlist = $this->gradeName($jdshijian); 
+        $bjlist = $this->className();
 
         if(array_key_exists($bjinfo->ruxuenian, $njlist))
         {
@@ -216,8 +216,8 @@ class Banji extends BaseModel
             return false;
         }
         // 获取年级、班级列表
-        $njlist = nianJiNameList();
-        $bjlist = banJiNameList();
+        $njlist = $this->gradeName();
+        $bjlist = $this->className();
 
         $nj = substr($str, 0, 9);
         $bj = substr($str, 9, strlen($str) - 9);

@@ -108,7 +108,6 @@ class School extends BaseModel
     {
         // 实例化类别数据模型
         $cat = new \app\system\model\Category;
-        // 获取获取级别列表
         $catlist = $cat->where('p_id', 102)
             ->where('status', 1)
             ->column('id', 'title');
@@ -122,4 +121,26 @@ class School extends BaseModel
 
         return $schlist; 
     }
+
+
+    // 根据学段查学校
+    public function srcSchool($low = '幼儿园', $high = '其它学段', $order = 'asc')
+    {
+        // 实例化类别数据模型
+        $cat = new \app\system\model\Category;
+        $catlist = $cat->where('p_id', 103)
+            ->where('status', 1)
+            ->column('id', 'title');
+
+        // 查询学校
+        $schlist = $this->where('xueduan_id', 'between', [$catlist[$low], $catlist[$high]])
+            ->where('status', 1)
+            ->where('jibie_id', 10203)
+            ->order(['xueduan_id' => $order, 'paixu'])
+            ->field('id, title, jiancheng')
+            ->select();
+
+        return $schlist;
+    }
+
 }

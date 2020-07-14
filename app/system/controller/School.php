@@ -43,7 +43,6 @@ class School extends AdminBase
 
         // 实例化
         $sch = new sch;
-
         $data = $sch->search($src);
 
         // 查询要显示的数据

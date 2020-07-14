@@ -59,7 +59,7 @@
           <div class="layui-form-item">
             <label for="danwei_id" class="layui-form-label"><span class="x-red">*</span>现工作单位</label>
             <div class="layui-input-block">
-              {php} $schoollist = schoolList('校级', '市级', 'asc');{/php}
+              {php} $schoollist = danweiJibie('校级', '市级', 'asc');{/php}
               <select name="danwei_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="schoollist" id="vo"}
@@ -80,7 +80,7 @@
               职务
             </label>
             <div class="layui-input-block">
-              {php} $category = getCategory(107);{/php}
+              {php} $category = categoryChildren(107);{/php}
               <select name="zhiwu_id">
                 <option value=""></option>
                 {volist name="category" id="vo"}
@@ -101,7 +101,7 @@
               职称
             </label>
             <div class="layui-input-block">
-              {php} $category = getCategory(106);{/php}
+              {php} $category = categoryChildren(106);{/php}
               <select name="zhicheng_id">
                 <option value=""></option>
                 {volist name="category" id="vo"}
@@ -122,7 +122,7 @@
               学历
             </label>
             <div class="layui-input-block">
-              {php} $category = getCategory(105);{/php}
+              {php} $category = categoryChildren(105);{/php}
               <select name="xueli_id">
                 <option value=""></option>
                 {volist name="category" id="vo"}

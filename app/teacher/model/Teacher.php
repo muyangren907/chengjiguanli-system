@@ -316,14 +316,14 @@ class Teacher extends BaseModel
     // 年龄获取器
     public function getAgeAttr()
     {
-        return getAgeByBirth($this->getdata('shengri'), 2);
+        return $this->fBirth($this->getdata('shengri'), 2);
     }
 
 
     // 工龄获取器
     public function getGonglingAttr()
     {
-        return getAgeByBirth($this->getdata('worktime'), 2);
+        return $this->fBirth($this->getdata('worktime'), 2);
     }
 
 

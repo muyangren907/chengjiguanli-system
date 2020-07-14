@@ -23,7 +23,7 @@
 	    <label for="jibie_id" class="layui-form-label" style="height: 100%">单位级别</label>
 	    <div class="layui-input-block">
 	    	<input type="radio" name="jibie_id" title="无" value="" lay-skin="primary" checked="">
-	    	{php} $category = getCategory(102);{/php}
+	    	{php} $category = categoryChildren(102);{/php}
 	    	{volist name="category" id="vo"}
 	    		<input type="radio" name="jibie_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
@@ -33,7 +33,7 @@
 	    <label for="xingzhi_id" class="layui-form-label" style="height: 100%">单位性质</label>
 	    <div class="layui-input-block">
 	    	<input type="radio" name="xingzhi_id" title="无" value="" lay-skin="primary" checked="">
-	    	{php} $category = getCategory(101);{/php}
+	    	{php} $category = categoryChildren(101);{/php}
 	    	{volist name="category" id="vo"}
 	    		<input type="radio" name="xingzhi_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
