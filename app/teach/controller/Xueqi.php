@@ -36,6 +36,8 @@ class Xueqi extends BaseController
                 ,'field' => 'id'
                 ,'order' => 'desc'
                 ,'searchval' => ''
+                ,'bfdate' => ''
+                ,'enddate' => ''
             ], 'POST');
 
         // 根据条件查询数据

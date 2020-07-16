@@ -45,6 +45,8 @@ class Xueqi extends BaseModel
             'category' => ''
             ,'searchval' => ''
             ,'status' => ''
+            ,'bfdate' => ''
+            ,'enddate' => ''
         ];
         $src = array_cover($srcfrom, $src) ;
         if(isset($srcfrom['bfdate']) && strlen($srcfrom['bfdate']) > 0)

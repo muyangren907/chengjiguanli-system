@@ -26,10 +26,10 @@
         时间
       </label>
       <div class="layui-input-inline">
-        <input type="text" class="layui-input" id="bfdate" name="bfdate" placeholder="起始：默认四年前的今天" value="{$list.data.bfdate|default=''}" autocomplete="off" lay-filter="riqi">
+        <input type="text" class="layui-input layui-input-date" id="bfdate" name="bfdate" placeholder="" value="" autocomplete="off" lay-filter="riqi">
       </div>
       <div class="layui-input-inline">
-        <input type="text" class="layui-input" id="enddate" name="enddate" placeholder="结束：默认明天" value="{$list.data.enddate|default=''}" autocomplete="off" lay-filter="riqi">
+        <input type="text" class="layui-input layui-input-date" id="enddate" name="enddate" placeholder="" value="" autocomplete="off" lay-filter="riqi">
       </div>
     </div>
   </div>
@@ -77,9 +77,10 @@
     ]];
 
   // 提交搜索条件后重载表格
-    layui.use(['table','cjgl'],function(){
+    layui.use(['table','cjgl','laydate'],function(){
       var table = layui.table
           cjgl = layui.cjgl;
+          laydate = layui.laydate;
       //表头工具栏事件
       table.on('toolbar(mytable)', function(obj){
         switch(obj.event){
@@ -109,6 +110,15 @@
             cjgl.add('编辑学期','xueqi/edit/'+obj.data.id,'','',true);
             break;
         };
+      });
+      lay('.layui-input-date').each(function(){
+        laydate.render({
+          elem: this
+          ,trigger: 'click'
+            ,done: function(value, date, endDate){
+              $("#srcsubmit").click();
+            }
+        });
       });
     });
 </script>

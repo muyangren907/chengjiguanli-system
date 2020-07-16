@@ -25,7 +25,7 @@
       <div class="layui-form-item">
         <label for="danwei_id" class="layui-form-label" style="height: 100%">单位</label>
         <div class="layui-input-block">
-          {php} $schoollist = schoolList('教研组', '区级');{/php}
+          {php} $schoollist = danweiJibie('教研组', '区级');{/php}
           <input type="radio" name="school_id" title="无" value="" lay-skin="primary" checked>
           {volist name="schoollist" id="vo"}
             <input type="radio" name="school_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
