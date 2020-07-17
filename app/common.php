@@ -429,3 +429,170 @@
 
         return $data;
     }
+
+
+    function nToWord($num)
+    {
+        $num = round($num) * 1;  # 获取数字并取整
+
+        $chiNum = array('零', '一', '二', '三', '四', '五', '六', '七', '八', '九');
+        $chiUni = array('','十', '百', '千', '万','十', '百', '千', '亿', '十', '百','千','万','十', '百', '千');
+        $jiedian = array(4, 8, 12);
+        $cnt = strlen($num);  #取数字长度
+        $num = (string)$num;
+        $chiStr = '';
+        $zero = true;  # 上一个数字是否为0
+
+        switch ($cnt) {
+            case 0:
+                $chiStr = '';
+                break;
+            case 1:
+                $chiStr = $chiNum[$num];
+                break;
+            case 2:
+                $temp = $num[0];
+                if($temp == 1)
+                {
+                    $chiStr = $chiUni[1];
+                }else{
+                    $chiStr = $chiNum[$temp] . $chiUni[1];
+                }
+                $temp = $num[1];
+                $chiStr = $chiStr . $chiNum[$temp];
+                break;
+            default:
+                for( $i = $cnt -1 ; $i >= 0; $i-- )
+                {
+                    $temp = $num[$i]; # 获取当前数位上的数字
+                    $x = $cnt - $i -1; # 获取数位字典下标
+                    if ( $temp == 0 ) {
+                        $noShuwei = false;
+                        // 判断连续4个数位是否都是0
+                        if( ($x + 1) % 4 == 1 && $x != 0)
+                        {
+                            $noShuwei = true; # 初始化4位小循环
+                            for ($ii = 1; $ii < 4; $ii++) {
+                                if($num[$i - $ii] != 0 || ($i-$ii) < 0 )  # 如果有非0数字则开关关闭并
+                                {
+                                    $noShuwei = false;  # 退出循环
+                                    continue;
+                                }
+                            }
+                            if ($noShuwei == false)
+                            {
+                                $chiStr = $chiUni[$x] . $chiStr;
+                            } else {
+                                strlen($chiStr) > 0 ? $chiStr = $chiNum[$temp] . $chiStr : '' ;
+                            }
+                        }else{
+                            $zero == true ? '' : $chiStr = $chiNum[$temp] . $chiStr;
+                        }
+                        $zero = true;
+                    } else {
+                        $chiStr = $chiNum[$temp] . $chiUni[$x] . $chiStr;
+                        $zero = false;
+                        $zeroCnt = 0;
+                    }
+                    ($x + 1) % 4 == 0 ? $zeroCnt = 0 : '';  # 每4个数位，计数器归零一次
+                }
+                break;
+        }
+        return $chiStr;
+    }
+
+
+    function numToWord($num)
+    {
+        if(!preg_match("/^[1-9][0-9]*$/", $num))
+        {
+            return '';
+        }
+
+        $chiUni = array('', '万', '亿', '万');
+        $cnt = strlen($num);  #取数字长度
+        $num = (string)$num;
+        $chiStr = '';
+
+        //分割数组
+        $x = 0;
+        $y = 0;
+        for ($i=$cnt - 1; $i >= 0; $i--) {
+            if($x<4)
+            {
+                $arr[$y][$x] = $num[$i];
+            }else{
+                $x = 0;
+                $y = $y + 1;
+                $arr[$y][$x] = $num[$i];
+            }
+            $x = $x + 1;
+        }
+
+        foreach ($arr as $key => $value) {
+            // 判断有几位数
+            $cnt = count($value);
+            dump('aa');
+            $thisStr = numTo($value, $key);
+
+            if($thisStr == '零')
+            {
+                $chiStr = numTo($value, $key) . $chiStr;
+            }else{
+                $chiStr = numTo($value, $key) . $chiUni[$key] . $chiStr;
+            }
+        }
+
+
+        return $chiStr;
+    }
+
+
+    function numTo($arr = array(), $key = 0)
+    {
+        $cnt = count($arr);
+        $chiNum = array('零', '一', '二', '三', '四', '五', '六', '七', '八', '九');
+        $chiUni = array('','十', '百', '千');
+        $chiStr = '';
+        $zero = true;  # 上一个数字是否为0
+        $key = $key * 4;
+        if($cnt == 0 || array_sum($arr) = 0)
+        {
+            return $chiNum[0];
+        }
+
+
+        switch ($cnt) {
+            case 2:
+                $temp = $arr[1];
+                if($temp == 1)
+                {
+                    $chiStr = $chiUni[1];
+                }else{
+                    $chiStr = $chiNum[$temp] . $chiUni[1];
+                }
+                $temp = $arr[0];
+                $temp != 0 ? $chiStr = $chiStr . $chiNum[$temp] : '' ;
+                break;
+            default:
+                for($i = 0; $i<$cnt; $i++)
+                {
+                    $temp = $arr[$i];
+                    if($temp == 0)
+                    {
+                        if($zero != true)
+                        {
+                            $chiStr = $chiNum[$temp] .$chiStr;
+                        }
+                        $zero = true;
+                    }else{
+                        $chiStr = $chiNum[$temp] . $chiUni[$i] .$chiStr;
+                        $zero = false;
+                    }
+                }
+                break;
+        }
+
+        return $chiStr;
+
+    }

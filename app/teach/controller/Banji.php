@@ -21,6 +21,16 @@ class Banji extends BaseController
         $list['dataurl'] = 'banji/data';
         $list['status'] = '/teach/banji/status';
 
+        // $n = 100000001;
+        // $n = 12305679;
+
+        $n = 10001;
+        halt('aa');
+
+        $str = numToWord($n);
+        dump($n);
+        dump($str);
+
         // 模板赋值
         $this->view->assign('list', $list);
 
