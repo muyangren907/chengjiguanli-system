@@ -59,7 +59,7 @@ class Xueqi extends BaseModel
         {
             $src['enddate'] = $srcfrom['enddate'];
         }else{
-            $src['enddate'] = date("Y-m-d", strtotime("+10 year"));
+            $src['enddate'] = date("Y-m-d", strtotime('now'));
         }
 
         // 查询数据
