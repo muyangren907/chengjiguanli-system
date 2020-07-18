@@ -201,7 +201,7 @@ class JsRongyuInfo extends BaseModel
                     },
                 ]
             )
-            ->append(['hjJsName', 'cyJsName'])
+            // ->append(['hjJsName', 'cyJsName'])
             ->select();
 
         return $data;
@@ -291,23 +291,23 @@ class JsRongyuInfo extends BaseModel
         return $value;
     }
 
-    // 获奖教师名整理
-    public function getHjJsNameAttr($value)
-    {
-        $teacherList = $this->getAttr('hjJsry');
-        $teachNames = teacherNames($teacherList);
+    // // 获奖教师名整理
+    // public function getHjJsNameAttr($value)
+    // {
+    //     $teacherList = $this->getAttr('hjJsry');
+    //     $teachNames = teacherNames($teacherList);
 
-        return $teachNames;
+    //     return $teachNames;
 
-    }
+    // }
 
-    // 获奖教师名整理
-    public function getCyJsNameAttr($value)
-    {
-        $teacherList = $this->getAttr('cyJsry');
-        $teachNames = teacherNames($teacherList);
+    // // 获奖教师名整理
+    // public function getCyJsNameAttr($value)
+    // {
+    //     $teacherList = $this->getAttr('cyJsry');
+    //     $teachNames = teacherNames($teacherList);
 
-        return $teachNames;
+    //     return $teachNames;
 
-    }
+    // }
 }

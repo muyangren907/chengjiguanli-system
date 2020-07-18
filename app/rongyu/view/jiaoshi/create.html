@@ -15,7 +15,7 @@
           <div class="layui-form-item">
     		    <label for="category_id" class="layui-form-label"><span class="x-red">*</span>荣誉类型</label>
     		    <div class="layui-input-block">
-    		    	{php} $category = getCategory(114);{/php}
+    		    	{php} $category = categoryChildren(114);{/php}
     		      <select name="category_id" lay-verify="required">
     		      	<option value=""></option>
     		      	{volist name="category" id="vo"}
@@ -34,7 +34,7 @@
           <div class="layui-form-item">
             <label for="fzschool_id" class="layui-form-label"><span class="x-red">*</span>颁奖单位</label>
             <div class="layui-input-block">
-              {php} $school = schoolList('区级', '其它级');{/php}
+              {php} $school = danweiJibie('区级', '其它级');{/php}
               <select name="fzschool_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="school" id="vo"}

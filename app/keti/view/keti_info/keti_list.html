@@ -24,7 +24,7 @@
 	    <label for="fzdanwei_id" class="layui-form-label" style="height: 100%">负责单位</label>
 	    <div class="layui-input-block">
 	    	<input type="radio" name="fzdanwei_id" title="无" value="" lay-skin="primary" checked>
-	    	{php} $school = schoolList('校级','区级'); {/php}
+	    	{php} $school = danweiJibie('校级','区级'); {/php}
 	    	{volist name="school" id="vo"}
 	    		<input type="radio" name="fzdanwei_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
@@ -34,7 +34,7 @@
 	    <label for="subject_id" class="layui-form-label" style="height: 100%">所属学科</label>
 	    <div class="layui-input-block">
 	    	<input type="radio" name="subject_id" title="无" value="" lay-skin="primary" checked>
-	    	{php} $category = getCategory(116);{/php}
+	    	{php} $category = categoryChildren(116);{/php}
 	    	{volist name="category" id="vo"}
 	    		<input type="radio" name="subject_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
@@ -44,7 +44,7 @@
 	    <label for="category_id" class="layui-form-label" style="height: 100%">研究类别</label>
 	    <div class="layui-input-block">
 	    	<input type="radio" name="category_id" title="无" value="" lay-skin="primary" checked>
-	    	{php} $category = getCategory(117);{/php}
+	    	{php} $category = categoryChildren(117);{/php}
 	    	{volist name="category" id="vo"}
 	    		<input type="radio" name="category_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
@@ -54,7 +54,7 @@
 	    <label for="jddengji_id" class="layui-form-label" style="height: 100%">鉴定结果</label>
 	    <div class="layui-input-block">
 	    <input type="radio" name="jddengji_id" title="无" value="" lay-skin="primary" checked>
-        {php} $category = getCategory(118);{/php}
+        {php} $category = categoryChildren(118);{/php}
         {volist name="category" id="vo"}
           <input type="radio" name="jddengji_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
         {/volist}

@@ -37,7 +37,7 @@
 	    <label for="hjschool_id" class="layui-form-label" style="height: 100%">获奖单位</label>
 	    <div class="layui-input-block">
 	    	<input type="radio" name="hjschool_id" title="无" value="" lay-skin="primary" checked>
-	    	{php} $school = schoolList('校级','区级'); {/php}
+	    	{php} $school = danweiJibie('校级','区级'); {/php}
 	    	{volist name="school" id="vo"}
 	    		<input type="radio" name="hjschool_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
@@ -79,7 +79,7 @@
 				var str='';
 				if(d.hjJsry)
 				{
-					for (var k = 0, length = d.hjJsry.length; k < length; k++) {
+          for (var k = 0, length = d.hjJsry.length; k < length; k++) {
 						if(k == 0){
 							str = d.hjJsry[k].teacher.xingming;
 						}else{

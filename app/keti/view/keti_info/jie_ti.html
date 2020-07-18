@@ -74,7 +74,7 @@
           <div class="layui-form-item">
             <label for="jddengji_id" class="layui-form-label"><span class="x-red">*</span>结题鉴定 </label>
             <div class="layui-input-block">
-              {php}$jddengji = getCategory(118);{/php}
+              {php}$jddengji = categoryChildren(118);{/php}
               <select name="jddengji_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="jddengji" id="vo"}

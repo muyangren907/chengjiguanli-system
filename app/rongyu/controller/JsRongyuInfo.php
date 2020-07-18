@@ -448,14 +448,30 @@ class JsRongyuInfo extends BaseController
             $myrowid = $key + 4;
             $worksheet->getCell('A' . $myrowid)->setValue($key + 1);
             $worksheet->getCell('B' . $myrowid)->setValue($value->title);
-            $worksheet->getCell('C' . $myrowid)->setValue($value->hjJsName);
+            $names = '';
+            foreach ($value->hjJsry as $k => $val) {
+                if($k == 0)
+                {
+                    $names = $val->teacher->xingming;
+                }
+                $names = $names . '、' .$val->teacher->xingming;
+            }
+            $worksheet->getCell('C' . $myrowid)->setValue($names);
             if($value->hj_school){
                 $worksheet->getCell('D' . $myrowid)->setValue($value->hj_school->jiancheng);
             }
             if($value->ry_subject){
                 $worksheet->getCell('E' . $myrowid)->setValue($value->ry_subject->title);
             }
-            $worksheet->getCell('F' . $myrowid)->setValue($value->cyJsName);
+            $names = '';
+            foreach ($value->cyJsry as $k => $val) {
+                if($k == 0)
+                {
+                    $names = $val->teacher->xingming;
+                }
+                $names = $names . '、' .$val->teacher->xingming;
+            }
+            $worksheet->getCell('F' . $myrowid)->setValue($names);
             if($value->jx_category){
                 $worksheet->getCell('G' . $myrowid)->setValue($value->jx_category->title);
             }

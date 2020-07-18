@@ -114,7 +114,7 @@
           <div class="layui-form-item">
             <label for="hjschool_id" class="layui-form-label"><span class="x-red">*</span>所属单位</label>
             <div class="layui-input-block">
-              {php} $school = schoolList('校级','区级');{/php}
+              {php} $school = danweiJibie('校级','区级');{/php}
               <select name="hjschool_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="school" id="vo"}
@@ -154,7 +154,7 @@
           <div class="layui-form-item">
             <label for="jiangxiang_id" class="layui-form-label"><span class="x-red">*</span>奖项 </label>
             <div class="layui-input-block">
-              {php} $jiangxiang = getCategory(113);{/php}
+              {php} $jiangxiang = categoryChildren(113);{/php}
               <select name="jiangxiang_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="jiangxiang" id="vo"}
@@ -258,7 +258,7 @@
       $(obj).attr('onclick',"imgMax(this,true)");
     }
   }
-  
+
 </script>
 {/block}
 

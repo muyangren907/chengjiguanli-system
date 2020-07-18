@@ -23,7 +23,7 @@
 	    <label for="category_id" class="layui-form-label" style="height: 100%">荣誉类别</label>
 	    <div class="layui-input-block">
 	    	<input type="radio" name="category_id" title="无" value="" lay-skin="primary" checked>
-	    	{php} $category = getCategory(114);{/php}
+	    	{php} $category = categoryChildren(114);{/php}
 	    	{volist name="category" id="vo"}
 	    		<input type="radio" name="category_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
@@ -33,7 +33,7 @@
 	    <label for="fzschool_id" class="layui-form-label" style="height: 100%">颁奖单位</label>
 	    <div class="layui-input-block">
 	    	<input type="radio" name="fzschool_id" title="无" value="" lay-skin="primary" checked>
-	    	{php} $school = schoolList('区级','其它级'); {/php}
+	    	{php} $school = danweiJibie('区级','其它级'); {/php}
 	    	{volist name="school" id="vo"}
 	    		<input type="radio" name="fzschool_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
