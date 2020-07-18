@@ -73,7 +73,7 @@ class Fields extends AdminBase
             $oldname = $filist->oldname;
         }
 
-        $url = public_path() . 'public\\uploads\\' . $filist->url;
+        $url = public_path() . 'uploads\\' . $filist->url;
 
         $data = file_exists($url);
         if ($data === true) {
@@ -81,7 +81,7 @@ class Fields extends AdminBase
         } else {
            return $this->error('文件不存在！');
         }
-        
+
 
     }
 
