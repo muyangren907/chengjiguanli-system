@@ -92,26 +92,26 @@
     }
 
 
-	// // 整理教师名
-	// function teacherNames($list = array())
-	// {
-	// 	if(count($list) == 0 )
-	// 	{
-	// 		return '';
-	// 	}
+	// 整理教师名
+	function teacherNames($list = array())
+	{
+		if(count($list) == 0 )
+		{
+			return '';
+		}
 
-	// 	$names = '';
-	// 	foreach ($list as $key => $value) {
-	// 		if($key == 0)
-	// 		{
-	// 			$names = $value['teacher']['xingming'];
-	// 		}else{
-	// 			$names = $names . '、'. $value['teacher']['xingming'];
-	// 		}
-	// 	}
+		$names = '';
+		foreach ($list as $key => $value) {
+			if($key == 0)
+			{
+				$names = $value['teacher']['xingming'];
+			}else{
+				$names = $names . '、'. $value['teacher']['xingming'];
+			}
+		}
 
-	// 	return $names;
-	// }
+		return $names;
+	}
 
 
     // 给数组按多条件排序
@@ -123,12 +123,12 @@
     }
 
 
-    /**
+    /*
      * 根据键值，用数组2的值替换数组1的值
      * $cover 覆盖数组，存储新值的数组
      * $covered 被覆盖数组，被更改值的数组
      * 返回 新arr1
-     * */
+     */
     function array_cover($cover = array(), $covered = array())
     {
     	$tools = new \app\tools\controller\Index;

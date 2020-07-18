@@ -6,6 +6,9 @@ namespace app\rongyu\controller;
 use app\BaseController;
 // 引用教师数据模型类
 use app\rongyu\model\DwRongyu as DW;
+// 引用上传文件
+use app\tools\controller\File;
+
 
 class Danwei extends BaseController
 {
@@ -155,14 +158,17 @@ class Danwei extends BaseController
     // 保存批传
     public function saveAll()
     {
-        // 获取文件信息
-        $list['text'] = $this->request->post('text');
-        $list['serurl'] = $this->request->post('serurl');
+        // 获取表单数据
+        $list = request()->only([
+            'text'
+            ,'serurl'
+        ], 'post');
 
         // 获取表单上传文件
         $file = request()->file('file');
         // 上传文件并返回结果
-        $data = saveFileInfo($file, $list, false);
+        $fileObj = new File();
+        $data = $fileObj->saveFileInfo($file, $list, false);
 
         if($data['val'] != true)
         {
@@ -173,6 +179,7 @@ class Danwei extends BaseController
         $createInfo = [
             'url' => $data['url']
             ,'title' => '批传单位荣誉图片'
+            ,'project' => '无'
         ];
 
         // 实例化验证类
@@ -200,15 +207,17 @@ class Danwei extends BaseController
      */
      public function upload()
     {
-
-        // 获取文件信息
-        $list['text'] = $this->request->post('text');
-        $list['serurl'] = $this->request->post('serurl');
+        // 获取表单数据
+        $list = request()->only([
+            'text'
+            ,'serurl'
+        ], 'post');
 
         // 获取表单上传文件
         $file = request()->file('file');
         // 上传文件并返回结果
-        $data = saveFileInfo($file, $list, false);
+        $fileObj = new File();
+        $data = $fileObj->saveFileInfo($file, $list, false);
 
         return json($data);
     }

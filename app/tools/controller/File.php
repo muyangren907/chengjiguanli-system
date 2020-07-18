@@ -20,7 +20,7 @@ class File
      *         str      $data['val']  返回信息
      *         str      $data['url']  文件路径
      */
-    public function saveFileInfo($file, $list, $isSave = false)
+    public function saveFileInfo($file, $list = array(), $isSave = false)
     {
         $hash = $file->hash('sha1');
         $f = new \app\system\model\Fields;
@@ -28,7 +28,7 @@ class File
 
         if($serFile)
         {
-            $serFile->user_id = session('userid');
+            $serFile->user_id = session('admin.userid');
             $serFile->save();
             $data['msg'] = '文件已经存在';
             $data['val'] = true;
@@ -49,7 +49,7 @@ class File
                 ,strlen($savename) - strripos($savename
                 ,'\\'));
             $list['hash'] = $file->hash('sha1');
-            $list['user_id'] = session('userid');
+            $list['user_id'] = session('admin.userid');
             $list['oldname'] = $file->getOriginalName();
             $list['fieldsize'] = $file->getSize();
             $list['category_id'] = $list['category_id'];

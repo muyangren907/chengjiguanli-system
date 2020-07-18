@@ -1,19 +1,21 @@
 {extend name=".././view/create.html" /}
 
 {block name="form"}
-    <div class="layui-form-item">
-      <button type="button" class="layui-btn" id="upload">
-        <i class="layui-icon">&#xe67c;</i>上传文件
-      </button>
-    </div>
     <form class="layui-form layui-form-pane" lay-filter="myform">
           <div class="layui-form-item">
-              <label for="url" class="layui-form-label">
-                  <span class="x-red">*</span>文件路径
+              <label for="title" class="layui-form-label">
+                  文件
               </label>
               <div class="layui-input-block">
-                  <input type="text" id="url" name="url" lay-verify="required"
-                  autocomplete="off" class="layui-input " value="" placeholder="中文2-25个字符" readonly="true">
+                <div class="layui-input-inline" style="min-width: 250px">
+                  <input type="text" id="url" name="url"
+                  autocomplete="off" class="layui-input " value="{$list.data.url|default=''}" placeholder="地址" readonly>
+                </div>
+                <div class="layui-input-inline" style="min-width: 100px">
+                  <button type="button" class="layui-btn" id="upload">
+                    <i class="layui-icon">&#xe67c;</i>上传文件
+                  </button>
+                </div>
               </div>
           </div>
           <div class="layui-form-item" style="text-align: right;">

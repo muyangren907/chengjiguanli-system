@@ -5,18 +5,6 @@ namespace app\tools\controller;
 
 class Index
 {
-    // // 将关联学生成绩转换成以学科列名为key得分为value的数组
-    // public function subjectChengjiKeyAndValue($array = array())
-    // {
-    //     $arr = array();
-    //     foreach ($array as $key => $value) {
-    //         $array[$value->subjectName->lieming] = $value;
-    //         unset($array[$key]);
-    //     }
-    //     return $array;
-    // }
-
-
     // 给数组按多条件排序
     public function sortArrByManyField(){
       $args = func_get_args();
@@ -41,7 +29,7 @@ class Index
       $keys = array_keys($args[0]);
       call_user_func_array('array_multisort', $args);
 
-      return array_pop($args);;
+      return array_pop($args);
     }
 
 

@@ -10,6 +10,9 @@ use app\keti\model\KetiInfo as ktinfo;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
+// 引用上传文件
+use app\tools\controller\File;
+
 
 class KetiInfo extends BaseController
 {
@@ -192,14 +195,17 @@ class KetiInfo extends BaseController
     // 批量保存图片
     public function saveAll($ketice_id)
     {
-        // 获取文件信息
-        $list['text'] = $this->request->post('text');
-        $list['serurl'] = $this->request->post('serurl');
+        // 获取表单数据
+        $list = request()->only([
+            'text'
+            ,'serurl'
+        ], 'post');
 
         // 获取表单上传文件
         $file = request()->file('file');
         // 上传文件并返回结果
-        $data = saveFileInfo($file, $list, false);
+        $fileObj = new File();
+        $data = $fileObj->saveFileInfo($file, $list, false);
 
         if($data['val'] != 1)
         {
@@ -427,7 +433,7 @@ class KetiInfo extends BaseController
         }else{
             $data = true;
         }
-        
+
 
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '更新成功', 'val' => 1]

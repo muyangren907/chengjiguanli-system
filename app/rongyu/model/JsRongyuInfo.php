@@ -290,24 +290,4 @@ class JsRongyuInfo extends BaseModel
         }
         return $value;
     }
-
-    // // 获奖教师名整理
-    // public function getHjJsNameAttr($value)
-    // {
-    //     $teacherList = $this->getAttr('hjJsry');
-    //     $teachNames = teacherNames($teacherList);
-
-    //     return $teachNames;
-
-    // }
-
-    // // 获奖教师名整理
-    // public function getCyJsNameAttr($value)
-    // {
-    //     $teacherList = $this->getAttr('cyJsry');
-    //     $teachNames = teacherNames($teacherList);
-
-    //     return $teachNames;
-
-    // }
 }

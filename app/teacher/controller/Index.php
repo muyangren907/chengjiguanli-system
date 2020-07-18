@@ -7,6 +7,9 @@ use app\BaseController;
 // 引用教师数据模型类
 use app\teacher\model\Teacher as TC;
 
+// 引用上传文件
+use app\tools\controller\File;
+
 
 class Index extends BaseController
 {
@@ -426,13 +429,17 @@ class Index extends BaseController
     // 上传文件
     public function upload()
     {
-        // 获取文件信息
-        $list['category_id'] = $this->request->post('category_id');
-        $list['serurl'] = $this->request->post('serurl');
+        // 获取表单数据
+        $list = request()->only([
+            'serurl'
+            ,'category_id'
+        ], 'post');
 
         // 获取表单上传文件
         $file = request()->file('file');
-        $data = saveFileInfo($file, $list, true);
+        // 上传文件并返回结果
+        $fileObj = new File();
+        $data = $fileObj->saveFileInfo($file, $list, true);
 
         return json($data);
     }

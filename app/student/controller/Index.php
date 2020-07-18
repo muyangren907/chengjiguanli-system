@@ -453,7 +453,7 @@ class Index extends BaseController
         $stuinfo = $excel->readXls(public_path() . 'uploads\\' . $list['url']);
         if($stuinfo[0][2] != "序号" && $stuinfo[1][2] != "姓名" && $stuinfo[2][2] != "身份证号")
         {
-            $this->error('请使用模板上传', '/login/err'); #如果表格数据与模板不相符，则跳转。
+            $data = array('msg'=>'请使用模板上传','val'=>0,'url'=>'');
             return json($data);
         }
 
