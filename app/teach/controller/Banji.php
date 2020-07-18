@@ -21,16 +21,6 @@ class Banji extends BaseController
         $list['dataurl'] = 'banji/data';
         $list['status'] = '/teach/banji/status';
 
-        // $n = 100000001;
-        // $n = 12305679;
-
-        $n = 10001;
-        halt('aa');
-
-        $str = numToWord($n);
-        dump($n);
-        dump($str);
-
         // 模板赋值
         $this->view->assign('list', $list);
 
@@ -125,9 +115,10 @@ class Banji extends BaseController
         $paixumax = bjmod::where('school_id', $list['school_id'])
             ->where('ruxuenian', $list['ruxuenian'])
             ->max('paixu');
-        if($paixumax + $list['bjsum'] > 25) # 如果增加班级数超过2个，则少加班级
+        $cnfMax = config('shangma.classmax');
+        if($paixumax + $list['bjsum'] > $cnfMax) # 如果增加班级数超过2个，则少加班级
         {
-            $list['bjsum'] = 25 - $paixumax;
+            $list['bjsum'] = $cnfMax - $paixumax;
             if($list['bjsum'] == 0){
                 return json(['msg' => '已经超过同年级班级数的上线啦。', 'val' => 0]);
             }
