@@ -135,7 +135,7 @@
         $arr = $tools->array_cover($cover, $covered);
     	return $arr;
     }
-    
+
 
     /**
      * 获取参加考试的学科
@@ -191,3 +191,6 @@
         $data = $tools->reSetArray($arr, $srcfrom);
         return $data;
     }
+
+
+

@@ -184,7 +184,7 @@ class Banji extends BaseModel
             ->find();
 
         //获取班级、年级列表
-        $njlist = $this->gradeName($jdshijian); 
+        $njlist = $this->gradeName($jdshijian);
         $bjlist = $this->className();
 
         if(array_key_exists($bjinfo->ruxuenian, $njlist))
@@ -270,34 +270,107 @@ class Banji extends BaseModel
     // 班级列表
     public function className()
     {
-        $bjarr = array(
-            '1' => '一班'
-            ,'2' => '二班'
-            ,'3' => '三班'
-            ,'4' => '四班'
-            ,'5' => '五班'
-            ,'6' => '六班'
-            ,'7' => '七班'
-            ,'8' => '八班'
-            ,'9' => '九班'
-            ,'10' => '十班'
-            ,'11' => '十一班'
-            ,'12' => '十二班'
-            ,'13' => '十三班'
-            ,'14' => '十四班'
-            ,'15' => '十五班'
-            ,'16' => '十六班'
-            ,'17' => '十七班'
-            ,'18' => '十八班'
-            ,'19' => '十九班'
-            ,'20' => '二十班'
-            ,'21' => '二十一班'
-            ,'22' => '二十二班'
-            ,'23' => '二十三班'
-            ,'24' => '二十四班'
-            ,'25' => '二十五班'
-        );
+        $max = $this->where('status', 1)
+            ->max('paixu');
+        $cnfMax = config('shangma.classmax');
+        $cnt = 0;
+        $max > $cnfMax ? $cnt = $max : $cnt = $cnfMax;
+
+        $bjarr = array();
+        for($i = 1; $i <= $cnt; $i++)
+        {
+            $bjarr[$i] = self::numToWord($i) . '班';
+        }
         return $bjarr;
+    }
+
+
+    public function numToWord($num)
+    {
+        if(!preg_match("/^[1-9][0-9]*$/", $num))
+        {
+            return '';
+        }
+        $chiUni = array('', '万', '亿', '万');
+        $cnt = strlen($num);  #取数字长度
+        $num = (string)$num;
+        $chiStr = '';
+
+        //分割数组
+        $x = 0;
+        $y = 0;
+        for ($i=$cnt - 1; $i >= 0; $i--) {
+            if($x<4)
+            {
+                $arr[$y][$x] = $num[$i];
+            }else{
+                $x = 0;
+                $y = $y + 1;
+                $arr[$y][$x] = $num[$i];
+            }
+            $x = $x + 1;
+        }
+
+        foreach ($arr as $key => $value) {
+            // 判断有几位数
+            $cnt = count($value);
+            $thisStr = self::numTo($value, $key);
+
+            if($thisStr == '零')
+            {
+                $chiStr = self::numTo($value, $key) . $chiStr;
+            }else{
+                $chiStr = self::numTo($value, $key) . $chiUni[$key] . $chiStr;
+            }
+        }
+        $chiStr = str_replace("零零", "零", $chiStr);
+        return $chiStr;
+    }
+
+
+    private function numTo($arr = array(), $key = 0)
+    {
+        $cnt = count($arr);
+        $chiNum = array('零', '一', '二', '三', '四', '五', '六', '七', '八', '九');
+        $chiUni = array('','十', '百', '千');
+        $chiStr = '';
+        $zero = true;  # 上一个数字是否为0
+        $key = $key * 4;
+        if($cnt == 0 || array_sum($arr) == 0)
+        {
+            return $chiNum[0];
+        }
+        switch ($cnt) {
+            case 2:
+                $temp = $arr[1];
+                if($temp == 1)
+                {
+                    $chiStr = $chiUni[1];
+                }else{
+                    $chiStr = $chiNum[$temp] . $chiUni[1];
+                }
+                $temp = $arr[0];
+                $temp != 0 ? $chiStr = $chiStr . $chiNum[$temp] : '' ;
+                break;
+            default:
+                for($i = 0; $i<$cnt; $i++)
+                {
+                    $temp = $arr[$i];
+                    if($temp == 0)
+                    {
+                        if($zero != true)
+                        {
+                            $chiStr = $chiNum[$temp] .$chiStr;
+                        }
+                        $zero = true;
+                    }else{
+                        $chiStr = $chiNum[$temp] . $chiUni[$i] .$chiStr;
+                        $zero = false;
+                    }
+                }
+                break;
+        }
+        return $chiStr;
     }
 
 
