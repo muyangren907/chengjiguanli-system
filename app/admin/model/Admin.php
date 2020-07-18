@@ -68,7 +68,7 @@ class Admin extends BaseModel
 
     public function glGroup()
     {
-        return $this->belongsToMany('AuthGroup', 'AuthGroupAccess', 'uid', 'group_id');
+        return $this->belongsToMany('AuthGroup', 'AuthGroupAccess', 'group_id', 'uid');
     }
 
 

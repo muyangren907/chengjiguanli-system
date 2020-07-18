@@ -59,7 +59,7 @@
           <div class="layui-form-item">
             <label for="school_id" class="layui-form-label"><span class="x-red">*</span>所在单位</label>
             <div class="layui-input-block">
-              {php} $schlist = schoolList('校级', '区级');{/php}
+              {php} $schlist = danweiJibie('校级', '区级');{/php}
               <select name="school_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="schlist" id="vo"}

@@ -122,7 +122,6 @@ class Banji extends BaseModel
     {
         //获取班级、年级列表
         $njlist = $this->gradeName();
-        $bjlist = $this->className();
 
         $nj = $this->getAttr('ruxuenian');
         $bj = $this->getAttr('paixu');
@@ -130,9 +129,9 @@ class Banji extends BaseModel
         // 获取班级名
         if( array_key_exists($nj,$njlist) == true )
         {
-            $title = $njlist[$nj] . $bjlist[$bj];
+            $title = $njlist[$nj] . self::numToWord($bj);
         }else{
-            $title = $nj . '届' . $bj . '班';
+            $title = $nj . '届' . self::numToWord($bj) . '班';
         }
 
         return $title;
@@ -142,17 +141,8 @@ class Banji extends BaseModel
     // 班名获取器
     public function getBanTitleAttr()
     {
-        $bjname = $this->className();
         $bj = $this->getAttr('paixu');
-
-        // 获取班级名
-        if( array_key_exists($bj,$bjname) == true )
-        {
-            $title = $bjname[$bj];
-        }else{
-            $title = $bj . '班';
-        }
-
+        $title = self::numToWord($bj) . '班';
 
         $del = $this->getAttr('delete_time');
         $del == null ?  $title : $title = $title & '(删)' ;
@@ -185,13 +175,12 @@ class Banji extends BaseModel
 
         //获取班级、年级列表
         $njlist = $this->gradeName($jdshijian);
-        $bjlist = $this->className();
 
         if(array_key_exists($bjinfo->ruxuenian, $njlist))
         {
-            $bjtitle = $njlist[$bjinfo->ruxuenian] . $bjlist[$bjinfo->paixu];
+            $bjtitle = $njlist[$bjinfo->ruxuenian] . self::numToWord($bjinfo->paixu);
         }else{
-            $bjtitle = $bjinfo->ruxuenian . '界' . $bjinfo->paixu . '班';
+            $bjtitle = $bjinfo->ruxuenian . '界' . self::numToWord($bjinfo->paixu) . '班';
         }
 
         // 如果该班级被删除，则标删除

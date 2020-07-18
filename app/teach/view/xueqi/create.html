@@ -23,7 +23,7 @@
           <div class="layui-form-item">
     		    <label for="category" class="layui-form-label"><span class="x-red">*</span>类别</label>
     		    <div class="layui-input-block">
-    		    	{php} $category = getCategory('108');{/php}
+    		    	{php} $category = categoryChildren('108');{/php}
     		      <select name="category_id" lay-verify="required">
     		      	<option value=""></option>
     		      	{volist name="category" id="vo"}

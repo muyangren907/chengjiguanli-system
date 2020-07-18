@@ -23,7 +23,7 @@
 	    <label for="xueqi_id" class="layui-form-label" style="height: 100%">学期</label>
 	    <div class="layui-input-block">
 	    	<input type="radio" name="xueqi_id" title="无" value="" lay-skin="primary" checked="">
-	    	{php} $category = getCategory(108);{/php}
+	    	{php} $category = categoryChildren(108);{/php}
 	    	{volist name="category" id="vo"}
 	    		<input type="radio" name="xueqi_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
@@ -33,7 +33,7 @@
 	    <label for="category_id" class="layui-form-label" style="height: 100%">考试类型</label>
 	    <div class="layui-input-block">
 	    	<input type="radio" name="category_id" title="无" value="" lay-skin="primary" checked>
-	    	{php} $category = getCategory(109);{/php}
+	    	{php} $category = categoryChildren(109);{/php}
 	    	{volist name="category" id="vo"}
 	    		<input type="radio" name="category_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
@@ -96,7 +96,7 @@
 				endate = d.bfdate + '～' + endate;
 				return endate;
 			}},
-      		
+
 
 		]];
 
