@@ -56,7 +56,20 @@
 	// 班级列表
 	function banJiNamelist()
 	{
-		$cnfMax = config('shangma.classmax');
+		$banji = new \app\teach\model\Banji;
+        $max = $banji->where('status', 1)->max('paixu');
+        $cnfMax = config('shangma.classmax');
+        $cnt = 0;
+        $max > $cnfMax ? $cnt = $max : $cnt = $cnfMax;
+
+        $bjarr = array();
+        for($i = 1; $i <= $cnt; $i++)
+        {
+            $bjarr[$i] = numToWord($i) . '班';
+        }
+        return $bjarr;
+
+        $cnfMax = config('shangma.classmax');
         $bjarr = array();
         for($i = 1; $i <= $cnfMax; $i++)
         {
