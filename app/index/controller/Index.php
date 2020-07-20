@@ -93,6 +93,8 @@ class Index extends BaseController
         // 课题数
         $con = new \app\keti\model\KetiInfo;
         $list['keti'] =  $con->count();
+        // 缓存时间
+        $list['cacheExpire'] = config('cache.stores.file.expire') . 's';
 
         $view = app('view');
         // 模版赋值

@@ -30,14 +30,14 @@
 	    </div>
 	  </div>
     <div class="layui-form-item">
-      <label for="ruxuenian" class="layui-form-label" style="height: 100%">入学年</label>
+      <label for="ruxuenian" class="layui-form-label" style="height: 100%">毕业年</label>
       <div class="layui-input-block">
         {php}
           $thisTime = strtotime("-6 year");
-          $njlist = nianJiNameList($thisTime);
+          $njlist = nianJiNameList('str', $thisTime);
         {/php}
         {volist name="njlist" id="vo"}
-          <input type="radio" name="ruxuenian" title="{$key}年" value="{$key}" lay-skin="primary"  lay-filter="src" {eq name="i" value="1"}checked{/eq} >
+          <input type="radio" name="ruxuenian" title="{$key+6}年" value="{$key}" lay-skin="primary"  lay-filter="src" {eq name="i" value="1"}checked{/eq} >
         {/volist}
       </div>
     </div>

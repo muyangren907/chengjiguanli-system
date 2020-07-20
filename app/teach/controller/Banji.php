@@ -115,15 +115,20 @@ class Banji extends BaseController
         $paixumax = bjmod::where('school_id', $list['school_id'])
             ->where('ruxuenian', $list['ruxuenian'])
             ->max('paixu');
-        $cnfMax = config('shangma.classmax');
-        if($cnfMax > 0)
+        $sys = new \app\system\model\SystemBase;
+        $cnfMax = $sys->where('id', '>', 0)
+            ->order(['id'=>'desc'])
+            ->value('classmax');
+
+        if($cnfMax != 0)
         {
+            if($paixumax >= $cnfMax)
+            {
+                return json(['msg' => '已经超过同年级班级数的上线啦。', 'val' => 0]);
+            }
             if($paixumax + $list['bjsum'] > $cnfMax) # 如果增加班级数超过2个，则少加班级
             {
                 $list['bjsum'] = $cnfMax - $paixumax;
-                if($list['bjsum'] == 0){
-                    return json(['msg' => '已经超过同年级班级数的上线啦。', 'val' => 0]);
-                }
             }
         }
 

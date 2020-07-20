@@ -58,6 +58,15 @@
                   autocomplete="off" class="layui-input" value="{$list.data.danwei|default=''}">
               </div>
           </div>
+          <div class="layui-form-item">
+              <label for="keywords" class="layui-form-label">
+                  <span class="x-red">*</span>最大班级数
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="classmax" name="classmax" required="true" lay-verify="required"
+                  autocomplete="off" class="layui-input" value="{$list.data.classmax|default=''}">
+              </div>
+          </div>
           <div class="layui-form-item" style="text-align: center;">
               <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
                   设置

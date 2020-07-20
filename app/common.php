@@ -23,11 +23,11 @@
 	}
 
 
-	function nianJiNameList($riqi=0)
+	function nianJiNameList($value = 'str', $riqi = 0)
 	{
 		// 实例化年级控制器
         $bj = new \app\teach\model\Banji;
-        $njList= $bj->gradeName($riqi);
+        $njList= $bj->gradeName($value, $riqi);
 		return $njList;
 	}
 
@@ -41,16 +41,6 @@
         return $njList;
 	}
 
-
-	/**
-	* $date是时间戳
-	* $type为1的时候是虚岁,2的时候是周岁
-	*/
-	function getAgeByBirth($date = 0, $type = 1){
-        $tearch = new \app\teacher\model\Tearcher;
-        $age = $tearch->fBirth($data, $type);
-	   return $age;
-	}
 
 
 	// EXCEL表格列名

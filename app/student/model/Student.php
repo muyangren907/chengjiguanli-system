@@ -19,10 +19,13 @@ class Student extends BaseModel
     // 年龄获取器
     public function getAgeAttr()
     {
-    	if(strlen($this->getData('shengri')) == 0){
+    	$shengri = $this->getData('shengri');
+        if(strlen($shengri) == 0 ){
             return '';
         };
-        return getAgeByBirth($this->getData('shengri'), 2);
+        $tearch = new \app\teacher\model\Teacher;
+        $age = $tearch->fBirth($shengri, 1);
+        return $age;
     }
 
 

@@ -97,6 +97,13 @@ class Banji extends BaseModel
     }
 
 
+    // 年级-班级关联表
+    public function njBanji()
+    {
+        return $this->hasMany('Banji', 'ruxuenian', 'ruxuenian');
+    }
+
+
     // 班级名获取器
     public function getNumTitleAttr()
     {
@@ -120,20 +127,9 @@ class Banji extends BaseModel
     // 班级名获取器
     public function getBanjiTitleAttr()
     {
-        //获取班级、年级列表
-        $njlist = $this->gradeName();
-
         $nj = $this->getAttr('ruxuenian');
         $bj = $this->getAttr('paixu');
-
-        // 获取班级名
-        if( array_key_exists($nj,$njlist) == true )
-        {
-            $title = $njlist[$nj] . self::numToWord($bj);
-        }else{
-            $title = $nj . '届' . self::numToWord($bj) . '班';
-        }
-
+        $title = $this->fClassTitle($nj, time(), $bj, 1);
         return $title;
     }
 
@@ -151,46 +147,40 @@ class Banji extends BaseModel
     }
 
 
-    // 年级-班级关联表
-    public function njBanji()
-    {
-        return $this->hasMany('Banji', 'ruxuenian', 'ruxuenian');
-    }
 
+    // /**
+    //  * 获取考试时的班级名称(文本格式-一年级十一班)
+    //  * $jdshijian 考试开始时间
+    //  * $ruxuenian 年级
+    //  * $paixu 班级
+    //  * 返回 $str 班级名称
+    //  * */
+    // public function myBanjiTitle($bjid, $jdshijian=0)
+    // {
+    //     // 查询班级信息
+    //     $bjinfo = $this::withTrashed()
+    //         ->where('id', $bjid)
+    //         ->field('id, ruxuenian, paixu, delete_time')
+    //         ->find();
 
-    /**
-     * 获取考试时的班级名称(文本格式-一年级十一班)
-     * $jdshijian 考试开始时间
-     * $ruxuenian 年级
-     * $paixu 班级
-     * 返回 $str 班级名称
-     * */
-    public function myBanjiTitle($bjid, $jdshijian=0)
-    {
-        // 查询班级信息
-        $bjinfo = $this::withTrashed()
-            ->where('id', $bjid)
-            ->field('id, ruxuenian, paixu, delete_time')
-            ->find();
+    //     //获取班级、年级列表
+    //     $njlist = $this->gradeName($jdshijian);
 
-        //获取班级、年级列表
-        $njlist = $this->gradeName($jdshijian);
+    //     if(array_key_exists($bjinfo->ruxuenian, $njlist))
+    //     {
+    //         $bjtitle = $njlist[$bjinfo->ruxuenian] . self::numToWord($bjinfo->paixu) . '班';
+    //     }else{
+    //         $bjtitle = $bjinfo->ruxuenian . '界' . self::numToWord($bjinfo->paixu) . '班';
+    //     }
 
-        if(array_key_exists($bjinfo->ruxuenian, $njlist))
-        {
-            $bjtitle = $njlist[$bjinfo->ruxuenian] . self::numToWord($bjinfo->paixu);
-        }else{
-            $bjtitle = $bjinfo->ruxuenian . '界' . self::numToWord($bjinfo->paixu) . '班';
-        }
+    //     // 如果该班级被删除，则标删除
+    //     if($bjinfo->delete_time != null)
+    //     {
+    //         $bjtitle = $bjtitle . '(删)';
+    //     }
 
-        // 如果该班级被删除，则标删除
-        if($bjinfo->delete_time != null)
-        {
-            $bjtitle = $bjtitle . '(删)';
-        }
-
-        return $bjtitle;
-    }
+    //     return $bjtitle;
+    // }
 
 
     /**
@@ -205,7 +195,7 @@ class Banji extends BaseModel
             return false;
         }
         // 获取年级、班级列表
-        $njlist = $this->gradeName();
+        $njlist = $this->gradeName(nwo());
         $bjlist = $this->className();
 
         $nj = substr($str, 0, 9);
@@ -225,8 +215,47 @@ class Banji extends BaseModel
     }
 
 
+    /**
+    * 格式化班级名称
+    * $grade  入学年
+    * $paixu   班级排序
+    * $category 是否返回汉字
+    * 返回班级ID
+    */
+    public function fClassTitle($grade = 1950, $jiedian = 0, $paixu = 1, $category = true)
+    {
+        //获取班级、年级列表
+        $njlist = $this->gradeName('str', $jiedian);
+        $title = '';
+        if( isset($njlist[$grade]) )
+        {
+            switch ($category) {
+                case true:
+                    $title = $njlist[$grade] . self::numToWord($paixu) . '班';
+                    break;
+                default:
+                    $njlist = array_flip(array_keys($njlist));
+                    $title = $njlist[$grade].''.$paixu;
+                    break;
+            }
+        }else{
+            switch ($category) {
+                case true:
+                    $title = $grade . '界' . self::numToWord($paixu) . '班';
+                    break;
+                default:
+                    $njlist = array_flip(array_keys($njlist));
+                    $title = $njlist[$grade].'.'.$paixu;
+                    break;
+            }
+        }
+
+        return $title;
+    }
+
+
     // 生成年级名
-    public function gradeName($riqi=0)
+    public function gradeName($value = 'str', $riqi=0)
     {
         // 定义学年时间节点日期为每年的8月1日
         // $yd = '8-1';
@@ -245,12 +274,24 @@ class Banji extends BaseModel
         $nian = $nian - $str;
 
         $njlist = array();
-        $njlist[$nian] = '一年级';
-        $njlist[$nian - 1] = '二年级';
-        $njlist[$nian - 2] = '三年级';
-        $njlist[$nian - 3] = '四年级';
-        $njlist[$nian - 4] = '五年级';
-        $njlist[$nian - 5] = '六年级';
+        if($value == 'num')
+        {
+            $njlist['一年级'] = $nian;
+            $njlist['二年级'] = $nian - 1;
+            $njlist['三年级'] = $nian - 2;
+            $njlist['四年级'] = $nian - 3;
+            $njlist['五年级'] = $nian - 4;
+            $njlist['六年级'] = $nian - 5;
+        }else{
+
+            $njlist[$nian] = '一年级';
+            $njlist[$nian - 1] = '二年级';
+            $njlist[$nian - 2] = '三年级';
+            $njlist[$nian - 3] = '四年级';
+            $njlist[$nian - 4] = '五年级';
+            $njlist[$nian - 5] = '六年级';
+        }
+
 
         return $njlist;
     }
@@ -259,11 +300,16 @@ class Banji extends BaseModel
     // 班级列表
     public function className()
     {
-        $max = $this->where('status', 1)
-            ->max('paixu');
-        $cnfMax = config('shangma.classmax');
         $cnt = 0;
-        $max > $cnfMax ? $cnt = $max : $cnt = $cnfMax;
+        $max = $this->where('status', 1)
+            ->cache(true)
+            ->max('paixu');
+        // $sys = new \app\system\model\SystemBase;
+        // $cnfMax = $sys->where('id', '>', 0)
+        //     ->order(['id'=>'desc'])
+        //     ->value('classmax');
+
+        // $max > $cnfMax ? $cnt = $max : $cnt = $cnfMax;
 
         $bjarr = array();
         for($i = 1; $i <= $cnt; $i++)

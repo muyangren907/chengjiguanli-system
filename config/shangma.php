@@ -9,5 +9,4 @@ return [
     // 版本号
     'webtitle'         => '码蚁成绩管理系统',
     'version'         => 'v1.3.5',
-    'classmax'        =>  Env::get('shangma.classmax', '25'),       # 同单位同年级班级最大数
 ];
