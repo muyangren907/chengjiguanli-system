@@ -5,31 +5,33 @@ namespace app\tools\controller;
 
 class Index
 {
+
     // 给数组按多条件排序
     public function sortArrByManyField(){
-      $args = func_get_args();
-      if(empty($args)){
-        return null;
-      }
-      $arr = array_shift($args);
-      if(!is_array($arr)){
-        throw new Exception("第一个参数不为数组");
-      }
-
-      foreach($args as $key => $field){
-        if(is_string($field)){
-          $temp = array();
-          foreach($arr as $index => $val){
-            $temp[$index] = $val[$field];
-          }
-          $args[$key] = $temp;
+        $args = func_get_args();
+        if(empty($args)){
+            return null;
         }
-      }
-      $args[] = &$arr;//引用值
-      $keys = array_keys($args[0]);
-      call_user_func_array('array_multisort', $args);
+        $arr = array_shift($args);
+        if(!is_array($arr)){
+            throw new Exception("第一个参数不为数组");
+        }
 
-      return array_pop($args);
+        foreach($args as $key => $field){
+            if(is_string($field)){
+                $temp = array();
+                foreach($arr as $index => $val){
+                    $temp[$index] = $val[$field];
+                }
+                $args[$key] = $temp;
+            }
+        }
+
+        $args[] = &$arr;//引用值
+        $keys = array_keys($args[0]);
+        call_user_func_array('array_multisort', $args);
+
+        return array_pop($args);
     }
 
 
@@ -41,10 +43,13 @@ class Index
      * */
     public function array_cover($cover = array(), $covered = array())
     {
-        foreach ($cover as $key => $value) {
-            if(isset($covered[$key]) == true)
-            {
-                $covered[$key] = $cover[$key];
+        if(is_array($cover) && is_array($covered))
+        {
+            foreach ($cover as $key => $value) {
+                if(isset($covered[$key]) == true)
+                {
+                    $covered[$key] = $cover[$key];
+                }
             }
         }
         return $covered;
@@ -118,7 +123,7 @@ class Index
     * @param str或array $str 表单中获取的参数
     * @return array 返回类型
     */
-    public function reSetArray($arr, $srcfrom)
+    public function reSetArray($arr = array(), $srcfrom)
     {
         // 整理变量
         $src = [
@@ -134,7 +139,7 @@ class Index
         if($cnt > 0){
             $src['order'] == 'desc' ? $src['order'] = SORT_DESC
                 : $src['order'] = SORT_ASC;   # 数据排序
-            $arr = sortArrByManyField($arr, $src['field'], $src['order']);
+            $arr = $this->sortArrByManyField($arr, $src['field'], $src['order']);
         }
         $limit_start = $src['page'] * $src['limit'] - $src['limit']; # 获取当前页数据
         $limit_length = $src['limit'];
@@ -148,4 +153,75 @@ class Index
 
         return $data;
     }
+
+
+    // 年与年级对应表
+    public function gradeName($value = 'str', $riqi)
+    {
+        $bj = new \app\teach\model\Banji;
+        $njList = $bj->gradeName($value, $riqi);
+        return $njList;
+    }
+
+
+    // 加密
+    public function encrypt($data, $key)
+    {
+        $key    =    md5($key);
+        $x        =    0;
+        $len    =    strlen($data);
+        $l        =    strlen($key);
+        $char = '';
+        $str = '';
+        for ($i = 0; $i < $len; $i++)
+        {
+            if ($x == $l)
+            {
+                $x = 0;
+            }
+            $char .= $key{$x};
+            $x++;
+        }
+        for ($i = 0; $i < $len; $i++)
+        {
+            $str .= chr(ord($data{$i}) + (ord($char{$i})) % 256);
+        }
+        return base64_encode($str);
+    }
+
+
+    //  解密
+    public function decrypt($data, $key)
+    {
+        $key = md5($key);
+        $x = 0;
+        $data = base64_decode($data);
+        $len = strlen($data);
+        $l = strlen($key);
+        $char = '';
+        $str = '';
+        for ($i = 0; $i < $len; $i++)
+        {
+            if ($x == $l)
+            {
+                $x = 0;
+            }
+            $char .= substr($key, $x, 1);
+            $x++;
+        }
+        for ($i = 0; $i < $len; $i++)
+        {
+            if (ord(substr($data, $i, 1)) < ord(substr($char, $i, 1)))
+            {
+                $str .= chr((ord(substr($data, $i, 1)) + 256) - ord(substr($char, $i, 1)));
+            }
+            else
+            {
+                $str .= chr(ord(substr($data, $i, 1)) - ord(substr($char, $i, 1)));
+            }
+        }
+        return $str;
+    }
+
+
 }

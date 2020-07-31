@@ -3,11 +3,11 @@
 namespace app\teach\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 // 引用学科数据模型类
 use app\teach\model\Subject as SJ;
 
-class Subject extends BaseController
+class Subject extends AdminBase
 {
     /**
      * 学科列表

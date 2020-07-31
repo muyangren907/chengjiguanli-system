@@ -3,13 +3,13 @@
 namespace app\admin\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 // 引用用户数据模型
 use app\admin\model\Admin as AD;
 // 引用加密类
 use WhiteHat101\Crypt\APR1_MD5;
 
-class Index extends BaseController
+class Index extends AdminBase
 {
     // 管理员列表
     public function index()

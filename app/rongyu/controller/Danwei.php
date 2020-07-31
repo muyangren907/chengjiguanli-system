@@ -3,14 +3,14 @@
 namespace app\rongyu\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 // 引用教师数据模型类
 use app\rongyu\model\DwRongyu as DW;
 // 引用上传文件
 use app\tools\controller\File;
 
 
-class Danwei extends BaseController
+class Danwei extends AdminBase
 {
     /**
      * 显示单位荣誉列表

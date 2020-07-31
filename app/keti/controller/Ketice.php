@@ -3,12 +3,12 @@
 namespace app\keti\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 
 // 引用课题数据模型
 use app\keti\model\Keti as keti;
 
-class Ketice extends BaseController
+class Ketice extends AdminBase
 {
     /**
      * 显示资源列表

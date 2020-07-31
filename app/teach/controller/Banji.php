@@ -3,11 +3,11 @@
 namespace app\teach\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 // 引用班级数据模型类
 use app\teach\model\Banji as bjmod;
 
-class Banji extends BaseController
+class Banji extends AdminBase
 {
     /**
      * 显示班级列表

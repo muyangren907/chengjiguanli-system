@@ -112,7 +112,7 @@
             cjgl.delAll(checkStatus, 'index/delete', 'mytable');
             break;
           case 'add':
-            cjgl.add('新建考试', 'index/create', '', '', true);
+            cjgl.add('新建考试', 'index/create', '600', '400', false);
             break;
         };
       });
@@ -127,7 +127,7 @@
 	          cjgl.del(obj, "index/delete");
 	          break;
 	        case 'edit':// 编辑
-	          cjgl.add('编辑考试', 'index/edit/' + obj.data.id, '', '', true);
+	          cjgl.add('编辑考试', 'index/edit/' + obj.data.id, '600', '400', false);
 	          break;
 	        case 'more':// 状态
 	          cjgl.addTab(obj.data.title + ' 操作', '/kaoshi/index/more/' + obj.data.id, true);

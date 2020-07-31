@@ -25,7 +25,6 @@ class Teacher extends BaseModel
         $src['xueli_id'] = strToArray($src['xueli_id']);
         $src['zhicheng_id'] = strToArray($src['zhicheng_id']);
 
-
         $data = $this->when(count($src['danwei_id']) > 0, function($query) use($src){
                     $query->where('danwei_id', 'in', $src['danwei_id']);
                 })
@@ -63,6 +62,8 @@ class Teacher extends BaseModel
             )
             ->append(['age', 'gongling'])
             ->select();
+
+
 
         return $data;
     }

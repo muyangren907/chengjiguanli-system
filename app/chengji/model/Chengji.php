@@ -34,13 +34,13 @@ class Chengji extends KaoshiBase
     {
         // 初始化参数
         $src = array(
-            'field'=>'update_time',
-            'order'=>'desc',
-            'kaoshi_id'=>'0',
-            'banji_id'=>array(),
-            'subject_id'=>'',
-            'searchval'=>'',
-            'user_id'=>session('userid'),
+            'field'=>'update_time'
+            ,'order'=>'desc'
+            ,'kaoshi_id'=>'0'
+            ,'banji_id'=>array()
+            ,'subject_id'=>''
+            ,'searchval'=>''
+            ,'user_id'=>session('userid')
         );
         $src = array_cover( $srcfrom , $src ) ;
         $src['banji_id'] = strToarray($src['banji_id']);

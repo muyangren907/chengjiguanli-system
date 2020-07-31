@@ -4,11 +4,11 @@ declare (strict_types = 1);
 namespace app\teach\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 // 引用班级数据模型类
 use app\teach\model\BanjiChengji as bjcjmod;
 
-class BanjiChengji extends BaseController
+class BanjiChengji extends AdminBase
 {
     /**
      * 班级历次成绩列表

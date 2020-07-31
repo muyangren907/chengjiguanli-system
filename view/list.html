@@ -25,7 +25,7 @@
           (function() {
             var hm = document.createElement("script");
             hm.src = "https://hm.baidu.com/hm.js?1fe9097e79cfcf0c8d4547c3a1ba50e0";
-            var s = document.getElementsByTagName("script")[0]; 
+            var s = document.getElementsByTagName("script")[0];
             s.parentNode.insertBefore(hm, s);
           })();
         </script>
@@ -130,7 +130,6 @@
           checkall = $(data.elem).attr('checkall');
           parentId = $(data.elem).parents("div").attr('id');
           if(checkall == 'p'){
-            console.log(checkall);
             cjgl.checkboxAll(parentId, data.elem.checked);
             $("#srcsubmit").click();
             return true;
@@ -166,7 +165,7 @@
           }
           return true;
         })
-        
+
 
         // 表格重载
         function tablereload()

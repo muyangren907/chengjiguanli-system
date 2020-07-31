@@ -28,9 +28,6 @@ class Admin extends BaseModel
                     $query->field('id, jiancheng');
                 }
                 ,'glGroup'
-                // ,'glGroup' => function($query){
-                //     $query->where('status', 1)->field('title, rules, miaoshu');
-                // }
             ])
             ->hidden([
                 'password'

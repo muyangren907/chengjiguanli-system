@@ -4,14 +4,14 @@ declare (strict_types = 1);
 namespace app\student\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 // 引用学生数据模型类
 use \app\student\model\Student as STU;
 // 引用学生数据模型类
 use \app\student\model\StudentChengji as STUCJ;
 
 
-class StudentChengji extends BaseController
+class StudentChengji extends AdminBase
 {
     // 学生信息页
     public function index($id)

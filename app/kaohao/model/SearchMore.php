@@ -10,7 +10,7 @@ use \app\kaohao\model\Kaohao as kh;
 
 class SearchMore extends KaoshiBase
 {
-    /* 
+    /*
     * 以班级为单位，列出本次考试成绩原始数据；
     * 其它数据以此方法为基础进行数据整理
     */
@@ -455,7 +455,7 @@ class SearchMore extends KaoshiBase
 
         if(count($data) > 0)
         {
-            $data = sortArrByManyField($data, 'paixu', SORT_ASC);
+            $data = \app\facade\Tools::sortArrByManyField($data, 'paixu', SORT_ASC);
         }
 
         return $data;
@@ -521,12 +521,11 @@ class SearchMore extends KaoshiBase
                 'schPaixu'=>$value->cjSchool->paixu,
                 'banTitle'=>$value->banTitle,
                 'banjiTitle'=>$value->banjiTitle,
-                // 'numTitle'=>$value->numTitle,
             ];
         }
         if(count($data) > 0)
         {
-            $data = sortArrByManyField($data, 'schPaixu', SORT_ASC, 'paixu', SORT_ASC);
+            $data = \app\facade\Tools::sortArrByManyField($data, 'schPaixu', SORT_ASC, 'paixu', SORT_ASC);
         }
 
         return $data;

@@ -3,11 +3,11 @@
 namespace app\teach\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 // 引用学期数据模型类
 use app\teach\model\Xueqi as XQ;
 
-class Xueqi extends BaseController
+class Xueqi extends AdminBase
 {
     // 显示学期列表
     public function index()

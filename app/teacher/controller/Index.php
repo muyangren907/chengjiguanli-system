@@ -3,15 +3,14 @@
 namespace app\teacher\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 // 引用教师数据模型类
 use app\teacher\model\Teacher as TC;
-
 // 引用上传文件
 use app\tools\controller\File;
 
 
-class Index extends BaseController
+class Index extends AdminBase
 {
     // 显示教师列表
     public function index()
@@ -67,6 +66,7 @@ class Index extends BaseController
                 ,'status'
                 ,'update_time'
             ]);
+
         $data = reSetObject($data, $src);
 
         return json($data);

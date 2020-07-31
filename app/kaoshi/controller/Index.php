@@ -3,14 +3,14 @@
 namespace app\kaoshi\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 
 // 引用考试数据模型类
 use app\kaoshi\model\Kaoshi as KS;
 use app\middleware\KaoshiStatus;
 
 
-class Index extends BaseController
+class Index extends AdminBase
 {
     // 显示考试列表
     public function index()
@@ -237,91 +237,5 @@ class Index extends BaseController
         $this->view->assign('list', $list);
         // 渲染
         return $this->view->fetch();
-    }
-
-
-    // 根据考试ID和年级获取参加考试学校
-    public function cySchool()
-    {
-        // 获取变量
-        $src['kaoshi_id'] = input('post.kaoshi_id');
-        $src['ruxuenian'] = input('post.ruxuenian');
-
-        $khSrc = new \app\kaohao\model\Search;
-        $school = $khSrc->cySchool($src);
-        $cnt = count($school);
-
-        // 重组返回内容
-        $data = [
-            'count'=>$cnt  // 符合条件的总数据量
-            ,'data'=>$school  //获取到的数据结果
-        ];
-
-        return json($data);
-    }
-
-
-    // 根据考试ID和年级获取参加考试年级
-    public function cyNianji()
-    {
-        // 获取变量
-        $kaoshi_id = input('post.kaoshi_id');
-        $ksset = new \app\kaoshi\model\KaoshiSet;
-        $nianji = $ksset->srcNianji($kaoshi_id);
-        $cnt = count($nianji);
-
-        // 重组返回内容
-        $data = [
-            'count'=>$cnt, // 符合条件的总数据量
-            'data'=>$nianji, //获取到的数据结果
-        ];
-
-        return json($data);
-    }
-
-
-    // 根据考试ID和年级获取参加考试班级
-    public function cyBanji()
-    {
-        // 获取参数
-        $src = $this->request
-            ->only([
-                'school_id' => ''
-                ,'ruxuenian' => ''
-                ,'kaoshi_id' => '1'
-            ], 'POST');
-
-        $khSrc = new \app\kaohao\model\SearchMore;
-        $bj = $khSrc->cyBanji($src);
-        $cnt = count($bj);
-
-        // 重组返回内容
-        $data = [
-            'count'=>$cnt, // 符合条件的总数据量
-            'data'=>$bj, //获取到的数据结果
-        ];
-
-        return json($data);
-    }
-
-
-    // 根据考试ID和年级获取参加考试学科
-    public function cySubject()
-    {
-        // 获取变量
-        $kaoshi_id = input('post.kaoshi_id');
-        $nianji = input('post.ruxuenian');
-
-        $ksset = new \app\kaoshi\model\KaoshiSet;
-        $sbj = $ksset->srcSubject($kaoshi_id, '', $nianji);
-        $cnt = count($sbj);
-
-        // 重组返回内容
-        $data = [
-            'count'=>$cnt, // 符合条件的总数据量
-            'data'=>$sbj, //获取到的数据结果
-        ];
-
-        return json($data);
     }
 }

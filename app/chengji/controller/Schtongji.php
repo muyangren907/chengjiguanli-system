@@ -1,11 +1,11 @@
 <?php
 namespace app\chengji\controller;
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 // 引用成绩统计数据模型
 use app\chengji\model\TongjiSch as SCHTJ;
 
-class Schtongji
+class Schtongji extends AdminBase
 {
 
     // 统计全区年级成绩

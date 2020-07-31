@@ -17,7 +17,6 @@
 		// 查询类别
         $category = new \app\system\model\Category;
         $list = $category->srcChild($p_id);
-
 		// 返回类别列表
 		return $list;
 	}
@@ -36,7 +35,7 @@
 	function banJiNamelist()
 	{
 		// 实例化年级控制器
-        $bj = new \app\tools\controller\Banji;
+        $bj = new \app\teach\model\Banji;
         $njList= $bj->banJiNamelist();
         return $njList;
 	}
@@ -46,7 +45,7 @@
 	// EXCEL表格列名
 	function excelColumnName()
 	{
-		$excel = new \app\tools\controller\Excel;
+		$excel = new \app\tools\controller\File;
         $data = $excel->excelColumnName();
         return $data;
 	}
@@ -85,10 +84,9 @@
 	// 整理教师名
 	function teacherNames($list = array())
 	{
-		if(count($list) == 0 )
-		{
-			return '';
-		}
+		if (count($list) == 0) {
+            return '';
+        }
 
 		$names = '';
 		foreach ($list as $key => $value) {
@@ -104,15 +102,6 @@
 	}
 
 
-    // 给数组按多条件排序
-    function sortArrByManyField(){
-      $args = func_get_args();
-      $tools = new \app\tools\controller\Index;
-      $arr = $tools->sortArrByManyField($args);
-      return $arr;
-    }
-
-
     /*
      * 根据键值，用数组2的值替换数组1的值
      * $cover 覆盖数组，存储新值的数组
@@ -121,22 +110,8 @@
      */
     function array_cover($cover = array(), $covered = array())
     {
-    	$tools = new \app\tools\controller\Index;
-        $arr = $tools->array_cover($cover, $covered);
+        $arr = \app\facade\Tools::array_cover($cover, $covered);
     	return $arr;
-    }
-
-
-    /**
-     * 获取参加考试的学科
-     * 返回 $data
-     * */
-    function subjectList()
-    {
-        $sbj = new \app\teach\model\Subject;
-        $data = $sbj->kaoshi();
-
-        return $data;
     }
 
 
@@ -149,8 +124,7 @@
     */
     function strToArray($str)
     {
-    	$tools = new \app\tools\controller\Index;
-        $data = $tools->strToArray($str);
+        $data = \app\facade\Tools::strToArray($str);
         return $data;
     }
 
@@ -163,8 +137,7 @@
     */
     function reSetObject($obj, $srcfrom)
     {
-        $tools = new \app\tools\controller\Index;
-        $data = $tools->reSetObject($obj, $srcfrom);
+        $data = \app\facade\Tools::reSetObject($obj, $srcfrom);
         return $data;
     }
 
@@ -177,10 +150,6 @@
     */
     function reSetArray($arr, $srcfrom)
     {
-        $tools = new \app\tools\controller\Index;
-        $data = $tools->reSetArray($arr, $srcfrom);
+        $data = \app\facade\Tools::reSetArray($arr, $srcfrom);
         return $data;
     }
-
-
-

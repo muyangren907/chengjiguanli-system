@@ -15,7 +15,7 @@
 	<label for="nianji" class="layui-form-label" style="height: 100%">年级 </label>
 	<div class="layui-input-block">
 		<input type="radio" name="nianji" title="无" value="" lay-skin="primary" checked="true">
-		{php} $njlist = nianJiNameList($list['sj']);{/php}
+		{php} $njlist = nianJiNameList('str',$list['sj']);{/php}
 		{foreach $njlist as $key=>$vo}
 		<input type="radio" name="nianji" title="{$vo}" value="{$key}" lay-skin="primary">
 		{/foreach}
@@ -127,8 +127,7 @@
 		function addSubject(){
 	    	// 获取参数
 	    	formval = form.val("search");
-	    	formval.ruxuenian = formval.nianji;
-	    	cjgl.createCheckbox('subject_id',formval,'/kaoshi/index/cysubject','subject_id');
+	    	cjgl.createCheckbox('subject_id',formval,'/tools/kscy/subject','subject_id');
 	    }
 
 	    // 统计成绩

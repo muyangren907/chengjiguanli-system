@@ -259,17 +259,18 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
         url,
         val,
         function(data,status){
-          if(data.count){
+          if(data.count > 0){
             cnt = data.count;
             mydata = data.data;
+
           }else{
             cnt = 0;
             mydata = Array();
           }
 
-          if(cnt>0){
+          // if(cnt>0){
             $('#'+parentId).append('<input type="checkbox" value="" title="全选" lay-skin="primary" checkall="p">');
-          }
+          // }
           for(x in mydata){
             $('#'+parentId).append('<input type="checkbox" name="'+createName+'[]" value="'+mydata[x]['id']+'" title="'+mydata[x][title]+'" lay-skin="primary" checkall="c">');
           }
@@ -324,7 +325,7 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
     * @return array 返回类型
     */
     checkboxAll:function(parentId,checked){
-      if(checked==true) 
+      if(checked==true)
       {
         $('#'+parentId).find("input[checkall='c']").prop('checked',true);
       }else{

@@ -3,11 +3,11 @@
 namespace app\chengji\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 // 引用成绩统计数据模型
 use app\chengji\model\TongjiBj as BTJ;
 
-class Bjtongji extends BaseController
+class Bjtongji extends AdminBase
 {
     // 班级成绩汇总
     public function biaoge($kaoshi_id)
@@ -438,7 +438,7 @@ class Bjtongji extends BaseController
             $data['xAxis'][] = (string)$value['low'].'~'.$value['high'];
             $data['series'][] = $value['cnt'];
         }
-        
+
         return json($data);
     }
 

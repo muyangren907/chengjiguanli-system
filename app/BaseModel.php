@@ -9,7 +9,6 @@ use think\model\concern\SoftDelete;
 
 class BaseModel extends Model
 {
-
     // 开启全局自动时间戳
     protected $autoWriteTimestamp = true;
 

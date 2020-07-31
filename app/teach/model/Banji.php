@@ -292,7 +292,6 @@ class Banji extends BaseModel
             $njlist[$nian - 5] = '六年级';
         }
 
-
         return $njlist;
     }
 

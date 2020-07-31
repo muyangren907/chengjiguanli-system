@@ -14,7 +14,8 @@ class KaoshiSetEdit extends Validate
      * @var
      */
     protected $rule = [
-        'kaoshi|考试ID'      =>  'require|integer',
+        'id|ID'      =>  'require|integer',
+        'kaoshi_id|考试ID'      =>  'require|integer',
         'manfen|满分'      =>  'require|number',
         'youxiu|优秀'      =>  'require|number',
         'jige|及格'      =>  'require|number',
@@ -30,6 +31,6 @@ class KaoshiSetEdit extends Validate
     protected $message = [];
 
     protected $scene = [
-        'edit'  =>  ['id','kaoshi','manfen','youxiu','jige'],
+        'edit'  =>  ['id','kaoshi_id','manfen','youxiu','jige'],
     ];
 }

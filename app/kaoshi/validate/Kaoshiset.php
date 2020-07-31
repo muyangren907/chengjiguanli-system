@@ -34,6 +34,5 @@ class Kaoshiset extends Validate
 
     protected $scene = [
         'create'  =>  ['kaoshi_id', 'nianji','nianjiname', 'subject_id', 'manfen', 'youxiu', 'jige'],
-        'edit'  =>  ['id', 'kaoshi_id', 'nianji','nianjiname', 'subject_id', 'manfen', 'youxiu', 'jige'],
     ];
 }

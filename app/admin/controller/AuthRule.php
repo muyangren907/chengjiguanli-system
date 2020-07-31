@@ -3,11 +3,11 @@
 namespace app\admin\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 // 引用权限数据模型类
 use app\admin\model\AuthRule as AR;
 
-class AuthRule extends BaseController
+class AuthRule extends AdminBase
 {
     // 显示权限列表
     public function index()

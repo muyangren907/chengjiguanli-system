@@ -66,6 +66,7 @@ class KaoshiSet extends BaseModel
         $src['subject_id'] = strToarray($src['subject_id']);
 
         $sbjList = $this->where('kaoshi_id', $src['kaoshi_id'])
+            ->where('status', 1)
             ->when(count($src['subject_id']) > 0, function ($query) use ($src) {
                 $query->where('subject_id', 'in', $src['subject_id']);
             })
@@ -82,7 +83,6 @@ class KaoshiSet extends BaseModel
                     $query->field('id, title, jiancheng, paixu, lieming');
                 }
             ])
-            ->where('status', 1)
             ->select();
 
         // 重新整理学科信息
@@ -103,10 +103,11 @@ class KaoshiSet extends BaseModel
             ];
         }
 
-        // 按条件排序
-        if(count($data) > 0){
-            $data = sortArrByManyField($data, 'paixu', SORT_ASC);
+        if(count($data) > 0)
+        {
+            $data = \app\facade\Tools::sortArrByManyField($data, 'paixu', SORT_ASC);
         }
+
         return $data;
     }
 
@@ -137,9 +138,19 @@ class KaoshiSet extends BaseModel
         }
         // 按条件排序
         if(count($data) > 0){
-            $data = sortArrByManyField($data, 'nianji', SORT_ASC);
+            $data = \app\facade\Tools::sortArrByManyField($data, 'nianji', SORT_ASC);
         }
         return $data;
+    }
+
+
+    // 通过考试ID生成可以参加考试年级
+    public function srcGradeByID($kaoshi_id)
+    {
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $time = $ks->where('id', $kaoshi_id)->field('bfdate, enddate')->find();
+        $bj = \app\facade\Tools::gradeName('str', $time->getData('enddate'));
+        return $bj;
     }
 
 

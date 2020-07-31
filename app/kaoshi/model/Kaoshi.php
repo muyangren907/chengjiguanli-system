@@ -64,15 +64,15 @@ class Kaoshi extends BaseModel
     }
 
 
-    // // 考试参加考试的学校、学科、年级、班级
-    // public function kaoshiInfo($id = 0)
-    // {
-    //     // 获取参考年级
-    //     $kaoshiList = $this->where('id', $id)
-    //             ->field('id, title, status, luru')
-    //             ->find();
-    //     return $kaoshiList;
-    // }
+    // 本次考试信息，包含ID、标题、状态、是否允许编辑成绩
+    public function kaoshiInfo($id = 0)
+    {
+        // 获取参考年级
+        $kaoshiList = $this->where('id', $id)
+                ->field('id, title, status, luru')
+                ->find();
+        return $kaoshiList;
+    }
 
 
     // 开始时间修改器
@@ -116,14 +116,20 @@ class Kaoshi extends BaseModel
         $subject = $ksset->srcSubject($src);
         // 重新整理数据
         $str = '';
-        foreach ($subject as $key => $value) {
-            if($key == 0)
-            {
-                $str = $value['jiancheng'];
-            }else{
-                $str = $str . '、' . $value['jiancheng'];
+        if(isset($subject))
+        {
+            $i = 0;
+            foreach ($subject as $key => $value) {
+                if($i == 0)
+                {
+                    $str = $value['jiancheng'];
+                }else{
+                    $str = $str . '、' . $value['jiancheng'];
+                }
+                $i = $i + 1;
             }
         }
+
         return $str;
     }
 
@@ -133,16 +139,21 @@ class Kaoshi extends BaseModel
     {
         // 查询参考年级
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $data = $ksset->srcNianji($this->getAttr('id'));
+        $data = $ksset->srcGrade($this->getAttr('id'));
         // 重新整理数据
         $str = '';
-        foreach ($data as $key => $value) {
-            $temp = substr($value['nianjiname'], 0, 3);
-            if($key == 0)
-            {
-                $str = $temp;
-            }else{
-                $str = $str . '、' . $temp;
+        if(isset($data))
+        {
+            $i = 0;
+            foreach ($data as $key => $value) {
+                $temp = substr($value['nianjiname'], 0, 3);
+                if($i == 0)
+                {
+                    $str = $temp;
+                }else{
+                    $str = $str . '、' . $temp;
+                }
+                $i = $i + 1;
             }
         }
         return $str;
@@ -182,6 +193,7 @@ class Kaoshi extends BaseModel
     {
         return $this->belongsTo('\app\teach\model\Xueqi', 'xueqi_id', 'id');
     }
+
 
 
 }

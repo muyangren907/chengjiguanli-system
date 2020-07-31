@@ -2,12 +2,12 @@
 namespace app\chengji\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 use app\chengji\model\Chengji;
 use app\teach\model\Subject;
 
 
-class Luru extends BaseController
+class Luru extends AdminBase
 {
     // 成绩列表
     public function index()
@@ -70,7 +70,7 @@ class Luru extends BaseController
         // 渲染
         return $this->view->fetch();
     }
-    
+
 
     // 保存使用二维码录入的成绩
     public function malusave()
@@ -197,8 +197,8 @@ class Luru extends BaseController
             }
 
             $cjone->defen = $list['newdefen'];
-            $cjone->defenlv = $list['newdefen'] / $manfen * 100; 
-            $cjone->user_id = session('admin.userid'); 
+            $cjone->defenlv = $list['newdefen'] / $manfen * 100;
+            $cjone->user_id = session('admin.userid');
             $data = $cjone->save();
         } else {
             $data = [

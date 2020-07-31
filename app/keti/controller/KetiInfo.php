@@ -3,7 +3,7 @@
 namespace app\keti\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 // 引用课题信息数据模型类
 use app\keti\model\KetiInfo as ktinfo;
 // 引用PhpSpreadsheet类
@@ -14,7 +14,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use app\tools\controller\File;
 
 
-class KetiInfo extends BaseController
+class KetiInfo extends AdminBase
 {
     /**
      * 显示资源列表

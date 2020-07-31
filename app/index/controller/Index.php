@@ -2,12 +2,12 @@
 namespace app\index\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 // 引用与此控制器同名的数据模型
 use app\system\model\SystemBase as  sysbasemod;
 
 
-class Index extends BaseController
+class Index extends AdminBase
 {
     // 主页
     public function index()

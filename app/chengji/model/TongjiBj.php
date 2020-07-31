@@ -212,6 +212,8 @@ class TongjiBj extends KaoshiBase
         $src = array(
             'kaoshi_id' => ''
             ,'banji_id' => array()
+            ,'page' => 0
+            ,'limit' => 10
         );
         $src = array_cover($srcfrom, $src);
         $src['banji_id'] = strToarray($src['banji_id']);
@@ -224,6 +226,9 @@ class TongjiBj extends KaoshiBase
         $tongjiJg = $this
             ->where('kaoshi_id', $src['kaoshi_id'])
             ->where('banji_id', 'in', $src['banji_id'])
+            ->when($src['page'] > 0, function ($query) use($src) {
+                $query->limit($src['limit'])->page($src['page']);
+            })
             ->field('banji_id, kaoshi_id')
             ->with([
                 'bjBanji'=>function($query){

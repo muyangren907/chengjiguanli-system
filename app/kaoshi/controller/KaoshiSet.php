@@ -2,7 +2,7 @@
 namespace app\kaoshi\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 
 // 引用考号数据模型类
 use app\kaoshi\model\KaoshiSet as ksset;
@@ -10,7 +10,7 @@ use app\kaoshi\model\KaoshiSet as ksset;
 use app\kaoshi\controller\Kaoshi as kscon;
 
 
-class KaoshiSet extends BaseController
+class KaoshiSet extends AdminBase
 {
     /**
      * 显示资源列表
@@ -30,7 +30,7 @@ class KaoshiSet extends BaseController
         $ksset = new ksset;
         $src['kaoshi_id'] = $kaoshi_id;
         $list['subject'] = $ksset->srcSubject($src);
-        $nj = $ksset->srcNianji($kaoshi_id);
+        $nj = $ksset->srcGrade($kaoshi_id);
         $kaoshi = new \app\kaoshi\model\Kaoshi;
         $list['sj']  = $kaoshi::where('id', $kaoshi_id)->value('bfdate');
 
@@ -86,9 +86,9 @@ class KaoshiSet extends BaseController
         );
 
         // 获取参加考试年级
-        $ks = new \app\kaoshi\model\Kaoshi;
-        $ksend = $ks->where('id', $kaoshi_id)->value('enddate');
-        $list['set']['nianji'] = nianJiNameList($ksend);
+        $ksset = new ksset();
+        $nianJiNameList = $ksset->srcGradeByID($kaoshi_id);
+        $list['set']['nianji'] = $nianJiNameList;
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -182,7 +182,7 @@ class KaoshiSet extends BaseController
                     $query->field('id, title, jiancheng');
                 }
             ])
-            ->find()->toArray();
+            ->find();
 
         // 设置页面标题
         $list['set'] = array(
@@ -211,7 +211,7 @@ class KaoshiSet extends BaseController
         // 获取表单数据
         $list = request()->only([
             'id'
-            ,'kaoshi'
+            ,'kaoshi_id'
             ,'manfen'
             ,'youxiu'
             ,'jige'
@@ -225,7 +225,7 @@ class KaoshiSet extends BaseController
         if(!$result){
             return json(['msg' => $msg, 'val' => 0]);;
         }
-        event('kslu', $list['kaoshi']);
+        event('kslu', $list['kaoshi_id']);
 
         // 更新数据
         $ksset = new ksset();
@@ -288,5 +288,5 @@ class KaoshiSet extends BaseController
         // 返回信息
         return json($data);
     }
-    
+
 }

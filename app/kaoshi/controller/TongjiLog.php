@@ -4,9 +4,9 @@ declare (strict_types = 1);
 namespace app\Kaoshi\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 
-class TongjiLog extends BaseController
+class TongjiLog extends AdminBase
 {
     /**
      * 显示资源列表

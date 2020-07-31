@@ -3,12 +3,12 @@
 namespace app\admin\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 // 引用用户权限关联数据模型
 use app\admin\model\AuthGroupAccess as AGA;
 
 
-class AuthGroupAccess extends BaseController
+class AuthGroupAccess extends AdminBase
 {
 	// 用户列表
     public function index($group_id)
@@ -94,7 +94,7 @@ class AuthGroupAccess extends BaseController
             $msg = $validate->getError();
             if(!$result){
                 continue;
-            } 
+            }
             // 查询数据是否存在
             $tempObj = $aga
                 ->where('uid', $value)

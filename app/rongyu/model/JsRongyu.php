@@ -11,10 +11,10 @@ class JsRongyu extends BaseModel
     public function search($srcfrom)
     {
     	$src = [
-            'fzschool_id'=>array(),
-            'hjschool_id'=>array(),
-            'category_id'=>array(),
-            'searchval'=>''
+            'fzschool_id' => array()
+            ,'hjschool_id' => array()
+            ,'category_id' => array()
+            ,'searchval' => ''
         ];
         // 用新值替换初始值
         $src = array_cover($srcfrom, $src);

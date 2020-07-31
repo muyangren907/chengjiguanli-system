@@ -1,12 +1,12 @@
 <?php
 namespace app\chengji\controller;
 
-use app\BaseController;     # 引用控制器基类
+use app\base\controller\AdminBase;     # 引用控制器基类
 use app\chengji\model\Chengji; # 引用成绩数据模型
 use \app\kaoshi\model\Kaohao; # 引用考号数据模型
 use \app\teach\model\Subject; # 引用学科数据模型
 
-class Index extends BaseController
+class Index extends AdminBase
 {
     // 成绩列表
     public function index($kaoshi_id)
@@ -52,7 +52,7 @@ class Index extends BaseController
                 ,'banji_id' => array()
                 ,'searchval'
             ], 'POST');
-            
+
         // 获取参与考试的班级
         if (count($src['banji_id']) == 0) {
             $khSrc = new \app\kaohao\model\SearchMore;

@@ -3,11 +3,11 @@
 namespace app\chengji\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 // 引用成绩统计数据模型
 use app\chengji\model\Tongji as TJ;
 
-class Tongji extends BaseController
+class Tongji extends AdminBase
 {
     // 统计已经录入成绩数量
     public function yiluCnt($kaoshi_id)
