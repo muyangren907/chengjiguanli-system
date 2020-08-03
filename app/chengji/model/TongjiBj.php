@@ -272,6 +272,8 @@ class TongjiBj extends BaseModel
             $src['enddate'] = date("Y-m-d", strtotime("+1 day"));
         }
 
+        // halt($src);
+
         $data = $this
             ->where('banji_id', $src['banji_id'])
             ->where('kaoshi_id', 'in', function ($query) use ($src) {
