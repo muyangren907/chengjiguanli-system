@@ -23,7 +23,7 @@ class BanjiChengji extends BaseController
         $list['banji_id'] = $banji;
 
         $sbj = new \app\teach\model\Subject;
-        $list['subject'] = $sbj->searchKaoshi()->toArray();
+        $list['subject_id'] = $sbj->searchKaoshi()->toArray();
 
         // 模板赋值
         $this->view->assign('list',$list);
@@ -43,9 +43,9 @@ class BanjiChengji extends BaseController
                 ,'limit'=>'10'
                 ,'field'=>'ks_id'
                 ,'order'=>'desc'
-                ,'banji'=>''
-                ,'category'=>''
-                ,'xueqi'=>''
+                ,'banji_id'=>''
+                ,'category_id'=>''
+                ,'xueqi_id'=>''
                 ,'bfdate'=>''
                 ,'enddate'=>''
             ],'POST');
@@ -69,10 +69,10 @@ class BanjiChengji extends BaseController
             ->only([
                 'field' => 'ks_id'
                 ,'order' => 'desc'
-                ,'banji' => ''
-                ,'subject' => ''
-                ,'category' => ''
-                ,'xueqi' => ''
+                ,'banji_id' => ''
+                ,'subject_id' => ''
+                ,'category_id' => ''
+                ,'xueqi_id' => ''
                 ,'bfdate' => ''
                 ,'enddate' => ''
             ],'POST');
@@ -82,7 +82,7 @@ class BanjiChengji extends BaseController
         $bjcjmod = new \app\chengji\model\TongjiBj;
         $data = $bjcjmod->srcBanjiChengji($src);
         $bjcjmod = new bjcjmod;
-        $data = $bjcjmod->tiaoXing($data, $src['subject']);
+        $data = $bjcjmod->tiaoXing($data, $src['subject_id']);
 
         return json($data);
     }

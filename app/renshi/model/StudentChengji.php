@@ -188,7 +188,7 @@ class StudentChengji extends BaseModel
                     ->find();
 
         // 参加考试学科
-        $subject = subjectList(1,1); 
+        $subject = subjectList(1,1);
         // 获取参加考试学科满分
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $manfen = $ksset->srcSubject($khInfo->kaoshi_id, '', $khInfo->ruxuenian);
