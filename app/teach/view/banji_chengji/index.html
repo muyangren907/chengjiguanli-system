@@ -58,7 +58,7 @@
 {/block}
 
 {block name="echart"}
-{volist name="$list.subject" id="vo"}
+{volist name="$list.subject_id" id="vo"}
 <div class="layui-col-xs6" style="width:100%; height:400px; margin-top: 45px; margin-bottom: 45px;" id="{$vo.lieming}"></div>
 {/volist}
 {/block}
@@ -86,7 +86,7 @@
   ,[]
   ];
 	// 获取学科
-	var xk = '<?php echo json_encode($list["subject"]);?>';
+	var xk = '<?php echo json_encode($list["subject_id"]);?>';
 	xk = eval(decodeURIComponent(xk));
 	var xiangmu = {cj_cnt:'人数',avg:'平均分',jige:'及格率%',youxiu:'优秀率%'};		// 要显示哪些统计结果
 

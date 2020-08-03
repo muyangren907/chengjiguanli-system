@@ -38,6 +38,11 @@ class OneStudentChengji extends BaseModel
         // 整理数据
         $data = array();
         foreach ($stuCj as $key => $value) {
+            if(empty($value->cjKaoshi))
+            {
+                continue;
+            }
+
             $data[$key] = [
                 'kaoshi_id' => $value->kaoshi_id,
                 'kaoshiTitle' => $value->cjKaoshi->title,
@@ -187,7 +192,7 @@ class OneStudentChengji extends BaseModel
                     ->find();
 
         // 参加考试学科
-        $subject = subjectList(1,1); 
+        $subject = subjectList(1,1);
         // 获取参加考试学科满分
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $manfen = $ksset->srcSubject($khInfo->kaoshi_id, '', $khInfo->ruxuenian);

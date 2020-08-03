@@ -79,7 +79,6 @@ class BanjiChengji extends BaseModel
         ];
 
         foreach ($cjlist as $key => $value) {
-
             if($subject == $value->subject_id){
                 $xAxis[] = $value->bjKaoshi->title;
                 $series['0']['data'][] = $value->defenlv;

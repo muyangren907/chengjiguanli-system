@@ -23,7 +23,7 @@ class BanjiChengji extends AdminBase
         $list['banji_id'] = $banji;
 
         $sbj = new \app\teach\model\Subject;
-        $list['subject'] = $sbj->searchKaoshi()->toArray();
+        $list['subject_id'] = $sbj->searchKaoshi()->toArray();
 
         // 模板赋值
         $this->view->assign('list',$list);
