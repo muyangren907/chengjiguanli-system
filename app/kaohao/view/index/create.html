@@ -15,9 +15,9 @@
           <div class="layui-form-item">
             <label for="school_id" class="layui-form-label"><span class="x-red">*</span>学校</label>
             <div class="layui-input-block">
-              {php}$schoolList = schoolList('校级', '校级'){/php}
+              {php}$schoolList = schoolXueduan('小学', '初中'){/php}
               <select name="school_id" id="school_id" lay-verify="required">
-                <option value=""></option>
+                <option value="">请选择学校</option>
                 {foreach $schoolList as $key=>$vo}
                   <option value="{$vo.id}" >
                     {$vo.title}
@@ -73,18 +73,15 @@
     var form = layui.form
         cjgl = layui.cjgl;
 
-
     addBanji();
     // 监听选择按钮
     form.on('select', function(data){
       var myselectname = $(data.elem).attr('name');
       if(myselectname == 'school_id' || myselectname == 'ruxuenian'){
         addBanji();
-
         form.val("myform", { //formTest 即 class="layui-form" 所在元素属性 lay-filter="" 对应的值
           "search": "" // "name": "value"
         });
-
         form.render();
       }
     });
@@ -94,7 +91,11 @@
     {
       // 获取参数
       formval = form.val("myform");
-      cjgl.createSelectOption('banji_id', formval, '/teach/banji/mybanji', 'id', 'banTitle');
+      if(formval.school_id == '' || formval.ruxuenian == '')
+      {
+        return true;
+      }
+      cjgl.createSelectOption('banji_id', formval, '/tools/kscy/class', 'id', 'banTitle');
     }
 
 
@@ -102,19 +103,18 @@
     $('#search').bind({
       keyup:function(){
         $('#list').children("span[name='aa']").remove();
-        str = $('#search').val().trim();
-        banji = $('#banji_id').val();
-        if(banji=='')
+        formval = form.val("myform");
+        formval.search = formval.search.trim();
+        if(formval.banji_id=='' || formval.search == '')
         {
-          layer.msg('先选择班级');
           return true;
         }
         // 获取数据
         $.post(
             "/student/index/srcstudent",
             {
-                "str":str,
-                "banji_id":banji,
+                "str":formval.search,
+                "banji_id":formval.banji_id,
                 "kaoshi":1
             },
             function(data,status){

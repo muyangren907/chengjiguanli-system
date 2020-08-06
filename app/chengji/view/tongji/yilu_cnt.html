@@ -5,35 +5,35 @@
 {/block}
 {block name="nav"}
 <span class="layui-breadcrumb">
-	<a href="">考试管理</a>
-	<a href="">更多操作</a>
-	<a href="">前期操作</a>
-	<a href="">已录成绩数量</a>
-	<a><cite>{$list['kaoshititle']}</cite></a>
+  <a href="">考试管理</a>
+  <a href="">更多操作</a>
+  <a href="">前期操作</a>
+  <a href="">已录成绩数量</a>
+  <a><cite>{$list['kaoshititle']}</cite></a>
 </span>
 {/block}
 {block name="search"}
 <div class="layui-form-item">
-	<label for="school_id" class="layui-form-label" style="height: 100%">学校</label>
-	<div class="layui-input-block">
-		{foreach $list.school_id as $key=>$vo}
-		<input type="radio" name="school_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" lay-filter="src" {eq name="$key" value="0"} checked {/eq}>
-		{/foreach}
-	</div>
+  <label for="school_id" class="layui-form-label" style="height: 100%">学校</label>
+  <div class="layui-input-block">
+    {foreach $list.school_id as $key=>$vo}
+    <input type="radio" name="school_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" lay-filter="src" {eq name="$key" value="0"} checked {/eq}>
+    {/foreach}
+  </div>
 </div>
 <div class="layui-form-item">
-	<label for="nianji" class="layui-form-label" style="height: 100%">年级 </label>
-	<div class="layui-input-block" pane>
-		{foreach $list.nianji as $key=>$vo}
-		<input type="radio" name="ruxuenian" value="{$vo.nianji}" title="{$vo.nianjiname}"
-		{eq name="$key" value="0"} checked {/eq}>
-		{/foreach}
-	</div>
+  <label for="nianji" class="layui-form-label" style="height: 100%">年级 </label>
+  <div class="layui-input-block" pane>
+    {foreach $list.nianji as $key=>$vo}
+    <input type="radio" name="ruxuenian" value="{$vo.nianji}" title="{$vo.nianjiname}"
+    {eq name="$key" value="0"} checked {/eq}>
+    {/foreach}
+  </div>
 </div>
 <div class="layui-form-item" style="margin-bottom: 0;">
-	<label for="banji" class="layui-form-label" style="height: 100%">班级</label>
-	<div class="layui-input-block" id="banji">
-	</div>
+  <label for="banji" class="layui-form-label" style="height: 100%">班级</label>
+  <div class="layui-input-block" id="banji">
+  </div>
 </div>
 <input type="hidden" name="kaoshi_id" value="{$list.kaoshi_id}">
 {/block}
@@ -43,122 +43,122 @@
 {block name="myjs"}
 <!-- 表格上面按钮模板 -->
 <script type="text/html" id="toolbarDemo">
-	<div class="layui-btn-container">
-		<button class="layui-btn layui-btn-danger" lay-event="dels">
-			<i class="iconfont">&#xe69d;</i> 批量删除
-		</button>
-		<button class="layui-btn" lay-event="add">
-			<i class="iconfont">&#xe6b9;</i> 添加
-		</button>
-	</div>
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-danger" lay-event="dels">
+      <i class="iconfont">&#xe69d;</i> 批量删除
+    </button>
+    <button class="layui-btn" lay-event="add">
+      <i class="iconfont">&#xe6b9;</i> 添加
+    </button>
+  </div>
 </script>
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
-	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
-	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
+  <a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
+  <a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
 </script>
 <!-- 表格操作 -->
 <script>
-	//设置列
+  //设置列
     options.cols=[[ //表头
-    {field:'banji_id',type:'numbers',title:'序号',align:'center',sort: true,width:80},
+    {field:'id',type:'numbers',title:'序号',align:'center',sort: false,width:80},
     {field: 'school_id', title: '学校',align:'center',sort: true,width:80,rowspan:2},
     {field: 'banji_id', title: '班级',align:'center',sort: true,width:130,rowspan:2},
     {field: 'id',title: '班级人数',align:'center',minWidth:100,templet:function(d){
-    	var str='';
-    	if(d.chengji)
-    	{
-    		str = d.chengji.stucnt
-    	}
-    	return str;
+      var str='';
+      if(d.chengji)
+      {
+        str = d.chengji.stucnt
+      }
+      return str;
     }},
     ]];
 
-	// 获取学科
-	var xk = '<?php echo json_encode($list["subject_id"]);?>';
-	xk = eval(decodeURIComponent(xk));
+  // 获取学科
+  var xk = '<?php echo json_encode($list["subject_id"]);?>';
+  xk = eval(decodeURIComponent(xk));
 
-	$.each(xk,function(index,value){
-		var colname = xk[index].lieming
-		    coltitle = xk[index].title;
-		options.cols[0].push({field: 'id',title: coltitle,minWidth:100,align:'center',templet:function(d){
-			var str='';
-			if(d.chengji)
-			{
-				if(d.chengji[colname]){
-					str = d.chengji[colname].xkcnt;
-				}
-			}
-			return str;
-		}});
-	});
+  $.each(xk,function(index,value){
+    var colname = xk[index].lieming
+        coltitle = xk[index].title;
+    options.cols[0].push({field: 'id',title: coltitle,minWidth:100,align:'center',templet:function(d){
+      var str='';
+      if(d.chengji)
+      {
+        if(d.chengji[colname]){
+          str = d.chengji[colname].xkcnt;
+        }
+      }
+      return str;
+    }});
+  });
 
 
-  	// 提交搜索条件后重载表格
-  	layui.use(['table','cjgl'],function(){
-		var table = layui.table
-		cjgl = layui.cjgl
-		form = layui.form;
+    // 提交搜索条件后重载表格
+    layui.use(['table','cjgl'],function(){
+    var table = layui.table
+    cjgl = layui.cjgl
+    form = layui.form;
 
-		addBanji();
+    addBanji();
 
-		//表头工具栏事件
-		table.on('toolbar(mytable)', function(obj){
-			switch(obj.event){
-				case 'dels':
-					layer.msg('这个别动！');
-					break;
-	            	var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-	            	cjgl.delAll(checkStatus,'/school','mytable');
-	            	break;
-	            case 'add':
-		            layer.msg('这个别动！');
-		            break;
-		            cjgl.add('添加单位','/school/create','650','500');
-	            break;
-	        };
-	    });
+    //表头工具栏事件
+    table.on('toolbar(mytable)', function(obj){
+      switch(obj.event){
+        case 'dels':
+          layer.msg('这个别动！');
+          break;
+                var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
+                cjgl.delAll(checkStatus,'/school','mytable');
+                break;
+              case 'add':
+                layer.msg('这个别动！');
+                break;
+                cjgl.add('添加单位','/school/create','650','500');
+              break;
+          };
+      });
 
-	    //监听行工具条
-	    table.on('tool(mytable)', function(obj){
-		    var data = obj.data; //获得当前行数据
-		    var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
-		    var tr = obj.tr; //获得当前行 tr 的DOM对象
-		    switch(layEvent){
-		      case 'detail':// 查看
-			      layer.msg('查看' + data.id);
-			      break;
-		      case 'del':// 删除
-			      cjgl.del(obj,"/school");
-			      break;
-		      case 'edit':// 编辑
-			      cjgl.add('编辑单位','/school/'+obj.data.id+'/edit','650','500');
-			      break;
-		      case 'status':// 状态
-			      cjgl.status(obj,"{:url('setstatus')}");
-			      break;
-		  	};
-		});
+      //监听行工具条
+      table.on('tool(mytable)', function(obj){
+        var data = obj.data; //获得当前行数据
+        var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+        var tr = obj.tr; //获得当前行 tr 的DOM对象
+        switch(layEvent){
+          case 'detail':// 查看
+            layer.msg('查看' + data.id);
+            break;
+          case 'del':// 删除
+            cjgl.del(obj,"/school");
+            break;
+          case 'edit':// 编辑
+            cjgl.add('编辑单位','/school/'+obj.data.id+'/edit','650','500');
+            break;
+          case 'status':// 状态
+            cjgl.status(obj,"{:url('setstatus')}");
+            break;
+        };
+    });
 
-		// 监听表单提交
-		form.on('radio', function(data){
-			addBanji();
-			$("#srcsubmit").click();
-		});
+    // 监听表单提交
+    form.on('radio', function(data){
+      addBanji();
+      $("#srcsubmit").click();
+    });
 
-		// 添加班级列表
-	    function addBanji(){
-	      // 获取参数
-	      var formval;
-	      formval = formval = form.val("search");
-	      if(formval.school_id == '')
-	      {
-	      	$('#banji').children().remove();
-	      }else{
-	      	cjgl.createCheckbox('banji', formval, '/kaoshi/index/cybanji', 'banji_id', 'banTitle');
-	      }
-	    }
-	});
+    // 添加班级列表
+      function addBanji(){
+        // 获取参数
+        var formval;
+        formval = formval = form.val("search");
+        if(formval.school_id == '')
+        {
+          $('#banji').children().remove();
+        }else{
+          cjgl.createCheckbox('banji', formval, '/tools/kscy/class', 'banji_id', 'banTitle');
+        }
+      }
+  });
 
 
 

@@ -8,8 +8,8 @@
               <select name="nianji" lay-verify="required">
                 <option value="">请选择年级</option>
                 {foreach $list.set.nianji as $key=>$vo }
-                  <option value="{$key}">
-                    {$vo}
+                  <option value="$vo.nianji">
+                    {$vo.nianjiname}
                   </option>
                 {/foreach}
               </select>

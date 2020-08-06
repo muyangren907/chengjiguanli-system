@@ -134,7 +134,10 @@
     		    <label for="subject_id" class="layui-form-label"><span class="x-red">*</span>所属学科 </label>
     		    <div class="layui-input-block">
     		    	{php}
-                $subjectlist = subjectList(1, '');
+                $sbj = new \app\teach\model\Subject;
+                $subjectlist = $sbj->where('status', 1)
+                    ->field('id,title')
+                    ->select();
               {/php}
     		      <select name="subject_id" lay-verify="required">
     		      	<option value=""></option>

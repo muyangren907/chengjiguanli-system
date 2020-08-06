@@ -3,7 +3,10 @@ declare (strict_types = 1);
 
 namespace app\tools\controller;
 
-class Index
+// 引用控制器基类
+use app\BaseController;
+
+class Index extends BaseController
 {
 
     // 给数组按多条件排序
@@ -63,19 +66,27 @@ class Index
     * @param str或array $str 表单中获取的参数
     * @return array 返回类型
     */
-    public function strToArray($str)
+    public function strToArray($str = array())
     {
         // 如果str是字符串，则转换成数组
         if(is_array($str) == false)
         {
-            $str = explode(',', $str);
-        }
-        // 循环数组，删除空元素
-        foreach ($str as $key => $value) {
-            if($value == "" && $value == null){
-                unset($str[$key]);
+            if ($str != '' || $str != null) {
+                $str = (string)$str;
+                $str = explode(',', $str);
+                // 循环数组，删除空元素
+                foreach ($str as $key => $value) {
+                    if($value == "" && $value == null){
+                        unset($str[$key]);
+                    }
+                }
+            }else{
+                $str = array();
             }
+        }else{
+            $str = $str;
         }
+
         return $str;
     }
 
@@ -152,15 +163,6 @@ class Index
         ];
 
         return $data;
-    }
-
-
-    // 年与年级对应表
-    public function gradeName($value = 'str', $riqi)
-    {
-        $bj = new \app\teach\model\Banji;
-        $njList = $bj->gradeName($value, $riqi);
-        return $njList;
     }
 
 

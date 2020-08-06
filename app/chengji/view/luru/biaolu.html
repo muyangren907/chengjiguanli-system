@@ -123,7 +123,7 @@ layui.use(['form','upload','cjgl'], function(){
 		//执行实例
     var uploadInst = upload.render({
       elem: '#upload' //绑定元素
-      ,url: "/teacher/index/upload" //上传接口
+      ,url: "/tools/file/upload" //上传接口
       ,done: function(res){
         if(res.val == 1){
           $('#url').val(res.url);
@@ -194,21 +194,21 @@ layui.use(['form','upload','cjgl'], function(){
     function addSchool(){
       // 获取参数
       formval = form.val("dwform");
-      cjgl.createSelectOption('school_id', formval, '/kaoshi/index/cyschool', 'id', 'title');
+      cjgl.createSelectOption('school_id', formval, '/tools/kscy/school', 'id', 'title');
     }
 
     // 添加年级
     function addNianji(){
       // 获取参数
       formval = form.val("dwform");
-      cjgl.createSelectOption('ruxuenian', formval, '/kaoshi/index/cynianji', 'nianji', 'nianjiname');
+      cjgl.createSelectOption('ruxuenian', formval, '/tools/kscy/grade', 'nianji', 'nianjiname');
     }
 
     // 添加学科
     function addBanji(){
       // 获取参数
       formval = form.val("dwform");
-      cjgl.createCheckbox('banji_id', formval, '/kaoshi/index/cybanji', 'banji_id', 'banTitle');
+      cjgl.createCheckbox('banji_id', formval, '/tools/kscy/class', 'banji_id', 'banTitle');
     }
 
 
@@ -216,7 +216,7 @@ layui.use(['form','upload','cjgl'], function(){
     function addSubject(){
       // 获取参数
       formval = form.val("dwform");
-      cjgl.createCheckbox('subject_id', formval, '/kaoshi/index/cysubject', 'subject_id', 'title');
+      cjgl.createCheckbox('subject_id', formval, '/tools/kscy/subject', 'subject_id', 'title');
     }
 
 });

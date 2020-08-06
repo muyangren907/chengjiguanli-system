@@ -426,23 +426,23 @@ class Index extends AdminBase
     }
 
 
-    // 上传文件
-    public function upload()
-    {
-        // 获取表单数据
-        $list = request()->only([
-            'serurl'
-            ,'category_id'
-        ], 'post');
+    // // 上传文件
+    // public function upload()
+    // {
+    //     // 获取表单数据
+    //     $list = request()->only([
+    //         'serurl'
+    //         ,'category_id'
+    //     ], 'post');
 
-        // 获取表单上传文件
-        $file = request()->file('file');
-        // 上传文件并返回结果
-        $fileObj = new File();
-        $data = $fileObj->saveFileInfo($file, $list, true);
+    //     // 获取表单上传文件
+    //     $file = request()->file('file');
+    //     // 上传文件并返回结果
+    //     $fileObj = new File();
+    //     $data = $fileObj->saveFileInfo($file, $list, true);
 
-        return json($data);
-    }
+    //     return json($data);
+    // }
 
 
     // 下载表格模板

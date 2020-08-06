@@ -18,13 +18,13 @@ class Njtongji extends AdminBase
             ->field('id, title')
             ->find();
         // 获取参与学校
-        $khSrc = new \app\kaohao\model\Search;
+        $cy = new \app\kaohao\model\SearchCanYu;
         $src['kaoshi_id'] = $kaoshi_id;
-        $list['school_id'] = $khSrc->cySchool($src);
+        $list['school_id'] = $cy->school($src);
         // 获取年级与学科
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['nianji'] = $ksset->srcNianji($kaoshi_id);
-        $list['subject_id'] = $ksset->srcSubject($kaoshi_id, '', '');
+        $list['nianji'] = $ksset->srcGrade($kaoshi_id);
+        $list['subject_id'] = $ksset->srcSubject($src);
 
         // 设置要给模板赋值的信息
         $list['webtitle'] = '各学校的年级成绩统计表';
@@ -90,7 +90,7 @@ class Njtongji extends AdminBase
 
         // 获取年级与学科
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['set']['nianji'] = $ksset->srcNianji($kaoshi_id);
+        $list['set']['nianji'] = $ksset->srcGrade($kaoshi_id);
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -128,8 +128,8 @@ class Njtongji extends AdminBase
                     ->field('id, title, bfdate, enddate')
                     ->find();
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $xk = $ksset->srcSubject($src['kaoshi_id'], '', $src['ruxuenian']);
-        $njlist = nianJiNameList($ksinfo->getData('bfdate')); # 获取考试年级名称
+        $xk = $ksset->srcSubject($src);
+        $njlist = nianJiNameList('str', $ksinfo->getData('bfdate')); # 获取考试年级名称
         $nianji = $njlist[$src['ruxuenian']];
         $tabletitle = $ksinfo->title . ' ' . $nianji . '各学校成绩汇总'; # 获取要下载成绩的学校和年级信息
 

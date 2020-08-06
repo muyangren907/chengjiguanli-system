@@ -87,7 +87,7 @@ class KaoshiSet extends AdminBase
 
         // 获取参加考试年级
         $ksset = new ksset();
-        $nianJiNameList = $ksset->srcGradeByID($kaoshi_id);
+        $nianJiNameList = $ksset->srcGrade($kaoshi_id);
         $list['set']['nianji'] = $nianJiNameList;
 
         // 模板赋值

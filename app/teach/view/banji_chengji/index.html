@@ -23,7 +23,7 @@
   <label for="xueqi_id" class="layui-form-label" style="height: 100%">学期</label>
   <div class="layui-input-block">
     <input type="radio" name="xueqi_id" title="无" value="" lay-skin="primary">
-    {php} $category = getCategory(108);{/php}
+    {php} $category = categoryChildren(108);{/php}
     {volist name="category" id="vo"}
     <input type="radio" name="xueqi_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
     {/volist}
@@ -32,7 +32,7 @@
 <div class="layui-form-item">
   <label for="category_id" class="layui-form-label" style="height: 100%">考试类型</label>
   <div class="layui-input-block">
-    {php} $category = getCategory(109);{/php}
+    {php} $category = categoryChildren(109);{/php}
     {volist name="category" id="vo"}
     <input type="checkbox" name="category_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
     {/volist}
@@ -44,7 +44,7 @@
       <span class="x-red">*</span>考试时间
     </label>
     <div class="layui-input-inline">
-      <input type="text" class="layui-input" id="bfdate" name="bfdate" placeholder="起始：默认一年前的今天" value="{$list.data.bfdate|default=''}" autocomplete="off" lay-filter="riqi">
+      <input type="text" class="layui-input" id="bfdate" name="bfdate" placeholder="起始：默认二年前的今天" value="{$list.data.bfdate|default=''}" autocomplete="off" lay-filter="riqi">
     </div>
     <div class="layui-input-inline">
       <input type="text" class="layui-input" id="enddate" name="enddate" placeholder="结束：默认明天" value="{$list.data.enddate|default=''}" autocomplete="off" lay-filter="riqi">

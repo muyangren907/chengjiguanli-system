@@ -3,9 +3,9 @@
 namespace app\kaohao\model;
 
 // 引用数据模型基类
-use \app\kaoshi\model\KaoshiBase;
+use \app\BaseModel;
 
-class Kaohao extends KaoshiBase
+class Kaohao extends BaseModel
 {
     // 班级成绩关联
     public function banjiKaohao()
@@ -52,8 +52,7 @@ class Kaohao extends KaoshiBase
     // 获取参加考试的班级全名
     public function getBanjiTitleAttr()
     {
-        $bj = banJiNamelist();
-        $title = $this->getAttr('nianji') . $bj[$this->getAttr('paixu')];
+        $title = $this->getAttr('nianji') . self::getBanTitleAttr();
         return $title;
     }
 
@@ -61,8 +60,23 @@ class Kaohao extends KaoshiBase
     // 获取不带年级的班级名
     public function getBanTitleAttr()
     {
-        $bj = banJiNamelist();
-        $title = $bj[$this->getAttr('paixu')];
+        $bj = new \app\teach\model\Banji;
+        $title = $bj->numToWord($this->getAttr('paixu')) . '班';
+        return $title;
+    }
+
+    // 获取参加考试班级数字名
+    public function getNumBanjiTitleAttr()
+    {
+        $njList = array_values(nianJiNameList('str', time()));
+        $nianji = array_search($this->getAttr('nianji'), $njList);
+        if ($nianji)
+        {
+            $title = $nianji . '.' . $this->getAttr('paixu');
+        } else {
+            $title = $this->getAttr('ruxuenian') . $this->getAttr('paixu');
+        }
+
         return $title;
     }
 }

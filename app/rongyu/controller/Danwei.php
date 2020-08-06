@@ -167,8 +167,7 @@ class Danwei extends AdminBase
         // 获取表单上传文件
         $file = request()->file('file');
         // 上传文件并返回结果
-        $fileObj = new File();
-        $data = $fileObj->saveFileInfo($file, $list, false);
+        $data = \app\facade\File::saveFileInfo($file, $list, false);
 
         if($data['val'] != true)
         {
@@ -216,8 +215,7 @@ class Danwei extends AdminBase
         // 获取表单上传文件
         $file = request()->file('file');
         // 上传文件并返回结果
-        $fileObj = new File();
-        $data = $fileObj->saveFileInfo($file, $list, false);
+        $data = \app\facade\File::saveFileInfo($file, $list, false);
 
         return json($data);
     }

@@ -6,9 +6,9 @@ use app\base\controller\AdminBase;
 
 // 引用数据模型类
 use app\kaoshi\model\Kaoshi as KS;
-use app\kaohao\model\Search as khSrc;
+use app\kaohao\model\SearchMore as srcMore;
+use app\kaohao\model\SearchCanYu as srcCy;
 use app\kaoshi\model\KaoshiSet as ksset;
-use app\kaohao\model\KaohaoSearch as khSear;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use \Endroid\QrCode\QrCode;
 use think\Validate;
@@ -21,15 +21,16 @@ class Excel extends AdminBase
     {
         // 获取参考年级、学科
         $ksset = new ksset;
-        $list['data']['nianji'] = $ksset->srcNianji($kaoshi_id);
-        $khSrc = new khSrc;
+        $list['data']['nianji'] = $ksset->srcGrade($kaoshi_id);
+        $srcMore = new srcMore;
         $src['kaoshi_id'] = $kaoshi_id;
         if(count($list['data']['nianji']) > 0){
             $src['ruxuenian'] = $list['data']['nianji'][0];
         } else {
             $src['ruxuenian'] = array();
         }
-        $list['data']['school'] = $khSrc->cySchool($src);
+        $srcCy = new srcCy();
+        $list['data']['school'] = $srcCy->school($src);
         // 设置页面标题
         $list['set'] = array(
             'webtitle' => '下载考号'
@@ -75,15 +76,15 @@ class Excel extends AdminBase
                     ->find();
         // 获取参考学科
         $ksset = new ksset();
-        $ksSubject = $ksset->srcSubject($kaoshi_id, $list['subject_id'], '');
+        $ksSubject = $ksset->srcSubject($list);
 
         // 查询考号
-        $khSrc = new khSrc();
+        $srcMore = new srcMore();
         $src = [
             'kaoshi_id' => $kaoshi_id
             ,'banji_id' => $banji_id
         ];
-        $kaohao = $khSrc->srcBanjiKaohao($src);
+        $kaohao = $srcMore->srcBanjiKaohao($src);
 
         $thistime = date("Y-m-d h:i:sa");
         // 创建表格
@@ -107,9 +108,6 @@ class Excel extends AdminBase
         $sheet->setCellValue('E1', '学科');
         $sheet->setCellValue('F1', '姓名');
 
-        // 实例化系统设置类
-        $md5 = new \app\system\controller\Encrypt;
-
         // 循环写出信息
         $i = 2;
         foreach ($kaohao as $key=>$bj)
@@ -121,10 +119,10 @@ class Excel extends AdminBase
                     // 表格赋值
                     $sheet->setCellValue('A' . $i, $i-1);
                     $stuKaohao = '';
-                    $stuKaohao = $md5->encrypt($kh->id . '|' . $sbj['id'], 'dlbz');
+                    $stuKaohao = \app\facade\Tools::encrypt($kh->id . '|' . $sbj['id'], 'dlbz');
                     $sheet->setCellValue('C' . $i, $bj->cjSchool->jiancheng);
                     $sheet->setCellValue('B' . $i, $stuKaohao);
-                    $sheet->setCellValue('D' . $i, $bj->cjBanji->numTitle);
+                    $sheet->setCellValue('D' . $i, $bj->numBanjiTitle);
                     $sheet->setCellValue('E' . $i, $sbj['jiancheng']);
                     $sheet->setCellValue('F' . $i, $kh->cjStudent['xingming']);
                     $i++;
@@ -151,15 +149,16 @@ class Excel extends AdminBase
     {
         // 获取参考年级、学科
         $ksset = new ksset;
-        $list['data']['nianji'] = $ksset->srcNianji($kaoshi_id);
-        $khSrc = new khSrc;
+        $list['data']['nianji'] = $ksset->srcGrade($kaoshi_id);
+        $srcMore = new srcMore;
         $src['kaoshi_id'] = $kaoshi_id;
         if(count($list['data']['nianji']) > 0){
             $src['ruxuenian'] = $list['data']['nianji'][0];
         } else {
             $src['ruxuenian'] = array();
         }
-        $list['data']['school'] = $khSrc->cySchool($src);
+        $srcCy = new srcCy();
+        $list['data']['school'] = $srcCy->school($src);
 
         // 设置页面标题
         $list['set'] = array(
@@ -208,15 +207,15 @@ class Excel extends AdminBase
                     ->find();
         // 获取参加考试学科
         $ksset = new ksset();
-        $ksSubject = $ksset->srcSubject($kaoshi_id, $list['subject_id']);
+        $ksSubject = $ksset->srcSubject($list);
 
         // 查询考号
-        $khSrc = new khSrc();
+        $srcMore = new srcMore();
         $src = [
             'kaoshi_id' => $kaoshi_id
             ,'banji_id' => $banji_id
         ];
-        $kaohao = $khSrc->srcBanjiKaohao($src);
+        $kaohao = $srcMore->srcBanjiKaohao($src);
 
         // 获取电子表格列名
         $lieming = excelColumnName();
@@ -263,7 +262,7 @@ class Excel extends AdminBase
             foreach ($bj->banjiKaohao as $k => $kh) {
                 $sheet->setCellValue('A' . $i, $i - 3);
                 $sheet->setCellValue('B' . $i, $kh->id);
-                $sheet->setCellValue('C' . $i, $bj->cjBanji->banjiTitle);
+                $sheet->setCellValue('C' . $i, $bj->banjiTitle);
                 $sheet->setCellValue('D' . $i, $kh->cjStudent->xingming);
                 $i ++;
             }
@@ -306,13 +305,5 @@ class Excel extends AdminBase
         ob_flush();
         flush();
         exit();
-    }
-
-
-    // 定义EXCEL列名
-    public function excelColumnName()
-    {
-        $liemingarr = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM','BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW'];
-        return $liemingarr;
     }
 }

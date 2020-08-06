@@ -3,10 +3,10 @@
 namespace app\chengji\model;
 
 // 引用基类
-use \app\kaoshi\model\KaoshiBase;
+use \app\BaseModel;
 
 
-class Chengji extends KaoshiBase
+class Chengji extends BaseModel
 {
     // 学科关联
     public function subjectName()
@@ -164,7 +164,6 @@ class Chengji extends KaoshiBase
             $data[$key][$col[1]] = 1 - ($data[$key][$col[0]]-1)/$cnt;
             $data[$key][$col[1]] = round($data[$key][$col[1]] * 100 , 2) ;
         }
-
         $temp = $this->saveAll($data);
 
         return true;

@@ -16,8 +16,8 @@ class Index extends AdminBase
 
         // 获取参加考试的年级和学科
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['set']['nianji'] = $ksset->srcNianji($kaoshi_id);
-        $src['kaohao_id'] = $kaoshi_id;
+        $list['set']['nianji'] = $ksset->srcGrade($kaoshi_id);
+        $src['kaoshi_id'] = $kaoshi_id;
         $list['set']['subject_id'] = $ksset->srcSubject($src);
         if (count($list['set']['nianji']) > 0) {
             $src['ruxuenian']=$list['set']['nianji'][0];
@@ -25,8 +25,8 @@ class Index extends AdminBase
             $src['ruxuenian']=array();
         }
         $src['kaoshi_id'] = $kaoshi_id;
-        $khSrc = new \app\kaohao\model\SearchMore;
-        $list['set']['school_id'] = $khSrc->cySchool($src);
+        $cy = new \app\kaohao\model\SearchCanYu;
+        $list['set']['school_id'] = $cy->school($src);
         $list['kaoshi_id'] = $kaoshi_id;
         $list['dataurl'] = '/chengji/index/data';
 
@@ -55,8 +55,8 @@ class Index extends AdminBase
 
         // 获取参与考试的班级
         if (count($src['banji_id']) == 0) {
-            $khSrc = new \app\kaohao\model\SearchMore;
-            $src['banji_id']= array_column($khSrc->cyBanji($src), 'id');
+            $cy = new \app\kaohao\model\SearchCanYu;
+            $src['banji_id']= array_column($cy->class($src), 'id');
         }
 
         // 实例化并查询成绩
@@ -80,11 +80,11 @@ class Index extends AdminBase
             'kaoshi_id' => $kaoshi_id
         );
         // 获取参加考试的学校和年级
-        $khSrc = new \app\kaohao\model\Search;
+        $cy = new \app\kaohao\model\SearchCanYu;
         $src['kaoshi_id'] = $kaoshi_id;
-        $list['school'] = $khSrc->cySchool($src);
+        $list['school'] = $cy->school($src);
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['nianji'] = $ksset->srcNianji($kaoshi_id);
+        $list['nianji'] = $ksset->srcGrade($kaoshi_id);
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -105,6 +105,14 @@ class Index extends AdminBase
         $subject_id = $src['subject_id'];
         // 判断考试状态
         event('kslu', $src['kaoshi_id']);
+
+        // 实例化验证模型
+        $validate = new \app\chengji\validate\Cjdownload;
+        $result = $validate->scene('deletemore')->check($src);
+        $msg = $validate->getError();
+        if(!$result){
+            $this->error($msg);
+        }
 
         // 获取要删除成绩的考号
         $kaohao = new \app\kaohao\model\Kaohao;
@@ -200,11 +208,11 @@ class Index extends AdminBase
         );
 
         // 获取参加考试的学校和年级
-        $khSrc = new \app\kaohao\model\Search;
+        $cy = new \app\kaohao\model\SearchCanYu;
         $src['kaoshi_id'] = $kaoshi_id;
-        $list['school_id'] = $khSrc->cySchool($src);
+        $list['school_id'] = $cy->school($src);
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['nianji'] = $ksset->srcNianji($kaoshi_id);
+        $list['nianji'] = $ksset->srcGrade($kaoshi_id);
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -232,7 +240,7 @@ class Index extends AdminBase
 
         // 实例化验证模型
         $validate = new \app\chengji\validate\Cjdownload;
-        $result = $validate->check($src);
+        $result = $validate->scene('download')->check($src);
         $msg = $validate->getError();
         if(!$result){
             $this->error($msg);
@@ -240,10 +248,10 @@ class Index extends AdminBase
 
         // 获取参与考试的班级
         ob_start();
-        $khSrc = new \app\kaohao\model\Search;
-        $chengjiinfo = $khSrc->srcChengjiList($src);
+        $more = new \app\kaohao\model\SearchMore;
+        $chengjiinfo = $more->srcChengjiList($src);
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $subject_id = $ksset->srcSubject($src['kaoshi_id'], $src['subject_id'], $src['ruxuenian']);
+        $subject_id = $ksset->srcSubject($src);
 
         // 获取考试标题
         $ks = new \app\kaoshi\model\Kaoshi;
@@ -252,7 +260,7 @@ class Index extends AdminBase
                 ->find();
 
         // 获取考试年级名称
-        $njlist = nianJiNameList($ks->getData('bfdate'));
+        $njlist = nianJiNameList('str', $ks->getData('bfdate'));
         $nianji = $njlist[$src['ruxuenian']];
         $tabletitle = $ks->title . ' ' . $schoolname . ' ' . $nianji . ' ' . '学生成绩详细列表';
         $colname = excelColumnName();
@@ -308,22 +316,22 @@ class Index extends AdminBase
         // 循环写出成绩及个人信息
         $i = 4;
         foreach ($chengjiinfo as $key => $value) {
-                // 表格赋值
-                $sheet->setCellValue('A' . $i, $i - 2);
-                $sheet->setCellValue('B' . $i, $value['banji_title']);
-                $sheet->setCellValue('C' . $i, $value['student_xingming']);
-                $sheet->setCellValue('D' . $i, $value['sex']);
-                $colcnt = 4;
-                foreach ($subject_id as $k => $val) {
-                    if(isset($value[$val['lieming']]))
-                    {
-                        $sheet->setCellValue($colname[$colcnt] . $i, $value[$val['lieming']]);
-                    }
-                    $colcnt ++;
+            // 表格赋值
+            $sheet->setCellValue('A' . $i, $i - 2);
+            $sheet->setCellValue('B' . $i, $value['banji_title']);
+            $sheet->setCellValue('C' . $i, $value['student_xingming']);
+            $sheet->setCellValue('D' . $i, $value['sex']);
+            $colcnt = 4;
+            foreach ($subject_id as $k => $val) {
+                if(isset($value[$val['lieming']]))
+                {
+                    $sheet->setCellValue($colname[$colcnt] . $i, $value[$val['lieming']]);
                 }
-                $sheet->setCellValue($colname[$colcnt] . $i, $value['avg']);
-                $sheet->setCellValue($colname[$colcnt + 1] . $i, $value['sum']);
-                $i ++;
+                $colcnt ++;
+            }
+            $sheet->setCellValue($colname[$colcnt] . $i, $value['avg']);
+            $sheet->setCellValue($colname[$colcnt + 1] . $i, $value['sum']);
+            $i ++;
         }
 
         // 表格格式
@@ -423,11 +431,11 @@ class Index extends AdminBase
         );
 
         // 获取参加考试的学校和年级
-        $khSrc = new \app\kaohao\model\Search;
+        $cy = new \app\kaohao\model\SearchCanYu;
         $src['kaoshi_id'] = $kaoshi_id;
-        $list['school_id'] = $khSrc->cySchool($src);
+        $list['school_id'] = $cy->school($src);
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['nianji'] = $ksset->srcNianji($kaoshi_id);
+        $list['nianji'] = $ksset->srcGrade($kaoshi_id);
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -464,18 +472,19 @@ class Index extends AdminBase
 
         // 获取参与考试的班级
         ob_start();
-        $khSrc = new \app\kaohao\model\Search;
-        $chengjiinfo = $khSrc->srcChengjiList($src);
+        $more = new \app\kaohao\model\SearchMore;
+        $cy = new \app\kaohao\model\SearchCanYu;
+        $chengjiinfo = $more->srcChengjiList($src);
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $subject_id = $ksset->srcSubject($src['kaoshi_id'], $src['subject_id'], $src['ruxuenian']);
+        $subject_id = $ksset->srcSubject($src);
 
         $tj = new \app\chengji\model\Tongji;
         $srcAll = [
             'kaoshi_id' => $src['kaoshi_id'],
             'ruxuenian' => $src['ruxuenian']
         ];
-        $srcAll['banji_id']= array_column($khSrc->cyBanji($srcAll), 'id');
-        $chengjiinfo = $khSrc->srcChengjiList($src);
+        $srcAll['banji_id']= array_column($cy->class($srcAll), 'id');
+        $chengjiinfo = $more->srcChengjiList($src);
         $njtj = $tj->tongjiSubject($chengjiinfo, $subject_id);
 
         // 获取考试标题
@@ -485,7 +494,7 @@ class Index extends AdminBase
                 ->find();
 
         // 获取考试年级名称
-        $njlist = nianJiNameList($ks->getData('bfdate'));
+        $njlist = nianJiNameList('str', $ks->getData('bfdate'));
         $nianji = $njlist[$src['ruxuenian']];
         $tabletitle = $ks->title . ' ' . $schoolname . ' ' . $nianji . ' ' . '学生成绩条';
 

@@ -14,7 +14,8 @@ class Cjdownload extends Validate
      */
 	protected $rule = [
         'banji_id|班级'      =>  'require|array',
-        'kaoshi_id|考试'      =>  'require|number'
+        'kaoshi_id|考试'      =>  'require|number',
+        'subject_id|学科'     =>  'require|array'
     ];
 
     /**
@@ -24,4 +25,16 @@ class Cjdownload extends Validate
      * @var array
      */
     protected $message = [];
+
+    protected $scene = [
+        'download'  =>  [
+            'kaoshi_id'
+            ,'banji_id'
+        ]
+        ,'deletemore' => [
+            'banjiid'
+            ,'kaoshi_id'
+            ,'subject_id'
+        ]
+    ];
 }

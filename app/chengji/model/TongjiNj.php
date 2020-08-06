@@ -1,14 +1,14 @@
 <?php
 namespace app\chengji\model;
 // 引用基类
-use \app\kaoshi\model\KaoshiBase;
+use \app\BaseModel;
 // 引用学生成绩统计类
 use app\chengji\model\Tongji as TJ;
 
 /**
  * @mixin think\Model
  */
-class TongjiNj extends KaoshiBase
+class TongjiNj extends BaseModel
 {
     // 统计所有参加本次考试年级的成绩
     public function tjNianji($kaoshi_id)
@@ -16,15 +16,16 @@ class TongjiNj extends KaoshiBase
         $src['kaoshi_id'] = $kaoshi_id;
 
         // 查询要统计成绩的学校
-        $khSrc = new \app\kaohao\model\Search;
-        $schoolList = $khSrc->cySchool($src);
+        $cy = new \app\kaohao\model\SearchCanYu;
+        $more = new \app\kaohao\model\SearchMore;
+        $schoolList = $cy->school($src);
 
         if(count($schoolList) == 0){
             return false;
         }
         // 查询要统计的年级
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $njList = $ksset->srcNianji($kaoshi_id);
+        $njList = $ksset->srcGrade($kaoshi_id);
 
         // 实例化学生成绩统计类
         $tj = new TJ;
@@ -35,9 +36,9 @@ class TongjiNj extends KaoshiBase
                     ,'school_id' => $school['id']
                     ,'ruxuenian' => $nianji['nianji']
                 ];
-                $src['banji_id'] = array_column($khSrc->cyBanji($src), 'id');
-                $subject = $ksset->srcSubject($kaoshi_id, '', $nianji['nianji']);
-                $temp = $khSrc->srcChengjiList($src);
+                $src['banji_id'] = array_column($cy->class($src), 'id');
+                $subject = $ksset->srcSubject($src);
+                $temp = $more->srcChengjiList($src);
                 $temp = $tj->tongjiSubject($temp, $subject);
                 foreach ($temp['cj'] as $cjkey => $cj) {
                     // 查询该班级该学科成绩是否存在
@@ -119,8 +120,8 @@ class TongjiNj extends KaoshiBase
         $kaoshi = $src['kaoshi_id'];
 
         // 查询要统计成绩的学校
-        $khSrc = new \app\kaohao\model\Search;
-        $schoolList = $khSrc->cySchool($src);
+        $cy = new \app\kaohao\model\SearchCanYu;
+        $schoolList = $cy->school($src);
 
         if(count($schoolList) == 0){
             return array();
@@ -201,10 +202,11 @@ class TongjiNj extends KaoshiBase
     {
         $src = array('kaoshi_id' => $kaoshi_id);
         // 实例化学生成绩统计类
-        $khSrc = new \app\kaohao\model\Search;
+        $cy = new \app\kaohao\model\SearchCanYu;
+        $more = new \app\kaohao\model\SearchMore;
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $cj = new \app\chengji\model\Chengji;
-        $nianji = $ksset->srcNianji($kaoshi_id);
+        $nianji = $ksset->srcGrade($kaoshi_id);
         $col = ['xpaixu', 'xweizhi'];
 
         // 循环年级
@@ -213,20 +215,20 @@ class TongjiNj extends KaoshiBase
             // 获取参加考试班级
             $src['ruxuenian'] = $value['nianji'];
 
-            $school = $khSrc->cySchool($src);
+            $school = $cy->school($src);
             $subject = $ksset->srcSubject($kaoshi_id, '', $value['nianji']);
 
             // 循环班级，获取并统计成绩
             foreach ($school as $schkey => $val) {
                 // 获取查询成绩参数
                 $src['school_id'] = $val['id'];
-                $banji = $khSrc->cyBanji($src);
+                $banji = $cy->class($src);
                 $srcfrom = [
                     'kaoshi_id' => $kaoshi_id
                     ,'school_id' => $val['id']
                     ,'banji_id' => array_column($banji, 'id')
                 ];
-                $temp = $khSrc->srcChengjiSubject($srcfrom);
+                $temp = $more->srcChengjiSubject($srcfrom);
 
                 // 循环计算成绩排序
                 foreach ($temp as $key => $value) {

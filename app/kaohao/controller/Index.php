@@ -18,7 +18,7 @@ class Index extends AdminBase
     {
         // 获取参考年级
         $ksset = new ksset;
-        $list['data']['nianji'] = $ksset->srcNianji($kaoshi_id);
+        $list['data']['nianji'] = $ksset->srcGrade($kaoshi_id);
         $list['data']['nianjiNum'] = array_column($list['data']['nianji'], 'nianji');
 
         // 设置页面标题
@@ -138,7 +138,7 @@ class Index extends AdminBase
     {
         // 获取参考年级、学科
         $ksset = new ksset;
-        $list['data']['nianji'] = $ksset->srcNianji($kaoshi_id);
+        $list['data']['nianji'] = $ksset->srcGrade($kaoshi_id);
         $kh = new KH;
         $src['kaoshi_id'] = $kaoshi_id;
         if(count($list['data']['nianji']) > 0){

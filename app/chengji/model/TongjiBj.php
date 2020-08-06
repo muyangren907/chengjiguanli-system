@@ -2,15 +2,20 @@
 namespace app\chengji\model;
 
 // 引用基类
-use \app\kaoshi\model\KaoshiBase;
+use \app\BaseModel;
 // 引用学生成绩统计类
-use app\chengji\model\Tongji as TJ;
+use \app\chengji\model\Tongji as TJ;
+// 引用考号查询
+use \app\kaohao\model\SearchMore as More;
+use \app\kaohao\model\SearchCanYu as Canyu;
+// 引用考试参与
+use \app\kaoshi\model\KaoshiSet as ksset;
 
 
 /**
  * @mixin think\Model
  */
-class TongjiBj extends KaoshiBase
+class TongjiBj extends BaseModel
 {
     // 统计参加本次考试所有班级的成绩并保存
     public function tjBanji($kaoshi_id)
@@ -18,17 +23,18 @@ class TongjiBj extends KaoshiBase
         $src = array('kaoshi_id' => $kaoshi_id);
         // 实例化学生成绩统计类
         $tj = new TJ;
-        $khSrc = new \app\kaohao\model\Search;
-        $ksset = new \app\kaoshi\model\KaoshiSet;
-        $nianji = $ksset->srcNianji($kaoshi_id);
+        $more = new More();
+        $cy = new Canyu();
+        $ksset = new ksset();
+        $nianji = $ksset->srcGrade($kaoshi_id);
 
         // 循环年级统计结果
         $data = array();
         foreach ($nianji as $njkey => $value) {
             // 获取参加考试班级
             $src['ruxuenian'] = $value['nianji'];
-            $banji = $khSrc->cyBanji($src);
-            $subject = $ksset->srcSubject($kaoshi_id, '', $value['nianji']);
+            $banji = $cy->class($src);
+            $subject = $ksset->srcSubject($src);
 
             // 循环班级，获取并统计成绩
             foreach ($banji as $bjkey => $val) {
@@ -36,7 +42,7 @@ class TongjiBj extends KaoshiBase
                     'kaoshi_id' => $kaoshi_id
                     ,'banji_id' => $val['id']
                 ];
-                $temp = $khSrc->srcChengjiList($srcfrom);
+                $temp = $more->srcChengjiList($srcfrom);
                 $temp = $tj->tongjiSubject($temp, $subject);
 
                 // 循环更新或写入成绩
@@ -111,24 +117,26 @@ class TongjiBj extends KaoshiBase
             ,'ruxuenian' => ''
         );
         $src = array_cover($srcfrom, $src);
+
         $src['banji_id'] = strToArray($src['banji_id']);
         $src['school_id'] = strToArray($src['school_id']);
 
         // 实例化学生成绩统计类
         $tj = new TJ;
-        $khSrc = new \app\kaohao\model\Search;
-        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $more = new More();
+        $cy = new Canyu();
+        $ksset = new ksset();
 
         // 获取参加考试学科
-        $subject = $ksset->srcSubject($src['kaoshi_id'], '', $src['ruxuenian']);
-        $banji =$khSrc->cyBanji($src);
+        $subject = $ksset->srcSubject($src);
+        $banji =$cy->class($src);
 
         // 获取并统计各班级成绩
         $data = array();
         $srcfrom['kaoshi_id'] = $src['kaoshi_id'];
         foreach ($banji as $key => $value) {
             $srcfrom['banji_id'] = $value['id'];
-            $temp = $khSrc->srcChengjiList($srcfrom);
+            $temp = $more->srcChengjiList($srcfrom);
             $temp = $tj->tongjiCnt($temp, $subject);
             $data[] = [
                 'banji_id' => $value['banjiTitle']
@@ -139,7 +147,7 @@ class TongjiBj extends KaoshiBase
         }
 
         $srcfrom['banji_id'] = array_column($banji, 'id');
-        $temp = $khSrc->srcChengjiList($srcfrom);
+        $temp = $more->srcChengjiList($srcfrom);
         $temp = $tj->tongjiCnt($temp, $subject);
         $data[] = [
             'banji_id' => '合计',
@@ -171,11 +179,12 @@ class TongjiBj extends KaoshiBase
 
         // 实例化学生成绩统计类
         $tj = new TJ;
-        $khSrc = new \app\kaohao\model\Search;
-        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $more = new More();
+        $cy = new Canyu();
+        $ksset = new ksset();
 
         // 获取参加考试学科
-        $subject = $ksset->srcSubject($src['kaoshi_id'], '', $src['ruxuenian']);
+        $subject = $ksset->srcSubject($src);
         $fsx = 0;
         $lieming = 'lieming';
         foreach ($subject as $key => $value) {
@@ -188,7 +197,7 @@ class TongjiBj extends KaoshiBase
 
         // 获取并统计各班级成绩
         $data = array();
-        $cj = $khSrc->srcChengjiList($src);
+        $cj = $more->srcChengjiList($src);
         if (array_key_exists($lieming, $cj[0]))
         {
             $cjcol = array_column($cj, $lieming);
@@ -212,8 +221,6 @@ class TongjiBj extends KaoshiBase
         $src = array(
             'kaoshi_id' => ''
             ,'banji_id' => array()
-            ,'page' => 0
-            ,'limit' => 10
         );
         $src = array_cover($srcfrom, $src);
         $src['banji_id'] = strToarray($src['banji_id']);
@@ -226,9 +233,6 @@ class TongjiBj extends KaoshiBase
         $tongjiJg = $this
             ->where('kaoshi_id', $src['kaoshi_id'])
             ->where('banji_id', 'in', $src['banji_id'])
-            ->when($src['page'] > 0, function ($query) use($src) {
-                $query->limit($src['limit'])->page($src['page']);
-            })
             ->field('banji_id, kaoshi_id')
             ->with([
                 'bjBanji'=>function($query){
@@ -297,7 +301,7 @@ class TongjiBj extends KaoshiBase
         }
         if(count($data)>0)
         {
-            $data = sortArrByManyField($data, 'school_paixu', SORT_ASC, 'banji_paixu', SORT_ASC);
+            $data = \app\facade\Tools::sortArrByManyField($data, 'school_paixu', SORT_ASC, 'banji_paixu', SORT_ASC);
         }
 
         return $data;
@@ -323,7 +327,7 @@ class TongjiBj extends KaoshiBase
         {
             $src['bfdate'] = $srcfrom['bfdate'];
         }else{
-            $src['bfdate'] = date("Y-m-d", strtotime("-1 year"));
+            $src['bfdate'] = date("Y-m-d", strtotime("-2 year"));
         }
         if(isset($srcfrom['enddate']) && strlen($srcfrom['enddate']) > 0)
         {
@@ -376,10 +380,12 @@ class TongjiBj extends KaoshiBase
     {
         $src = array('kaoshi_id' => $kaoshi_id);
         // 实例化学生成绩统计类
-        $khSrc = new \app\kaohao\model\Search;
-        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $more = new More();
+        $cy = new Canyu();
+        $ksset = new ksset();
         $cj = new \app\chengji\model\Chengji;
-        $nianji = $ksset->srcNianji($kaoshi_id);
+
+        $nianji = $ksset->srcGrade($kaoshi_id);
         $col = ['bpaixu', 'bweizhi'];
 
         // 初始化统计结果
@@ -387,7 +393,7 @@ class TongjiBj extends KaoshiBase
         foreach ($nianji as $njkey => $value) {
             // 获取参加考试班级
             $src['ruxuenian'] = $value['nianji'];
-            $banji = $khSrc->cyBanji($src);
+            $banji = $cy->class($src);
             $subject = $ksset->srcSubject($kaoshi_id, '', $value['nianji']);
 
             // 循环班级，获取并统计成绩
@@ -397,7 +403,8 @@ class TongjiBj extends KaoshiBase
                     'kaoshi_id' => $kaoshi_id,
                     'banji_id' => $val['id'],
                 ];
-                $temp = $khSrc->srcChengjiSubject($srcfrom);
+                $temp = $more->srcChengjiSubject($srcfrom);
+
                 // 循环计算成绩排序
                 foreach ($temp as $key => $value) {
                     $cj->saveOrder($value, $col);
@@ -450,13 +457,14 @@ class TongjiBj extends KaoshiBase
     // 获取班级名称
     public function getBanjiTitleAttr()
     {
-        $khSrc = new \app\kaohao\model\Search;
+        $more = new More();
+        $cy = new Canyu();
         $src = [
             'kaoshi_id' => $this->getAttr('kaoshi_id'),
             'banji_id' => $this->getAttr('banji_id'),
         ];
 
-        $bj = $khSrc->cyBanji($src);
+        $bj = $cy->class($src);
         return $bj[0]['banjiTitle'];
     }
 }

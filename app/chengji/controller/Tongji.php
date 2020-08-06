@@ -20,16 +20,19 @@ class Tongji extends AdminBase
 
         // 获取参加考试的年级和学科
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['nianji'] = $ksset->srcNianji($kaoshi_id);
-        $list['subject_id'] = $ksset->srcSubject($kaoshi_id);
+        $list['nianji'] = $ksset->srcGrade($kaoshi_id);
+        $src = [
+            'kaoshi_id' => $kaoshi_id
+        ];
+        $list['subject_id'] = $ksset->srcSubject($src);
 
         // 获取参与学校
         if(count($list['nianji']) > 0)
         {
-            $khSrc = new \app\kaohao\model\Search;
+            $khSrc = new \app\kaohao\model\SearchCanyu;
             $src['ruxuenian'] = [$list['nianji'][0]['nianji']];
             $src['kaoshi_id'] = $kaoshi_id;
-            $list['school_id'] = $khSrc->cySchool($src);
+            $list['school_id'] = $khSrc->school($src);
         }
 
         // 设置要给模板赋值的信息

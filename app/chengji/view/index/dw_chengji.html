@@ -67,14 +67,14 @@ layui.use(['form','cjgl'], function(){
   function addBanji(){
     // 获取参数
     formval = form.val("myform");
-    cjgl.createCheckbox('banji_id', formval, '/kaoshi/index/cybanji', 'banji_id', 'banTitle');
+    cjgl.createCheckbox('banji_id', formval, '/tools/kscy/class', 'banji_id', 'banTitle');
   }
 
   // 添加学科
   function addSubject(){
     // 获取参数
     formval = form.val("myform");
-    cjgl.createCheckbox('subject_id', formval, '/kaoshi/index/cysubject', 'subject_id', 'title');
+    cjgl.createCheckbox('subject_id', formval, '/tools/kscy/subject', 'subject_id', 'title');
   }
 
 });

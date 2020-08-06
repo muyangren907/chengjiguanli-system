@@ -274,7 +274,7 @@ class Banji extends BaseModel
         $nian = $nian - $str;
 
         $njlist = array();
-        if($value == 'num')
+        if($value != 'str')
         {
             $njlist['一年级'] = $nian;
             $njlist['二年级'] = $nian - 1;
@@ -303,13 +303,6 @@ class Banji extends BaseModel
         $max = $this->where('status', 1)
             ->cache(true)
             ->max('paixu');
-        // $sys = new \app\system\model\SystemBase;
-        // $cnfMax = $sys->where('id', '>', 0)
-        //     ->order(['id'=>'desc'])
-        //     ->value('classmax');
-
-        // $max > $cnfMax ? $cnt = $max : $cnt = $cnfMax;
-
         $bjarr = array();
         for($i = 1; $i <= $cnt; $i++)
         {
@@ -333,8 +326,8 @@ class Banji extends BaseModel
         //分割数组
         $x = 0;
         $y = 0;
-        for ($i=$cnt - 1; $i >= 0; $i--) {
-            if($x<4)
+        for ($i = $cnt - 1; $i >= 0; $i --) {
+            if($x < 4)
             {
                 $arr[$y][$x] = $num[$i];
             }else{

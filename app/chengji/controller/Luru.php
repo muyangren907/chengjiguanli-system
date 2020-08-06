@@ -89,8 +89,10 @@ class Luru extends AdminBase
         event('kslu', $kaoshi_id);
 
         // 获取本学科满分
+        $list['ruxuenian'] = $list['nianji'];
+        $list['kaoshi_id'] = $kaoshi_id;
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $subject = $ksset->srcSubject($kaoshi_id, $list['subject_id'], $list['nianji']);
+        $subject = $ksset->srcSubject($list);
 
         if (count($subject) > 0) {
             $manfen = $subject[0]['fenshuxian']['manfen'];
@@ -165,7 +167,12 @@ class Luru extends AdminBase
         $khinfo = $kh->where('id', $id)->find();
         // 获取本学科满分
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $subject = $ksset->srcSubject($khinfo->kaoshi_id, $subject_id, $khinfo->ruxuenian);
+        $src = [
+            'kaoshi_id' => $khinfo->kaoshi_id
+            ,'subject_id' => $subject_id
+            ,'ruxuenian' => $khinfo->ruxuenian
+        ];
+        $subject = $ksset->srcSubject($src);
         if (count($subject)>0) {
             $manfen = $subject[0]['fenshuxian']['manfen'];
         } else {
@@ -226,14 +233,13 @@ class Luru extends AdminBase
         // 获取表单数据
         $val = input('post.val');
         // 实例化系统设置类
-        $md5 = new \app\system\controller\Encrypt;
-        $val = $md5->decrypt($val, 'dlbz');
+        $val = \app\facade\Tools::decrypt($val, 'dlbz');
         $list = explode('|', $val);
         $id = $list[0];
         $subject_id = $list[1];
 
-        $khSrc = new \app\kaohao\model\Search;
-        $cjlist = $khSrc->khSrcOneSubjectChengji($id, $subject_id);
+        $khSrc = new \app\kaohao\model\SearchOne;
+        $cjlist = $khSrc->srcOneSubjectChengji($id, $subject_id);
 
         // 获取列名
         return json($cjlist);
@@ -274,8 +280,7 @@ class Luru extends AdminBase
         ], 'POST');
 
         // 读取表格数据
-        $excel = new \app\student\controller\Myexcel;
-        $cjinfo = $excel->readXls(public_path() . 'uploads\\' . $list['url']);
+        $cjinfo = \app\facade\File::readXls(public_path() . 'uploads\\' . $list['url']);
 
         $kaoshi_id = $cjinfo[1][0];  #获取考号
         $nianji = $cjinfo[1][1];  #获取年级
@@ -300,7 +305,12 @@ class Luru extends AdminBase
 
         // 查询考试信息
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $sbj = $ksset->srcSubject($kaoshi_id, $xk, $nianji);
+        $src = [
+            'kaoshi_id' => $kaoshi_id
+            ,'ruxuenian' => $nianji
+            ,'subject_id' => $xk
+        ];
+        $sbj = $ksset->srcSubject($src);
         $subject = array();
         foreach ($sbj as $key => $value) {
             $key = array_search($value['id'], $xk);

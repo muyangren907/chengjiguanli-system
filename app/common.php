@@ -40,17 +40,6 @@
         return $njList;
 	}
 
-
-
-	// EXCEL表格列名
-	function excelColumnName()
-	{
-		$excel = new \app\tools\controller\File;
-        $data = $excel->excelColumnName();
-        return $data;
-	}
-
-
 	// 单位列表
 	function danweiJibie($low = '班级', $high = '其它级', $order = 'asc')
 	{
@@ -152,4 +141,27 @@
     {
         $data = \app\facade\Tools::reSetArray($arr, $srcfrom);
         return $data;
+    }
+
+
+    // 定义EXCEL列名
+    function excelColumnName()
+    {
+        $liemingarr = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM','BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW'];
+        return $liemingarr;
+    }
+
+
+    // 多字段排序
+    function sortArrByManyField($arr, $srcfrom)
+    {
+        $data = \app\facade\Tools::sortArrByManyField($arr, $srcfrom);
+        return $data;
+    }
+
+
+    // 学科列表
+    function subjectAll()
+    {
+
     }

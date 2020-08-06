@@ -6,17 +6,17 @@ namespace app\tools\controller;
 // 引用控制器基类
 use app\BaseController;
 
-class KsCanyu extends BaseController
+class KsCanYu extends BaseController
 {
-        // 根据考试ID和年级获取参加考试学校
+    // 根据考试ID和年级获取参加考试学校
     public function school()
     {
         // 获取变量
         $src['kaoshi_id'] = input('post.kaoshi_id');
         $src['ruxuenian'] = input('post.ruxuenian');
 
-        $khSrc = new \app\kaohao\model\Search;
-        $school = $khSrc->cySchool($src);
+        $khSrc = new \app\kaohao\model\SearchCanYu;
+        $school = $khSrc->school($src);
         $cnt = count($school);
 
         // 重组返回内容
@@ -35,7 +35,7 @@ class KsCanyu extends BaseController
         // 获取变量
         $kaoshi_id = input('post.kaoshi_id');
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $nianji = $ksset->srcNianji($kaoshi_id);
+        $nianji = $ksset->srcGrade($kaoshi_id);
         $cnt = count($nianji);
 
         // 重组返回内容
@@ -57,14 +57,10 @@ class KsCanyu extends BaseController
                 'school_id' => ''
                 ,'ruxuenian' => ''
                 ,'kaoshi_id' => ''
-                ,'field' => 'paixu'
-                ,'order' => 'desc'
-                ,'page' => 1
-                ,'limit' => 100
-            ], 'POST');
+            ], 'param');
 
-        $khSrc = new \app\kaohao\model\SearchMore;
-        $bj = $khSrc->cyBanji($src);
+        $khSrc = new \app\kaohao\model\SearchCanyu;
+        $bj = $khSrc->class($src);
         $cnt = count($bj);
 
         // 重组返回内容

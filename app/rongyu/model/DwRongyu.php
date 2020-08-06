@@ -12,10 +12,10 @@ class DwRongyu extends BaseModel
     {
         // 整理变量
         $src = [
-            'fzschool_id'=>array()
-            ,'hjschool_id'=>array()
-            ,'category_id'=>array()
-            ,'searchval'=>''
+            'fzschool_id' => array()
+            ,'hjschool_id' => array()
+            ,'category_id' => array()
+            ,'searchval' => ''
         ];
         $src = array_cover($srcfrom, $src);
         $src['fzschool_id'] = strToArray($src['fzschool_id']);
@@ -108,7 +108,7 @@ class DwRongyu extends BaseModel
     public function getFzshijianAttr($value)
     {
         // 判断发证时间是否为空
-        $value>0 ? $value = date('Y-m-d',$value) : $value = "";
+        $value > 0 ? $value = date('Y-m-d', $value) : $value = "";
 
         // 返回发证时间
         return $value;

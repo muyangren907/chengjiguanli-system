@@ -3,9 +3,15 @@ declare (strict_types = 1);
 
 namespace app\tools\controller;
 
-use think\Request;
+// 引用控制器基类
+use app\BaseController;
 
-class File
+// 引用PhpSpreadsheet类
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
+class File extends BaseController
 {
     /**
      * 获取文件信息并保存
@@ -80,5 +86,22 @@ class File
         $activeSheet = $phpexcel->getActiveSheet();
         $sheet = $activeSheet->toArray();
         return $sheet;
+    }
+
+
+    // 上传文件
+    public function upload()
+    {
+        // 获取表单数据
+        $list = request()->only([
+            'serurl'
+            ,'category_id'
+        ], 'post');
+
+        // 获取表单上传文件
+        $file = request()->file('file');
+        $data = $this->saveFileInfo($file, $list, true);
+
+        return json($data);
     }
 }

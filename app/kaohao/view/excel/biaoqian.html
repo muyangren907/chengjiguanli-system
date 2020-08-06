@@ -76,14 +76,14 @@
     function addSubject(){
       // 获取参数
       formval = form.val("myform");
-      cjgl.createCheckbox('subject_id', formval, '/kaoshi/index/cysubject', 'subject_id');
+      cjgl.createCheckbox('subject_id', formval, '/tools/kscy/subject', 'subject_id');
     }
 
     // 添加班级列表
     function addBanji(){
       // 获取参数
       formval = form.val("myform");
-      cjgl.createCheckbox('banji', formval, '/kaoshi/index/cybanji', 'banji_id', 'banTitle');
+      cjgl.createCheckbox('banji', formval, '/tools/kscy/class', 'banji_id', 'banTitle');
     }
 
   });

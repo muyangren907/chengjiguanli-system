@@ -101,6 +101,7 @@
   options.cols[0].push({field: 'id', title: '操作',toolbar: '#barDemo',minWidth:125});
 
 	// // 设置查询条件
+ //  formval =
 	// options.where = {
 	// 	kaoshi:"{$list.kaoshi_id}"
  //    ,school:$("input[name='school']:checked").val()
@@ -110,7 +111,6 @@
 	// 设置每页显示条数
 	options.limit = 10;
 	options.limits = [10,15];
-
 
 	// 提交搜索条件后重载表格
     layui.use(['table','cjgl'],function(){
@@ -198,7 +198,7 @@
       function addBanji(){
         // 获取参数
         var formval = form.val('search');
-        cjgl.createCheckbox('banji_id',formval,'/kaoshi/index/cybanji','banji_id','banTitle');
+        cjgl.createCheckbox('banji_id',formval,'/tools/kscy/class','banji_id','banTitle');
       }
 
 

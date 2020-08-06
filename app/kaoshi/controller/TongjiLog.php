@@ -44,7 +44,7 @@ class TongjiLog extends AdminBase
             ], 'POST');
 
         // 实例化考号
-        $khSrc = new \app\kaohao\model\Search;
+        $khSrc = new \app\kaohao\model\SearchMore;
         $lastcj = $khSrc->lastUpdateTime($src['kaoshi_id']);
         $cjLastTime = $lastcj->getData('update_time');
         $src['cjlast'] = $cjLastTime;

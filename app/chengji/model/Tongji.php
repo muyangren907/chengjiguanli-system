@@ -3,9 +3,9 @@
 namespace app\chengji\model;
 
 // 引用基类
-use \app\kaoshi\model\KaoshiBase;
+use \app\BaseModel;
 
-class Tongji extends KaoshiBase
+class Tongji extends BaseModel
 {
     // 统计成绩
     public function tongjiCnt($cj = array(), $subject_id)
@@ -322,7 +322,7 @@ class Tongji extends KaoshiBase
                 ,'cnt' => 0
             ];
         }
-        
+
         foreach ($arr as $key => $value) {
             $xiabiao = intval($value / $long);
             if($xiabiao < 0){
