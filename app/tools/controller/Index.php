@@ -226,4 +226,17 @@ class Index extends BaseController
     }
 
 
+    // 是否启用别名
+    public function sysClass()
+    {
+        // 实例化系统设置对象
+        $sys = new \app\system\model\SystemBase;
+        $alias = $sys->order(['id'=>'desc'])
+            ->field('grademax, classmax, classalias')
+            ->cache('key')
+            ->find();
+        return $alias;
+    }
+
+
 }

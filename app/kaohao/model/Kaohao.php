@@ -62,14 +62,10 @@ class Kaohao extends BaseModel
     {
         $bj = new \app\teach\model\Banji;
 
-        // 获取班级名显示样式
-        $sys = new \app\system\model\SystemBase;
-        $alias = $sys->order('id')->value('classalias');
-        if($alias == true)
+        $alias = \app\facade\Tools::sysClass();
+        if($alias->classalias)
         {
-            $bj = new \app\teach\model\Banji;
             $title = $bj->where('id', $this->getAttr('banji_id'))->value('alias');
-
             if($title == '')
             {
                 $title = $bj->numToWord($this->getAttr('paixu')) . '班';

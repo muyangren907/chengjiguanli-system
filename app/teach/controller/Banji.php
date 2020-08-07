@@ -118,9 +118,9 @@ class Banji extends AdminBase
             ->max('paixu');
 
         // 获取班级最大数
-        $sys = new \app\system\model\SystemBase;
-        $cnfMax = $sys->order('id')->value('classmax');
-        if($paixumax + $list['bjsum'] > $cnfMax) # 如果增加班级数超过2个，则少加班级
+        $cnfMax = \app\facade\Tools::sysClass();
+
+        if($paixumax + $list['bjsum'] > $cnfMax->classmax) # 如果增加班级数超过2个，则少加班级
         {
             if($paixumax >= $cnfMax)
             {

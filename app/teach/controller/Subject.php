@@ -145,7 +145,7 @@ class Subject extends AdminBase
         $list = request()->only([
             'title'
             ,'jiancheng'
-            ,'category'
+            ,'category_id'
             ,'kaoshi'
             ,'lieming'
             ,'paixu'
@@ -161,7 +161,7 @@ class Subject extends AdminBase
         }
 
         // 更新数据
-        $data = SJ::update($list, $id);
+        $data = SJ::update($list, ['id'=>$id]);
 
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '更新成功', 'val' => 1]

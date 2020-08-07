@@ -104,7 +104,7 @@ class Student extends BaseModel
                 })
                 ->with([
                     'stuBanji'=>function($query){
-                        $query->field('id, ruxuenian, paixu')->append(['banjiTitle']);
+                        $query->field('id, ruxuenian, paixu, alias')->append(['banjiTitle']);
                     }
                 ])
                 ->field('id, xingming, sex, shengri, banji_id, kaoshi, status')

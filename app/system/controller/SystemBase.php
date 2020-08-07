@@ -58,7 +58,7 @@ class SystemBase extends AdminBase
             return json(['msg'=>$msg,'val'=>0]);;
         }
 
-        $data = sysbasemod::where('id', $id)->update($list);
+        $data = sysbasemod::where('id', $id)->cache('key')->update($list);
 
         // 根据更新结果设置返回提示信息
         $data >= 0 ? $data = ['msg' => '设置成功','val'=>1]

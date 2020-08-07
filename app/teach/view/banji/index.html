@@ -61,7 +61,14 @@
 	options.cols=[[ //表头
 	{type:'checkbox', fixed: 'left'},
 	{field: 'id', title: 'ID', minWidth:100,sort: true},
-	{field: 'banjiTitle', title: '班级名称', minWidth:100},
+	{field: 'banjiTitle', title: '班级名称', minWidth:100,templet:function(d){
+    var str='';
+    if(d.grade && d.ban)
+    {
+      str = d.grade + d.ban;
+    }
+    return str;
+  }},
   {field: 'alias', title: '别名', minWidth:60, edit:'text'},
 	{field: 'school', title: '单位名称',sort: true, minWidth:240,templet:function(d){
 		var str='';

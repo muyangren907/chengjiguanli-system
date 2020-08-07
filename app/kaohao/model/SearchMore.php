@@ -30,7 +30,7 @@ class SearchMore extends BaseModel
         // 查询成绩
         $kh = new kh();
         $data = $kh->where('kaoshi_id', $src['kaoshi_id'])
-            ->field('id, school_id, student_id, ruxuenian, paixu, kaoshi_id, nianji')
+            ->field('id, school_id, student_id, ruxuenian, paixu, kaoshi_id, nianji, banji_id')
             ->where('banji_id', 'in', $src['banji_id'])
             ->when(strlen($src['searchval']) > 0, function($query) use($src){
                 $query->where(function($w) use ($src){

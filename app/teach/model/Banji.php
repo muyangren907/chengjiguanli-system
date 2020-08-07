@@ -44,7 +44,7 @@ class Banji extends BaseModel
                     $query->where('status', 1);
                 }
             ])
-            ->append(['banjiTitle', 'banTitle'])
+            ->append(['banjiTitle', 'banTitle', 'grade', 'ban'])
             ->select();
 
         return $data;
@@ -127,15 +127,51 @@ class Banji extends BaseModel
     // 班级名获取器
     public function getBanjiTitleAttr()
     {
-        $nj = $this->getAttr('ruxuenian');
-        $bj = $this->getAttr('paixu');
-        $title = $this->fClassTitle($nj, time(), $bj, 1);
+        $njlist = self::gradeName('str', time());
+        $title = $njlist[$this->getAttr('ruxuenian')] . self::getBanTitleAttr();
         return $title;
     }
 
 
     // 班名获取器
     public function getBanTitleAttr()
+    {
+
+        $alias = \app\facade\Tools::sysClass();
+        if($alias->classalias)
+        {
+            $title = $this->alias;
+            if($title == '')
+            {
+                $bj = $this->getAttr('paixu');
+                $title = self::numToWord($bj) . '班';
+                $del = $this->getAttr('delete_time');
+                $del == null ?  $title : $title = $title & '(删)' ;
+            }else{
+                $title = $title . '班';
+            }
+        }else{
+            $bj = $this->getAttr('paixu');
+            $title = self::numToWord($bj) . '班';
+            $del = $this->getAttr('delete_time');
+            $del == null ?  $title : $title = $title & '(删)' ;
+        }
+
+        return $title;
+    }
+
+
+    // 班级名获取器
+    public function getGradeAttr()
+    {
+        $njList = $this->gradeName('str', time());
+        $title = $njList[$this->getAttr('ruxuenian')];
+        return $title;
+    }
+
+
+    // 班名获取器
+    public function getBanAttr()
     {
         $bj = $this->getAttr('paixu');
         $title = self::numToWord($bj) . '班';
@@ -145,7 +181,6 @@ class Banji extends BaseModel
 
         return $title;
     }
-
 
 
     // /**
@@ -195,7 +230,7 @@ class Banji extends BaseModel
             return false;
         }
         // 获取年级、班级列表
-        $njlist = $this->gradeName(nwo());
+        $njlist = $this->gradeName(now());
         $bjlist = $this->className();
 
         $nj = substr($str, 0, 9);
@@ -273,21 +308,21 @@ class Banji extends BaseModel
         $thisday <= $jiedian ? $str = 1 : $str = 0;
         $nian = $nian - $str;
 
+        // 获取年级最大数
+        $gradeMax = \app\facade\Tools::sysClass();
+        $gradeMax = $gradeMax->grademax;
+
         $njlist = array();
         if($value != 'str')
         {
-            // 获取年级最大数
-            $sys = new \app\system\model\SystemBase;
-            $gradeMax = $sys->order('id')->value('grademax');
-
             for($i = 0; $i < $gradeMax; $i ++)
             {
-                $njlist[numToWord($i + 1) . '年级'] = $nian - $i;
+                $njlist[self::numToWord($i + 1) . '年级'] = $nian - $i;
             }
         }else{
             for($i = 0; $i < $gradeMax; $i ++)
             {
-                $njlist[$nian - $i] = numToWord($i + 1) . '年级';
+                $njlist[$nian - $i] = self::numToWord($i + 1) . '年级';
             }
         }
         return $njlist;
@@ -348,6 +383,7 @@ class Banji extends BaseModel
                 $chiStr = self::numTo($value, $key) . $chiUni[$key] . $chiStr;
             }
         }
+
         $chiStr = str_replace("零零", "零", $chiStr);
         return $chiStr;
     }
