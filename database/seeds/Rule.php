@@ -774,6 +774,12 @@ class Rule extends Seeder
                     ,'paixu' => 6
                     ,'pid' => 502
                 ],
+                ['id' => 500207
+                    ,'title' => '设置别名'
+                    ,'name' => 'teach/banji/setalias'
+                    ,'paixu' => 6
+                    ,'pid' => 502
+                ],
             ['id' => 503
                 ,'title' => '学科列表'
                 ,'name' => 'teach/subject/index'
