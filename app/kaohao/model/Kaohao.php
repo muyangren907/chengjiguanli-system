@@ -23,7 +23,7 @@ class Kaohao extends BaseModel
 
         // 查询成绩
         $data = $this->where('kaoshi_id', $src['kaoshi_id'])
-            ->field('id, school_id, student_id, ruxuenian, paixu, kaoshi_id, nianji')
+            ->field('id, school_id, student_id, ruxuenian, paixu, kaoshi_id, nianji, banji_id')
             ->where('banji_id', 'in', $src['banji_id'])
             ->when(strlen($src['searchval']) > 0, function($query) use($src){
                 $query->where(function($w) use ($src){
@@ -99,7 +99,7 @@ class Kaohao extends BaseModel
     public function getBanjiTitleAttr()
     {
         $bj = banJiNamelist();
-        $title = $this->getAttr('nianji') . $bj[$this->getAttr('paixu')];
+        $title = $this->getAttr('nianji') . self::getBanTitleAttr();
         return $title;
     }
 
@@ -107,8 +107,25 @@ class Kaohao extends BaseModel
     // 获取不带年级的班级名
     public function getBanTitleAttr()
     {
-        $bj = banJiNamelist();
-        $title = $bj[$this->getAttr('paixu')];
+        // 获取班级名显示样式
+        $sys = new \app\system\model\SystemBase;
+        $alias = $sys->order('id')->value('classalias');
+        if($alias == true)
+        {
+            $bj = new \app\teach\model\Banji;
+            $title = $bj->where('id', $this->getAttr('banji_id'))->value('alias');
+
+            if($title == '')
+            {
+                $bj = banJiNamelist();
+                $title = $bj[$this->getAttr('paixu')];
+            }else{
+                $title = $title . '班';
+            }
+        }else{
+            $bj = banJiNamelist();
+            $title = $bj[$this->getAttr('paixu')];
+        }
         return $title;
     }
 

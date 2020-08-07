@@ -22,6 +22,9 @@ class SystemBase extends Seeder
             'description'   =>  '前端采用X-admin，后端采用Thinkphp。寻找最方便的录入成绩方法，提供最丰富的统计项目。',
             'thinks'        =>  'ThinkPHP,X-admin,百度Echarts,jquwery',
             'danwei'        =>  '大连长岛经济区',
+            'grademax'     =>  6,
+            'classmax'      =>  30,
+            'classalias'    => 0
         ];
         // 保存数据
         $this->table('system_base')->insert($rows)->save();

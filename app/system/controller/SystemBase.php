@@ -14,7 +14,7 @@ class SystemBase extends BaseController
     public function edit()
     {
         // 获取用户信息
-        $list['data'] = sysbasemod::field('id, keywords, description, thinks, danwei')
+        $list['data'] = sysbasemod::field('id, keywords, description, thinks, danwei, grademax, classmax, classalias')
             ->order(['id' => 'desc'])
             ->find();
 
@@ -44,6 +44,9 @@ class SystemBase extends BaseController
             ,'description'
             ,'thinks'
             ,'danwei'
+            ,'grademax'
+            ,'classmax'
+            ,'classalias'
         ], 'put');
         $list['id'] = $id;
 

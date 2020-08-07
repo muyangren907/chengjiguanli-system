@@ -16,7 +16,8 @@ class Banji extends Validate
         'id|ID'         =>     'require:number',
         'school_id|学校'     =>      'require|number',
         'ruxuenian|年级'  =>      'require|number',
-        'bjsum|班级数'    =>      'require|number'
+        'bjsum|班级数'    =>      'require|number',
+        'alias|别名' =>  'require'
     ];
 
     /**
@@ -32,6 +33,9 @@ class Banji extends Validate
             'school_id'
             ,'ruxuenian'
             ,'bjsum'
+        ],
+        'alias'  =>  [
+            'id'
         ],
     ];
 }

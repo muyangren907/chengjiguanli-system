@@ -41,14 +41,15 @@
 		$thisday <= $jiedian ? $str = 1 : $str = 0;
 		$nian = $nian - $str;
 
-		$njlist = array();
-		$njlist[$nian] = '一年级';
-		$njlist[$nian - 1] = '二年级';
-		$njlist[$nian - 2] = '三年级';
-		$njlist[$nian - 3] = '四年级';
-		$njlist[$nian - 4] = '五年级';
-		$njlist[$nian - 5] = '六年级';
+        // 获取年级最大数
+        $sys = new \app\system\model\SystemBase;
+        $gradeMax = $sys->order('id')->value('grademax');
 
+		$njlist = array();
+        for($i = 0; $i < $gradeMax; $i ++)
+        {
+            $njlist[$nian - $i] = numToWord($i + 1) . '年级';
+        }
 		return $njlist;
 	}
 
