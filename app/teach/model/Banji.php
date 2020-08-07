@@ -276,22 +276,20 @@ class Banji extends BaseModel
         $njlist = array();
         if($value != 'str')
         {
-            $njlist['一年级'] = $nian;
-            $njlist['二年级'] = $nian - 1;
-            $njlist['三年级'] = $nian - 2;
-            $njlist['四年级'] = $nian - 3;
-            $njlist['五年级'] = $nian - 4;
-            $njlist['六年级'] = $nian - 5;
+            // 获取年级最大数
+            $sys = new \app\system\model\SystemBase;
+            $gradeMax = $sys->order('id')->value('grademax');
+
+            for($i = 0; $i < $gradeMax; $i ++)
+            {
+                $njlist[numToWord($i + 1) . '年级'] = $nian - $i;
+            }
         }else{
-
-            $njlist[$nian] = '一年级';
-            $njlist[$nian - 1] = '二年级';
-            $njlist[$nian - 2] = '三年级';
-            $njlist[$nian - 3] = '四年级';
-            $njlist[$nian - 4] = '五年级';
-            $njlist[$nian - 5] = '六年级';
+            for($i = 0; $i < $gradeMax; $i ++)
+            {
+                $njlist[$nian - $i] = numToWord($i + 1) . '年级';
+            }
         }
-
         return $njlist;
     }
 

@@ -61,7 +61,24 @@ class Kaohao extends BaseModel
     public function getBanTitleAttr()
     {
         $bj = new \app\teach\model\Banji;
-        $title = $bj->numToWord($this->getAttr('paixu')) . '班';
+
+        // 获取班级名显示样式
+        $sys = new \app\system\model\SystemBase;
+        $alias = $sys->order('id')->value('classalias');
+        if($alias == true)
+        {
+            $bj = new \app\teach\model\Banji;
+            $title = $bj->where('id', $this->getAttr('banji_id'))->value('alias');
+
+            if($title == '')
+            {
+                $title = $bj->numToWord($this->getAttr('paixu')) . '班';
+            }else{
+                $title = $title . '班';
+            }
+        }else{
+            $title = $bj->numToWord($this->getAttr('paixu')) . '班';
+        }
         return $title;
     }
 

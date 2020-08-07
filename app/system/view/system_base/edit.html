@@ -23,6 +23,48 @@
     <div class="x-body">
       <form class="layui-form layui-form-pane">
           <div class="layui-form-item">
+              <label for="grademax" class="layui-form-label">
+                  <span class="x-red">*</span>最大年级数
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="grademax" name="grademax" required="true" lay-verify="required"
+                  autocomplete="off" class="layui-input" value="{$list.data.grademax|default=''}">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="classmax" class="layui-form-label">
+                  <span class="x-red">*</span>班级最大数
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="classmax" name="classmax" required="true" lay-verify="required"
+                  autocomplete="off" class="layui-input" value="{$list.data.classmax|default=''}">
+              </div>
+          </div>
+          <div class="layui-form-item" pane>
+            <label for="classalias1" class="layui-form-label">
+              <span class="x-red">*</span>是否启用班级别名
+            </label>
+            <div class="layui-input-block">
+              <input type="radio" name="classalias" value="1" title="启用"
+                {present name="$list.data.classalias"}
+                {$list.data.classalias}
+                    {eq name="$list.data.classalias" value="1" }
+                     checked
+                    {/eq}
+                {/present}>
+              <input type="radio" name="classalias" value="0" title="禁用"
+                {present name="$list.data.classalias"}
+                    {eq name="list.data.classalias" value="0" }
+                     checked
+                    {/eq}
+                {/present}
+                {notpresent name="$list.data.classalias"}
+                 checked
+                {/notpresent}
+                >
+            </div>
+          </div>
+          <div class="layui-form-item">
               <label for="keywords" class="layui-form-label">
                   <span class="x-red">*</span>关键字
               </label>

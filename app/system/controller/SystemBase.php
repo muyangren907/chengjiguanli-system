@@ -14,7 +14,7 @@ class SystemBase extends AdminBase
     public function edit()
     {
         // 获取用户信息
-        $list['data'] = sysbasemod::field('id, keywords, description, thinks, danwei, classmax')
+        $list['data'] = sysbasemod::field('id, keywords, description, thinks, danwei, grademax, classmax, classalias')
             ->order(['id' => 'desc'])
             ->find();
 
@@ -44,6 +44,9 @@ class SystemBase extends AdminBase
             ,'description'
             ,'thinks'
             ,'danwei'
+            ,'grademax'
+            ,'classmax'
+            ,'classalias'
         ], 'put');
         $list['id'] = $id;
 

@@ -57,6 +57,7 @@ class Banji extends AdminBase
                 ,'paixu'
                 ,'gl_student_count'
                 ,'status'
+                ,'alias'
                 ,'update_time'
             ]);  # 查询数据
         $data = reSetObject($data, $src);
@@ -115,12 +116,11 @@ class Banji extends AdminBase
         $paixumax = bjmod::where('school_id', $list['school_id'])
             ->where('ruxuenian', $list['ruxuenian'])
             ->max('paixu');
-        $sys = new \app\system\model\SystemBase;
-        $cnfMax = $sys->where('id', '>', 0)
-            ->order(['id'=>'desc'])
-            ->value('classmax');
 
-        if($cnfMax != 0)
+        // 获取班级最大数
+        $sys = new \app\system\model\SystemBase;
+        $cnfMax = $sys->order('id')->value('classmax');
+        if($paixumax + $list['bjsum'] > $cnfMax) # 如果增加班级数超过2个，则少加班级
         {
             if($paixumax >= $cnfMax)
             {
@@ -330,5 +330,41 @@ class Banji extends AdminBase
 
         // 返回数据
         return json($list);
+    }
+
+
+    // 设置班级别名
+    public function setAlias()
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'id' => '',
+                'alias' => '',
+            ], 'PUT');
+
+        // 验证表单数据
+        $validate = new \app\teach\validate\Banji;
+        $result = $validate->scene('alias')->check($src);
+        $msg = $validate->getError();
+        if(!$result)
+        {
+            return json(['msg' => $msg, 'val' => 0]);
+        }
+
+        // 保存数据
+        $bj = new bjmod();
+
+        // 更新数据
+        $bjlist = bjmod::find($src['id']);
+        $bjlist->alias = $src['alias'];
+        $data = $bjlist->save();
+
+        // 根据更新结果设置返回提示信息
+        $data >= 0 ? $data = ['msg' => '别名设置成功', 'val' => 1]
+            : $data = ['msg' => '别名设置失败', 'val' => 0];
+
+        // 返回信息
+        return json($data);
     }
 }
