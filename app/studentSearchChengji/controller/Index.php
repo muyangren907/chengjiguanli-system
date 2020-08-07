@@ -4,11 +4,11 @@ declare (strict_types = 1);
 namespace app\studentSearchChengji\controller;
 
 // 引用学生查询基类
-use app\StudentSearchBase;
+use \app\base\controller\StudentSearchBase;
 // 引用与此控制器同名的数据模型
-use app\system\model\SystemBase as  sysbasemod;
+use \app\system\model\SystemBase as  sysbasemod;
 // 引用学生数据模型类
-use \app\student\model\StudentChengji as STUCJ;
+use \app\studentSearchChengji\model\OneStudentChengji as STUCJ;
 // 引用学生数据模型类
 use \app\student\model\Student as STU;
 // 引用加密类
@@ -61,192 +61,6 @@ class Index extends StudentSearchBase
         $this->view->assign('list', $list);
 
         return $this->view->fetch();
-    }
-
-    // 学生个人总分仪表图
-    public function ajaxOneStudentChengjiYiBiao()
-    {
-        // 获取表单参数
-        $src = $this->request
-            ->only([
-                'kaohao_id' => '',
-            ], 'POST');
-
-        // 获取学生成绩
-        $stucj = new STUCJ;
-        $data = $stucj->oneStudentYiBiao($src);
-
-        return json($data);
-    }
-
-
-    // 学生个人成绩列表
-    public function ajaxOneStudentSubjectChengji()
-    {
-        // 获取表单参数
-        // 获取参数
-        $src = $this->request
-            ->only([
-                'kaohao_id' => '',
-            ], 'POST');
-
-        // 获取学生成绩
-        $stucj = new STUCJ;
-        $data = $stucj->kaohaoSearch($src);
-
-        // 整理变量
-        $src = [
-            'field' => 'subject_id'
-            ,'order' => 'asc'
-            ,'page' => 1
-            ,'limit' => 10
-        ];
-
-
-        $data = reSetArray($data, $src);
-
-        return json($data);
-    }
-
-
-    // 学生个人成绩列表
-    public function ajaxOneStudentSubjectDefenlv()
-    {
-        // 获取表单参数
-        // 获取参数
-        $src = $this->request
-            ->only([
-                'kaohao_id' => '',
-            ], 'POST');
-
-        // 获取学生成绩
-        $stucj = new STUCJ;
-        $list = $stucj->kaohaoSearch($src);
-        $category = array();
-        $data = array();
-        foreach ($list as $key => $value) {
-            $category[] = $value['subject_name'];
-            $data[] = $value['defenlv'];
-        }
-        $data = [
-            'xAxis' => [
-                'type' => 'category'
-                ,'data' => $category
-            ]
-            ,'yAxis' => [
-                'type' => 'value'
-                ,'data' => ''
-            ]
-            ,'series' => [
-                [
-                    'data' => $data
-                    ,'name' => '得分率%'
-                    ,'type' => 'bar'
-                    ,'label' => [
-                        'show' => true
-                        ,'position'=>'top' // 在上方显示
-                        ,'textStyle' => [
-                            'color' => 'black',
-                            'fontSize' => 12
-                        ]
-                    ]
-                ],
-            ]
-        ];
-
-        return json($data);
-    }
-
-
-    // 学生个人成绩雷达图
-    public function ajaxOneStudentChengjiLeiDa()
-    {
-        // 获取表单参数
-        $src = $this->request
-            ->only([
-                'kaohao_id' => '',
-            ], 'POST');
-
-        // 获取学生成绩
-        $stucj = new STUCJ;
-        $data = $stucj->oneStudentLeiDa($src);
-
-        return json($data);
-    }
-
-
-    // 学生个人成绩列表
-    public function ajaxOneStudentSubjectWeizhi()
-    {
-        // 获取表单参数
-        // 获取参数
-        $src = $this->request
-            ->only([
-                'kaohao_id' => '',
-            ], 'POST');
-
-        // 获取学生成绩
-        $stucj = new STUCJ;
-        $list = $stucj->kaohaoSearch($src);
-        $category = array();
-        $data = array();
-        foreach ($list as $key => $value) {
-            $category[] = $value['subject_name'];
-            $data[] = round($value['qweizhi'], 0);
-        }
-        $data = [
-            'xAxis' => [
-                'type' => 'value'
-                ,'data' => ''
-            ]
-            ,'yAxis' => [
-                'type' => 'category'
-                ,'data' => $category
-            ]
-            ,'series' => [
-                [
-                    'data' => $data
-                    ,'name' => '超过%'
-                    ,'type' => 'bar'
-                    ,'label' => [
-                        'show' => true
-                        ,'position'=>'insideRight' // 在上方显示
-                        ,'textStyle' => [
-                            'color' => 'black',
-                            'fontSize' => 12
-                        ]
-                    ]
-                ],
-            ]
-        ];
-        return json($data);
-    }
-
-
-    // 获取学生历次考试成绩
-    public function ajaxOneStudentOldChengji()
-    {
-        // 获取表单参数
-        $src = $this->request
-            ->only([
-                'page' => '1'
-                ,'limit' => '10'
-                ,'field' => 'kaoshi_id'
-                ,'order' => 'desc'
-                ,'student_id' => ''
-                ,'category_id' => ''
-                ,'xueqi_id' => ''
-                ,'bfdate' => ''
-                ,'enddate' => ''
-            ], 'POST');
-
-
-        // 获取学生成绩
-        $stucj = new STUCJ;
-        $khList = $stucj->oneStudentChengjiList($src);
-        $data = reSetArray($khList, $src);
-
-        return json($data);
     }
 
 
@@ -311,5 +125,4 @@ class Index extends StudentSearchBase
         // 返回信息
         return json($data);
     }
-
 }

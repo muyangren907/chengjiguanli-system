@@ -574,7 +574,7 @@ class Rule extends Seeder
                 ],
                 ['id' => 40114
                     ,'title' => '查看成绩'
-                    ,'name' => 'student/studentchengji/index' 
+                    ,'name' => 'student/chengji/index'
                     ,'paixu' => 14
                     ,'pid' => 401
                 ],
@@ -611,7 +611,7 @@ class Rule extends Seeder
                     ,'pid' => 403
                 ],
 
-            
+
 
             /*======================================================================
              * 考试管理

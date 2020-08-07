@@ -161,7 +161,9 @@
 
 
     // 学科列表
-    function subjectAll()
+    function subjectKaoshiList()
     {
-
+        $sbj = new \app\teach\model\Subject;
+        $subject = $sbj->kaoshi();
+        return $subject;
     }

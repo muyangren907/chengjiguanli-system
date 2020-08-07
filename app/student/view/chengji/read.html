@@ -25,7 +25,7 @@
   <label for="xueqi_id" class="layui-form-label" style="height: 100%">学期</label>
   <div class="layui-input-block">
     <input type="radio" name="xueqi_id" title="无" value="" lay-skin="primary" checked="true">
-    {php} $category = getCategory(108);{/php}
+    {php} $category = categoryChildren(108);{/php}
     {volist name="category" id="vo"}
     <input type="radio" name="xueqi_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
     {/volist}
@@ -34,7 +34,7 @@
 <div class="layui-form-item">
   <label for="category_id" class="layui-form-label" style="height: 100%">考试类型</label>
   <div class="layui-input-block">
-    {php} $category = getCategory(109);{/php}
+    {php} $category = categoryChildren(109);{/php}
     {volist name="category" id="vo"}
       <input type="checkbox" name="category_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
     {/volist}
@@ -211,7 +211,7 @@
    // 条形统计图--平均分
    function getDefenlv(sbjid, sbjlieming, sbjtitle){
     var id = sbjlieming;
-    var url = '/student/studentcj/chengjitubiao';
+    var url = '/tools/onestudentchengji/xkold';
     var val = form.val('search');
     val.subject_id = sbjid;
     var title = sbjtitle;

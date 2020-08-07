@@ -164,7 +164,7 @@
     defenOptions = {
       elem: '#tabledemo',
       toolbar: '#toolbarDemo',
-      url:"/studentsearchchengji/index/xkcj",
+      url:"/tools/onestudentchengji/oldcj",
       method:"POST",   //数据接口
       page: false, //开启分页
       loading:true,
@@ -195,7 +195,7 @@
     kaoshiOptions = {
       elem: '#kaoshi',
       toolbar: '#kaoshi',
-      url:"/studentsearchchengji/index/oldcj",
+      url:"/tools/onestudentchengji/oldcj",
       method:"POST",   //数据接口
       page: false, //开启分页
       loading:true,
@@ -222,7 +222,7 @@
 
   // 雷达图
   function getLeiDa(kaohao_id){
-    var url = '/studentsearchchengji/index/leida';
+    var url = '/tools/onestudentchengji/leida';
     var title = '学科成绩雷达图';
     var val = {
       kaohao_id: kaohao_id
@@ -232,7 +232,7 @@
 
   // 仪表图
   function getYiBiao(kaohao_id){
-    var url = '/studentsearchchengji/index/yibiao';
+    var url = '/tools/onestudentchengji/yibiao';
     var title = '总成绩仪表图';
     var val = {
       kaohao_id: kaohao_id
@@ -244,7 +244,7 @@
   // 条形统计图--优秀率
     function getDefenlv(kaohao_id){
       var id = 'myDefenlv';
-      var url = '/studentsearchchengji/index/xkdfl';
+      var url = '/tools/onestudentchengji/xkdfl';
       var val = {
         kaohao_id: kaohao_id
       };
@@ -256,7 +256,7 @@
     // 条形统计图--优秀率
     function getQweizhi(kaohao_id){
       var id = 'myQweizhi';
-      var url = '/studentsearchchengji/index/xkwz';
+      var url = '/tools/onestudentchengji/xkwz';
       var val = {
         kaohao_id: kaohao_id
       };

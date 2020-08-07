@@ -22,3 +22,15 @@ Route::group('kscy', function () {
 Route::group('file', function () {
     Route::rule('upload','File/upload','post');    # 上传文件
 });
+
+// 某个学生成绩
+Route::group('onestudentchengji', function () {
+    // Route::rule('data','OneStudentChengji/ajaxData','post');    # 上传文件
+    Route::rule('oldcj','OneStudentChengji/ajaxOldChengji','post');    # 上传文件
+    Route::rule('leida','OneStudentChengji/ajaxLeiDa','post');    # 上传文件
+    Route::rule('yibiao','OneStudentChengji/ajaxYiBiao','post');    # 上传文件
+    Route::rule('xkcj','OneStudentChengji/ajaxSubjectChengji','post');    # 上传文件
+    Route::rule('xkdfl','OneStudentChengji/ajaxSubjectDeFenLv','post');    # 上传文件
+    Route::rule('xkwz','OneStudentChengji/ajaxSubjectWeiZhi','post');    # 上传文件
+    Route::rule('xkold','OneStudentChengji/ajaxOldSubject','post');    # 上传文件
+});

@@ -1,5 +1,5 @@
 <?php
-namespace app\base\contoller;
+namespace app\base\controller;
 
 // 引用控制器基类
 use app\BaseController;
@@ -7,7 +7,7 @@ use app\BaseController;
 /**
  * 控制器基础类
  */
-abstract class StudentSearchBase  extends BaseController 
+abstract class StudentSearchBase  extends BaseController
 {
     /**
      * 控制器中间件

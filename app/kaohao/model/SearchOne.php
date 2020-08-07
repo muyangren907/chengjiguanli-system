@@ -11,7 +11,7 @@ use \app\kaohao\model\Kaohao as kh;
 class SearchOne extends BaseModel
 {
     // 获取某个学生历次考试成绩
-    public function srcOneStudentOldChengji($srcfrom)
+    public function oldChengji($srcfrom)
     {
         // 初始化参数
         $src = array(

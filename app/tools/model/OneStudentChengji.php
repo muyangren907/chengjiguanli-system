@@ -1,7 +1,7 @@
 <?php
 declare (strict_types = 1);
 
-namespace app\chengji\model;
+namespace app\tools\model;
 
 // 引用数据模型基类
 use app\BaseModel;
@@ -11,8 +11,8 @@ use app\BaseModel;
  */
 class OneStudentChengji extends BaseModel
 {
-    // 一个学生所有学科成绩列表
-    public function oneStudentChengjiList($srcfrom)
+    // 一个学生所有学科历次成绩
+    public function oldList($srcfrom)
     {
         // 初始化参数
         $src = array(
@@ -25,8 +25,8 @@ class OneStudentChengji extends BaseModel
         $src = array_cover($srcfrom, $src);
 
         // 查询成绩
-        $khSrc = new \app\kaohao\model\Search;
-        $stuCj = $khSrc->srcOneStudentChengji($src);
+        $one = new \app\kaohao\model\SearchOne;
+        $stuCj = $one->oldChengji($src);
 
         // 获取可以参加考试的学科
         $sbj = new \app\teach\model\Subject;
@@ -38,11 +38,6 @@ class OneStudentChengji extends BaseModel
         // 整理数据
         $data = array();
         foreach ($stuCj as $key => $value) {
-            if(empty($value->cjKaoshi))
-            {
-                continue;
-            }
-
             $data[$key] = [
                 'kaoshi_id' => $value->kaoshi_id,
                 'kaoshiTitle' => $value->cjKaoshi->title,
@@ -88,7 +83,7 @@ class OneStudentChengji extends BaseModel
 
 
     // 一个学生一个学科历次成绩
-    public function oneStudentSubjectChengji($srcfrom)
+    public function subjectChengji($srcfrom)
     {
         // 初始化参数
         $src = array(
@@ -102,8 +97,8 @@ class OneStudentChengji extends BaseModel
         );
         $src = array_cover( $srcfrom , $src );
 
-        $khSrc = new \app\kaohao\model\Search;
-        $stuCj = $khSrc->srcOneStudentChengji($src);
+        $one = new \app\kaohao\model\SearchOne;
+        $stuCj = $one->srcOneStudentChengji($src);
 
 
         // 获取可以参加考试的学科
@@ -171,7 +166,7 @@ class OneStudentChengji extends BaseModel
 
 
     // 该学生本次考试各学科成绩雷达图
-    public function oneStudentLeiDa($srcfrom)
+    public function leiDa($srcfrom)
     {
         // 初始化参数
         $src = array(
@@ -186,16 +181,17 @@ class OneStudentChengji extends BaseModel
         $khInfo = $kh->where('id', $src['kaohao_id'])
                     ->with([
                         'ksChengji'=>function($query){
-                            $query->field('id, kaohao_id, subject_id, defen');
+                            $query->field('id,kaohao_id,subject_id,defen');
                         }
                     ])
                     ->find();
 
         // 参加考试学科
-        $subject = subjectList(1,1);
+        $sbj = new \app\teach\model\Subject;
+        $subject = subjectKaoshiList();
         // 获取参加考试学科满分
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $manfen = $ksset->srcSubject($khInfo->kaoshi_id, '', $khInfo->ruxuenian);
+        $manfen = $ksset->srcSubject($khInfo->kaoshi, '', $khInfo->ruxuenian);
 
         // 查询区成绩
         $SchoolChengji = new \app\chengji\model\TongjiSch;
@@ -259,7 +255,7 @@ class OneStudentChengji extends BaseModel
                         unset($schcj[$sch_k]);
                         continue;
                     }
-                    
+
                 }
             }
             if(isset($qcj['value'][$i]) == false)
@@ -286,7 +282,7 @@ class OneStudentChengji extends BaseModel
 
 
     // 该学生本次考试各学科成绩仪表图
-    public function oneStudentYiBiao($srcfrom)
+    public function yiBiao($srcfrom)
     {
         // 初始化参数
         $src = array(
@@ -295,7 +291,7 @@ class OneStudentChengji extends BaseModel
 
         // 用新值替换初始值
         $src = array_cover($srcfrom, $src);
-        
+
         // 成绩查询信息
         $kh = new \app\kaohao\model\Kaohao;         #该考号对应的考试信息。
         $khInfo = $kh->where('id', $src['kaohao_id'])
@@ -311,8 +307,8 @@ class OneStudentChengji extends BaseModel
         }
         $src['ruxuenian'] = $khInfo->ruxuenian;    #设置查询条件
         $src['kaoshi_id'] = $khInfo->kaoshi_id;
-        $khSrc = new \app\kaohao\model\Search;
-        $src['banji_id'] = array_column($khSrc->cyBanji($src), 'id');
+        $cy = new \app\kaohao\model\SearchCanYu;
+        $src['banji_id'] = array_column($cy->class($src), 'id');
 
         // 实例化并查询成绩
         $cj = new \app\chengji\model\Chengji;
@@ -346,8 +342,8 @@ class OneStudentChengji extends BaseModel
     }
 
 
-    // 查询某个学生所有学科成绩
-    public function kaohaoSearch($srcfrom)
+    // 查询某个学生单次所有学科成绩
+    public function oneChengji($srcfrom)
     {
         // 初始化参数
         $src = array(
@@ -371,7 +367,7 @@ class OneStudentChengji extends BaseModel
                     }
                 ])
                 ->find();
-                
+
         $data = array();
 
         $schtj = new \app\chengji\model\TongjiSch;
@@ -394,7 +390,4 @@ class OneStudentChengji extends BaseModel
 
         return $data;
     }
-
-
-
 }
