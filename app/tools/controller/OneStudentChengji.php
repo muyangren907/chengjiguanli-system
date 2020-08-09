@@ -28,8 +28,8 @@ class OneStudentChengji extends BaseController
                 ,'xueqi_id' => ''
                 ,'bfdate' => ''
                 ,'enddate' => ''
+                ,'searchval' => ''
             ], 'POST');
-
 
         // 获取学生成绩
         $stucj = new STUCJ;
@@ -138,6 +138,7 @@ class OneStudentChengji extends BaseController
                 ,'xueqi_id' => ''
                 ,'bfdate' => ''
                 ,'enddate' => ''
+                ,'searchval' => ''
             ], 'POST');
 
         $stucj = new STUCJ;

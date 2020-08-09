@@ -149,6 +149,17 @@
       }
     });
 
+    // 监听表单提交
+    form.on('submit(srcsubmit)', function(data){
+      options.where = lForm.val("search");
+      table.render(options);  //获取数据并渲染
+      for(x in xk)
+      {
+        getDefenlv(xk[x].id,xk[x].lieming,xk[x].title);
+      }
+      return false;
+    });
+
 
     // 添加图表中内容
     for(x in xk)

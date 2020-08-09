@@ -21,7 +21,6 @@ class KsCanYu extends BaseController
 
         $cy = new \app\kaohao\model\SearchCanYu;
         $school = $cy->school($src);
-        // $school = $ksset->srcGrade($kaoshi_id);
         $school = reSetArray($school, $src);
 
         return json($school);

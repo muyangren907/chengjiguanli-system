@@ -23,27 +23,26 @@ class SearchCanyu extends BaseModel
 
         $kh = new kh;
         $schoolList = $kh->where('kaoshi_id', $src['kaoshi_id'])
-                ->when(count($src['ruxuenian']) > 0, function($query) use($src){
-                    $query->where('ruxuenian', 'in', $src['ruxuenian']);
-                })
-                ->with(['cjSchool' => function($query){
-                        $query->field('id, jiancheng, paixu, title')
-                        ->order(['paixu' => 'asc']);
-                    }
-                ])
-                ->group('school_id')
-                ->field('school_id')
-                ->select()
-                ->toArray();
+            ->when(count($src['ruxuenian']) > 0, function($query) use($src){
+                $query->where('ruxuenian', 'in', $src['ruxuenian']);
+            })
+            ->with(['cjSchool' => function($query){
+                    $query->field('id, jiancheng, paixu, title')
+                    ->order(['paixu' => 'asc']);
+                }
+            ])
+            ->group('school_id')
+            ->field('school_id')
+            ->select();
 
         // 重新整理参加学校信息
         $data = array();
         foreach ($schoolList as $key => $value) {
             $data[] = [
-                'paixu' => $value['cjSchool']['paixu'],
-                'id' => $value['cjSchool']['id'],
-                'title' => $value['cjSchool']['title'],
-                'jiancheng' => $value['cjSchool']['jiancheng'],
+                'paixu' => $value->cjSchool->paixu,
+                'id' => $value->cjSchool->id,
+                'title' => $value->cjSchool->title,
+                'jiancheng' => $value->cjSchool->jiancheng,
             ];
         }
 

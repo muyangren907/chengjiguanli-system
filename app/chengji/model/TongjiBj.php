@@ -340,6 +340,7 @@ class TongjiBj extends BaseModel
             ->where('banji_id', $src['banji_id'])
             ->where('kaoshi_id', 'in', function ($query) use ($src) {
                 $query->name('kaoshi')
+                    ->where('luru&status', '0')
                     ->whereTime('bfdate|enddate', 'between', [$src['bfdate'], $src['enddate']])
                     ->when(count($src['xueqi_id']) > 0, function($q) use ($src) {
                         $q->where('xueqi_id', 'in', function($w) use ($src) {

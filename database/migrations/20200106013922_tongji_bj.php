@@ -34,6 +34,7 @@ class TongjiBj extends Migrator
         // 添加当前表字段
         $table
             ->addColumn('kaoshi_id','integer',['limit'=>11,'null'=>false,'default'=>0,'comment'=>'考试'])
+            ->addColumn('teacher_id','integer',['limit'=>11,'null'=>true,'comment'=>'任课教师'])
             ->addColumn('banji_id','integer',['limit'=>11,'null'=>false,'default'=>0,'comment'=>'班级'])
             ->addColumn('subject_id','integer',['limit'=>11,'null'=>false,'default'=>0,'comment'=>'学科'])
             ->addColumn('stu_cnt','integer',['limit'=>11,'null'=>true,'comment'=>'参加考试人数'])

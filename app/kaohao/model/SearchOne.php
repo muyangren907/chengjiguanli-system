@@ -15,10 +15,11 @@ class SearchOne extends BaseModel
     {
         // 初始化参数
         $src = array(
-            'student_id' => '',
-            'category_id' => '',
-            'xueqi_id' => '',
-            'kaoshi_id' => '',
+            'student_id' => ''
+            ,'category_id' => ''
+            ,'xueqi_id' => ''
+            ,'kaoshi_id' => ''
+            ,'searchval' => ''
         );
         $src = array_cover($srcfrom, $src);
         $src['category_id'] = strToArray($src['category_id']);
@@ -41,30 +42,26 @@ class SearchOne extends BaseModel
 
         $kh = new kh;
         $stuCj = $kh->where('student_id',$src['student_id'])
-            ->when(count($src['category_id'])>0, function($query) use($src){
-                $query->where('kaoshi_id','in',function($q) use($src){
-                    $q->name('kaoshi')
-                    ->where('category_id','in',$src['category_id'])
-                    ->field('id');
-                });
-            })
-            ->when(count($src['xueqi_id'])>0, function($query) use($src){
-                $query->where('kaoshi_id','in',function($q) use($src){
-                    $q->name('kaoshi')
-                        ->where('xueqi_id','in',function($w) use($src){
-                            $w->name('xueqi')
-                                ->where('category_id','in',$src['xueqi_id'])
-                                ->field('id');
-                        })
-                        ->field('id');
-                });
-            })
-            ->when(count($src['kaoshi_id'])>0, function($query) use($src){
-                $query->where('kaoshi_id', 'in', $src['kaoshi_id']);
-            })
             ->where('kaoshi_id', 'in', function($query) use($src){
                 $query->name('kaoshi')
-                    ->whereTime('bfdate|enddate', 'between', [ $src['bfdate'],$src['enddate'] ])
+                    ->whereTime('bfdate|enddate', 'between', [$src['bfdate'], $src['enddate']])
+                    ->where('luru&status', '0')
+                    ->when(count($src['kaoshi_id'])>0, function($w) use($src){
+                        $w->where('id', 'in', $src['kaoshi_id']);
+                    })
+                    ->when(strlen($src['searchval'])>0, function($w) use($src){
+                        $w->where('title', 'like', '%' . $src['searchval'] . '%');
+                    })
+                    ->when(count($src['category_id'])>0, function($w) use($src){
+                        $w->where('category_id', 'in', $src['category_id']);
+                    })
+                    ->when(count($src['xueqi_id'])>0, function($w) use($src){
+                        $w->where('xueqi_id', 'in', function($q) use($src){
+                            $q->name('xueqi')
+                                ->where('category_id', 'in', $src['xueqi_id'])
+                                ->field('id');
+                        });
+                    })
                     ->field('id');
             })
             ->with([

@@ -29,20 +29,6 @@ class Index extends StudentSearchBase
         // 设置要给模板赋值的信息
         $list['webtitle'] = config('shangma.webtitle'); # 系统名称
 
-        $kh = new \app\kaohao\model\Kaohao;
-        $khInfo = $kh->where('student_id',session('student.userid'))
-        	->order(['kaoshi_id'=>'desc'])
-        	->with([
-        		'cjKaoshi' => function ($query) {
-        			$query->field('id,title,bfdate,enddate');
-        		}
-        	])
-        	->find();
-        $list['id'] = $khInfo->id;
-        // $list['id'] = 9480;
-        $list['kaoshi_title'] = $khInfo->cjKaoshi->title;
-        $list['kaoshi_date'] = $khInfo->cjKaoshi->bfdate . '～' . $khInfo->cjKaoshi->enddate;
-
         $stu = new \app\student\model\Student;
         $stuInfo = $stu->where('id', session('student.userid'))
                 ->with([
@@ -56,11 +42,34 @@ class Index extends StudentSearchBase
         $list['xingming'] = $stuInfo->xingming;
         $list['banjiTitle'] = $stuInfo->stuBanji->banjiTitle;
         $list['student_id'] = session('student.userid');
+        $list['sbj'] = subjectKaoshiList();
 
         // 模板赋值
         $this->view->assign('list', $list);
 
         return $this->view->fetch();
+    }
+
+
+
+    // 学生查询页首页
+    public function read($kaohao_id)
+    {
+        $kh = new \app\kaohao\model\Kaohao;
+        $khInfo = $kh->where('id', $kaohao_id)
+            ->with([
+                'cjKaoshi' => function ($query) {
+                    $query->field('id, title, bfdate, enddate');
+                }
+            ])
+            ->find();
+        $list['webtitle'] = $khInfo->cjKaoshi->title;
+        $list['id'] = $khInfo->id;
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+
+        return $this->view->fetch('kaohao@index/read');
     }
 
 
@@ -84,7 +93,7 @@ class Index extends StudentSearchBase
 
 
     // 保存新密码
-    public function updatePassword($id)
+    public function updatePassword($student_id)
     {
         // 获取表单数据
         $list = request()->post();

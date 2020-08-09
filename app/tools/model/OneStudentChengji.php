@@ -21,6 +21,7 @@ class OneStudentChengji extends BaseModel
             ,'xueqi_id' => ''
             ,'bfdate' => ''
             ,'enddate' => ''
+            ,'searchval' => ''
         );
         $src = array_cover($srcfrom, $src);
 
@@ -99,8 +100,9 @@ class OneStudentChengji extends BaseModel
             ,'xueqi_id' => ''
             ,'bfdate' => ''
             ,'enddate' => ''
+            ,'searchval' => ''
         );
-        $src = array_cover( $srcfrom , $src );
+        $src = array_cover($srcfrom, $src);
 
         $one = new \app\kaohao\model\SearchOne;
         $stuCj = $one->oldChengji($src);
