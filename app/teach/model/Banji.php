@@ -137,7 +137,7 @@ class Banji extends BaseModel
     public function getBanTitleAttr()
     {
 
-        $alias = \app\facade\Tools::sysClass();
+        $alias = \app\facade\System::sysClass();
         if($alias->classalias)
         {
             $title = $this->alias;
@@ -230,7 +230,7 @@ class Banji extends BaseModel
             return false;
         }
         // 获取年级、班级列表
-        $njlist = $this->gradeName(now());
+        $njlist = $this->gradeName('str', time());
         $bjlist = $this->className();
 
         $nj = substr($str, 0, 9);
@@ -294,13 +294,16 @@ class Banji extends BaseModel
     {
         // 定义学年时间节点日期为每年的8月1日
         // $yd = '8-1';
+        $sysClass = \app\facade\System::sysClass();
+        $jd = date('-m-d', $sysClass->getData('xuenian'));
+
         if($riqi == 0)
         {
-            $jiedian = strtotime(date('Y') . '-8-1');
+            $jiedian = strtotime(date('Y') . $jd);
             $thisday = time();
             $nian = date('Y');
         }else{
-            $jiedian = strtotime(date('Y', $riqi) . '-8-1');
+            $jiedian = strtotime(date('Y', $riqi) . $jd);
             $thisday = $riqi;
             $nian = date('Y', $riqi);
         }
@@ -309,8 +312,7 @@ class Banji extends BaseModel
         $nian = $nian - $str;
 
         // 获取年级最大数
-        $gradeMax = \app\facade\Tools::sysClass();
-        $gradeMax = $gradeMax->grademax;
+        $gradeMax = $sysClass->grademax;
 
         $njlist = array();
         if($value != 'str')
@@ -332,12 +334,12 @@ class Banji extends BaseModel
     // 班级列表
     public function className()
     {
-        $cnt = 0;
-        $max = $this->where('status', 1)
-            ->cache(true)
-            ->max('paixu');
+
+        $sys = \app\facade\System::sysClass();
+        $classmax = $sys->classmax;
+
         $bjarr = array();
-        for($i = 1; $i <= $cnt; $i++)
+        for($i = 1; $i <= $classmax; $i++)
         {
             $bjarr[$i] = self::numToWord($i) . '班';
         }

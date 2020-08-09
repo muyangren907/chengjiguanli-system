@@ -237,12 +237,13 @@ class TongjiBj extends BaseModel
             ->with([
                 'bjBanji'=>function($query){
                     $query
-                        ->field('id, school_id, paixu')
+                        ->field('id, school_id, paixu, ruxuenian, alias')
                         ->with([
                             'glSchool'=>function($query){
                                 $query->field('id, jiancheng, paixu');
                             },
                         ]);
+
                 },
                 'bjJieguo'=>function($query){
                     $query->field('subject_id, banji_id, stu_cnt,
@@ -256,7 +257,6 @@ class TongjiBj extends BaseModel
                         ->order(['subject_id']);
                 }
             ])
-            // ->cache(true)
             ->group('banji_id, kaoshi_id')
             ->append(['banjiTitle'])
             ->select();
@@ -335,8 +335,6 @@ class TongjiBj extends BaseModel
         }else{
             $src['enddate'] = date("Y-m-d", strtotime("+1 day"));
         }
-
-        // halt($src);
 
         $data = $this
             ->where('banji_id', $src['banji_id'])
@@ -457,14 +455,30 @@ class TongjiBj extends BaseModel
     // 获取班级名称
     public function getBanjiTitleAttr()
     {
-        $more = new More();
-        $cy = new Canyu();
-        $src = [
-            'kaoshi_id' => $this->getAttr('kaoshi_id'),
-            'banji_id' => $this->getAttr('banji_id'),
-        ];
+        $ks = $this->getAttr('bjKaoshi');
+        $bj = $this->getAttr('bjBanji');
 
-        $bj = $cy->class($src);
-        return $bj[0]['banjiTitle'];
+        $njlist = nianJiNameList('str', $ks->getData('enddate'));
+        $njname = $njlist[$bj->ruxuenian];
+
+        $sys = \app\facade\System::sysClass();
+        $classalias = $sys->classalias;
+
+        $bjobj = new \app\teach\model\Banji;
+
+        if($sys->classalias)
+        {
+            $bjname = $bj->alias;
+            if($bjname == '')
+            {
+                $bjname = $bjobj->numToWord($bj->paixu);
+            }
+        }else{
+            $bjname = $bjobj->numToWord($bj->paixu);
+        }
+
+        $title = $njname . $bjname . '班';
+
+        return $title;
     }
 }

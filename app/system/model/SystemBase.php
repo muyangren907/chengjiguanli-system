@@ -14,4 +14,22 @@ class SystemBase extends BaseModel
             ->find();
         return $info;
     }
+
+
+    // 学年节点获取器
+    public function getXuenianAttr($value)
+    {
+        $value = date('Y', time()).'-'.date('m-d', $value);
+        return $value;
+    }
+
+
+    // 学年节点修改器
+    public function setXuenianAttr ($value)
+    {
+        $value = strtotime($value);
+        $value = '1986-'.date('m-d', $value);
+        $value = strtotime($value);
+        return $value;
+    }
 }

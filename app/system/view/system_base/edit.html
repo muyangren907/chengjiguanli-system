@@ -65,6 +65,15 @@
             </div>
           </div>
           <div class="layui-form-item">
+              <label for="xuenian" class="layui-form-label">
+                  <span class="x-red">*</span>学年划分节点
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="xuenian" name="xuenian" required="true" lay-verify="required"
+                  autocomplete="off" class="layui-input" value="{$list.data.xuenian|default=''}">
+              </div>
+          </div>
+          <div class="layui-form-item">
               <label for="keywords" class="layui-form-label">
                   <span class="x-red">*</span>关键字
               </label>
@@ -100,15 +109,6 @@
                   autocomplete="off" class="layui-input" value="{$list.data.danwei|default=''}">
               </div>
           </div>
-          <div class="layui-form-item">
-              <label for="keywords" class="layui-form-label">
-                  <span class="x-red">*</span>最大班级数
-              </label>
-              <div class="layui-input-block">
-                  <input type="text" id="classmax" name="classmax" required="true" lay-verify="required"
-                  autocomplete="off" class="layui-input" value="{$list.data.classmax|default=''}">
-              </div>
-          </div>
           <div class="layui-form-item" style="text-align: center;">
               <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
                   设置
@@ -117,8 +117,15 @@
       </form>
     </div>
     <script>
-      layui.use(['form'], function(){
-        var form = layui.form;
+      layui.use(['laydate','form'], function(){
+        var form = layui.form,
+            laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#xuenian' //指定元素
+          ,trigger: 'click' //采用click弹出
+        });
 
         //监听提交
         form.on('submit(mysubmit)', function(data){

@@ -101,29 +101,38 @@ class Index extends BaseController
     {
         // 整理变量
         $src = [
-            'field' => 'update_time'
-            ,'order' => 'desc'
+            'field' => ''
+            ,'order' => 'asc'
             ,'page' => 1
             ,'limit' => 10
         ];
         $src = array_cover($srcfrom, $src) ;
-        $str1 = $src['field'];
-        $str2 = $src['order'];
 
-        // 整理数据
-        $cnt = $obj->count();
-        $obj = $obj->order($src['field'], $src['order']);
-
-        $limit_start = $src['page'] * $src['limit'] - $src['limit'];
-        $limit_length = $src['limit'] * 1;
-        $obj = $obj->slice($limit_start, $limit_length);
         $data = [
             'code' => 0  // ajax请求次数，作为标识符
             ,'msg' => ""  // 获取到的结果数(每页显示数量)
-            ,'count' => $cnt // 符合条件的总数据量
-            ,'data' => $obj //获取到的数据结果
+            ,'count' => 0 // 符合条件的总数据量
+            ,'data' => '' //获取到的数据结果
         ];
 
+        // 整理数据
+        $cnt = $obj->count();
+        if($cnt > 0)
+        {
+            if($src['field'] != '') # 排序
+            {
+                $obj = $obj->order($src['field'], $src['order']);
+            }
+            $limit_start = $src['page'] * $src['limit'] - $src['limit'];
+            $limit_length = $src['limit'] * 1;
+            $obj = $obj->slice($limit_start, $limit_length);
+            $data = [
+                'code' => 0  // ajax请求次数，作为标识符
+                ,'msg' => ""  // 获取到的结果数(每页显示数量)
+                ,'count' => $cnt // 符合条件的总数据量
+                ,'data' => $obj //获取到的数据结果
+            ];
+        }
         return $data;
     }
 
@@ -138,30 +147,38 @@ class Index extends BaseController
     {
         // 整理变量
         $src = [
-            'field' => 'update_time'
+            'field' => ''
             ,'order' => 'desc'
             ,'page' => 1
             ,'limit' => 10
         ];
         $src = array_cover($srcfrom, $src) ;
+        $data = [   # 数据合并
+            'code' => 0 , # ajax请求次数，作为标识符
+            'msg' => "",  # 获取到的结果数(每页显示数量)
+            'count' => 0, # 符合条件的总数据量
+            'data' => [], # 获取到的数据结果
+        ];
 
         // 重新整理数据
         $cnt = count($arr);    # 记录总数
         if($cnt > 0){
-            $src['order'] == 'desc' ? $src['order'] = SORT_DESC
+            if($src['field'] != '')
+            {
+                $src['order'] == 'desc' ? $src['order'] = SORT_DESC
                 : $src['order'] = SORT_ASC;   # 数据排序
-            $arr = $this->sortArrByManyField($arr, $src['field'], $src['order']);
+                $arr = $this->sortArrByManyField($arr, $src['field'], $src['order']);
+            }
+            $limit_start = $src['page'] * $src['limit'] - $src['limit']; # 获取当前页数据
+            $limit_length = $src['limit'];
+            $arr = array_slice($arr, $limit_start, $limit_length);
+            $data = [   # 数据合并
+                'code' => 0 , # ajax请求次数，作为标识符
+                'msg' => "",  # 获取到的结果数(每页显示数量)
+                'count' => $cnt, # 符合条件的总数据量
+                'data' => $arr, # 获取到的数据结果
+            ];
         }
-        $limit_start = $src['page'] * $src['limit'] - $src['limit']; # 获取当前页数据
-        $limit_length = $src['limit'];
-        $arr = array_slice($arr, $limit_start, $limit_length);
-        $data = [   # 数据合并
-            'code' => 0 , # ajax请求次数，作为标识符
-            'msg' => "",  # 获取到的结果数(每页显示数量)
-            'count' => $cnt, # 符合条件的总数据量
-            'data' => $arr, # 获取到的数据结果
-        ];
-
         return $data;
     }
 
@@ -224,19 +241,4 @@ class Index extends BaseController
         }
         return $str;
     }
-
-
-    // 是否启用别名
-    public function sysClass()
-    {
-        // 实例化系统设置对象
-        $sys = new \app\system\model\SystemBase;
-        $alias = $sys->order(['id'=>'desc'])
-            ->field('grademax, classmax, classalias')
-            ->cache('key')
-            ->find();
-        return $alias;
-    }
-
-
 }

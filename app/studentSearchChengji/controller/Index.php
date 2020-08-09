@@ -38,8 +38,8 @@ class Index extends StudentSearchBase
         		}
         	])
         	->find();
-        // $list['id'] = $khInfo->id;
-        $list['id'] = 9480;
+        $list['id'] = $khInfo->id;
+        // $list['id'] = 9480;
         $list['kaoshi_title'] = $khInfo->cjKaoshi->title;
         $list['kaoshi_date'] = $khInfo->cjKaoshi->bfdate . '～' . $khInfo->cjKaoshi->enddate;
 

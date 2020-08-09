@@ -388,8 +388,7 @@ class Index extends AdminBase
         ], 'POST');
 
         // 实例化操作表格类
-        $excel = new \app\student\controller\Myexcel;
-        $teacherinfo = $excel->readXls(public_path() . 'uploads\\' . $list['url']);
+        $teacherinfo = \app\facade\File::readXls(public_path() . 'uploads\\' . $list['url']);
 
         // 判断表格是否正确
         if("教师基本情况表" != $teacherinfo[0][0] || '姓名*' != $teacherinfo[2][1] || '性别*' != $teacherinfo[2][2])

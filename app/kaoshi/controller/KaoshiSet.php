@@ -6,8 +6,6 @@ use app\base\controller\AdminBase;
 
 // 引用考号数据模型类
 use app\kaoshi\model\KaoshiSet as ksset;
-// 考试控制器
-use app\kaoshi\controller\Kaoshi as kscon;
 
 
 class KaoshiSet extends AdminBase
@@ -85,10 +83,11 @@ class KaoshiSet extends AdminBase
             ,'kaoshi_id' => $kaoshi_id
         );
 
-        // 获取参加考试年级
-        $ksset = new ksset();
-        $nianJiNameList = $ksset->srcGrade($kaoshi_id);
-        $list['set']['nianji'] = $nianJiNameList;
+                // 获取考试时间
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $enddate = $ks->kaoshiInfo($kaoshi_id);
+        $enddate = $enddate->getData('enddate');
+        $list['set']['nianji'] = nianJiNameList('str', $enddate);
 
         // 模板赋值
         $this->view->assign('list', $list);

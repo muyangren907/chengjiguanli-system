@@ -118,7 +118,7 @@ class Banji extends AdminBase
             ->max('paixu');
 
         // 获取班级最大数
-        $cnfMax = \app\facade\Tools::sysClass();
+        $cnfMax = \app\facade\System::sysClass();
 
         if($paixumax + $list['bjsum'] > $cnfMax->classmax) # 如果增加班级数超过2个，则少加班级
         {
@@ -280,6 +280,7 @@ class Banji extends AdminBase
                 'school_id' => ''
                 ,'ruxuenian' => ''
                 ,'status' => 1
+                ,'limit' =>100
             ], 'POST');
 
         // 查询班级
@@ -311,9 +312,10 @@ class Banji extends AdminBase
         // 获取参数
         $src = $this->request
             ->only([
-                'school_id' => '',
-                'ruxuenian' => '',
-                'status' => 1,
+                'school_id' => ''
+                ,'ruxuenian' => ''
+                ,'status' => 1
+                ,'limit' =>100
             ], 'POST');
 
         // 查询班级
@@ -327,6 +329,7 @@ class Banji extends AdminBase
                     ,'banTitle'
                 ]
             ]);  # 查询数据
+        $data = reSetObject($list, $src);
 
         // 返回数据
         return json($list);

@@ -40,7 +40,7 @@ class Subject extends BaseModel
     // 获取参加考试的学科
     public function kaoshi()
     {
-        $data = self::where('kaoshi', 1)
+        $data = self::where('kaoshi&status', 1)
                 ->field('id, title, jiancheng, lieming')
                 ->order(['paixu'=>'asc'])
                 ->select();

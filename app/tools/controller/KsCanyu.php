@@ -11,40 +11,37 @@ class KsCanYu extends BaseController
     // 根据考试ID和年级获取参加考试学校
     public function school()
     {
-        // 获取变量
-        $src['kaoshi_id'] = input('post.kaoshi_id');
-        $src['ruxuenian'] = input('post.ruxuenian');
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'ruxuenian' => ''
+                ,'kaoshi_id' => ''
+                ,'limit' => 100
+            ], 'POST');
 
-        $khSrc = new \app\kaohao\model\SearchCanYu;
-        $school = $khSrc->school($src);
-        $cnt = count($school);
+        $cy = new \app\kaohao\model\SearchCanYu;
+        $school = $cy->school($src);
+        // $school = $ksset->srcGrade($kaoshi_id);
+        $school = reSetArray($school, $src);
 
-        // 重组返回内容
-        $data = [
-            'count'=>$cnt  // 符合条件的总数据量
-            ,'data'=>$school  //获取到的数据结果
-        ];
-
-        return json($data);
+        return json($school);
     }
 
 
     // 根据考试ID和年级获取参加考试年级
     public function grade()
     {
-        // 获取变量
-        $kaoshi_id = input('post.kaoshi_id');
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'kaoshi_id' => ''
+                ,'limit' => 100
+            ], 'POST');
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $nianji = $ksset->srcGrade($kaoshi_id);
-        $cnt = count($nianji);
+        $nianji = $ksset->srcGrade($src['kaoshi_id']);
+        $nianji = reSetArray($nianji, $src);
 
-        // 重组返回内容
-        $data = [
-            'count'=>$cnt, // 符合条件的总数据量
-            'data'=>$nianji, //获取到的数据结果
-        ];
-
-        return json($data);
+        return json($nianji);
     }
 
 
@@ -57,19 +54,14 @@ class KsCanYu extends BaseController
                 'school_id' => ''
                 ,'ruxuenian' => ''
                 ,'kaoshi_id' => ''
-            ], 'param');
+                ,'limit' => 100
+            ], 'POST');
 
         $khSrc = new \app\kaohao\model\SearchCanyu;
         $bj = $khSrc->class($src);
-        $cnt = count($bj);
+        $bj = reSetArray($bj, $src);
 
-        // 重组返回内容
-        $data = [
-            'count'=>$cnt, // 符合条件的总数据量
-            'data'=>$bj, //获取到的数据结果
-        ];
-
-        return json($data);
+        return json($bj);
     }
 
 

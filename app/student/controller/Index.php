@@ -7,7 +7,7 @@ use app\base\controller\AdminBase;
 // 引用学生数据模型类
 use app\student\model\Student as STU;
 // 引用phpspreadsheet类
-use app\student\controller\Myexcel;
+use app\tools\controller\File;
 
 class Index extends AdminBase
 {
@@ -449,8 +449,7 @@ class Index extends AdminBase
         ], 'POST');
 
         // 读取表格数据
-        $excel = new Myexcel();
-        $stuinfo = $excel->readXls(public_path() . 'uploads\\' . $list['url']);
+        $stuinfo = \app\facade\File::readXls(public_path() . 'uploads\\' . $list['url']);
         if($stuinfo[0][2] != "序号" && $stuinfo[1][2] != "姓名" && $stuinfo[2][2] != "身份证号")
         {
             $data = array('msg'=>'请使用模板上传','val'=>0,'url'=>'');
@@ -529,8 +528,7 @@ class Index extends AdminBase
         ], 'POST');
 
         // 读取表中数据
-        $excel = new Myexcel();
-        $stuinfo = $excel->readXls(public_path() . 'uploads\\' . $list['url']);
+        $stuinfo = \app\facade\File::readXls(public_path() . 'uploads\\' . $list['url']);
 
         // 判断表格是否正确
         if($stuinfo[0][2] != "序号" && $stuinfo[1][2] != "ID" && $stuinfo[2][2] != "班级" && $stuinfo[3][2] != "姓名")

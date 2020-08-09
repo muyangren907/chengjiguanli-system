@@ -61,8 +61,7 @@ class Kaohao extends BaseModel
     public function getBanTitleAttr()
     {
         $bj = new \app\teach\model\Banji;
-
-        $alias = \app\facade\Tools::sysClass();
+        $alias = \app\facade\System::sysClass();
         if($alias->classalias)
         {
             $title = $bj->where('id', $this->getAttr('banji_id'))->value('alias');
@@ -77,6 +76,8 @@ class Kaohao extends BaseModel
         }
         return $title;
     }
+
+
 
     // 获取参加考试班级数字名
     public function getNumBanjiTitleAttr()

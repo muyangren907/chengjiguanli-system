@@ -38,6 +38,10 @@ class OneStudentChengji extends BaseModel
         // 整理数据
         $data = array();
         foreach ($stuCj as $key => $value) {
+            if(!isset($value->cjKaoshi))
+            {
+                continue;
+            }
             $data[$key] = [
                 'kaoshi_id' => $value->kaoshi_id,
                 'kaoshiTitle' => $value->cjKaoshi->title,
@@ -48,6 +52,7 @@ class OneStudentChengji extends BaseModel
                 'bfdate' => $value->cjKaoshi->bfdate,
                 'enddate' => $value->cjKaoshi->enddate,
             ];
+
 
             $cjcnt = count($value->ksChengji);
 
@@ -83,7 +88,7 @@ class OneStudentChengji extends BaseModel
 
 
     // 一个学生一个学科历次成绩
-    public function subjectChengji($srcfrom)
+    public function subjectOldChengji($srcfrom)
     {
         // 初始化参数
         $src = array(
@@ -98,15 +103,8 @@ class OneStudentChengji extends BaseModel
         $src = array_cover( $srcfrom , $src );
 
         $one = new \app\kaohao\model\SearchOne;
-        $stuCj = $one->srcOneStudentChengji($src);
+        $stuCj = $one->oldChengji($src);
 
-
-        // 获取可以参加考试的学科
-        $sbj = new \app\teach\model\Subject;
-        $sbjList = $sbj->where('kaoshi',1)
-                        ->where('status',1)
-                        ->field('id,lieming')
-                        ->column('lieming','id');
 
         // 整理数据
         $data = array();
@@ -387,6 +385,103 @@ class OneStudentChengji extends BaseModel
                 ,'min' => $schtjInfo[$value->subject_id]['min']
             ];
         }
+
+        return $data;
+    }
+
+
+    // 本次考试各学科的得分率
+    public function oneDeFenLv($srcfrom)
+    {
+        // 初始化参数
+        $src = array(
+            'kaohao_id' => '',
+        );
+
+        // 用新值替换初始值
+        $src = array_cover($srcfrom, $src);
+
+        // 获取学生成绩
+        $list = $this->oneChengji($src);
+        $category = array();
+        $data = array();
+        foreach ($list as $key => $value) {
+            $category[] = $value['subject_name'];
+            $data[] = $value['defenlv'];
+        }
+        $data = [
+            'xAxis' => [
+                'type' => 'category'
+                ,'data' => $category
+            ]
+            ,'yAxis' => [
+                'type' => 'value'
+                ,'data' => ''
+            ]
+            ,'series' => [
+                [
+                    'data' => $data
+                    ,'name' => '得分率%'
+                    ,'type' => 'bar'
+                    ,'label' => [
+                        'show' => true
+                        ,'position'=>'top' // 在上方显示
+                        ,'textStyle' => [
+                            'color' => 'black',
+                            'fontSize' => 12
+                        ]
+                    ]
+                ],
+            ]
+        ];
+        return $data;
+    }
+
+
+    // 本次考试各学科成绩位置
+    public function oneSubjectWeiZhi($srcfrom)
+    {
+        // 初始化参数
+        $src = array(
+            'kaohao_id' => '',
+        );
+
+        // 用新值替换初始值
+        $src = array_cover($srcfrom, $src);
+
+        // 获取学生成绩
+        $list = $this->oneChengji($src);
+        $category = array();
+        $data = array();
+        foreach ($list as $key => $value) {
+            $category[] = $value['subject_name'];
+            $data[] = round($value['qweizhi'], 0);
+        }
+        $data = [
+            'xAxis' => [
+                'type' => 'value'
+                ,'data' => ''
+            ]
+            ,'yAxis' => [
+                'type' => 'category'
+                ,'data' => $category
+            ]
+            ,'series' => [
+                [
+                    'data' => $data
+                    ,'name' => '超过%'
+                    ,'type' => 'bar'
+                    ,'label' => [
+                        'show' => true
+                        ,'position'=>'insideRight' // 在上方显示
+                        ,'textStyle' => [
+                            'color' => 'black',
+                            'fontSize' => 12
+                        ]
+                    ]
+                ],
+            ]
+        ];
 
         return $data;
     }

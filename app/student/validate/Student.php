@@ -15,13 +15,13 @@ class Student extends Validate
 	protected $rule = [
         'id|ID'         =>     'require|number',
         'xingming|姓名'     =>  'require|chs|length:2,8',
-        'sex|性别'            =>      'require|number',
+        'sex|性别'            =>      'require|boolean',
         'shengri|出生日期'        =>      'date',
         'shenfenzhenghao|身份证号' =>      "require|idCard",
         'ruxuenian|年级'         =>      'require|number',
         'banji_id|班级'     =>      'require|number',
         'kaoshi|是否参加考试'            =>      'require|number',
-        'quanpin|姓名全拼'      =>      'require|'
+        'quanpin|姓名全拼'      =>      'require'
     ];
 
     /**

@@ -14,7 +14,9 @@ class SystemBase extends AdminBase
     public function edit()
     {
         // 获取用户信息
-        $list['data'] = sysbasemod::field('id, keywords, description, thinks, danwei, grademax, classmax, classalias')
+        $sys = new sysbasemod;
+        $list['data'] = $sys
+            ->field('id, keywords, description, thinks, danwei, grademax, classmax, classalias, xuenian')
             ->order(['id' => 'desc'])
             ->find();
 
@@ -47,8 +49,11 @@ class SystemBase extends AdminBase
             ,'grademax'
             ,'classmax'
             ,'classalias'
+            ,'xuenian'
         ], 'put');
         $list['id'] = $id;
+
+
 
         // 验证表单数据
         $validate = new \app\system\validate\SystemBase;
@@ -58,7 +63,17 @@ class SystemBase extends AdminBase
             return json(['msg'=>$msg,'val'=>0]);;
         }
 
-        $data = sysbasemod::where('id', $id)->cache('key')->update($list);
+        $sys = new sysbasemod;
+        $sysList = $sys->find($id);
+        $sysList->keywords = $list['keywords'];
+        $sysList->description = $list['description'];
+        $sysList->thinks = $list['thinks'];
+        $sysList->danwei = $list['danwei'];
+        $sysList->grademax = $list['grademax'];
+        $sysList->classmax = $list['classmax'];
+        $sysList->classalias = $list['classalias'];
+        $sysList->xuenian = $list['xuenian'];
+        $data = $sysList->save();
 
         // 根据更新结果设置返回提示信息
         $data >= 0 ? $data = ['msg' => '设置成功','val'=>1]

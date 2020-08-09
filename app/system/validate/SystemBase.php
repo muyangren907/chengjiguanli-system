@@ -13,11 +13,16 @@ class SystemBase extends Validate
      * @var array
      */
 	protected $rule = [
-        'id|ID'     =>  'require|number',
+        'id|ID'     =>  'require|integer',
         'keywords|关键字'      =>  'require|length:2,60',
         'description|描述'      =>  'require|length:1,100',
         'thinks|感谢'      =>  'require|length:1,80',
         'danwei|单位'      =>  'require|length:2,80',
+        'xuenian|学年节点' =>   'require|date',
+        'grademax|年级最大数' => 'require|integer',
+        'classmax|年级最大数' => 'require|integer',
+        'classalias|别名' => 'require|boolean',
+
     ];
 
     /**
@@ -35,6 +40,10 @@ class SystemBase extends Validate
             ,'description'
             ,'thinks'
             ,'danwei'
+            ,'xuenian'
+            ,'grademax'
+            ,'classmax'
+            ,'classalias'
         ],
     ];
 }

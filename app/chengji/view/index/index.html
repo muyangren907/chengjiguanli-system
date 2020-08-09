@@ -42,7 +42,7 @@
 		</div>
 		<div class="layui-form-item" style="margin-bottom: 0;">
 		    <label for="banji_id" class="layui-form-label" style="height: 100%">班级</label>
-		    <div class="layui-input-block" id="banji_id">
+		    <div class="layui-input-block" id="banji_id" name="banji_id">
 		    </div>
 		</div>
 		<input type="hidden" id="kaoshi_id" name="kaoshi_id" value="{$list.kaoshi_id}">
@@ -198,7 +198,7 @@
       function addBanji(){
         // 获取参数
         var formval = form.val('search');
-        cjgl.createCheckbox('banji_id',formval,'/tools/kscy/class','banji_id','banTitle');
+        cjgl.createCheckbox('banji_id', formval, '/tools/kscy/class', 'banji_id', 'banTitle');
       }
 
 

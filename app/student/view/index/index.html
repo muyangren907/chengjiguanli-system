@@ -33,7 +33,7 @@
 	    <label for="ruxuenian" class="layui-form-label" style="height: 100%">年级 </label>
 	    <div class="layui-input-block">
 	    	{php}
-          $njlist = nianJiNameList();
+          $njlist = nianJiNameList('str', time());
         {/php}
         {volist name="njlist" id="vo"}
 	    		<input type="radio" name="ruxuenian" title="{$vo}" value="{$key}" lay-skin="primary"  lay-filter="src" {eq name="i" value="1"}checked{/eq} >

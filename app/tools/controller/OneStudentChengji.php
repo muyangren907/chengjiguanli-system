@@ -78,7 +78,6 @@ class OneStudentChengji extends BaseController
     public function ajaxSubjectChengji()
     {
         // 获取表单参数
-        // 获取参数
         $src = $this->request
             ->only([
                 'kaohao_id' => '',
@@ -87,16 +86,6 @@ class OneStudentChengji extends BaseController
         // 获取学生成绩
         $stucj = new STUCJ;
         $data = $stucj->oneChengji($src);
-
-        // 整理变量
-        $src = [
-            'field' => 'subject_id'
-            ,'order' => 'asc'
-            ,'page' => 1
-            ,'limit' => 10
-        ];
-
-
         $data = reSetArray($data, $src);
 
         return json($data);
@@ -107,7 +96,6 @@ class OneStudentChengji extends BaseController
     public function ajaxSubjectDeFenLv()
     {
         // 获取表单参数
-        // 获取参数
         $src = $this->request
             ->only([
                 'kaohao_id' => '',
@@ -115,38 +103,7 @@ class OneStudentChengji extends BaseController
 
         // 获取学生成绩
         $stucj = new STUCJ;
-        $list = $stucj->oneChengji($src);
-        $category = array();
-        $data = array();
-        foreach ($list as $key => $value) {
-            $category[] = $value['subject_name'];
-            $data[] = $value['defenlv'];
-        }
-        $data = [
-            'xAxis' => [
-                'type' => 'category'
-                ,'data' => $category
-            ]
-            ,'yAxis' => [
-                'type' => 'value'
-                ,'data' => ''
-            ]
-            ,'series' => [
-                [
-                    'data' => $data
-                    ,'name' => '得分率%'
-                    ,'type' => 'bar'
-                    ,'label' => [
-                        'show' => true
-                        ,'position'=>'top' // 在上方显示
-                        ,'textStyle' => [
-                            'color' => 'black',
-                            'fontSize' => 12
-                        ]
-                    ]
-                ],
-            ]
-        ];
+        $data = $stucj->oneDeFenLv($src);
 
         return json($data);
     }
@@ -156,7 +113,6 @@ class OneStudentChengji extends BaseController
     public function ajaxSubjectWeiZhi()
     {
         // 获取表单参数
-        // 获取参数
         $src = $this->request
             ->only([
                 'kaohao_id' => '',
@@ -164,43 +120,12 @@ class OneStudentChengji extends BaseController
 
         // 获取学生成绩
         $stucj = new STUCJ;
-        $list = $stucj->oneChengji($src);
-        $category = array();
-        $data = array();
-        foreach ($list as $key => $value) {
-            $category[] = $value['subject_name'];
-            $data[] = round($value['qweizhi'], 0);
-        }
-        $data = [
-            'xAxis' => [
-                'type' => 'value'
-                ,'data' => ''
-            ]
-            ,'yAxis' => [
-                'type' => 'category'
-                ,'data' => $category
-            ]
-            ,'series' => [
-                [
-                    'data' => $data
-                    ,'name' => '超过%'
-                    ,'type' => 'bar'
-                    ,'label' => [
-                        'show' => true
-                        ,'position'=>'insideRight' // 在上方显示
-                        ,'textStyle' => [
-                            'color' => 'black',
-                            'fontSize' => 12
-                        ]
-                    ]
-                ],
-            ]
-        ];
+        $data = $stucj->oneSubjectWeiZhi($src);
         return json($data);
     }
 
 
-    // 学生单个学生历次成绩（得分率）
+    // 单个学生历次成绩（得分率）
     public function ajaxOldSubject()
     {
         // 获取表单参数
@@ -215,10 +140,8 @@ class OneStudentChengji extends BaseController
                 ,'enddate' => ''
             ], 'POST');
 
-        // 获取学生成绩
         $stucj = new STUCJ;
-        $data = $stucj->oldList($src);
-
+        $data = $stucj->subjectOldChengji($src);
         return json($data);
     }
 }
