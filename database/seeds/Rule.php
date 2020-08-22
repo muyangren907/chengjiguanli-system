@@ -234,8 +234,38 @@ class Rule extends Seeder
                             ,'paixu' => 2
                             ,'pid' => 3020102
                         ],
-
                     ['id' => 3020103
+                        ,'title' => '任课教师'
+                        ,'name' => 'chengji/bjtongji/renke'
+                        ,'paixu' => 1
+                        ,'pid' => 30201
+                    ],
+                        ['id' => 302010301
+                            ,'title' => '编辑'
+                            ,'name' => 'chengji/bjtongji/renkeedit'
+                            ,'paixu' => 2
+                            ,'pid' => 3020103
+                        ],
+                        ['id' => 302010302
+                            ,'title' => '更新编辑'
+                            ,'name' => 'chengji/bjtongji/renkeupdate'
+                            ,'paixu' => 2
+                            ,'pid' => 3020103
+                        ],
+                        ['id' => 302010303
+                            ,'title' => '设置'
+                            ,'name' => 'chengji/bjtongji/renkeeditteacher'
+                            ,'paixu' => 2
+                            ,'pid' => 3020103
+                        ],
+                        ['id' => 302010304
+                            ,'title' => '更新设置'
+                            ,'name' => 'chengji/bjtongji/renkeupdateteacher'
+                            ,'paixu' => 2
+                            ,'pid' => 3020103
+                        ],
+
+                    ['id' => 3020104
                         ,'title' => '下载试卷标签信息'
                         ,'name' => 'kaohao/excel/biaoqian'
                         ,'paixu' => 4
@@ -243,9 +273,9 @@ class Rule extends Seeder
                     ],
                         ['id' => 290000000
                             ,'title' => '生成考号备用'
-                            ,'name' => 'zhanwei_302010301'
+                            ,'name' => 'zhanwei_302010401'
                             ,'paixu' => 2
-                            ,'pid' => 3020102
+                            ,'pid' => 3020104
                         ],
                 ['id' => 30202
                     ,'title' => '成绩录入'

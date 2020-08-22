@@ -442,4 +442,214 @@ class Bjtongji extends AdminBase
         return json($data);
     }
 
+
+    // 班级任课教师列表
+    public function renke($kaoshi_id)
+    {
+        // 获取考试信息
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $ksinfo = $ks->where('id', $kaoshi_id)
+            ->field('id, title')
+            ->find();
+        // 获取参与学校
+        $cy = new \app\kaohao\model\SearchCanyu;
+        $src['kaoshi_id'] = $kaoshi_id;
+        $list['school_id'] = $cy->school($src);
+
+        // 获取年级与学科
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $list['nianji'] = $ksset->srcGrade($kaoshi_id);
+        $list['subject_id'] = $ksset->srcSubject($src);
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = '任课教师';
+        $list['kaoshi_id'] = $kaoshi_id;
+        $list['kaoshititle'] = $ksinfo->title;
+        $list['dataurl'] = '/chengji/bjtj/renkedata';
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+
+        // 渲染模板
+        return $this->view->fetch();
+    }
+
+
+    // 查询任课教师
+    // 获取年级成绩统计结果
+    public function ajaxDataRenke()
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'page' => '1'
+                ,'limit' => '10'
+                ,'kaoshi_id' => ''
+                ,'ruxuenian' => ''
+                ,'school_id' => array()
+                ,'banji_id' => array()
+            ], 'POST');
+
+        if (count($src['banji_id'])==0) {
+            // 获取参与考试的班级
+            $cy = new \app\kaohao\model\SearchCanyu;
+            $src['banji_id']= array_column($cy->class($src),'id');
+        }
+
+        // 统计成绩
+        $btj = new BTJ;
+        $data = $btj->renke($src);
+
+        // 获取记录总数
+        $cnt = count($data);
+        // 截取当前页数据
+        $data = array_slice($data, ($src['page'] - 1) * $src['limit'], $src['limit']);
+        // 重组返回内容
+        $data = [
+            'code'=> 0 , // ajax请求次数，作为标识符
+            'msg'=>"",  // 获取到的结果数(每页显示数量)
+            'count'=>$cnt, // 符合条件的总数据量
+            'data'=>$data, //获取到的数据结果
+        ];
+
+        return json($data);
+    }
+
+
+    // 编辑任课教师
+    public function renkeEdit($id)
+    {
+        // 获取考试ID和班级ID
+        $info = BTJ::field('kaoshi_id, banji_id')
+            ->find($id);
+
+        // 查询该班级各学科任课教师
+        $btj = new BTJ;
+        $list['data'] = $btj->where('kaoshi_id', $info->kaoshi_id)
+                ->where('banji_id', $info->banji_id)
+                ->where('subject_id', '>', 0)
+                ->field('id, teacher_id, kaoshi_id, banji_id, subject_id')
+                ->with([
+                    'bjTeacher' => function ($query) {
+                        $query->field('id, xingming');
+                    },
+                    'bjSubject' => function ($query) {
+                        $query ->field('id, title, jiancheng');
+                    }
+                ])
+                ->select();
+
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'设置任课教师'
+            ,'butname'=>'设置'
+            ,'formpost'=>'PUT'
+            ,'url'=>'/chengji/bjtj/renkeupdate/'.$id,
+        );
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+        // 渲染
+        return $this->view->fetch();
+    }
+
+
+
+    // 更新任课教师
+    public function renkeUpdate($id)
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'teacher_id' => array()
+                ,'id' => array()
+            ], 'POST');
+
+        // 验证表单数据
+        $validate = new \app\chengji\validate\RenKe;
+        $result = $validate->scene('edit')->check($src);
+        $msg = $validate->getError();
+        if(!$result){
+            return json(['msg'=>$msg,'val'=>0]);;
+        }
+
+        // 整理数据
+        $list = array();
+        foreach ($src['id'] as $key => $value) {
+            $list[$key] = [
+                'id' => $value
+                ,'teacher_id' => $src['teacher_id'][$key]
+            ];
+        }
+
+        $btj = new BTJ;
+        $data = $btj->saveAll($list);
+        $data ? $data = ['msg' => '设置成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
+
+    // 根据教师姓名设置任课教师
+    public function renkeEditTeacher($kaoshi_id)
+    {
+        $list['data']['kaoshi_id'] = $kaoshi_id;
+        $list['data']['subject_id'] = 'a';
+        $sbj = new \app\teach\model\Subject;
+        $list['data']['subject_id'] = $sbj->kaoshi();
+        // halt($list);
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'设置任课教师'
+            ,'butname'=>'设置'
+            ,'formpost'=>'PUT'
+            ,'url'=>'/chengji/bjtj/renkeupdateteaher',
+        );
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+        // 渲染
+        return $this->view->fetch();
+    }
+
+
+    // 更新任课教师
+    public function renkeUpdateteacher()
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'teacher_id' => ''
+                ,'id' => array()
+            ], 'POST');
+
+        // 验证表单数据
+        $validate = new \app\chengji\validate\RenKe;
+        $result = $validate->scene('edit')->check($src);
+        $msg = $validate->getError();
+        if(!$result){
+            return json(['msg'=>$msg,'val'=>0]);;
+        }
+
+        // 整理数据
+        $list = array();
+        foreach ($src['id'] as $key => $value) {
+            $list[$key] = [
+                'id' => $value
+                ,'teacher_id' => $src['teacher_id']
+            ];
+        }
+
+        $btj = new BTJ;
+        $data = $btj->saveAll($list);
+        $data ? $data = ['msg' => '设置成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
 }

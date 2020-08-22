@@ -168,12 +168,20 @@ class Teacher extends BaseModel
 
 
     // 根据姓名、首拼查询教师
-    public function strSrcTeachers($str)
+    public function strSrcTeachers($srcfrom)
     {
+        $src = [
+            'str' => ''
+            ,'danwei_id' => ''
+        ];
+        $src = array_cover($srcfrom, $src);
         // 如果有数据则查询教师信息
         $list = self::field('id, xingming, danwei_id, shengri, sex')
-            ->whereOr('xingming', 'like', '%' . $str . '%')
-            ->whereOr('shoupin', 'like', $str . '%')
+            ->whereOr('xingming', 'like', '%' . $src['str'] . '%')
+            ->whereOr('shoupin', 'like', $src['str'] . '%')
+            ->when(strlen($src['danwei_id']) > 0, function ($query) use($src) {
+                $query->where('danwei_id', $src['danwei_id']);
+            })
             ->with(
                 [
                     'jsDanwei' => function($query){

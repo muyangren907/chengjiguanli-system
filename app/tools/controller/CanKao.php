@@ -5,7 +5,7 @@ namespace app\zhengli\controller;
 
 use app\base\controller\ToolsBase;
 
-class CanKao extends BaseController 
+class CanKao1 extends BaseController
 {
     // 获取参考学科
     public function subjectIdLieming($srcfrom)

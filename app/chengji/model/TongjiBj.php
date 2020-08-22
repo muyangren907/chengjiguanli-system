@@ -122,7 +122,7 @@ class TongjiBj extends BaseModel
         $src['school_id'] = strToArray($src['school_id']);
 
         // 实例化学生成绩统计类
-        $tj = new TJ;
+        $tj = new TJ();
         $more = new More();
         $cy = new Canyu();
         $ksset = new ksset();
@@ -217,49 +217,8 @@ class TongjiBj extends BaseModel
     // 根据条件查询各班级成绩
     public function search($srcfrom)
     {
-        // 初始化参数
-        $src = array(
-            'kaoshi_id' => ''
-            ,'banji_id' => array()
-        );
-        $src = array_cover($srcfrom, $src);
-        $src['banji_id'] = strToarray($src['banji_id']);
-        $kaoshi_id = $src['kaoshi_id'];
-
-        if(count($src['banji_id']) == 0){
-            return array();
-        }
-
-        $tongjiJg = $this
-            ->where('kaoshi_id', $src['kaoshi_id'])
-            ->where('banji_id', 'in', $src['banji_id'])
-            ->field('banji_id, kaoshi_id')
-            ->with([
-                'bjBanji'=>function($query){
-                    $query
-                        ->field('id, school_id, paixu, ruxuenian, alias')
-                        ->with([
-                            'glSchool'=>function($query){
-                                $query->field('id, jiancheng, paixu');
-                            },
-                        ]);
-
-                },
-                'bjJieguo'=>function($query){
-                    $query->field('subject_id, banji_id, stu_cnt,
-                        chengji_cnt, avg, youxiu, jige, biaozhuncha,
-                        max, min, q1, q2, q3')
-                        ->with([
-                            'bjSubject' => function($query){
-                                $query->field('id, lieming, jiancheng, title');
-                            },
-                        ])
-                        ->order(['subject_id']);
-                }
-            ])
-            ->group('banji_id, kaoshi_id')
-            ->append(['banjiTitle'])
-            ->select();
+        // 查询数据
+        $tongjiJg = $this->searchBase($srcfrom);
 
         // 重组数据
         $data = array();
@@ -296,7 +255,139 @@ class TongjiBj extends BaseModel
                         ,'jige' => $val->jige
                     ];
                 }
+            }
+        }
+        if(count($data)>0)
+        {
+            $data = \app\facade\Tools::sortArrByManyField($data, 'school_paixu', SORT_ASC, 'banji_paixu', SORT_ASC);
+        }
 
+        return $data;
+    }
+
+
+    // 根据条件查询各班级成绩
+    public function searchBase($srcfrom)
+    {
+        // 初始化参数
+        $src = array(
+            'kaoshi_id' => ''
+            ,'banji_id' => array()
+        );
+        $src = array_cover($srcfrom, $src);
+        $src['banji_id'] = strToarray($src['banji_id']);
+        $kaoshi_id = $src['kaoshi_id'];
+
+        if(count($src['banji_id']) == 0){
+            return array();
+        }
+
+        $tongjiJg = $this
+            ->where('kaoshi_id', $src['kaoshi_id'])
+            ->where('banji_id', 'in', $src['banji_id'])
+            ->field('banji_id, kaoshi_id')
+            ->with([
+                'bjBanji '=> function ($query) {
+                    $query
+                        ->field('id, school_id, paixu, ruxuenian, alias')
+                        ->with([
+                            'glSchool' => function($query){
+                                $query->field('id, jiancheng, paixu');
+                            },
+                        ]);
+
+                },
+                'bjJieguo' => function ($query) {
+                    $query->field('id, teacher_id, subject_id, banji_id, stu_cnt,
+                        chengji_cnt, avg, youxiu, jige, biaozhuncha,
+                        max, min, q1, q2, q3')
+                        ->with([
+                            'bjSubject' => function($q){
+                                $q->field('id, lieming, jiancheng, title');
+                            },
+                            'bjTeacher' => function ($q) {
+                                $q->field('id, xingming');
+                            }
+                        ])
+                        ->order(['subject_id']);
+                }
+            ])
+            ->group('banji_id, kaoshi_id')
+            ->append(['banjiTitle'])
+            ->select();
+
+        return $tongjiJg;
+    }
+
+
+
+    // 查询成绩统计结果（没有分组）
+    public function searchSubjedt($srcfrom)
+    {
+        // 初始化参数
+        $src = array(
+            'kaoshi_id' => ''
+            ,'banji_id' => array()
+            ,'subject_id' => array()
+            ,'school_id' => ''
+            ,'ruxuenian' => ''
+        );
+        $src = array_cover($srcfrom, $src);
+        $src['banji_id'] = strToarray($src['banji_id']);
+        $src['subject_id'] = strToarray($src['subject_id']);
+
+        $data = $this->where('kaoshi_id', $src['kaoshi_id'])
+                ->when(count($src['banji_id']) > 0, function ($query) use($src) {
+                    $query->where('banji_id', 'in', $src['banji_id']);
+                })
+                ->where('banji_id', 'in', function ($query) use($src) {
+                    $query->name('banji')
+                        ->when(strlen($src['school_id']) > 0, function ($q) use ($src) {
+                            $q->where('school_id', $src['school_id']);
+                        })
+                        ->when(strlen($src['school_id']) > 0, function ($q) use ($src) {
+                            $q->where('ruxuenian', $src['ruxuenian']);
+                        })
+                        ->field('id');
+                })
+                ->when(count($src['subject_id']) > 0, function ($query) use($src) {
+                    $query->where('subject_id', 'in', $src['subject_id']);
+                })
+                ->field('id, banji_id, kaoshi_id')
+                ->append(['banTitle'])
+                ->select();
+
+        return $data;
+    }
+
+
+    // 查询任课教师
+    public function renke($srcfrom)
+    {
+        // 查询数据
+        $tongjiJg = $this->searchBase($srcfrom);
+
+        // 重组数据
+        $data = array();
+        foreach ($tongjiJg as $key => $value) {
+            $data[$value->banji_id] = [
+                'school_paixu' =>$value->school_paixu
+                ,'school_jiancheng' => $value->bjBanji->glSchool->jiancheng
+                ,'banji_title' => $value->banjiTitle
+                ,'banji_paixu' => $value->banji_paixu
+
+            ];
+            foreach ($value->bjJieguo as $k => $val) {
+                if($val->subject_id > 0){
+                    if(isset($val->bjTeacher->xingming))
+                    {
+                        $data[$value->banji_id][$val->bjSubject->lieming] = $val->bjTeacher->xingming;
+                    }else{
+                        $data[$value->banji_id][$val->bjSubject->lieming] = '';
+                    }
+
+                    $data[$value->banji_id]['id'] = $val->id;
+                }
             }
         }
         if(count($data)>0)
@@ -453,6 +544,13 @@ class TongjiBj extends BaseModel
     }
 
 
+    // 教师关联
+    public function bjTeacher()
+    {
+        return $this->belongsTo('\app\teacher\model\Teacher', 'teacher_id', 'id');
+    }
+
+
     // 获取班级名称
     public function getBanjiTitleAttr()
     {
@@ -462,23 +560,22 @@ class TongjiBj extends BaseModel
         $njlist = nianJiNameList('str', $ks->getData('enddate'));
         $njname = $njlist[$bj->ruxuenian];
 
-        $sys = \app\facade\System::sysClass();
-        $classalias = $sys->classalias;
+        $bjname = $bj->banTitle;
 
-        $bjobj = new \app\teach\model\Banji;
+        $title = $njname . $bjname;
 
-        if($sys->classalias)
-        {
-            $bjname = $bj->alias;
-            if($bjname == '')
-            {
-                $bjname = $bjobj->numToWord($bj->paixu);
-            }
-        }else{
-            $bjname = $bjobj->numToWord($bj->paixu);
-        }
+        return $title;
+    }
 
-        $title = $njname . $bjname . '班';
+
+    // 获取班级名称
+    public function getBanTitleAttr()
+    {
+        $bj = $this->getAttr('bjBanji');
+
+        $bjname = $bj->banTitle;
+
+        $title = $bjname;
 
         return $title;
     }

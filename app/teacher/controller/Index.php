@@ -409,39 +409,23 @@ class Index extends AdminBase
     // 根据教师姓名、首拼、全拼搜索教师信息
     public function srcTeacher()
     {
-        // 声明结果数组
-        $data = array();
-        $str = input("post.str");
-
-        // 判断是否存在数据，如果没有数据则返回。
-        if(strlen($str) <= 0){
-            return json($data);
-        }
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'str' => ''
+                ,'danwei_id' => ''
+                ,'field' => 'id'
+                ,'order' => 'desc'
+                ,'teacher_id' => ''
+            ], 'POST');
 
         $teacher = new TC();
-        $list = $teacher->strSrcTeachers($str);
+        $data = $teacher->strSrcTeachers($src);
 
-        return json($list);
+        $data = reSetObject($data, $src);
+
+        return json($data);
     }
-
-
-    // // 上传文件
-    // public function upload()
-    // {
-    //     // 获取表单数据
-    //     $list = request()->only([
-    //         'serurl'
-    //         ,'category_id'
-    //     ], 'post');
-
-    //     // 获取表单上传文件
-    //     $file = request()->file('file');
-    //     // 上传文件并返回结果
-    //     $fileObj = new File();
-    //     $data = $fileObj->saveFileInfo($file, $list, true);
-
-    //     return json($data);
-    // }
 
 
     // 下载表格模板

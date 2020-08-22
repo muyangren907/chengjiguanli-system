@@ -181,7 +181,7 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
           "str":val,
         },
         function(data,status){
-
+          data = data.data;
           if($.isEmptyObject(data))
           {
             return true;

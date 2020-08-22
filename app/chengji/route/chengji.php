@@ -46,9 +46,15 @@ Route::group('bjtj', function () {
     Route::rule('tongji','Bjtongji/tongji','post');		# 统计各班级成绩
     Route::rule('myavg','Bjtongji/myAvg','post');			# 扫码界面
     Route::rule('myxiangti','Bjtongji/myXiangti','post');			# 扫码界面
-     Route::rule('myfenshuduan','Bjtongji/myFenshuduan','post');          # 扫码界面
+    Route::rule('myfenshuduan','Bjtongji/myFenshuduan','post');          # 扫码界面
     Route::rule('bjorder','Bjtongji/bjOrder','post');		# 统计各班级成绩
     Route::rule('fenshuduan/<kaoshi_id>','Bjtongji/fenshuduan','get');          # 班级表格
+    Route::rule('renke/<kaoshi_id>','Bjtongji/renke','get');          # 班级表格
+    Route::rule('renkedata','Bjtongji/ajaxDataRenke','post');          # 班级表格
+    Route::rule('renkeedit/<id>','Bjtongji/renkeEdit','get');          # 更新任课教师
+    Route::rule('renkeupdate/<id>','Bjtongji/renkeUpdate','put');          # 班级表格
+    Route::rule('renkeeditteacher/<kaoshi_id>','Bjtongji/renkeEditTeacher','get');          # 设置任课教师
+    Route::rule('renkeupdateteaher','Bjtongji/renkeUpdateTeacher','put');          # 更新任课教师
 });
 
 
@@ -76,14 +82,14 @@ Route::group('schtj', function () {
 
 // 录入
 Route::group('luru', function () {
-    Route::rule('malu','Luru/malu','get');			# 扫码界面
-    Route::rule('malusave','Luru/malusave','put');		# 扫码保存
-    Route::rule('read','Luru/read','post');		# 扫码后读取成绩
-    Route::rule('biaolu','Luru/biaolu','get');					# 表格录入界面
-    Route::rule('saveall','Luru/saveAll','post');				# 保存表格录入信息
-    Route::rule('edit/<id>','Luru/edit','get');				# 修改信息
-    Route::rule('update/<id>','Luru/update','put');				# 更新信息
-    Route::rule('index','Luru/index','get');			# 成绩获取
-    Route::rule('data','Luru/ajaxData','post');			# 成绩获取
+    Route::rule('malu', 'Luru/malu', 'get');			# 扫码界面
+    Route::rule('malusave', 'Luru/malusave', 'put');		# 扫码保存
+    Route::rule('read', 'Luru/read', 'post');		# 扫码后读取成绩
+    Route::rule('biaolu', 'Luru/biaolu', 'get');					# 表格录入界面
+    Route::rule('saveall', 'Luru/saveAll', 'post');				# 保存表格录入信息
+    Route::rule('edit/<id>', 'Luru/edit', 'get');				# 修改信息
+    Route::rule('update/<id>', 'Luru/update', 'put');				# 更新信息
+    Route::rule('index', 'Luru/index', 'get');			# 成绩获取
+    Route::rule('data', 'Luru/ajaxData', 'post');			# 成绩获取
 });
 

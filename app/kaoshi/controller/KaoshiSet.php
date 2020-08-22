@@ -287,5 +287,4 @@ class KaoshiSet extends AdminBase
         // 返回信息
         return json($data);
     }
-
 }

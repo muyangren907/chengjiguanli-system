@@ -64,6 +64,27 @@ class KsCanYu extends BaseController
     }
 
 
+    // 根据考试ID和年级获取参加考试班级
+    public function tjClass()
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'school_id' => ''
+                ,'ruxuenian' => ''
+                ,'kaoshi_id' => ''
+                ,'subject_id' => ''
+                ,'limit' => 100
+            ], 'POST');
+
+        $khSrc = new \app\chengji\model\TongjiBj;
+        $bj = $khSrc->searchSubjedt($src);
+        $bj = reSetObject($bj, $src);
+
+        return json($bj);
+    }
+
+
     // 根据考试ID和年级获取参加考试学科
     public function subject()
     {
