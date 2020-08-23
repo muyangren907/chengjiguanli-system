@@ -48,7 +48,7 @@ class Student
     public function yanzheng()
     {
         // 获取表单数据
-        $data = request()->only(['username','password','shenfenzhenghao','online']);
+        $data = request()->only(['username','password','online']);
 
         // 验证表单数据
         try {
@@ -117,7 +117,7 @@ class Student
 
         //验证密码
         $check = $md5->check($password,$userinfo->password);
-        
+
         if($check)
         {
             session('student', null);
@@ -136,7 +136,7 @@ class Student
             session(null);
             $data=['msg'=>'学生身份证号或密码错误','status'=>0];
         }
-        return $data;        
+        return $data;
     }
 
 

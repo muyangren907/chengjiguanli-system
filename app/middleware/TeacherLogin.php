@@ -16,8 +16,8 @@ class TeacherLogin
     public function handle($request, \Closure $next)
     {
         // 尝试从session中获取用户名和密码
-        $username = session('?username') ? $username = session('username') : $username = '';
-        $password = session('?password') ? $password = session('password') : $password = '';
+        $username = session('?teacher.username') ? $username = session('teacher.username') : $username = '';
+        $password = session('?teacher.password') ? $password = session('teacher.password') : $password = '';
         // 尝试从cookie中获取用户名和密码
         if (strlen($username)<1 )
         {

@@ -27,7 +27,7 @@
         <![endif]-->
         <script>
             // 是否开启刷新记忆tab功能
-            // var is_remember = false;
+            var is_remember = false;
         </script>
         <!-- // 百度统计代码  -->
         <script>
@@ -45,20 +45,6 @@
         <div class="container">
             <div class="logo">
                 <a href="/studentsearchchengji/index/index">{$list['webtitle']}</a></div>
-            <ul class="layui-nav left fast-add" lay-filter="">
-                <li class="layui-nav-item">
-                    <a href="javascript:;">快捷操作</a>
-                    <dl class="layui-nav-child">
-                      <!-- 二级菜单 -->
-                      <dd>
-                        <a onclick="xadmin.open('历史成绩','/chengji/luru/malu','','',true)">
-                            <i class="layui-icon layui-icon-search"></i>历史成绩</a></dd>
-                      <dd>
-                        <a onclick="xadmin.open('系统帮助','https://www.kancloud.cn/llblax/abcd/789222')">
-                            <i class="layui-icon layui-icon-username"></i>系统帮助</a></dd>
-                    </dl>
-                </li>
-            </ul>
             <ul class="layui-nav right" lay-filter="">
                 <li class="layui-nav-item">
                     <a href="javascript:;">{$list.banjiTitle}&nbsp;&nbsp;{$list.xingming}</a>
@@ -70,6 +56,9 @@
                         <a onclick="xadmin.open('修改密码','/studentsearchchengji/index/editpassword','400','250')">
                             修改密码</a>
                           </dd>
+                      <dd>
+                        <a onclick="xadmin.open('系统帮助','https://www.kancloud.cn/llblax/abcd/789222')">
+                            系统帮助</a></dd>
                       <dd>
                         <a href="/login/student">切换帐号</a></dd>
                     </dl>

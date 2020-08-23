@@ -21,7 +21,7 @@
         <![endif]-->
         <script>
             // 是否开启刷新记忆tab功能
-            // var is_remember = false;
+            var is_remember = false;
         </script>
         <!-- // 百度统计代码  -->
         <script>
@@ -39,7 +39,7 @@
         <!-- 顶部开始 -->
         <div class="container">
             <div class="logo">
-                <a href="/">{$list['webtitle']}</a></div>
+                <a href="/teachersearchchengji/index/index">{$list['webtitle']}</a></div>
             <div class="left_open">
                 <a><i title="展开左侧栏" class="iconfont">&#xe699;</i></a>
             </div>
@@ -64,25 +64,27 @@
                 </li>
             </ul>
             <ul class="layui-nav right" lay-filter="">
+                <li class="layui-nav-item to-index">
+                    <span>{$list.info.jsDanwei.title}</span></li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;">{$list.xingming}</a>
+                    <a href="javascript:;">{$list.info.xingming}</a>
                     <dl class="layui-nav-child">
                       <!-- 二级菜单 -->
                       <dd>
-                        <a onclick="xadmin.open('个人信息','/admin/index/myinfo')">
+                        <a onclick="xadmin.open('个人信息','/teachersearchchengji/index/myinfo')">
                             个人信息</a></dd>
                       <dd>
                         <!-- <a onclick="layer.msg('修改密码，请下载后本地测试。')">
                             修改密码</a> -->
-                        <a onclick="xadmin.open('修改密码','/admin/index/editpassword/edit','400','250')">
+                        <a onclick="xadmin.open('修改密码','/teachersearchchengji/index/editpassword/edit','400','250')">
                             修改密码</a>
                           </dd>
                       <dd>
-                        <a href="/login">切换帐号</a></dd>
+                        <a href="/login/teacher">切换帐号</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item to-index">
-                    <a href="/login">退了</a></li>
+                    <a href="/login/teacher">退了</a></li>
             </ul>
         </div>
 
@@ -132,7 +134,7 @@
                 </div>
                 <div class="layui-tab-content">
                     <div class="layui-tab-item layui-show">
-                        <iframe src='/welcome' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
+                        <iframe src='/teachersearchchengji/index/welcome' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
                     </div>
                 </div>
                 <div id="tab_show"></div>
