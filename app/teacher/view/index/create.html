@@ -57,6 +57,15 @@
               </div>
           </div>
           <div class="layui-form-item">
+              <label for="phone" class="layui-form-label">
+                  <span class="x-red">*</span>手机号
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="phone" name="phone" lay-verify="required"
+                  autocomplete="off" class="layui-input " value="{$list.data.phone|default=''}" placeholder="请输入正确的手机号，该手机号为登录帐号">
+              </div>
+          </div>
+          <div class="layui-form-item">
             <label for="danwei_id" class="layui-form-label"><span class="x-red">*</span>现工作单位</label>
             <div class="layui-input-block">
               {php} $schoollist = danweiJibie('校级', '市级', 'asc');{/php}

@@ -158,6 +158,7 @@ class Index extends AdminBase
             ,'quanpin'
             ,'shoupin'
             ,'shengri'
+            ,'phone'
             ,'zhiwu_id'
             ,'zhicheng_id'
             ,'xueli_id'
@@ -173,7 +174,14 @@ class Index extends AdminBase
         $result = $validate->scene('create')->check($list);
         $msg = $validate->getError();
         if(!$result){
-            return json(['msg' => $msg, 'val' => 0]);;
+            return json(['msg' => $msg, 'val' => 0]);
+        }
+
+        $tc = new TC();
+        $temp = $tc->phoneSrc($list['phone']);
+        if($temp)
+        {
+            return json(['msg' => '手机号已经存在', 'val' => 0]);
         }
 
         $list['quanpin'] = trim(strtolower(str_replace(' ', '', $list['quanpin'])));
@@ -232,7 +240,7 @@ class Index extends AdminBase
     public function edit($id)
     {
         // 获取教师信息
-        $list['data'] = TC::field('id, xingming, sex, quanpin, shoupin, shengri, zhiwu_id, zhicheng_id, xueli_id, biye, worktime, zhuanye, danwei_id, tuixiu')
+        $list['data'] = TC::field('id, xingming, sex, quanpin, shoupin, shengri, phone, zhiwu_id, zhicheng_id, xueli_id, biye, worktime, zhuanye, danwei_id, tuixiu')
             ->find($id);
 
         // 设置页面标题
@@ -260,6 +268,7 @@ class Index extends AdminBase
             ,'quanpin'
             ,'shoupin'
             ,'shengri'
+            ,'phone'
             ,'zhiwu_id'
             ,'zhicheng_id'
             ,'xueli_id'
@@ -278,17 +287,26 @@ class Index extends AdminBase
         if(!$result){
             return json(['msg' => $msg, 'val' => 0]);;
         }
+        $tc = new TC();
+        $temp = $tc->phoneSrc($list['phone']);
+        if($temp)
+        {
+            return json(['msg' => '手机号已经存在', 'val' => 0]);
+        }
 
         $list['quanpin'] = trim(strtolower(str_replace(' ', '', $list['quanpin'])));
         $list['shoupin'] = trim(strtolower($list['shoupin']));
+
         // 更新数据
         $teacher = new TC();
         $teacherlist = $teacher->find($id);
+
         $teacherlist->xingming = $list['xingming'];
         $teacherlist->sex = $list['sex'];
         $teacherlist->quanpin = $list['quanpin'];
         $teacherlist->shoupin = $list['shoupin'];
         $teacherlist->shengri = $list['shengri'];
+        $teacherlist->phone = $list['phone'];
         $teacherlist->zhiwu_id = $list['zhiwu_id'];
         $teacherlist->zhicheng_id = $list['zhicheng_id'];
         $teacherlist->xueli_id = $list['xueli_id'];

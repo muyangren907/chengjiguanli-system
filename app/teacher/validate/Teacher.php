@@ -20,6 +20,7 @@ class Teacher extends Validate
         'sex|性别'        =>      'require|number|max:2',
         'danwei_id|单位'        =>      'require|number',
         'shengri|出生日期'        =>      'date',
+        'phone|手机号'         =>      'require|mobile',
         'zhiwu_id|职务'      =>      'number',
         'zhicheng_id|职称'     =>  'number',
         'xueli_id|学历'    =>  'number',
@@ -45,6 +46,7 @@ class Teacher extends Validate
             ,'sex'
             ,'danwei_id'
             ,'shengri'
+            ,'phone'
             ,'zhiwu_id'
             ,'zhicheng_id'
             ,'xueli_id'
@@ -61,6 +63,7 @@ class Teacher extends Validate
             ,'sex'
             ,'danwei_id'
             ,'shengri'
+            ,'phone'
             ,'zhiwu_id'
             ,'zhicheng_id'
             ,'xueli_id'

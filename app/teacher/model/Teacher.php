@@ -138,17 +138,28 @@ class Teacher extends BaseModel
         $i = 0;
         $teacherlist = array();
         foreach ($arr as $key => $value) {
+            $phone = str_replace(' ', '', $value[4]);
+            $temp = $this->phoneSrc($phone);
+            if($temp)
+            {
+                if($temp->delete_time > 0)
+                {
+                    $temp->restore();
+                }
+                $teacherlist[$i]['id'] = $temp->id;
+            }
             $teacherlist[$i]['xingming'] = $value[1];
             $teacherlist[$i]['sex'] = $this->cutStr($value[2]);
             $teacherlist[$i]['shengri'] = $value[3];
-            $teacherlist[$i]['worktime'] = $value[4];
-            $teacherlist[$i]['zhiwu_id'] = $this->cutStr($value[5]);
-            $teacherlist[$i]['zhicheng_id'] = $this->cutStr($value[6]);
+            $teacherlist[$i]['phone'] = $phone;
+            $teacherlist[$i]['worktime'] = $value[5];
+            $teacherlist[$i]['zhiwu_id'] = $this->cutStr($value[6]);
+            $teacherlist[$i]['zhicheng_id'] = $this->cutStr($value[7]);
             $teacherlist[$i]['danwei_id'] = $School_id;
-            $teacherlist[$i]['biye'] = $value[8];
-            $teacherlist[$i]['subject_id'] = $this->cutStr($value[7]);
+            $teacherlist[$i]['biye'] = $value[9];
+            $teacherlist[$i]['subject_id'] = $this->cutStr($value[8]);
             $teacherlist[$i]['zhuanye'] = $value[9];
-            $teacherlist[$i]['xueli_id'] = $this->cutStr($value[10]);
+            $teacherlist[$i]['xueli_id'] = $this->cutStr($value[11]);
             $quanpin = $pinyin->sentence($value[1]);
             $jianpin = $pinyin->abbr($value[1]);
             $teacherlist[$i]['quanpin'] = trim(strtolower(str_replace(' ', '', $quanpin)));
@@ -193,6 +204,18 @@ class Teacher extends BaseModel
             ->select();
 
         return $list;
+    }
+
+
+
+    // 根据手机号查询教师
+    public function phoneSrc($phone)
+    {
+        $data = self::withTrashed()
+            ->where('phone', $phone)
+            ->field('id, delete_time')
+            ->find();
+        return $data;
     }
 
 
