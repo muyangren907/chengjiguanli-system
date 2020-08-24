@@ -19,10 +19,11 @@ class SystemBase extends Validate
         'thinks|感谢'      =>  'require|length:1,80',
         'danwei|单位'      =>  'require|length:2,80',
         'xuenian|学年节点' =>   'require|date',
-        'grademax|年级最大数' => 'require|integer',
+        'gradelist|年级最大数' => 'require|length:1,200',
         'classmax|年级最大数' => 'require|integer',
         'classalias|别名' => 'require|boolean',
-
+        'teacherrongyu|教师查询荣誉' =>  'require|boolean',
+        'teacherketi|教师查询课题' =>  'require|boolean',
     ];
 
     /**
@@ -41,9 +42,11 @@ class SystemBase extends Validate
             ,'thinks'
             ,'danwei'
             ,'xuenian'
-            ,'grademax'
+            ,'gradelist'
             ,'classmax'
             ,'classalias'
+            ,'teacherrongyu'
+            ,'teacherketi'
         ],
     ];
 }

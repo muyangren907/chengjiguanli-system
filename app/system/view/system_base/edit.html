@@ -23,12 +23,12 @@
     <div class="x-body">
       <form class="layui-form layui-form-pane">
           <div class="layui-form-item">
-              <label for="grademax" class="layui-form-label">
+              <label for="gradelist" class="layui-form-label">
                   <span class="x-red">*</span>最大年级数
               </label>
               <div class="layui-input-block">
-                  <input type="text" id="grademax" name="grademax" required="true" lay-verify="required"
-                  autocomplete="off" class="layui-input" value="{$list.data.grademax|default=''}">
+                  <input type="text" id="gradelist" name="gradelist" required="true" lay-verify="required"
+                  autocomplete="off" class="layui-input" value="{$list.data.gradelist|default=''}">
               </div>
           </div>
           <div class="layui-form-item">
@@ -42,7 +42,7 @@
           </div>
           <div class="layui-form-item" pane>
             <label for="classalias1" class="layui-form-label">
-              <span class="x-red">*</span>是否启用班级别名
+              <span class="x-red">*</span>班级别名
             </label>
             <div class="layui-input-block">
               <input type="radio" name="classalias" value="1" title="启用"
@@ -59,6 +59,54 @@
                     {/eq}
                 {/present}
                 {notpresent name="$list.data.classalias"}
+                 checked
+                {/notpresent}
+                >
+            </div>
+          </div>
+          <div class="layui-form-item" pane>
+            <label for="classalias1" class="layui-form-label">
+              <span class="x-red">*</span>教师查荣誉
+            </label>
+            <div class="layui-input-block">
+              <input type="radio" name="teacherrongyu" value="1" title="允许"
+                {present name="$list.data.teacherrongyu"}
+                {$list.data.teacherrongyu}
+                    {eq name="$list.data.teacherrongyu" value="1" }
+                     checked
+                    {/eq}
+                {/present}>
+              <input type="radio" name="teacherrongyu" value="0" title="不允许"
+                {present name="$list.data.teacherrongyu"}
+                    {eq name="list.data.teacherrongyu" value="0" }
+                     checked
+                    {/eq}
+                {/present}
+                {notpresent name="$list.data.teacherrongyu"}
+                 checked
+                {/notpresent}
+                >
+            </div>
+          </div>
+          <div class="layui-form-item" pane>
+            <label for="classalias1" class="layui-form-label">
+              <span class="x-red">*</span>教师查课题
+            </label>
+            <div class="layui-input-block">
+              <input type="radio" name="teacherketi" value="1" title="允许"
+                {present name="$list.data.teacherketi"}
+                {$list.data.teacherketi}
+                    {eq name="$list.data.teacherketi" value="1" }
+                     checked
+                    {/eq}
+                {/present}>
+              <input type="radio" name="teacherketi" value="0" title="不允许"
+                {present name="$list.data.teacherketi"}
+                    {eq name="list.data.teacherketi" value="0" }
+                     checked
+                    {/eq}
+                {/present}
+                {notpresent name="$list.data.teacherketi"}
                  checked
                 {/notpresent}
                 >

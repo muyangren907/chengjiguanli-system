@@ -37,7 +37,7 @@ class System extends BaseController
         // 实例化系统设置对象
         $sys = new \app\system\model\SystemBase;
         $alias = $sys->order(['id'=>'desc'])
-            ->field('grademax, classmax, classalias, xuenian')
+            ->field('gradelist, classmax, classalias, xuenian, teacherrongyu, teacherketi')
             ->find();
         return $alias;
     }

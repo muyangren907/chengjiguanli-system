@@ -39,13 +39,13 @@
             <hr class="hr15">
             <input name="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input" autocomplete="off">
             <hr class="hr15" id="thisafter">
-            
+
               <div class="layui-form-item" style="margin-left:0px; margin-bottom: 0px;">
                 <div id="slider" style="height: 50px"></div>
               </div>
             <hr class="hr15">
-            <a href="/login/student" class="layui-btn layui-btn-danger" style="width:23%;height: 48px;font-size: 14px;padding-top: 7px;">学生查询</a>
-            <a href="/login/teacher" class="layui-btn layui-btn-danger" style="width:23%;height: 48px;font-size: 14px;padding-top: 7px; margin-left: 1px">教师查询</a>
+            <a href="/login/student" class="layui-btn layui-btn-danger" style="width:23%;height: 48px;font-size: 14px;padding-top: 7px;">学生入口</a>
+            <a href="/login/teacher" class="layui-btn layui-btn-danger" style="width:23%;height: 48px;font-size: 14px;padding-top: 7px; margin-left: 1px">教师入口</a>
             <input value="管理员登录" lay-submit lay-filter="login" style="width:49%; float: right;" type="submit">
             <hr class="hr20" >
         </form>
@@ -70,7 +70,7 @@
             },
           })
         }
-        
+
         //监听提交
         form.on('submit(login)', function(data){
           mobile = "{$list['mobile']}";

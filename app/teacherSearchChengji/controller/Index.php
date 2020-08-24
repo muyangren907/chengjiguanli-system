@@ -34,10 +34,8 @@ class Index extends TeacherSearchBase
                     }
                 ])
                 ->find();
-        // halt($list->toArray());
-        // $auth = new \app\admin\model\AuthRule;      # 菜单
-        // $menu = $auth->menu(session('teacher.userid'));
-        $list['menu'] = [
+        $sysClass = \app\facade\System::sysClass();
+        $temp = [
             [
                 'title' => '成绩查询'
                 ,'font' => '&#xe6c9;'
@@ -48,7 +46,12 @@ class Index extends TeacherSearchBase
                     ]
                 ]
             ]
-            ,[
+        ];
+
+        if($sysClass->teacherrongyu)
+        {
+            $cnt = count($temp);
+            $temp[] = [
                 'title' => '荣誉查询'
                 ,'font' => '&#xe6e4;'
                 ,'authCid' => [
@@ -57,8 +60,12 @@ class Index extends TeacherSearchBase
                         ,'url' => ''
                     ]
                 ]
-            ]
-            ,[
+            ];
+        }
+        if($sysClass->teacherketi)
+        {
+            $cnt = count($temp);
+            $temp[] = [
                 'title' => '课题查询'
                 ,'font' => '&#xe6b3;'
                 ,'authCid' => [
@@ -67,11 +74,14 @@ class Index extends TeacherSearchBase
                         ,'url' => ''
                     ]
                 ]
-            ]
-        ];
+            ];
+        }
+
+        $list['menu'] = $temp;
+
 
         // 模版赋值
-        $this->view->assign('list',$list);
+        $this->view->assign('list', $list);
         // 渲染输出
         return $this->view->fetch();
     }

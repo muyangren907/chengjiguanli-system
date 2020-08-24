@@ -312,19 +312,20 @@ class Banji extends BaseModel
         $nian = $nian - $str;
 
         // 获取年级最大数
-        $gradeMax = $sysClass->grademax;
+        $gradelist = explode('|', $sysClass->gradelist);
+        $gradeMax = count($gradelist);
 
         $njlist = array();
         if($value != 'str')
         {
             for($i = 0; $i < $gradeMax; $i ++)
             {
-                $njlist[self::numToWord($i + 1) . '年级'] = $nian - $i;
+                $njlist[$gradelist[$i]] = $nian - $i;
             }
         }else{
             for($i = 0; $i < $gradeMax; $i ++)
             {
-                $njlist[$nian - $i] = self::numToWord($i + 1) . '年级';
+                $njlist[$nian - $i] = $gradelist[$i];
             }
         }
         return $njlist;

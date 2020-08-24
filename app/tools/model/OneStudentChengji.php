@@ -317,14 +317,14 @@ class OneStudentChengji extends BaseModel
             $data = sortArrByManyField($data, 'sum', SORT_DESC);
             $data = array_column($data, 'id');
             $rank = array_search($src['kaohao_id'], $data);
-            $rank = 100 - round(($rank + 1) / count($data) * 100, 0);
+            $rank = round(($rank + 1) / count($data) * 100, 0);
             $data = [
                 'title' => '总分：' . $sum
                 ,'series' => [
                     'name'=>'总成绩'
                     ,'type' => 'gauge'
                     // ,'detail' => $rank . '%'
-                    ,'data' => [['value'=>$rank, 'name'=>'超过']]
+                    ,'data' => [['value'=>$rank, 'name'=>'位置']]
                 ]
             ];
         } else {
@@ -334,7 +334,7 @@ class OneStudentChengji extends BaseModel
                     'name'=>'总成绩'
                     ,'type' => 'gauge'
                     // ,'detail' => $rank . '%'
-                    ,'data' => [['value'=>0, 'name'=>'超过']]
+                    ,'data' => [['value'=>0, 'name'=>'位置']]
                 ]
             ];
         }
@@ -471,7 +471,7 @@ class OneStudentChengji extends BaseModel
             ,'series' => [
                 [
                     'data' => $data
-                    ,'name' => '超过%'
+                    ,'name' => '排名%'
                     ,'type' => 'bar'
                     ,'label' => [
                         'show' => true
