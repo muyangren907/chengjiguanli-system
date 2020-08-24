@@ -16,6 +16,7 @@ Route::group('index', function () {
     Route::rule('welcome','Index/welcome','get');                       # 信息列表
     Route::rule('read/<kaohao_id>', 'Index/read', 'get');             # 读取信息
     Route::rule('editpassword','Index/editpassword','get');						# 信息列表
-    Route::rule('updatepassword/<teacher_id>','Index/updatePassword','put');						# 信息列表
-
+    Route::rule('updatepassword/<teacher_id>','Index/updatePassword','put');			# 信息列表
+    Route::rule('banji','Index/banji','get');                       # 信息列表
+    Route::rule('banjidata','Index/ajaxDataBanji','post');                # 获取数据
 });

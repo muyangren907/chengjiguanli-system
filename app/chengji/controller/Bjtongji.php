@@ -63,18 +63,7 @@ class Bjtongji extends AdminBase
         // 统计成绩
         $btj = new BTJ;
         $data = $btj->search($src);
-
-        // 获取记录总数
-        $cnt = count($data);
-        // 截取当前页数据
-        $data = array_slice($data, ($src['page'] - 1) * $src['limit'], $src['limit']);
-        // 重组返回内容
-        $data = [
-            'code'=> 0 , // ajax请求次数，作为标识符
-            'msg'=>"",  // 获取到的结果数(每页显示数量)
-            'count'=>$cnt, // 符合条件的总数据量
-            'data'=>$data, //获取到的数据结果
-        ];
+        $data = reSetArray($data, $src);
 
         return json($data);
     }

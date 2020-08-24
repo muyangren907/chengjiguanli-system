@@ -41,8 +41,12 @@ class Index extends TeacherSearchBase
                 ,'font' => '&#xe6c9;'
                 ,'authCid' => [
                     [
-                        'title' => '成绩查询一'
-                        ,'url' => ''
+                        'title' => '班级成绩'
+                        ,'url' => '/teachersearchchengji/index/banji'
+                    ]
+                    , [
+                        'title' => '学生成绩'
+                        ,'url' => '/teachersearchchengji/index/databanji'
                     ]
                 ]
             ]
@@ -121,9 +125,8 @@ class Index extends TeacherSearchBase
 
 
     // 学生查询页首页
-    public function read($kaohao_id)
+    public function read($teacher_id)
     {
-        halt('aa');
         $kh = new \app\kaohao\model\Kaohao;
         $khInfo = $kh->where('id', $kaohao_id)
             ->with([
@@ -201,6 +204,52 @@ class Index extends TeacherSearchBase
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息
+        return json($data);
+    }
+
+
+    // 班级成绩列表
+    public function banji()
+    {
+        $teacher_id = session('teacher.userid');
+        $list['teacher_id'] = $teacher_id;
+
+        $sbj = new \app\teach\model\Subject;
+        $list['subject'] = $sbj->kaoshi();
+
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = '班级成绩列表';
+        $list['dataurl'] = '/teachersearchchengji/index/banjidata';
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+
+        // 渲染模板
+        return $this->view->fetch();
+    }
+
+
+    // 获取班级成绩数据
+    public function ajaxDataBanji()
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'page' => '1'
+                ,'limit' => '10'
+                ,'teacher_id' => ''
+                ,'xueqi_id' => ''
+                ,'category_id' => array() # 考试类型
+                ,'subject_id' => array()
+                ,'bfdate' => ''
+                ,'enddate' => ''
+            ], 'POST');
+
+        // 统计成绩
+        $btj = new \app\chengji\model\TongjiBj;
+        $data = $btj->searchTeacher($src);
+        $data = reSetObject($data, $src);
+
         return json($data);
     }
 }

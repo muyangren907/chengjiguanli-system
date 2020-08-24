@@ -331,14 +331,19 @@ class TongjiBj extends BaseModel
             ,'subject_id' => array()
             ,'school_id' => ''
             ,'ruxuenian' => ''
+            ,'teacher_id' => ''
         );
         $src = array_cover($srcfrom, $src);
         $src['banji_id'] = strToarray($src['banji_id']);
         $src['subject_id'] = strToarray($src['subject_id']);
+        $src['teacher_id'] = strToarray($src['teacher_id']);
 
         $data = $this->where('kaoshi_id', $src['kaoshi_id'])
                 ->when(count($src['banji_id']) > 0, function ($query) use($src) {
                     $query->where('banji_id', 'in', $src['banji_id']);
+                })
+                ->when(count($src['teacher_id']) > 0, function ($query) use($src) {
+                    $query->where('teacher_id', 'in', $src['teacher_id']);
                 })
                 ->where('banji_id', 'in', function ($query) use($src) {
                     $query->name('banji')
@@ -355,6 +360,72 @@ class TongjiBj extends BaseModel
                 })
                 ->field('id, banji_id, kaoshi_id')
                 ->append(['banTitle'])
+                ->select();
+
+        return $data;
+    }
+
+
+    // 查询与指定教师相关的所有考试成绩
+    public function searchTeacher($srcfrom)
+    {
+        // 初始化参数
+        $src = array(
+            'xueqi_id' => ''
+            ,'category_id' => array()
+            ,'subject_id' => array()
+            ,'teacher_id' => 0
+            ,'bfdate' => ''
+            ,'enddate' => ''
+        );
+        $src = array_cover($srcfrom, $src);
+        $src['xueqi_id'] = strToarray($src['xueqi_id']);
+        $src['subject_id'] = strToarray($src['subject_id']);
+        $src['category_id'] = strToarray($src['category_id']);
+
+        if(isset($srcfrom['bfdate']) && strlen($srcfrom['bfdate'])>0)
+        {
+            $src['bfdate'] = $srcfrom['bfdate'];
+        }else{
+            $src['bfdate'] = date("Y-m-d",strtotime("-1 year"));
+        }
+
+        if(isset($srcfrom['enddate']) && strlen($srcfrom['enddate'])>0)
+        {
+            $src['enddate'] = $srcfrom['enddate'];
+        }else{
+            $src['enddate'] = date("Y-m-d",strtotime("+1 day"));
+        }
+
+        $data = $this->where('teacher_id', $src['teacher_id'])
+                ->where('subject_id', '<>', 0)
+                ->when(count($src['subject_id']) > 0, function ($query) use($src) {
+                    $query->where('subject_id', 'in', $src['subject_id']);
+                })
+                ->where('kaoshi_id', 'in', function ($query) use($src) {
+                    $query->name('kaoshi')
+                        ->whereTime('bfdate|enddate', 'between', [$src['bfdate'], $src['enddate']])
+                        ->when(count($src['xueqi_id'])>0, function ($q) use($src) {
+                            $q->where('xueqi_id', 'in', function ($w) use($src) {
+                                $w->name('xueqi')
+                                    ->where('category_id', 'in', $src['xueqi_id'])
+                                        ->field('id');
+                                });
+                        })
+                        ->when(count($src['category_id'])>0, function ($q) use($src) {
+                            $q->where('category_id', 'in', $src['category_id']);
+                        })
+                        ->field('id');
+                })
+                ->with([
+                    'bjSubject' => function ($query) {
+                        $query->field('id, title, jiancheng');
+                    }
+                    ,'bjKaoshi' => function ($query) {
+                        $query->field('id, title, enddate');
+                    }
+                ])
+                ->append(['banjiTitle'])
                 ->select();
 
         return $data;
