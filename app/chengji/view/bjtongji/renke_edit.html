@@ -58,7 +58,8 @@
       $.post(
           "/teacher/index/srcteacher",
           {
-              "str": val
+              "str": val,
+              'danwei_id': "{$list.set.danwei_id}"
           },
           function(data,status){
               data = data.data;

@@ -511,6 +511,9 @@ class Bjtongji extends AdminBase
         $info = BTJ::field('kaoshi_id, banji_id')
             ->find($id);
 
+        $bj = new \app\teach\model\Banji;
+        $school = $bj->where('id', $info->banji_id)->value('school_id');
+
         // 查询该班级各学科任课教师
         $btj = new BTJ;
         $list['data'] = $btj->where('kaoshi_id', $info->kaoshi_id)
@@ -532,6 +535,7 @@ class Bjtongji extends AdminBase
             'webtitle'=>'设置任课教师'
             ,'butname'=>'设置'
             ,'formpost'=>'PUT'
+            ,'danwei_id' => $school
             ,'url'=>'/chengji/bjtj/renkeupdate/'.$id,
         );
 

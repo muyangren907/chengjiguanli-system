@@ -97,7 +97,7 @@
 	        cjgl.add('添加单位','/school/create','650','500');
 	        break;
 	        case 'download':
-	        cjgl.add('设置任课班级','/chengji/bjtj/renkeeditteacher/' + "{$list.kaoshi_id}",'','',true);
+	        cjgl.add('设置任课班级','/chengji/bjtj/renkeeditteacher/' + "{$list.kaoshi_id}",'600','400',false);
 	        break;
        };
      });
@@ -115,7 +115,7 @@
           cjgl.del(obj,"/school");
           break;
         	case 'edit':// 编辑
-          cjgl.add('编辑' + obj.data.banji_title +'任课','/chengji/bjtj/renkeedit/'+obj.data.id,'650','500',true);
+          cjgl.add('编辑' + obj.data.banji_title +'任课','/chengji/bjtj/renkeedit/'+obj.data.id,'650','500',false);
           break;
         	case 'status':// 状态
           cjgl.status(obj,"{:url('setstatus')}");

@@ -41,7 +41,7 @@
 <div class="layui-form-item">
   <div class="layui-inline">
     <label for="title" class="layui-form-label">
-      <span class="x-red">*</span>考试时间
+      考试时间
     </label>
     <div class="layui-input-inline">
       <input type="text" class="layui-input" id="bfdate" name="bfdate" placeholder="起始：默认二年前的今天" value="{$list.data.bfdate|default=''}" autocomplete="off" lay-filter="riqi">
@@ -58,20 +58,13 @@
 {/block}
 {block name="echart"}
 <!-- <div class="layui-row" style="padding-top: 80px;"> -->
-	<div class="layui-col-xs6" style="width: 100%;height:400px;" id="myAvg"></div>
-	<div class="layui-col-xs6" style="width: 100%;height:400px;" id="myJige"></div>
-	<div class="layui-col-xs6" style="width: 100%;height:400px;" id="myYouxiu"></div>
-	<div class="layui-col-xs6" style="width: 100%;height:400px;" id="myBiaozhunca"></div>
-	<div class="layui-col-xs6" style="width: 100%;height:400px;" id="myXiangti"></div>
+
   <!-- </div> -->
 {/block}
 {block name="myjs"}
   <!-- 表格上面按钮模板 -->
   <script type="text/html" id="toolbarDemo">
    <div class="layui-btn-container">
-<!-- 		<button class="layui-btn layui-btn-danger" lay-event="dels">
-			<i class="iconfont">&#xe69d;</i> 批量删除
-		</button> -->
 		<button class="layui-btn" lay-event="download">
 			<i class="layui-icon layui-icon-download-circle"></i> 下载
 		</button>
@@ -79,14 +72,14 @@
 </script>
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
-	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
-	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
+	<a class="layui-btn-xs" lay-event="detail" title="查看学生成绩"><i class="layui-icon">&#xe62d;</i></a>
 </script>
 <!-- 表格操作 -->
 <script>
 	// 设置列
   	options.cols=[[ //表头
-    	{type:'numbers',title:'序号', fixed:true},
+    	{type:'numbers', title:'序号', fixed:true},
+      {field: 'id', title: '操作', toolbar: '#barDemo', minWidth:140},
     	{field: 'banji_id', title: '班级',sort: true, minWidth:140, fixed:true, templet:function(d){
         var str = d.banjiTitle;
         return str;
@@ -161,7 +154,7 @@
           cjgl.del(obj,"/school");
           break;
         	case 'edit':// 编辑
-          cjgl.add('编辑单位','/school/'+obj.data.id+'/edit','650','500');
+          cjgl.add('编辑单位','/school/edit','650','500');
           break;
         	case 'status':// 状态
           cjgl.status(obj,"{:url('setstatus')}");
