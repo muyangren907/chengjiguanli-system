@@ -432,42 +432,42 @@ class TongjiBj extends BaseModel
     }
 
 
-    // 查询任课教师
-    public function renke($srcfrom)
-    {
-        // 查询数据
-        $tongjiJg = $this->searchBase($srcfrom);
+    // // 查询任课教师
+    // public function renke($srcfrom)
+    // {
+    //     // 查询数据
+    //     $tongjiJg = $this->searchBase($srcfrom);
 
-        // 重组数据
-        $data = array();
-        foreach ($tongjiJg as $key => $value) {
-            $data[$value->banji_id] = [
-                'school_paixu' =>$value->school_paixu
-                ,'school_jiancheng' => $value->bjBanji->glSchool->jiancheng
-                ,'banji_title' => $value->banjiTitle
-                ,'banji_paixu' => $value->banji_paixu
+    //     // 重组数据
+    //     $data = array();
+    //     foreach ($tongjiJg as $key => $value) {
+    //         $data[$value->banji_id] = [
+    //             'school_paixu' =>$value->school_paixu
+    //             ,'school_jiancheng' => $value->bjBanji->glSchool->jiancheng
+    //             ,'banji_title' => $value->banjiTitle
+    //             ,'banji_paixu' => $value->banji_paixu
 
-            ];
-            foreach ($value->bjJieguo as $k => $val) {
-                if($val->subject_id > 0){
-                    if(isset($val->bjTeacher->xingming))
-                    {
-                        $data[$value->banji_id][$val->bjSubject->lieming] = $val->bjTeacher->xingming;
-                    }else{
-                        $data[$value->banji_id][$val->bjSubject->lieming] = '';
-                    }
+    //         ];
+    //         foreach ($value->bjJieguo as $k => $val) {
+    //             if($val->subject_id > 0){
+    //                 if(isset($val->bjTeacher->xingming))
+    //                 {
+    //                     $data[$value->banji_id][$val->bjSubject->lieming] = $val->bjTeacher->xingming;
+    //                 }else{
+    //                     $data[$value->banji_id][$val->bjSubject->lieming] = '';
+    //                 }
 
-                    $data[$value->banji_id]['id'] = $val->id;
-                }
-            }
-        }
-        if(count($data)>0)
-        {
-            $data = \app\facade\Tools::sortArrByManyField($data, 'school_paixu', SORT_ASC, 'banji_paixu', SORT_ASC);
-        }
+    //                 $data[$value->banji_id]['id'] = $val->id;
+    //             }
+    //         }
+    //     }
+    //     if(count($data)>0)
+    //     {
+    //         $data = \app\facade\Tools::sortArrByManyField($data, 'school_paixu', SORT_ASC, 'banji_paixu', SORT_ASC);
+    //     }
 
-        return $data;
-    }
+    //     return $data;
+    // }
 
 
     /**
@@ -625,15 +625,20 @@ class TongjiBj extends BaseModel
     // 获取班级名称
     public function getBanjiTitleAttr()
     {
-        $ks = $this->getAttr('bjKaoshi');
-        $bj = $this->getAttr('bjBanji');
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $ksInfo = $ks->where('id', $this->getAttr('kaoshi_id'))
+            ->field('id, enddate')
+            ->find();
 
-        $njlist = nianJiNameList('str', $ks->getData('enddate'));
-        $njname = $njlist[$bj->ruxuenian];
+        $bj = new \app\teach\model\Banji;
+        $bjInfo = $bj->where('id', $this->getAttr('banji_id'))
+            ->field('id, ruxuenian, alias, paixu')
+            ->append(['banTitle'])
+            ->find();
 
-        $bjname = $bj->banTitle;
-
-        $title = $njname . $bjname;
+        $njlist = nianJiNameList('str', $ksInfo->getData('enddate'));
+        $njname = $njlist[$bjInfo->ruxuenian];
+        $title = $njname . $bjInfo->banTitle;
 
         return $title;
     }

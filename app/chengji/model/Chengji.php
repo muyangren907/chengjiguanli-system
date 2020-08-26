@@ -29,44 +29,55 @@ class Chengji extends BaseModel
     }
 
 
-    // 列出已录成绩列表
-    public function searchLuru($srcfrom)
+    // 查询成绩
+    public function searchBase($srcfrom)
     {
         // 初始化参数
         $src = array(
-            'field'=>'update_time'
-            ,'order'=>'desc'
-            ,'kaoshi_id'=>'0'
-            ,'banji_id'=>array()
-            ,'subject_id'=>''
-            ,'searchval'=>''
-            ,'user_id'=>session('userid')
+            'kaoshi_id' => ''
+            ,'banji_id' => array()
+            ,'subject_id' => ''
+            ,'searchval' => ''
+            ,'user_id' => ''
         );
-        $src = array_cover( $srcfrom , $src ) ;
+        $src = array_cover($srcfrom, $src) ;
+        $src['kaoshi_id'] = strToarray($src['kaoshi_id']);
         $src['banji_id'] = strToarray($src['banji_id']);
+        $src['subject_id'] = strToarray($src['subject_id']);
 
-        $stu = new \app\student\model\Student;
-        $stuid = $stu
-            ->when(strlen($src['searchval']) > 0, function ($query) use ($src) {
-                $query->where('xingming', 'like', '%' . $src['searchval'] . '%')
-                    ->field('id');
-            })
-            ->column('id');
+        $khid = array();
+        if(count($src['kaoshi_id']) > 0 || count($src['banji_id']) > 0 || strlen($src['searchval']) > 0)
+        {
+            $kh = new \app\kaohao\model\Kaohao;
+            $khid = $kh
+                ->when(count($src['kaoshi_id']) > 0, function ($query) use($src){
+                    $query->where('kaoshi_id', 'in', $src['kaoshi_id']);
+                })
+                ->when(count($src['banji_id']) > 0, function ($query) use($src){
+                    $query->where('banji_id', 'in', $src['banji_id']);
+                })
+                ->when(strlen($src['searchval']) > 0, function ($query) use($src){
+                    $query->where('student_id', 'in', function ($q) use($src) {
+                        $q->name('student')
+                            ->where('xingming', 'like', '%' . $src['searchval'] . '%')
+                            ->field('id');
+                    });
+                })
+                ->column('id');
+        }
 
-        $nianji = nianJiNameList();
         $cjList = $this
-            ->whereMonth('update_time')
-            ->where('user_id', $src['user_id'])
-            ->when(is_numeric($src['subject_id']), function ($query) use ($src) {
-                $query->where('subject_id', $src['subject_id']);
+            ->when(count($src['kaoshi_id']) == 0 && count($src['banji_id']) ==0, function($query) {
+                $query->whereMonth('update_time');
             })
-            ->when(count($stuid) > 0, function ($query) use ($stuid) {
-                $query->where('kaohao_id', 'in', function ($q) use ($stuid) {
-                    $q->name('kaohao')
-                        ->where('student_id', 'in', $stuid)
-                        ->whereTime('update_time', '-480 hours')
-                        ->field('id');
-                });
+            ->when(strlen($src['user_id']) > 0, function ($query) use($src){
+                $query->where('user_id', $src['user_id']);
+            })
+            ->when(count($src['subject_id']) > 0, function ($query) use ($src) {
+                $query->where('subject_id', 'in', $src['subject_id']);
+            })
+            ->when(count($khid) > 0, function ($query) use ($khid) {
+                $query->where('kaohao_id', 'in', $khid);
             })
             ->with([
                 'subjectName' => function($query){
@@ -76,19 +87,29 @@ class Chengji extends BaseModel
                     $query->field('id, kaoshi_id, school_id, ruxuenian, nianji, banji_id, paixu, student_id')
                         ->append(['banjiTitle'])
                         ->with([
-                        'cjSchool' => function($query){
-                            $query->field('id, jiancheng, paixu');
-                        }
-                        ,'cjStudent' => function($query){
-                            $query->field('id, xingming, sex');
-                        }
-                        ,'cjKaoshi' => function($query){
-                            $query->field('id, title');
-                        }
-                    ]);
+                            'cjSchool' => function($query){
+                                $query->field('id, jiancheng, paixu');
+                            }
+                            ,'cjStudent' => function($query){
+                                $query->field('id, xingming, sex');
+                            }
+                            ,'cjKaoshi' => function($query){
+                                $query->field('id, title');
+                            }
+                        ]);
                 }
             ])
             ->select();
+
+        return $cjList;
+    }
+
+
+    // 列出已录成绩列表
+    public function searchLuru($srcfrom)
+    {
+        $nianji = nianJiNameList();
+        $cjList = $this->searchBase($srcfrom);
 
         // 重新整理成绩
         $data = array();
@@ -112,15 +133,37 @@ class Chengji extends BaseModel
             $value->cjKaohao->cjStudent ? $data[$key]['student_name']=$value->cjKaohao->cjStudent->xingming : $data[$key]['student_name']= '';
         }
 
-        // 按条件排序
-        $src['order'] == 'desc' ? $src['order'] =SORT_DESC : $src['order'] = SORT_ASC;
-        if (count($data) > 0) {
-            $data = sortArrByManyField($data, $src['field'], $src['order']);
+        return $data;
+    }
+
+
+    // 列出已录成绩列表
+    public function searchTeacher($srcfrom)
+    {
+        $nianji = nianJiNameList();
+        $cjList = $this->searchBase($srcfrom);
+
+        // 重新整理成绩
+        $data = array();
+        foreach ($cjList as $key => $value) {
+            $data[$key] = [
+                'id' => $value->id
+                ,'kaohao_id' => $value->cjKaohao->id
+                ,'student' => $value->cjKaohao->cjStudent->xingming
+                ,'subject_title' => $value->subjectName->title
+                ,'subject_id' => $value->subjectName->id
+                ,'banji_title' => $value->cjKaohao->banjiTitle
+                ,'subject_lieming' => $value->subjectName->lieming
+                ,'defen' => $value->defen
+                ,'defenlv' => $value->defenlv
+                ,'bweizhi' => $value->bweizhi
+                ,'xweizhi' => $value->xweizhi
+            ];
+            $value->cjKaohao->cjStudent ? $data[$key]['student_name']=$value->cjKaohao->cjStudent->xingming : $data[$key]['student_name']= '';
         }
 
         return $data;
     }
-
 
 
     // 根据条件查询学生所有学科成绩

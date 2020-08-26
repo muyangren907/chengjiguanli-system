@@ -252,4 +252,57 @@ class Index extends TeacherSearchBase
 
         return json($data);
     }
+
+
+    // 查看班级成绩
+    public function detail($bjtj_id)
+    {
+        // 统计成绩
+        $btj = new \app\chengji\model\TongjiBj;
+        $list = $btj->where('id', $bjtj_id)
+            ->field('id, banji_id, kaoshi_id, subject_id')
+            ->with([
+                'bjSubject' => function ($query) {
+                    $query->field('id, title, jiancheng');
+                }
+                ,'bjKaoshi' => function ($query) {
+                    $query->field('id, title, enddate');
+                }
+            ])
+            ->append(['banjiTitle'])
+            ->find();
+
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = $list->banjiTitle . '学生成绩';
+        $list['dataurl'] = '/teachersearchchengji/index/detaildata';
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+
+        // 渲染模板
+        return $this->view->fetch();
+    }
+
+
+    // 获取班级学生成绩
+    public function ajaxDataDetail()
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'page' => '1'
+                ,'limit' => '10'
+                ,'kaoshi_id' => ''
+                ,'banji_id' => ''
+                ,'subject_id' => array()
+                ,'searchval'
+            ], 'POST');
+
+        $cj = new \app\chengji\model\Chengji;
+        $data = $cj->searchTeacher($src);
+
+        $data = reSetArray($data, $src);
+
+        return json($data);
+    }
 }

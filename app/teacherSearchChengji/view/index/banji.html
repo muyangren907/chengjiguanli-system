@@ -78,8 +78,8 @@
 <script>
 	// 设置列
   	options.cols=[[ //表头
-    	{type:'numbers', title:'序号', fixed:true},
-      {field: 'id', title: '操作', toolbar: '#barDemo', minWidth:140},
+    	{type:'numbers', title:'序号', fixed:true, minWidth:10},
+      {field: 'id', title: '操作', toolbar: '#barDemo', minWidth:10, fixed:true},
     	{field: 'banji_id', title: '班级',sort: true, minWidth:140, fixed:true, templet:function(d){
         var str = d.banjiTitle;
         return str;
@@ -125,15 +125,15 @@
     //表头工具栏事件
     table.on('toolbar(mytable)', function(obj){
       switch(obj.event){
-       case 'dels':
+        case 'dels':
           break;
 	        var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
 	        cjgl.delAll(checkStatus,'/school','mytable');
 	        break;
-	        case 'add':
+	      case 'add':
 	        cjgl.add('添加单位','/school/create','650','500');
 	        break;
-	        case 'download':
+	      case 'download':
           layer.msg('看看就行啦 ^_^');
           break;
 	        cjgl.add('下载成绩','/chengji/bjtj/dwbiaoge/' + "{$list.teacher_id}",'650','300');
@@ -148,17 +148,17 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
         	case 'detail':// 查看
-          layer.msg('查看' + data.id);
-          break;
+            cjgl.addTab('查看学生成绩', '/teachersearchchengji/index/detail/' + data.id, true);
+            break;
         	case 'del':// 删除
-          cjgl.del(obj,"/school");
-          break;
+            cjgl.del(obj,"/school");
+            break;
         	case 'edit':// 编辑
-          cjgl.add('编辑单位','/school/edit','650','500');
-          break;
+            cjgl.add('编辑单位','/school/edit','650','500');
+            break;
         	case 'status':// 状态
-          cjgl.status(obj,"{:url('setstatus')}");
-          break;
+            cjgl.status(obj,"{:url('setstatus')}");
+            break;
         };
       });
 

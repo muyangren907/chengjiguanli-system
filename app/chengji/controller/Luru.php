@@ -43,6 +43,7 @@ class Luru extends AdminBase
                 ,'order' => 'desc'
                 ,'subject_id' => ''
                 ,'searchval'
+                ,'user_id' => session('admin.userid')
             ], 'POST');
 
         // 根据条件查询数据
