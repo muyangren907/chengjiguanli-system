@@ -37,6 +37,24 @@ class Index extends TeacherSearchBase
         $sysClass = \app\facade\System::sysClass();
         $temp = [
             [
+                'title' => '成绩采集'
+                ,'font' => '&#xe6c9;'
+                ,'authCid' => [
+                    [
+                        'title' => '扫码录入'
+                        ,'url' => '/teachersearchchengji/index/banji'
+                    ]
+                    ,[
+                        'title' => '表格录入'
+                        ,'url' => '/teachersearchchengji/index/banji'
+                    ]
+                    ,[
+                        'title' => '已录成绩'
+                        ,'url' => '/teachersearchchengji/index/banji'
+                    ]
+                ]
+            ]
+            ,[
                 'title' => '成绩查询'
                 ,'font' => '&#xe6c9;'
                 ,'authCid' => [
@@ -332,6 +350,25 @@ class Index extends TeacherSearchBase
 
         // 渲染模板
         return $this->view->fetch();
+    }
+
+
+
+    // 扫码录入
+    public function malu()
+    {
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle' => '扫码录成绩'
+            ,'butname' => '录入'
+            ,'formpost' => 'PUT'
+            ,'url' => '/chengji/malu'
+        );
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+        // 渲染
+        return $this->view->fetch('chengji@/luru/malu');
     }
 
 
