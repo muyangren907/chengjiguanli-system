@@ -75,7 +75,7 @@
             <div class="layui-field-box" style="width: 100%">
                 <table id="keti" lay-filter="keti" lay-size="sm" class="layui-table"></table>
             </div>
-        </fieldset>   
+        </fieldset>
     </div>
     <script>
         //config的设置是全局的
@@ -133,7 +133,7 @@
           var ry =table.render({
             elem: '#rongyu'
             ,method:"POST"   //数据接口
-            ,url: '/teacher/index/srcry' //数据接口
+            ,url: '/tools/teacherinfo/srcry' //数据接口
             ,where:{
               'teacher_id': "{$list.id}"
             }
@@ -195,7 +195,7 @@
           var kt =table.render({
             elem: '#keti'
             ,method:"POST"   //数据接口
-            ,url: '/teacher/index/srckt' //数据接口
+            ,url: '/tools/teacherinfo/srckt' //数据接口
             ,where:{
               'teacher_id': "{$list.id}"
             }

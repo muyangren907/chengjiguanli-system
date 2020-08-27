@@ -100,8 +100,17 @@
 	// 设置列
   options.cols=[[ //表头
 			{type:'checkbox', fixed: 'left'},
+      {field: 'danwei_id', title: '单位', sort: true,templet:function(d){
+        var str='';
+        if(d.jsDanwei)
+        {
+          str = d.jsDanwei.jiancheng;
+        }
+        return str;
+      }},
 			{field: 'xingming', title: '姓名',sort: true},
 			{field: 'sex', title: '性别',sort: true},
+      {field: 'phone', title: '手机号',sort: true},
 			{field: "shengri",title: '周岁',sort: true,templet:function(d){
 				return d.age;
 			}},
@@ -118,14 +127,6 @@
 				return d.gongling;
 			}},
 			{field: 'zhuanye', title: '专业', sort: true},
-			{field: 'danwei_id', title: '单位', sort: true,templet:function(d){
-				var str='';
-				if(d.jsDanwei)
-				{
-					str = d.jsDanwei.jiancheng;
-				}
-				return str;
-			}},
 			{field: 'status', title: '状态',templet:'#status', sort: true},
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
 		]];

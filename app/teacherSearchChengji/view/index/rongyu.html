@@ -11,46 +11,7 @@
 </span>
 {/block}
 {block name="search"}
-<div class="layui-form-item">
-  <label for="xueqi_id" class="layui-form-label" style="height: 100%">学期</label>
-  <div class="layui-input-block">
-    <input type="radio" name="xueqi_id" title="无" value="" lay-skin="primary" checked="checked">
-    {php} $category = categoryChildren(108);{/php}
-    {volist name="category" id="vo"}
-    <input type="radio" name="xueqi_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
-    {/volist}
-  </div>
-</div>
-<div class="layui-form-item">
-  <label for="category_id" class="layui-form-label" style="height: 100%">考试类型</label>
-  <div class="layui-input-block">
-    {php} $category = categoryChildren(109);{/php}
-    {volist name="category" id="vo"}
-    <input type="checkbox" name="category_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
-    {/volist}
-  </div>
-</div>
-<div class="layui-form-item">
-  <label for="subject_id" class="layui-form-label" style="height: 100%">学科</label>
-  <div class="layui-input-block">
-    {volist name="list.subject" id="vo"}
-    <input type="checkbox" name="subject_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
-    {/volist}
-  </div>
-</div>
-<div class="layui-form-item">
-  <div class="layui-inline">
-    <label for="title" class="layui-form-label">
-      考试时间
-    </label>
-    <div class="layui-input-inline">
-      <input type="text" class="layui-input" id="bfdate" name="bfdate" placeholder="起始：默认二年前的今天" value="{$list.data.bfdate|default=''}" autocomplete="off" lay-filter="riqi">
-    </div>
-    <div class="layui-input-inline">
-      <input type="text" class="layui-input" id="enddate" name="enddate" placeholder="结束：默认明天" value="{$list.data.enddate|default=''}" autocomplete="off" lay-filter="riqi">
-    </div>
-  </div>
-</div>
+
 <input type="hidden" name="teacher_id" value="{$list.teacher_id}">
 {/block}
 {block name="table"}
@@ -78,39 +39,58 @@
 <script>
 	// 设置列
   	options.cols=[[ //表头
-    	{type:'numbers', title:'序号', fixed:true, minWidth:10},
-      {field: 'id', title: '操作', toolbar: '#barDemo', minWidth:10, fixed:true},
-    	{field: 'banji_id', title: '班级',sort: true, minWidth:140, fixed:true, templet:function(d){
-        var str = d.banjiTitle;
-        return str;
-      }},
-      {field: 'kaoshi_id', title: '考试',sort: true, minWidth:200, fixed:true,templet:function(d){
-        var str='';
-        if(d.bjKaoshi )
-        {
-          str = d.bjKaoshi.title;
-        }
-        return str;
-      }},
-      {field: 'subject_id', title: '学科',sort: true, templet:function(d){
-        var str = '';
-        if(d.bjSubject)
-        {
-          str = d.bjSubject.title;
-        }
-        return str;
-      }},
-      {field: 'chengji_cnt', title: '人数',sort: true},
-      {field: 'avg', title: '平均分',sort: true},
-      {field: 'jige', title: '及格率%',sort: true},
-      {field: 'youxiu', title: '优秀率%',sort: true},
-      {field: 'biaozhuncha', title: '标准差',sort: true},
-      {field: 'max', title: '最高分',sort: true},
-      {field: 'min', title: '最低分',sort: true},
-      {field: 'zhongweishu', title: '中位数',sort: true},
-      {field: 'zhongshu', title: '众数',sort: true},
-    ]
+    	{type:'numbers',sort:true,width:50,title:'序号'}
+      ,{field: 'title',sort:true, title: '荣誉标题', minWidth:250}
+      ,{field: 'rongyuce_id',title: '所属荣誉册',sort:true,width:250,templet:function(d){
+            var str='';
+            if(d.ryTuce)
+            {
+                str = d.ryTuce.title;
+            }
+            return str;
+        }}
+      ,{title: '获奖人',templet:function(d){
+            var str='';
+            if(d.hjJsry)
+            {
+                for (var k = 0, length = d.hjJsry.length; k < length; k++) {
+                    if(k == 0){
+                        str = d.hjJsry[k].teacher.xingming;
+                    }else{
+                        str =str+'、'+d.hjJsry[k].teacher.xingming;
+                    }
+                }
+            }
+            return str;
+        }}
+      ,{title: '级别',width:100,templet:function(d){
+            var str='';
+            if(d.ryTuce)
+            {
+                str = d.ryTuce.fzSchool.dwJibie.title;
+            }
+            return str;
+        }}
+      ,{field: 'jiangxiang_id',title: '奖项',sort:true,width:100,templet:function(d){
+            var str='';
+            if(d.jxCategory)
+            {
+                str = d.jxCategory.title;
+            }
+            return str;
+        }}
+      ,{field: 'hjshijian',sort:true,width:120, title: '获奖时间'}
+      ,{title: '发证单位', minWidth: 177,templet:function(d){
+            var str='';
+            if(d.ryTuce)
+            {
+                str = d.ryTuce.fzSchool.title;
+            }
+            return str;
+        }}
+      ]
     ];
+
 
   // 提交搜索条件后重载表格
   layui.use(['table','cjgl','laydate'],function(){

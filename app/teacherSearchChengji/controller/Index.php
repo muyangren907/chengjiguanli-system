@@ -44,10 +44,6 @@ class Index extends TeacherSearchBase
                         'title' => '班级成绩'
                         ,'url' => '/teachersearchchengji/index/banji'
                     ]
-                    , [
-                        'title' => '学生成绩'
-                        ,'url' => '/teachersearchchengji/index/databanji'
-                    ]
                 ]
             ]
         ];
@@ -60,8 +56,8 @@ class Index extends TeacherSearchBase
                 ,'font' => '&#xe6e4;'
                 ,'authCid' => [
                     [
-                        'title' => '荣誉查询一'
-                        ,'url' => ''
+                        'title' => '个人荣誉'
+                        ,'url' => '/teachersearchchengji/index/rongyu'
                     ]
                 ]
             ];
@@ -74,8 +70,8 @@ class Index extends TeacherSearchBase
                 ,'font' => '&#xe6b3;'
                 ,'authCid' => [
                     [
-                        'title' => '课题查询一'
-                        ,'url' => ''
+                        'title' => '个人课题'
+                        ,'url' => '/teachersearchchengji/index/keti'
                     ]
                 ]
             ];
@@ -273,7 +269,7 @@ class Index extends TeacherSearchBase
             ->find();
 
         // 设置要给模板赋值的信息
-        $list['webtitle'] = $list->banjiTitle . '学生成绩';
+        $list['webtitle'] = $list->banjiTitle . $list->bjSubject->title . '成绩';
         $list['dataurl'] = '/teachersearchchengji/index/detaildata';
 
         // 模板赋值
@@ -305,4 +301,38 @@ class Index extends TeacherSearchBase
 
         return json($data);
     }
+
+
+    // 查看班级成绩
+    public function rongyu()
+    {
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = '个人荣誉';
+        $list['dataurl'] = '/tools/teacherinfo/srcry';
+        $list['teacher_id'] = session('teacher.userid');
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+
+        // 渲染模板
+        return $this->view->fetch();
+    }
+
+
+    // 查看班级成绩
+    public function keti()
+    {
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = '个人课题';
+        $list['dataurl'] = '/tools/teacherinfo/srckt';
+        $list['teacher_id'] = session('teacher.userid');
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+
+        // 渲染模板
+        return $this->view->fetch();
+    }
+
+
 }

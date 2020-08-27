@@ -64,6 +64,7 @@ class Index extends AdminBase
                 ,'biye'
                 ,'zhuanye'
                 ,'status'
+                ,'phone'
                 ,'update_time'
             ]);
 
@@ -455,7 +456,7 @@ class Index extends AdminBase
 
 
     // 查询教师荣誉
-    public function srcRy($teacher_id)
+    public function srcRy()
     {
         // 获取参数
         $src = $this->request

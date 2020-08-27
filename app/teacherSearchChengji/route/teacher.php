@@ -22,4 +22,7 @@ Route::group('index', function () {
 
     Route::rule('detail/<bjtj_id>','Index/detail','get');			# 信息列表
     Route::rule('detaildata','Index/ajaxDataDetail','post');		# 信息列表
+
+    Route::rule('rongyu','Index/rongyu','get');           # 信息列表
+    Route::rule('keti','Index/keti','get');           # 信息列表
 });

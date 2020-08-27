@@ -35,3 +35,10 @@ Route::group('onestudentchengji', function () {
     Route::rule('xkwz','OneStudentChengji/ajaxSubjectWeiZhi','post');    # 上传文件
     Route::rule('xkold','OneStudentChengji/ajaxOldSubject','post');    # 上传文件
 });
+
+
+// 查询老师荣誉和课题
+Route::group('teacherinfo', function () {
+    Route::rule('srcry','TeacherInfo/srcRy','post');    # 获取荣誉数据
+    Route::rule('srckt','TeacherInfo/srcKt','post');    # 获取课题数据
+});
