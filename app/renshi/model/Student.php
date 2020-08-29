@@ -48,6 +48,16 @@ class Student extends BaseModel
             ,'1' => '男'
             ,'2' => '保密'
         ];
+
+        $str = '';
+        if(isset($sex[$value]))
+        {
+            $str = $sex[$value];
+        }else{
+            $str = '未知';
+        }
+        return $str;
+
         return $sex[$value];
     }
 
@@ -58,8 +68,17 @@ class Student extends BaseModel
         $sex = [
             '0' => '不参加'
             ,'1' => '参加'
-            ,'2' => '未知'
         ];
+
+        $str = '';
+        if(isset($sex[$value]))
+        {
+            $str = $sex[$value];
+        }else{
+            $str = '未知';
+        }
+        return $str;
+
         return $sex[$value];
     }
 

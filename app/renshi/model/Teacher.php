@@ -294,16 +294,30 @@ class Teacher extends BaseModel
     // 性别获取器
     public function getSexAttr($value)
     {
-        $sex = array('0' => '女', '1' => '男', '2' => '未知');
-        return $sex[$value];
+        $sex = array('0' => '女', '1' => '男');
+        $str = '';
+        if(isset($sex[$value]))
+        {
+            $str = $sex[$value];
+        }else{
+            $str = '未知';
+        }
+        return $str;
     }
 
 
     // 退休获取器
     public function getTuixiuAttr($value)
     {
-        $sex = array('0' => '否', '1' => '是', '2' => '未知');
-        return $sex[$value];
+        $sex = array('0' => '否', '1' => '是');
+        $str = '';
+        if(isset($sex[$value]))
+        {
+            $str = $sex[$value];
+        }else{
+            $str = '未知';
+        }
+        return $str;
     }
 
 
