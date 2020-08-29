@@ -125,6 +125,16 @@ class Index extends TeacherSearchBase
 
         $list['xingming'] = TCH::where('phone', $list['username'])->value('xingming');
         $list['version'] = config('shangma.version');
+
+        $ry = new \app\rongyu\model\JsRongyuCanyu;
+        $list['rongyu'] = $ry->where('teacher_id', session('teacher.userid'))->count();
+
+        $kt = new \app\keti\model\KetiCanyu;
+        $list['keti'] = $ry->where('teacher_id', session('teacher.userid'))->count();
+
+
+
+
         $list['kaoshi'] = 1;
         $list['teacher'] = 1;
         $list['student'] = 1;
@@ -251,6 +261,8 @@ class Index extends TeacherSearchBase
             ->only([
                 'page' => '1'
                 ,'limit' => '10'
+                ,'field' => 'update_time'
+                ,'order' => 'desc'
                 ,'teacher_id' => ''
                 ,'xueqi_id' => ''
                 ,'category_id' => array() # 考试类型
@@ -306,6 +318,8 @@ class Index extends TeacherSearchBase
             ->only([
                 'page' => '1'
                 ,'limit' => '10'
+                ,'field' => 'update_time'
+                ,'order' => 'desc'
                 ,'kaoshi_id' => ''
                 ,'banji_id' => ''
                 ,'subject_id' => array()

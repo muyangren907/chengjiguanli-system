@@ -6,8 +6,6 @@ namespace app\tools\controller;
 // 引用控制器基类
 use app\BaseController;
 // 引用学生数据模型类
-// use \app\student\model\Student as STU;
-// 引用学生数据模型类
 use \app\tools\model\OneStudentChengji as STUCJ;
 
 
