@@ -38,7 +38,7 @@ class Index extends TeacherSearchBase
         $temp = [
             [
                 'title' => '成绩采集'
-                ,'font' => '&#xe6c9;'
+                ,'font' => '&#xe709;'
                 ,'authCid' => [
                     [
                         'title' => '扫码录入'
@@ -318,7 +318,7 @@ class Index extends TeacherSearchBase
             ->only([
                 'page' => '1'
                 ,'limit' => '10'
-                ,'field' => 'update_time'
+                ,'field' => 'id'
                 ,'order' => 'desc'
                 ,'kaoshi_id' => ''
                 ,'banji_id' => ''
