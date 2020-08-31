@@ -10,10 +10,9 @@ use app\teach\model\Subject;
 
 class Index extends BaseControllerr
 {
-    // 初始化控制器
-    function initialize()
+    protected function initialize()
     {
-    	
+        deump('初始化');
     }
 
     // 成绩列表
@@ -21,7 +20,7 @@ class Index extends BaseControllerr
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = '已录列表';
-        $list['dataurl'] = '/chengji/luru/data';
+        $list['dataurl'] = '/luru/index/data';
         $list['status'] = '/chengji/index/status';
 
         // 获取学科列表
@@ -70,7 +69,7 @@ class Index extends BaseControllerr
             'webtitle' => '扫码录成绩'
             ,'butname' => '录入'
             ,'formpost' => 'PUT'
-            ,'url' => '/chengji/malu'
+            ,'url' => '/luru/index/malu'
         );
 
         // 模板赋值

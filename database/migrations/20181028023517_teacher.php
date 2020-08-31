@@ -47,7 +47,7 @@ class Teacher extends Migrator
             ->addColumn('quanpin','string',['limit'=>30,'default'=>'a','null'=>false,'comment'=>'全拼'])
             ->addColumn('shoupin','string',['limit'=>5,'default'=>'a','null'=>false,'comment'=>'简拼'])
             ->addColumn('tuixiu','boolean',['limit'=>1,'default'=>0,'null'=>false,'comment'=>'是否已经退休'])
-            ->addColumn('phone','string',['limit'=>11,'null'=>true,'comment'=>'手机号'])
+            ->addColumn('phone','string',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'手机号'])
             ->addColumn('status','boolean',['limit'=>1,'default'=>true,'null'=>false,'comment'=>'状态'])
             ->addColumn('password','string',['limit'=>137,'null'=>false,'default'=>'$apr1$RSUodBwI$zOhVq9RQWfQDOW2sbeCDS1','comment'=>'登录密码'])
             ->addColumn('denglucishu','integer',['limit'=>5,'default'=>0,'null'=>false,'comment'=>'登录次数'])

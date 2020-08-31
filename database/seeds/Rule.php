@@ -29,55 +29,55 @@ class Rule extends Seeder
             ],
             ['id' => 101
                 ,'title' => '扫码录入'
-                ,'name' => 'chengji/luru/malu'
+                ,'name' => 'luru/index/malu'
                 ,'paixu' => 1
                 ,'ismenu'  => 1
                 ,'pid'  => 1
-                ,'url' => '/chengji/luru/malu'
+                ,'url' => '/luru/index/malu'
             ],
                 ['id' => 10101
                     ,'title' => '扫码查询'
-                    ,'name' => 'chengji/Luru/read'
+                    ,'name' => '/luru/index/read'
                     ,'paixu'  => 1
                     ,'pid' => 101
                 ]
                 ,['id' => 10102
                     ,'title' => '扫码保存'
-                    ,'name' => 'chengji/luru/malusave'
+                    ,'name' => '/luru/index/malusave'
                     ,'paixu'  => 2
                     ,'pid' => 101
                 ],
             ['id' => 102
                 ,'title' => '表格录入'
-                ,'name' => 'chengji/luru/biaolu'
+                ,'name' => '/luru/index/biaolu'
                 ,'paixu' => 2
                 ,'ismenu'  => 1
                 ,'pid'  => 1
-                ,'url' => '/chengji/luru/biaolu'
+                ,'url' => '/luru/index/biaolu'
             ],
                 ['id' => 10201
                     ,'title' => '表格保存'
-                    ,'name' => 'chengji/luru/saveall'
+                    ,'name' => '/luru/index/saveall'
                     ,'paixu'  => 1
                     ,'pid' => 102
                 ],
                 ['id' => 10202
                     ,'title' => '表格上传'
-                    ,'name' => 'chengji/luru/upload'
+                    ,'name' => '/luru/index/upload'
                     ,'paixu'  => 2
                     ,'pid' => 102
                 ],
             ['id' => 103
                 ,'title' => '已录列表'
-                ,'name' => 'chengji/luru/index'
+                ,'name' => '/luru/index/index'
                 ,'paixu' => 2
                 ,'ismenu'  => 1
                 ,'pid'  => 1
-                ,'url' => '/chengji/luru/index'
+                ,'url' => '/luru/index/index'
             ],
                 ['id' => 10301
                     ,'title' => '成绩更新'
-                    ,'name' => 'chengji/luru/update'
+                    ,'name' => '/luru/index/update'
                     ,'paixu'  => 1
                     ,'pid' => 103
                 ],
@@ -606,6 +606,12 @@ class Rule extends Seeder
                     ,'title' => '查看成绩'
                     ,'name' => 'student/chengji/index'
                     ,'paixu' => 14
+                    ,'pid' => 401
+                ],
+                ['id' => 40115
+                    ,'title' => '重置密码'
+                    ,'name' => 'student/index/resetpassword'
+                    ,'paixu' => 15
                     ,'pid' => 401
                 ],
                         // 师生名单
@@ -1597,6 +1603,12 @@ class Rule extends Seeder
                         ,'title' => '表格模板下载'
                         ,'name' => 'teacher/index/downloadxls'
                         ,'paixu' => 11
+                        ,'pid' => 1001
+                    ],
+                    ['id' => 100112
+                        ,'title' => '重置密码'
+                        ,'name' => 'teacher/index/resetpassword'
+                        ,'paixu' => 7
                         ,'pid' => 1001
                     ],
                 ['id' => 1002

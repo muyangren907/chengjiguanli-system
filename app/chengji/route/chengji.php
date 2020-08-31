@@ -78,18 +78,3 @@ Route::group('schtj', function () {
     Route::rule('tongji','Schtongji/tongji','post');		# 统计各年级成绩
     Route::rule('schorder','Schtongji/schOrder','post');		# 统计各班级成绩
 });
-
-
-// 录入
-Route::group('luru', function () {
-    Route::rule('malu', 'Luru/malu', 'get');			# 扫码界面
-    Route::rule('malusave', 'Luru/malusave', 'put');		# 扫码保存
-    Route::rule('read', 'Luru/read', 'post');		# 扫码后读取成绩
-    Route::rule('biaolu', 'Luru/biaolu', 'get');					# 表格录入界面
-    Route::rule('saveall', 'Luru/saveAll', 'post');				# 保存表格录入信息
-    Route::rule('edit/<id>', 'Luru/edit', 'get');				# 修改信息
-    Route::rule('update/<id>', 'Luru/update', 'put');				# 更新信息
-    Route::rule('index', 'Luru/index', 'get');			# 成绩获取
-    Route::rule('data', 'Luru/ajaxData', 'post');			# 成绩获取
-});
-

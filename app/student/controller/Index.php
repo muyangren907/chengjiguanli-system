@@ -604,4 +604,24 @@ class Index extends AdminBase
                     ->select();
         return json($list);
     }
+
+
+    // 重置密码
+    public function resetpassword($id)
+    {
+        // 生成密码
+        $md5 = new \WhiteHat101\Crypt\APR1_MD5;
+        $password = $md5->hash('123456');
+
+        // 查询用户信息
+        $data = STU::where('id', $id)->update(['password' => $password]);
+        // 根据更新结果设置返回提示信息
+        $data ? $data = ['msg' => '密码已经重置为:<br>123456', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
 }
