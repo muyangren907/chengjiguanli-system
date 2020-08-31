@@ -60,8 +60,6 @@ class Student extends BaseModel
             $str = '未知';
         }
         return $str;
-
-        return $sex[$value];
     }
 
 
@@ -81,8 +79,6 @@ class Student extends BaseModel
             $str = '未知';
         }
         return $str;
-
-        return $sex[$value];
     }
 
 

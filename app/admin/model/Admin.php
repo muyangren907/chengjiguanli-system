@@ -112,7 +112,15 @@ class Admin extends BaseModel
             ,'1' => '男'
             ,'2' => '保密'
         ];
-        return $sex[$value];
+
+        $str = '';
+        if(isset($sex[$value]))
+        {
+            $str = $sex[$value];
+        }else{
+            $str = '未知';
+        }
+        return $str;
     }
 
 
