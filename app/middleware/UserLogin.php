@@ -18,7 +18,7 @@ class UserLogin
         $isajax = $request->isAjax();
         if ($category != 'admin')
         {
-            
+
             \app\facade\OnLine::jump('/login', '请使用管理员帐号登录');
         }
 

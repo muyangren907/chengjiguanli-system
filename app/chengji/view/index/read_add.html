@@ -47,9 +47,9 @@
         var str='';
         if(d.userName)
         {
-          if(d.userName.adSchool)
+          if(d.userName.jsDanwei)
           {
-            str = d.userName.adSchool.jiancheng + '　' + d.userName.xingming;
+            str = d.userName.jsDanwei.jiancheng + '　' + d.userName.xingming;
           }
         }
         return str;
@@ -62,7 +62,7 @@
   options.where = {
     kaohao:"{$list.kaohao}"
   }
-	
+
 
 	// 提交搜索条件后重载表格
     layui.use(['table','cjgl'],function(){
@@ -97,7 +97,7 @@
       		,colname = obj.field
       		,rowdata = obj.data;
 
-      	// 修改服务器数据 
+      	// 修改服务器数据
         $.ajax({
                 url:"/chengji/"+rowdata.id,
                 type:'PUT',
@@ -117,7 +117,7 @@
                     layer.msg('数据扔半道啦。',function(){});
                 },
             });
-      }) 
+      })
     });
 </script>
 {/block}

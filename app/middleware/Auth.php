@@ -20,7 +20,6 @@ class Auth
      */
     public function handle($request, \Closure $next)
     {
-
         $admins = Config::get('auth.auth_config.administrator');
         // 如果当前用户ID在配置排除的列表中，愚昧取消验证
         if(in_array(session('admin.userid'),$admins)){

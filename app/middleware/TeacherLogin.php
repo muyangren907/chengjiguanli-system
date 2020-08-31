@@ -15,40 +15,22 @@ class TeacherLogin
      */
     public function handle($request, \Closure $next)
     {
-        // 尝试从session中获取用户名和密码
-        $username = session('?teacher.username') ? $username = session('teacher.username') : $username = '';
-        $password = session('?teacher.password') ? $password = session('teacher.password') : $password = '';
-        // 尝试从cookie中获取用户名和密码
-        if (strlen($username)<1 )
-        {
-            $username = cookie('?username') ? $username = cookie('username') : $username = '';
-            $password = cookie('?password') ? $password = cookie('password') : $password = '';
-        }
-
+        $category = session('onlineCategory');
         $isajax = $request->isAjax();
-
-        // 如果没有获取到用户名和密码，则跳转到登录页面
-        if(strlen($username)<1)
+        if ($category != 'teacher')
         {
-            if($isajax)
-            {
-                $this->error('很长时间没有操作，登录超时啦~');
-            }else{
-                echo "<script language='javascript' type='text/javascript'>top.location.href='/login/teacher'</script>";
-            }
+
+            \app\facade\OnLine::jump('/login/teacher', '请使用教师帐号登录');
         }
+
+        $userInfo = \app\facade\OnLine::getLoginInfo('teacher');
 
         // 检验用户名或密码是否正确
         $yz = new \app\login\controller\Teacher;
-        $yz = $yz->check($username,$password);
-        if($yz['status'] == 0){
-            if($isajax)
-            {
-                $this->error('密码刚才修改过了，请重新登录~','/login/err');
-            }else{
-                echo "<script language='javascript' type='text/javascript'>top.location.href='/login/teacher'</script>";
-            }
+        $yz = $yz->check($userInfo['username'],$userInfo['password']);
 
+        if($yz['status'] == 0){
+            \app\facade\OnLine::jump('/login/teacher', '请使用新密码登录');
         }
 
         return $next($request);

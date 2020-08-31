@@ -267,6 +267,15 @@ class Category extends Seeder
                 ['id' => 12004,'title' => '学校排序','p_id' => 120,'paixu' => 4,'isupdate' => 0],
                 ['id' => 12005,'title' => '区统计','p_id' => 120,'paixu' => 5,'isupdate' => 0],
                 ['id' => 12006,'title' => '区排序','p_id' => 120,'paixu' => 6,'isupdate' => 0],
+            ['id' => 121
+                ,'title' => '成绩录入用户类型'
+                ,'p_id' => 0
+                ,'paixu' => 21
+                ,'isupdate' => 0
+            ],
+                //  课题或荣誉角色
+                ['id' => 12101,'title' => '班级统计','p_id' => 121,'paixu' => 1,'isupdate' => 0],
+                ['id' => 12102,'title' => '班级排序','p_id' => 121,'paixu' => 2,'isupdate' => 0],
         ];
         // 保存数据
         $this->table('category')->insert($rows)->save();

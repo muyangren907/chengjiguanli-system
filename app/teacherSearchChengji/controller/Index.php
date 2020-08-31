@@ -42,15 +42,15 @@ class Index extends TeacherSearchBase
                 ,'authCid' => [
                     [
                         'title' => '扫码录入'
-                        ,'url' => '/teachersearchchengji/index/banji'
+                        ,'url' => '/luru/index/malu'
                     ]
                     ,[
                         'title' => '表格录入'
-                        ,'url' => '/teachersearchchengji/index/banji'
+                        ,'url' => '/luru/index/biaolu'
                     ]
                     ,[
                         'title' => '已录成绩'
-                        ,'url' => '/teachersearchchengji/index/banji'
+                        ,'url' => '/luru/index/index'
                     ]
                 ]
             ]

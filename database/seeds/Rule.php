@@ -37,19 +37,19 @@ class Rule extends Seeder
             ],
                 ['id' => 10101
                     ,'title' => '扫码查询'
-                    ,'name' => '/luru/index/read'
+                    ,'name' => 'luru/index/read'
                     ,'paixu'  => 1
                     ,'pid' => 101
                 ]
                 ,['id' => 10102
                     ,'title' => '扫码保存'
-                    ,'name' => '/luru/index/malusave'
+                    ,'name' => 'luru/index/malusave'
                     ,'paixu'  => 2
                     ,'pid' => 101
                 ],
             ['id' => 102
                 ,'title' => '表格录入'
-                ,'name' => '/luru/index/biaolu'
+                ,'name' => 'luru/index/biaolu'
                 ,'paixu' => 2
                 ,'ismenu'  => 1
                 ,'pid'  => 1
@@ -57,19 +57,19 @@ class Rule extends Seeder
             ],
                 ['id' => 10201
                     ,'title' => '表格保存'
-                    ,'name' => '/luru/index/saveall'
+                    ,'name' => 'luru/index/saveall'
                     ,'paixu'  => 1
                     ,'pid' => 102
                 ],
                 ['id' => 10202
                     ,'title' => '表格上传'
-                    ,'name' => '/luru/index/upload'
+                    ,'name' => 'luru/index/upload'
                     ,'paixu'  => 2
                     ,'pid' => 102
                 ],
             ['id' => 103
                 ,'title' => '已录列表'
-                ,'name' => '/luru/index/index'
+                ,'name' => 'luru/index/index'
                 ,'paixu' => 2
                 ,'ismenu'  => 1
                 ,'pid'  => 1

@@ -2,17 +2,39 @@
 declare (strict_types = 1);
 
 // 引用控制器基类
-namespace app\BaseControllerr;
+namespace app\luru\controller;
 
 // 引用控制器基类
+use app\BaseController;
 use app\chengji\model\Chengji;
 use app\teach\model\Subject;
 
-class Index extends BaseControllerr
+
+class Index extends BaseController
 {
+    protected $middleware = [];
+
+    protected $userid = '';
+
     protected function initialize()
     {
-        deump('初始化');
+        $online = session('onlineCategory');
+        if($online == 'teacher')
+        {
+            $this->middleware = [
+                'online'
+                ,'terlogin'
+            ];
+            $this->userid = session('teacher.userid');
+
+        }else{
+            $this->middleware = [
+                'online'
+                ,'login'
+                ,'auth'
+            ];
+            $this->userid = $this->userid;
+        }
     }
 
     // 成绩列表
@@ -49,7 +71,7 @@ class Index extends BaseControllerr
                 ,'order' => 'desc'
                 ,'subject_id' => ''
                 ,'searchval'
-                ,'user_id' => session('admin.userid')
+                ,'teacher_id' => $this->userid
             ], 'POST');
 
         // 根据条件查询数据
@@ -138,7 +160,7 @@ class Index extends BaseControllerr
             $data = [
                 'kaohao_id' => $list['kaohao_id']
                 ,'subject_id' => $list['subject_id']
-                ,'user_id' => session('admin.userid')
+                ,'teacher_id' => $this->userid
                 ,'defen' => $list['defen']
                 ,'defenlv' => $list['defen'] / $manfen * 100
             ];
@@ -212,13 +234,13 @@ class Index extends BaseControllerr
 
             $cjone->defen = $list['newdefen'];
             $cjone->defenlv = $list['newdefen'] / $manfen * 100;
-            $cjone->user_id = session('admin.userid');
+            $cjone->teacher_id = $this->userid;
             $data = $cjone->save();
         } else {
             $data = [
                 'kaohao_id' => $list['kaohao_id']
                 ,'subject_id' => $subject_id
-                ,'user_id' => session('admin.userid')
+                ,'teacher_id' => $this->userid
                 ,'defen' => $list['newdefen']
                 ,'defenlv' => $list['newdefen'] / $manfen * 100
             ];
@@ -241,6 +263,12 @@ class Index extends BaseControllerr
         $val = input('post.val');
         // 实例化系统设置类
         $val = \app\facade\Tools::decrypt($val, 'dlbz');
+        $yz = strstr($val, '|');
+        if($yz == false)
+        {
+            $cjlist = array();
+            return json($cjlist);
+        }
         $list = explode('|', $val);
         $id = $list[0];
         $subject_id = $list[1];
@@ -326,7 +354,7 @@ class Index extends BaseControllerr
             }
         }
 
-        $user_id = session('admin.userid');   # 获取用户id
+        $user_id = $this->userid;   # 获取用户id
         $data = array();
 
         // 重新组合数组
@@ -362,7 +390,7 @@ class Index extends BaseControllerr
                         $cjone->restore();
                         $cjone->defen = $defen;
                         $cjone->defenlv = $defen / $manfen * 100;
-                        $cjone->user_id = $user_id;
+                        $cjone->teacher_id = $user_id;
                         $cjone->save();
                     }
                 } else {
@@ -370,7 +398,7 @@ class Index extends BaseControllerr
                     $data = [
                         'kaohao_id' => $val[1]
                         ,'subject_id' => $value['id']
-                        ,'user_id' => $user_id
+                        ,'teacher_id' => $user_id
                         ,'defen' => $defen
                         ,'defenlv' => $defen / $manfen * 100
                     ];

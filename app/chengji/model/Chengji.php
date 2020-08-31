@@ -18,7 +18,7 @@ class Chengji extends BaseModel
     // 学科关联
     public function userName()
     {
-        return $this->belongsTo('\app\admin\model\Admin','user_id','id');
+        return $this->belongsTo('\app\teacher\model\Teacher','teacher_id','id');
     }
 
 
