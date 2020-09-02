@@ -47,6 +47,7 @@ class Fields extends AdminBase
             ->visible([
                 'id'
                 ,'flCategory'=>['title']
+                ,'flTeacher'=>['xingming']
                 ,'oldname'
                 ,'fieldsize'
                 ,'flTeacher'=>['xingming']

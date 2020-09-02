@@ -40,7 +40,7 @@ class Fields extends Migrator
             ->addColumn('extension','string',['limit'=>100,'default'=>'.a','null'=>false,'comment'=>'文件扩展名'])
             ->addColumn('fieldsize','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'文件大小'])
             ->addColumn('hash','string',['limit'=>100,'default'=>'a','null'=>false,'comment'=>'散列值'])
-            ->addColumn('user_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'用户ID'])
+            ->addColumn('teacher_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'用户ID'])
             ->addColumn('url','string',['limit'=>100,'null'=>true,'comment'=>'文件储存位置'])
             ->addColumn('create_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'更新时间'])
