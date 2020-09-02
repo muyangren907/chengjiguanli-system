@@ -77,7 +77,7 @@ class Rule extends Seeder
             ],
                 ['id' => 10301
                     ,'title' => '成绩更新'
-                    ,'name' => '/luru/index/update'
+                    ,'name' => 'luru/index/update'
                     ,'paixu'  => 1
                     ,'pid' => 103
                 ],
