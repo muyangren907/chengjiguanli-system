@@ -17,7 +17,7 @@ Route::group('', function () {
 		Route::rule('','Index/yanzheng','post');
 		Route::rule('log','Index/shangmaLog','get');		# 配置更新
 		Route::rule('err','Index/myerror','get');			//错误页
-
+		Route::rule('weihu','Index/weihu','get');			//错误页
 });
 
 // 学生查询成绩登录

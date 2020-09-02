@@ -30,7 +30,6 @@ class Index extends AdminBase
     }
 
 
-
     public function welcome()
     {
 
@@ -104,5 +103,4 @@ class Index extends AdminBase
         // 渲染输出
         return $view->fetch('welcome');
     }
-
 }

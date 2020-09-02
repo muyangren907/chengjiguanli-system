@@ -13,8 +13,6 @@ use think\facade\View;
 use app\login\validate\Yanzheng;
 // 引用验证类
 use think\exception\ValidateException;
-// 引用配置类
-use think\facade\Config;
 
 
 class Index
@@ -31,8 +29,8 @@ class Index
         session(null);
 
         // 获取系统名称和版本号
-        $list['webtitle'] = Config::get('shangma.webtitle');
-        $list['version'] = Config::get('shangma.version');
+        $list['webtitle'] = config('shangma.webtitle');
+        $list['version'] = config('shangma.version');
         $list['mobile'] = $mobile;
 
         View::assign('list',$list);
@@ -152,14 +150,29 @@ class Index
     // 错误页面
     public function myerror()
     {
-        
         // 获取系统名称和版本号
-        $list['webtitle'] = Config::get('shangma.webtitle');
-        $list['version'] = Config::get('shangma.version');
+        $list['webtitle'] = config('shangma.webtitle');
+        $list['version'] = config('shangma.version');
 
         View::assign('list',$list);
 
         // 渲染输出
+        return View::fetch();
+    }
+
+
+    // 系统维护
+    public function weihu()
+    {
+        // 获取系统名称和版本号
+        $list = [
+            'shijian' => config('shangma.shijian')
+            ,'shichang' => config('shangma.shichang')
+            ,'webtitle' => '系统维护中'
+            ,'version' => config('shangma.version')
+        ];
+
+        View::assign('list',$list);
         return View::fetch();
     }
     
