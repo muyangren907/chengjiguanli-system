@@ -40,11 +40,11 @@ class Fields extends BaseModel
                     $query->where('oldname', 'like', '%' . $src['searchval'] . '%');
                 })
             ->with([
-                'flUser' => function($query){
+                'flTeacher' => function($query){
                     $query
-                    ->field('id, xingming, school_id')
+                    ->field('id, xingming, danwei_id')
                         ->with([
-                            'adSchool' => function($q){
+                            'jsDanwei' => function($q){
                                 $q->field('id, jiancheng');
                             }
                         ]);
@@ -62,9 +62,9 @@ class Fields extends BaseModel
 
 
     // 上传人数据关联
-    public function  flUser()
+    public function  flTeacher()
     {
-        return $this->belongsTo('\app\admin\model\Admin', 'user_id', 'id');
+        return $this->belongsTo('\app\teacher\model\Teacher', 'teacher_id', 'id');
     }
 
 

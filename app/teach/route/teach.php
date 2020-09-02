@@ -35,6 +35,8 @@ Route::group('banji', function () {
 	    Route::rule('mybanji','banji/mybanji','post');		# 删除信息
 	    Route::rule('mybanjis','banji/banjiList','post');		# 删除信息
         Route::rule('alias','banji/setAlias','put');       # 删除信息
+        Route::rule('banzhuren/<id>','banji/banzhuren','get');				# 修改信息
+	    Route::rule('updatebanzhuren/<id>','banji/updatebanzhuren','put');			# 更新信息 
 	});
 
 

@@ -13,11 +13,12 @@ class Banji extends Validate
      * @var array
      */
 	protected $rule = [
-        'id|ID'         =>     'require:number',
+        'id|ID'         =>     'require|number',
         'school_id|学校'     =>      'require|number',
         'ruxuenian|年级'  =>      'require|number',
         'bjsum|班级数'    =>      'require|number',
-        'alias|别名' =>  'require'
+        'alias|别名' =>  'max:24',
+        'banzhuren|别名' =>  'number'
     ];
 
     /**
@@ -36,6 +37,11 @@ class Banji extends Validate
         ],
         'alias'  =>  [
             'id'
+            ,'alias'
+        ],
+        'banzhuren'  =>  [
+            'id'
+            ,'banzhuren'
         ],
     ];
 }

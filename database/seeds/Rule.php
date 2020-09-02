@@ -756,7 +756,19 @@ class Rule extends Seeder
                 ['id' => 500207
                     ,'title' => '设置别名'
                     ,'name' => 'teach/banji/setalias'
-                    ,'paixu' => 6
+                    ,'paixu' => 7
+                    ,'pid' => 502
+                ],
+                ['id' => 500208
+                    ,'title' => '编辑班主任'
+                    ,'name' => 'teach/banji/banzhuren'
+                    ,'paixu' => 8
+                    ,'pid' => 502
+                ],
+                ['id' => 500209
+                    ,'title' => '更新班主任'
+                    ,'name' => 'teach/banji/updatebanzhuren'
+                    ,'paixu' => 9
                     ,'pid' => 502
                 ],
             ['id' => 503

@@ -94,7 +94,7 @@ class KsCanYu extends BaseController
                 'kaoshi_id' => ''
                 ,'nianji' => ''
                 ,'field' => 'paixu'
-                ,'order' => 'desc'
+                ,'order' => 'asc'
                 ,'page' => 1
                 ,'limit' => 100
             ], 'POST');

@@ -51,6 +51,7 @@
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
 	<a class="layui-btn-xs" lay-event="detail" title="成绩"><i class="layui-icon layui-icon-chart-screen"></i></a>
+	<a class="layui-btn-xs" lay-event="banzhuren" title="设置班主任"><i class="layui-icon layui-icon-username"></i></a>
 	<a class="layui-btn-xs" lay-event="befo" title="前移"><i class="layui-icon">&#xe603;</i></a>
 	<a class="layui-btn-xs" lay-event="end" title="后移"><i class="layui-icon">&#xe602;</i></a>
 	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
@@ -62,14 +63,22 @@
 	{type:'checkbox', fixed: 'left'},
 	{field: 'id', title: 'ID', minWidth:100,sort: true},
 	{field: 'banjiTitle', title: '班级名称', minWidth:100,templet:function(d){
-    var str='';
-    if(d.grade && d.ban)
-    {
-      str = d.grade + d.ban;
-    }
-    return str;
-  }},
-  {field: 'alias', title: '别名', minWidth:60, edit:'text'},
+	    var str='';
+	    if(d.grade && d.ban)
+	    {
+	      str = d.grade + d.ban;
+	    }
+	    return str;
+	  }},
+	{field: 'alias', title: '别名', minWidth:60, edit:'text'},
+	{field: 'banzhuren', title: '班主任',sort: true, minWidth:60,templet:function(d){
+		var str='';
+		if(d.glTeacher)
+		{
+			str = d.glTeacher.xingming;
+		}
+		return str;
+	}},
 	{field: 'school', title: '单位名称',sort: true, minWidth:240,templet:function(d){
 		var str='';
 		if(d.glSchool)
@@ -82,7 +91,7 @@
 	{field: 'paixu', title: '排序', sort: true},
 	{field:"gl_student_count",title: '学生数',sort: true},
 	{field: 'status', title: '状态',templet:'#status', sort: true},
-	{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:160}
+	{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:180}
 	]];
 	// 设置查询条件
 	options.where = {
@@ -114,22 +123,25 @@
       	var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
       	var tr = obj.tr; //获得当前行 tr 的DOM对象
       	switch(layEvent){
-	        case 'detail':// 查看
+	      case 'detail':// 查看
             parent.xadmin.add_tab(obj.data.banjiTitle  +'－考试成绩','/teach/banjicj/index/'+obj.data.id,'','',true);
             break;
           case 'befo':// 前移
   	        yidong(this,'banji/yidong/'+data.id,-1);
   	        break;
-	        case 'end':// 后移
+	      case 'end':// 后移
   	        yidong(this,'banji/yidong/'+data.id,1);
   	        break;
-	        case 'del':// 删除
+	      case 'del':// 删除
             layer.msg('暂时不允许删除');
             break;
   	        cjgl.del(obj,"banji/delete");
-	          break;
-	        case 'edit':// 编辑
+	         break;
+	      case 'edit':// 编辑
   	        cjgl.add('编辑班级','banji/edit/'+obj.data.id,'600','300');
+  	        break;
+  	      case 'banzhuren':   //编辑
+  	        cjgl.add('设置班主任','banji/banzhuren/'+obj.data.id,'600','300');
   	        break;
        };
      });
@@ -140,7 +152,6 @@
       // 声明变量
       var value = obj.value
         ,rowdata = obj.data;
-      console.log(obj);
 
       // 修改服务器数据
       $.ajax({

@@ -68,7 +68,7 @@ class Auth
             'kaoshi/index/cysubject',    # 获取参加考试学科
             // Kaohao应用
             'kaohao/excel/biaoqianxls',    # 下载试卷标签
-            'kaohao/excel/dwcaiji',    # 下载成绩采集表
+            'luru/index/dwcaiji',    # 下载成绩采集表
             // Renshi应用
             'student/index/ajaxdataby',    # 获取毕业学生列表
             'student/index/ajaxdatadel',    # 获取删除学生列表

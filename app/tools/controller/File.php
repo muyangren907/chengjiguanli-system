@@ -13,6 +13,31 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class File extends BaseController
 {
+    
+    // 初始化变量
+    protected function initialize()
+    {
+        $online = session('onlineCategory');
+        if($online == 'teacher')
+        {
+            $this->middleware = [
+                'online'
+                ,'terlogin'
+            ];
+            $this->userid = session('teacher.userid');
+
+        }else{
+            $this->middleware = [
+                'online'
+                ,'login'
+                ,'auth'
+            ];
+            $ad = new \app\admin\model\Admin;
+            $adInfo = $ad->searchOne(session('admin.userid'));
+            $this->userid = $adInfo->teacher_id;
+        }
+    }
+
     /**
      * 获取文件信息并保存
      *
@@ -55,7 +80,7 @@ class File extends BaseController
                 ,strlen($savename) - strripos($savename
                 ,'\\'));
             $list['hash'] = $file->hash('sha1');
-            $list['user_id'] = session('admin.userid');
+            $list['teacher_id'] = $this->userid;
             $list['oldname'] = $file->getOriginalName();
             $list['fieldsize'] = $file->getSize();
             $list['category_id'] = $list['category_id'];

@@ -589,7 +589,6 @@ class Bjtongji extends AdminBase
     public function renkeEditTeacher($kaoshi_id)
     {
         $list['data']['kaoshi_id'] = $kaoshi_id;
-        $list['data']['subject_id'] = 'a';
         $sbj = new \app\teach\model\Subject;
         $list['data']['subject_id'] = $sbj->kaoshi();
         // halt($list);

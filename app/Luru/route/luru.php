@@ -21,5 +21,6 @@ Route::group('index', function () {
     Route::rule('update/<id>', 'Index/update', 'put');				# 更新信息
     Route::rule('index', 'Index/index', 'get');			# 成绩获取
     Route::rule('data', 'Index/ajaxData', 'post');			# 成绩获取
+    Route::rule('dwcaiji', 'Index/dwcaiji', 'post');  # 成绩采集下载
 });
 

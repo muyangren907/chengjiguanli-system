@@ -49,7 +49,7 @@ class Fields extends AdminBase
                 ,'flCategory'=>['title']
                 ,'oldname'
                 ,'fieldsize'
-                ,'flUser'=>['xingming']
+                ,'flTeacher'=>['xingming']
                 ,'bianjitime'
                 ,'update_time'
             ]);

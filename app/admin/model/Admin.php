@@ -63,6 +63,16 @@ class Admin extends BaseModel
     }
 
 
+    // 查询管理员资料
+    public function searchOne($id)
+    {
+        $adminInfo = $this->where('id', $id)
+            ->field('id, username, xingming, teacher_id')
+            ->find();
+        return $adminInfo;
+    }
+
+
     public function glGroup()
     {
         return $this->belongsToMany('AuthGroup', 'AuthGroupAccess', 'group_id', 'uid');

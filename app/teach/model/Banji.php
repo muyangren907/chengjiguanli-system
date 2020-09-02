@@ -20,6 +20,11 @@ class Banji extends BaseModel
         $src = array_cover($srcfrom, $src);
         $src['school_id'] = strToarray($src['school_id']);
         $src['ruxuenian'] = strToarray($src['ruxuenian']);
+        if(count($src['ruxuenian']) == 0)
+        {
+            $njname = $this->gradeName('num', time());     # 年级名对应表
+            $src['ruxuenian'] = array_values($njname);
+        }
 
         // 查询数据
         $data = $this
@@ -36,6 +41,9 @@ class Banji extends BaseModel
                 [
                     'glSchool'=>function($query){
                         $query->field('id, title, jiancheng');
+                    },
+                    'glTeacher'=>function($query){
+                        $query->field('id, xingming');
                     },
                 ]
             )
@@ -97,6 +105,12 @@ class Banji extends BaseModel
     }
 
 
+    // 学校关联模型
+    public function glTeacher(){
+        return $this->belongsTo('\app\teacher\model\Teacher', 'banzhuren', 'id');
+    }
+
+
     // 年级-班级关联表
     public function njBanji()
     {
@@ -108,7 +122,7 @@ class Banji extends BaseModel
     public function getNumTitleAttr()
     {
     	// 获取基础信息
-        $njname = $this->gradeName();     # 年级名对应表
+        $njname = $this->gradeName('str', time());     # 年级名对应表
     	$nj = $this->getAttr('ruxuenian');
     	$bj = $this->getAttr('paixu');
         $numnj = array_flip(array_keys($njname));
@@ -127,8 +141,7 @@ class Banji extends BaseModel
     // 班级名获取器
     public function getBanjiTitleAttr()
     {
-        $njlist = self::gradeName('str', time());
-        $title = $njlist[$this->getAttr('ruxuenian')] . self::getBanTitleAttr();
+        $title = self::getGradeAttr() . self::getBanTitleAttr();
         return $title;
     }
 
@@ -165,7 +178,12 @@ class Banji extends BaseModel
     public function getGradeAttr()
     {
         $njList = $this->gradeName('str', time());
-        $title = $njList[$this->getAttr('ruxuenian')];
+        if(isset($njList[$this->getAttr('ruxuenian')]))
+        {
+            $title = $njList[$this->getAttr('ruxuenian')];
+        }else{
+            $title = $this->getAttr('ruxuenian') . '界';
+        }
         return $title;
     }
 
