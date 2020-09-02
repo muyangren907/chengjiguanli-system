@@ -168,12 +168,6 @@ class Rule extends Seeder
                         ,'paixu' => 1
                         ,'pid' => 30201
                     ],
-                        ['id' => 302010101
-                            ,'title' => '考试设置'
-                            ,'name' => 'kaoshi/kaoshiset/index'
-                            ,'paixu' => 1
-                            ,'pid' => 3020101
-                        ],
                         ['id' => 302010102
                             ,'title' => '新建'
                             ,'name' => 'kaoshi/kaoshiset/create'

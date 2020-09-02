@@ -244,11 +244,13 @@ class Index extends AdminBase
         $id = request()->delete('id');
         $id = explode(',', $id);
 
-        foreach ($id as $key => $value) {
-            // 判断考试结束时间是否已过
-            $ksid = KH::where('id', $value)->value('kaoshi_id');
+        if(isset($id[0]))
+        {
+            $ksid = KH::where('id', $id[0])->value('kaoshi_id');
             event('kslu', $ksid);
             $data = KH::destroy($id);
+        }else{
+            $data = false;
         }
 
         // 根据更新结果设置返回提示信息
