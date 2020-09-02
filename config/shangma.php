@@ -9,7 +9,7 @@ return [
     // 版本号
     'webtitle'         => '码蚁成绩管理系统',
     'version'         => 'v1.3.5',
-    'weihu'         => true,
+    'weihu'         => false,
     'shijian'		=> '2020-9-2 11:54',
     'shichang'		=> '1',
 ];
