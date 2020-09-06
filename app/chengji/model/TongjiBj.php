@@ -397,6 +397,9 @@ class TongjiBj extends BaseModel
             $src['enddate'] = date("Y-m-d",strtotime("+1 day"));
         }
 
+        $bj = new \app\teach\model\Banji;
+        $bjList = $bj->where('banzhuren', $src['teacher_id'])->column('id');
+
         $data = $this->where('teacher_id', $src['teacher_id'])
                 ->where('subject_id', '<>', 0)
                 ->when(count($src['subject_id']) > 0, function ($query) use($src) {
@@ -416,6 +419,14 @@ class TongjiBj extends BaseModel
                             $q->where('category_id', 'in', $src['category_id']);
                         })
                         ->field('id');
+                })
+                ->when(count($bjList) > 0, function ($query) use($bjList) {
+                    $query->whereOr('id', 'in', function ($q) use($bjList) {
+                        $q->name('tongjiBj')
+                            ->where('banji_id', 'in', $bjList)
+                            ->where('subject_id', '<>', 0)
+                            ->field('id');
+                    });
                 })
                 ->with([
                     'bjSubject' => function ($query) {
