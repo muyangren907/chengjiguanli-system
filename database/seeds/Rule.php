@@ -164,7 +164,7 @@ class Rule extends Seeder
                 ],
                     ['id' => 3020101
                         ,'title' => '考试设置'
-                        ,'name' => 'zhanwei_3020101'
+                        ,'name' => 'kaoshi/kaoshiset/index'
                         ,'paixu' => 1
                         ,'pid' => 30201
                     ],

@@ -20,17 +20,17 @@ class KaoshiSet extends BaseModel
     	// 初始化参数
         $src = array(
             'kaoshi_id' => '0'
-            ,'nianji' => array()
+            ,'ruxuenian' => array()
             ,'subject_id' => array()
             ,'searchval' => ''
         );
         $src = array_cover($srcfrom, $src);
-        $src['nianji'] = strToarray($src['nianji']);
+        $src['ruxuenian'] = strToarray($src['ruxuenian']);
         $src['subject_id'] = strToarray($src['subject_id']);
 
         $data = $this->where('kaoshi_id', $src['kaoshi_id'])
-            ->when(count($src['nianji']) > 0, function($query) use ($src) {
-                $query->where('nianji', 'in', $src['nianji']);
+            ->when(count($src['ruxuenian']) > 0, function($query) use ($src) {
+                $query->where('ruxuenian', 'in', $src['ruxuenian']);
             })
             ->when(count($src['subject_id']) > 0, function($query) use ($src) {
                 $query->where('subject_id', 'in', $src['subject_id']);
@@ -58,7 +58,7 @@ class KaoshiSet extends BaseModel
         // 初始化参数
         $src = array(
             'kaoshi_id' => '0'
-            ,'nianji' => 0
+            ,'ruxuenian' => 0
             ,'subject_id' => array()
         );
 
@@ -70,8 +70,8 @@ class KaoshiSet extends BaseModel
             ->when(count($src['subject_id']) > 0, function ($query) use ($src) {
                 $query->where('subject_id', 'in', $src['subject_id']);
             })
-            ->when($src['nianji'] > 0, function ($query) use ($src) {
-                $query->where('nianji', $src['nianji']);
+            ->when($src['ruxuenian'] > 0, function ($query) use ($src) {
+                $query->where('ruxuenian', $src['ruxuenian']);
             })
             ->group('subject_id')
             ->field("subject_id
@@ -121,8 +121,8 @@ class KaoshiSet extends BaseModel
     public function srcGrade($kaoshi_id)
     {
         $njList = $this->where('kaoshi_id', $kaoshi_id)
-            ->group('nianji')
-            ->field("nianji
+            ->group('ruxuenian')
+            ->field("ruxuenian
                 ,any_value(nianjiname) as nianjiname")
             // ->cache(true)
             ->select();
@@ -132,13 +132,13 @@ class KaoshiSet extends BaseModel
         foreach ($njList as $key => $value) {
             # code...
             $data[] = [
-                'nianji' => $value->nianji,
+                'ruxuenian' => $value->ruxuenian,
                 'nianjiname' => $value->nianjiname
             ];
         }
         // 按条件排序
         if(count($data) > 0){
-            $data = \app\facade\Tools::sortArrByManyField($data, 'nianji', SORT_ASC);
+            $data = \app\facade\Tools::sortArrByManyField($data, 'ruxuenian', SORT_ASC);
         }
         return $data;
     }

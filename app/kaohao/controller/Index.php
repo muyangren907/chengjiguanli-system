@@ -19,7 +19,7 @@ class Index extends AdminBase
         // 获取参考年级
         $ksset = new ksset;
         $list['data']['nianji'] = $ksset->srcGrade($kaoshi_id);
-        $list['data']['nianjiNum'] = array_column($list['data']['nianji'], 'nianji');
+        $list['data']['nianjiNum'] = array_column($list['data']['nianji'], 'ruxuenian');
 
         // 设置页面标题
         $list['set'] = array(

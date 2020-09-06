@@ -27,7 +27,7 @@
 	<label for="ruxuenian" class="layui-form-label" style="height: 100%">年级 </label>
 	<div class="layui-input-block" pane>
 		{volist name="$list.nianji" id="vo"}
-  		<input type="radio" name="ruxuenian" title="{$vo.nianjiname}" value="{$vo.nianji}" lay-skin="primary" {eq name="i" value="1" }
+  		<input type="radio" name="ruxuenian" title="{$vo.nianjiname}" value="{$vo.ruxuenian}" lay-skin="primary" {eq name="i" value="1" }
   		checked="true"
   		{/eq}>
 		{/volist}

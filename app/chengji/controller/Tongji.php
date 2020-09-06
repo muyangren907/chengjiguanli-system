@@ -30,7 +30,7 @@ class Tongji extends AdminBase
         if(count($list['nianji']) > 0)
         {
             $khSrc = new \app\kaohao\model\SearchCanyu;
-            $src['ruxuenian'] = [$list['nianji'][0]['nianji']];
+            $src['ruxuenian'] = [$list['nianji'][0]['ruxuenian']];
             $src['kaoshi_id'] = $kaoshi_id;
             $list['school_id'] = $khSrc->school($src);
         }
@@ -99,20 +99,20 @@ class Tongji extends AdminBase
             ->only([
                 'kaoshi_id' => 0
                 ,'subject_id' => 0
-                ,'nianji' => 0
+                ,'ruxuenian' => 0
             ], 'PUT');
 
         // 获取满分
         $ksSet = new \app\kaoshi\model\KaoshiSet;
         $manfen = $ksSet->where('kaoshi_id', $src['kaoshi_id'])
                     ->where('subject_id', $src['subject_id'])
-                    ->where('nianji', $src['nianji'])
+                    ->where('ruxuenian', $src['ruxuenian'])
                     ->field('id,title')
                     ->value('manfen');
         // 获取考号
         $kaohao = new \app\kaohao\model\Kaohao;
         $kaohaoid = $kaohao->where('kaoshi_id', $src['kaoshi_id'])
-                        ->where('ruxuenian', $src['nianji'])
+                        ->where('ruxuenian', $src['ruxuenian'])
                         ->column('id');
         // 查询成绩
         $cj = new \app\chengji\model\Chengji;

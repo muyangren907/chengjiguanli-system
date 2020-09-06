@@ -92,7 +92,7 @@ class KsCanYu extends BaseController
         $src = $this->request
             ->only([
                 'kaoshi_id' => ''
-                ,'nianji' => ''
+                ,'ruxuenian' => ''
                 ,'field' => 'paixu'
                 ,'order' => 'asc'
                 ,'page' => 1
