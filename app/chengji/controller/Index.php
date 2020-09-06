@@ -618,21 +618,14 @@ class Index extends AdminBase
 
         $data = $chengji
                 ->where('kaohao_id',$src['kaohao'])
-                ->field('id,kaohao_id,subject_id,teacher_id,defen,update_time')
+                ->field('id,kaohao_id,subject_id,user_id,user_group,defen,update_time')
                 ->order([$src['field']=>$src['order']])
                 ->with([
                     'subjectName'=>function($query){
                         $query->field('id,title');
-                    },
-                    'userName'=>function($query){
-                        $query->field('id,danwei_id,xingming')
-                            ->with([
-                                'jsDanwei'=>function($query){
-                                    $query->field('id,jiancheng');
-                                }
-                            ]);
                     }
                 ])
+                ->append(['userInfo'])
                 ->select();
 
         $cnt = count($data);

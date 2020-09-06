@@ -35,7 +35,8 @@ class Chengji extends Migrator
         $table
             ->addColumn('kaohao_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'考试'])
             ->addColumn('subject_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'学科'])
-            ->addColumn('teacher_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'学生'])
+            ->addColumn('user_group','string',['limit'=>11, 'null'=>true,'comment'=>'用户组'])
+            ->addColumn('user_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'用户'])
             ->addColumn('defen','decimal',['precision'=>5,'scale'=>1,'default'=>Null,'null'=>false,'comment'=>'得分'])
             ->addColumn('defenlv','decimal',['precision'=>6,'scale'=>2,'default'=>Null,'null'=>false,'comment'=>'得分率'])
 

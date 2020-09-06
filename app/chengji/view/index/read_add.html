@@ -43,14 +43,11 @@
         return str;
       }},
 		{field: 'defen', title: '得分 ', minWidth:100,sort:false},
-		{title: '成绩录入',templet:function(d){
+		{field:'user_id', title: '成绩录入',templet:function(d){
         var str='';
-        if(d.userName)
+        if(d.userInfo)
         {
-          if(d.userName.jsDanwei)
-          {
-            str = d.userName.jsDanwei.jiancheng + '　' + d.userName.xingming;
-          }
+          str = d.userInfo;
         }
         return str;
       }},

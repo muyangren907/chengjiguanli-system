@@ -13,18 +13,18 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class File extends BaseController
 {
-    
+
     // 初始化变量
     protected function initialize()
     {
-        $online = session('onlineCategory');
-        if($online == 'teacher')
+        $this->online = session('onlineCategory');
+        if($this->online == 'teacher')
         {
             $this->middleware = [
                 'online'
                 ,'terlogin'
             ];
-            $this->userid = session('teacher.userid');
+            $this->luruTeacherId = session('teacher.userid');
 
         }else{
             $this->middleware = [
@@ -32,9 +32,7 @@ class File extends BaseController
                 ,'login'
                 ,'auth'
             ];
-            $ad = new \app\admin\model\Admin;
-            $adInfo = $ad->searchOne(session('admin.userid'));
-            $this->userid = $adInfo->teacher_id;
+            $this->luruTeacherId = session('admin.userid');
         }
     }
 
@@ -59,7 +57,7 @@ class File extends BaseController
 
         if($serFile)
         {
-            $serFile->user_id = session('admin.userid');
+            $serFile->user_id = $this->luruTeacherId;
             $serFile->save();
             $data['msg'] = '文件已经存在';
             $data['val'] = true;
@@ -77,10 +75,10 @@ class File extends BaseController
             $list['url'] = $savename;
             $list['newname'] = substr($savename
                 ,strripos($savename, '\\') + 1
-                ,strlen($savename) - strripos($savename
-                ,'\\'));
+                ,strlen($savename) - strripos($savename ,'\\'));
             $list['hash'] = $file->hash('sha1');
-            $list['teacher_id'] = $this->userid;
+            $list['user_id'] = $this->luruTeacherId;
+            $list['user_group'] = $this->online;
             $list['oldname'] = $file->getOriginalName();
             $list['fieldsize'] = $file->getSize();
             $list['category_id'] = $list['category_id'];

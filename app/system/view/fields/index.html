@@ -61,15 +61,11 @@
 		        }
 		        return str;
 		      }},
-			{field: 'teacher_id', title: '上传人', minWidth:150,sort: true,templet:function(d){
+			{field: 'user_id', title: '上传人', minWidth:150,sort: true,templet:function(d){
 		        var str='';
-		        if(d.flTeacher)
+		        if(d.userInfo)
 		        {
-		          str = d.flTeacher.xingming;
-		          if(d.flTeacher.jsDanwei)
-		          {
-		          	str = d.flTeacher.jsDanwei.jiancheng + ' ' + d.flTeacher.xingming;
-		          }
+		          str = d.userInfo;
 		        }
 		        return str;
 		      }},

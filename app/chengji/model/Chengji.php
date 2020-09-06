@@ -16,9 +16,16 @@ class Chengji extends BaseModel
 
 
     // 学科关联
-    public function userName()
+    public function cjTeacher()
     {
-        return $this->belongsTo('\app\teacher\model\Teacher','teacher_id','id');
+        return $this->belongsTo('\app\teacher\model\Teacher','user_id','id');
+    }
+
+
+    // 学科关联
+    public function cjAdmin()
+    {
+        return $this->belongsTo('\app\admin\model\Admin','user_id','id');
     }
 
 
@@ -39,6 +46,7 @@ class Chengji extends BaseModel
             ,'subject_id' => ''
             ,'searchval' => ''
             ,'user_id' => ''
+            ,'user_group' =>''
         );
         $src = array_cover($srcfrom, $src) ;
         $src['kaoshi_id'] = strToarray($src['kaoshi_id']);
@@ -70,8 +78,9 @@ class Chengji extends BaseModel
             ->when(count($src['kaoshi_id']) == 0 && count($src['banji_id']) ==0, function($query) {
                 $query->whereMonth('update_time');
             })
-            ->when(strlen($src['user_id']) > 0, function ($query) use($src){
-                $query->where('user_id', $src['user_id']);
+            ->when(strlen($src['user_id']) > 0 && strlen($src['user_group']) > 0, function ($query) use($src){
+                $query->where('user_id', $src['user_id'])
+                    ->where('user_group', $src['user_group']);
             })
             ->when(count($src['subject_id']) > 0, function ($query) use ($src) {
                 $query->where('subject_id', 'in', $src['subject_id']);
@@ -210,6 +219,43 @@ class Chengji extends BaseModel
         $temp = $this->saveAll($data);
 
         return true;
+    }
+
+
+    // 上传人信息获取器
+    public function getUserInfoAttr($value, $data)
+    {
+        // halt($data);
+        $xm = '';
+        if($data['user_group'] === 'admin')
+        {
+            if($this->cjAdmin)
+            {
+                $xm = $this->cjAdmin->xingming . '(' .  $this->cjAdmin->adSchool->jiancheng . ')';
+            }
+        }else{
+            if($this->cjTeacher)
+            {
+                $xm = $this->cjTeacher->xingming . '(' . $this->cjTeacher->jsDanwei->jiancheng . ')';
+            }
+        }
+
+        $arr = [
+            'admin' => '管理员'
+            ,'teacher' => '教师'
+            ,'student' => '学生'
+        ];
+
+        if(isset($arr[$data['user_group']]))
+        {
+            $group = $arr[$data['user_group']];
+        }else{
+            $group = '未知';
+        }
+
+        $str = $group . ' ' . $xm;
+
+        return $str;
     }
 
 }

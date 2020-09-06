@@ -40,21 +40,11 @@ class Fields extends BaseModel
                     $query->where('oldname', 'like', '%' . $src['searchval'] . '%');
                 })
             ->with([
-                'flTeacher' => function($query){
-                    $query
-                    ->field('id, xingming, danwei_id')
-                        ->with([
-                            'jsDanwei' => function($q){
-                                $q->field('id, jiancheng');
-                            }
-                        ]);
+                'flCategory' => function ($query) {
+                    $query->field('id, title');
                 }
-                ,'flCategory' => function($query){
-                    $query
-                    ->field('id, title');
-                }
-
             ])
+            ->append(['userInfo'])
             ->select();
 
         return $data;
@@ -64,14 +54,52 @@ class Fields extends BaseModel
     // 上传人数据关联
     public function  flTeacher()
     {
-        return $this->belongsTo('\app\teacher\model\Teacher', 'teacher_id', 'id');
+        return $this->belongsTo('\app\teacher\model\Teacher', 'user_id', 'id');
     }
+
+
+    // 上传人数据关联
+    public function  flAdmin()
+    {
+        return $this->belongsTo('\app\admin\model\Admin', 'user_id', 'id');
+    }
+
 
 
     // 文件种类数模型关联
     public function  flCategory()
     {
         return $this->belongsTo('\app\system\model\Category', 'category_id', 'id');
+    }
+
+
+    // 上传人信息获取器
+    public function getUserInfoAttr($value, $data)
+    {
+        // halt($data);
+        $xm = '';
+        if($data['user_group'] === 'admin')
+        {
+            if($this->flAdmin)
+            {
+                $xm = $this->flAdmin->xingming . '(' .  $this->flAdmin->adSchool->jiancheng . ')';
+            }
+        }else{
+            if($this->flTeacher)
+            {
+                $xm = $this->flTeacher->xingming . '(' . $this->flTeacher->jsDanwei->jiancheng . ')';
+            }
+        }
+
+        $arr = [
+            'admin' => '管理员'
+            ,'teacher' => '教师'
+            ,'student' => '学生'
+        ];
+
+        $str = $arr[$data['user_group']] . ' ' . $xm;
+
+        return $str;
     }
 
 }

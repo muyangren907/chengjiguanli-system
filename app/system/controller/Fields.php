@@ -47,12 +47,13 @@ class Fields extends AdminBase
             ->visible([
                 'id'
                 ,'flCategory'=>['title']
-                ,'flTeacher'=>['xingming']
+                // ,'flTeacher'=>['xingming']
                 ,'oldname'
                 ,'fieldsize'
-                ,'flTeacher'=>['xingming']
+                // ,'flTeacher'=>['xingming']
                 ,'bianjitime'
                 ,'update_time'
+                ,'userInfo'
             ]);
         $data = reSetObject($data, $src);
 

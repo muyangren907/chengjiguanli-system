@@ -20,18 +20,19 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 class Index extends BaseController
 {
     protected $middleware = [];
-    protected $userid = '';
+    protected $luruTeacherId = '';
+    protected $online = '';
 
     protected function initialize()
     {
-        $online = session('onlineCategory');
-        if($online == 'teacher')
+        $this->online = session('onlineCategory');
+        if($this->online == 'teacher')
         {
             $this->middleware = [
                 'online'
                 ,'terlogin'
             ];
-            $this->userid = session('teacher.userid');
+            $this->luruTeacherId = session('teacher.userid');
 
         }else{
             $this->middleware = [
@@ -39,9 +40,7 @@ class Index extends BaseController
                 ,'login'
                 ,'auth'
             ];
-            $ad = new \app\admin\model\Admin;
-            $adInfo = $ad->searchOne(session('admin.userid'));
-            $this->userid = $adInfo->teacher_id;
+            $this->luruTeacherId = session('admin.userid');
         }
     }
 
@@ -79,7 +78,8 @@ class Index extends BaseController
                 ,'order' => 'desc'
                 ,'subject_id' => ''
                 ,'searchval'
-                ,'teacher_id' => $this->userid
+                ,'user_id' => $this->luruTeacherId
+                ,'user_group' => $this->online
             ], 'POST');
 
         // 根据条件查询数据
@@ -157,18 +157,20 @@ class Index extends BaseController
             }
 
             if ($cjone->defen == $list['defen']) {
-                $data = ['msg' => '与原成绩相同，不需要修改。', 'val' => 1];
+                $data = ['msg' => '与原成绩相同，不需要修改。', 'val' => 0];
                 return json($data);
             }
 
             $cjone->defen = $list['defen'];
+            $cjone->user_group = $this->online;
+            $cjone->user_id = $this->luruTeacherId;
             $cjone->defenlv = $list['defen'] / $manfen * 100;
             $data = $cjone->save();
         } else {
             $data = [
                 'kaohao_id' => $list['kaohao_id']
                 ,'subject_id' => $list['subject_id']
-                ,'teacher_id' => $this->userid
+                ,'user_id' => $this->luruTeacherId
                 ,'defen' => $list['defen']
                 ,'defenlv' => $list['defen'] / $manfen * 100
             ];
@@ -242,13 +244,15 @@ class Index extends BaseController
 
             $cjone->defen = $list['newdefen'];
             $cjone->defenlv = $list['newdefen'] / $manfen * 100;
-            $cjone->teacher_id = $this->userid;
+            $cjone->user_id = $this->luruTeacherId;
+            $cjone->user_group = $this->online;
             $data = $cjone->save();
         } else {
             $data = [
                 'kaohao_id' => $list['kaohao_id']
                 ,'subject_id' => $subject_id
-                ,'teacher_id' => $this->userid
+                ,'user_id' => $this->luruTeacherId
+                ,'user_group' => $this->online
                 ,'defen' => $list['newdefen']
                 ,'defenlv' => $list['newdefen'] / $manfen * 100
             ];
@@ -362,7 +366,8 @@ class Index extends BaseController
             }
         }
 
-        $user_id = $this->userid;   # 获取用户id
+        $user_id = $this->luruTeacherId;   # 获取用户id
+        $user_group = $this->online;   # 获取用户id
         $data = array();
 
         // 重新组合数组
@@ -398,7 +403,8 @@ class Index extends BaseController
                         $cjone->restore();
                         $cjone->defen = $defen;
                         $cjone->defenlv = $defen / $manfen * 100;
-                        $cjone->teacher_id = $user_id;
+                        $cjone->user_id = $user_id;
+                        $cjone->user_group = $user_group;
                         $cjone->save();
                     }
                 } else {
@@ -406,7 +412,8 @@ class Index extends BaseController
                     $data = [
                         'kaohao_id' => $val[1]
                         ,'subject_id' => $value['id']
-                        ,'teacher_id' => $this->userid
+                        ,'user_id' => $user_id
+                        ,'user_group' => $user_group
                         ,'defen' => $defen
                         ,'defenlv' => $defen / $manfen * 100
                     ];
@@ -476,7 +483,7 @@ class Index extends BaseController
             ->setCreator("尚码成绩管理系统")    //作者
             ->setTitle("尚码成绩管理")  //标题
             ->setLastModifiedBy(session('username')) //最后修改者
-            ->setDescription("该表格由" . $this->userid . "于" . $thistime . "在尚码成绩管理系统中下载，只作为内部交流材料,不允许外泄。")  //描述
+            ->setDescription("该表格由" . $this->luruTeacherId . "于" . $thistime . "在尚码成绩管理系统中下载，只作为内部交流材料,不允许外泄。")  //描述
             ->setKeywords("尚码 成绩管理") //关键字
             ->setCategory("成绩管理"); //分类
 
