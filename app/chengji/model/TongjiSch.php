@@ -26,7 +26,7 @@ class TongjiSch extends BaseModel
             foreach ($njList as $k => $nianji) {
                 $src = [
                     'kaoshi_id' => $kaoshi_id
-                    ,'ruxuenian' => $nianji['nianji']
+                    ,'ruxuenian' => $nianji['ruxuenian']
                 ];
                 $src['banji_id'] = array_column($cy->class($src), 'id');
                 $subject = $ksset->srcSubject($src);
@@ -35,13 +35,13 @@ class TongjiSch extends BaseModel
                 foreach ($temp['cj'] as $k => $cj) {
                     // 查询该班级该学科成绩是否存在
                     $tongjiJg = $this->where('kaoshi_id', $src['kaoshi_id'])
-                        ->where('ruxuenian', $nianji['nianji'])
+                        ->where('ruxuenian', $nianji['ruxuenian'])
                         ->where('subject_id', $cj['id'])
                         ->find();
                     if($tongjiJg)
                     {
                         $tongjiJg->kaoshi_id = $src['kaoshi_id'];
-                        $tongjiJg->ruxuenian = $nianji['nianji'];
+                        $tongjiJg->ruxuenian = $nianji['ruxuenian'];
                         $tongjiJg->subject_id = $cj['id'];
                         $tongjiJg->stu_cnt = $cj['stucnt'];
                         $tongjiJg->chengji_cnt = $cj['xkcnt'];
@@ -63,7 +63,7 @@ class TongjiSch extends BaseModel
                         // 重新组合统计结果
                         $tongjiJg = [
                             'kaoshi_id' => $src['kaoshi_id']
-                            ,'ruxuenian' => $nianji['nianji']
+                            ,'ruxuenian' => $nianji['ruxuenian']
                             ,'subject_id' => $cj['id']
                             ,'stu_cnt' => $cj['stucnt']
                             ,'chengji_cnt' => $cj['xkcnt']
@@ -164,7 +164,7 @@ class TongjiSch extends BaseModel
         $data = array();
         foreach ($nianji as $njkey => $value) {
             // 获取参加考试班级
-            $src['ruxuenian'] = $value['nianji'];
+            $src['ruxuenian'] = $value['ruxuenian'];
             $subject = $ksset->srcSubject($src);
             $banji = $cy->class($src);
             $col = [
@@ -175,7 +175,7 @@ class TongjiSch extends BaseModel
             // 获取成绩
             $srcfrom = [
                 'kaoshi_id' => $kaoshi_id
-                ,'ruxuenian' => $value['nianji']
+                ,'ruxuenian' => $value['ruxuenian']
                 ,'banji_id' => array_column($banji, 'id')
             ];
             $temp = $more->srcChengjiSubject($srcfrom);

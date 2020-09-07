@@ -32,7 +32,7 @@ class TongjiBj extends BaseModel
         $data = array();
         foreach ($nianji as $njkey => $value) {
             // 获取参加考试班级
-            $src['ruxuenian'] = $value['nianji'];
+            $src['ruxuenian'] = $value['ruxuenian'];
             $banji = $cy->class($src);
             $subject = $ksset->srcSubject($src);
 
@@ -564,9 +564,9 @@ class TongjiBj extends BaseModel
         $data = array();
         foreach ($nianji as $njkey => $value) {
             // 获取参加考试班级
-            $src['ruxuenian'] = $value['nianji'];
+            $src['ruxuenian'] = $value['ruxuenian'];
             $banji = $cy->class($src);
-            $subject = $ksset->srcSubject($kaoshi_id, '', $value['nianji']);
+            $subject = $ksset->srcSubject($kaoshi_id, '', $value['ruxuenian']);
 
             // 循环班级，获取并统计成绩
             foreach ($banji as $bjkey => $val) {

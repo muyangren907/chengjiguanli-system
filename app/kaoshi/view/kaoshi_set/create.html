@@ -3,9 +3,9 @@
 {block name="form"}
     <form class="layui-form layui-form-pane" lay-filter="myform">
           <div class="layui-form-item">
-            <label for="nianji" class="layui-form-label"><span class="x-red">*</span>参考年级</label>
+            <label for="ruxuenian" class="layui-form-label"><span class="x-red">*</span>参考年级</label>
             <div class="layui-input-block">
-              <select name="nianji" lay-verify="required">
+              <select name="ruxuenian" lay-verify="required">
                 <option value="">请选择年级</option>
                 {foreach $list.set.nianji as $key=>$vo }
                   <option value="{$key}">

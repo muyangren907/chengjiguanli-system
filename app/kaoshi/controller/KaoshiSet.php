@@ -108,7 +108,7 @@ class KaoshiSet extends AdminBase
         $src = $this->request
                 ->only([
                     'kaoshi_id'
-                    ,'nianji'
+                    ,'ruxuenian'
                     ,'nianjiname'
                     ,'subject_id' => array()
                     ,'manfen' => array()
@@ -132,7 +132,7 @@ class KaoshiSet extends AdminBase
         foreach ($src['subject_id'] as $key  =>  $value) {
             $list[] = [
                 'kaoshi_id' => $src['kaoshi_id'],
-                'nianji' => $src['nianji'],
+                'ruxuenian' => $src['ruxuenian'],
                 'nianjiname' => $src['nianjiname'],
                 'subject_id' => $value,
                 'manfen' => $src['manfen'][$key],
@@ -143,12 +143,12 @@ class KaoshiSet extends AdminBase
 
         // 查询已经存在数据删除并添加新数据
         $ksset = new ksset;
-        $nianji = $src['nianji'];
+        $ruxuenian = $src['ruxuenian'];
         $kaoshi_id = $src['kaoshi_id'];
 
-        ksset::destroy(function($query)use($nianji, $kaoshi_id){
+        ksset::destroy(function($query)use($ruxuenian, $kaoshi_id){
             $query->where('kaoshi_id', $kaoshi_id)
-                ->where('nianji', $nianji);
+                ->where('ruxuenian', $ruxuenian);
             ;
         },true);
 

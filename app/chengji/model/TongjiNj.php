@@ -34,7 +34,7 @@ class TongjiNj extends BaseModel
                 $src = [
                     'kaoshi_id' => $kaoshi_id
                     ,'school_id' => $school['id']
-                    ,'ruxuenian' => $nianji['nianji']
+                    ,'ruxuenian' => $nianji['ruxuenian']
                 ];
                 $src['banji_id'] = array_column($cy->class($src), 'id');
                 $subject = $ksset->srcSubject($src);
@@ -44,14 +44,14 @@ class TongjiNj extends BaseModel
                     // 查询该班级该学科成绩是否存在
                     $tongjiJg = $this->where('kaoshi_id', $src['kaoshi_id'])
                         ->where('school_id', $school['id'])
-                        ->where('ruxuenian', $nianji['nianji'])
+                        ->where('ruxuenian', $nianji['ruxuenian'])
                         ->where('subject_id', $cj['id'])
                         ->find();
                     if($tongjiJg)
                     {
                         $tongjiJg->kaoshi_id = $src['kaoshi_id'];
                         $tongjiJg->school_id = $school['id'];
-                        $tongjiJg->ruxuenian = $nianji['nianji'];
+                        $tongjiJg->ruxuenian = $nianji['ruxuenian'];
                         $tongjiJg->subject_id = $cj['id'];
                         $tongjiJg->stu_cnt = $cj['stucnt'];
                         $tongjiJg->chengji_cnt = $cj['xkcnt'];
@@ -74,7 +74,7 @@ class TongjiNj extends BaseModel
                         $tongjiJg = [
                             'kaoshi_id' => $src['kaoshi_id'],
                             'school_id' => $school['id'],
-                            'ruxuenian' => $nianji['nianji'],
+                            'ruxuenian' => $nianji['ruxuenian'],
                             'subject_id' => $cj['id'],
                             'stu_cnt' => $cj['stucnt'],
                             'chengji_cnt' => $cj['xkcnt'],
@@ -213,10 +213,10 @@ class TongjiNj extends BaseModel
         $data = array();
         foreach ($nianji as $njkey => $value) {
             // 获取参加考试班级
-            $src['ruxuenian'] = $value['nianji'];
+            $src['ruxuenian'] = $value['ruxuenian'];
 
             $school = $cy->school($src);
-            $subject = $ksset->srcSubject($kaoshi_id, '', $value['nianji']);
+            $subject = $ksset->srcSubject($kaoshi_id, '', $value['ruxuenian']);
 
             // 循环班级，获取并统计成绩
             foreach ($school as $schkey => $val) {
