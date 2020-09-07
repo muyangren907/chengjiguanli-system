@@ -62,6 +62,10 @@
 
 ![考试操作三](https://gitee.com/dlbz/shangma/raw/master/public/examples/考试操作三.png)
 
+考试操作四
+
+![考试操作四](https://gitee.com/dlbz/shangma/raw/master/public/examples/考试操作四.png)
+
 扫码录入成绩
 
 ![扫码录入成绩](https://gitee.com/dlbz/shangma/raw/master/public/examples/扫码录入成绩.png)
@@ -110,18 +114,22 @@
 
 学生历次考试成绩
 
-![权限分配](https://gitee.com/dlbz/shangma/raw/master/public/examples/学生成绩.png)
+![学生成绩](https://gitee.com/dlbz/shangma/raw/master/public/examples/学生成绩.png)
 
 
 
 学生历次考试成绩得分率与成绩在班级、学校、全部中排序的大约位置
 
-![权限分配](https://gitee.com/dlbz/shangma/raw/master/public/examples/学生成绩图表.png)
+![学生成绩](https://gitee.com/dlbz/shangma/raw/master/public/examples/学生成绩图表.png)
 
 
 学生单次考试成绩
 
-![权限分配](https://gitee.com/dlbz/shangma/raw/master/public/examples/学生单次考试成绩.png)
+![学生成绩查询一](https://gitee.com/dlbz/shangma/raw/master/public/examples/学生查看一.png)
+
+![学生成绩查询二](https://gitee.com/dlbz/shangma/raw/master/public/examples/学生查询二.png)
+
+![学生成绩查询三](https://gitee.com/dlbz/shangma/raw/master/public/examples/学生查询三.png)
 
 
 
