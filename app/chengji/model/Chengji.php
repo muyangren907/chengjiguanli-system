@@ -233,11 +233,13 @@ class Chengji extends BaseModel
             {
                 $xm = $this->cjAdmin->xingming . '(' .  $this->cjAdmin->adSchool->jiancheng . ')';
             }
-        }else{
+        }elseif ($data['user_group'] === 'teacher') {
             if($this->cjTeacher)
             {
                 $xm = $this->cjTeacher->xingming . '(' . $this->cjTeacher->jsDanwei->jiancheng . ')';
             }
+        }else {
+            $xm = '';
         }
 
         $arr = [

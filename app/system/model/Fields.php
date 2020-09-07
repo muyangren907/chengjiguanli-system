@@ -84,11 +84,13 @@ class Fields extends BaseModel
             {
                 $xm = $this->flAdmin->xingming . '(' .  $this->flAdmin->adSchool->jiancheng . ')';
             }
-        }else{
+        }elseif ($data['user_group'] === 'teacher') {
             if($this->flTeacher)
             {
                 $xm = $this->flTeacher->xingming . '(' . $this->flTeacher->jsDanwei->jiancheng . ')';
             }
+        }else{
+            $xm = '';
         }
 
         $arr = [
