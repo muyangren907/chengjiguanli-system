@@ -7,9 +7,9 @@ use think\facade\Env;
 
 return [
     // 版本号
-    'webtitle'         => '码蚁成绩管理系统',
-    'version'         => 'v1.3.5',
-    'weihu'         => false,
-    'shijian'		=> '2020-9-2 12:47',
-    'shichang'		=> '1',
+    'webtitle'         => '码蚁成绩管理系统',  #系统名称
+    'version'         => 'v1.3.5',   # 系统版本
+    'weihu'         => false,  # 是否开启维护跳转
+    'shijian'		=> '2020-9-2 12:47',  # 开始时间
+    'shichang'		=> '1',			# 时长:单位分钟
 ];
