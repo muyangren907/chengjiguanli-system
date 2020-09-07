@@ -355,6 +355,12 @@ class Banji extends AdminBase
             return json(['msg' => $msg, 'val' => 0]);
         }
 
+        $sysInfo = \app\facade\System::sysClass();
+        if($sysInfo->classalias == false)
+        {
+            return json(['msg' => '不允许使用班级别名', 'val' => 0]);
+        }
+
         // 保存数据
         $bj = new bjmod();
 
