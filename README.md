@@ -43,7 +43,7 @@
 
 ![欢迎页面](https://gitee.com/dlbz/shangma/raw/master/public/examples/欢迎页面.png)
 
-
+考试列表
 ![考试列表](https://gitee.com/dlbz/shangma/raw/master/public/examples/考试列表.png)
 
 考试设置
@@ -114,7 +114,7 @@
 
 学生历次考试成绩
 
-![学生成绩](https://gitee.com/dlbz/shangma/raw/master/public/examples/学生成绩.png)
+![学生成绩](https://gitee.com/dlbz/shangma/raw/master/public/examples/学生成绩列表.png)
 
 
 
@@ -126,8 +126,10 @@
 学生单次考试成绩
 
 ![学生成绩查询一](https://gitee.com/dlbz/shangma/raw/master/public/examples/学生查看一.png)
+总成绩位置、各学科得分和得分率
 
 ![学生成绩查询二](https://gitee.com/dlbz/shangma/raw/master/public/examples/学生查询二.png)
+各学科成绩与平均分雷达图、各学科成绩位置
 
 ![学生成绩查询三](https://gitee.com/dlbz/shangma/raw/master/public/examples/学生查询三.png)
 
@@ -138,9 +140,13 @@
 [http://www.dl-sm.cn](http://www.dl-sm.cn) 或 [112.126.57.79](112.126.57.79)
 
 演示帐号
+
 	管理员帐号   test1    密码  123456
+
 	教师帐号   123456     密码123
+
 	学生帐号   210202201210018213   密码123
+
 实际中教师帐号为教师手机号，学生帐号为学生身份证号码，默认密码为123
 
 里面隐藏了两个很实用的功能，如果想了解隐藏功能，请下载。
@@ -158,7 +164,7 @@
 
 	更多更新日志（http://www.www.dl-sm.cn.cn/login/log）
 ## 升级提示
-  推荐使用 Navicat 同步表结构和同步权限cj_auth_rule表、分类cj_category表中数据。
+  推荐使用 Navicat 同步表结构和部分表中数据。
 
 
 ## 更详细信息请查阅官方手册
