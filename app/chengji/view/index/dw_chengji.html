@@ -19,8 +19,8 @@
           <div class="layui-input-block">
             <select name="ruxuenian" id="ruxuenian" lay-verify="required" class="layui-form-label" lay-filter="nianji">
               {foreach $list.nianji as $key=>$vo}
-                <option value="{$vo.ruxuenian">
-                  {$vo['nianjiname']}
+                <option value="{$vo.ruxuenian}">
+                  {$vo.nianjiname}
                 </option>
               {/foreach}
             </select>

@@ -195,8 +195,8 @@ class Index extends AdminBase
             $data = ['msg' => '生成成功', 'val' => 1];
         }else{
             // 获取参加考试年级数组
-            $bfdate = KS::where('id', $list['kaoshi_id'])->value('bfdate');
-            $njlist = nianJiNameList($bfdate);
+            $enddate = KS::where('id', $list['kaoshi_id'])->value('enddate');
+            $njlist = nianJiNameList('str', $enddate);
 
             // 获取班级信息
             $bj = new \app\teach\model\Banji;
