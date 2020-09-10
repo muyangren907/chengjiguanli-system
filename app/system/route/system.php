@@ -50,3 +50,10 @@ Route::group('category', function () {
 	});
 
 
+// 类别管理
+Route::group('backup', function () {
+	    Route::rule('index', 'BackUp/index', 'get');				# 获取数据
+	    Route::rule('create', 'BackUp/create', 'get');				# 获取数据
+	});
+
+

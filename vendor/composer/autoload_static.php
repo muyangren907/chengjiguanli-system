@@ -75,6 +75,10 @@ class ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175
     );
 
     public static $prefixLengthsPsr4 = array (
+        'w' => 
+        array (
+            'wamkj\\thinkphp\\' => 15,
+        ),
         't' => 
         array (
             'think\\view\\driver\\' => 18,
@@ -132,6 +136,10 @@ class ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175
     );
 
     public static $prefixDirsPsr4 = array (
+        'wamkj\\thinkphp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wamkj/thinkphp6.0-databackup/src',
+        ),
         'think\\view\\driver\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/think-view/src',

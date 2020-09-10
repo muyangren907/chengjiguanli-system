@@ -1603,6 +1603,55 @@
         "description": "thinkphp template driver"
     },
     {
+        "name": "wamkj/thinkphp6.0-databackup",
+        "version": "v1.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wamkj/thinkphp6.0-databackup.git",
+            "reference": "28a0e406d827132942723a3c9f69bb20c98e652f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wamkj/thinkphp6.0-databackup/zipball/28a0e406d827132942723a3c9f69bb20c98e652f",
+            "reference": "28a0e406d827132942723a3c9f69bb20c98e652f",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "php": ">=7.1.0",
+            "topthink/framework": "^6.0"
+        },
+        "time": "2020-02-15T13:04:16+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "wamkj\\thinkphp\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "authors": [
+            {
+                "name": "wamkj",
+                "email": "1149183529@qq.com"
+            }
+        ],
+        "description": "thinkphp6.0的数据库自动备份扩展",
+        "keywords": [
+            "think-databackup",
+            "thinkphp"
+        ]
+    },
+    {
         "name": "whitehat101/apr1-md5",
         "version": "v1.0.0",
         "version_normalized": "1.0.0.0",

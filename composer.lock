@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "322282769369ca005b20ef14242869b6",
+    "content-hash": "eaa0338e9ea68c6f157abc1926c6acc1",
     "packages": [
         {
             "name": "league/flysystem",
@@ -1297,6 +1297,53 @@
             ],
             "description": "thinkphp template driver",
             "time": "2019-11-06T11:40:13+00:00"
+        },
+        {
+            "name": "wamkj/thinkphp6.0-databackup",
+            "version": "v1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wamkj/thinkphp6.0-databackup.git",
+                "reference": "28a0e406d827132942723a3c9f69bb20c98e652f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wamkj/thinkphp6.0-databackup/zipball/28a0e406d827132942723a3c9f69bb20c98e652f",
+                "reference": "28a0e406d827132942723a3c9f69bb20c98e652f",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">=7.1.0",
+                "topthink/framework": "^6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "wamkj\\thinkphp\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "wamkj",
+                    "email": "1149183529@qq.com"
+                }
+            ],
+            "description": "thinkphp6.0的数据库自动备份扩展",
+            "keywords": [
+                "think-databackup",
+                "thinkphp"
+            ],
+            "time": "2020-02-15T13:04:16+00:00"
         },
         {
             "name": "whitehat101/apr1-md5",

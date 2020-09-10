@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'wamkj\\thinkphp\\' => array($vendorDir . '/wamkj/thinkphp6.0-databackup/src'),
     'think\\view\\driver\\' => array($vendorDir . '/topthink/think-view/src'),
     'think\\trace\\' => array($vendorDir . '/topthink/think-trace/src'),
     'think\\migration\\' => array($vendorDir . '/topthink/think-migration/src'),

@@ -1,0 +1,99 @@
+
+{extend name=".././view/list.html" /}
+{block name="jsset"}
+
+{/block}
+{block name="nav"}
+	<span class="layui-breadcrumb">
+		<a href="">系统管理</a>
+		<a href="">数据备份</a>
+		<a><cite>备份列表</cite></a>
+	</span>
+{/block}
+{block name="search"}
+{/block}
+{block name="table"}
+	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
+{/block}
+{block name="myjs"}
+	<!-- 表格上面按钮模板 -->
+<script type="text/html" id="toolbarDemo">
+	<div class="layui-btn-container">
+		<button class="layui-btn layui-btn-danger" lay-event="dels">
+			<i class="iconfont">&#xe69d;</i> 批量删除
+		</button>
+	</div>
+</script>
+<!-- 记录操作按钮模板 -->
+<script type="text/html" id="barDemo">
+	<a class="layui-btn-xs" title="下载" href="/system/file/download/{{d.id}}"><i class="iconfont">&#xe714;</i></a>
+	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
+</script>
+<!-- 表格操作 -->
+<script>
+	// 设置列
+  options.cols=[[ //表头
+			{type:'checkbox', fixed: 'left'},
+			{field: 'category_id', title: '文件种类',sort: true, minWidth:100,templet:function(d){
+				var str='';
+				if(d.flCategory)
+				{
+					str = d.flCategory.title;
+				}
+				return str;
+			}},
+			{field: 'oldname', title: '原文件名', minWidth:200,sort: true},
+			{field: "bianjitime",title: '最后编辑时间', minWidth:160,sort: true},
+			{field: 'fieldsize', title: '文件大小', minWidth:100,sort: true,templet:function(d){
+		        var str=0;
+		        if(d.fieldsize)
+		        {
+		          str = Math.round(d.fieldsize * 1 / 1024 * 100) / 100 + 'KB';
+		        }
+		        return str;
+		      }},
+			{field: 'user_id', title: '上传人', minWidth:150,sort: true,templet:function(d){
+		        var str='';
+		        if(d.userInfo)
+		        {
+		          str = d.userInfo;
+		        }
+		        return str;
+		      }},
+			{field: 'update_time', title: '上传时间', minWidth:160, sort: true},
+			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:90}
+		]];
+
+  // 提交搜索条件后重载表格
+    layui.use(['table','cjgl'],function(){
+      var table = layui.table
+          cjgl = layui.cjgl;
+      //表头工具栏事件
+      table.on('toolbar(mytable)', function(obj){
+        switch(obj.event){
+          case 'dels':
+            var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
+            cjgl.delAll(checkStatus,'file/delete','mytable');
+            break;
+        };
+      });
+
+      //监听行工具条
+      table.on('tool(mytable)', function(obj){
+        var data = obj.data; //获得当前行数据
+        var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+        var tr = obj.tr; //获得当前行 tr 的DOM对象
+        switch(layEvent){
+          case 'del':// 删除
+          	cjgl.del(obj,"file/delete");
+          	break;
+          case 'download':// 编辑
+          	var data = cjgl.add('下载文件','file/download/'+obj.data.id,'350','150',false);
+          	console.log(data);
+          	break;
+        };
+      });
+
+    });
+</script>
+{/block}
