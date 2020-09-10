@@ -74,12 +74,15 @@ class Banji extends AdminBase
      */
     public function create()
     {
+        $alias = \app\facade\System::sysClass();
+
         // 设置页面标题
         $list['set'] = array(
             'webtitle' => '添加班级'
             ,'butname' => '添加'
             ,'formpost' => 'POST'
             ,'url' => 'save'
+            ,'classmax' =>$alias->classmax
         );
 
         // 模板赋值

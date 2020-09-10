@@ -1527,6 +1527,14 @@ class Rule extends Seeder
                     ,'pid' => 902
                     ,'status' => 0
                 ],
+            ['id' => 903
+                ,'title' => '课题统计'
+                ,'name' => 'keti/ketiinfo/tongji'
+                ,'paixu' => 3
+                ,'ismenu'  => 1
+                ,'pid'  => 9
+                ,'url' => '/keti/ketiinfo/tongji'
+            ],
 
             // 教师管理
             ['id' => 10

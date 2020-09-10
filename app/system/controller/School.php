@@ -188,7 +188,6 @@ class School extends AdminBase
     {
         $id = request()->delete('id');
         $id = explode(',', $id);
-
         $data = sch::destroy($id);
 
         // 根据更新结果设置返回提示信息
