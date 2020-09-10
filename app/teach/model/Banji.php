@@ -251,8 +251,9 @@ class Banji extends BaseModel
         $njlist = $this->gradeName('str', time());
         $bjlist = $this->className();
 
-        $nj = substr($str, 0, 9);
-        $bj = substr($str, 9, strlen($str) - 9);
+        $find = strpos($str,"级") + 3;
+        $nj = substr($str, 0, $find);
+        $bj = substr($str, $find, strlen($str) - $find);
 
         $nj = array_search($nj, $njlist);
         $bj = array_search($bj, $bjlist);
