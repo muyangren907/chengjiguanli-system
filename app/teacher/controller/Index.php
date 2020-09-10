@@ -289,10 +289,13 @@ class Index extends AdminBase
             return json(['msg' => $msg, 'val' => 0]);;
         }
         $tc = new TC();
-        $temp = $tc->phoneSrc($list['phone']);
+        $temp = TC::withTrashed()->where('phone', $list['phone'])->find();
         if($temp)
         {
-            return json(['msg' => '手机号已经存在', 'val' => 0]);
+            if($temp->id != $id*1)
+            {
+                return json(['msg' => '手机号已经存在', 'val' => 0]);
+            }
         }
 
         $list['quanpin'] = trim(strtolower(str_replace(' ', '', $list['quanpin'])));
