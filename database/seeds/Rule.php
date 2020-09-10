@@ -1169,6 +1169,26 @@ class Rule extends Seeder
                     ,'paixu' => 1
                     ,'pid'  => 704
                 ],
+            ['id' => 705
+                ,'title' => '数据备份'
+                ,'name' => 'system/backup/index'
+                ,'paixu' => 11
+                ,'ismenu'  => 1
+                ,'pid'  => 7
+                ,'url' => '/system/backup/index'
+            ],
+                ['id' => 70501
+                    ,'title' => '创建'
+                    ,'name' => 'system/backup/create'
+                    ,'paixu' => 1
+                    ,'pid'  => 705
+                ],
+                ['id' => 70502
+                    ,'title' => '删除'
+                    ,'name' => 'system/backup/delete'
+                    ,'paixu' => 1
+                    ,'pid'  => 705
+                ],
 
             /*======================================================================
              * 考试管理

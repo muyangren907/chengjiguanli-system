@@ -21,24 +21,38 @@ class BackUp extends AdminBase
 
     public function index()
     {
-        $db= new up($this->upcnf);
-
         // 设置要给模板赋值的信息
         $list['webtitle'] = '文件列表';
-        $list['dataurl'] = 'file/data';
-
-        $fileList = $db->fileList();
-        foreach ($fileList as $key => $value) {
-           $fileList[$key]['time'] = date('Y-m-d H:i:s', $value['time']);
-        }
-        $list['data'] = $fileList;
-        halt($list['data']);
+        $list['dataurl'] = '/system/backup/data';
 
         // 模板赋值
         $this->view->assign('list', $list);
-
         // 渲染模板
         return $this->view->fetch();
+    }
+
+
+    //  获取单位列表数据
+    public function ajaxData()
+    {
+        // 获取参数
+        $src = $this->request
+                ->only([
+                    'page' => '1'
+                    ,'limit' => '10'
+                    ,'field' => 'time'
+                    ,'order' => 'desc'
+                ],'POST');
+
+        $db= new up($this->upcnf);
+        $data = $db->fileList();
+        foreach ($data as $key => $value) {
+           $data[$key]['ltime'] = date('Y-m-d H:i:s', $value['time']);
+           $data[$key]['lsize'] = round($value['size'] / 1024 / 1024, 2) . 'Mb';
+        }
+        $data = reSetArray($data, $src);
+
+        return json($data);
     }
 
 
@@ -48,15 +62,14 @@ class BackUp extends AdminBase
         $db= new up($this->upcnf);
         $aa = $db->dataList();
         $start = 0;
-        // $rand = mt_rand(1000, 9999);
-        // $file = time() . $rand;
-        // $file =  (string)$file;
-        // $file = array_column($aa, 'name');
-        foreach ($aa as $key => $value) {
+        foreach ($aa as $key => $value) { 
             $start1= $db->setFile()->backup($value['name'], $start);
         }
 
-        $bb = $db->fileList();
+        // 根据更新结果设置返回提示信息
+        $data = ['msg' => '创建成功', 'val' => 1];
+        // 返回信息
+        return json($data);
     }
 
 
@@ -64,6 +77,20 @@ class BackUp extends AdminBase
     public function daoru()
     {
 
+    }
+
+
+    // 删除备份
+    public function delete($time)
+    {
+        $db= new up($this->upcnf);
+        $data = $db->delFile($time);
+        // 根据更新结果设置返回提示信息
+        $data ? $data = ['msg' => '删除成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
+
+        // 返回信息
+        return json($data);
     }
 
 
