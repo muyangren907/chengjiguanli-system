@@ -138,12 +138,4 @@ class Student
         }
         return $data;
     }
-
-
-
-
-
-
-
-
 }

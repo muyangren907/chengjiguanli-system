@@ -31,23 +31,27 @@
         </script>
 </head>
 <body class="login-bg">
-    <div class="login layui-anim layui-anim-up">
+    <div class="login layui-anim layui-anim-up" style="margin-top: 60px;">
         <div class="message">{$list['webtitle']} {$list['version']}</div>
         <div id="darkbannerwrap"></div>
         <form method="post" class="layui-form" >
             <input name="username" placeholder="用户名"  type="text" lay-verify="required" class="layui-input" >
             <hr class="hr15">
             <input name="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input" autocomplete="off">
+            <hr class="hr15">
+            <div style="text-align: center;">
+              <input type="radio" class="layui-input" name="category" value="student" title="学生">
+              <input type="radio" class="layui-input" name="category" value="teacher" title="教师">
+              <input type="radio" class="layui-input" name="category" value="admin" title="管理员">
+            </div>
             <hr class="hr15" id="thisafter">
-
               <div class="layui-form-item" style="margin-left:0px; margin-bottom: 0px;">
                 <div id="slider" style="height: 50px"></div>
               </div>
             <hr class="hr15">
-            <a href="/login/student" class="layui-btn layui-btn-danger" style="width:23%;height: 48px;font-size: 14px;padding-top: 7px;">学生入口</a>
-            <a href="/login/teacher" class="layui-btn layui-btn-danger" style="width:23%;height: 48px;font-size: 14px;padding-top: 7px; margin-left: 1px">教师入口</a>
-            <input value="管理员登录" lay-submit lay-filter="login" style="width:49%; float: right;" type="submit">
+            <input value="登录" lay-submit lay-filter="login" style="float: right;" type="submit">
             <hr class="hr20" >
+            <div style="color: #666666; text-align: center;">推荐使用Firefox、Chrome浏览器</div>
         </form>
     </div>
     <script type="text/javascript" charset="utf-8">
@@ -108,15 +112,14 @@
           }
           return false;
         });
+
+        // 单选事件
+        $("[name='category']").each(function(){
+          $(this).bind('click', function(){
+            $('username').val('a');
+          });
+        });
       })
-
-
-      function tiaozhuan()
-      {
-        layer.msg('');
-      }
-
-
     </script>
 
 
