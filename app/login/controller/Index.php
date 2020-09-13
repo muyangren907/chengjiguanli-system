@@ -5,14 +5,8 @@ namespace app\login\controller;
 use app\admin\model\Admin as AD;
 // // 引用加密类
 use WhiteHat101\Crypt\APR1_MD5;
-// // 引用验证码类
-use think\captcha\Captcha;
 // 引用view类
 use think\facade\View;
-// 引用验证规则
-use app\login\validate\Yanzheng;
-// 引用验证类
-use think\exception\ValidateException;
 
 
 class Index
@@ -20,7 +14,6 @@ class Index
     // 显示登录选择界面
     public function index()
     {
-        $mobile = request()->isMobile();
         // 清除cookie
         cookie('userid', null);
         cookie('username', null);
@@ -31,7 +24,6 @@ class Index
         // 获取系统名称和版本号
         $list['webtitle'] = config('shangma.webtitle');
         $list['version'] = config('shangma.version');
-        $list['mobile'] = $mobile;
 
         View::assign('list',$list);
 
@@ -40,42 +32,77 @@ class Index
     }
 
 
-    // 登录验证
-    public function yanzheng()
+
+    // 登录验证分流
+    public function yanchengdenglu()
     {
         // 获取表单数据
-        $data = request()->only(['username','password','captcha','online']);
+        $list = request()
+            ->only([
+                'username'
+                ,'password'
+                ,'category'
+            ]);
 
-        // 验证表单数据
-        try {
-            // 实例化验证模型
-            $validate = new \app\login\validate\Yanzheng;
-            validate(Yanzheng::class)->scene('admin')->check($data);
-        } catch (ValidateException $e) {
-            // 验证失败 输出错误信息
-            $data=['msg'=>$e->getError(),'status'=>0];
+        $validate = new \app\login\validate\Yanzheng;
+        $result = $validate->scene('fenliu')->check($list);
+        $msg = $validate->getError();
+        if(!$result){
+            return json(['msg' => $msg, 'val' => 0]);
+        }
+
+        switch ($list['category']) {
+            case 'admin':
+                $data = $this->admin($list);
+                break;
+
+            case 'teacher':
+                $data = $this->teacher($list);
+                break;
+
+            case 'student':
+                $data = $this->student($list);
+                break;
+
+            default:
+                $data = ['msg' => '用户身份丢失', 'val' => 1];
+                break;
+        }
+
+        return json($data);
+    }
+
+
+
+    // 登录验证
+    public function admin($list)
+    {
+        // 获取服务器密码
+        $userinfo = AD::where('username', $list['username'])
+            ->where('val', 1)
+            ->field('id, lastip, username, ip, denglucishu, lasttime, thistime, password')
+            ->find();
+
+        if($userinfo == null)
+        {
+            // 清除session（当前作用域）
+            session(null);
+            // 验证结果;
+            $data = ['msg' => '管理员帐号不存在或被禁用', 'val' => 0];
             return json($data);
         }
 
+
         // 验证用户名和密码
-        $check = $this->check($data['username'],$data['password']);
+        $check = $this->check($list['password'], $userinfo->password);
 
-        if($check['status']==1)
+        if($check['val'] === 1)
         {
-
-            // 设置cookie值
-            if( request()->post('online') == true )
-            {
-                // 设置
-                cookie('userid', session('userid') ,259200);
-                cookie('username', $data['username'] ,259200);
-                cookie('password', $data['password'] ,259200);
-            }
+            session(null);
+            session('onlineCategory', 'admin');
+            session('user_id', $userinfo->id);
 
             // 将本次信息上传到服务器上
-            $userinfo = AD::where('username',$data['username'])
-                    ->field('lastip,username,ip,denglucishu,lasttime,thistime')
-                    ->find();
             $userinfo->lastip = $userinfo->ip;
             $userinfo->ip = request()->ip();
             $userinfo->denglucishu = ['inc', 1];
@@ -84,10 +111,10 @@ class Index
             $userinfo->save();
 
             // 跳转到首页
-            $data=['msg'=>'验证成功','status'=>1];
+            $data = ['msg' => '验证成功', 'val' => 1];
         }else{
             // 提示错误信息
-            $data=['msg'=>$check['msg'],'status'=>0];
+            $data = ['msg' => $check['msg'], 'val' => 0];
         }
 
         return json($data);
@@ -95,47 +122,31 @@ class Index
 
 
     // 已知密码进行验证
-    public function check($username,$password)
+    public function check($srcfrom)
     {
+        $src = [
+            'username' => ''
+            ,'password' => ''
+            ,'onlineCategory' => ''
+            ,'user_id' => ''
+        ];
+        $src = array_cover($srcfrom, $src);
+
         // 实例化加密类
         $md5 = new APR1_MD5();
 
-        // 获取服务器密码
-        $userinfo = AD::where('username',$username)->where('status',1)->find();
-
-        if($userinfo == null)
-        {
-            
-            // 清除session（当前作用域）
-            session(null);
-            // 验证结果;
-            $data=['msg'=>'用户名不存在或被禁用','status'=>0];
-            return $data;
-        }
-
-
         //验证密码
-        $check = $md5->check($password,$userinfo->password);
-        
+        $check = $md5->check($inputPassword, $serverPassword);
+
         if($check)
         {
-            session('admin', null);
-            session('onlineCategory', 'admin');
-            session('admin.userid', $userinfo->id);
-            session('admin.username', $username);
-            session('admin.password', $password);
-
-            $data=['msg'=>'验证成功','status'=>1];
+            session('username', $username);
+            session('password', $password);
+            $data = ['msg' => '验证成功', 'val' => 1];
         }else{
-             // 清除cookie
-            cookie('userid', null);
-            cookie('username', null);
-            cookie('password', null);
-            // 清除session（当前作用域）
-            session(null);
-            $data=['msg'=>'用户名或密码错误','status'=>0];
+            $data = ['msg' => '用户名或密码错误', 'val' => 0];
         }
-        return $data;        
+        return $data;
     }
 
 
@@ -175,5 +186,5 @@ class Index
         View::assign('list',$list);
         return View::fetch();
     }
-    
+
 }

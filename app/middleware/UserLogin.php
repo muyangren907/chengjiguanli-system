@@ -19,7 +19,7 @@ class UserLogin
         if ($category != 'admin')
         {
 
-            \app\facade\OnLine::jump('/login', '请使用管理员帐号登录');
+            \app\facade\OnLine::jump('/login/index/index', '请使用管理员帐号登录');
         }
 
         $userInfo = \app\facade\OnLine::getLoginInfo('admin');
@@ -29,7 +29,7 @@ class UserLogin
         $yz = $yz->check($userInfo['username'],$userInfo['password']);
 
         if($yz['status'] == 0){
-            \app\facade\OnLine::jump('/login', '请使用新密码登录');
+            \app\facade\OnLine::jump('/login/index/index', '请使用新密码登录');
         }
 
         return $next($request);

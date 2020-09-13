@@ -35,14 +35,14 @@
         <div class="message">{$list['webtitle']} {$list['version']}</div>
         <div id="darkbannerwrap"></div>
         <form method="post" class="layui-form" >
-            <input name="username" placeholder="用户名"  type="text" lay-verify="required" class="layui-input" >
+            <input id="username" name="username" placeholder="用户名"  type="text" lay-verify="required" class="layui-input" >
             <hr class="hr15">
-            <input name="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input" autocomplete="off">
+            <input id="password" name="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input" autocomplete="off">
             <hr class="hr15">
-            <div style="text-align: center;">
-              <input type="radio" class="layui-input" name="category" value="student" title="学生">
-              <input type="radio" class="layui-input" name="category" value="teacher" title="教师">
-              <input type="radio" class="layui-input" name="category" value="admin" title="管理员">
+            <div>
+              <input type="radio" lay-filter="category" class="layui-input" name="category" value="student" title="学生">
+              <input type="radio" lay-filter="category" class="layui-input" name="category" value="teacher" title="教师">
+              <input type="radio" lay-filter="category" class="layui-input" name="category" value="admin" title="管理员">
             </div>
             <hr class="hr15" id="thisafter">
               <div class="layui-form-item" style="margin-left:0px; margin-bottom: 0px;">
@@ -63,61 +63,43 @@
         var sliderVerify = layui.sliderVerify,
           form = layui.form;
 
-        mobile = "{$list['mobile']}";
-        if(mobile!==true)
-        {
-          var slider = sliderVerify.render({
-            elem: '#slider',
-            onOk: function(){
-              //当验证通过回调
-              // layer.msg("滑块验证通过");
-            },
-          })
-        }
+        var slider = sliderVerify.render({
+          elem: '#slider',
+          onOk: function(){
+            //当验证通过回调
+            // layer.msg("滑块验证通过");
+          },
+        })
 
         //监听提交
         form.on('submit(login)', function(data){
-          mobile = "{$list['mobile']}";
-          if(mobile == true)
+          yz = slider.isOk();
+          if(yz == false)
           {
-            yz = true
-          }else{
-            yz = slider.isOk();
-          }
-
-          if(yz){
-            $.post("/login",data.field,function(data,status){
-                  if(status != 'success')
-                  {
-                    layer.msg('数据传输错误');
-                    $('#captchaimg').onclick();
-                    $('#captcha').val('');
-                    $('#password').val('');
-                    slider.reset();
-                  }
-                  if(data.status == 1)
-                  {
-                    window.location.href="/";
-                  }else{
-                    layer.msg(data.msg);
-                    $('#captchaimg').click();
-                    $('#captcha').val('');
-                    $('#password').val('');
-                    slider.reset();
-                  }
-                });
-                return false;
-          }else{
             layer.msg("请先通过滑块验证");
+            return false;
           }
-          return false;
-        });
-
-        // 单选事件
-        $("[name='category']").each(function(){
-          $(this).bind('click', function(){
-            $('username').val('a');
+          $.ajax({
+            url:"/login",
+            type:'POST',
+            async: true,
+            data:data.field,
+            success:function(result){
+              if(result.val == 1)
+              {
+                window.location.href="/";
+              }else{
+                layer.msg(result.msg);
+                $('#password').val('');
+                slider.reset();
+              }
+            },
+            error:function(result){
+              $('#password').val('');
+              layer.msg('数据扔半道，回不来啦。',function(){});
+            },
           });
+          return false;
         });
       })
     </script>

@@ -11,11 +11,11 @@ class Yanzheng extends Validate
      * 格式：'字段名'	=>	['规则1','规则2'...]
      *
      * @var array
-     */	
+     */
 	protected $rule = [
         'username|用户名'  =>  'require',
         'password|密码'  =>  'require',
-        // 'captcha|验证码'=>'require|captcha',
+        'category|用户身份'  =>  'require',
     ];
 
     protected $message = [
@@ -27,6 +27,11 @@ class Yanzheng extends Validate
             'username'
             ,'password'
             ,'shengfenzhenghao'
+        ],
+        'fenliu'  =>  [
+            'username'
+            ,'password'
+            ,'category'
         ]
     ];
 }

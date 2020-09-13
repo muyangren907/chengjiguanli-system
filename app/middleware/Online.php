@@ -25,7 +25,7 @@ class Online
         $online = session('?onlineCategory');
         if($online == false)
         {
-            \app\facade\OnLine::jump('/login', '登录超时啦~');
+            \app\facade\OnLine::jump('/login/index/index', '登录超时啦~');
         }
         return $next($request);
     }
