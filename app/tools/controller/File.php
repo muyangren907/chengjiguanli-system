@@ -22,18 +22,19 @@ class File extends BaseController
         {
             $this->middleware = [
                 'online'
-                ,'login'
+                ,'terlogin'
             ];
+            $this->luruTeacherId = session('teacher.userid');
+
         }else{
             $this->middleware = [
                 'online'
                 ,'login'
                 ,'auth'
             ];
+            $this->luruTeacherId = session('admin.userid');
         }
-        $this->luruTeacherId = session('user_id');
     }
-
 
     /**
      * 获取文件信息并保存
