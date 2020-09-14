@@ -24,7 +24,7 @@ abstract class TeacherSearchBase  extends BaseController
         $this->online = session('onlineCategory');
         if($this->online != 'teacher')
         {
-            \app\facade\OnLine::jump('/login', '登录超时啦~');
+            \app\facade\OnLine::jump('/login', '请使用教师帐号登录');
         }
     }
 }

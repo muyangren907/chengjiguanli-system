@@ -23,11 +23,6 @@ class Yanzheng extends Validate
             'username'
             ,'password'
         ],
-        'student'  =>  [
-            'username'
-            ,'password'
-            ,'shengfenzhenghao'
-        ],
         'fenliu'  =>  [
             'username'
             ,'password'
