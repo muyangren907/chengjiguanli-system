@@ -42,7 +42,7 @@
             <div>
               <input type="radio" lay-filter="category" class="layui-input" name="category" value="student" title="学生">
               <input type="radio" lay-filter="category" class="layui-input" name="category" value="teacher" title="教师">
-              <input type="radio" lay-filter="category" class="layui-input" name="category" value="admin" title="管理员">
+              <input type="radio" lay-filter="category" class="layui-input" name="category" value="admin" title="管理员" checked="checked">
             </div>
             <hr class="hr15" id="thisafter">
               <div class="layui-form-item" style="margin-left:0px; margin-bottom: 0px;">
@@ -87,7 +87,7 @@
             success:function(result){
               if(result.val == 1)
               {
-                window.location.href="/";
+                window.location.href = result.url;
               }else{
                 layer.msg(result.msg);
                 $('#password').val('');

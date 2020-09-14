@@ -30,18 +30,16 @@ class Index extends BaseController
         {
             $this->middleware = [
                 'online'
-                ,'terlogin'
+                ,'login'
             ];
-            $this->luruTeacherId = session('teacher.userid');
-
         }else{
             $this->middleware = [
                 'online'
                 ,'login'
                 ,'auth'
             ];
-            $this->luruTeacherId = session('admin.userid');
         }
+        $this->luruTeacherId = session('user_id');
     }
 
     // 成绩列表

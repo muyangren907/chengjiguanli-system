@@ -15,6 +15,16 @@ abstract class StudentSearchBase  extends BaseController
      */
     protected $middleware = [
         'online'
-        ,'stulogin'
+        ,'login'
     ];
+
+    // 初始化变量
+    protected function initialize()
+    {
+        $this->online = session('onlineCategory');
+        if($this->online != 'student')
+        {
+            \app\facade\OnLine::jump('/login', '请使用学生帐号登录');
+        }
+    }
 }

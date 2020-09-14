@@ -26,7 +26,7 @@ class Index extends TeacherSearchBase
         $list['version'] = config('shangma.version');   # 版本号
         $tch = new TCH;   # 获取用户姓名
 
-        $list->info = $tch->where('id', session('teacher.userid'))
+        $list->info = $tch->where('id', session('user_id'))
                 ->field('id, xingming, danwei_id')
                 ->with([
                     'jsDanwei' => function ($query) {
@@ -94,9 +94,7 @@ class Index extends TeacherSearchBase
                 ]
             ];
         }
-
         $list['menu'] = $temp;
-
 
         // 模版赋值
         $this->view->assign('list', $list);
@@ -127,18 +125,14 @@ class Index extends TeacherSearchBase
         $list['version'] = config('shangma.version');
 
         $ry = new \app\rongyu\model\JsRongyuCanyu;
-        $list['rongyu'] = $ry->where('teacher_id', session('teacher.userid'))->count();
+        $list['rongyu'] = $ry->where('teacher_id', session('user_id'))->count();
 
         $kt = new \app\keti\model\KetiCanyu;
-        $list['keti'] = $ry->where('teacher_id', session('teacher.userid'))->count();
-
-
-
+        $list['keti'] = $ry->where('teacher_id', session('user_id'))->count();
 
         $list['kaoshi'] = 1;
         $list['teacher'] = 1;
         $list['student'] = 1;
-
 
         // 模版赋值
         $this->view->assign('list',$list);
@@ -177,7 +171,7 @@ class Index extends TeacherSearchBase
             'webtitle' => '修改密码'
             ,'butname' => '修改'
             ,'formpost' => 'PUT'
-            ,'url' => '/teachersearchchengji/index/updatepassword/' . session('teacher.userid')
+            ,'url' => '/teachersearchchengji/index/updatepassword/' . session('user_id')
         );
 
         // 模板赋值
@@ -235,7 +229,7 @@ class Index extends TeacherSearchBase
     // 班级成绩列表
     public function banji()
     {
-        $teacher_id = session('teacher.userid');
+        $teacher_id = session('user_id');
         $list['teacher_id'] = $teacher_id;
 
         $sbj = new \app\teach\model\Subject;
@@ -341,7 +335,7 @@ class Index extends TeacherSearchBase
         // 设置要给模板赋值的信息
         $list['webtitle'] = '个人荣誉';
         $list['dataurl'] = '/tools/teacherinfo/srcry';
-        $list['teacher_id'] = session('teacher.userid');
+        $list['teacher_id'] = session('user_id');
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -357,7 +351,7 @@ class Index extends TeacherSearchBase
         // 设置要给模板赋值的信息
         $list['webtitle'] = '个人课题';
         $list['dataurl'] = '/tools/teacherinfo/srckt';
-        $list['teacher_id'] = session('teacher.userid');
+        $list['teacher_id'] = session('user_id');
 
         // 模板赋值
         $this->view->assign('list', $list);

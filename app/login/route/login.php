@@ -14,7 +14,7 @@ use think\facade\Route;
 // 系统设置systembase
 Route::group('', function () {
 		Route::rule('','Index/index','get');
-		Route::rule('','Index/yanzheng','post');
+		Route::rule('','Index/yanchengdenglu','post');
 		Route::rule('log','Index/shangmaLog','get');		# 配置更新
 		Route::rule('err','Index/myerror','get');			//错误页
 		Route::rule('weihu','Index/weihu','get');			//错误页
