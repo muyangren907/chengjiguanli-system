@@ -22,7 +22,7 @@ class File extends BaseController
         {
             $this->middleware = [
                 'online'
-                ,'terlogin'
+                ,'login'
             ];
         }else{
             $this->middleware = [
