@@ -99,7 +99,12 @@ class Fields extends BaseModel
             ,'student' => '学生'
         ];
 
-        $str = $arr[$data['user_group']] . ' ' . $xm;
+        if(isset($arr[$data['user_group']]))
+        {
+            $str = $arr[$data['user_group']] . ' ' . $xm;
+        }else{
+            $str = '';
+        }
 
         return $str;
     }
