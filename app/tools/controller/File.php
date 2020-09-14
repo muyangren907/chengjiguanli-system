@@ -22,7 +22,7 @@ class File extends BaseController
         {
             $this->middleware = [
                 'online'
-                ,'login'
+                ,'terlogin'
             ];
             $this->luruTeacherId = session('teacher.userid');
 
