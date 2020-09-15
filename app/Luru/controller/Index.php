@@ -367,6 +367,7 @@ class Index extends BaseController
         $user_id = $this->luruTeacherId;   # 获取用户id
         $user_group = $this->online;   # 获取用户id
         $data = array();
+        $md5 = new \app\facade\Tools;
 
         // 重新组合数组
         foreach ($subject as $key => $value) {
@@ -389,9 +390,11 @@ class Index extends BaseController
                     continue;
                 }
 
+                $temp_id = $md5::decrypt($val[1], 'dlbz');
+
                 // 添加或更新数据
                 $cjone = Chengji::withTrashed()
-                    ->where('kaohao_id', $val[1])
+                    ->where('kaohao_id', $temp_id)
                     ->where('subject_id', $value['id'])
                     ->find();
                 // 判断成绩是否存在
@@ -408,7 +411,7 @@ class Index extends BaseController
                 } else {
                     // 如果不存在则新增记录
                     $data = [
-                        'kaohao_id' => $val[1]
+                        'kaohao_id' => $temp_id
                         ,'subject_id' => $value['id']
                         ,'user_id' => $user_id
                         ,'user_group' => $user_group
@@ -508,13 +511,15 @@ class Index extends BaseController
         $sheet->getColumnDimension('B')->setWidth('0');
         $sheet->getColumnDimension('C')->setWidth('13');
 
+        $md5 = new \app\facade\Tools;
+
         // 将学生信息循环写入表中
         $i = 4;
         foreach ($kaohao as $key=>$bj)
         {
             foreach ($bj->banjiKaohao as $k => $kh) {
                 $sheet->setCellValue('A' . $i, $i - 3);
-                $sheet->setCellValue('B' . $i, $kh->id);
+                $sheet->setCellValue('B' . $i, $md5::encrypt((string)$kh->id, 'dlbz'));
                 $sheet->setCellValue('C' . $i, $bj->banjiTitle);
                 $sheet->setCellValue('D' . $i, $kh->cjStudent->xingming);
                 $i ++;
