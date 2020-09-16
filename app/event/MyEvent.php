@@ -36,13 +36,13 @@ class MyEvent
                 $log->restore();
             }
             $log->update_time = time();
-            $log->user_id = session('admin.userid');
+            $log->user_id = session('user_id');
             $data = $log->save();
         }else{
             $data = $tjLog->save([
                 'kaoshi_id' => $kaoshi_id,
                 'category_id' => $category_id,
-                'user_id' => session('admin.userid'),
+                'user_id' => session('user_id'),
             ]);
         }
 

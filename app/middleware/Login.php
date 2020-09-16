@@ -19,31 +19,23 @@ class Login
             case 'admin':
                 $yz = new \app\login\controller\Index;
                 $yz = $yz->admin(session('username'), session('password'));
-                if($yz['val'] == 0)
-                {
-                    \app\facade\OnLine::jump('/login', $yz['msg']);
-                }
                 break;
             case 'teacher':
                 $yz = new \app\login\controller\Index;
                 $yz = $yz->teacher(session('username'), session('password'));
-                if($yz['val'] == 0)
-                {
-                    \app\facade\OnLine::jump('/login', $yz['msg']);
-                }
                 break;
             case 'student':
                 $yz = new \app\login\controller\Index;
                 $yz = $yz->student(session('username'), session('password'));
-                if($yz['val'] == 0)
-                {
-                    \app\facade\OnLine::jump('/login', $yz['msg']);
-                }
                 break;
-            
+
             default:
                 \app\facade\OnLine::jump('/login', '请选择用户角色');
                 break;
+        }
+        if($yz['val'] == 0)
+        {
+            \app\facade\OnLine::jump('/login', $yz['msg']);
         }
 
         return $next($request);
