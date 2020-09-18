@@ -62,6 +62,7 @@ class KsCanYu extends BaseController
         {
             $teacher_id = session('user_id');
             $s = \think\facade\Session::all();
+            
             $btj = new \app\chengji\model\TongjiBj;
             $src['banji_id'] = $btj->where('teacher_id', $teacher_id)
                         ->where('kaoshi_id', $src['kaoshi_id'])
