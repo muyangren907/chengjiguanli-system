@@ -12,4 +12,5 @@ return [
     'weihu'         => false,  # 是否开启维护跳转
     'shijian'		=> '2020-9-2 12:47',  # 开始时间
     'shichang'		=> '1',			# 时长:单位分钟
+    'lurufanwei'    =>  true   # 是否开启教师只能录入自己任课班级的成绩
 ];
