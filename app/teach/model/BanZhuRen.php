@@ -1,0 +1,82 @@
+<?php
+declare (strict_types = 1);
+
+namespace app\teach\model;
+
+// 引用数据模型基类
+use app\BaseModel;
+
+/**
+ * @mixin \think\Model
+ */
+class BanZhuRen extends BaseModel
+{
+    // 教师关联模型
+    public function glTeacher()
+    {
+        return $this->belongsTo('\app\teacher\model\Teacher', 'teacher_id', 'id');
+    }
+
+
+    // 教师关联模型
+    public function glBanji()
+    {
+        return $this->belongsTo('\app\teach\model\Banji', 'banji_id', 'id');
+    }
+
+
+    // 生日获取器
+    public function getBfdateAttr($value)
+    {
+        return date('Y-m-d',$value);
+    }
+
+
+    // 根据条件查询学期
+    public function search($srcfrom)
+    {
+        // 整理变量
+        $src = [
+            'banji_id' => ''
+            ,'teacher_id' => ''
+            ,'bfdate' => ''
+            ,'enddate' => ''
+        ];
+        $src = array_cover($srcfrom, $src) ;
+        $src['banji_id'] = strToarray($src['banji_id']);
+        $src['teacher_id'] = strToarray($src['teacher_id']);
+        if(isset($srcfrom['bfdate']) && strlen($srcfrom['bfdate']) > 0)
+        {
+            $src['bfdate'] = $srcfrom['bfdate'];
+        }else{
+            $src['bfdate'] = date("Y-m-d", strtotime("-6 year"));
+        }
+        if(isset($srcfrom['enddate']) && strlen($srcfrom['enddate']) > 0)
+        {
+            $src['enddate'] = $srcfrom['enddate'];
+        }else{
+            $src['enddate'] = date("Y-m-d", strtotime('now'));
+        }
+
+        // 查询数据
+        $data = $this
+            ->whereTime('bfdate', 'between', [$src['bfdate'], $src['enddate']])
+            ->when(count($src['banji_id']) > 0, function($query) use($src){
+                    $query->where('banji_id', $src['banji_id']);
+                })
+            ->when(count($src['teacher_id']) > 0, function($query) use($src){
+                    $query->where('teacher_id', $src['teacher_id']);
+                })
+            ->with(
+                [
+                    'glTeacher'=>function($query){
+                        $query->field('id, xingming');
+                    },
+                ]
+            )
+            ->select();
+
+        return $data;
+    }
+
+}

@@ -39,12 +39,19 @@ class Banji extends BaseModel
                 })
             ->with(
                 [
-                    'glSchool'=>function($query){
+                    'glSchool' => function($query){
                         $query->field('id, title, jiancheng');
                     },
-                    'glTeacher'=>function($query){
-                        $query->field('id, xingming');
-                    },
+                    'glBanZhuRen' => function ($query) {
+                        $query->field('id, teacher_id, banji_id, bfdate')
+                            ->with([
+                                'glTeacher' => function($q) {
+                                    $q->field('id, xingming');
+                                }
+                            ])
+                            ->withLimit(1)
+                            ->order(['bfdate' => 'desc', 'id' => 'desc']);
+                    }
                 ]
             )
             ->withCount([
@@ -105,16 +112,19 @@ class Banji extends BaseModel
     }
 
 
-    // 学校关联模型
-    public function glTeacher(){
-        return $this->belongsTo('\app\teacher\model\Teacher', 'banzhuren', 'id');
-    }
-
-
     // 年级-班级关联表
     public function njBanji()
     {
         return $this->hasMany('Banji', 'ruxuenian', 'ruxuenian');
+    }
+
+
+    // 年级-班级关联表
+    public function glBanZhuRen()
+    {
+        return $this->hasMany('BanZhuRen', 'banji_id', 'id')
+                    ->limit(1)
+                    ->order(['update_time' => 'desc']);
     }
 
 

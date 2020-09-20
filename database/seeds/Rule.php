@@ -711,60 +711,90 @@ class Rule extends Seeder
                 ,'pid'  => 5
                 ,'url' => '/teach/banji'
             ],
-                ['id' => 500201
+                ['id' => 50201
                     ,'title' => '添加'
                     ,'name' => 'teach/banji/create'
                     ,'paixu'  => 1
                     ,'pid' => 502
                 ],
-                ['id' => 500202
+                ['id' => 50202
                     ,'title' => '保存'
                     ,'name' => 'teach/banji/save'
                     ,'paixu'  => 2
                     ,'pid' => 502
                 ],
-                ['id' => 500203
+                ['id' => 50203
                     ,'title' => '移动'
                     ,'name' => 'teach/banji/yidong'
                     ,'paixu' => 3
                     ,'pid' => 502
                 ],
-                ['id' => 500204
+                ['id' => 50204
                     ,'title' => '删除'
                     ,'name' => 'teach/banji/delete'
                     ,'paixu' => 4
                     ,'pid' => 502
                 ],
-                ['id' => 500205
+                ['id' => 50205
                     ,'title' => '状态'
                     ,'name' => 'teach/banji/setstatus'
                     ,'paixu' => 5
                     ,'pid' => 502
                 ],
-                ['id' => 500206
+                ['id' => 50206
                     ,'title' => '成绩查看'
                     ,'name' => 'teach/banjichengji/index'
                     ,'paixu' => 6
                     ,'pid' => 502
                 ],
-                ['id' => 500207
+                ['id' => 50207
                     ,'title' => '设置别名'
                     ,'name' => 'teach/banji/setalias'
                     ,'paixu' => 7
                     ,'pid' => 502
                 ],
-                ['id' => 500208
-                    ,'title' => '编辑班主任'
-                    ,'name' => 'teach/banji/banzhuren'
+                ['id' => 50208
+                    ,'title' => '班主任管理'
+                    ,'name' => 'teach/banzhuren/index'
                     ,'paixu' => 8
                     ,'pid' => 502
                 ],
-                ['id' => 500209
-                    ,'title' => '更新班主任'
-                    ,'name' => 'teach/banji/updatebanzhuren'
-                    ,'paixu' => 9
-                    ,'pid' => 502
-                ],
+                    ['id' => 5020801
+                        ,'title' => '添加'
+                        ,'name' => 'teach/banzhuren/create'
+                        ,'paixu' => 1
+                        ,'pid' => 50208
+                    ],
+                    ['id' => 5020802
+                        ,'title' => '保存'
+                        ,'name' => 'teach/banzhuren/save'
+                        ,'paixu' => 2
+                        ,'pid' => 50208
+                    ],
+                    ['id' => 5020803
+                        ,'title' => '编辑'
+                        ,'name' => 'teach/banzhuren/edit'
+                        ,'paixu' => 3
+                        ,'pid' => 50208
+                    ],
+                    ['id' => 5020804
+                        ,'title' => '更新'
+                        ,'name' => 'teach/banzhuren/update'
+                        ,'paixu' => 4
+                        ,'pid' => 50208
+                    ],
+                    ['id' => 5020805
+                        ,'title' => '删除'
+                        ,'name' => 'teach/banzhuren/delete'
+                        ,'paixu' => 5
+                        ,'pid' => 50208
+                    ],
+                    ['id' => 5020806
+                        ,'title' => '状态'
+                        ,'name' => 'teach/banzhuren/setstatus'
+                        ,'paixu' => 6
+                        ,'pid' => 50208
+                    ],
             ['id' => 503
                 ,'title' => '学科列表'
                 ,'name' => 'teach/subject/index'
