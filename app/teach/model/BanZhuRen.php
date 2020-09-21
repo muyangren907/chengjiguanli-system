@@ -48,6 +48,7 @@ class BanZhuRen extends BaseModel
             ,'teacher_id' => ''
             ,'bfdate' => ''
             ,'enddate' => ''
+            ,'searchval' => ''
         ];
 
         $src = array_cover($srcfrom, $src) ;
@@ -67,7 +68,6 @@ class BanZhuRen extends BaseModel
             $src['enddate'] = date("Y-m-d", strtotime('1 day'));
         }
 
-
         // 查询数据
         $data = $this
             ->whereTime('bfdate', 'between', [$src['bfdate'], $src['enddate']])
@@ -77,6 +77,13 @@ class BanZhuRen extends BaseModel
             ->when(count($src['teacher_id']) > 0, function($query) use($src){
                     $query->where('teacher_id', 'in', $src['teacher_id']);
                 })
+            ->when(strlen($src['searchval']) > 0, function ($query) use($src) {
+                $query->where('teacher_id', 'in', function ($q) use($src) {
+                    $q->name('teacher')
+                        ->where('xingming', 'like', '%'.$src['searchval'].'%')
+                        ->field('id');
+                });
+            })
             ->with(
                 [
                     'glTeacher'=>function($query){
