@@ -88,7 +88,7 @@
             cjgl.delAll(checkStatus,'/teach/banzhuren/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加班主任','/teach/banzhuren/create/' + "{$list.banji_id}",'600','400',false);
+            cjgl.add('添加','/teach/banzhuren/create/' + "{$list.banji_id}",'600','400',false);
             break;
         };
       });
@@ -106,7 +106,7 @@
             cjgl.del(obj,"/teach/banzhuren/delete");
             break;
           case 'edit':// 编辑
-            cjgl.add('编辑班主任','/teach/banzhuren/edit/'+obj.data.id,'','',true);
+            cjgl.add('编辑','/teach/banzhuren/edit/'+obj.data.id,'','',true);
             break;
         };
       });
