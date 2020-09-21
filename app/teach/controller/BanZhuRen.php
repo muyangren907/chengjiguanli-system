@@ -10,7 +10,6 @@ use app\teach\model\BanZhuRen as bzr;
 
 class BanZhuRen extends AdminBase
 {
-
     // 主任列表
     public function index($banji_id)
     {
@@ -73,14 +72,18 @@ class BanZhuRen extends AdminBase
             'webtitle' => '添加班主任'
             ,'butname' => '添加'
             ,'formpost' => 'POST'
-            ,'url' => 'save'
-            ,'banji_id' => $banji_id
+            ,'url' => '/teach/banzhuren/save'
         );
+
+        $bj = new \app\teach\model\Banji;
+        $bjInfo = $bj->where('id', $banji_id)->value('school_id');
+        $list['data']['school_id'] = $bjInfo;
+        $list['data']['banji_id'] = $banji_id;
 
         // 模板赋值
         $this->view->assign('list', $list);
         // 渲染
-        return $this->view->fetch('chengji@create');
+        return $this->view->fetch();
     }
 
 
@@ -93,13 +96,13 @@ class BanZhuRen extends AdminBase
     {
         // 获取表单数据
         $list = request()->only([
-            'school_id'
-            ,'ruxuenian'
-            ,'bjsum'
+            'banji_id'
+            ,'teacher_id'
+            ,'bfdate'
         ], 'post');
 
         // 验证表单数据
-        $validate = new \app\teach\validate\Banji;
+        $validate = new \app\teach\validate\BanZhuRen;
         $result = $validate->scene('create')->check($list);
         $msg = $validate->getError();
         if(!$result)
@@ -107,43 +110,83 @@ class BanZhuRen extends AdminBase
             return json(['msg' => $msg, 'val' => 0]);
         }
 
-        // 整理要添加的数据
-        $paixumax = bjmod::where('school_id', $list['school_id'])
-            ->where('ruxuenian', $list['ruxuenian'])
-            ->max('paixu');
-
-        // 获取班级最大数
-        $cnfMax = \app\facade\System::sysClass();
-
-        if($paixumax + $list['bjsum'] > $cnfMax->classmax) # 如果增加班级数超过2个，则少加班级
-        {
-            if($paixumax >= $cnfMax)
-            {
-                return json(['msg' => '已经超过同年级班级数的上线啦。', 'val' => 0]);
-            }
-            if($paixumax + $list['bjsum'] > $cnfMax) # 如果增加班级数超过2个，则少加班级
-            {
-                $list['bjsum'] = $cnfMax - $paixumax;
-            }
-        }
-
-        $i = 1;
-        while($i <= $list['bjsum'])
-        {
-            $bjarr[] = array(
-                'school_id' => $list['school_id'],
-                'ruxuenian' => $list['ruxuenian'],
-                'paixu' => $paixumax + $i,
-            );
-            $i ++;
-        }
-
         // 保存数据
-        $bj = new bjmod();
-        $data = $bj->saveAll($bjarr);
+        $bj = new bzr();
+        $data = $bj->save($list);
 
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '添加成功', 'val'=>1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
+    // 修改学期信息
+    public function edit($id)
+    {
+        // 获取学期信息
+        $bzr = new bzr;
+        $bjInfo = $bzr
+            ->where('id', $id)
+            ->field('id,teacher_id, banji_id, bfdate')
+            ->with([
+                'glTeacher' => function ($query) {
+                    $query->field('id, xingming');
+                },
+                'glBanji' => function ($query) {
+                    $query->field('id, school_id');
+                }
+            ])
+            ->find();
+        $list['data']['school_id'] = $bjInfo->glBanji->school_id;
+        $list['data']['banji_id'] = $bjInfo->banji_id;
+        $list['data']['teacher_id'] = $bjInfo->teacher_id;
+        $list['data']['xingming'] = $bjInfo->glTeacher->xingming;
+        $list['data']['bfdate'] = $bjInfo->bfdate;
+
+       // 设置页面标题
+        $list['set'] = array(
+            'webtitle' => '编辑班主任'
+            ,'butname' => '修改'
+            ,'formpost' => 'PUT'
+            ,'url' => '/teach/banzhuren/update/' . $id
+        );
+
+        // 模板赋值
+        $this->view->assign('list',$list);
+        // 渲染
+        return $this->view->fetch('create');
+    }
+
+
+    // 更新学期信息
+    public function update($id)
+    {
+        // 获取表单数据
+        $list = request()->only([
+            'bfdate'
+            ,'teacher_id'
+        ], 'put');
+        $list['id'] = $id;
+
+        // 验证表单数据
+        $validate = new \app\teach\validate\BanZhuRen;
+        $result = $validate->scene('edit')->check($list);
+        $msg = $validate->getError();
+        if(!$result){
+            return json(['msg' => $msg, 'val' => 0]);
+        }
+
+        // 更新数据
+        $bzrlist = bzr::find($id);
+        $bzrlist->teacher_id = $list['teacher_id'];
+        $bzrlist->bfdate = $list['bfdate'];
+        $data = $bzrlist->save();
+
+        // 根据更新结果设置返回提示信息
+        $data>=0 ? $data = ['msg' => '更新成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息
@@ -162,7 +205,7 @@ class BanZhuRen extends AdminBase
         $id = request()->delete('id');
         $id = explode(',', $id);
 
-        $data = bjmod::destroy($id);
+        $data = bzr::destroy($id);
 
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '删除成功', 'val' => 1]

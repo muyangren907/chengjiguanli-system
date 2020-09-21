@@ -50,7 +50,7 @@ class Banji extends BaseModel
                                 }
                             ])
                             ->withLimit(1)
-                            ->order(['bfdate' => 'desc', 'id' => 'desc']);
+                            ->order(['update_time' => 'asc', 'bfdate' => 'desc']);
                     }
                 ]
             )

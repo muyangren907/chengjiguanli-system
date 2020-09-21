@@ -32,6 +32,13 @@ class BanZhuRen extends BaseModel
     }
 
 
+    // 生日修改器
+    public function setBfdateAttr($value)
+    {
+        return strtotime($value);
+    }
+
+
     // 根据条件查询学期
     public function search($srcfrom)
     {
@@ -42,9 +49,11 @@ class BanZhuRen extends BaseModel
             ,'bfdate' => ''
             ,'enddate' => ''
         ];
+
         $src = array_cover($srcfrom, $src) ;
         $src['banji_id'] = strToarray($src['banji_id']);
         $src['teacher_id'] = strToarray($src['teacher_id']);
+
         if(isset($srcfrom['bfdate']) && strlen($srcfrom['bfdate']) > 0)
         {
             $src['bfdate'] = $srcfrom['bfdate'];
@@ -55,17 +64,18 @@ class BanZhuRen extends BaseModel
         {
             $src['enddate'] = $srcfrom['enddate'];
         }else{
-            $src['enddate'] = date("Y-m-d", strtotime('now'));
+            $src['enddate'] = date("Y-m-d", strtotime('1 day'));
         }
+
 
         // 查询数据
         $data = $this
             ->whereTime('bfdate', 'between', [$src['bfdate'], $src['enddate']])
             ->when(count($src['banji_id']) > 0, function($query) use($src){
-                    $query->where('banji_id', $src['banji_id']);
+                    $query->where('banji_id', 'in', $src['banji_id']);
                 })
             ->when(count($src['teacher_id']) > 0, function($query) use($src){
-                    $query->where('teacher_id', $src['teacher_id']);
+                    $query->where('teacher_id', 'in', $src['teacher_id']);
                 })
             ->with(
                 [
@@ -74,6 +84,7 @@ class BanZhuRen extends BaseModel
                     },
                 ]
             )
+            ->order(['update_time' => 'desc'])
             ->select();
 
         return $data;
