@@ -42,16 +42,9 @@ class Banji extends BaseModel
                     'glSchool' => function($query){
                         $query->field('id, title, jiancheng');
                     },
-                    'glBanZhuRen' => function ($query) {
-                        $query->field('id, teacher_id, banji_id, bfdate')
-                            ->with([
-                                'glTeacher' => function($q) {
-                                    $q->field('id, xingming');
-                                }
-                            ])
-                            ->withLimit(1)
-                            ->order(['update_time' => 'asc', 'bfdate' => 'desc']);
-                    }
+                    // 'glBanZhuRen' => function ($query) {
+                    //     $query->field('id, teacher_id, banji_id, bfdate');
+                    // }
                 ]
             )
             ->withCount([
@@ -59,7 +52,7 @@ class Banji extends BaseModel
                     $query->where('status', 1);
                 }
             ])
-            ->append(['banjiTitle', 'banTitle', 'grade', 'ban'])
+            ->append(['banjiTitle', 'banTitle', 'grade', 'ban','bzr'])
             ->select();
 
         return $data;
@@ -123,8 +116,7 @@ class Banji extends BaseModel
     public function glBanZhuRen()
     {
         return $this->hasMany('BanZhuRen', 'banji_id', 'id')
-                    ->limit(1)
-                    ->order(['update_time' => 'desc']);
+            ->order(['bfdate'=>'desc', 'update_time'=>'desc']);
     }
 
 
@@ -208,6 +200,20 @@ class Banji extends BaseModel
         $del == null ?  $title : $title = $title & '(删)' ;
 
         return $title;
+    }
+
+
+    // 班主任获取器
+    public function getBzrAttr()
+    {
+        $bzrList = $this->glBanZhuRen;
+        $str = '';
+        if (isset($bzrList[0]))
+        {
+            $str = $bzrList[0]->glTeacher->xingming;
+        }
+
+        return $str;
     }
 
 

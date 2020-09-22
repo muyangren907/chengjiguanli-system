@@ -73,15 +73,9 @@
 	{field: 'alias', title: '别名', minWidth:60, edit:'text'},
 	{field: 'banzhuren', title: '班主任',sort: true, minWidth:60,templet:function(d){
 		var str='';
-		if(d.glBanZhuRen)
+		if(d.bzr)
 		{
-			if(d.glBanZhuRen[0])
-      {
-        if(d.glBanZhuRen[0].glTeacher)
-        {
-          str = d.glBanZhuRen[0].glTeacher.xingming;
-        }
-      }
+			str = d.bzr;
 		}
 		return str;
 	}},
