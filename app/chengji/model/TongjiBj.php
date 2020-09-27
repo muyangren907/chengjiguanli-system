@@ -397,8 +397,10 @@ class TongjiBj extends BaseModel
             $src['enddate'] = date("Y-m-d",strtotime("+1 day"));
         }
 
-        $bj = new \app\teach\model\Banji;
-        $bjList = $bj->where('banzhuren', $src['teacher_id'])->column('id');
+        $bj = new \app\teach\model\BanZhuRen;
+        $bjId = $bj->where('teacher_id', $src['teacher_id'])
+                ->order(['bfdate'=>'desc', 'update_time'])
+                ->value('banji_id');
 
         $data = $this->where('teacher_id', $src['teacher_id'])
                 ->where('subject_id', '<>', 0)
@@ -420,10 +422,10 @@ class TongjiBj extends BaseModel
                         })
                         ->field('id');
                 })
-                ->when(count($bjList) > 0, function ($query) use($bjList) {
-                    $query->whereOr('id', 'in', function ($q) use($bjList) {
+                ->when(strlen($bjId) > 0, function ($query) use($bjId) {
+                    $query->whereOr('id', 'in', function ($q) use($bjId) {
                         $q->name('tongjiBj')
-                            ->where('banji_id', 'in', $bjList)
+                            ->where('banji_id',  $bjId)
                             ->where('subject_id', '<>', 0)
                             ->field('id');
                     });

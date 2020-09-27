@@ -180,7 +180,7 @@ class Index
         if($userinfo == null)
         {
             // 验证结果;
-            $data = ['msg' => '教师帐号不存在或被禁用', 'val' => 0];
+            $data = ['msg' => '学生帐号不存在或被禁用', 'val' => 0];
             return $data;
         }
 
