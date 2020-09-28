@@ -12,12 +12,12 @@
 {block name="search"}
 <input type="hidden" name="kaoshi_id" id="kaoshi_id" value="{$list.kaoshi_id}">
 <div class="layui-form-item">
-	<label for="nianji" class="layui-form-label" style="height: 100%">年级 </label>
+	<label for="ruxuenian" class="layui-form-label" style="height: 100%">年级 </label>
 	<div class="layui-input-block">
-		<input type="radio" name="nianji" title="无" value="" lay-skin="primary" checked="true">
+		<input type="radio" name="ruxuenian" title="无" value="" lay-skin="primary" checked="true">
 		{php} $njlist = nianJiNameList('str',$list['sj']);{/php}
 		{foreach $njlist as $key=>$vo}
-		<input type="radio" name="nianji" title="{$vo}" value="{$key}" lay-skin="primary">
+		<input type="radio" name="ruxuenian" title="{$vo}" value="{$key}" lay-skin="primary">
 		{/foreach}
 	</div>
 </div>

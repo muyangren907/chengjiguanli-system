@@ -3,7 +3,7 @@ namespace app\chengji\controller;
 
 use app\base\controller\AdminBase;     # 引用控制器基类
 use app\chengji\model\Chengji; # 引用成绩数据模型
-use \app\kaoshi\model\Kaohao; # 引用考号数据模型
+use \app\kaohao\model\Kaohao; # 引用考号数据模型
 use \app\teach\model\Subject; # 引用学科数据模型
 
 class Index extends AdminBase

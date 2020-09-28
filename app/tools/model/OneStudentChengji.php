@@ -336,7 +336,7 @@ class OneStudentChengji extends BaseModel
         $rank = array_search($src['kaohao_id'], $data);
         $paixu['xiao']['paixu'] = $rank;
         $paixu['xiao']['weizhi'] = round(($rank + 1) / count($data) * 100, 0);
-        
+
         return $paixu;
     }
 
@@ -360,7 +360,7 @@ class OneStudentChengji extends BaseModel
                     ,'data' => [['value'=>$paixu['ban']['weizhi'], 'name'=>'位置']]
                 ]
             ];
-        
+
         return $data;
     }
 
@@ -537,14 +537,18 @@ class OneStudentChengji extends BaseModel
             ,'banji_id' => $thisCj->banji_id
             ,'cj' => $thisCj->ksChengji->toArray()
         ];
+
         $xkdb = $this->subjectDuibi($tempSrc);  # 学科成绩对比
-        
+        $xbbanjidb = $this->subjectAvgDuibi($tempSrc);
+        $lastdb = $this->lastDb($src['kaohao_id']);
+
 
         $str = $xingming . '同学，你在《'.$ksTitle.'》'.$kslx.'中参加了' . $subjectCnt . '个学科的成绩测试，';
-        $str = $str . '整体看你的成绩' .$zpx. '。' . $xkdb;
-        $str = $str . '与上次考试成绩相比，';
+        $str = $str . '从总分上看你的成绩' .$zpx. '。' . $xkdb . $xbbanjidb;
+        $str = $str . $lastdb;
         return $str;
     }
+
 
     // 总成绩位置评语
     private function zfPingyu($srcfrom)
@@ -604,12 +608,12 @@ class OneStudentChengji extends BaseModel
 
         if ($cjCnt<=1)
         {
-             $py = '';
+            $py = '';
         }else{
             $tj = new \app\chengji\model\Tongji;
             $avg = round(array_sum($cj) / $cjCnt,2);
             $bzc = $tj->getVariance($avg, $cj, true);
-            $bzcpy = '本次考试中各学科成绩间';
+            $bzcpy = '本次考试中各学科成绩';
             switch ($bzc) {
                 case $bzc < 5:
                     $bzcpy = $bzcpy . '几乎没有差距，';
@@ -626,7 +630,7 @@ class OneStudentChengji extends BaseModel
                 case $bzc < 20:
                     $bzcpy = $bzcpy . '差距非常大，';
                     break;
-                
+
                 default:
                     $bzcpy = $bzcpy . '不均衡，';
                     break;
@@ -666,16 +670,23 @@ class OneStudentChengji extends BaseModel
             }
             if($bzc == 0)
             {
-                $py = $bzcpy; 
+                $py = $bzcpy;
             }else{
-               $py = $bzcpy . $xkMax . '学科成绩比' . $xkMin . '学科成绩好一些。'; 
+               $py = $bzcpy . $xkMax . '成绩比' . $xkMin . '成绩好一些。';
             }
         }
 
+        return $py;
+    }
+
+
+    // 本次考试各学科成绩与班级平均分对比
+    private function subjectAvgDuibi($src)
+    {
         // 与班级平均分对比
         $cj = array();
         foreach ($src['cj'] as $key => $value) {
-           $cj[$value['subject_id']]['defen'] = (float)$value['defen'];
+           $cj[$value['subject_id']]['defen'] = $value['defen'];
            $cj[$value['subject_id']]['oldkey'] = $key;
         }
         $btj = new \app\chengji\model\TongjiBj;
@@ -684,7 +695,7 @@ class OneStudentChengji extends BaseModel
                     ->select();
         $avg = array();
         foreach ($btCj as $key => $value) {
-            $avg[$value->subject_id] = (float)$value->avg;
+            $avg[$value->subject_id] = $value->avg;
         }
         $avgCha = array();
         $zhengfu = [
@@ -692,31 +703,90 @@ class OneStudentChengji extends BaseModel
             ,'ling' => 0
             ,'zheng' => 0
         ];
-        $avgCha[2] = 1;
-        $avgCha[0] = 1;
-        $avgCha[1] = 1;
-        halt($avgCha);
         foreach ($cj as $key => $value) {
-            // $avgCha[$value['oldkey']] =$value['defen'] - $avg[$key];
-            // $avgCha[$value['oldkey']] = -59;
             $temp = $value['defen'] - $avg[$key];
-            $avgCha[] = $temp;
-            dump($avgCha);
-            // if($avgCha[$value['oldkey']] < 0 )
-            // {
-            //     $zhengfu['fu'] = $zhengfu['fu'] + 1;
-            // }elseif($avgCha = 0){
-            //     $zhengfu['ling'] = $zhengfu['ling'] + 1;
-            // }else{
-            //     $zhengfu['zheng'] = $zhengfu['zheng'] + 1;
-            // }
+            $avgCha[$value['oldkey']] = $temp;
+            if($temp < 0)
+            {
+                $zhengfu['fu'] ++;
+            }elseif($temp == 0)
+            {
+                $zhengfu['ling'] ++;
+            }else{
+                $zhengfu['zheng'] ++;
+            }
         }
         $bjdbpy = '与班级平均分对比，'; #与班级平均分对比结果
+        $cjCnt = count($src['cj']);
+        $zheng = '';
+        $ling = '';
+        $fu = '';
+        $py = '';
+
+        // 比平均分多
+        if($zhengfu['zheng'] > 0)
+        {
+            if($zhengfu['zheng'] == $cjCnt)
+            {
+                $zheng = $zheng . '所有学科成绩高于班级平均分，';
+            }else{
+                $xk = '';
+                foreach ($avgCha as $key => $value) {
+                    if($value > 0)
+                    {
+                        if($xk == '')
+                        {
+                            $xk = $src['cj'][$key]['subjectName']['title'];
+                        }else{
+                            $xk = $xk . '、' . $src['cj'][$key]['subjectName']['title'];
+                        }
+                    }
+                }
+                $zheng = $zheng . $xk . '成绩高于班级平均分';
+            }
+            arsort($avgCha);
+            $key = array_search(reset($avgCha), $avgCha);
+            $xk = $src['cj'][$key]['subjectName']['title'];
+            if($zhengfu['zheng'] == 1)
+            {
+                $zheng = $zheng . reset($avgCha) .'分';
+            }else{
+                $zheng = $zheng . ',其中' . $xk .'成绩高与班级平均' . reset($avgCha) .'分';
+            }
+
+        }
+
+
+        // 与平均分同样多
+        if($zhengfu['ling'] > 0)
+        {
+            if($zhengfu['ling'] == $cjCnt)
+            {
+                $ling = $ling . '所有学科成绩与班级平均分相同';
+            }else{
+                $xk = '';
+                foreach ($avgCha as $key => $value) {
+                    if($value == 0)
+                    {
+                        if($xk == '')
+                        {
+                            $xk = $src['cj'][$key]['subjectName']['title'];
+                        }else{
+                            $xk = $xk . '、' . $src['cj'][$key]['subjectName']['title'];
+                        }
+                    }
+                }
+                $ling = $ling . $xk . '成绩与班级平均分相同';
+            }
+        }
+
+
+        // 比平均分少
         if($zhengfu['fu'] > 0)
         {
             if($zhengfu['fu'] == $cjCnt)
             {
-                $bjdbpy = $bjdbpy . '所有学科成绩低于班级平均分，';
+                $fu = $fu . '所有学科成绩低于班级平均分，';
             }else{
                 $xk = '';
                 foreach ($avgCha as $key => $value) {
@@ -730,16 +800,227 @@ class OneStudentChengji extends BaseModel
                         }
                     }
                 }
-                $bjdbpy = $bjdbpy . '学科成绩低于班级平均分，';
+                $fu = $fu . $xk . '成绩低于班级平均分';
             }
             arsort($avgCha);
             $key = array_search(end($avgCha), $avgCha);
             $xk = $src['cj'][$key]['subjectName']['title'];
-            $bjdbpy = $bjdbpy . '其中' . $xk .'成绩低与班级平均' . abs(end($avgCha)) .'分.';
+            if($zhengfu['fu'] == 1)
+            {
+                $fu = $fu . abs(end($avgCha)) .'分。';
+            }else{
+                $fu = $fu . ',其中' . $xk .'成绩低与班级平均' . abs(end($avgCha)) .'分。';
+            }
+
         }
 
-        $py = $py . $bjdbpy;
-        halt('aa');
+        if(strlen($zheng) > 0)
+        {
+            if(strlen($ling)>0 || strlen($fu)>0)
+            {
+                $py = $bjdbpy . $zheng . ',';
+            }else{
+                $py = $bjdbpy . $zheng . '。';
+            }
+        }
+
+        if(strlen($ling) > 0)
+        {
+            if(strlen($fu) > 0)
+            {
+                $py = $py . $ling . '，' . $fu;
+            }else{
+                $py = $py . $ling . '。';
+            }
+        }
+
+        return $py;
+    }
+
+
+
+    // 对比上次成绩
+    private function lastDb($kaohao_id)
+    {
+        $py = '';
+        $kh = new \app\kaohao\model\Kaohao;
+        $thisCj = $kh->where('id', $kaohao_id)
+            ->field('id, student_id, kaoshi_id')
+            ->with([
+                'ksChengji' => function ($query) {
+                    $query->field('id, kaohao_id, subject_id, bpaixu, xpaixu, qpaixu')
+                        ->with([
+                            'subjectName' => function ($query) {
+                                $query->field('id, title');
+                            }
+                        ]);
+                },
+                'cjKaoshi' => function ($query) {
+                    $query->field('id, enddate');
+                }
+            ])
+            ->find();
+        $student_id = $thisCj->student_id;
+        $subject_id = array();
+        $subject_title = array();
+        foreach ($thisCj->ksChengji as $key => $value) {
+            $subject_id[] = $value->subject_id;
+            $subject_title[$value->subject_id] = $value->subjectName->title;
+        }
+
+        $thisPaixu = array();
+        foreach ($thisCj->ksChengji as $key => $value) {
+            $thisPaixu[$value->subject_id] = $value['bpaixu'];
+        }
+
+        $enddate = $thisCj->cjKaoshi->getData('enddate');
+
+        $cj = new \app\chengji\model\Chengji;
+        $lastCj = $cj->where('subject_id', 'in', $subject_id)
+                ->where('kaohao_id', 'in', function ($query) use ($student_id, $kaohao_id, $enddate) {
+                    $query->name('kaohao')
+                        ->where('id', '<>', $kaohao_id)
+                        ->where('student_id', $student_id)
+                        ->where('kaoshi_id', 'in', function ($q) use($enddate) {
+                            $q->name('kaoshi')
+                                ->where('enddate', '<', $enddate)
+                                ->field('id');
+                        })
+                        ->field('id');
+                })
+                ->field('id, kaohao_id, subject_id, bpaixu, xpaixu, qpaixu')
+                ->select();
+
+        $lastPaixu = array();
+        foreach ($lastCj as $key => $value) {
+            $lastPaixu[$value->subject_id] = $value->bpaixu;
+        }
+        if(count($lastPaixu) == 0)
+        {
+            return $py;
+        }
+
+        // 循环对比成绩
+        $cha = array();
+        $zhengfu = [
+            'zheng' => 0
+            ,'ling' => 0
+            ,'fu' => 0
+        ];
+        $zheng = '';
+        $ling = '';
+        $fu = '';
+
+        foreach ($thisPaixu as $key => $value) {
+            if(isset($lastPaixu[$key]))
+            {
+                $cha[$key] = $value - $lastPaixu[$key];
+                if ($cha[$key] < 0)
+                {
+                    $zhengfu['fu'] ++;
+                }elseif($cha[$key] == 0)
+                {
+                    $zhengfu['ling'] ++;
+                }else{
+                    $zhengfu['zheng'] ++;
+                }
+            }
+        }
+        arsort($cha);
+
+        // 名次上的评语
+        if($zhengfu['zheng'] > 0)
+        {
+            $xk = '';
+            foreach ($cha as $key => $value) {
+                if($value > 0)
+                {
+                    if($xk == '')
+                    {
+                        $xk = $subject_title[$key];
+                    }else{
+                        $xk = $xk . '、' . $subject_title[$key];
+                    }
+                }
+            }
+            if($zhengfu['zheng'] == 1)
+            {
+                $zheng = $xk . '成绩上升';
+            }else{
+                $zheng = $xk .  '成绩上升，其中' . $subject_title(key(reset($cha))) . '成绩上升最多';
+            }
+        }
+
+
+        // 名次相同的评语
+        if($zhengfu['ling'] > 0)
+        {
+            $xk = '';
+            foreach ($cha as $key => $value) {
+                if($value == 0)
+                {
+                    if($xk == '')
+                    {
+                        $xk = $subject_title[$key];
+                    }else{
+                        $xk = $xk . '、' . $subject_title[$key];
+                    }
+                }
+            }
+            $ling = $xk . '成绩保持原来水平';
+        }
+
+
+        // 名次下降的评语
+        if($zhengfu['fu'] > 0)
+        {
+            $xk = '';
+            foreach ($cha as $key => $value) {
+                if($value < 0)
+                {
+                    if($xk == '')
+                    {
+                        $xk = $subject_title[$key];
+                    }else{
+                        $xk = $xk . '、' . $subject_title[$key];
+                    }
+                }
+            }
+            if($zhengfu['fu'] == 1)
+            {
+                $fu = $xk . '成绩下降';
+            }else{
+                $fu = $xk .  '成绩下降，其中' . $subject_title(key(end($cha))) . '成绩下降最多';
+            }
+        }
+
+
+        $bjdbpy = '与上次考试成绩相比';
+        if(strlen($zheng) > 0)
+        {
+            if(strlen($ling)>0 || strlen($fu)>0)
+            {
+                $py = $bjdbpy . $zheng . ',';
+            }else{
+                $py = $bjdbpy . $zheng . '。';
+            }
+        }
+
+        if(strlen($ling) > 0)
+        {
+            if(strlen($fu) > 0)
+            {
+                $py = $py . $ling . '，' . $fu;
+            }else{
+                $py = $py . $ling . '。';
+            }
+        }
+
+        if(strlen($fu) > 0)
+        {
+            $py = $py . $fu . '。';
+        }
+
         return $py;
     }
 
