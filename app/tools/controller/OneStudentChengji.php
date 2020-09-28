@@ -143,4 +143,25 @@ class OneStudentChengji extends BaseController
         $data = $stucj->subjectOldChengji($src);
         return json($data);
     }
+
+
+    // 生成个人报告
+    public function ajaxBaoGao()
+    {
+        // 获取表单参数
+        $src = $this->request
+            ->only([
+                'kaohao_id' => ''
+            ], 'POST');
+
+        $stucj = new STUCJ;
+        $baogao = $stucj->baogao($src);
+        $data = [
+            'val' => 1
+            ,'msg' => '数据获取成功'
+            ,'baogao' => $baogao
+        ];
+
+        return json($data);
+    }
 }

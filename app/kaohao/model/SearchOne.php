@@ -117,6 +117,14 @@ class SearchOne extends BaseModel
                 ,'cjStudent' => function($q){
                     $q->field('id, xingming');
                 }
+                ,'cjKaoshi' => function ($query) {
+                    $query->field('id, title, category_id')
+                        ->with([
+                            'ksCategory' => function ($q) {
+                                $q->field('id, title');
+                            }
+                        ]);
+                }
             ])
             ->field('id, kaoshi_id, student_id, ruxuenian, nianji, banji_id, paixu')
             ->append(['banjiTitle'])
