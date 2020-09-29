@@ -28,8 +28,6 @@ class KeChengBiaoTemp extends Migrator
      */
     public function change()
     {
-        public function change()
-    {
         // 定义数据表名称
         $table = $this->table('ke_cheng_biao_temp');
 
@@ -43,6 +41,5 @@ class KeChengBiaoTemp extends Migrator
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
             ->addColumn('beizhu','string',['limit'=>80,'null'=>true,'comment'=>'备注'])
             ->create();
-    }
     }
 }
