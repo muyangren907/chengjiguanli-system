@@ -3,7 +3,7 @@
 use think\migration\Migrator;
 use think\migration\db\Column;
 
-class FenGong extends Migrator
+class ClassRoom extends Migrator
 {
     /**
      * Change Method.
@@ -29,12 +29,13 @@ class FenGong extends Migrator
     public function change()
     {
         // 定义数据表名称
-        $table = $this->table('fen_gong');
+        $table = $this->table('class_room');
 
         // 添加当前表字段
         $table
-            ->addColumn('banji_id','integer',['limit'=>11,'null'=>true,'comment'=>'学科ID'])
-            ->addColumn('subject_id','integer',['limit'=>11,'null'=>true,'comment'=>'学科ID'])
+            ->addColumn('title','string',['limit'=>80,'null'=>true,'comment'=>'标题'])
+            ->addColumn('dizhi','string',['limit'=>80,'null'=>true,'comment'=>'地址'])
+            ->addColumn('classmax','integer',['limit'=>11,'default'=>'1','null'=>false,'comment'=>'最大能容纳多少个班级'])
             ->addColumn('teacher_id','integer',['limit'=>11,'null'=>true,'comment'=>'教师ID'])
             ->addColumn('create_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'更新时间'])
