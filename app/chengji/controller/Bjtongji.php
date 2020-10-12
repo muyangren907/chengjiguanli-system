@@ -292,6 +292,12 @@ class Bjtongji extends AdminBase
     // 统计各班级成绩
     public function tongji()
     {
+        $tj = new \app\chengji\model\Tongji;
+        $arr = [1,7,3,4,5,6,2,8];
+        $zw = $tj->zhongweishu($arr);
+
+        halt('zw=' . $zw);
+
         // 获取变量
         $kaoshi_id = input('post.kaoshi_id');
         // 判断考试状态
