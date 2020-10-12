@@ -1122,17 +1122,17 @@
     },
     {
         "name": "topthink/framework",
-        "version": "v6.0.3",
-        "version_normalized": "6.0.3.0",
+        "version": "v6.0.4",
+        "version_normalized": "6.0.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/top-think/framework.git",
-            "reference": "b4046fb21e6163ba23a792b694162693dbe71b4b"
+            "reference": "4b252d78562d4a51a501651f837c26cb9d91624f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/top-think/framework/zipball/b4046fb21e6163ba23a792b694162693dbe71b4b",
-            "reference": "b4046fb21e6163ba23a792b694162693dbe71b4b",
+            "url": "https://api.github.com/repos/top-think/framework/zipball/4b252d78562d4a51a501651f837c26cb9d91624f",
+            "reference": "4b252d78562d4a51a501651f837c26cb9d91624f",
             "shasum": "",
             "mirrors": [
                 {
@@ -1146,7 +1146,6 @@
             "ext-mbstring": "*",
             "league/flysystem": "^1.0",
             "league/flysystem-cached-adapter": "^1.0",
-            "opis/closure": "^3.1",
             "php": ">=7.1.0",
             "psr/container": "~1.0",
             "psr/log": "~1.0",
@@ -1159,7 +1158,7 @@
             "mockery/mockery": "^1.2",
             "phpunit/phpunit": "^7.0"
         },
-        "time": "2020-06-26T16:03:10+00:00",
+        "time": "2020-09-29T02:19:59+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
