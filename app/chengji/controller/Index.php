@@ -558,9 +558,9 @@ class Index extends AdminBase
                 $sheet->setCellValue('D' . ($row + $k), $val['title']);
                 $sheet->setCellValue('E' . ($row + $k), $value[$val['lieming']]);   # 得分
                 $sheet->setCellValue('F' . ($row + $k), $njtj['cj'][$val['lieming']]['avg']);
-                $sheet->setCellValue('G' . ($row + $k), $njtj['cj'][$val['lieming']]['max']);
-                $sheet->setCellValue('H' . ($row + $k), $njtj['cj'][$val['lieming']]['youxiu']);
-                $sheet->setCellValue('I' . ($row + $k), $njtj['cj'][$val['lieming']]['jige']);
+                $sheet->setCellValue('G' . ($row + $k), $njtj['cj'][$val['lieming']]['youxiu']);
+                $sheet->setCellValue('H' . ($row + $k), $njtj['cj'][$val['lieming']]['jige']);
+                $sheet->setCellValue('I' . ($row + $k), $njtj['cj'][$val['lieming']]['max']);
                 $sheet->setCellValue('J' . ($row + $k), $njtj['cj'][$val['lieming']]['sifenwei'][0]);
                 $sheet->setCellValue('K' . ($row + $k), $njtj['cj'][$val['lieming']]['sifenwei'][1]);
                 $sheet->setCellValue('L' . ($row + $k), $njtj['cj'][$val['lieming']]['sifenwei'][2]);

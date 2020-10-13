@@ -246,15 +246,15 @@ class Tongji extends BaseModel
         $zws = 0;
 
         $cnt = count($arr);
-        if ($cnt === 1) {
+        if ($cnt = 1) {
             $zws = $arr[0];
         }elseif ($cnt  > 1) {
             $mod = $cnt % 2;
             if ($mod == 0) {
                 $i = $cnt / 2;
-                $zws = ($arr[$i - 1] + $arr[$i]) / 2;
+                $zws = ($arr[$i] + $arr[$i + 1]) / 2;
             }else{
-                $i = ($cnt - 1) / 2;
+                $i = ($cnt + 1) / 2;
                 $zws = $arr[$i];
             }
         }else{
