@@ -46,11 +46,10 @@ class RuleName
     public function setName(string $name, RuleItem $ruleItem, bool $first = false): void
     {
         $name = strtolower($name);
-        $item = $this->getRuleItemInfo($ruleItem);
         if ($first && isset($this->item[$name])) {
-            array_unshift($this->item[$name], $item);
+            array_unshift($this->item[$name], $ruleItem);
         } else {
-            $this->item[$name][] = $item;
+            $this->item[$name][] = $ruleItem;
         }
     }
 
@@ -180,8 +179,8 @@ class RuleName
                 $result = $this->item[$name];
             } else {
                 foreach ($this->item[$name] as $item) {
-                    $itemDomain = $item['domain'];
-                    $itemMethod = $item['method'];
+                    $itemDomain = $item->getDomain();
+                    $itemMethod = $item->getMethod();
 
                     if (($itemDomain == $domain || '-' == $itemDomain) && ('*' == $itemMethod || '*' == $method || $method == $itemMethod)) {
                         $result[] = $item;
@@ -193,19 +192,4 @@ class RuleName
         return $result;
     }
 
-    /**
-     * 获取路由信息
-     * @access protected
-     * @param  RuleItem $item 路由规则
-     * @return array
-     */
-    protected function getRuleItemInfo(RuleItem $item): array
-    {
-        return [
-            'rule'   => $item->getRule(),
-            'domain' => $item->getDomain(),
-            'method' => $item->getMethod(),
-            'suffix' => $item->getSuffix(),
-        ];
-    }
 }

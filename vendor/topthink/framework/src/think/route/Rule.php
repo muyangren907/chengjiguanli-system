@@ -237,17 +237,11 @@ abstract class Rule
      */
     public function getPattern(string $name = '')
     {
-        $pattern = $this->pattern;
-
-        if ($this->parent) {
-            $pattern = array_merge($this->parent->getPattern(), $pattern);
-        }
-
         if ('' === $name) {
-            return $pattern;
+            return $this->pattern;
         }
 
-        return $pattern[$name] ?? null;
+        return $this->pattern[$name] ?? null;
     }
 
     /**
@@ -259,26 +253,11 @@ abstract class Rule
      */
     public function getOption(string $name = '', $default = null)
     {
-        $option = $this->option;
-
-        if ($this->parent) {
-            $parentOption = $this->parent->getOption();
-
-            // 合并分组参数
-            foreach ($this->mergeOptions as $item) {
-                if (isset($parentOption[$item]) && isset($option[$item])) {
-                    $option[$item] = array_merge($parentOption[$item], $option[$item]);
-                }
-            }
-
-            $option = array_merge($parentOption, $option);
-        }
-
         if ('' === $name) {
-            return $option;
+            return $this->option;
         }
 
-        return $option[$name] ?? $default;
+        return $this->option[$name] ?? $default;
     }
 
     /**
@@ -573,6 +552,26 @@ abstract class Rule
     }
 
     /**
+     * 合并分组参数
+     * @access public
+     * @return array
+     */
+    public function mergeGroupOptions(): array
+    {
+        $parentOption = $this->parent->getOption();
+        // 合并分组参数
+        foreach ($this->mergeOptions as $item) {
+            if (isset($parentOption[$item]) && isset($this->option[$item])) {
+                $this->option[$item] = array_merge($parentOption[$item], $this->option[$item]);
+            }
+        }
+
+        $this->option = array_merge($parentOption, $this->option);
+
+        return $this->option;
+    }
+
+    /**
      * 解析匹配到的规则路由
      * @access public
      * @param  Request $request 请求对象
@@ -591,31 +590,24 @@ abstract class Rule
         }
 
         // 替换路由地址中的变量
-        $extraParams = true;
-        $search      = $replace      = [];
-        $depr        = $this->router->config('pathinfo_depr');
-        foreach ($matches as $key => $value) {
-            $search[]  = '<' . $key . '>';
-            $replace[] = $value;
+        if (is_string($route) && !empty($matches)) {
+            $search = $replace = [];
 
-            $search[]  = ':' . $key;
-            $replace[] = $value;
+            foreach ($matches as $key => $value) {
+                $search[]  = '<' . $key . '>';
+                $replace[] = $value;
 
-            if (strpos($value, $depr)) {
-                $extraParams = false;
+                $search[]  = ':' . $key;
+                $replace[] = $value;
             }
-        }
 
-        if (is_string($route)) {
             $route = str_replace($search, $replace, $route);
         }
 
         // 解析额外参数
-        if ($extraParams) {
-            $count = substr_count($rule, '/');
-            $url   = array_slice(explode('|', $url), $count + 1);
-            $this->parseUrlParams(implode('|', $url), $matches);
-        }
+        $count = substr_count($rule, '/');
+        $url   = array_slice(explode('|', $url), $count + 1);
+        $this->parseUrlParams(implode('|', $url), $matches);
 
         $this->vars = $matches;
 
@@ -638,7 +630,7 @@ abstract class Rule
         } elseif ($route instanceof Closure) {
             // 执行闭包
             $result = new CallbackDispatch($request, $this, $route, $this->vars);
-        } elseif (false !== strpos($route, '@') || false !== strpos($route, '::') || false !== strpos($route, '\\')) {
+        } elseif (false !== strpos($route, '@') || false !== strpos($route, '::')) {
             // 路由到类的方法
             $route  = str_replace('::', '@', $route);
             $result = $this->dispatchMethod($request, $route);

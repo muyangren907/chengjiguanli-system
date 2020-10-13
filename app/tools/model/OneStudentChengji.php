@@ -1010,10 +1010,15 @@ class OneStudentChengji extends BaseModel
         {
             if(strlen($fu) > 0)
             {
-                $py = $py . $ling . '，' . $fu . '。';
+                $py = $py . $ling . '，' . $fu;
             }else{
                 $py = $py . $ling . '。';
             }
+        }
+
+        if(strlen($fu) > 0)
+        {
+            $py = $py . $fu . '。';
         }
 
         return $py;

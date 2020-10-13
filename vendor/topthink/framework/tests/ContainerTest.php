@@ -150,7 +150,6 @@ class ContainerTest extends TestCase
         $container->bind('name2', $object);
 
         $container->bind('name3', Taylor::class);
-        $container->bind('name3', Taylor::class);
 
         $container->name4 = $object;
 

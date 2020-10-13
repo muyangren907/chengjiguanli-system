@@ -852,51 +852,6 @@ class Rule extends Seeder
                     ,'paixu' => 8
                     ,'pid' => 503
                 ],
-            ['id' => 504
-                ,'title' => '教室列表'
-                ,'name' => 'teach/classroom/index'
-                ,'paixu' => 4
-                ,'ismenu'  => 1
-                ,'pid'  => 5
-                ,'url' => '/teach/classroom'
-            ],
-                // 学科列表权限
-                ['id' => 50401
-                    ,'title' => '添加'
-                    ,'name' => 'teach/classroom/create'
-                    ,'paixu'  => 1
-                    ,'pid' => 504
-                ],
-                ['id' => 50402
-                    ,'title' => '保存'
-                    ,'name' => 'teach/classroom/save'
-                    ,'paixu'  => 2
-                    ,'pid' => 504
-                ],
-                ['id' => 50403
-                    ,'title' => '删除'
-                    ,'name' => 'teach/classroom/delete'
-                    ,'paixu' => 3
-                    ,'pid' => 504
-                ],
-                ['id' => 50404
-                    ,'title' => '编辑'
-                    ,'name' => 'teach/classroom/edit'
-                    ,'paixu' => 4
-                    ,'pid' => 504
-                ],
-                ['id' => 50405
-                    ,'title' => '更新'
-                    ,'name' => 'teach/classroom/update'
-                    ,'paixu'  => 5
-                    ,'pid' => 504
-                ],
-                ['id' => 50406
-                    ,'title' => '状态'
-                    ,'name' => 'teach/classroom/setstatus'
-                    ,'paixu' => 6
-                    ,'pid' => 504
-                ],
 
             /*======================================================================
              * 考试管理

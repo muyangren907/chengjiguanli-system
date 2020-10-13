@@ -123,7 +123,6 @@ class HttpTest extends TestCase
         $response = m::mock(Response::class);
 
         $this->app->shouldReceive('instance')->once()->with('request', $request);
-        $this->app->shouldReceive('initialize')->once();
 
         $exception = new Exception();
 
