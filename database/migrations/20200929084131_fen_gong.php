@@ -29,7 +29,7 @@ class FenGong extends Migrator
     public function change()
     {
         // 定义数据表名称
-        $table = $this->table('ke_cheng_biao_temp');
+        $table = $this->table('fen_gong');
 
         // 添加当前表字段
         $table
