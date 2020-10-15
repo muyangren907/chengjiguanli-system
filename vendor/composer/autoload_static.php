@@ -8,7 +8,7 @@ class ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
-        '538ca81a9a966a6716601ecf48f4eaef' => __DIR__ . '/..' . '/opis/closure/functions.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'abede361264e2ae69ec1eee813a101af' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/abs.php',
         '21a5860fbef5be28db5ddfbc3cca67c4' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/acos.php',
         '1546e3f9d127f2a9bb2d1b6c31c26ef1' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/acosh.php',
@@ -67,8 +67,8 @@ class ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175
         'aa53dcba601214d17ad405b7c291b7e8' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/operations/multiply.php',
         '75c79eb1b25749b05a47976f32b0d8a2' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/operations/divideby.php',
         '6ab8ad87a734f276a6bcd5a0fe1289be' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/operations/divideinto.php',
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         'dc1275c308c5b416beb314b6317daca2' => __DIR__ . '/..' . '/overtrue/pinyin/src/const.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
@@ -96,12 +96,17 @@ class ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175
         array (
             'app\\' => 4,
         ),
+        'Z' => 
+        array (
+            'ZipStream\\' => 10,
+        ),
         'W' => 
         array (
             'WhiteHat101\\Crypt\\' => 18,
         ),
         'S' => 
         array (
+            'Symfony\\Polyfill\\Php80\\' => 23,
             'Symfony\\Polyfill\\Php72\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Component\\VarDumper\\' => 28,
@@ -110,6 +115,8 @@ class ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175
         array (
             'Psr\\SimpleCache\\' => 16,
             'Psr\\Log\\' => 8,
+            'Psr\\Http\\Message\\' => 17,
+            'Psr\\Http\\Client\\' => 16,
             'Psr\\Container\\' => 14,
             'Psr\\Cache\\' => 10,
             'PhpOffice\\PhpSpreadsheet\\' => 25,
@@ -118,14 +125,15 @@ class ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175
         'O' => 
         array (
             'Overtrue\\Pinyin\\' => 16,
-            'Opis\\Closure\\' => 13,
         ),
         'M' => 
         array (
+            'MyCLabs\\Enum\\' => 13,
             'Matrix\\' => 7,
         ),
         'L' => 
         array (
+            'League\\MimeTypeDetection\\' => 25,
             'League\\Flysystem\\Cached\\' => 24,
             'League\\Flysystem\\' => 17,
         ),
@@ -176,9 +184,17 @@ class ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175
         array (
             0 => __DIR__ . '/../..' . '/app',
         ),
+        'ZipStream\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
+        ),
         'WhiteHat101\\Crypt\\' => 
         array (
             0 => __DIR__ . '/..' . '/whitehat101/apr1-md5/src',
+        ),
+        'Symfony\\Polyfill\\Php80\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
         ),
         'Symfony\\Polyfill\\Php72\\' => 
         array (
@@ -200,6 +216,15 @@ class ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
+        'Psr\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'Psr\\Http\\Client\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-client/src',
+        ),
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
@@ -220,13 +245,17 @@ class ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175
         array (
             0 => __DIR__ . '/..' . '/overtrue/pinyin/src',
         ),
-        'Opis\\Closure\\' => 
+        'MyCLabs\\Enum\\' => 
         array (
-            0 => __DIR__ . '/..' . '/opis/closure/src',
+            0 => __DIR__ . '/..' . '/myclabs/php-enum/src',
         ),
         'Matrix\\' => 
         array (
             0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
+        ),
+        'League\\MimeTypeDetection\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/mime-type-detection/src',
         ),
         'League\\Flysystem\\Cached\\' => 
         array (
@@ -246,12 +275,19 @@ class ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175
         0 => __DIR__ . '/../..' . '/extend',
     );
 
+    public static $classMap = array (
+        'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
+        'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
+        'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175::$prefixDirsPsr4;
             $loader->fallbackDirsPsr0 = ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175::$fallbackDirsPsr0;
+            $loader->classMap = ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175::$classMap;
 
         }, null, ClassLoader::class);
     }
