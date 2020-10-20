@@ -42,9 +42,6 @@ class Banji extends BaseModel
                     'glSchool' => function($query){
                         $query->field('id, title, jiancheng');
                     },
-                    // 'glBanZhuRen' => function ($query) {
-                    //     $query->field('id, teacher_id, banji_id, bfdate');
-                    // }
                 ]
             )
             ->withCount([
@@ -208,11 +205,31 @@ class Banji extends BaseModel
     {
         $bzrList = $this->glBanZhuRen;
         $str = '';
+
         if (isset($bzrList[0]))
         {
-            $str = $bzrList[0]->glTeacher->xingming;
+            if($this->getBiyeAttr !== true)
+            {
+                $str = $bzrList[0]->glTeacher->xingming;
+            }
         }
 
+        return $str;
+    }
+
+
+    // 判断当前班级是否已经毕业
+    public function getBiyeAttr()
+    {
+        $ruxuenian = $this->ruxuenian;
+        $date_r = strtotime($ruxuenian + 6 . '-8-1');
+        $str = '';
+        if(time() > $date_r)
+        {
+            $str = true;
+        }else{
+            $str = false;
+        }
         return $str;
     }
 
@@ -471,6 +488,5 @@ class Banji extends BaseModel
         }
         return $chiStr;
     }
-
 
 }

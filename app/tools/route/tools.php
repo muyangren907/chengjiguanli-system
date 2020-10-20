@@ -42,4 +42,5 @@ Route::group('onestudentchengji', function () {
 Route::group('teacherinfo', function () {
     Route::rule('srcry','TeacherInfo/srcRy','post');    # 获取荣誉数据
     Route::rule('srckt','TeacherInfo/srcKt','post');    # 获取课题数据
+    Route::rule('srcbzr','TeacherInfo/srcBzr','post');    # 获取课题数据
 });

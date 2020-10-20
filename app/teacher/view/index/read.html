@@ -65,15 +65,21 @@
 
    <!--      荣誉信息 -->
         <fieldset class="layui-elem-field">
-            <legend>历年获奖情况</legend>
+            <legend>获奖情况</legend>
             <div class="layui-field-box" style="width: 100%">
                 <table id="rongyu" lay-filter="rongyu" lay-size="sm" class="layui-table"></table>
             </div>
         </fieldset>
         <fieldset class="layui-elem-field">
-            <legend>历年参与课题情况</legend>
+            <legend>参与课题情况</legend>
             <div class="layui-field-box" style="width: 100%">
                 <table id="keti" lay-filter="keti" lay-size="sm" class="layui-table"></table>
+            </div>
+        </fieldset>
+        <fieldset class="layui-elem-field">
+            <legend>担任班主任情况</legend>
+            <div class="layui-field-box" style="width: 100%">
+                <table id="banzhuren" lay-filter="banzhuren" lay-size="sm" class="layui-table"></table>
             </div>
         </fieldset>
     </div>
@@ -249,6 +255,34 @@
                 }},
             ]]
           });
+        
+        //第三个实例
+        bzr = table.render(options);  //获取数据并渲染
+          var bzr =table.render({
+            elem: '#banzhuren'
+            ,method:"POST"   //数据接口
+            ,url: '/tools/teacherinfo/srcbzr' //数据接口
+            ,where:{
+              'teacher_id': "{$list.id}"
+            }
+            ,cols: [[ //表头
+               {field:'id', type:'numbers',sort:true,width:100,title:'序号'}
+              ,{field: 'title',sort:true, title: '开始时间', minWidth:200}
+              ,{field: 'title',sort:true, title: '班级名称', minWidth:200}
+              ,{field: 'bianhao',sort:true, title: '学科'}
+              ,{field: 'jddengji_id', title: '鉴定结果', sort: true, minWidth:100,templet:function(d){
+                  var str='';
+                  if(d.ktJdDengji)
+                  {
+                    str = d.ktJdDengji.title;
+                  }
+                  return str;
+                }},
+            ]]
+          });
+
+
+
         });
         </script>
     </body>

@@ -459,8 +459,9 @@ class JsRongyuInfo extends AdminBase
                 if($k == 0)
                 {
                     $names = $val->teacher->xingming;
+                }else{
+                    $names = $names . '、' .$val->teacher->xingming;
                 }
-                $names = $names . '、' .$val->teacher->xingming;
             }
             $worksheet->getCell('C' . $myrowid)->setValue($names);
             if($value->hj_school){
@@ -474,8 +475,9 @@ class JsRongyuInfo extends AdminBase
                 if($k == 0)
                 {
                     $names = $val->teacher->xingming;
+                }else{
+                    $names = $names . '、' .$val->teacher->xingming;
                 }
-                $names = $names . '、' .$val->teacher->xingming;
             }
             $worksheet->getCell('F' . $myrowid)->setValue($names);
             if($value->jx_category){

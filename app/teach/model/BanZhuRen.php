@@ -39,6 +39,25 @@ class BanZhuRen extends BaseModel
     }
 
 
+    // 查询任职结束时间
+    public function getJieShuAttr()
+    {
+        $str = '';
+        // 根据当前记录时间查询结束时间
+        $js = $this
+            ->where('banji_id', $this->banji_id)
+            ->where('bfdate', '>', $this->getData('bfdate'))
+            ->order(['bfdate' => 'asc'])
+            ->find();
+        if($js)
+        {
+            $str = $js->bfdate;
+        }
+        
+        return $str;
+    }
+
+
     // 根据条件查询学期
     public function search($srcfrom)
     {
@@ -94,6 +113,28 @@ class BanZhuRen extends BaseModel
             ->order(['update_time' => 'desc'])
             ->select();
 
+        return $data;
+    }
+
+
+    // 查询教师担任班主任情况
+    public function srcTeacher($srcfrom)
+    {
+        // 整理变量
+        $src = [
+            'teacher_id' => ''
+        ];
+        $src = array_cover($srcfrom, $src) ;
+
+        $data = $this->where('teacher_id', $src['teacher_id'])
+            ->order(['update_time'=>'desc'])
+            ->with([
+                'glBanji' => function ($query) {
+                    $query->field('id, ruxuenian, paixu')->append(['banJiTitle, biye']);
+                }
+            ])
+            ->append(['jieShu'])
+            ->select();
         return $data;
     }
 
