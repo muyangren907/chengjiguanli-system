@@ -255,7 +255,7 @@
                 }},
             ]]
           });
-        
+
         //第三个实例
         bzr = table.render(options);  //获取数据并渲染
           var bzr =table.render({
@@ -267,17 +267,22 @@
             }
             ,cols: [[ //表头
                {field:'id', type:'numbers',sort:true,width:100,title:'序号'}
-              ,{field: 'title',sort:true, title: '开始时间', minWidth:200}
-              ,{field: 'title',sort:true, title: '班级名称', minWidth:200}
-              ,{field: 'bianhao',sort:true, title: '学科'}
-              ,{field: 'jddengji_id', title: '鉴定结果', sort: true, minWidth:100,templet:function(d){
+              ,{field: 'bfdate',sort:true, title: '任职时间', minWidth:200,templet:function(d){
                   var str='';
-                  if(d.ktJdDengji)
+                  str = d.bfdate + ' ~ ' + d.jieShu;
+                  return str;
+                }}
+              ,{field: 'banji_id',sort:true, title: '任职班级', minWidth:200,templet:function(d){
+                  var str='';
+                  if(d.glBanji)
                   {
-                    str = d.ktJdDengji.title;
+                    if(d.glBanji.banJiTitle)
+                    {
+                      str = d.glBanji.banJiTitle;
+                    }
                   }
                   return str;
-                }},
+                }}
             ]]
           });
 

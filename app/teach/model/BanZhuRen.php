@@ -42,18 +42,24 @@ class BanZhuRen extends BaseModel
     // 查询任职结束时间
     public function getJieShuAttr()
     {
-        $str = '';
-        // 根据当前记录时间查询结束时间
-        $js = $this
-            ->where('banji_id', $this->banji_id)
-            ->where('bfdate', '>', $this->getData('bfdate'))
-            ->order(['bfdate' => 'asc'])
-            ->find();
-        if($js)
+        $str = '现在';
+
+        if($this->glBanji->biye === true)
         {
-            $str = $js->bfdate;
+            $str = $this->glBanji->ruxuenian . '-8-1';
+        }else{
+            // 根据当前记录时间查询结束时间
+            $js = $this
+                ->where('banji_id', $this->banji_id)
+                ->where('bfdate', '>', $this->getData('bfdate'))
+                ->order(['bfdate' => 'asc'])
+                ->find();
+            if($js)
+            {
+                $str = $js->bfdate;
+            }
         }
-        
+
         return $str;
     }
 
@@ -130,7 +136,7 @@ class BanZhuRen extends BaseModel
             ->order(['update_time'=>'desc'])
             ->with([
                 'glBanji' => function ($query) {
-                    $query->field('id, ruxuenian, paixu')->append(['banJiTitle, biye']);
+                    $query->field('id, ruxuenian, paixu')->append(['banJiTitle', 'biye']);
                 }
             ])
             ->append(['jieShu'])
