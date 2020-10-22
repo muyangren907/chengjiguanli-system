@@ -397,12 +397,31 @@ class TongjiBj extends BaseModel
             $src['enddate'] = date("Y-m-d",strtotime("+1 day"));
         }
 
+        // 根据教师ID查询教师担任哪些班级班主任，并返回班级ID的数组
         $bj = new \app\teach\model\BanZhuRen;
-        $bjId = $bj->where('teacher_id', $src['teacher_id'])
-                ->order(['bfdate'=>'desc', 'update_time'])
-                ->value('banji_id');
+        $bjInfo = $bj->where('teacher_id', $src['teacher_id'])
+                ->with([
+                    'glBanji' => function ($query) {
+                        $query->field('id, ruxuenian')
+                            ->append(['biye']);
+                    }
+                ])
+                ->distinct(true)
+                ->field('banji_id')
+                ->select();
+        $bjIds = array();
+        foreach ($bjInfo as $key => $value) {
+            $bjIds[] = $value->banji_id;
+        }
+        $src['bjIds'] = $bjIds;
+        // halt($src);
 
-        $data = $this->where('teacher_id', $src['teacher_id'])
+        $data = $this
+                ->where(function ($query) use($src) {
+                    $query
+                        ->whereOr('teacher_id', $src['teacher_id'])
+                        ->whereOr('banji_id', 'in', $src['bjIds']);
+                })
                 ->where('subject_id', '<>', 0)
                 ->when(count($src['subject_id']) > 0, function ($query) use($src) {
                     $query->where('subject_id', 'in', $src['subject_id']);
@@ -421,14 +440,6 @@ class TongjiBj extends BaseModel
                             $q->where('category_id', 'in', $src['category_id']);
                         })
                         ->field('id');
-                })
-                ->when(strlen($bjId) > 0, function ($query) use($bjId) {
-                    $query->whereOr('id', 'in', function ($q) use($bjId) {
-                        $q->name('tongjiBj')
-                            ->where('banji_id',  $bjId)
-                            ->where('subject_id', '<>', 0)
-                            ->field('id');
-                    });
                 })
                 ->with([
                     'bjSubject' => function ($query) {
