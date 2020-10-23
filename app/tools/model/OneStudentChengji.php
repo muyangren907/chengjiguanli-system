@@ -751,7 +751,7 @@ class OneStudentChengji extends BaseModel
             {
                 $zheng = $zheng . reset($avgCha) .'分';
             }else{
-                $zheng = $zheng . ',其中' . $xk .'成绩高与班级平均' . reset($avgCha) .'分';
+                $zheng = $zheng . ',其中' . $xk .'成绩高于班级平均' . reset($avgCha) .'分';
             }
 
         }
