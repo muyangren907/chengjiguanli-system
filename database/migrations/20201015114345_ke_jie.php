@@ -3,7 +3,7 @@
 use think\migration\Migrator;
 use think\migration\db\Column;
 
-class KeJieShiJian extends Migrator
+class KeJie extends Migrator
 {
     /**
      * Change Method.
