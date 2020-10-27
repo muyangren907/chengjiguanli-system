@@ -71,11 +71,11 @@
 	    return str;
 	  }},
 	{field: 'alias', title: '别名', minWidth:60, edit:'text'},
-	{field: 'banzhuren', title: '班主任',sort: true, minWidth:60,templet:function(d){
+	{field: 'banzhuren', title: '现任班主任',sort: true, minWidth:60,templet:function(d){
 		var str='';
-		if(d.glTeacher)
+		if(d.bzr)
 		{
-			str = d.glTeacher.xingming;
+			str = d.bzr;
 		}
 		return str;
 	}},
@@ -109,10 +109,10 @@
             layer.msg('暂时不允许删除');
             break;
       			var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-      			cjgl.delAll(checkStatus,'banji/delete','mytable');
+      			cjgl.delAll(checkStatus,'/teach/banji/delete','mytable');
       			break;
       		case 'add':
-      			cjgl.add('添加班级','banji/create','600','300');
+      			cjgl.add('添加班级','/teach/banji/create','600','300');
       			break;
       		};
       	});
@@ -127,21 +127,21 @@
             parent.xadmin.add_tab(obj.data.banjiTitle  +'－考试成绩','/teach/banjicj/index/'+obj.data.id,'','',true);
             break;
           case 'befo':// 前移
-  	        yidong(this,'banji/yidong/'+data.id,-1);
+  	        yidong(this,'/teach/banji/yidong/'+data.id,-1);
   	        break;
 	      case 'end':// 后移
-  	        yidong(this,'banji/yidong/'+data.id,1);
+  	        yidong(this,'/teach/banji/yidong/'+data.id,1);
   	        break;
 	      case 'del':// 删除
             layer.msg('暂时不允许删除');
             break;
-  	        cjgl.del(obj,"banji/delete");
+  	        cjgl.del(obj,"/teach/banji/delete");
 	         break;
 	      case 'edit':// 编辑
-  	        cjgl.add('编辑班级','banji/edit/'+obj.data.id,'600','300');
+  	        cjgl.add('编辑班级','/teach/banji/edit/'+obj.data.id,'600','300');
   	        break;
   	      case 'banzhuren':   //编辑
-  	        cjgl.add('设置班主任','banji/banzhuren/'+obj.data.id,'600','300');
+  	        cjgl.addTab('班主任','/teach/banzhuren/index/'+obj.data.id,'','',true);
   	        break;
        };
      });

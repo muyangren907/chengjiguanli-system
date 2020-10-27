@@ -55,8 +55,22 @@ class KsCanYu extends BaseController
                 ,'kaoshi_id' => ''
                 ,'limit' => 100
             ], 'POST');
-
         $khSrc = new \app\kaohao\model\SearchCanyu;
+        $myself = config('shangma.lurufanwei');
+        $category = session('onlineCategory');
+        if($category == 'teacher' && $myself == true)
+        {
+            $teacher_id = session('user_id');
+            $s = \think\facade\Session::all();
+            
+            $btj = new \app\chengji\model\TongjiBj;
+            $src['banji_id'] = $btj->where('teacher_id', $teacher_id)
+                        ->where('kaoshi_id', $src['kaoshi_id'])
+                        ->column('banji_id');
+            $bj = new \app\teach\model\Banji;
+            $bjid = $bj->where('banzhuren', $teacher_id)->value('id');
+            array_push($src['banji_id'], $bjid);
+        }
         $bj = $khSrc->class($src);
         $bj = reSetArray($bj, $src);
 

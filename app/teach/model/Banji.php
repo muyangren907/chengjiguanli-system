@@ -39,11 +39,8 @@ class Banji extends BaseModel
                 })
             ->with(
                 [
-                    'glSchool'=>function($query){
+                    'glSchool' => function($query){
                         $query->field('id, title, jiancheng');
-                    },
-                    'glTeacher'=>function($query){
-                        $query->field('id, xingming');
                     },
                 ]
             )
@@ -52,7 +49,7 @@ class Banji extends BaseModel
                     $query->where('status', 1);
                 }
             ])
-            ->append(['banjiTitle', 'banTitle', 'grade', 'ban'])
+            ->append(['banjiTitle', 'banTitle', 'grade', 'ban','bzr'])
             ->select();
 
         return $data;
@@ -105,16 +102,18 @@ class Banji extends BaseModel
     }
 
 
-    // 学校关联模型
-    public function glTeacher(){
-        return $this->belongsTo('\app\teacher\model\Teacher', 'banzhuren', 'id');
-    }
-
-
     // 年级-班级关联表
     public function njBanji()
     {
         return $this->hasMany('Banji', 'ruxuenian', 'ruxuenian');
+    }
+
+
+    // 年级-班级关联表
+    public function glBanZhuRen()
+    {
+        return $this->hasMany('BanZhuRen', 'banji_id', 'id')
+            ->order(['bfdate'=>'desc', 'update_time'=>'desc']);
     }
 
 
@@ -198,6 +197,40 @@ class Banji extends BaseModel
         $del == null ?  $title : $title = $title & '(删)' ;
 
         return $title;
+    }
+
+
+    // 班主任获取器
+    public function getBzrAttr()
+    {
+        $bzrList = $this->glBanZhuRen;
+        $str = '';
+
+        if (isset($bzrList[0]))
+        {
+            if($this->getBiyeAttr !== true)
+            {
+                $str = $bzrList[0]->glTeacher->xingming;
+            }
+        }
+
+        return $str;
+    }
+
+
+    // 判断当前班级是否已经毕业
+    public function getBiyeAttr()
+    {
+        $ruxuenian = $this->ruxuenian;
+        $date_r = strtotime($ruxuenian + 6 . '-8-1');
+        $str = '';
+        if(time() > $date_r)
+        {
+            $str = true;
+        }else{
+            $str = false;
+        }
+        return $str;
     }
 
 
@@ -455,6 +488,5 @@ class Banji extends BaseModel
         }
         return $chiStr;
     }
-
 
 }

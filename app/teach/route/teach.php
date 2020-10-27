@@ -35,8 +35,6 @@ Route::group('banji', function () {
 	    Route::rule('mybanji','banji/mybanji','post');		# 删除信息
 	    Route::rule('mybanjis','banji/banjiList','post');		# 删除信息
         Route::rule('alias','banji/setAlias','put');       # 删除信息
-        Route::rule('banzhuren/<id>','banji/banzhuren','get');				# 修改信息
-	    Route::rule('updatebanzhuren/<id>','banji/updatebanzhuren','put');			# 更新信息 
 	});
 
 
@@ -61,6 +59,19 @@ Route::group('subject', function () {
 	    Route::rule('status','subject/setStatus','post');		# 删除信息
 	    Route::rule('kaoshi','subject/kaoshi','post');		# 删除信息
 	});
+
+
+// 班主任管理
+Route::group('banzhuren', function () {
+        Route::rule('index/<banji_id>','BanZhuRen/index','get');                        # 信息列表
+        Route::rule('data','BanZhuRen/ajaxdata','post');                # 获取数据
+        Route::rule('create/<banji_id>','BanZhuRen/create','get');             # 添加信息
+        Route::rule('save','BanZhuRen/save','post');                    # 保存信息
+        Route::rule('edit/<id>','BanZhuRen/edit','get');                # 修改信息
+        Route::rule('update/<id>','BanZhuRen/update','put');            # 更新信息
+        Route::rule('delete/<id>','BanZhuRen/delete','delete');     # 删除信息
+        Route::rule('status','BanZhuRen/setStatus','post');     # 删除信息
+    });
 
 
 

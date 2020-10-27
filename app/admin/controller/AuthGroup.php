@@ -65,6 +65,7 @@ class AuthGroup extends AdminBase
         $ruleSelect = array();
         $auth = $rule->digui($ruleList, $ruleSelect); # 递归获取所有权限
         $list['auth'] = $auth;
+        // halt($auth);
 
         // 模板赋值
         $this->view->assign('list', $list);

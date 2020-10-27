@@ -132,9 +132,6 @@ class Xueqi extends AdminBase
     }
 
 
-
-
-
     // 更新学期信息
     public function update($id)
     {

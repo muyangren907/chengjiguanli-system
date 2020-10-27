@@ -37,7 +37,6 @@ class Banji extends Migrator
             ->addColumn('ruxuenian','integer',['limit'=>4,'null'=>true,'comment'=>'入学年'])
             ->addColumn('xuanduan_id','integer',['limit'=>11,'null'=>true,'comment'=>'学段'])
             ->addColumn('paixu','integer',['limit'=>3,'default'=>'100','null'=>false,'comment'=>'排序'])
-            ->addColumn('banzhuren','integer',['limit'=>11,'null'=>true,'comment'=>'班主任'])
             ->addColumn('alias','string',['limit'=>24,'default'=>null,'null'=>true,'comment'=>'班级别名'])
             ->addColumn('create_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'更新时间'])

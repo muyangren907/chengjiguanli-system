@@ -8,7 +8,7 @@
               </label>
               <div class="layui-inline">
                 <div class="layui-input-inline">
-                  <input name="student_id" id="student_id" type="text" class="layui-input" autocomplete="off" readonly="true">
+                  <input name="student_id" id="student_id" type="text" class="layui-input" autocomplete="off" readonly="true" lay-verify="required">
                 </div>
               </div>
           </div>
@@ -101,7 +101,13 @@
 
     // 搜索教师
     $('#search').bind({
-      keyup:function(){
+      keyup:function(e){
+        var e = e || window.event;
+        // console.log(e);
+        if(e.keyCode == 13){
+           // $("#srcsubmit").click();
+           return false;
+        }
         $('#list').children("span[name='aa']").remove();
         formval = form.val("myform");
         formval.search = formval.search.trim();

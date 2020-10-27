@@ -20,6 +20,14 @@
 <body>
   <div class="myrow">
       <div class="layui-row layui-col-md12">
+          <div class="layui-col-xs12 layui-col-sm12 layui-col-md12 mydivtop">
+              <div class="mydivneirong">
+                  <div class="mydivtitle">
+                      成绩报告
+                  </div>
+                  <div class="baogao" id="baogao"></div>
+              </div>
+          </div>
           <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 mydivtop">
               <div class="mydivneirong">
                   <div class="mydivtitle">
@@ -30,7 +38,7 @@
                   </div>
               </div>
           </div>
-          <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 mydivtop">
+          <div class="layui-col-xs12 layui-col-sm12 layui-col-md8 mydivtop">
               <div class="mydivneirong">
                   <div class="mydivtitle">
                       各学科得分
@@ -118,6 +126,7 @@
 
   function loadTubiao()
   {
+    getBaogao("{$list.id}");
     getLeiDa("{$list.id}");
     getYiBiao("{$list.id}");
     getDefenlv("{$list.id}");
@@ -166,6 +175,29 @@
     };
     var title = '';
     createTiaoxing(id, url, val, title);
+  }
+
+
+  // 获取学生成绩报告
+  function getBaogao(kaohao_id)
+  {
+    $.ajax({
+      url:'/tools/onestudentchengji/baogao',
+      type:'POST',
+      data:{
+        'kaohao_id':kaohao_id
+      },
+      success:function(result){
+        if(result.val == 1){
+          $('#baogao').text(result.baogao);
+        }else{
+          layer.msg(result.msg);
+        }
+      },
+      error:function(result){
+        layer.msg('数据扔半道啦。',function(){});
+      },
+    });
   }
 
 

@@ -34,6 +34,7 @@ Route::group('onestudentchengji', function () {
     Route::rule('xkdfl','OneStudentChengji/ajaxSubjectDeFenLv','post');    # 上传文件
     Route::rule('xkwz','OneStudentChengji/ajaxSubjectWeiZhi','post');    # 上传文件
     Route::rule('xkold','OneStudentChengji/ajaxOldSubject','post');    # 上传文件
+    Route::rule('baogao','OneStudentChengji/ajaxBaoGao','post');    # 上传文件
 });
 
 
@@ -41,4 +42,5 @@ Route::group('onestudentchengji', function () {
 Route::group('teacherinfo', function () {
     Route::rule('srcry','TeacherInfo/srcRy','post');    # 获取荣誉数据
     Route::rule('srckt','TeacherInfo/srcKt','post');    # 获取课题数据
+    Route::rule('srcbzr','TeacherInfo/srcBzr','post');    # 获取课题数据
 });

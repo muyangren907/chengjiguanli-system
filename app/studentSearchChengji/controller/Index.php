@@ -30,7 +30,7 @@ class Index extends StudentSearchBase
         $list['webtitle'] = config('shangma.webtitle'); # 系统名称
 
         $stu = new \app\student\model\Student;
-        $stuInfo = $stu->where('id', session('student.userid'))
+        $stuInfo = $stu->where('id', session('user_id'))
                 ->with([
                     'stuBanji' => function ($query) {
                         $query->field('id, paixu, ruxuenian')
@@ -41,7 +41,7 @@ class Index extends StudentSearchBase
                 ->find();
         $list['xingming'] = $stuInfo->xingming;
         $list['banjiTitle'] = $stuInfo->stuBanji->banjiTitle;
-        $list['student_id'] = session('student.userid');
+        $list['student_id'] = session('user_id');
         $list['sbj'] = subjectKaoshiList();
 
         // 模板赋值
@@ -81,7 +81,7 @@ class Index extends StudentSearchBase
             'webtitle' => '修改密码'
             ,'butname' => '修改'
             ,'formpost' => 'PUT'
-            ,'url' => '/studentsearchchengji/index/updatepassword/' . session('student.userid')
+            ,'url' => '/studentsearchchengji/index/updatepassword/' . session('user_id')
         );
 
         // 模板赋值

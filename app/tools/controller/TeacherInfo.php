@@ -63,4 +63,26 @@ class TeacherInfo extends BaseController
     }
 
 
+    // 查询担任班主任情况
+    public function srcBzr()
+    {
+       // 获取参数
+        $src = $this->request
+            ->only([
+                'page' => '1'
+                ,'limit' => '10'
+                ,'field' => 'update_time'
+                ,'order' => 'desc'
+                ,'teacher_id' => ''
+            ], 'POST');
+
+        // 查询数据
+        $bzr = new \app\teach\model\BanZhuRen;
+        $data = $bzr->srcTeacher($src);
+        $data = reSetObject($data, $src);
+
+        return json($data); 
+    }
+
+
 }

@@ -19,4 +19,14 @@ abstract class AdminBase  extends BaseController
         ,'login'
         ,'auth'
     ];
+
+    // 初始化变量
+    protected function initialize()
+    {
+        $this->online = session('onlineCategory');
+        if($this->online != 'admin')
+        {
+            \app\facade\OnLine::jump('/login', '请使用管理员帐号登录');
+        }
+    }
 }

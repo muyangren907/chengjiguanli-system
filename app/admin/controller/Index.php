@@ -151,7 +151,7 @@ class Index extends AdminBase
     // 读取用户信息
     public function myinfo()
     {
-        $id = session('admin.userid');
+        $id = session('user_id');
         $ad = new AD;
         // 获取管理员信息
         $list = $ad->where('id', $id)
@@ -314,7 +314,7 @@ class Index extends AdminBase
             'webtitle' => '修改密码'
             ,'butname' => '修改'
             ,'formpost' => 'PUT'
-            ,'url' => '/admin/index/updatepassword/' . session('admin.userid')
+            ,'url' => '/admin/index/updatepassword/' . session('user_id')
         );
 
         // 模板赋值

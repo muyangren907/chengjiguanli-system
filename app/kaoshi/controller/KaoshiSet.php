@@ -48,7 +48,7 @@ class KaoshiSet extends AdminBase
         $src = $this->request
             ->only([
                 'kaoshi_id' => 0
-                ,'nianji' => array()
+                ,'ruxuenian' => array()
                 ,'subject_id' => array()
                 ,'page' => '1'
                 ,'limit' => '10'

@@ -33,7 +33,7 @@ class TeacherZhiwu extends Migrator
 
         // 添加当前表字段
         $table
-            ->addColumn('teacherid','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'教师ID'])
+            ->addColumn('teacher_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'教师ID'])
             ->addColumn('zhiwu_id','integer',['limit'=>11,'null'=>true,'comment'=>'职务'])
             
             ->addColumn('create_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'创建时间'])

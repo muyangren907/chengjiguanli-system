@@ -31,23 +31,27 @@
         </script>
 </head>
 <body class="login-bg">
-    <div class="login layui-anim layui-anim-up">
+    <div class="login layui-anim layui-anim-up" style="margin-top: 60px;">
         <div class="message">{$list['webtitle']} {$list['version']}</div>
         <div id="darkbannerwrap"></div>
         <form method="post" class="layui-form" >
-            <input name="username" placeholder="用户名"  type="text" lay-verify="required" class="layui-input" >
+            <input id="username" name="username" placeholder="用户名"  type="text" lay-verify="required" class="layui-input" >
             <hr class="hr15">
-            <input name="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input" autocomplete="off">
+            <input id="password" name="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input" autocomplete="off">
+            <hr class="hr15">
+            <div>
+              <input type="radio" lay-filter="category" class="layui-input" name="category" value="student" title="学生">
+              <input type="radio" lay-filter="category" class="layui-input" name="category" value="teacher" title="教师">
+              <input type="radio" lay-filter="category" class="layui-input" name="category" value="admin" title="管理员" checked="checked">
+            </div>
             <hr class="hr15" id="thisafter">
-
               <div class="layui-form-item" style="margin-left:0px; margin-bottom: 0px;">
                 <div id="slider" style="height: 50px"></div>
               </div>
             <hr class="hr15">
-            <a href="/login/student" class="layui-btn layui-btn-danger" style="width:23%;height: 48px;font-size: 14px;padding-top: 7px;">学生入口</a>
-            <a href="/login/teacher" class="layui-btn layui-btn-danger" style="width:23%;height: 48px;font-size: 14px;padding-top: 7px; margin-left: 1px">教师入口</a>
-            <input value="管理员登录" lay-submit lay-filter="login" style="width:49%; float: right;" type="submit">
+            <input value="登录" lay-submit lay-filter="login" style="float: right;" type="submit">
             <hr class="hr20" >
+            <div style="color: #666666; text-align: center;">推荐使用Firefox、Chrome浏览器</div>
         </form>
     </div>
     <script type="text/javascript" charset="utf-8">
@@ -59,64 +63,45 @@
         var sliderVerify = layui.sliderVerify,
           form = layui.form;
 
-        mobile = "{$list['mobile']}";
-        if(mobile!==true)
-        {
-          var slider = sliderVerify.render({
-            elem: '#slider',
-            onOk: function(){
-              //当验证通过回调
-              // layer.msg("滑块验证通过");
-            },
-          })
-        }
+        var slider = sliderVerify.render({
+          elem: '#slider',
+          onOk: function(){
+            //当验证通过回调
+            // layer.msg("滑块验证通过");
+          },
+        })
 
         //监听提交
         form.on('submit(login)', function(data){
-          mobile = "{$list['mobile']}";
-          if(mobile == true)
+          yz = slider.isOk();
+          if(yz == false)
           {
-            yz = true
-          }else{
-            yz = slider.isOk();
-          }
-
-          if(yz){
-            $.post("/login",data.field,function(data,status){
-                  if(status != 'success')
-                  {
-                    layer.msg('数据传输错误');
-                    $('#captchaimg').onclick();
-                    $('#captcha').val('');
-                    $('#password').val('');
-                    slider.reset();
-                  }
-                  if(data.status == 1)
-                  {
-                    window.location.href="/";
-                  }else{
-                    layer.msg(data.msg);
-                    $('#captchaimg').click();
-                    $('#captcha').val('');
-                    $('#password').val('');
-                    slider.reset();
-                  }
-                });
-                return false;
-          }else{
             layer.msg("请先通过滑块验证");
+            return false;
           }
+          $.ajax({
+            url:"/login",
+            type:'POST',
+            async: true,
+            data:data.field,
+            success:function(result){
+              if(result.val == 1)
+              {
+                window.location.href = result.url;
+              }else{
+                layer.msg(result.msg);
+                $('#password').val('');
+                slider.reset();
+              }
+            },
+            error:function(result){
+              $('#password').val('');
+              layer.msg('数据扔半道，回不来啦。',function(){});
+            },
+          });
           return false;
         });
       })
-
-
-      function tiaozhuan()
-      {
-        layer.msg('');
-      }
-
-
     </script>
 
 

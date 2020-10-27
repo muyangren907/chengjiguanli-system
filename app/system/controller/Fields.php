@@ -28,7 +28,7 @@ class Fields extends AdminBase
     }
 
 
-    //  获取单位列表数据
+    //  获取文件列表数据
     public function ajaxData()
     {
         // 获取参数
@@ -47,10 +47,8 @@ class Fields extends AdminBase
             ->visible([
                 'id'
                 ,'flCategory'=>['title']
-                // ,'flTeacher'=>['xingming']
                 ,'oldname'
                 ,'fieldsize'
-                // ,'flTeacher'=>['xingming']
                 ,'bianjitime'
                 ,'update_time'
                 ,'userInfo'
