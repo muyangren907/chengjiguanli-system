@@ -67,9 +67,15 @@ class KsCanYu extends BaseController
             $src['banji_id'] = $btj->where('teacher_id', $teacher_id)
                         ->where('kaoshi_id', $src['kaoshi_id'])
                         ->column('banji_id');
-            $bj = new \app\teach\model\Banji;
-            $bjid = $bj->where('banzhuren', $teacher_id)->value('id');
-            array_push($src['banji_id'], $bjid);
+            $bzr = new \app\teach\model\BanZhuRen;
+            $src['teacher_id'] = $teacher_id;
+            $bjInfo = $bzr->srcTeacher($src);
+            foreach ($bjInfo as $key => $value) {
+                if($value->glBanji->biye === false)
+                {
+                    array_push($src['banji_id'], $value->glBanji->id);
+                }
+            }
         }
         $bj = $khSrc->class($src);
         $bj = reSetArray($bj, $src);
