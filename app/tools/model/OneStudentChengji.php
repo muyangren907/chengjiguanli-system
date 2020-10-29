@@ -947,7 +947,8 @@ class OneStudentChengji extends BaseModel
             {
                 $zheng = $xk . '成绩上升';
             }else{
-                $zheng = $xk .  '成绩上升，其中' . $subject_title(key(reset($cha))) . '成绩上升最多';
+                $t = key(reset($cha));
+                $zheng = $xk .  '成绩上升，其中' . $subject_title($t) . '成绩上升最多';
             }
         }
 
