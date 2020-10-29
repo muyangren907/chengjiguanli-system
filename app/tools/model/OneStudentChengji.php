@@ -914,7 +914,7 @@ class OneStudentChengji extends BaseModel
         foreach ($thisPaixu as $key => $value) {
             if(isset($lastPaixu[$key]))
             {
-                $cha[$key] = $value - $lastPaixu[$key];
+                $cha[$key] = $lastPaixu[$key] - $value;
                 if ($cha[$key] < 0)
                 {
                     $zhengfu['fu'] ++;
