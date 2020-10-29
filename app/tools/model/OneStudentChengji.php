@@ -947,8 +947,9 @@ class OneStudentChengji extends BaseModel
             {
                 $zheng = $xk . '成绩上升';
             }else{
-                $t = key(reset($cha));
-                $zheng = $xk .  '成绩上升，其中' . $subject_title($t) . '成绩上升最多';
+                reset($cha);
+                $t = key($cha);
+                $zheng = $xk .  '成绩上升，其中' . $subject_title[$t] . '成绩上升最多';
             }
         }
 
@@ -991,8 +992,9 @@ class OneStudentChengji extends BaseModel
             {
                 $fu = $xk . '成绩下降';
             }else{
-                $t = key(end($cha));
-                $fu = $xk .  '成绩下降，其中' . $subject_title($t) . '成绩下降最多';
+                end($cha);
+                $t = key($cha);
+                $fu = $xk .  '成绩下降，其中' . $subject_title[$t] . '成绩下降最多';
             }
         }
 
