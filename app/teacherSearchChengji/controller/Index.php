@@ -117,7 +117,7 @@ class Index extends TeacherSearchBase
             ->find();
 
         // 查询用户登信息
-        $list['username'] = session('teacher.username');
+        $list['username'] = session('username');
         $list['webtitle'] = config('shangma.webtitle');
 
 
