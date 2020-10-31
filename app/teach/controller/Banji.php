@@ -286,6 +286,11 @@ class Banji extends AdminBase
                 ,'limit' =>100
             ], 'POST');
 
+        if($src['school_id'] == '' && $src['ruxuenian'] == '')
+        {
+            return '';
+        }
+
         // 查询班级
         $bj = new bjmod;
         $data = $bj->search($src);  # 查询数据
