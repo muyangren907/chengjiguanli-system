@@ -23,20 +23,22 @@
     <div class="layui-form-item">
 	    <label for="school_id" class="layui-form-label" style="height: 100%">学校</label>
 	    <div class="layui-input-block">
+        <input type="radio" name="school_id" title="无" value="" lay-skin="primary" checked>
 	    	{php} $schoollist = schoolXueduan('小学', '初中');{/php}
 	    	{volist name="schoollist" id="vo"}
-	    		<input type="radio" name="school_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" lay-filter="src" {eq name="i" value="1"}checked{/eq} >
+	    		<input type="radio" name="school_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" lay-filter="src">
 	    	{/volist}
 	    </div>
 	</div>
 	<div class="layui-form-item">
 	    <label for="ruxuenian" class="layui-form-label" style="height: 100%">年级 </label>
 	    <div class="layui-input-block">
+        <input type="radio" name="ruxuenian" title="无" value="" lay-skin="primary" checked>
 	    	{php}
           $njlist = nianJiNameList('str', time());
         {/php}
         {volist name="njlist" id="vo"}
-	    		<input type="radio" name="ruxuenian" title="{$vo}" value="{$key}" lay-skin="primary"  lay-filter="src" {eq name="i" value="1"}checked{/eq} >
+	    		<input type="radio" name="ruxuenian" title="{$vo}" value="{$key}" lay-skin="primary"  lay-filter="src">
 	    	{/volist}
 	    </div>
 	</div>
