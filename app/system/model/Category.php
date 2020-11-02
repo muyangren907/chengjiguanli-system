@@ -49,7 +49,7 @@ class Category extends BaseModel
                     }
                 ]
             )
-            ->cache(true, 60)
+            // ->cache(true, 60)
             ->select();
         return $data;
     }
