@@ -448,8 +448,9 @@ class Index extends AdminBase
             ,'url'
         ], 'POST');
 
+        $fengefu = DIRECTORY_SEPARATOR;
         // 读取表格数据
-        $stuinfo = \app\facade\File::readXls(public_path() . 'uploads\\' . $list['url']);
+        $stuinfo = \app\facade\File::readXls(public_path() . 'uploads' . $fengefu . $list['url']);
         if($stuinfo[0][2] != "序号" && $stuinfo[1][2] != "姓名" && $stuinfo[2][2] != "身份证号")
         {
             $data = array('msg'=>'请使用模板上传','val'=>0,'url'=>'');
@@ -527,8 +528,9 @@ class Index extends AdminBase
             'url'
         ], 'POST');
 
+        $fengefu = DIRECTORY_SEPARATOR;
         // 读取表中数据
-        $stuinfo = \app\facade\File::readXls(public_path() . 'uploads\\' . $list['url']);
+        $stuinfo = \app\facade\File::readXls(public_path() . 'uploads' . $fengefu . $list['url']);
 
         // 判断表格是否正确
         if($stuinfo[0][2] != "序号" && $stuinfo[1][2] != "ID" && $stuinfo[2][2] != "班级" && $stuinfo[3][2] != "姓名")

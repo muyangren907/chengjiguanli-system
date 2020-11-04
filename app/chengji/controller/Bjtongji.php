@@ -18,7 +18,7 @@ class Bjtongji extends AdminBase
             ->field('id, title')
             ->find();
         // 获取参与学校
-        $cy = new \app\kaohao\model\SearchCanyu;
+        $cy = new \app\kaohao\model\SearchCanYu;
         $src['kaoshi_id'] = $kaoshi_id;
         $list['school_id'] = $cy->school($src);
 
@@ -56,7 +56,7 @@ class Bjtongji extends AdminBase
 
         if (count($src['banji_id'])==0) {
             // 获取参与考试的班级
-            $cy = new \app\kaohao\model\SearchCanyu;
+            $cy = new \app\kaohao\model\SearchCanYu;
             $src['banji_id']= array_column($cy->class($src),'id');
         }
 
@@ -78,7 +78,7 @@ class Bjtongji extends AdminBase
             ->field('id, title')
             ->find();
         // 获取参与学校
-        $cy = new \app\kaohao\model\SearchCanyu;
+        $cy = new \app\kaohao\model\SearchCanYu;
         $src['kaoshi_id'] = $kaoshi_id;
         $list['school_id'] = $cy->school($src);
 
@@ -112,7 +112,7 @@ class Bjtongji extends AdminBase
             ,'kaoshi_id' => $kaoshi_id
         );
         // 获取参与学校
-        $cy = new \app\kaohao\model\SearchCanyu;
+        $cy = new \app\kaohao\model\SearchCanYu;
         $src['kaoshi_id'] = $kaoshi_id;
         $list['set']['school_id'] = $cy->school($src);
         // 获取年级与学科
@@ -152,7 +152,7 @@ class Bjtongji extends AdminBase
         $school = new \app\system\model\School; # 学校、年级信息
         $schoolname = $school->where('id', 'in', $src['school_id'])->value('jiancheng');
         $tabletitle = $ksinfo->title . ' ' . $schoolname . $nianji . '各班级成绩汇总';
-        $cy = new \app\kaohao\model\SearchCanyu;  # 参考班级
+        $cy = new \app\kaohao\model\SearchCanYu;  # 参考班级
         $src['banji_id']= array_column($cy->class($src), 'id');
         $btj = new BTJ;     # 成绩统计结果
         $data = $btj->search($src);
@@ -358,7 +358,7 @@ class Bjtongji extends AdminBase
 
         if (count($src['banji_id']) == 0) {
             // 获取参与考试的班级
-            $cy = new \app\kaohao\model\SearchCanyu;
+            $cy = new \app\kaohao\model\SearchCanYu;
             $src['banji_id'] = array_column($cy->class($src), 'id');
         }
 
@@ -385,7 +385,7 @@ class Bjtongji extends AdminBase
 
         if (count($src['banji_id']) == 0) {
             // 获取参与考试的班级
-            $cy = new \app\kaohao\model\SearchCanyu;
+            $cy = new \app\kaohao\model\SearchCanYu;
             $src['banji_id']= array_column($cy->class($src), 'id');
         }
 
@@ -441,7 +441,7 @@ class Bjtongji extends AdminBase
             ->field('id, title')
             ->find();
         // 获取参与学校
-        $cy = new \app\kaohao\model\SearchCanyu;
+        $cy = new \app\kaohao\model\SearchCanYu;
         $src['kaoshi_id'] = $kaoshi_id;
         $list['school_id'] = $cy->school($src);
 
@@ -480,7 +480,7 @@ class Bjtongji extends AdminBase
 
         if (count($src['banji_id'])==0) {
             // 获取参与考试的班级
-            $cy = new \app\kaohao\model\SearchCanyu;
+            $cy = new \app\kaohao\model\SearchCanYu;
             $src['banji_id']= array_column($cy->class($src),'id');
         }
 

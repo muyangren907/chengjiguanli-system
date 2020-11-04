@@ -81,7 +81,7 @@ class SearchMore extends BaseModel
             return $data = array();
         }
 
-        $ksset = new \app\kaoshi\model\kaoshiSet;
+        $ksset = new \app\kaoshi\model\KaoshiSet;
         $xk = $ksset->srcSubject($src);
 
         // 实例化学生数据模型

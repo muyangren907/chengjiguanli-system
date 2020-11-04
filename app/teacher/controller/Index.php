@@ -453,7 +453,8 @@ class Index extends AdminBase
     // 下载表格模板
     public function downloadXls()
     {
-        $url = public_path() . 'uploads\\teacher\\TeacherInfo.xlsx';
+        $fengefu = DIRECTORY_SEPARATOR;
+        $url = public_path() . 'uploads' . $fengefu . 'teacher' . $fengefu . 'TeacherInfo.xlsx';
         return download($url, '教师名单模板.xlsx');
     }
 

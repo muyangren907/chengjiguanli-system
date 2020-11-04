@@ -325,7 +325,8 @@ class Index extends BaseController
         ], 'POST');
 
         // 读取表格数据
-        $cjinfo = \app\facade\File::readXls(public_path() . 'uploads\\' . $list['url']);
+        $fengefu = DIRECTORY_SEPARATOR;
+        $cjinfo = \app\facade\File::readXls(public_path() . 'uploads' . $fengefu . $list['url']);
 
         $kaoshi_id = $cjinfo[1][0];  #获取考号
         $nianji = $cjinfo[1][1];  #获取年级

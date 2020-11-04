@@ -60,7 +60,7 @@ class Index extends TeacherSearchBase
                 ,'authCid' => [
                     [
                         'title' => '班级成绩'
-                        ,'url' => '/teachersearchchengji/index/banji'
+                        ,'url' => '/teacherSearchChengji/index/banji'
                     ]
                 ]
             ]
@@ -75,7 +75,7 @@ class Index extends TeacherSearchBase
                 ,'authCid' => [
                     [
                         'title' => '个人荣誉'
-                        ,'url' => '/teachersearchchengji/index/rongyu'
+                        ,'url' => '/teacherSearchChengji/index/rongyu'
                     ]
                 ]
             ];
@@ -89,7 +89,7 @@ class Index extends TeacherSearchBase
                 ,'authCid' => [
                     [
                         'title' => '个人课题'
-                        ,'url' => '/teachersearchchengji/index/keti'
+                        ,'url' => '/teacherSearchChengji/index/keti'
                     ]
                 ]
             ];
@@ -171,7 +171,7 @@ class Index extends TeacherSearchBase
             'webtitle' => '修改密码'
             ,'butname' => '修改'
             ,'formpost' => 'PUT'
-            ,'url' => '/teachersearchchengji/index/updatepassword/' . session('user_id')
+            ,'url' => '/teacherSearchChengji/index/updatepassword/' . session('user_id')
         );
 
         // 模板赋值
@@ -237,7 +237,7 @@ class Index extends TeacherSearchBase
 
         // 设置要给模板赋值的信息
         $list['webtitle'] = '班级成绩列表';
-        $list['dataurl'] = '/teachersearchchengji/index/banjidata';
+        $list['dataurl'] = '/teacherSearchChengji/index/banjidata';
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -294,7 +294,7 @@ class Index extends TeacherSearchBase
 
         // 设置要给模板赋值的信息
         $list['webtitle'] = $list->banjiTitle . $list->bjSubject->title . '成绩';
-        $list['dataurl'] = '/teachersearchchengji/index/detaildata';
+        $list['dataurl'] = '/teacherSearchChengji/index/detaildata';
 
         // 模板赋值
         $this->view->assign('list', $list);

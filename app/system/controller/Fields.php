@@ -73,7 +73,8 @@ class Fields extends AdminBase
             $oldname = $filist->oldname;
         }
 
-        $url = public_path() . 'uploads\\' . $filist->url;
+        $fengefu = DIRECTORY_SEPARATOR;
+        $url = public_path() . 'uploads' . $fengefu . $filist->url;
 
         $data = file_exists($url);
         if ($data === true) {

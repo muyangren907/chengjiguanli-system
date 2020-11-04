@@ -1186,20 +1186,6 @@ class Rule extends Seeder
                     ,'pid' => 703
                 ],
             ['id' => 704
-                ,'title' => '系统设置'
-                ,'name' => 'system/systembase/edit'
-                ,'paixu' => 10
-                ,'ismenu'  => 1
-                ,'pid'  => 7
-                ,'url' => '/system/'
-            ],
-                ['id' => 70401
-                    ,'title' => '更新'
-                    ,'name' => 'system/systembase/update'
-                    ,'paixu' => 1
-                    ,'pid'  => 704
-                ],
-            ['id' => 705
                 ,'title' => '数据备份'
                 ,'name' => 'system/backup/index'
                 ,'paixu' => 11
@@ -1207,15 +1193,30 @@ class Rule extends Seeder
                 ,'pid'  => 7
                 ,'url' => '/system/backup/index'
             ],
-                ['id' => 70501
+                ['id' => 70401
                     ,'title' => '创建'
                     ,'name' => 'system/backup/create'
                     ,'paixu' => 1
-                    ,'pid'  => 705
+                    ,'pid'  => 704
                 ],
-                ['id' => 70502
+                ['id' => 70402
                     ,'title' => '删除'
                     ,'name' => 'system/backup/delete'
+                    ,'paixu' => 1
+                    ,'pid'  => 704
+                ],
+
+            ['id' => 705
+                ,'title' => '系统设置'
+                ,'name' => 'system/systembase/edit'
+                ,'paixu' => 10
+                ,'ismenu'  => 1
+                ,'pid'  => 7
+                ,'url' => '/system/'
+            ],
+                ['id' => 70501
+                    ,'title' => '更新'
+                    ,'name' => 'system/systembase/update'
                     ,'paixu' => 1
                     ,'pid'  => 705
                 ],
