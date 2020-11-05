@@ -299,6 +299,7 @@ class Index extends BaseController
         $list['data'] = $ks::order(['id' => 'desc'])
                 ->field('id, title')
                 ->where('luru', 1)
+                ->where('status', 1)
                 ->select();
 
         // 设置页面标题
