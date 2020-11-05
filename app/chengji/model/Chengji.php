@@ -126,8 +126,11 @@ class Chengji extends BaseModel
             $data[$key]['id'] = $value->id;
             if($value->cjKaohao)
             {
-                $data[$key]['kaoshi_title'] = $value->cjKaohao->cjKaoshi->title;
-                $data[$key]['kaoshi_id'] =  $value->cjKaohao->cjKaoshi->id;
+                if($value->cjKaohao->cjKaoshi)
+                {
+                    $data[$key]['kaoshi_title'] = $value->cjKaohao->cjKaoshi->title;
+                    $data[$key]['kaoshi_id'] =  $value->cjKaohao->cjKaoshi->id;
+                }
                 $data[$key]['kaohao_id'] = $value->cjKaohao->id;
                 $data[$key]['school_jiancheng'] = $value->cjKaohao->cjSchool->jiancheng;
                 $data[$key]['school_id'] = $value->cjKaohao->cjSchool->paixu;
@@ -146,7 +149,6 @@ class Chengji extends BaseModel
             $data[$key]['update_time'] = $value->update_time;
 
         }
-
         return $data;
     }
 
