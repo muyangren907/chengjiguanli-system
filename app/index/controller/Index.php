@@ -64,7 +64,7 @@ class Index extends AdminBase
         // 获取服务器操作系统
         $list->xitong = php_uname('s');
         // 获取磁盘空间
-        $list->kongjian = round(disk_free_space('\\')*1/1024/1024/1024, 2).'GB';
+        $list->kongjian = round(disk_free_space('/')*1/1024/1024/1024, 2).'GB';
         // 获取Session过期时间
         $list->session = \think\facade\Config::get('session.expire').'s';
         // 获取thinkphp版本

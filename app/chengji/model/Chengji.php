@@ -123,23 +123,28 @@ class Chengji extends BaseModel
         // 重新整理成绩
         $data = array();
         foreach ($cjList as $key => $value) {
-            $data[$key] = [
-                'id' => $value->id
-                ,'kaoshi_title' => $value->cjKaohao->cjKaoshi->title
-                ,'kaoshi_id' => $value->cjKaohao->cjKaoshi->id
-                ,'kaohao_id' => $value->cjKaohao->id
-                ,'school_jiancheng' => $value->cjKaohao->cjSchool->jiancheng
-                ,'school_id' => $value->cjKaohao->cjSchool->paixu
-                ,'banji_title' => $value->cjKaohao->banjiTitle
-                ,'banji_id' => $value->cjKaohao->banji_id
-                ,'subject_title' => $value->subjectName->title
-                ,'subject_id' => $value->subjectName->id
-                ,'subject_lieming' => $value->subjectName->lieming
-                ,'defen' => $value->defen
-                ,'status' => $value->status
-                ,'update_time' => $value->update_time
-            ];
-            $value->cjKaohao->cjStudent ? $data[$key]['student_name']=$value->cjKaohao->cjStudent->xingming : $data[$key]['student_name']= '';
+            $data[$key]['id'] = $value->id;
+            if($value->cjKaohao)
+            {
+                $data[$key]['kaoshi_title'] = $value->cjKaohao->cjKaoshi->title;
+                $data[$key]['kaoshi_id'] =  $value->cjKaohao->cjKaoshi->id;
+                $data[$key]['kaohao_id'] = $value->cjKaohao->id;
+                $data[$key]['school_jiancheng'] = $value->cjKaohao->cjSchool->jiancheng;
+                $data[$key]['school_id'] = $value->cjKaohao->cjSchool->paixu;
+                $data[$key]['banji_title'] = $value->cjKaohao->banjiTitle;
+                $data[$key]['banji_id'] = $value->cjKaohao->banji_id;
+                $value->cjKaohao->cjStudent ? $data[$key]['student_name']=$value->cjKaohao->cjStudent->xingming : $data[$key]['student_name']= '';
+            }
+            if($value->subjectName)
+            {
+                $data[$key]['subject_title'] = $value->subjectName->title;
+                $data[$key]['subject_id'] = $value->subjectName->id;
+                $data[$key]['subject_lieming'] = $value->subjectName->lieming;
+            }
+            $data[$key]['defen'] = $value->defen;
+            $data[$key]['status'] = $value->status;
+            $data[$key]['update_time'] = $value->update_time;
+
         }
 
         return $data;

@@ -562,7 +562,7 @@ class Index extends AdminBase
     // 下载表格模板
     public function download()
     {
-        $url = public_path() . 'uploads\\student\\student_template.xlsx';
+        $url = public_path() . 'uploads/student/student_template.xlsx';
         return download($url,'学生名单模板.xlsx');
     }
 

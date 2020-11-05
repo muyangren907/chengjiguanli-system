@@ -53,27 +53,22 @@ class File extends BaseController
         $f = new \app\system\model\Fields;
         $serFile = $f::where('hash', $hash)->find();
 
-        // if($serFile)
-        // {
-        //     $serFile->user_id = $this->luruTeacherId;
-        //     $serFile->save();
-        //     $data['msg'] = '文件已经存在';
-        //     $data['val'] = true;
-        //     $data['url'] = $serFile->url;
-        //     return $data;
-        // }
+        if($serFile)
+        {
+            $serFile->user_id = $this->luruTeacherId;
+            $serFile->save();
+            $data['msg'] = '文件已经存在';
+            $data['val'] = true;
+            $data['url'] = $serFile->url;
+            return $data;
+        }
 
         // 上传文件到本地服务器
         $savename = \think\facade\Filesystem::disk('public')
             ->putFile($list['serurl'], $file);
 
         $fengefu = DIRECTORY_SEPARATOR;
-        if($fengefu === '/')
-        {
-            $fengefu_fan = '\\';
-        }else{
-            $fengefu_fan = '/';
-        }
+        $fengefu_fan = '/';
 
         // 重新组合文件路径
         $savename = str_replace($fengefu_fan, $fengefu, $savename);
