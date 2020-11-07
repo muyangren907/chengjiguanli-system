@@ -276,27 +276,47 @@ class Banji extends BaseModel
     */
     public function srcBanJiID($str, $school_id)
     {
-        if(stristr($str,'年级', true) === false  || stristr($str, '班' , true) === false)
-        {
-            return false;
-        }
         // 获取年级、班级列表
         $njlist = $this->gradeName('str', time());
         $bjlist = $this->className();
 
-        $find = strpos($str,"级") + 3;
-        $nj = substr($str, 0, $find);
-        $bj = substr($str, $find, strlen($str) - $find);
+        $len = strlen($str);
+        $nj = '';
+        $bj = '';
+        // 获取年级
+        foreach ($njlist as $key => $value) {
+            $nj = stripos($str, $value, 0);
+            if($nj === 0)
+            {
+                $nj = $key;
+                break;
+            }
+        }
+        // 获取班级
+        foreach ($bjlist as $key => $value) {
+            $bj = stripos($str, $value, 0);
+            $bjLen = strlen($value);
+            if(($bj + $bjLen) === $len)
+            {
+                $bj = $key;
+                break;
+            }
 
-        $nj = array_search($nj, $njlist);
-        $bj = array_search($bj, $bjlist);
+        }
 
-        // 查询班级id
-        $banji = new \app\teach\model\Banji;
-        $id = $banji->where('ruxuenian', $nj)
-                ->where('paixu', $bj)
-                ->where('school_id', $school_id)
-                ->value('id');
+        if($nj > 0 && $bj > 0)
+        {
+            // 查询班级id
+            $banji = new \app\teach\model\Banji;
+            $id = $banji->where('ruxuenian', $nj)
+                    ->where('paixu', $bj)
+                    ->where('school_id', $school_id)
+                    ->value('id');
+        }else {
+            $id = '';
+        }
+
+
 
         return $id;
     }

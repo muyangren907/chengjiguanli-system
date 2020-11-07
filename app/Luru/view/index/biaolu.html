@@ -208,6 +208,7 @@ layui.use(['form','upload','cjgl'], function(){
     function addBanji(){
       // 获取参数
       formval = form.val("dwform");
+      console.log(formval);
       cjgl.createCheckbox('banji_id', formval, '/tools/kscy/class', 'banji_id', 'banTitle');
     }
 
