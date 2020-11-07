@@ -62,7 +62,7 @@ class BackUp extends AdminBase
         $db= new up($this->upcnf);
         $aa = $db->dataList();
         $start = 0;
-        foreach ($aa as $key => $value) { 
+        foreach ($aa as $key => $value) {
             $start1= $db->setFile()->backup($value['name'], $start);
         }
 
@@ -76,7 +76,9 @@ class BackUp extends AdminBase
     // 数据库恢复
     public function daoru()
     {
-
+        $db= new up($this->upcnf);
+        $db->repair($tables);
+        $start= $db->setFile($file)->import($start);
     }
 
 

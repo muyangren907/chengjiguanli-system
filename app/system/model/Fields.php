@@ -82,12 +82,20 @@ class Fields extends BaseModel
         {
             if($this->flAdmin)
             {
-                $xm = $this->flAdmin->xingming . '(' .  $this->flAdmin->adSchool->jiancheng . ')';
+                $xm = $this->flAdmin->xingming;
+                if($this->flAdmin->adSchool)
+                {
+                    $xm = $xm . '(' .  $this->flAdmin->adSchool->jiancheng . ')';
+                }
             }
         }elseif ($data['user_group'] === 'teacher') {
             if($this->flTeacher)
             {
-                $xm = $this->flTeacher->xingming . '(' . $this->flTeacher->jsDanwei->jiancheng . ')';
+                $xm = $this->flTeacher->xingming;
+                if($this->flTeacher->jsDanwei)
+                {
+                    $xm = $xm . '(' . $this->flTeacher->jsDanwei->jiancheng . ')';
+                }
             }
         }else{
             $xm = '';
