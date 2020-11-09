@@ -38,6 +38,7 @@ class School extends AdminBase
                 ,'order' => 'asc'
                 ,'jibie_id' => array()
                 ,'xingzhi_id' => array()
+                ,'status' => '1'
                 ,'searchval' => ''
             ],'POST');
 

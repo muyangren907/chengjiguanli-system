@@ -39,11 +39,12 @@ class School extends BaseModel
     {
         // 整理参数
         $src = [
-            'jibie_id'=>array(),
-            'xingzhi_id'=>array(),
-            'xueduan_id'=>array(),
-            'kaoshi'=>'',
-            'searchval'=>''
+            'jibie_id' => array()
+            ,'xingzhi_id' => array()
+            ,'xueduan_id' => array()
+            ,'kaoshi' => ''
+            ,'status' => 1
+            ,'searchval' => ''
         ];
         $src = array_cover($srcfrom, $src);
         $src['jibie_id'] = strToArray($src['jibie_id']);
@@ -66,6 +67,9 @@ class School extends BaseModel
                 })
             ->when(strlen($src['kaoshi']) > 0, function($query) use($src){
                     $query->where('kaoshi', $src['kaoshi']);
+                })
+            ->when(strlen($src['status']) > 0, function($query) use($src){
+                    $query->where('status', $src['status']);
                 })
             ->with(
                 [
@@ -119,7 +123,7 @@ class School extends BaseModel
             ->field('id, title, jiancheng')
             ->select();
 
-        return $schlist; 
+        return $schlist;
     }
 
 

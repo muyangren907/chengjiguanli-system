@@ -39,6 +39,14 @@
 	    	{/volist}
 	    </div>
 	</div>
+  <div class="layui-form-item" style="margin-bottom: 0;">
+      <label for="status" class="layui-form-label" style="height: 100%">单位性质</label>
+      <div class="layui-input-block">
+        <input type="radio" name="status" value="" title="无" value="" lay-skin="primary">
+        <input type="radio" name="status" value="1" title="启用" value="" lay-skin="primary" checked="checked">
+        <input type="radio" name="status" value="0" title="禁用" value="" lay-skin="primary">
+      </div>
+  </div>
 {/block}
 {block name="table"}
 	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
