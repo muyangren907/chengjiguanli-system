@@ -354,6 +354,27 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
     },
 
     /**
+    * 如果二级checkbox全部选中,那么就选中全选按钮，否则取消选中
+    *
+    * @access public
+    * @param parentId 选中checkbox父级div的id
+    * @return array 返回类型
+    */
+    checkboxParentList:function(parentId){
+      cnt = $('#'+parentId).children("input[checkall='c']").length;
+      checkedCnt = $('#'+parentId).children("input:checkbox[checkall='c']:checked").length;
+      console.log(cnt, checkedCnt);
+      if(cnt == checkedCnt)
+      {
+        $('#'+parentId).find("input[checkall='p']").prop('checked',true);
+      }else{
+        $('#'+parentId).find("input[checkall='p']").prop('checked',false);
+      }
+
+      form.render();
+    },
+
+    /**
     * 在创建角色中，选中类别时的动作
     *
     * @access public

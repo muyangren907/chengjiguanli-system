@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html class="x-admin-sm">
-  
+
   <head>
     <meta charset="UTF-8">
     <title>{$list.set.webtitle}</title>
@@ -34,16 +34,16 @@
     <div class="x-body">
     	{block name="form"}{/block}
     </div>
-    
+
     <script>
       //config的设置是全局的
       layui.config({
           base: "__XADMIN__/js/" //假设这是你存放拓展模块的根目录
       });
     </script>
-    
+
     <script>
-        
+
       layui.use(['form','cjgl'], function(){
         var form = layui.form
             cjgl = layui.cjgl;
@@ -60,12 +60,12 @@
               {
                 layer.msg(result.msg);
                 //先得到当前iframe层的索引
-                var index = parent.layer.getFrameIndex(window.name); 
-                //再执行关闭 
+                var index = parent.layer.getFrameIndex(window.name);
+                //再执行关闭
                 if(parent.layui.table){
                   parent.layui.table.reload('mytable');
                 }
-                parent.layer.close(index); 
+                parent.layer.close(index);
                 parent.layer.msg(result.msg);
               }else{
                 layer.msg(result.msg);
@@ -79,7 +79,7 @@
             }
           });
           return false;
-        }); 
+        });
 
         // 监听复选框
         form.on('checkbox', function(data){
@@ -89,7 +89,7 @@
           if(checkall=='p'){
             cjgl.checkboxAll(parentId,data.elem.checked);
           }else if(checkall=='c'){
-            cjgl.checkboxParent(parentId);
+            cjgl.checkboxParentList(parentId);
           }
           action = $(data.elem).attr('action');
           if(action == 'btmOnclick')
@@ -104,7 +104,7 @@
             checked = data.elem.checked;
             cjgl.checkedAuth(id,checked);
           }
-        });       
+        });
       });
   </script>
   {block name="myjs"}{/block}
