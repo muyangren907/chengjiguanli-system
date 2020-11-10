@@ -36,7 +36,7 @@ class Kaohao extends Migrator
             ->addColumn('kaoshi_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'考试'])
             ->addColumn('school_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'学校'])
             ->addColumn('ruxuenian','integer',['limit'=>4,'default'=>0,'null'=>false,'comment'=>'入学年'])
-            ->addColumn('nianji','string',['limit'=>4,'default'=>'a','null'=>false,'comment'=>'年级'])
+            ->addColumn('nianji','string',['limit'=>10,'default'=>'a','null'=>false,'comment'=>'年级'])
             ->addColumn('banji_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'班级'])
             ->addColumn('paixu','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'班级排序'])
             ->addColumn('student_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'学生'])

@@ -16,7 +16,7 @@ class Kaoshiset extends Validate
         'id|ID'         =>     'require:number',
         'kaoshi_id|考试ID'      =>  'require|integer',
         'ruxuenian|年级'      =>  'require|integer',
-        'nianjiname|年级名称'      =>  'require|chs',
+        'nianjiname|年级名称'      =>  'require|chsAlphaNum',
         'subject_id|学科'      =>  'require|array',
         'manfen|满分'      =>  'require|array',
         'youxiu|优秀'      =>  'require|array',

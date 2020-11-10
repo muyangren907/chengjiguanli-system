@@ -28,7 +28,7 @@
               </label>
               <div class="layui-input-block">
                   <input type="text" id="gradelist" name="gradelist" required="true" lay-verify="required"
-                  autocomplete="off" class="layui-input" value="{$list.data.gradelist|default=''}">
+                  autocomplete="off" class="layui-input" value="{$list.data.gradelist|default=''}" placeholder="只能是汉字、字母、数字，多个年级用|分割，不要有空格">
               </div>
           </div>
           <div class="layui-form-item">
@@ -121,7 +121,7 @@
                 >
             </div>
           </div>
-          
+
           <div class="layui-form-item">
               <label for="keywords" class="layui-form-label">
                   <span class="x-red">*</span>关键字

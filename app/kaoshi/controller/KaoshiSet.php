@@ -18,7 +18,6 @@ class KaoshiSet extends AdminBase
     // 显示考试列表
     public function index($kaoshi_id)
     {
-
         // 设置要给模板赋值的信息
         $list['webtitle'] = '参加考试学科';
         $list['dataurl'] = '/kaoshi/kaoshiset/data';
