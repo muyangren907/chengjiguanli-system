@@ -111,6 +111,10 @@
 
 ![权限分配](https://gitee.com/dlbz/shangma/raw/master/public/examples/bjchayi.png)
 
+分数段统计，可以自行设置按试卷总分将数据分割多少份。
+
+![分数段统计](https://gitee.com/dlbz/shangma/raw/master/public/examples/分数段统计.png)
+
 
 学生历次考试成绩
 
