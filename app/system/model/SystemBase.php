@@ -19,7 +19,7 @@ class SystemBase extends BaseModel
     // 学年节点获取器
     public function getXuenianAttr($value)
     {
-        $value = date('Y', time()).'-'.date('m-d', $value);
+        $value = date('n月j日', $value);
         return $value;
     }
 
@@ -28,7 +28,7 @@ class SystemBase extends BaseModel
     public function setXuenianAttr ($value)
     {
         $value = strtotime($value);
-        $value = '1986-'.date('m-d', $value);
+        $value = date('Y', time()).'-'.date('m-d', $value);
         $value = strtotime($value);
         return $value;
     }

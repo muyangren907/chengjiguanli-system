@@ -32,6 +32,15 @@
               </div>
           </div>
           <div class="layui-form-item">
+              <label for="xuenian" class="layui-form-label">
+                  <span class="x-red">*</span>学年划分节点
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="xuenian" name="xuenian" required="true" lay-verify="required"
+                  autocomplete="off" class="layui-input" value="{$list.data.xuenian|default=''}">
+              </div>
+          </div>
+          <div class="layui-form-item">
               <label for="classmax" class="layui-form-label">
                   <span class="x-red">*</span>班级最大数
               </label>
@@ -112,15 +121,7 @@
                 >
             </div>
           </div>
-          <div class="layui-form-item">
-              <label for="xuenian" class="layui-form-label">
-                  <span class="x-red">*</span>学年划分节点
-              </label>
-              <div class="layui-input-block">
-                  <input type="text" id="xuenian" name="xuenian" required="true" lay-verify="required"
-                  autocomplete="off" class="layui-input" value="{$list.data.xuenian|default=''}">
-              </div>
-          </div>
+          
           <div class="layui-form-item">
               <label for="keywords" class="layui-form-label">
                   <span class="x-red">*</span>关键字
@@ -173,6 +174,7 @@
         laydate.render({
           elem: '#xuenian' //指定元素
           ,trigger: 'click' //采用click弹出
+          ,format: 'M月d日' //可任意组合
         });
 
         //监听提交

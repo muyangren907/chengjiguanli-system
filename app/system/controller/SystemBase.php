@@ -54,8 +54,12 @@ class SystemBase extends AdminBase
             ,'teacherketi'
         ], 'put');
         $list['id'] = $id;
-
-
+        $findy = strpos($list['xuenian'], '月');
+        $yue = substr($list['xuenian'],0,$findy);
+        $findy = $findy + 3;
+        $findr = strpos($list['xuenian'], '日');
+        $ri = substr($list['xuenian'], $findy, $findr - $findy);
+        $list['xuenian'] = date('Y') . '-' . $yue . '-' . $ri;
 
         // 验证表单数据
         $validate = new \app\system\validate\SystemBase;
