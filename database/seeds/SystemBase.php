@@ -23,7 +23,7 @@ class SystemBase extends Seeder
             'thinks'        =>  'ThinkPHP，X-admin，百度Echarts',
             'danwei'        =>  '大连长岛经济区',
             'gradelist'     =>  '一年级|二年级|三年级|四年级|五年级|六年级',
-            'classmax'      =>  30,
+            'classmax'      =>  5,
             'classalias'    => 0
         ];
         // 保存数据

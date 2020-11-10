@@ -1062,7 +1062,7 @@ class Rule extends Seeder
             ['id' => 701
                 ,'title' => '类别管理'
                 ,'name' => 'system/category/index'
-                ,'paixu' => 1
+                ,'paixu' => 3
                 ,'ismenu'  => 1
                 ,'pid'  => 7
                 ,'url' => '/system/category'
@@ -1112,7 +1112,7 @@ class Rule extends Seeder
             ['id' => 702
                 ,'title' => '单位管理'
                 ,'name' => 'system/school/index'
-                ,'paixu' => 2
+                ,'paixu' => 1
                 ,'ismenu'  => 1
                 ,'pid'  => 7
                 ,'url' => '/system/school'
@@ -1168,7 +1168,7 @@ class Rule extends Seeder
             ['id' => 703
                 ,'title' => '文件管理'
                 ,'name' => 'system/fields/index'
-                ,'paixu' => 3
+                ,'paixu' => 2
                 ,'ismenu'  => 1
                 ,'pid'  => 7
                 ,'url' => '/system/file'
@@ -1188,7 +1188,7 @@ class Rule extends Seeder
             ['id' => 704
                 ,'title' => '数据备份'
                 ,'name' => 'system/backup/index'
-                ,'paixu' => 11
+                ,'paixu' => 4
                 ,'ismenu'  => 1
                 ,'pid'  => 7
                 ,'url' => '/system/backup/index'
@@ -1209,7 +1209,7 @@ class Rule extends Seeder
             ['id' => 705
                 ,'title' => '系统设置'
                 ,'name' => 'system/systembase/edit'
-                ,'paixu' => 10
+                ,'paixu' => 5
                 ,'ismenu'  => 1
                 ,'pid'  => 7
                 ,'url' => '/system/'
