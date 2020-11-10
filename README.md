@@ -35,6 +35,8 @@
 * 管理员、教师和学生不同身份的登录
 
 
+## 界面及功能展示
+以下所有数据均是模拟数据，请勿对号入座。
 登录界面
 
 ![登录界面](https://gitee.com/dlbz/shangma/raw/master/public/examples/denglu.png)
