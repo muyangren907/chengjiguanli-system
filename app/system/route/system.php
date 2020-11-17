@@ -56,6 +56,7 @@ Route::group('backup', function () {
 	    Route::rule('create', 'BackUp/create', 'post');				# 获取数据
 	    Route::rule('data', 'BackUp/ajaxData', 'post');				# 获取数据
 	    Route::rule('delete/<time>', 'BackUp/delete', 'post');				# 获取数据
+        Route::rule('daoru', 'BackUp/daoru', 'get');              # 获取数据
 	});
 
 

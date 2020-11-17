@@ -77,8 +77,15 @@ class BackUp extends AdminBase
     public function daoru()
     {
         $db= new up($this->upcnf);
-        $db->repair($tables);
-        $start= $db->setFile($file)->import($start);
+        // // $db->repair($tables);
+
+        $start= $db->getFile('2020-11-04 21:30:38');
+        $file = $start['file'];
+        // dump($start);
+        // halt($file);
+        $s = 0;
+        $start= $db->setFile($file)->import($s);
+
     }
 
 

@@ -108,16 +108,8 @@
         });
 
         //监听状态开关
-        lForm.on('switch()', function(data){
-          var obj = {};
-          obj.msg = $(data.elem).attr('lay-text').split('|');
-          obj.url = $(data.elem).attr('myurl');
-          obj.val = {
-            'id': data.elem.id
-            ,'value': Number(data.elem.checked)
-            ,'ziduan': $(data.elem).attr('lay-filter')
-          };
-          cjgl.onoff(obj);
+        lForm.on('switch', function(data){
+          cjgl.onoff(data);
         });
 
         // 监听下拉菜单

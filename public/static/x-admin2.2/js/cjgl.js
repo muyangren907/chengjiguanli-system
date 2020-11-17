@@ -108,10 +108,21 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
       },
 
     // 开关操作
-    onoff:function(obj){
-      title = obj.msg[1-obj.val.value];
-      // 设置修改后的状态值
-      layer.confirm('确认要修改成'+title+'吗？',function(index){
+    onoff:function(data){
+      var obj = {};
+      obj.msg = $(data.elem).attr('lay-text').split('|');
+      obj.url = $(data.elem).attr('myurl');
+      obj.val = {
+        'id': data.elem.id
+        ,'value': Number(data.elem.checked)
+        ,'ziduan': $(data.elem).attr('lay-filter')
+      };
+
+      title = obj.msg[1 - obj.val.value];
+
+      layer.confirm('确认要修改成'+title+'吗？', {
+        btn: ['确定','取消'] //按钮
+      }, function(){
         $.ajax({
           url:obj.url,
           type:'POST',
@@ -124,10 +135,27 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
             }
           },
           error:function(result){
+
             layer.msg('数据扔半道啦。',function(){});
-          },
+          }
         });
+      }, function(){
+        mydiv = $(data.elem).next('div');
+        kg = data.elem.checked;
+        if($(mydiv).hasClass("layui-form-onswitch"))
+        {
+          $(mydiv).removeClass("layui-form-onswitch");
+          $(mydiv).children('em').text('禁用');
+          $(data.elem).attr('checked', !kg);
+          data.elem.checked = !kg;
+        }else{
+          $(mydiv).addClass("layui-form-onswitch");
+          $(mydiv).children('em').text('启用');
+          $(data.elem).attr('checked', !kg);
+          data.elem.checked = !kg;
+        }
       });
+
     },
 
     // 重置密码
