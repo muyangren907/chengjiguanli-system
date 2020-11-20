@@ -77,7 +77,10 @@ class Index
     // 管理员登录验证
     public function admin($username, $password)
     {
-        session(null);
+        session('onlineCategory', null);
+        session('user_id', null);
+        session('username', null);
+        session('password', null);
         // 获取服务器密码
         $userinfo = AD::where('username', $username)
             ->where('status', 1)
@@ -123,7 +126,10 @@ class Index
     // 管理员登录验证
     public function teacher($username, $password)
     {
-        session(null);
+        session('onlineCategory', null);
+        session('user_id', null);
+        session('username', null);
+        session('password', null);
         // 获取服务器密码
         $tch = new \app\teacher\model\Teacher;
         $userinfo = $tch::where('phone', $username)
@@ -169,7 +175,10 @@ class Index
     // 管理员登录验证
     public function student($username, $password)
     {
-        session(null);
+        session('onlineCategory', null);
+        session('user_id', null);
+        session('username', null);
+        session('password', null);
         // 获取服务器密码
         $stu = new \app\student\model\Student;
         $userinfo = $stu::where('shenfenzhenghao', $username)

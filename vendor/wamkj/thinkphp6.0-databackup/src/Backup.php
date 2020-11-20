@@ -4,7 +4,7 @@ use think\facade\Db;
 use think\facade\Config;
 class Backup
 {
-    /**
+        /**
      * 文件指针
      * @var resource
      */
@@ -16,7 +16,6 @@ class Backup
      */
     private $file;
 
-
     /**
      * 当前打开文件大小
      * @var integer
@@ -26,28 +25,23 @@ class Backup
      * 数据库配置
      * @var integer
      */
-
-
     private $dbconfig=array();
-
 
     /**
      * 备份配置
      * @var integer
      */
     private $config=array(
-        'path'     => './data/',//数据库备份路径
+        'path'     => './Data/',//数据库备份路径
         'part'     => 20971520,//数据库备份卷大小
         'compress' => 0,//数据库备份文件是否启用压缩 0不压缩 1 压缩
         'level'    => 9 //数据库备份文件压缩级别 1普通 4 一般  9最高
     );
-
-
     /**
      * 数据库备份构造方法
      * @param array  $file   备份或还原的文件信息
      * @param array  $config 备份配置信息
-    */
+     */
     public function __construct($config=[]){
         $this->config = array_merge($this->config, $config);
         //初始化文件名
@@ -60,7 +54,6 @@ class Backup
         }
     }
 
-
     /**
      * 设置数据库连接必备参数
      * @param array  $dbconfig   数据库连接配置信息
@@ -69,14 +62,12 @@ class Backup
     public function setDbConn($dbconfig=[])
     {
         if (empty($dbconfig)) {
-            $this->dbconfig = Config::get('database');
+            $this->dbconfig = Config::get('database.connections.mysql');
         }else{
             $this->dbconfig=$dbconfig;
         }
         return $this;
     }
-
-
     /**
      * 设置备份文件名
      * @param String  $file  文件名字
@@ -96,14 +87,11 @@ class Backup
         }
         return $this;
     }
-
-
     //数据类连接
     public static function connect()
     {
        return  Db::connect();
     }
-
 
     //数据库备份文件列表
     public function fileList()
@@ -134,14 +122,13 @@ class Backup
                 $extension        = strtoupper(pathinfo($file->getFilename(), PATHINFO_EXTENSION));
                 $info['compress'] = ($extension === 'SQL') ? '-' : $extension;
                 $info['time']     = strtotime("{$date} {$time}");
+
                 $list["{$date} {$time}"] = $info;
             }
         }
 
        return $list;
     }
-
-
     public function getFile($type='',$time=0)
     {          //
         if(!is_numeric($time) ){
@@ -193,7 +180,6 @@ class Backup
         }
     }
 
-
     //删除备份文件
     public function delFile($time)
     {
@@ -209,8 +195,6 @@ class Backup
             throw new \Exception("{$time} Time parameter is incorrect");
         }
     }
-
-
     public function import($start){
         //还原数据
         $db =  self::connect();
@@ -257,8 +241,6 @@ class Backup
         }
         return  array_map('array_change_key_case', $list);//$list;
     }
-
-
     /**
      * 写入初始数据
      * @return boolean true - 写入成功，false - 写入失败
@@ -277,7 +259,6 @@ class Backup
         $sql .= "SET FOREIGN_KEY_CHECKS = 0;\n\n";
         return  $this->write($sql);
     }
-
 
     /**
      * 备份表结构
@@ -324,6 +305,8 @@ class Backup
             foreach ($result as $row) {
                 $row = array_map('addslashes', $row);
                 $sql = "INSERT INTO `{$table}` VALUES ('" . str_replace(array("\r","\n"),array('\r','\n'),implode("', '", $row)) . "');\n";
+                // halt($sql);
+                $sql = str_replace(" ''", " null", $sql);
                 if(false === $this->write($sql)){
                     return false;
                 }
@@ -331,14 +314,13 @@ class Backup
 
             //还有更多数据
             if($count > $start + 1000){
-                return array($start + 1000, $count);
+                // return array($start + 1000, $count);
+                return $this->backup($table, $start + 1000);
             }
         }
         //备份下一表
         return 0;
     }
-
-
     /**
      * 优化表
      * @param  String $tables 表名
@@ -362,8 +344,6 @@ class Backup
             throw new \Exception("Please specify the table to be repaired!");
         }
     }
-
-
     /**
      * 修复表
      * @param  String $tables 表名
@@ -388,7 +368,6 @@ class Backup
         }
     }
 
-
     /**
      * 写入SQL语句
      * @param  string $sql 要写入的SQL语句
@@ -402,8 +381,6 @@ class Backup
         $this->open($size);
         return $this->config['compress'] ? @gzwrite($this->fp, $sql) : @fwrite($this->fp, $sql);
     }
-
-
     /**
      * 打开一个卷，用于写入数据
      * @param  integer $size 写入数据的大小
@@ -430,8 +407,6 @@ class Backup
             $this->size = filesize($filename) + $size;
         }
     }
-
-
     /**
      * 检查目录是否可写
      * @param  string   $path    目录
@@ -448,8 +423,6 @@ class Backup
             return false;
         }
     }
-
-
     /**
      * 析构方法，用于关闭文件资源
      */

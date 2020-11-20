@@ -1195,14 +1195,26 @@ class Rule extends Seeder
             ],
                 ['id' => 70401
                     ,'title' => '创建'
-                    ,'name' => 'system/backup/create'
+                    ,'name' => 'system/backup/export'
                     ,'paixu' => 1
                     ,'pid'  => 704
                 ],
                 ['id' => 70402
+                    ,'title' => '还原'
+                    ,'name' => 'system/backup/import'
+                    ,'paixu' => 2
+                    ,'pid'  => 704
+                ],
+                ['id' => 70403
+                    ,'title' => '下载'
+                    ,'name' => 'system/backup/down'
+                    ,'paixu' => 3
+                    ,'pid'  => 704
+                ],
+                ['id' => 70404
                     ,'title' => '删除'
                     ,'name' => 'system/backup/delete'
-                    ,'paixu' => 1
+                    ,'paixu' => 4
                     ,'pid'  => 704
                 ],
 

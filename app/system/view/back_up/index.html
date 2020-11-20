@@ -27,6 +27,8 @@
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
 	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
+  <a class="layui-btn-xs" lay-event="huifu" title="恢复"><i class="layui-icon layui-icon-refresh-1"></i></a>
+  <a class="layui-btn-xs" lay-event="down" title="下载"><i class="layui-icon layui-icon-download-circle"></i></a>
 </script>
 <!-- 表格操作 -->
 <script>
@@ -34,7 +36,10 @@
   options.cols=[[ //表头
 			{field:'time', type:'checkbox', fixed: 'left'},
 			{field: 'ltime', title: '时间', sort: true, minWidth:100},
+      {field: 'juan', title: '卷数', sort: true, minWidth:100},
+      {field: 'yasuo', title: '压缩', sort: true, minWidth:100},
 			{field: 'lsize', title: '文件大小', minWidth:100,sort: true},
+      {field: 'status', title: '状态', minWidth:100,sort: true},
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:90}
 		]];
 
@@ -46,7 +51,7 @@
       table.on('toolbar(mytable)', function(obj){
         switch(obj.event){
           case 'add':// 删除
-          	mypost('/system/backup/create', 'add');
+          	mypost();
           	break;
         };
       });
@@ -60,24 +65,108 @@
           case 'del':// 删除
           	result = mypost('/system/backup/delete/' + obj.data.time, 'del');
           	break;
+          case 'huifu':// 删除
+            myhuifu('/system/backup/import', this, obj.data.time);
+            break;
+          case 'down':// 删除
+            window.open("/system/backup/down/" + obj.data.time);
+            break;
         };
       });
 
       // 创建血仇
-      function mypost(url, category)
+      function mypost()
       {
-      	$.ajax({
-	        url:url,
-	        type:'POST',
-	        async: true,
-	        success:function(result){
-	          layer.msg(result.msg);
-	          userTable = table.render(options);  //获取数据并渲染
-	        },
-	        error:function(result){
-	          layer.msg('数据扔半道，回不来啦。',function(){});
-	        },
-	      });
+      	layer.msg("正在发送备份请求...");
+
+        $.post(
+          '/system/backup/export',
+          '',
+          function(data){
+            if(data.code==1){
+              layer.alert( "开始备份，请不要关闭本页面！");
+              backup(data.data.tab);
+              // layer.alert("正在备份数据库，请不要关闭！");
+            }else{
+              layer.msg(data.msg);
+            }
+
+          }, "json");
+        return false;
+      }
+
+        //递归备份表
+        function backup(tab,status){
+          $.ajax({
+            url:"/system/backup/export",
+            data:tab,
+            async:false,
+            type:"GET",
+            dataType:"json",
+            timeout:0,
+            success:function(data){
+              if(data.code==1){
+                  if(!$.isPlainObject(data.data.tab)){
+                    layer.msg("备份完成");
+                    // window.onbeforeunload = function(){ return null }
+                    return;
+                  }
+
+                  backup(data.data.tab, tab.id != data.data.tab.id);
+                } else {
+                  userTable = table.render(options);  //获取数据并渲染
+                  layer.msg("备份完成");
+                }
+            }
+          });
+        }
+
+
+      // 创建血仇
+      function myhuifu(url, a, time)
+      {
+        myStatus = $(a).parent().parent().prev().children('div');
+        $(myStatus).text('等待还原');
+        $.ajax({
+          url:url,
+          type:'POST',
+          async: true,
+          data:{
+            time:time,
+          },
+          success,
+          error:function(result){
+            layer.msg('数据扔半道，回不来啦。',function(){});
+          }
+        });
+        layer.alert('正在还原数据库，请不要关闭！');
+        return false;
+
+        function success(data){
+            if (data.code==1) {
+              $(myStatus).text(data.msg);
+                if (data.data.part) {
+                    $.ajax({
+                      url:url,
+                      type:'POST',
+                      async: true,
+                      data:{
+                        time:time,
+                        part:data.data.part,
+                        start:data.data.start,
+                      },
+                      success,
+                      error:function(result){
+                        layer.msg('数据扔半道，回不来啦。',function(){});
+                      }
+                    });
+                } else {
+                    layer.msg(data.msg);
+                }
+            } else {
+                layer.msg(data.msg);
+            }
+        }
       }
     });
 </script>

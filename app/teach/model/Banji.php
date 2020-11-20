@@ -210,7 +210,10 @@ class Banji extends BaseModel
         {
             if($this->getBiyeAttr !== true)
             {
-                $str = $bzrList[0]->glTeacher->xingming;
+                if($bzrList[0]->glTeacher)
+                {
+                    $str = $bzrList[0]->glTeacher->xingming;
+                }
             }
         }
 

@@ -53,10 +53,12 @@ Route::group('category', function () {
 // 类别管理
 Route::group('backup', function () {
 	    Route::rule('index', 'BackUp/index', 'get');				# 获取数据
-	    Route::rule('create', 'BackUp/create', 'post');				# 获取数据
+	    Route::rule('export', 'BackUp/export', 'post');				# 获取数据
+         Route::rule('export', 'BackUp/export', 'get');                # 获取数据
 	    Route::rule('data', 'BackUp/ajaxData', 'post');				# 获取数据
 	    Route::rule('delete/<time>', 'BackUp/delete', 'post');				# 获取数据
-        Route::rule('daoru', 'BackUp/daoru', 'get');              # 获取数据
+        Route::rule('import', 'BackUp/import', 'post');              # 获取数据
+        Route::rule('down/<time>', 'BackUp/down', 'get');              # 获取数据
 	});
 
 

@@ -9,6 +9,7 @@ use app\system\model\Category as CG;
 
 class Category extends AdminBase
 {
+
     // 类别列表
     public function index()
     {

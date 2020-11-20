@@ -14,6 +14,7 @@ class Online
      */
     public function handle($request, \Closure $next)
     {
+
         $weihu = config('shangma.weihu');
         // 判断是否在线，如果不在线则跳转
         $online = session('?onlineCategory');
@@ -27,7 +28,7 @@ class Online
         {
             \app\facade\OnLine::jump('/login/weihu', '系统维护中~');
         }
-        
+
         return $next($request);
     }
 }
