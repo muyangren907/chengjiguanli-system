@@ -179,7 +179,10 @@ https://www.kancloud.cn/llblax/abcd/789222
 
 
 ## 交流群
-![QQ交流群](https://gitee.com/dlbz/shangma/raw/master/public/examples/42d89069b6fbebb309b2ad2678b27d0.png)
+
+<a href="https://jq.qq.com/?_wv=1027&k=DePkb6ZX" target="_blank">QQ交流群  650156356</a>
+
+<img src="https://gitee.com/dlbz/shangma/raw/master/public/examples/42d89069b6fbebb309b2ad2678b27d0.jpg" width="300px">
 
 ## 下一步工作
 * [ ] 项目的问题修复和功能完善
