@@ -47,7 +47,7 @@ class BackUp extends AdminBase
         $data = $db->fileList();
         foreach ($data as $key => $value) {
            $data[$key]['ltime'] = date('Y-m-d H:i:s', $value['time']);
-           $data[$key]['lsize'] = round($value['size'] / 1024 / 1024, 2) . 'Mb';
+           $data[$key]['lsize'] = format_bytes($value['size']);
            $data[$key]['juan'] = $value['part'];
            $data[$key]['yasuo'] = $value['compress'];
            $data[$key]['status'] = '正常';

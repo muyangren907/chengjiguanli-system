@@ -37,7 +37,7 @@ class SearchOne extends BaseModel
         {
             $src['enddate'] = $srcfrom['enddate'];
         }else{
-            $src['enddate'] = date("Y-m-d",strtotime("+1 day"));
+            $src['enddate'] = date("Y-m-d",strtotime("+1 week"));
         }
 
         $kh = new kh;
