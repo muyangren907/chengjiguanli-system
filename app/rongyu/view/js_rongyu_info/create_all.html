@@ -28,11 +28,12 @@
 
 layui.use('upload', function(){
   var upload = layui.upload;
-   
+
   //执行实例
   var uploadInst = upload.render({
     elem: '#upload' //绑定元素
     ,url: "{$list.set.url}" //上传接口
+    ,async:false
     ,done: function(res){
       layer.msg(res.msg);
     }
