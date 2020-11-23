@@ -21,6 +21,7 @@ layui.use('upload', function(){
   var uploadInst = upload.render({
     elem: '#upload' //绑定元素
     ,url: "/rongyu/danwei/saveall" //上传接口
+    ,async:false
     ,done: function(res){
       layer.msg(res.msg);
     }

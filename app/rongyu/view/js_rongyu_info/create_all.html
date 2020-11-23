@@ -33,7 +33,7 @@ layui.use('upload', function(){
   var uploadInst = upload.render({
     elem: '#upload' //绑定元素
     ,url: "{$list.set.url}" //上传接口
-    ,async:true
+    ,async:false
     ,done: function(res){
       layer.msg(res.msg);
     }
