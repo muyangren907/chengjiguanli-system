@@ -63,7 +63,7 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
           case 'del':// 删除
-          	result = mypost('/system/backup/delete/' + obj.data.time, 'del');
+          	result = mydel('/system/backup/delete/' + obj.data.time);
           	break;
           case 'huifu':// 删除
             myhuifu('/system/backup/import', this, obj.data.time);
@@ -74,7 +74,23 @@
         };
       });
 
-      // 创建血仇
+
+      // 删除备份
+      function mydel(url)
+      {
+        $.post(
+          url,
+          '',
+          function(data){
+            layer.msg(data.msg);
+            if(data.val === 1)
+            {
+              userTable = table.render(options);  //获取数据并渲染
+            }
+          }, "json");
+      }
+
+      // 创建备份
       function mypost()
       {
       	layer.msg("正在发送备份请求...");
@@ -86,7 +102,6 @@
             if(data.code==1){
               layer.alert( "开始备份，请不要关闭本页面！");
               backup(data.data.tab);
-              // layer.alert("正在备份数据库，请不要关闭！");
             }else{
               layer.msg(data.msg);
             }
