@@ -21,7 +21,7 @@
           <div class="layui-form-item">
             <label for="school_id" class="layui-form-label"><span class="x-red">*</span>所在学校</label>
             <div class="layui-input-block">
-              {php} $schoollist = schoolXueduan('小学', '初中');{/php}
+              {php} $schoollist = danweiJibie('校级', '校级');{/php}
               <select name="school_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="schoollist" id="vo"}

@@ -61,7 +61,8 @@ class Category extends Seeder
                 ['id' => 10303,'title' => '中小学','p_id' => 103,'paixu' => 3,'isupdate' => 0],
                 ['id' => 10304,'title' => '初中','p_id' => 103,'paixu' => 4,'isupdate' => 0],
                 ['id' => 10305,'title' => '高中','p_id' => 103,'paixu' => 5,'isupdate' => 0],
-                ['id' => 10306,'title' => '其他学段','p_id' => 103,'paixu' => 6,'isupdate' => 0],
+                ['id' => 10306,'title' => '大学','p_id' => 103,'paixu' => 6,'isupdate' => 0],
+                ['id' => 10307,'title' => '其他学段','p_id' => 103,'paixu' => 7,'isupdate' => 0],
             ['id' => 104
                 ,'title' => '小学段'
                 ,'p_id' => 0

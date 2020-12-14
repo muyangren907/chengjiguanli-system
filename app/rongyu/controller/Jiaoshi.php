@@ -99,6 +99,7 @@ class Jiaoshi extends AdminBase
         // 验证数据
         $validate = new \app\rongyu\validate\JsRongyu;
         $result = $validate->scene('create')->check($list);
+        $msg = $validate->getError();
         // 如果验证不通过则停止保存
         if(!$result){
             return json(['msg' => $msg, 'val' => 0]);

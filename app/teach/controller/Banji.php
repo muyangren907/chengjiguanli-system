@@ -125,13 +125,13 @@ class Banji extends AdminBase
 
         if($paixumax + $list['bjsum'] > $cnfMax->classmax) # 如果增加班级数超过2个，则少加班级
         {
-            if($paixumax >= $cnfMax)
+            if($paixumax >= $cnfMax->classmax)
             {
                 return json(['msg' => '已经超过同年级班级数的上线啦。', 'val' => 0]);
             }
-            if($paixumax + $list['bjsum'] > $cnfMax) # 如果增加班级数超过2个，则少加班级
+            if($paixumax + $list['bjsum'] > $cnfMax->classmax) # 如果增加班级数超过2个，则少加班级
             {
-                $list['bjsum'] = $cnfMax - $paixumax;
+                $list['bjsum'] = $cnfMax->classmax - $paixumax;
             }
         }
 

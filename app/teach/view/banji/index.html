@@ -15,7 +15,7 @@
 	<label for="school" class="layui-form-label" style="height: 100%">学校</label>
 	<div class="layui-input-block">
 		{php}
-		$schoollist = schoolXueduan('小学','初中');
+		$schoollist =  danweiJibie('校级','校级');
 		{/php}
 		{volist name="schoollist" id="vo"}
 		<input type="radio" name="school_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" {eq name="i" value="1"}checked{/eq}>

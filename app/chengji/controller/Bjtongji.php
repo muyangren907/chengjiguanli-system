@@ -533,7 +533,7 @@ class Bjtongji extends AdminBase
         // 设置页面标题
         $list['set'] = array(
             'webtitle'=>'设置任课教师'
-            ,'butname'=>'设置'
+            ,'butname'=>'修改'
             ,'formpost'=>'PUT'
             ,'danwei_id' => $school
             ,'url'=>'/chengji/bjtj/renkeupdate/'.$id,
