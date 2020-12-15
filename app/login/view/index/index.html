@@ -34,7 +34,7 @@
     <div class="login layui-anim layui-anim-up" style="margin-top: 60px;">
         <div class="message">{$list['webtitle']} {$list['version']}</div>
         <div id="darkbannerwrap"></div>
-        <form method="post" class="layui-form" >
+        <form method="post" class="layui-form" lay-verify="loginform" id="loginform">
             <input id="username" name="username" placeholder="用户名"  type="text" lay-verify="required" class="layui-input" >
             <hr class="hr15">
             <input id="password" name="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input" autocomplete="off">
@@ -71,6 +71,23 @@
           },
         })
 
+        var url = '/login';
+
+        form.on('radio(category)', function(data){
+          switch(data.value){
+            case 'admin':
+              url = '/login';
+              break;
+            case 'teacher':
+              url = '/login/teacher';
+              break;
+            case 'student':
+              url = '/login/student';
+              break;
+          };
+        });
+
+
         //监听提交
         form.on('submit(login)', function(data){
           yz = slider.isOk();
@@ -79,8 +96,24 @@
             layer.msg("请先通过滑块验证");
             return false;
           }
+          formval = data.field;
+          switch(formval.category){
+            case 'admin':
+              url = '/login';
+              break;
+            case 'teacher':
+              url = '/login/teacher';
+              break;
+            case 'student':
+              url = '/login/student';
+              break;
+            default:
+              layer.msg('请先选择登录身份');
+              return false;
+          };
+
           $.ajax({
-            url:"/login",
+            url:url,
             type:'POST',
             async: true,
             data:data.field,

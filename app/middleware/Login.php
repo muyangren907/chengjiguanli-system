@@ -18,17 +18,16 @@ class Login
         switch ($category) {
             case 'admin':
                 $yz = new \app\login\controller\Index;
-                $yz = $yz->admin(session('username'), session('password'));
+                $yz = $yz->yz(session('username'), session('password'));
                 break;
             case 'teacher':
-                $yz = new \app\login\controller\Index;
-                $yz = $yz->teacher(session('username'), session('password'));
+                $yz = new \app\login\controller\Teacher;
+                $yz = $yz->yz(session('username'), session('password'));
                 break;
             case 'student':
-                $yz = new \app\login\controller\Index;
-                $yz = $yz->student(session('username'), session('password'));
+                $yz = new \app\login\controller\Student;
+                $yz = $yz->yz(session('username'), session('password'));
                 break;
-
             default:
                 \app\facade\OnLine::jump('/login', '请选择用户角色');
                 break;

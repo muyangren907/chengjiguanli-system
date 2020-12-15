@@ -177,3 +177,14 @@
         $subject = $sbj->kaoshi();
         return $subject;
     }
+
+
+    // 已知密码进行验证
+    function loginCheck($inputPassword, $serverPassword)
+    {
+        // 实例化加密类
+        $md5 = new \WhiteHat101\Crypt\APR1_MD5;
+        //验证密码
+        $check = $md5->check($inputPassword, $serverPassword);
+        return $check;
+    }

@@ -4,30 +4,8 @@ namespace app\login\controller;
 // 引用view类
 use think\facade\View;
 
-
-class Index
+class Teacher
 {
-    // 显示登录选择界面
-    public function index()
-    {
-        // 清除cookie
-        cookie('userid', null);
-        cookie('username', null);
-        cookie('password', null);
-        // 清除session（当前作用域）
-        session(null);
-
-        // 获取系统名称和版本号
-        $list['webtitle'] = config('shangma.webtitle');
-        $list['version'] = config('shangma.version');
-
-        View::assign('list',$list);
-
-        // 渲染输出
-        return View::fetch('index');
-    }
-
-
     // 学生登录验证
     public function login()
     {
@@ -44,6 +22,7 @@ class Index
                 ,'category'
             ]);
 
+
         $validate = new \app\login\validate\Yanzheng;
         $result = $validate->scene('admin')->check($list);
         $msg = $validate->getError();
@@ -56,10 +35,10 @@ class Index
         if($yz['val'] === 1)
         {
             // 获取服务器密码
-            $admin = new \app\admin\model\Admin;
-            $userinfo = $admin::where('username', $list['username'])
+            $ter = new \app\teacher\model\Teacher;
+            $userinfo = $ter::where('phone', $list['username'])
                 ->where('status', 1)
-                ->field('id, lastip, username, ip, denglucishu, lasttime, thistime, password')
+                ->field('id, lastip, phone, ip, denglucishu, lasttime, thistime, password')
                 ->find();
             // 将本次信息上传到服务器上
             $userinfo->lastip = $userinfo->ip;
@@ -77,15 +56,15 @@ class Index
     public function yz($username, $password)
     {
         // 获取服务器密码
-        $admin = new \app\admin\model\Admin;
-        $userinfo = $admin::where('username', $username)
+        $ter = new \app\teacher\model\Teacher;
+        $userinfo = $ter::where('phone', $username)
             ->where('status', 1)
-            ->field('id, lastip, username, ip, denglucishu, lasttime, thistime, password')
+            ->field('id, lastip, phone, ip, denglucishu, lasttime, thistime, password')
             ->find();
         if ($userinfo == null)
         {
             // 验证结果;
-            $data = ['msg' => '管理员帐号不存在或被禁用', 'val' => 0];
+            $data = ['msg' => '教师帐号不存在或被禁用', 'val' => 0];
             return $data;
         }
 
@@ -94,56 +73,18 @@ class Index
 
         if ($check === true)
         {
-            session('onlineCategory', 'admin');
+            session('onlineCategory', 'teacher');
             session('user_id', $userinfo->id);
             session('username', $username);
             session('password', $password);
             // 跳转到首页
-            $data = ['msg' => '验证成功', 'val' => 1, 'url' =>'\\'];
+            $data = ['msg' => '验证成功', 'val' => 1, 'url' =>'\\teacherSearchChengji\\index\\index'];
         } else {
             // 提示错误信息
             $data = ['msg' => '用户名或密码错误', 'val' => 0];
         }
 
         return $data;
-    }
-
-
-    // 系统更新日志
-    public function shangmaLog()
-    {
-        // 渲染模板
-        return View::fetch();
-    }
-
-
-    // 错误页面
-    public function myerror()
-    {
-        // 获取系统名称和版本号
-        $list['webtitle'] = config('shangma.webtitle');
-        $list['version'] = config('shangma.version');
-
-        View::assign('list',$list);
-
-        // 渲染输出
-        return View::fetch();
-    }
-
-
-    // 系统维护
-    public function weihu()
-    {
-        // 获取系统名称和版本号
-        $list = [
-            'shijian' => config('shangma.shijian')
-            ,'shichang' => config('shangma.shichang')
-            ,'webtitle' => '系统维护中'
-            ,'version' => config('shangma.version')
-        ];
-
-        View::assign('list',$list);
-        return View::fetch();
     }
 
 }
