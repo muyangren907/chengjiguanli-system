@@ -120,7 +120,7 @@ class Tongji extends BaseModel
     }
 
 
-    // 统计优秀、及格率
+    // 统计优秀、及格率人数
     public function rate($cj = array(), $fenshuxian)
     {
         $cnt = 0;
@@ -129,11 +129,7 @@ class Tongji extends BaseModel
                 $cnt ++;
             }
         }
-        if (count($cj) > 0) {
-            return round($cnt / count($cj) * 100, 2);
-        } else {
-            return '0';
-        }
+        return $cnt;
     }
 
 
@@ -163,8 +159,8 @@ class Tongji extends BaseModel
             $temjige == $sbjcnt && $temjige > 0 ? $jige ++ : $jige ;
         }
 
-        $row > 0 ? $rate = round($jige / count($cj) * 100, 2) : $rate = '';
-        return $rate;
+        // $row > 0 ? $rate = round($jige / count($cj) * 100, 2) : $rate = '';
+        return $jige;
     }
 
 
@@ -248,7 +244,9 @@ class Tongji extends BaseModel
         $cnt = count($arr);
         if ($cnt === 1) {
             $zws = $arr[0];
-        }elseif ($cnt  > 1) {
+        } elseif ($cnt == 2) {
+            $zws = ($arr[0] + $arr[1]) / 2;
+        } elseif ($cnt  > 2) {
             $mod = $cnt % 2;
             if ($mod === 0) {
                 $i = $cnt / 2;

@@ -132,14 +132,14 @@ class TongjiSch extends BaseModel
                 if ($val->subject_id > 0) {
                     $data['all']['chengji'][$val->schSubject->lieming] = [
                         'avg' => $val->avg
-                        ,'youxiu' => $val->youxiu
-                        ,'jige' => $val->jige
+                        ,'youxiulv' => $val->youxiulv
+                        ,'jigelv' => $val->jigelv
                         ,'cjCnt' => $val->chengji_cnt
                     ];
                 }else{
                     $data['all']['quanke'] = [
                         'avg' => $val->avg
-                        ,'jige' => $val->jige
+                        ,'jigelv' => $val->jigelv
                     ];
                 }
             }
@@ -198,6 +198,37 @@ class TongjiSch extends BaseModel
     // 成绩统计结果关联
     public function schJieguo()
     {
-        return $this->hasMany('\app\chengji\model\TongjiSch', 'ruxuenian', 'ruxuenian');
+        $data = $this->hasMany('\app\chengji\model\TongjiSch', 'ruxuenian', 'ruxuenian')
+            ->append(['youxiulv', 'jigelv']);
+        return $data;
     }
+
+
+    // 获取优秀率
+    public function getYouxiulvAttr()
+    {
+        $youxiu = 0;
+        $ycnt = $this->youxiu;
+        $cjcnt = $this->chengji_cnt;
+        if ($cjcnt > 0) {
+            $youxiu = round($ycnt / $cjcnt * 100, 2);
+        }
+
+        return $youxiu;
+    }
+
+
+    // 获取优秀率
+    public function getJigelvAttr()
+    {
+        $jige = 0;
+        $jcnt = $this->jige;
+        $cjcnt = $this->chengji_cnt;
+        if ($cjcnt > 0) {
+            $jige = round($jcnt / $cjcnt * 100, 2);
+        }
+
+        return $jige;
+    }
+
 }

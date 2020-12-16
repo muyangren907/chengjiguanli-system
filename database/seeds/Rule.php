@@ -33,7 +33,7 @@ class Rule extends Seeder
                 ,'paixu' => 1
                 ,'ismenu'  => 1
                 ,'pid'  => 1
-                ,'url' => '/Luru/index/malu'
+                ,'url' => '/luru/index/malu'
             ],
                 ['id' => 10101
                     ,'title' => '扫码查询'
@@ -53,7 +53,7 @@ class Rule extends Seeder
                 ,'paixu' => 2
                 ,'ismenu'  => 1
                 ,'pid'  => 1
-                ,'url' => '/Luru/index/biaolu'
+                ,'url' => '/luru/index/biaolu'
             ],
                 ['id' => 10201
                     ,'title' => '表格保存'
@@ -73,7 +73,7 @@ class Rule extends Seeder
                 ,'paixu' => 2
                 ,'ismenu'  => 1
                 ,'pid'  => 1
-                ,'url' => '/Luru/index/index'
+                ,'url' => '/luru/index/index'
             ],
                 ['id' => 10301
                     ,'title' => '成绩更新'

@@ -82,7 +82,7 @@
 	// 获取学科
 	var xk = '<?php echo json_encode($list["subject_id"]);?>';
 	xk = eval(decodeURIComponent(xk));
-	var xiangmu = {cjCnt:'人数',avg:'平均分',jige:'及格率%',youxiu:'优秀率%'};		// 要显示哪些统计结果
+	var xiangmu = {cjCnt:'人数',avg:'平均分',jigelv:'及格率%',youxiulv:'优秀率%'};		// 要显示哪些统计结果
 
 	$.each(xk,function(index,value){
 		options.cols[0].push({title: xk[index].title+'('+xk[index].fenshuxian.manfen+')',colspan:4,align:'center'});
@@ -107,7 +107,7 @@
       });
     });
   	options.cols[0].push({title: '全科及格率%',minWidth:100,rowspan:2,templet:function(d){
-  		var str = d.quanke.jige;
+  		var str = d.quanke.jigelv;
   		return str;
   	}});
   	options.cols[0].push({ title: '总平均分',minWidth:100,rowspan:2,templet:function(d){
@@ -224,7 +224,7 @@
       var id = 'myJige';
       var url = '/chengji/bjtj/myavg';
       var val = form.val('search');
-      val.xiangmu = 'jige';
+      val.xiangmu = 'jigelv';
       var title = '及格率';
       createTiaoxing(id, url, val, title);
     }
@@ -234,7 +234,7 @@
       var id = 'myYouxiu';
       var url = '/chengji/bjtj/myavg';
       var val = form.val('search');
-      val.xiangmu = 'youxiu';
+      val.xiangmu = 'youxiulv';
       var title = '优秀率';
       createTiaoxing(id, url, val, title);
     }

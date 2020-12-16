@@ -366,10 +366,20 @@ class Index extends AdminBase
         $colBiankuang = $colcnt;
         // 循环写出统计结果
         foreach ($subject_id as $key => $value) {
+            $xkcnt = $temp['cj'][$value['lieming']]['xkcnt'];
+            if ($xkcnt > 0 ) {
+                $youxiulv = round($temp['cj'][$value['lieming']]['youxiu'] / $xkcnt * 100, 2);
+                $jigelv = round($temp['cj'][$value['lieming']]['jige'] / $xkcnt * 100, 2);
+            } else {
+                $youxiulv = 0;
+                $jigelv = 0;
+            }
+
             $sheet->setCellValue($colname[$colcnt] . '4', $temp['cj'][$value['lieming']]['xkcnt']);
             $sheet->setCellValue($colname[$colcnt] . '5', $temp['cj'][$value['lieming']]['avg']);
-            $sheet->setCellValue($colname[$colcnt] . '6', $temp['cj'][$value['lieming']]['youxiu']);
-            $sheet->setCellValue($colname[$colcnt] . '7', $temp['cj'][$value['lieming']]['jige']);
+
+            $sheet->setCellValue($colname[$colcnt] . '6', $youxiulv);
+            $sheet->setCellValue($colname[$colcnt] . '7', $jigelv);
             $sheet->setCellValue($colname[$colcnt] . '8', $temp['cj'][$value['lieming']]['biaozhuncha']);
             $sheet->setCellValue($colname[$colcnt] . '9', $temp['cj'][$value['lieming']]['zhongweishu']);
             $sheet->setCellValue($colname[$colcnt] . '10', $temp['cj'][$value['lieming']]['zhongshu']);
@@ -555,11 +565,19 @@ class Index extends AdminBase
 
             // 写入成绩
             foreach ($subject_id as $k => $val) {
+                $xkcnt = $njtj['cj'][$val['lieming']]['xkcnt'];
+                if ($xkcnt > 0 ) {
+                    $youxiulv = round($njtj['cj'][$val['lieming']]['youxiu'] / $xkcnt * 100, 2);
+                    $jigelv = round($njtj['cj'][$val['lieming']]['jige'] / $xkcnt * 100, 2);
+                } else {
+                    $youxiulv = 0;
+                    $jigelv = 0;
+                }
                 $sheet->setCellValue('D' . ($row + $k), $val['title']);
                 $sheet->setCellValue('E' . ($row + $k), $value[$val['lieming']]);   # 得分
                 $sheet->setCellValue('F' . ($row + $k), $njtj['cj'][$val['lieming']]['avg']);
-                $sheet->setCellValue('G' . ($row + $k), $njtj['cj'][$val['lieming']]['youxiu']);
-                $sheet->setCellValue('H' . ($row + $k), $njtj['cj'][$val['lieming']]['jige']);
+                $sheet->setCellValue('G' . ($row + $k), $youxiulv);
+                $sheet->setCellValue('H' . ($row + $k), $jigelv);
                 $sheet->setCellValue('I' . ($row + $k), $njtj['cj'][$val['lieming']]['max']);
                 $sheet->setCellValue('J' . ($row + $k), $njtj['cj'][$val['lieming']]['sifenwei'][0]);
                 $sheet->setCellValue('K' . ($row + $k), $njtj['cj'][$val['lieming']]['sifenwei'][1]);

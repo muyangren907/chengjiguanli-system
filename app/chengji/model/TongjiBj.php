@@ -235,8 +235,8 @@ class TongjiBj extends BaseModel
                 if($val->subject_id > 0){
                     $data[$value->banji_id]['chengji'][$val->bjSubject->lieming] = [
                         'avg' => $val->avg * 1
-                        ,'youxiu' => $val->youxiu * 1
-                        ,'jige' => $val->jige * 1
+                        ,'youxiulv' => $val->youxiulv
+                        ,'jigelv' => $val->jigelv
                         ,'cjCnt' => $val->chengji_cnt
                         ,'title' => $val->bjSubject->title
                         ,'jiancheng' => $val->bjSubject->jiancheng
@@ -252,7 +252,7 @@ class TongjiBj extends BaseModel
                 }else{
                     $data[$value->banji_id]['quanke'] = [
                         'avg' => $val->avg
-                        ,'jige' => $val->jige
+                        ,'jigelv' => $val->jigelv
                     ];
                 }
             }
@@ -626,7 +626,8 @@ class TongjiBj extends BaseModel
     {
         $ksid = $this->getAttr('kaoshi_id');
         return $this->hasMany('\app\chengji\model\TongjiBj', 'banji_id', 'banji_id')
-                ->where('kaoshi_id', $ksid);
+                ->where('kaoshi_id', $ksid)
+                ->append(['youxiulv', 'jigelv']);
     }
 
 
@@ -678,5 +679,33 @@ class TongjiBj extends BaseModel
         $title = $bjname;
 
         return $title;
+    }
+
+
+    // 获取优秀率
+    public function getYouxiulvAttr()
+    {
+        $youxiu = 0;
+        $ycnt = $this->youxiu;
+        $cjcnt = $this->chengji_cnt;
+        if ($cjcnt > 0) {
+            $youxiu = round($ycnt / $cjcnt * 100, 2);
+        }
+
+        return $youxiu;
+    }
+
+
+    // 获取优秀率
+    public function getJigelvAttr()
+    {
+        $jige = 0;
+        $jcnt = $this->jige;
+        $cjcnt = $this->chengji_cnt;
+        if ($cjcnt > 0) {
+            $jige = round($jcnt / $cjcnt * 100, 2);
+        }
+
+        return $jige;
     }
 }

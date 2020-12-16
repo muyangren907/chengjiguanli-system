@@ -151,8 +151,8 @@ class Njtongji extends AdminBase
         $sbjcol = [
             'cjCnt' => '人数'
             ,'avg' => '平均分'
-            ,'jige' => '及格率%'
-            ,'youxiu' => '优秀率%'
+            ,'jigelv' => '及格率%'
+            ,'youxiulv' => '优秀率%'
         ];
         $sbjcolcnt = count($sbjcol);
         $colname = excelColumnName();
@@ -196,7 +196,7 @@ class Njtongji extends AdminBase
                      $col ++;
                 }
             }
-            $sheet->setCellValue($colname[$col] . $row, $value['quanke']['jige']);
+            $sheet->setCellValue($colname[$col] . $row, $value['quanke']['jigelv']);
             $col ++;
             $sheet->setCellValue($colname[$col] . $row, $value['quanke']['avg']);
             $row ++;

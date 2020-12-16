@@ -168,8 +168,8 @@ class TongjiNj extends BaseModel
                 if($val->subject_id > 0){
                     $data[$value->school_id]['chengji'][$val->njSubject->lieming] = [
                         'avg' => $val->avg * 1
-                        ,'youxiu' => $val->youxiu * 1
-                        ,'jige' => $val->jige * 1
+                        ,'youxiulv' => $val->youxiulv
+                        ,'jigelv' => $val->jigelv
                         ,'cjCnt' => $val->chengji_cnt
                         ,'title' => $val->njSubject->title
                         ,'jiancheng' => $val->njSubject->jiancheng
@@ -185,7 +185,7 @@ class TongjiNj extends BaseModel
                 }else{
                     $data[$value->school_id]['quanke'] = [
                         'avg' => $val->avg
-                        ,'jige' => $val->jige
+                        ,'jigelv' => $val->jigelv
                     ];
                 }
 
@@ -264,9 +264,39 @@ class TongjiNj extends BaseModel
     {
         $ruxuenian = $this->getAttr('ruxuenian');
         $kaoshi = $this->getAttr('kaoshi_id');
-        return $this->hasMany('\app\chengji\model\TongjiNj', 'school_id', 'school_id')
+        $data = $this->hasMany('\app\chengji\model\TongjiNj', 'school_id', 'school_id')
             ->where('ruxuenian', $ruxuenian)
-            ->where('kaoshi_id', $kaoshi);
+            ->where('kaoshi_id', $kaoshi)
+            ->append(['youxiulv', 'jigelv']);
+        return $data;
+    }
+
+
+    // 获取优秀率
+    public function getYouxiulvAttr()
+    {
+        $youxiu = 0;
+        $ycnt = $this->youxiu;
+        $cjcnt = $this->chengji_cnt;
+        if ($cjcnt > 0) {
+            $youxiu = round($ycnt / $cjcnt * 100, 2);
+        }
+
+        return $youxiu;
+    }
+
+
+    // 获取优秀率
+    public function getJigelvAttr()
+    {
+        $jige = 0;
+        $jcnt = $this->jige;
+        $cjcnt = $this->chengji_cnt;
+        if ($cjcnt > 0) {
+            $jige = round($jcnt / $cjcnt * 100, 2);
+        }
+
+        return $jige;
     }
 
 }
