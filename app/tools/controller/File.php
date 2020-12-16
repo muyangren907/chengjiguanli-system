@@ -67,13 +67,7 @@ class File extends BaseController
         $savename = \think\facade\Filesystem::disk('public')
             ->putFile($list['serurl'], $file);
 
-        $fengefu = DIRECTORY_SEPARATOR;
-        $fengefu_fan = '/';
-
-        // 重新组合文件路径
-        $savename = str_replace($fengefu_fan, $fengefu, $savename);
-
-        if($isSave==true){
+        if( $isSave == true) {
             $list['url'] = $savename;
             $list['newname'] = substr($savename
                 ,strripos($savename, $fengefu) + 1
