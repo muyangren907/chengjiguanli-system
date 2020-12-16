@@ -32,15 +32,15 @@ class BanjiChengji extends BaseModel
             {
                 $data[$value->kaoshi_id]['quanke'] = [
                     'avg' => $value->avg,
-                    'jige' => $value->jige,
+                    'jigelv' => $value->jigelv,
                 ];
             }else{
                 $data[$value->kaoshi_id]['chengji'][$value->bjSubject->lieming] = [
                     'cj_cnt' => $value->chengji_cnt,
                     'avg' => $value->avg,
                     'defenlv' => $value->defenlv,
-                    'youxiu' => $value->youxiu,
-                    'jige' => $value->jige,
+                    'youxiulv' => $value->youxiulv,
+                    'jigelv' => $value->jigelv,
                     'biaozhuncha' => $value->biaozhuncha,
                     'sifenwei' => [
                         'min' => $value->min,

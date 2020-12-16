@@ -449,7 +449,7 @@ class TongjiBj extends BaseModel
                         $query->field('id, title, enddate');
                     }
                 ])
-                ->append(['banjiTitle'])
+                ->append(['banjiTitle', 'youxiulv', 'jigelv'])
                 ->select();
 
         return $data;

@@ -88,7 +88,7 @@
 	// 获取学科
 	var xk = '<?php echo json_encode($list["subject_id"]);?>';
 	xk = eval(decodeURIComponent(xk));
-	var xiangmu = {cj_cnt:'人数',avg:'平均分',jige:'及格率%',youxiu:'优秀率%'};		// 要显示哪些统计结果
+	var xiangmu = {cj_cnt:'人数',avg:'平均分',jigelv:'及格率%',youxiulv:'优秀率%'};		// 要显示哪些统计结果
 
 
 	$.each(xk,function(index,value){
@@ -114,7 +114,7 @@
   });
   });
  options.cols[0].push({title: '全科及格率%',minWidth:100,rowspan:2,templet:function(d){
-  var str = d.quanke.jige;
+  var str = d.quanke.jigelv;
   return str;
 }});
  options.cols[0].push({ title: '总平均分',minWidth:100,rowspan:2,templet:function(d){
