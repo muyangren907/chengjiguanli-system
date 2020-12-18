@@ -61,6 +61,7 @@ Route::group('tjxm', function () {
     Route::rule('data','TongjiXiangmu/ajaxData','post');
     Route::rule('tongji','TongjiXiangmu/setTongji','post');     # 是否参与统计
     Route::rule('status','TongjiXiangmu/setStatus','post');     # 修改状态
+    Route::rule('delete/<id>','TongjiXiangmu/delete','delete');     # 删除信息
 });
 
 

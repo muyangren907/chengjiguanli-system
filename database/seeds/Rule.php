@@ -1188,7 +1188,7 @@ class Rule extends Seeder
             ['id' => 704
                 ,'title' => '数据备份'
                 ,'name' => 'system/backup/index'
-                ,'paixu' => 4
+                ,'paixu' => 5
                 ,'ismenu'  => 1
                 ,'pid'  => 7
                 ,'url' => '/system/backup/index'
@@ -1221,7 +1221,7 @@ class Rule extends Seeder
             ['id' => 705
                 ,'title' => '系统设置'
                 ,'name' => 'system/systembase/edit'
-                ,'paixu' => 5
+                ,'paixu' => 6
                 ,'ismenu'  => 1
                 ,'pid'  => 7
                 ,'url' => '/system/'
