@@ -53,25 +53,26 @@ class File extends BaseController
         $f = new \app\system\model\Fields;
         $serFile = $f::where('hash', $hash)->find();
 
-        if($serFile)
-        {
-            $serFile->user_id = $this->luruTeacherId;
-            $serFile->save();
-            $data['msg'] = '文件已经存在';
-            $data['val'] = true;
-            $data['url'] = $serFile->url;
-            return $data;
-        }
+        // if($serFile)
+        // {
+        //     $serFile->user_id = $this->luruTeacherId;
+        //     $serFile->save();
+        //     $data['msg'] = '文件已经存在';
+        //     $data['val'] = true;
+        //     $data['url'] = $serFile->url;
+        //     return $data;
+        // }
 
         // 上传文件到本地服务器
         $savename = \think\facade\Filesystem::disk('public')
             ->putFile($list['serurl'], $file);
+        $savename = str_replace('\\', '/', $savename);
 
         if( $isSave == true) {
             $list['url'] = $savename;
             $list['newname'] = substr($savename
-                ,strripos($savename, $fengefu) + 1
-                ,strlen($savename) - strripos($savename, $fengefu));
+                ,strripos($savename, '/') + 1
+                ,strlen($savename) - strripos($savename, '/'));
             $list['hash'] = $file->hash('sha1');
             $list['user_id'] = $this->luruTeacherId;
             $list['user_group'] = $this->online;
