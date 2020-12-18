@@ -40,7 +40,7 @@ Route::group('kaoshiset', function () {
     Route::rule('edit/<id>','KaoshiSet/edit','get');				# 修改信息
     Route::rule('update/<id>','KaoshiSet/update','put');			# 更新信息
     Route::rule('delete/<id>','KaoshiSet/delete','delete');		# 删除信息
-    Route::rule('status','KaoshiSet/setStatus','post');		# 删除信息
+    Route::rule('status','KaoshiSet/setStatus','post');		# 修改状态
 });
 
 
@@ -48,6 +48,19 @@ Route::group('kaoshiset', function () {
 Route::group('tjlog', function () {
     Route::rule('index/<kaoshi_id>','TongjiLog/index','get');
     Route::rule('data','TongjiLog/ajaxData','post');
+});
+
+
+// 统计项目设置
+Route::group('tjxm', function () {
+    Route::rule('index','TongjiXiangmu/index','get');
+    Route::rule('create','TongjiXiangmu/create','get');             # 添加信息
+    Route::rule('save','TongjiXiangmu/save','post');                    # 保存信息
+    Route::rule('edit/<id>','TongjiXiangmu/edit','get');                # 修改信息
+    Route::rule('update/<id>','TongjiXiangmu/update','put');            # 更新信息
+    Route::rule('data','TongjiXiangmu/ajaxData','post');
+    Route::rule('tongji','TongjiXiangmu/setTongji','post');     # 是否参与统计
+    Route::rule('status','TongjiXiangmu/setStatus','post');     # 修改状态
 });
 
 

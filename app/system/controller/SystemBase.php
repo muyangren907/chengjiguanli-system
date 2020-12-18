@@ -16,7 +16,7 @@ class SystemBase extends AdminBase
         // 获取用户信息
         $sys = new sysbasemod;
         $list['data'] = $sys
-            ->field('id, keywords, description, thinks, danwei, gradelist, classmax, classalias, xuenian, teacherrongyu, teacherketi')
+            ->field('id, keywords, description, thinks, danwei, gradelist, classmax, classalias, xuenian, teacherrongyu, teacherketi, studefen')
             ->order(['id' => 'desc'])
             ->find();
 
@@ -52,6 +52,7 @@ class SystemBase extends AdminBase
             ,'xuenian'
             ,'teacherrongyu'
             ,'teacherketi'
+            ,'studefen'
         ], 'put');
         $list['id'] = $id;
         $findy = strpos($list['xuenian'], '月');
@@ -81,6 +82,7 @@ class SystemBase extends AdminBase
         $sysList->xuenian = $list['xuenian'];
         $sysList->teacherrongyu = $list['teacherrongyu'];
         $sysList->teacherketi = $list['teacherketi'];
+        $sysList->studefen = $list['studefen'];
         $data = $sysList->save();
 
         // 根据更新结果设置返回提示信息

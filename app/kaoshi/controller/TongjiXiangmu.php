@@ -1,25 +1,27 @@
 <?php
+declare (strict_types = 1);
 
 namespace app\kaoshi\controller;
 
 // 引用控制器基类
 use app\base\controller\AdminBase;
-
 // 引用考试数据模型类
-use app\kaoshi\model\Kaoshi as KS;
-use app\middleware\KaoshiStatus;
+use app\kaoshi\model\TongjiXiangmu as tjxm;
 
-
-class Index extends AdminBase
+class TongjiXiangmu extends AdminBase
 {
-    // 显示考试列表
+    /**
+     * 显示资源列表
+     *
+     * @return \think\Response
+     */
     public function index()
     {
         // 设置要给模板赋值的信息
-        $list['webtitle'] = '考试列表';
-        $list['dataurl'] = '/kaoshi/index/data';
-        $list['status'] = '/kaoshi/index/status';
-        $list['luru'] = '/kaoshi/index/luru';
+        $list['webtitle'] = '统计项目设置';
+        $list['dataurl'] = '/kaoshi/tjxm/data';
+        $list['status'] = '/kaoshi/tjxm/status';
+        $list['tongji'] = '/kaoshi/tjxm/tongji';
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -34,27 +36,21 @@ class Index extends AdminBase
         // 获取参数
         $src = $this->request
             ->only([
-                'xueqi_id' => ''
-                ,'category_id' => ''
-                ,'page' => '1'
+                'page' => '1'
                 ,'limit' => '10'
                 ,'field' => 'id'
                 ,'order' => 'desc'
                 ,'searchval' => ''
             ], 'POST');
         // 根据条件查询数据
-        $ks = new KS;
-        $data = $ks->search($src)
+        $tjxm = new tjxm;
+        $data = $tjxm->search($src)
             ->visible([
                 'id'
                 ,'title'
-                ,'bfdate'
-                ,'enddate'
+                ,'biaoshi'
+                ,'tongji'
                 ,'status'
-                ,'luru'
-                ,'ksCategory' => ['id', 'title']
-                ,'ksZuzhi' => ['id', 'title']
-                ,'ksXueqi' => ['id', 'title']
                 ,'update_time'
             ]);
         $data = reSetObject($data, $src);
@@ -63,15 +59,19 @@ class Index extends AdminBase
     }
 
 
-    // 创建考试
+    /**
+     * 显示创建资源表单页.
+     *
+     * @return \think\Response
+     */
     public function create()
     {
         // 设置页面标题
         $list['set'] = array(
-            'webtitle' => '新建考试'
+            'webtitle' => '新建项目'
             ,'butname' => '创建'
             ,'formpost' => 'POST'
-            ,'url' => '/kaoshi/index/save'
+            ,'url' => '/kaoshi/tjxm/save'
         );
 
         // 模板赋值
@@ -80,31 +80,33 @@ class Index extends AdminBase
         return $this->view->fetch('create');
     }
 
-
-    // 保存信息
+    /**
+     * 保存新建的资源
+     *
+     * @param  \think\Request  $request
+     * @return \think\Response
+     */
     public function save()
     {
         // 获取表单数据
         $list = request()->only([
             'title'
-            ,'xueqi_id'
-            ,'category_id'
-            ,'bfdate'
-            ,'enddate'
-            ,'zuzhi_id'
+            ,'biaoshi'
+            ,'tongji'
         ], 'post');
 
         // 验证表单数据
-        $validate = new \app\kaoshi\validate\Kaoshi;
+        $validate = new \app\kaoshi\validate\TongjiXiangmu;
         $result = $validate->scene('create')->check($list);
         $msg = $validate->getError();
+
         if(!$result){
             return json(['msg' => $msg, 'val' => 0]);
         }
 
         // 保存数据
-        $ks = new KS();
-        $ksdata = $ks->create($list);
+        $tjxm = new tjxm();
+        $ksdata = $tjxm->create($list);
         $ksdata ? $data = ['msg' => '添加成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
@@ -113,21 +115,25 @@ class Index extends AdminBase
     }
 
 
-    // 修改考试信息
+    /**
+     * 显示编辑资源表单页.
+     *
+     * @param  int  $id
+     * @return \think\Response
+     */
     public function edit($id)
     {
         // 获取考试信息
-        $list['data'] = KS::where('id', $id)
-            ->field('id, title, xueqi_id, category_id, bfdate, enddate, zuzhi_id')
-            ->append(['nianjiids', 'manfenedit'])
+        $list['data'] = tjxm::where('id', $id)
+            ->field('id, title, biaoshi, tongji')
             ->find();
 
         // 设置页面标题
         $list['set'] = array(
-            'webtitle' => '编辑考试'
+            'webtitle' => '编辑项目'
             ,'butname' => '修改'
             ,'formpost' => 'PUT'
-            ,'url' => '/kaoshi/index/update/' . $id
+            ,'url' => '/kaoshi/tjxm/update/' . $id
         );
 
         // 模板赋值
@@ -136,24 +142,25 @@ class Index extends AdminBase
         return $this->view->fetch('create');
     }
 
-
-    // 更新考试信息
+    /**
+     * 保存更新的资源
+     *
+     * @param  \think\Request  $request
+     * @param  int  $id
+     * @return \think\Response
+     */
     public function update($id)
     {
-        event('kslu', $id);
         // 获取表单数据
         $list = request()->only([
             'title',
-            'xueqi_id',
-            'category_id',
-            'bfdate',
-            'enddate',
-            'zuzhi_id'
+            'biaoshi',
+            'tongji'
         ], 'post');
         $list['id'] = $id;
 
         // 验证表单数据
-        $validate = new \app\kaoshi\validate\Kaoshi;
+        $validate = new \app\kaoshi\validate\TongjiXiangmu;
         $result = $validate->scene('edit')->check($list);
         $msg = $validate->getError();
         if(!$result){
@@ -161,8 +168,8 @@ class Index extends AdminBase
         }
 
         // 更新数据
-        $ks = new KS();
-        $ksdata = $ks::update($list);
+        $tjxm = new tjxm;
+        $ksdata = $tjxm::update($list);
         $ksdata ? $data = ['msg' => '更新成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
@@ -170,19 +177,33 @@ class Index extends AdminBase
         return json($data);
     }
 
+    // 删除考试
+    public function delete($id)
+    {
+        // 整理数据
+        $id = request()->delete('id');
+        $id = explode(',', $id);
+
+        $data = tjxm::destroy($id);
+        $data ? $data = ['msg' => '删除成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
+
+        // 返回信息
+        return json($data);
+    }
 
 
-
-
-    // 设置成绩是否允许操作
-    public function luru()
+    // 设置考试状态
+    public function setStatus()
     {
         //  获取id变量
         $id = request()->post('id');
         $value = request()->post('value');
 
         // 获取考试信息
-        $data = KS::where('id', $id)->update(['luru' => $value]);
+        $data = tjxm::where('id', $id)->update(['status' => $value]);
+
+        // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '状态设置成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
@@ -191,19 +212,21 @@ class Index extends AdminBase
     }
 
 
-    // 考试更多操作页面
-    public function moreAction($kaoshi_id)
+    // 设置是否参与统计
+    public function setTongji()
     {
-        // 获取考试信息
-        $kaoshi = KS::where('id', $kaoshi_id)
-            ->field('id, title, bfdate, enddate')
-            ->find();
+        //  获取id变量
+        $id = request()->post('id');
+        $value = request()->post('value');
 
-        // 设置页面标题
-        $list['webtitle'] = $kaoshi->title  . '（' .  $kaoshi->bfdate . '~' . $kaoshi->enddate . '）';
-        $list['kaoshi_id'] = $kaoshi->id;
-        $this->view->assign('list', $list);
-        // 渲染
-        return $this->view->fetch();
+        // 获取考试信息
+        $data = tjxm::where('id', $id)->update(['tongji' => $value]);
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data = ['msg' => '状态设置成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
+
+        // 返回信息
+        return json($data);
     }
 }

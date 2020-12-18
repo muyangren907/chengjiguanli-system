@@ -1168,7 +1168,7 @@ class Rule extends Seeder
             ['id' => 703
                 ,'title' => '文件管理'
                 ,'name' => 'system/fields/index'
-                ,'paixu' => 3
+                ,'paixu' => 2
                 ,'ismenu'  => 1
                 ,'pid'  => 7
                 ,'url' => '/system/file'
@@ -1188,7 +1188,7 @@ class Rule extends Seeder
             ['id' => 704
                 ,'title' => '数据备份'
                 ,'name' => 'system/backup/index'
-                ,'paixu' => 5
+                ,'paixu' => 4
                 ,'ismenu'  => 1
                 ,'pid'  => 7
                 ,'url' => '/system/backup/index'
@@ -1221,7 +1221,7 @@ class Rule extends Seeder
             ['id' => 705
                 ,'title' => '系统设置'
                 ,'name' => 'system/systembase/edit'
-                ,'paixu' => 6
+                ,'paixu' => 5
                 ,'ismenu'  => 1
                 ,'pid'  => 7
                 ,'url' => '/system/'
@@ -1231,56 +1231,6 @@ class Rule extends Seeder
                     ,'name' => 'system/systembase/update'
                     ,'paixu' => 1
                     ,'pid'  => 705
-                ],
-            ['id' => 706
-                ,'title' => '统计项目'
-                ,'name' => 'kaoshi/tongjixiangmu/index'
-                ,'paixu' => 4
-                ,'ismenu'  => 1
-                ,'pid'  => 7
-                ,'url' => '/kaoshi/tjxm/index'
-            ],
-                ['id' => 70601
-                    ,'title' => '添加'
-                    ,'name' => 'kaoshi/tongjixiangmu/create'
-                    ,'paixu' => 1
-                    ,'pid'  => 706
-                ],
-                ['id' => 70602
-                    ,'title' => '保存'
-                    ,'name' => 'kaoshi/tongjixiangmu/save'
-                    ,'paixu' => 2
-                    ,'pid'  => 706
-                ],
-                ['id' => 70603
-                    ,'title' => '编辑'
-                    ,'name' => 'kaoshi/tongjixiangmu/edit'
-                    ,'paixu' => 3
-                    ,'pid'  => 706
-                ],
-                ['id' => 70604
-                    ,'title' => '更新'
-                    ,'name' => 'kaoshi/tongjixiangmu/update'
-                    ,'paixu' => 4
-                    ,'pid'  => 706
-                ],
-                ['id' => 70605
-                    ,'title' => '参与统计'
-                    ,'name' => 'kaoshi/tongjixiangmu/tongji'
-                    ,'paixu' => 5
-                    ,'pid'  => 706
-                ],
-                ['id' => 70606
-                    ,'title' => '添加'
-                    ,'name' => 'kaoshi/tongjixiangmu/setstatus'
-                    ,'paixu' => 6
-                    ,'pid'  => 706
-                ],
-                ['id' => 70607
-                    ,'title' => 'shanchu'
-                    ,'name' => 'kaoshi/tongjixiangmu/delete'
-                    ,'paixu' => 7
-                    ,'pid'  => 706
                 ],
 
             /*======================================================================

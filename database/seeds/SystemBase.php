@@ -24,7 +24,8 @@ class SystemBase extends Seeder
             'danwei'        =>  '大连长岛经济区',
             'gradelist'     =>  '一年级|二年级|三年级|四年级|五年级|六年级',
             'classmax'      =>  5,
-            'classalias'    => 0
+            'classalias'    =>  0,
+            'studefen' =>  1,
         ];
         // 保存数据
         $this->table('system_base')->insert($rows)->save();
