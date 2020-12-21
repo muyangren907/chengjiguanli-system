@@ -50,6 +50,7 @@ class TongjiXiangmu extends AdminBase
                 ,'title'
                 ,'biaoshi'
                 ,'tongji'
+                ,'paixu'
                 ,'status'
                 ,'update_time'
             ]);
@@ -93,6 +94,7 @@ class TongjiXiangmu extends AdminBase
             'title'
             ,'biaoshi'
             ,'tongji'
+            ,'paixu'
         ], 'post');
 
         // 验证表单数据
@@ -125,7 +127,7 @@ class TongjiXiangmu extends AdminBase
     {
         // 获取考试信息
         $list['data'] = tjxm::where('id', $id)
-            ->field('id, title, biaoshi, tongji')
+            ->field('id, title, biaoshi, tongji, paixu')
             ->find();
 
         // 设置页面标题
@@ -153,9 +155,10 @@ class TongjiXiangmu extends AdminBase
     {
         // 获取表单数据
         $list = request()->only([
-            'title',
-            'biaoshi',
-            'tongji'
+            'title'
+            ,'biaoshi'
+            ,'tongji'
+            ,'paixu'
         ], 'post');
         $list['id'] = $id;
 

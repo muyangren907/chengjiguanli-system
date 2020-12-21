@@ -20,6 +20,15 @@
                   autocomplete="off" class="layui-input " value="{$list.data.biaoshi|default=''}" placeholder="1-25个字符">
               </div>
           </div>
+          <div class="layui-form-item">
+              <label for="paixu" class="layui-form-label">
+                  <span class="x-red">*</span>排序
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="paixu" name="paixu" lay-verify="required"
+                  autocomplete="off" class="layui-input " value="{$list.data.paixu|default=''}" placeholder="数字">
+              </div>
+          </div>
           <div class="layui-form-item" pane>
             <label for="tongji" class="layui-form-label"><span class="x-red">*</span>是否参与统计</label>
             <div class="layui-input-block">

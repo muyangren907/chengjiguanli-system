@@ -15,7 +15,7 @@ class Index extends AdminBase
         // 获取信息
         $sysbasemod = new sysbasemod();     # 关键字
         $list = $sysbasemod::sysInfo();     # 描述
-        $list['webtitle'] = config('shangma.webtitle'); # 系统名称
+        // $list['webtitle'] = config('shangma.webtitle'); # 系统名称
         $list['version'] = config('shangma.version');   # 版本号
         $ad = new \app\admin\model\Admin;   # 获取用户姓名
         $list->xingming = $ad->where('id', session('user_id'))->value('xingming');

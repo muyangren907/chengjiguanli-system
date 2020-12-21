@@ -10,7 +10,7 @@ class SystemBase extends BaseModel
     static function sysInfo()
     {
         $info = self::order(['id' => 'desc'])
-            ->field('id, keywords, description')
+            ->field('id, keywords, description, sys_title')
             ->find();
         return $info;
     }

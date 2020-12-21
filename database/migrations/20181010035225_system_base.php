@@ -33,6 +33,7 @@ class SystemBase extends Migrator
 
         // 给当前表添加字段
         $table
+            ->addColumn('sys_title','string',['limit'=>60,'null'=>false,'default'=>'码蚁成绩管理系统','comment'=>'系统名称'])
             ->addColumn('keywords','string',['limit'=>60,'null'=>false,'default'=>'尚码成绩管理,录入,统计,查询,管理','comment'=>'关键词'])
             ->addColumn('description','string',['limit'=>100,'null'=>false,'default'=>'尚码成绩统计系统，包含成绩采集、成绩统计、成绩查询等功能。适合一线的成绩统计系统才是好系统。','comment'=>'网站说明'])
             ->addColumn('thinks','string',['limit'=>80,'null'=>false,'default'=>'ThinkPHP,X-admin,百度Echarts,jquery','comment'=>'网站感谢'])

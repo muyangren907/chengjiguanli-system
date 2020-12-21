@@ -76,21 +76,27 @@ class TongjiNj extends BaseModel
                             'school_id' => $school['id'],
                             'ruxuenian' => $nianji['ruxuenian'],
                             'subject_id' => $cj['id'],
-                            'stu_cnt' => $cj['stucnt'],
-                            'chengji_cnt' => $cj['xkcnt'],
-                            'sum' => $cj['sum'],
-                            'avg' => $cj['avg'],
-                            'biaozhuncha' => $cj['biaozhuncha'],
-                            'youxiu' => $cj['youxiu'],
-                            'jige' => $cj['jige'],
-                            'max' => $cj['max'],
-                            'min' => $cj['min'],
-                            'q1' => $cj['sifenwei'][0],
-                            'q2' => $cj['sifenwei'][1],
-                            'q3' => $cj['sifenwei'][2],
-                            'zhongshu' => $cj['zhongshu'],
-                            'zhongweihu' => $cj['zhongweishu'],
-                            'defenlv' => $cj['defenlv'],
+
+
+                            'title' => $val->bjSubject->title
+                            ,'jiancheng' => $val->bjSubject->jiancheng
+                            ,'stu_cnt' => $val->stu_cnt
+                            ,'chengji_cnt' => $val->chengji_cnt
+                            ,'sum' => $val->sum
+                            ,'avg' => $val->avg * 1
+                            ,'defenlv' => $val->defenlv
+                            ,'biaozhuncha' => $val->biaozhuncha * 1
+                            ,'youxiu' => $val->youxiu
+                            ,'jige' => $val->jige
+                            ,'youxiulv' => $val->youxiulv
+                            ,'jigelv' => $val->jigelv
+                            ,'max' => $val->max
+                            ,'min' => $val->min
+                            ,'q1' => $val->q1 * 1
+                            ,'q2' => $val->q2 * 1
+                            ,'q3' => $val->q3 * 1
+                            ,'zhongshu' => $val->zhongshu
+                            ,'zhongweishu' => $val->zhongweishu
                         ];
 
                         $data = $this::create($tongjiJg);
@@ -139,8 +145,7 @@ class TongjiNj extends BaseModel
                     $query->field('id, paixu, jiancheng');
                 },
                 'njJieguo' => function ($query) {
-                    $query->field('subject_id, school_id, ruxuenian, stu_cnt, chengji_cnt,
-                        avg, youxiu, jige, biaozhuncha, max, min, q1, q2, q3, zhongshu, zhongweishu')
+                    $query
                         ->with([
                             'njSubject' => function($query){
                                 $query->field('id, lieming, jiancheng, title');

@@ -29,4 +29,31 @@ class TongjiXiangmu extends BaseModel
 
         return $data;
     }
+
+
+    // 统计获取器
+    public function getTongjiAttr($value)
+    {
+        $jg = 0;
+        if($value === 1)
+        {
+            $jg = '参与';
+        }else{
+            $jg = '不参与';
+        }
+        return $jg;
+    }
+
+
+    // 查询统计
+    public function srcTongji()
+    {
+        $data = $this->where('status', 1)
+                ->where('tongji', 1)
+                ->field('title, biaoshi')
+                ->order(['paixu'])
+                ->select()
+                ->toArray();
+        return $data;
+    }
 }

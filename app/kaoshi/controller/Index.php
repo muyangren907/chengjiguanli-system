@@ -191,6 +191,41 @@ class Index extends AdminBase
     }
 
 
+    // 删除考试
+    public function delete($id)
+    {
+        // 整理数据
+        $id = request()->delete('id');
+        $id = explode(',', $id);
+
+        $data = KS::destroy($id);
+        $data ? $data = ['msg' => '删除成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
+    // 设置考试状态
+    public function setStatus()
+    {
+        //  获取id变量
+        $id = request()->post('id');
+        $value = request()->post('value');
+
+        // 获取考试信息
+        $data = KS::where('id', $id)->update(['status' => $value]);
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data = ['msg' => '状态设置成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
     // 考试更多操作页面
     public function moreAction($kaoshi_id)
     {

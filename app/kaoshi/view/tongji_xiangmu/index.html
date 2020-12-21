@@ -42,7 +42,7 @@
 	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon layui-icon-edit"></i></a>
 </script>
 <script type="text/html" id="tongji">
-  <input type="checkbox" myurl="{$list.tongji ? $list.tongji : url('tongji')}" {{d.tongji == 1 ? "checked" :""}} id="{{d.id}}" lay-skin="switch" lay-filter="tongji" lay-text="参与|不参与">
+  <input type="checkbox" myurl="{$list.tongji ? $list.tongji : url('tongji')}" {{d.tongji == '参与' ? "checked" :""}} id="{{d.id}}" lay-skin="switch" lay-filter="tongji" lay-text="参与|不参与">
 </script>
 <!-- 表格操作 -->
 <script>
@@ -53,6 +53,7 @@
 			{field:'title', title:'标题', minWidth:100, sort:true},
 			{field:'biaoshi', title:'标识', sort:true, minWidth:240},
       {field:'tongji', title:'参与统计', minWidth:80, templet:'#tongji', sort:true},
+      {field:'paixu', title:'排序', minWidth:80, sort:true},
       {field:'status', title:'状态', minWidth:80, templet:'#status', sort:true},
       {field:'id', title:'操作', toolbar:'#barDemo', minWidth:120},
 		]];

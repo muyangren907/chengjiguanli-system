@@ -50,6 +50,15 @@
 	}
 
 
+    // 查询统计项目
+    function srcTjxm()
+    {
+        $tjxm = new \app\kaoshi\model\TongjiXiangmu;
+        $data = $tjxm->srcTongji();
+        return $data;
+    }
+
+
     // // 单位列表
     // function schoolXueduan($low = '幼儿园', $high = '其它学段', $order = 'asc')
     // {

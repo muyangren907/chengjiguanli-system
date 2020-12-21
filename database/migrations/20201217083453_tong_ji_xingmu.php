@@ -35,7 +35,14 @@ class TongJiXingmu extends Migrator
             ->addColumn('catgory_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'类别id'])
             ->addColumn('title','string',['limit'=>100,'default'=>'a','null'=>false,'default'=>0,'comment'=>'名称'])
             ->addColumn('biaoshi','string',['limit'=>100,'default'=>'a','null'=>false,'default'=>0,'comment'=>'标识'])
-            ->addColumn('tongji','boolean',['limit'=>1,'default'=>0,'null'=>false,'comment'=>'默认是否参加统计'])
+
+            ->addColumn('admin_web','boolean',['limit'=>1,'default'=>0,'null'=>false,'comment'=>'管理员web显示项'])
+            ->addColumn('admin_banji','boolean',['limit'=>1,'default'=>0,'null'=>false,'comment'=>'管理员excel显示项'])
+            ->addColumn('admin_xuesheng','boolean',['limit'=>1,'default'=>0,'null'=>false,'comment'=>'默认是否参加统计'])
+
+
+
+            ->addColumn('paixu','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'排序'])
             ->addColumn('status','boolean',['limit'=>1,'default'=>'1','null'=>false,'comment'=>'0=禁用，1=正常'])
             ->addColumn('create_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'更新时间'])
