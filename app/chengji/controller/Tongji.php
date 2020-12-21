@@ -29,7 +29,7 @@ class Tongji extends AdminBase
         // 获取参与学校
         if(count($list['nianji']) > 0)
         {
-            $khSrc = new \app\kaohao\model\SearchCanyu;
+            $khSrc = new \app\kaohao\model\SearchCanYu;
             $src['ruxuenian'] = [$list['nianji'][0]['ruxuenian']];
             $src['kaoshi_id'] = $kaoshi_id;
             $list['school_id'] = $khSrc->school($src);
