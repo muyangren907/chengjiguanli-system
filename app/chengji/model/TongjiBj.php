@@ -254,6 +254,7 @@ class TongjiBj extends BaseModel
                         ,'zhongshu' => $val->zhongshu
                         ,'zhongweishu' => $val->zhongweishu
                         ,'chashenglv' => $val->chashenglv
+                        ,'canshilv' => $val->canshilv
                     ];
                 }else{
                     $data[$value->banji_id]['quanke'] = [
@@ -631,7 +632,7 @@ class TongjiBj extends BaseModel
         $ksid = $this->getAttr('kaoshi_id');
         return $this->hasMany('\app\chengji\model\TongjiBj', 'banji_id', 'banji_id')
                 ->where('kaoshi_id', $ksid)
-                ->append(['youxiulv', 'jigelv', 'chashenglv']);
+                ->append(['youxiulv', 'jigelv', 'chashenglv', 'canshilv']);
     }
 
 
@@ -722,6 +723,20 @@ class TongjiBj extends BaseModel
         $chalv = 0;
         if ($cjCnt > 0) {
             $chalv = round($chaCnt / $cjCnt * 100, 2);
+        }
+
+        return $chalv;
+    }
+
+
+    // 参试率
+    function getCanshilvAttr()
+    {
+        $cjCnt = $this->chengji_cnt;
+        $stu_cnt = $this->stu_cnt;
+        $canshilv = 0;
+        if ($stu_cnt > 0) {
+            $chalv = round($cjCnt / $stu_cnt * 100, 2);
         }
 
         return $chalv;

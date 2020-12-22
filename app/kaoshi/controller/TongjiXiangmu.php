@@ -52,6 +52,8 @@ class TongjiXiangmu extends AdminBase
                 ,'tongji'
                 ,'paixu'
                 ,'status'
+                ,'category_id'
+                ,'tjxmCategory'
                 ,'update_time'
             ]);
         $data = reSetObject($data, $src);

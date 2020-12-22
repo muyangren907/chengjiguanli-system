@@ -16,134 +16,867 @@ class TongjiXingmu extends Seeder
     {
         // 设置数据
         $rows = [
+            // 管理员-班级-网页
             [
-                'id' =>  1
-                ,'title' => '学号数'
+                'title' => '学号数'
                 ,'biaoshi' => 'stu_cnt'
-                ,'admin_web' => 0
+                ,'tongji' => 0
                 ,'paixu' => 1
+                ,'category_id' => 12201
             ]
             ,[
-                'id'    =>  2
-                ,'title'      =>  '成绩数'
+                'title'      =>  '成绩数'
                 ,'biaoshi'   =>  'chengji_cnt'
-                ,'admin_web'        =>  1
+                ,'tongji'        =>  1
                 ,'paixu' => 2
+                ,'category_id' => 12201
             ]
             ,[
-                'id'    =>  3
-                ,'title'      =>  '总分'
+                'title'      =>  '总分'
                 ,'biaoshi'   =>  'sum'
-                ,'admin_web'        =>  0
+                ,'tongji'        =>  0
                 ,'paixu' => 3
+                ,'category_id' => 12201
             ]
             ,[
-                'id'    =>  4
-                ,'title'      =>  '平均分'
+                'title'      =>  '平均分'
                 ,'biaoshi'   =>  'avg'
-                ,'admin_web'        =>  1
+                ,'tongji'        =>  1
                 ,'paixu' => 4
+                ,'category_id' => 12201
             ]
             ,[
-                'id'    =>  5
-                ,'title'      =>  '得分率'
+                'title'      =>  '得分率'
                 ,'biaoshi'   =>  'defenlv'
-                ,'admin_web'        =>  0
+                ,'tongji'        =>  0
                 ,'paixu' => 5
+                ,'category_id' => 12201
             ]
             ,[
-                'id'    =>  6
-                ,'title'      =>  '标准差'
+                'title'      =>  '标准差'
                 ,'biaoshi'   =>  'biaozhuncha'
-                ,'admin_web'        =>  0
+                ,'tongji'        =>  0
                 ,'paixu' => 6
+                ,'category_id' => 12201
             ]
             ,[
-                'id'    =>  7
-                ,'title'      =>  '优秀人数'
+                'title'      =>  '优秀人数'
                 ,'biaoshi'   =>  'youxiu'
-                ,'admin_web'        =>  0
+                ,'tongji'        =>  0
                 ,'paixu' => 7
+                ,'category_id' => 12201
             ]
             ,[
-                'id'    =>  8
-                ,'title'      =>  '优秀率'
+                'title'      =>  '优秀率'
                 ,'biaoshi'   =>  'youxiulv'
-                ,'admin_web'     =>  1
+                ,'tongji'     =>  1
                 ,'paixu' => 8
+                ,'category_id' => 12201
             ]
             ,[
-                'id'    =>  9
-                ,'title'      =>  '及格人数'
+                'title'      =>  '及格人数'
                 ,'biaoshi'   =>  'jige'
-                ,'admin_web'    =>  0
+                ,'tongji'    =>  0
                 ,'paixu' => 9
+                ,'category_id' => 12201
             ]
             ,[
-                'id'    =>  10
-                ,'title'      =>  '及格率'
+                'title'      =>  '及格率'
                 ,'biaoshi'   =>  'jigelv'
-                ,'admin_web'    =>  1
+                ,'tongji'    =>  1
                 ,'paixu' => 10
+                ,'category_id' => 12201
             ]
             ,[
-                'id'    =>  11
-                ,'title'      =>  '最高分'
+                'title'      =>  '最高分'
                 ,'biaoshi'   =>  'max'
-                ,'admin_web'    =>  0
+                ,'tongji'    =>  0
                 ,'paixu' => 11
+                ,'category_id' => 12201
             ]
             ,[
-                'id'    =>  12
-                ,'title'      =>  '最低分'
+                'title'      =>  '最低分'
                 ,'biaoshi'   =>  'min'
-                ,'admin_web'    =>  0
+                ,'tongji'    =>  0
                 ,'paixu' => 12
+                ,'category_id' => 12201
             ]
             ,[
-                'id'    =>  13
-                ,'title'      =>  'Q1'
+                'title'      =>  'Q1'
                 ,'biaoshi'   =>  'q1'
-                ,'admin_web'        =>  0
+                ,'tongji'        =>  0
                 ,'paixu' => 13
+                ,'category_id' => 12201
             ]
             ,[
-                'id'    =>  14
-                ,'title'      =>  'Q2'
+                'title'      =>  'Q2'
                 ,'biaoshi'   =>  'q2'
-                ,'admin_web'    =>  0
+                ,'tongji'    =>  0
                 ,'paixu' => 14
+                ,'category_id' => 12201
             ]
             ,[
-                'id'    =>  15
-                ,'title'      =>  'Q3'
+                'title'      =>  'Q3'
                 ,'biaoshi'   =>  'q3'
-                ,'admin_web'    =>  0
+                ,'tongji'    =>  0
                 ,'paixu' => 15
+                ,'category_id' => 12201
             ]
             ,[
-                'id'    =>  16
-                ,'title'      =>  '众数'
+                'title'      =>  '众数'
                 ,'biaoshi'   =>  'zhongshu'
-                ,'admin_web'    =>  0
+                ,'tongji'    =>  0
                 ,'paixu' => 16
+                ,'category_id' => 12201
             ]
             ,[
-
-                'id'    =>  17
-                ,'title'      =>  '中位数'
+                'title'      =>  '中位数'
                 ,'biaoshi'   =>  'zhongweishu'
-                ,'admin_web'    =>  0
+                ,'tongji'    =>  0
                 ,'paixu' => 17
+                ,'category_id' => 12201
+            ]
+            ,[
+                'title'      =>  '差生率'
+                ,'biaoshi'   =>  'chashenglv'
+                ,'tongji'    =>  0
+                ,'paixu' => 18
+                ,'category_id' => 12201
+            ]
+
+            // 管理员-班级-下载
+            ,[
+                'title' => '学号数'
+                ,'biaoshi' => 'stu_cnt'
+                ,'tongji' => 0
+                ,'paixu' => 1
+                ,'category_id' => 12202
+            ]
+            ,[
+                'title'      =>  '成绩数'
+                ,'biaoshi'   =>  'chengji_cnt'
+                ,'tongji'        =>  1
+                ,'paixu' => 2
+                ,'category_id' => 12202
+            ]
+            ,[
+                'title'      =>  '总分'
+                ,'biaoshi'   =>  'sum'
+                ,'tongji'        =>  0
+                ,'paixu' => 3
+                ,'category_id' => 12202
+            ]
+            ,[
+                'title'      =>  '平均分'
+                ,'biaoshi'   =>  'avg'
+                ,'tongji'        =>  1
+                ,'paixu' => 4
+                ,'category_id' => 12202
+            ]
+            ,[
+                'title'      =>  '得分率'
+                ,'biaoshi'   =>  'defenlv'
+                ,'tongji'        =>  0
+                ,'paixu' => 5
+                ,'category_id' => 12202
+            ]
+            ,[
+                'title'      =>  '标准差'
+                ,'biaoshi'   =>  'biaozhuncha'
+                ,'tongji'        =>  0
+                ,'paixu' => 6
+                ,'category_id' => 12202
+            ]
+            ,[
+                'title'      =>  '优秀人数'
+                ,'biaoshi'   =>  'youxiu'
+                ,'tongji'        =>  0
+                ,'paixu' => 7
+                ,'category_id' => 12202
+            ]
+            ,[
+                'title'      =>  '优秀率'
+                ,'biaoshi'   =>  'youxiulv'
+                ,'tongji'     =>  1
+                ,'paixu' => 8
+                ,'category_id' => 12202
+            ]
+            ,[
+                'title'      =>  '及格人数'
+                ,'biaoshi'   =>  'jige'
+                ,'tongji'    =>  0
+                ,'paixu' => 9
+                ,'category_id' => 12202
+            ]
+            ,[
+                'title'      =>  '及格率'
+                ,'biaoshi'   =>  'jigelv'
+                ,'tongji'    =>  1
+                ,'paixu' => 10
+                ,'category_id' => 12202
+            ]
+            ,[
+                'title'      =>  '最高分'
+                ,'biaoshi'   =>  'max'
+                ,'tongji'    =>  0
+                ,'paixu' => 11
+                ,'category_id' => 12202
+            ]
+            ,[
+                'title'      =>  '最低分'
+                ,'biaoshi'   =>  'min'
+                ,'tongji'    =>  0
+                ,'paixu' => 12
+                ,'category_id' => 12202
+            ]
+            ,[
+                'title'      =>  'Q1'
+                ,'biaoshi'   =>  'q1'
+                ,'tongji'        =>  0
+                ,'paixu' => 13
+                ,'category_id' => 12202
+            ]
+            ,[
+                'title'      =>  'Q2'
+                ,'biaoshi'   =>  'q2'
+                ,'tongji'    =>  0
+                ,'paixu' => 14
+                ,'category_id' => 12202
+            ]
+            ,[
+                'title'      =>  'Q3'
+                ,'biaoshi'   =>  'q3'
+                ,'tongji'    =>  0
+                ,'paixu' => 15
+                ,'category_id' => 12202
+            ]
+            ,[
+                'title'      =>  '众数'
+                ,'biaoshi'   =>  'zhongshu'
+                ,'tongji'    =>  0
+                ,'paixu' => 16
+                ,'category_id' => 12202
+            ]
+            ,[
+                'title'      =>  '中位数'
+                ,'biaoshi'   =>  'zhongweishu'
+                ,'tongji'    =>  0
+                ,'paixu' => 17
+                ,'category_id' => 12202
+            ]
+            ,[
+                'title'      =>  '差生率'
+                ,'biaoshi'   =>  'chashenglv'
+                ,'tongji'    =>  0
+                ,'paixu' => 18
+                ,'category_id' => 12202
+            ]
+
+            // 管理员-学校-网页
+            ,[
+                'title' => '学号数'
+                ,'biaoshi' => 'stu_cnt'
+                ,'tongji' => 0
+                ,'paixu' => 1
+                ,'category_id' => 12203
+            ]
+            ,[
+                'title'      =>  '成绩数'
+                ,'biaoshi'   =>  'chengji_cnt'
+                ,'tongji'        =>  1
+                ,'paixu' => 2
+                ,'category_id' => 12203
+            ]
+            ,[
+                'title'      =>  '总分'
+                ,'biaoshi'   =>  'sum'
+                ,'tongji'        =>  0
+                ,'paixu' => 3
+                ,'category_id' => 12203
+            ]
+            ,[
+                'title'      =>  '平均分'
+                ,'biaoshi'   =>  'avg'
+                ,'tongji'        =>  1
+                ,'paixu' => 4
+                ,'category_id' => 12203
+            ]
+            ,[
+                'title'      =>  '得分率'
+                ,'biaoshi'   =>  'defenlv'
+                ,'tongji'        =>  0
+                ,'paixu' => 5
+                ,'category_id' => 12203
+            ]
+            ,[
+                'title'      =>  '标准差'
+                ,'biaoshi'   =>  'biaozhuncha'
+                ,'tongji'        =>  0
+                ,'paixu' => 6
+                ,'category_id' => 12203
+            ]
+            ,[
+                'title'      =>  '优秀人数'
+                ,'biaoshi'   =>  'youxiu'
+                ,'tongji'        =>  0
+                ,'paixu' => 7
+                ,'category_id' => 12203
+            ]
+            ,[
+                'title'      =>  '优秀率'
+                ,'biaoshi'   =>  'youxiulv'
+                ,'tongji'     =>  1
+                ,'paixu' => 8
+                ,'category_id' => 12203
+            ]
+            ,[
+                'title'      =>  '及格人数'
+                ,'biaoshi'   =>  'jige'
+                ,'tongji'    =>  0
+                ,'paixu' => 9
+                ,'category_id' => 12203
+            ]
+            ,[
+                'title'      =>  '及格率'
+                ,'biaoshi'   =>  'jigelv'
+                ,'tongji'    =>  1
+                ,'paixu' => 10
+                ,'category_id' => 12203
+            ]
+            ,[
+                'title'      =>  '最高分'
+                ,'biaoshi'   =>  'max'
+                ,'tongji'    =>  0
+                ,'paixu' => 11
+                ,'category_id' => 12203
+            ]
+            ,[
+                'title'      =>  '最低分'
+                ,'biaoshi'   =>  'min'
+                ,'tongji'    =>  0
+                ,'paixu' => 12
+                ,'category_id' => 12203
+            ]
+            ,[
+                'title'      =>  'Q1'
+                ,'biaoshi'   =>  'q1'
+                ,'tongji'        =>  0
+                ,'paixu' => 13
+                ,'category_id' => 12203
+            ]
+            ,[
+                'title'      =>  'Q2'
+                ,'biaoshi'   =>  'q2'
+                ,'tongji'    =>  0
+                ,'paixu' => 14
+                ,'category_id' => 12203
+            ]
+            ,[
+                'title'      =>  'Q3'
+                ,'biaoshi'   =>  'q3'
+                ,'tongji'    =>  0
+                ,'paixu' => 15
+                ,'category_id' => 12203
+            ]
+            ,[
+                'title'      =>  '众数'
+                ,'biaoshi'   =>  'zhongshu'
+                ,'tongji'    =>  0
+                ,'paixu' => 16
+                ,'category_id' => 12203
             ]
             ,[
 
-                'id'    =>  18
-                ,'title'      =>  '差生率'
-                ,'biaoshi'   =>  'chashenglv'
-                ,'admin_web'    =>  0
-                ,'paixu' => 18
+                'title'      =>  '中位数'
+                ,'biaoshi'   =>  'zhongweishu'
+                ,'tongji'    =>  0
+                ,'paixu' => 17
+                ,'category_id' => 12203
             ]
+            ,[
+
+                'title'      =>  '差生率'
+                ,'biaoshi'   =>  'chashenglv'
+                ,'tongji'    =>  0
+                ,'paixu' => 18
+                ,'category_id' => 12203
+            ]
+
+            // 管理员-学校-下载
+            ,[
+                'title' => '学号数'
+                ,'biaoshi' => 'stu_cnt'
+                ,'tongji' => 0
+                ,'paixu' => 1
+                ,'category_id' => 12204
+            ]
+            ,[
+                'title'      =>  '成绩数'
+                ,'biaoshi'   =>  'chengji_cnt'
+                ,'tongji'        =>  1
+                ,'paixu' => 2
+                ,'category_id' => 12204
+            ]
+            ,[
+                'title'      =>  '总分'
+                ,'biaoshi'   =>  'sum'
+                ,'tongji'        =>  0
+                ,'paixu' => 3
+                ,'category_id' => 12204
+            ]
+            ,[
+                'title'      =>  '平均分'
+                ,'biaoshi'   =>  'avg'
+                ,'tongji'        =>  1
+                ,'paixu' => 4
+                ,'category_id' => 12204
+            ]
+            ,[
+                'title'      =>  '得分率'
+                ,'biaoshi'   =>  'defenlv'
+                ,'tongji'        =>  0
+                ,'paixu' => 5
+                ,'category_id' => 12204
+            ]
+            ,[
+                'title'      =>  '标准差'
+                ,'biaoshi'   =>  'biaozhuncha'
+                ,'tongji'        =>  0
+                ,'paixu' => 6
+                ,'category_id' => 12204
+            ]
+            ,[
+                'title'      =>  '优秀人数'
+                ,'biaoshi'   =>  'youxiu'
+                ,'tongji'        =>  0
+                ,'paixu' => 7
+                ,'category_id' => 12204
+            ]
+            ,[
+                'title'      =>  '优秀率'
+                ,'biaoshi'   =>  'youxiulv'
+                ,'tongji'     =>  1
+                ,'paixu' => 8
+                ,'category_id' => 12204
+            ]
+            ,[
+                'title'      =>  '及格人数'
+                ,'biaoshi'   =>  'jige'
+                ,'tongji'    =>  0
+                ,'paixu' => 9
+                ,'category_id' => 12204
+            ]
+            ,[
+                'title'      =>  '及格率'
+                ,'biaoshi'   =>  'jigelv'
+                ,'tongji'    =>  1
+                ,'paixu' => 10
+                ,'category_id' => 12204
+            ]
+            ,[
+                'title'      =>  '最高分'
+                ,'biaoshi'   =>  'max'
+                ,'tongji'    =>  0
+                ,'paixu' => 11
+                ,'category_id' => 12204
+            ]
+            ,[
+                'title'      =>  '最低分'
+                ,'biaoshi'   =>  'min'
+                ,'tongji'    =>  0
+                ,'paixu' => 12
+                ,'category_id' => 12204
+            ]
+            ,[
+                'title'      =>  'Q1'
+                ,'biaoshi'   =>  'q1'
+                ,'tongji'        =>  0
+                ,'paixu' => 13
+                ,'category_id' => 12204
+            ]
+            ,[
+                'title'      =>  'Q2'
+                ,'biaoshi'   =>  'q2'
+                ,'tongji'    =>  0
+                ,'paixu' => 14
+                ,'category_id' => 12204
+            ]
+            ,[
+                'title'      =>  'Q3'
+                ,'biaoshi'   =>  'q3'
+                ,'tongji'    =>  0
+                ,'paixu' => 15
+                ,'category_id' => 12204
+            ]
+            ,[
+                'title'      =>  '众数'
+                ,'biaoshi'   =>  'zhongshu'
+                ,'tongji'    =>  0
+                ,'paixu' => 16
+                ,'category_id' => 12204
+            ]
+            ,[
+                'title'      =>  '中位数'
+                ,'biaoshi'   =>  'zhongweishu'
+                ,'tongji'    =>  0
+                ,'paixu' => 17
+                ,'category_id' => 12204
+            ]
+            ,[
+
+                'title'      =>  '差生率'
+                ,'biaoshi'   =>  'chashenglv'
+                ,'tongji'    =>  0
+                ,'paixu' => 18
+                ,'category_id' => 12204
+            ]
+
+            // 教师-学科-网页
+            ,[
+                'title' => '学号数'
+                ,'biaoshi' => 'stu_cnt'
+                ,'tongji' => 0
+                ,'paixu' => 1
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '成绩数'
+                ,'biaoshi'   =>  'chengji_cnt'
+                ,'tongji'        =>  1
+                ,'paixu' => 2
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '总分'
+                ,'biaoshi'   =>  'sum'
+                ,'tongji'        =>  0
+                ,'paixu' => 3
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '平均分'
+                ,'biaoshi'   =>  'avg'
+                ,'tongji'        =>  1
+                ,'paixu' => 4
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '得分率'
+                ,'biaoshi'   =>  'defenlv'
+                ,'tongji'        =>  0
+                ,'paixu' => 5
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '标准差'
+                ,'biaoshi'   =>  'biaozhuncha'
+                ,'tongji'        =>  0
+                ,'paixu' => 6
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '优秀人数'
+                ,'biaoshi'   =>  'youxiu'
+                ,'tongji'        =>  0
+                ,'paixu' => 7
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '优秀率'
+                ,'biaoshi'   =>  'youxiulv'
+                ,'tongji'     =>  1
+                ,'paixu' => 8
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '及格人数'
+                ,'biaoshi'   =>  'jige'
+                ,'tongji'    =>  0
+                ,'paixu' => 9
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '及格率'
+                ,'biaoshi'   =>  'jigelv'
+                ,'tongji'    =>  1
+                ,'paixu' => 10
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '最高分'
+                ,'biaoshi'   =>  'max'
+                ,'tongji'    =>  0
+                ,'paixu' => 11
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '最低分'
+                ,'biaoshi'   =>  'min'
+                ,'tongji'    =>  0
+                ,'paixu' => 12
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  'Q1'
+                ,'biaoshi'   =>  'q1'
+                ,'tongji'        =>  0
+                ,'paixu' => 13
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  'Q2'
+                ,'biaoshi'   =>  'q2'
+                ,'tongji'    =>  0
+                ,'paixu' => 14
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  'Q3'
+                ,'biaoshi'   =>  'q3'
+                ,'tongji'    =>  0
+                ,'paixu' => 15
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '众数'
+                ,'biaoshi'   =>  'zhongshu'
+                ,'tongji'    =>  0
+                ,'paixu' => 16
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '中位数'
+                ,'biaoshi'   =>  'zhongweishu'
+                ,'tongji'    =>  0
+                ,'paixu' => 17
+                ,'category_id' => 12207
+            ]
+            ,[
+
+                'title'      =>  '差生率'
+                ,'biaoshi'   =>  'chashenglv'
+                ,'tongji'    =>  0
+                ,'paixu' => 18
+                ,'category_id' => 12207
+            ]
+
+            // 管理员-学生-下载
+            ,[
+                'title' => '学号数'
+                ,'biaoshi' => 'stu_cnt'
+                ,'tongji' => 0
+                ,'paixu' => 1
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '成绩数'
+                ,'biaoshi'   =>  'chengji_cnt'
+                ,'tongji'        =>  1
+                ,'paixu' => 2
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '总分'
+                ,'biaoshi'   =>  'sum'
+                ,'tongji'        =>  0
+                ,'paixu' => 3
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '平均分'
+                ,'biaoshi'   =>  'avg'
+                ,'tongji'        =>  1
+                ,'paixu' => 4
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '得分率'
+                ,'biaoshi'   =>  'defenlv'
+                ,'tongji'        =>  0
+                ,'paixu' => 5
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '标准差'
+                ,'biaoshi'   =>  'biaozhuncha'
+                ,'tongji'        =>  0
+                ,'paixu' => 6
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '优秀人数'
+                ,'biaoshi'   =>  'youxiu'
+                ,'tongji'        =>  0
+                ,'paixu' => 7
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '优秀率'
+                ,'biaoshi'   =>  'youxiulv'
+                ,'tongji'     =>  1
+                ,'paixu' => 8
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '及格人数'
+                ,'biaoshi'   =>  'jige'
+                ,'tongji'    =>  0
+                ,'paixu' => 9
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '及格率'
+                ,'biaoshi'   =>  'jigelv'
+                ,'tongji'    =>  1
+                ,'paixu' => 10
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '最高分'
+                ,'biaoshi'   =>  'max'
+                ,'tongji'    =>  0
+                ,'paixu' => 11
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '最低分'
+                ,'biaoshi'   =>  'min'
+                ,'tongji'    =>  0
+                ,'paixu' => 12
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  'Q1'
+                ,'biaoshi'   =>  'q1'
+                ,'tongji'        =>  0
+                ,'paixu' => 13
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  'Q2'
+                ,'biaoshi'   =>  'q2'
+                ,'tongji'    =>  0
+                ,'paixu' => 14
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  'Q3'
+                ,'biaoshi'   =>  'q3'
+                ,'tongji'    =>  0
+                ,'paixu' => 15
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '众数'
+                ,'biaoshi'   =>  'zhongshu'
+                ,'tongji'    =>  0
+                ,'paixu' => 16
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '中位数'
+                ,'biaoshi'   =>  'zhongweishu'
+                ,'tongji'    =>  0
+                ,'paixu' => 17
+                ,'category_id' => 12207
+            ]
+            ,[
+                'title'      =>  '差生率'
+                ,'biaoshi'   =>  'chashenglv'
+                ,'tongji'    =>  0
+                ,'paixu' => 18
+                ,'category_id' => 12207
+            ]
+
+            // 管理员-学生-下载左
+            ,[
+                'title' => '平均分'
+                ,'biaoshi' => 'avg'
+                ,'tongji' => 1
+                ,'paixu' => 1
+                ,'category_id' => 12210
+            ]
+            ,[
+                'title' => '总分'
+                ,'biaoshi' => 'sum'
+                ,'tongji' => 1
+                ,'paixu' => 2
+                ,'category_id' => 12210
+            ]
+            ,[
+                'title' => '班排序'
+                ,'biaoshi' => 'bpaixu'
+                ,'tongji' => 0
+                ,'paixu' => 3
+                ,'category_id' => 12210
+            ]
+            ,[
+                'title' => '年级排序'
+                ,'biaoshi' => 'npaixu'
+                ,'tongji' => 0
+                ,'paixu' => 4
+                ,'category_id' => 12210
+            ]
+            ,[
+                'title' => '班位置'
+                ,'biaoshi' => 'bpaixu'
+                ,'tongji' => 1
+                ,'paixu' => 5
+                ,'category_id' => 12210
+            ]
+            ,[
+                'title' => '年级位置'
+                ,'biaoshi' => 'npaixu'
+                ,'tongji' => 1
+                ,'paixu' => 6
+                ,'category_id' => 12210
+            ]
+
+            // 管理员-学生-网页
+            ,[
+                'title' => '平均分'
+                ,'biaoshi' => 'avg'
+                ,'tongji' => 1
+                ,'paixu' => 1
+                ,'category_id' => 12210
+            ]
+            ,[
+                'title' => '总分'
+                ,'biaoshi' => 'sum'
+                ,'tongji' => 1
+                ,'paixu' => 2
+                ,'category_id' => 12210
+            ]
+            ,[
+                'title' => '班排序'
+                ,'biaoshi' => 'bpaixu'
+                ,'tongji' => 0
+                ,'paixu' => 3
+                ,'category_id' => 12210
+            ]
+            ,[
+                'title' => '年级排序'
+                ,'biaoshi' => 'npaixu'
+                ,'tongji' => 0
+                ,'paixu' => 4
+                ,'category_id' => 12210
+            ]
+            ,[
+                'title' => '班位置'
+                ,'biaoshi' => 'bpaixu'
+                ,'tongji' => 1
+                ,'paixu' => 5
+                ,'category_id' => 12210
+            ]
+            ,[
+                'title' => '年级位置'
+                ,'biaoshi' => 'npaixu'
+                ,'tongji' => 1
+                ,'paixu' => 6
+                ,'category_id' => 12210
+            ]
+
+
     ];
         // 保存数据
         $this->table('tongji_xiangmu')->insert($rows)->save();

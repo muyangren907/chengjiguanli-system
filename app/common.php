@@ -59,26 +59,6 @@
     }
 
 
-    // // 单位列表
-    // function schoolXueduan($low = '幼儿园', $high = '其它学段', $order = 'asc')
-    // {
-    //     // 实例化单位模型
-    //     $sch = new \app\system\model\School;
-    //     $data = $sch->srcSchool($low, $high, $order);
-    //     return $data;
-    // }
-
-
-    // //  获取单位列表
-    // function srcSchool($src)
-    // {
-    //     // 实例化单位模型
-    //     $sch = new \app\system\model\School;
-    //     $data = $sch->srcSchool($low, $high, $order);
-    //     return $data;
-    // }
-
-
     // 可以组织考试的单位列表
     function kaoshiSchoolList()
     {

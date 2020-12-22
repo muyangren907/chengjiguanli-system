@@ -21,6 +21,11 @@ class Index
         $list['webtitle'] = config('shangma.webtitle');
         $list['version'] = config('shangma.version');
 
+        // 获取信息
+        $sysbasemod = new \app\system\model\SystemBase;     # 关键字
+        $sys = $sysbasemod::sysInfo();     # 描述
+        $list['webtitle'] = $sys->sys_title;
+
         View::assign('list',$list);
 
         // 渲染输出

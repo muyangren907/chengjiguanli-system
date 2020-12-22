@@ -50,6 +50,14 @@
   // 设置列
   options.cols=[[ //表头
 			{type:'checkbox', fixed:'left'},
+      {field: 'category_id', title: '类别',sort: true, minWidth:140,templet:function(d){
+        var str='';
+        if(d.tjxmCategory)
+        {
+          str = d.tjxmCategory.title;
+        }
+        return str;
+      }} ,
 			{field:'title', title:'标题', minWidth:100, sort:true},
 			{field:'biaoshi', title:'标识', sort:true, minWidth:240},
       {field:'tongji', title:'参与统计', minWidth:80, templet:'#tongji', sort:true},

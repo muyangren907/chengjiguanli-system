@@ -25,6 +25,11 @@ class TongjiXiangmu extends BaseModel
             ->when(strlen($src['searchval']) > 0, function($query) use($src){
                     $query->where('title|biaoshi', 'like', '%' . $src['searchval']. ' %');
                 })
+            ->with([
+                'tjxmCategory' => function ($q) {
+                    $q->field('id,title');
+                }
+            ])
             ->select();
 
         return $data;
@@ -55,5 +60,12 @@ class TongjiXiangmu extends BaseModel
                 ->select()
                 ->toArray();
         return $data;
+    }
+
+
+    // 类别关联
+    public function tjxmCategory()
+    {
+        return $this->belongsTo('\app\system\model\Category', 'category_id', 'id');
     }
 }
