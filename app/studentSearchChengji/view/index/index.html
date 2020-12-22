@@ -53,7 +53,7 @@
                       <dd>
                         <!-- <a onclick="layer.msg('修改密码，请下载后本地测试。')">
                             修改密码</a> -->
-                        <a onclick="xadmin.open('修改密码','/studentsearchchengji/index/editpassword','400','250')">
+                        <a onclick="xadmin.open('修改密码','/studentSearchChengji/index/editpassword','400','250')">
                             修改密码</a>
                           </dd>
                       <dd>
@@ -219,7 +219,7 @@
       var tr = obj.tr; //获得当前行 tr 的DOM对象
       switch(layEvent){
         case 'detail':// 查看
-          cjgl.add(obj.data.kaoshiTitle + '考试成绩','/studentsearchchengji/index/read/' + obj.data.kaohao_id,'','',true);
+          cjgl.add(obj.data.kaoshiTitle + '考试成绩','/studentSearchChengji/index/read/' + obj.data.kaohao_id,'','',true);
           break;
       };
     });

@@ -41,6 +41,7 @@ class Index extends StudentSearchBase
         $list['student_id'] = session('user_id');
         $list['sbj'] = subjectKaoshiList();
 
+
         // 模板赋值
         $this->view->assign('list', $list);
 
@@ -78,7 +79,7 @@ class Index extends StudentSearchBase
             'webtitle' => '修改密码'
             ,'butname' => '修改'
             ,'formpost' => 'PUT'
-            ,'url' => '/studentsearchchengji/index/updatepassword/' . session('user_id')
+            ,'url' => '/studentSearchChengji/index/updatepassword/' . session('user_id')
         );
 
         // 模板赋值

@@ -126,6 +126,7 @@ class Index extends TeacherSearchBase
         $list['kaoshi'] = 1;
         $list['teacher'] = 1;
         $list['student'] = 1;
+
         // 模版赋值
         $this->view->assign('list',$list);
         // 渲染输出
