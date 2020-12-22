@@ -17,14 +17,12 @@ class Index
         // 清除session（当前作用域）
         session(null);
 
-        // 获取系统名称和版本号
-        $list['webtitle'] = config('shangma.webtitle');
-        $list['version'] = config('shangma.version');
-
         // 获取信息
         $sysbasemod = new \app\system\model\SystemBase;     # 关键字
-        $sys = $sysbasemod::sysInfo();     # 描述
-        $list['webtitle'] = $sys->sys_title;
+        $list = $sysbasemod::sysInfo();     # 描述
+        // 获取系统名称和版本号
+        $list['version'] = config('shangma.version');
+        
 
         View::assign('list',$list);
 

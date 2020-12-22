@@ -22,7 +22,6 @@ class Index extends TeacherSearchBase
     	// 获取信息
         $sysbasemod = new sysbasemod();     # 关键字
         $list = $sysbasemod::sysInfo();     # 描述
-        $list['webtitle'] = config('shangma.webtitle'); # 系统名称
         $list['version'] = config('shangma.version');   # 版本号
         $tch = new TCH;   # 获取用户姓名
 
@@ -110,17 +109,11 @@ class Index extends TeacherSearchBase
         //实例化数据模型
         $sysbasemod = new sysbasemod();
 
-        // 查询系统设置
-        $list = $sysbasemod
-            ->order(['id'=>'desc'])
-            ->field('thinks, danwei')
-            ->find();
+        $list = $sysbasemod::sysInfo();     # 描述
+        $list['version'] = config('shangma.version');   # 版本号
 
         // 查询用户登信息
         $list['username'] = session('username');
-        $list['webtitle'] = config('shangma.webtitle');
-
-
         $list['xingming'] = TCH::where('phone', $list['username'])->value('xingming');
         $list['version'] = config('shangma.version');
 
@@ -133,7 +126,6 @@ class Index extends TeacherSearchBase
         $list['kaoshi'] = 1;
         $list['teacher'] = 1;
         $list['student'] = 1;
-
         // 模版赋值
         $this->view->assign('list',$list);
         // 渲染输出

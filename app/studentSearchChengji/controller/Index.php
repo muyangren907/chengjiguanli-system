@@ -22,12 +22,9 @@ class Index extends StudentSearchBase
     	// 获取信息
         $sysbasemod = new \app\system\model\SystemBase;     # 关键字
         // 查询系统设置
-        $list = $sysbasemod
-            ->order(['id'=>'desc'])
-            ->field('thinks, danwei')
-            ->find();
+        $list = $sysbasemod::sysInfo();     # 描述
+        $list['version'] = config('shangma.version');   # 版本号
         // 设置要给模板赋值的信息
-        $list['webtitle'] = config('shangma.webtitle'); # 系统名称
 
         $stu = new \app\student\model\Student;
         $stuInfo = $stu->where('id', session('user_id'))

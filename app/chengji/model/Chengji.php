@@ -46,7 +46,6 @@ class Chengji extends BaseModel
             ,'subject_id' => ''
             ,'searchval' => ''
             ,'user_id' => ''
-            ,'user_group' =>''
         );
         $src = array_cover($srcfrom, $src) ;
         $src['kaoshi_id'] = strToarray($src['kaoshi_id']);
@@ -78,9 +77,8 @@ class Chengji extends BaseModel
             ->when(count($src['kaoshi_id']) == 0 && count($src['banji_id']) ==0, function($query) {
                 $query->whereMonth('update_time');
             })
-            ->when(strlen($src['user_id']) > 0 && strlen($src['user_group']) > 0, function ($query) use($src){
-                $query->where('user_id', $src['user_id'])
-                    ->where('user_group', $src['user_group']);
+            ->when(strlen($src['user_id']) > 0, function ($query) use($src){
+                $query->where('user_id', $src['user_id']);
             })
             ->when(count($src['subject_id']) > 0, function ($query) use ($src) {
                 $query->where('subject_id', 'in', $src['subject_id']);
@@ -172,8 +170,8 @@ class Chengji extends BaseModel
                 ,'subject_lieming' => $value->subjectName->lieming
                 ,'defen' => $value->defen
                 ,'defenlv' => $value->defenlv
-                ,'bweizhi' => $value->bweizhi
-                ,'xweizhi' => $value->xweizhi
+                ,'bpaixu' => $value->bpaixu
+                ,'njpaixu' => $value->njpaixu
             ];
             $value->cjKaohao->cjStudent ? $data[$key]['student_name']=$value->cjKaohao->cjStudent->xingming : $data[$key]['student_name']= '';
         }
