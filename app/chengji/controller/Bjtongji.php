@@ -175,7 +175,7 @@ class Bjtongji extends AdminBase
 
         // 设置要导出的项目、列名、起始行
         $sbjcol = [
-            'cjCnt' => '人数'
+            'chengji_cnt' => '人数'
             ,'avg' => '平均分'
             ,'jigelv' => '及格率%'
             ,'youxiulv' => '优秀率%'

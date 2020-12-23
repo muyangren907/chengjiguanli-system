@@ -35,15 +35,18 @@ class Chengji extends Migrator
         $table
             ->addColumn('kaohao_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'考试'])
             ->addColumn('subject_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'学科'])
-            ->addColumn('user_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'用户'])
             ->addColumn('defen','decimal',['precision'=>5,'scale'=>1,'default'=>Null,'null'=>false,'comment'=>'得分'])
             ->addColumn('defenlv','decimal',['precision'=>6,'scale'=>2,'default'=>Null,'null'=>false,'comment'=>'得分率'])
+
             ->addColumn('bpaixu','integer',['limit'=>4,'null'=>true,'comment'=>'班级排序'])
-            ->addColumn('njpaixu','integer',['limit'=>4,'null'=>true,'comment'=>'年级排序'])
-            ->addColumn('qupaixu','integer',['limit'=>4,'null'=>true,'comment'=>'区排序'])
-            ->addColumn('bweizhi','integer',['limit'=>4,'null'=>true,'comment'=>'班级位置'])
-            ->addColumn('njweizhi','integer',['limit'=>4,'null'=>true,'comment'=>'年级位置'])
-            ->addColumn('quweizhi','integer',['limit'=>4,'null'=>true,'comment'=>'区位置'])
+            ->addColumn('bweizhi','decimal',['precision'=>6,'scale'=>2,'null'=>true,'comment'=>'班级位置'])
+            ->addColumn('xpaixu','integer',['limit'=>4,'null'=>true,'comment'=>'学校排序'])
+            ->addColumn('xweizhi','decimal',['precision'=>6,'scale'=>2,'null'=>true,'comment'=>'学校位置'])
+            // 区排序和位置
+            ->addColumn('qpaixu','integer',['limit'=>4,'null'=>true,'comment'=>'区排序'])
+            ->addColumn('qweizhi','decimal',['precision'=>6,'scale'=>2,'null'=>true,'comment'=>'区位置'])
+
+
             ->addColumn('create_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'更新时间'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])

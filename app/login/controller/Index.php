@@ -22,7 +22,7 @@ class Index
         $list = $sysbasemod::sysInfo();     # 描述
         // 获取系统名称和版本号
         $list['version'] = config('shangma.version');
-        
+
 
         View::assign('list',$list);
 
@@ -70,6 +70,7 @@ class Index
             $userinfo->denglucishu = ['inc', 1];
             $userinfo->lasttime = $userinfo->getData('thistime');
             $userinfo->thistime = time();
+            $userinfo->save();
         }
 
         return json($yz);

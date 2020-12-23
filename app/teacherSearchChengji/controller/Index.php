@@ -109,11 +109,17 @@ class Index extends TeacherSearchBase
         //实例化数据模型
         $sysbasemod = new sysbasemod();
 
-        $list = $sysbasemod::sysInfo();     # 描述
-        $list['version'] = config('shangma.version');   # 版本号
+        // 查询系统设置
+        $list = $sysbasemod
+            ->order(['id'=>'desc'])
+            ->field('thinks, danwei')
+            ->find();
 
         // 查询用户登信息
         $list['username'] = session('username');
+        $list['webtitle'] = config('shangma.webtitle');
+
+
         $list['xingming'] = TCH::where('phone', $list['username'])->value('xingming');
         $list['version'] = config('shangma.version');
 

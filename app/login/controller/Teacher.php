@@ -46,6 +46,7 @@ class Teacher
             $userinfo->denglucishu = ['inc', 1];
             $userinfo->lasttime = $userinfo->getData('thistime');
             $userinfo->thistime = time();
+            $userinfo->save();
         }
 
         return json($yz);

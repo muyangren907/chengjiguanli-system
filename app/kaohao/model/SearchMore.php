@@ -44,7 +44,7 @@ class SearchMore extends BaseModel
             })
             ->with([
                 'ksChengji' => function($query){
-                    $query->field('id, kaohao_id, subject_id, defen, bpaixu, njpaixu')
+                    $query->field('id, kaohao_id, subject_id, defen, bpaixu, xpaixu')
                         ->with([
                             'subjectName' => function ($q) {
                                 $q->field('id, title, jiancheng, lieming');

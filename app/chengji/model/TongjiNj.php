@@ -76,29 +76,22 @@ class TongjiNj extends BaseModel
                             'school_id' => $school['id'],
                             'ruxuenian' => $nianji['ruxuenian'],
                             'subject_id' => $cj['id'],
-
-
-                            'title' => $val->bjSubject->title
-                            ,'jiancheng' => $val->bjSubject->jiancheng
-                            ,'stu_cnt' => $val->stu_cnt
-                            ,'chengji_cnt' => $val->chengji_cnt
-                            ,'sum' => $val->sum
-                            ,'avg' => $val->avg * 1
-                            ,'defenlv' => $val->defenlv
-                            ,'biaozhuncha' => $val->biaozhuncha * 1
-                            ,'youxiu' => $val->youxiu
-                            ,'jige' => $val->jige
-                            ,'youxiulv' => $val->youxiulv
-                            ,'jigelv' => $val->jigelv
-                            ,'max' => $val->max
-                            ,'min' => $val->min
-                            ,'q1' => $val->q1 * 1
-                            ,'q2' => $val->q2 * 1
-                            ,'q3' => $val->q3 * 1
-                            ,'zhongshu' => $val->zhongshu
-                            ,'zhongweishu' => $val->zhongweishu
+                            'stu_cnt' => $cj['stucnt'],
+                            'chengji_cnt' => $cj['xkcnt'],
+                            'sum' => $cj['sum'],
+                            'avg' => $cj['avg'],
+                            'biaozhuncha' => $cj['biaozhuncha'],
+                            'youxiu' => $cj['youxiu'],
+                            'jige' => $cj['jige'],
+                            'max' => $cj['max'],
+                            'min' => $cj['min'],
+                            'q1' => $cj['sifenwei'][0],
+                            'q2' => $cj['sifenwei'][1],
+                            'q3' => $cj['sifenwei'][2],
+                            'zhongshu' => $cj['zhongshu'],
+                            'zhongweihu' => $cj['zhongweishu'],
+                            'defenlv' => $cj['defenlv'],
                         ];
-
                         $data = $this::create($tongjiJg);
                     }
                 }
@@ -165,7 +158,7 @@ class TongjiNj extends BaseModel
                 'id' => $value->id
                 ,'school_jiancheng' => $value->njSchool->jiancheng
                 ,'school_paixu' => $value->njSchool->paixu
-                ,'stuCnt' => $value->stu_cnt
+                ,'stu_cnt' => $value->stu_cnt
                 // 'title'=>$value->banjiTitle,
                 // 'banjipaixu'=>$value->bjBanji->paixu,
             ];
@@ -175,17 +168,15 @@ class TongjiNj extends BaseModel
                         'avg' => $val->avg * 1
                         ,'youxiulv' => $val->youxiulv
                         ,'jigelv' => $val->jigelv
-                        ,'cjCnt' => $val->chengji_cnt
+                        ,'chengji_cnt' => $val->chengji_cnt
                         ,'title' => $val->njSubject->title
                         ,'jiancheng' => $val->njSubject->jiancheng
                         ,'biaozhuncha' => $val->biaozhuncha * 1
-                        ,'sifenwei' => [
-                            'min' => $val->min
-                            ,'q1' => $val->q1 * 1
-                            ,'q2' => $val->q2 * 1
-                            ,'q3' => $val->q3 * 1
-                            ,'max' => $val->max
-                        ]
+                        ,'min' => $val->min
+                        ,'q1' => $val->q1 * 1
+                        ,'q2' => $val->q2 * 1
+                        ,'q3' => $val->q3 * 1
+                        ,'max' => $val->max
                     ];
                 }else{
                     $data[$value->school_id]['quanke'] = [
@@ -302,6 +293,34 @@ class TongjiNj extends BaseModel
         }
 
         return $jige;
+    }
+
+
+    // 差生率
+    function getChashenglvAttr()
+    {
+        $cjCnt = $this->chengji_cnt;
+        $chaCnt = $cjCnt - $this->jige;
+        $chalv = 0;
+        if ($cjCnt > 0) {
+            $chalv = round($chaCnt / $cjCnt * 100, 2);
+        }
+
+        return $chalv;
+    }
+
+
+    // 参试率
+    function getCanshilvAttr()
+    {
+        $cjCnt = $this->chengji_cnt;
+        $stu_cnt = $this->stu_cnt;
+        $canshilv = 0;
+        if ($stu_cnt > 0) {
+            $chalv = round($cjCnt / $stu_cnt * 100, 2);
+        }
+
+        return $chalv;
     }
 
 }
