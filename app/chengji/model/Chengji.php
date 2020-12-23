@@ -171,7 +171,10 @@ class Chengji extends BaseModel
                 ,'defen' => $value->defen
                 ,'defenlv' => $value->defenlv
                 ,'bpaixu' => $value->bpaixu
-                ,'xpaixu' => $value->njpaixu
+                ,'xpaixu' => $value->xpaixu
+                ,'bweizhi' => $value->bweizhi
+                ,'xweizhi' => $value->xweizhi
+
             ];
             $value->cjKaohao->cjStudent ? $data[$key]['student_name']=$value->cjKaohao->cjStudent->xingming : $data[$key]['student_name']= '';
         }
