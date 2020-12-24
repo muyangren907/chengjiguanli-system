@@ -107,7 +107,7 @@ class TongjiSch extends BaseModel
             ->field('kaoshi_id, ruxuenian')
             ->with([
                 'schJieguo' => function ($query) use ($src) {
-                    $query->field('subject_id, ruxuenian, chengji_cnt, avg, youxiu, jige')
+                    $query->field('stu_cnt, chengji_cnt, sum, avg, defenlv, biaozhuncha, youxiu, jige, max, min, q1, q2, q3, zhongshu, zhongweishu,  subject_id, ruxuenian')
                         ->where('kaoshi_id', $src['kaoshi_id'])
                         ->with([
                             'schSubject' => function($query){
@@ -131,10 +131,25 @@ class TongjiSch extends BaseModel
             foreach ($value->schJieguo as $k => $val) {
                 if ($val->subject_id > 0) {
                     $data['all']['chengji'][$val->schSubject->lieming] = [
-                        'avg' => $val->avg
+                        'stu_cnt' => $val->stu_cnt
+                        ,'chengji_cnt' => $val->chengji_cnt
+                        ,'sum' => $val->sum
+                        ,'avg' => $val->avg
+                        ,'defenlv' => $val->defenlv
+                        ,'biaozhuncha' => $val->biaozhuncha
+                        ,'youxiu' => $val->youxiu
                         ,'youxiulv' => $val->youxiulv
+                        ,'jige' => $val->jige
                         ,'jigelv' => $val->jigelv
-                        ,'cjCnt' => $val->chengji_cnt
+                        ,'max' => $val->max
+                        ,'min' => $val->min
+                        ,'q1' => $val->q1
+                        ,'q2' => $val->q2
+                        ,'q3' => $val->q3
+                        ,'zhongshu' => $val->zhongshu
+                        ,'zhongweishu' => $val->zhongweishu
+                        ,'chashenglv' => $val->chashenglv
+                        ,'canshilv' => $val->canshilv
                     ];
                 }else{
                     $data['all']['quanke'] = [
@@ -199,7 +214,7 @@ class TongjiSch extends BaseModel
     public function schJieguo()
     {
         $data = $this->hasMany('\app\chengji\model\TongjiSch', 'ruxuenian', 'ruxuenian')
-            ->append(['youxiulv', 'jigelv']);
+            ->append(['youxiulv', 'jigelv', 'chashenglv', 'canshilv']);
         return $data;
     }
 
@@ -229,6 +244,34 @@ class TongjiSch extends BaseModel
         }
 
         return $jige;
+    }
+
+
+    // 差生率
+    function getChashenglvAttr()
+    {
+        $cjCnt = $this->chengji_cnt;
+        $chaCnt = $cjCnt - $this->jige;
+        $chalv = 0;
+        if ($cjCnt > 0) {
+            $chalv = round($chaCnt / $cjCnt * 100, 2);
+        }
+
+        return $chalv;
+    }
+
+
+    // 参试率
+    function getCanshilvAttr()
+    {
+        $cjCnt = $this->chengji_cnt;
+        $stu_cnt = $this->stu_cnt;
+        $canshilv = 0;
+        if ($stu_cnt > 0) {
+            $chalv = round($cjCnt / $stu_cnt * 100, 2);
+        }
+
+        return $chalv;
     }
 
 }

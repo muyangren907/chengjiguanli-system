@@ -65,7 +65,7 @@
 	// 获取学科
 	var xk = '<?php echo json_encode($list["subject_id"]);?>';
 	xk = eval(decodeURIComponent(xk));
-	
+
 	var xiangmu = '<?php echo json_encode($list["tjxm"]);?>';
 	xiangmu = eval(decodeURIComponent(xiangmu));
 	xiangmuCnt = xiangmu.length;
@@ -83,7 +83,7 @@
     				{
     					if(d.chengji[colname])
 	    				{
-	    					str = d.chengji[colname][i];
+	    					str = d.chengji[colname][val.biaoshi];
 	    				}
     				}
     				return str;
