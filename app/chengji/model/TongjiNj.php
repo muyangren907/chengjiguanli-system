@@ -165,18 +165,27 @@ class TongjiNj extends BaseModel
             foreach ($value->njJieguo as $k => $val) {
                 if($val->subject_id > 0){
                     $data[$value->school_id]['chengji'][$val->njSubject->lieming] = [
-                        'avg' => $val->avg * 1
-                        ,'youxiulv' => $val->youxiulv
-                        ,'jigelv' => $val->jigelv
-                        ,'chengji_cnt' => $val->chengji_cnt
-                        ,'title' => $val->njSubject->title
+                        'title' => $val->njSubject->title
                         ,'jiancheng' => $val->njSubject->jiancheng
+                        ,'stu_cnt' => $val->stu_cnt
+                        ,'chengji_cnt' => $val->chengji_cnt
+                        ,'sum' => $val->sum
+                        ,'avg' => $val->avg
+                        ,'defenlv' => $val->defenlv
                         ,'biaozhuncha' => $val->biaozhuncha * 1
+                        ,'youxiu' => $val->youxiu
+                        ,'youxiulv' => $val->youxiulv
+                        ,'jige' => $val->jige
+                        ,'jigelv' => $val->jigelv
                         ,'min' => $val->min
                         ,'q1' => $val->q1 * 1
                         ,'q2' => $val->q2 * 1
                         ,'q3' => $val->q3 * 1
                         ,'max' => $val->max
+                        ,'zhongshu' => $val->zhongshu
+                        ,'zhongweishu' => $val->zhongweishu
+                        ,'canyulv' => $val->canyulv
+                        ,'chashenglv' => $val->chashenglv
                     ];
                 }else{
                     $data[$value->school_id]['quanke'] = [

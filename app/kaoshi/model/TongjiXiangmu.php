@@ -16,14 +16,19 @@ class TongjiXiangmu extends BaseModel
     {
         $src = [
             'searchval' => ''
+            ,'category_id' => array()
         ];
         // 用新值替换初始值
         $src = array_cover($srcfrom, $src);
+        $src['category_id'] = strToarray($src['category_id']);
 
         // 查询数据
         $data = $this
             ->when(strlen($src['searchval']) > 0, function($query) use($src){
                     $query->where('title|biaoshi', 'like', '%' . $src['searchval']. ' %');
+                })
+            ->when(count($src['category_id']) > 0, function($query) use($src){
+                    $query->where('category_id', 'in', $src['category_id']);
                 })
             ->with([
                 'tjxmCategory' => function ($q) {
@@ -51,10 +56,11 @@ class TongjiXiangmu extends BaseModel
 
 
     // 查询统计
-    public function srcTongji()
+    public function srcTongji($category_id)
     {
         $data = $this->where('status', 1)
                 ->where('tongji', 1)
+                ->where('category_id', $category_id)
                 ->field('title, biaoshi')
                 ->order(['paixu'])
                 ->select()

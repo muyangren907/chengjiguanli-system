@@ -65,15 +65,17 @@
 	// 获取学科
 	var xk = '<?php echo json_encode($list["subject_id"]);?>';
 	xk = eval(decodeURIComponent(xk));
-	var xiangmu = {cjCnt:'参考人数',avg:'平均分',jigelv:'及格率%',youxiulv:'优秀率%'};		// 要显示哪些统计结果
+	
+	var xiangmu = '<?php echo json_encode($list["tjxm"]);?>';
+	xiangmu = eval(decodeURIComponent(xiangmu));
+	xiangmuCnt = xiangmu.length;
 
     $.each(xk,function(index,value){
-    	options.cols[0].push({title: xk[index].title+'('+xk[index].fenshuxian.manfen+')',colspan:4,align:'center'});
+    	options.cols[0].push({title: xk[index].title+'('+xk[index].fenshuxian.manfen+')',colspan:xiangmuCnt,align:'center'});
 	    $.each(xiangmu,function(i,val){
 		    var colname = xk[index].lieming;
-    		// console.log(colname + ' ' + i);
     		var colinfo = {
-	    		title:val
+	    		title:val.title
 	    		,minWidth:100
 	    		,templet:function(d){
 	    			var str = "";

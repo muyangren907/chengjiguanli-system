@@ -294,6 +294,8 @@ class Category extends Seeder
                 ['id' => 12208,'title' => '教师-各学生-网页','p_id' => 122,'paixu' => 8,'isupdate' => 0],
                 ['id' => 12209,'title' => '学生-各考试-网页','p_id' => 122,'paixu' => 9,'isupdate' => 0],
                 ['id' => 12210,'title' => '管理员-学生-下载左','p_id' => 122,'paixu' => 10,'isupdate' => 0],
+                ['id' => 12211,'title' => '管理员-各年级-网页','p_id' => 122,'paixu' => 11,'isupdate' => 0],
+                ['id' => 12212,'title' => '管理员-各年级-下载','p_id' => 122,'paixu' => 12,'isupdate' => 0],
 
         ];
         // 保存数据

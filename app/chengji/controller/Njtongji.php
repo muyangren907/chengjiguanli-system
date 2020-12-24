@@ -31,6 +31,8 @@ class Njtongji extends AdminBase
         $list['kaoshi_id'] = $kaoshi_id;
         $list['kaoshititle'] = $ksinfo->title;
         $list['dataurl'] = '/chengji/njtj/data';
+        $list['tjxm'] = srcTjxm(12203);
+
 
         // 模板赋值
         $this->view->assign('list', $list);

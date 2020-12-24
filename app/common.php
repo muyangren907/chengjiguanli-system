@@ -51,10 +51,10 @@
 
 
     // 查询统计项目
-    function srcTjxm()
+    function srcTjxm($category_id)
     {
         $tjxm = new \app\kaoshi\model\TongjiXiangmu;
-        $data = $tjxm->srcTongji();
+        $data = $tjxm->srcTongji($category_id);
         return $data;
     }
 

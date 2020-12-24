@@ -31,7 +31,7 @@ class Bjtongji extends AdminBase
         $list['kaoshi_id'] = $kaoshi_id;
         $list['kaoshititle'] = $ksinfo->title;
         $list['dataurl'] = '/chengji/bjtj/data';
-        $list['tjxm'] = srcTjxm();
+        $list['tjxm'] = srcTjxm(12201);
 
         // 模板赋值
         $this->view->assign('list', $list);

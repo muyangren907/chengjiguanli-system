@@ -18,7 +18,7 @@ class School extends Seeder
         $rows= [
             [
                 'id' => 1
-                ,'title' => '大连长岛经济区文教中心'
+                ,'title' => '大连无名岛经济区文教中心'
                 ,'jiancheng' => '文教中心'
                 ,'biaoshi' => ''
                 ,'jibie_id' => 10204
@@ -26,6 +26,17 @@ class School extends Seeder
                 ,'paixu' => 10
                 ,'kaoshi' => 1
                 ,'xingzhi_id' => 10107
+            ],
+            [
+                'id' => 2
+                ,'title' => '大连无名岛经济区靠海小学'
+                ,'jiancheng' => '靠海'
+                ,'biaoshi' => ''
+                ,'jibie_id' => 10203
+                ,'xueduan_id'  =>  10302
+                ,'paixu' => 1
+                ,'kaoshi' => 1
+                ,'xingzhi_id' => 10102
             ],
         ];
         // 保存数据

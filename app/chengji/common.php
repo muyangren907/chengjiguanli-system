@@ -64,11 +64,11 @@
             }
 
             foreach ($value['chengji'] as $k => $val) {
-                $chengji[$k][$key][0] = $val['sifenwei']['min'];
-                $chengji[$k][$key][1] = $val['sifenwei']['q1'];
-                $chengji[$k][$key][2] = $val['sifenwei']['q2'];
-                $chengji[$k][$key][3] = $val['sifenwei']['q3'];
-                $chengji[$k][$key][4] = $val['sifenwei']['max'];
+                $chengji[$k][$key][0] = $val['min'];
+                $chengji[$k][$key][1] = $val['q1'];
+                $chengji[$k][$key][2] = $val['q2'];
+                $chengji[$k][$key][3] = $val['q3'];
+                $chengji[$k][$key][4] = $val['max'];
             }
 
             if (isset($value['banji_title'])) {

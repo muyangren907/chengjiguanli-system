@@ -18,6 +18,16 @@
           <input type="text" id="searchval" name="searchval"
           autocomplete="off" class="layui-input">
       </div>
+      <div class="layui-form-item">
+          <label for="category_id" class="layui-form-label" style="height: 100%">统计类型</label>
+          <div class="layui-input-block">
+            <input type="radio" name="category_id" title="无" value="" lay-skin="primary" checked>
+            {php} $category = categoryChildren(122);{/php}
+            {volist name="category" id="vo"}
+              <input type="radio" name="category_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+            {/volist}
+          </div>
+      </div>
     </div>
 	</div>
 {/block}

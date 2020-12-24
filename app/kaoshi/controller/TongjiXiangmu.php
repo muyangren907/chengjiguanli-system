@@ -41,6 +41,7 @@ class TongjiXiangmu extends AdminBase
                 ,'field' => 'id'
                 ,'order' => 'desc'
                 ,'searchval' => ''
+                ,'category_id' => ''
             ], 'POST');
         // 根据条件查询数据
         $tjxm = new tjxm;
