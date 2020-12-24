@@ -48,7 +48,6 @@ class TongjiXiangmu extends AdminBase
             ->visible([
                 'id'
                 ,'title'
-                ,'biaoshi'
                 ,'tongji'
                 ,'paixu'
                 ,'status'

@@ -17,7 +17,10 @@
               </label>
               <div class="layui-input-block">
                   <input type="text" id="biaoshi" name="biaoshi" lay-verify="required"
-                  autocomplete="off" class="layui-input " value="{$list.data.biaoshi|default=''}" placeholder="1-25个字符">
+                  autocomplete="off" class="layui-input " value="{$list.data.biaoshi|default=''}" placeholder="1-25个字符" {present name="$list.data.biaoshi"}
+                              disabled
+                              {/present}
+                              >
               </div>
           </div>
           <div class="layui-form-item">
