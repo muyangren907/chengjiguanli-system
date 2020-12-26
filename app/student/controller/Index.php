@@ -71,6 +71,10 @@ class Index extends AdminBase
         $list['webtitle'] = '毕业学生';
         $list['dataurl'] = '/student/index/databy';
 
+        $njlist = nianJiNameList('str', time());
+        $njlistCnt = count($njlist);
+        $list['thistime'] = strtotime("-" . $njlistCnt ." year");
+
         // 模板赋值
         $this->view->assign('list', $list);
 

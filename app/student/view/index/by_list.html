@@ -33,8 +33,7 @@
       <label for="ruxuenian" class="layui-form-label" style="height: 100%">毕业年</label>
       <div class="layui-input-block">
         {php}
-          $thisTime = strtotime("-6 year");
-          $njlist = nianJiNameList('str', $thisTime);
+          $njlist = nianJiNameList('str', $list['thistime']);
         {/php}
         {volist name="njlist" id="vo"}
           <input type="radio" name="ruxuenian" title="{$key+6}年" value="{$key}" lay-skin="primary"  lay-filter="src" {eq name="i" value="1"}checked{/eq} >
