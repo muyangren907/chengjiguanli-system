@@ -107,12 +107,14 @@ class Tongji extends BaseModel
             $temp['avg'] = round($temp['avg'], 2);
             $temp['max'] = max($cjcol);
             $temp['min'] = min($cjcol);
-            $temp['youxiu'] = null;
-            $temp['jige'] = $this->rateAll($cj, $subject); #全科及格率
+            $temp['youxiu'] = $this->rateAll($cj, $subject, 'youxiu');
+            $temp['jige'] = $this->rateAll($cj, $subject, 'jige'); #全科及格率
             $temp['sifenwei'] = $this->myquartile($cjcol);
             $temp['zhongshu'] = $this->zhongshu($cjcol);
             $temp['zhongweishu'] = $this->zhongweishu($cjcol);
             $temp['defenlv'] = round($temp['defenlv'] * 100, 2);
+            $temp['youxiulv'] = round($temp['youxiu'] / $temp['xkcnt'] * 100, 2);
+            $temp['jigelv'] = round($temp['jige'] / $temp['xkcnt'] * 100, 2);
         }
         $data['cj']['all'] = $temp;
 
@@ -134,7 +136,7 @@ class Tongji extends BaseModel
 
 
     // 全科及格率
-    public function rateAll($cj = array(), $sbj = array())
+    public function rateAll($cj = array(), $sbj = array(), $category = 'jige')
     {
         $jige = 0;  # 总及格人数
         $row = 0; #记录有成绩的学生数
@@ -146,7 +148,7 @@ class Tongji extends BaseModel
             // 开始循环这个学生的每个学科成绩
             foreach ($sbj as $k => $val) {
                 if (isset($value[$val['lieming']])) {
-                    if ($value[$val['lieming']] >= $val['fenshuxian']['jige']) {
+                    if ($value[$val['lieming']] >= $val['fenshuxian'][$category]) {
                         $temjige ++;
                     }
                     if ($value[$val['lieming']] !== null) {

@@ -391,7 +391,7 @@ class Index extends AdminBase
         $sheet->setCellValue($colname[$colBiankuang] . '11', $temp['cj']['all']['avg']);
         $sheet->mergeCells($colname[$colBiankuang] . '11:' . $colname[$colcnt - 1] . '11');
         $sheet->setCellValue($colname[$colBiankuang - 1] . '12', '全科及格率%');
-        $sheet->setCellValue($colname[$colBiankuang] . '12', $temp['cj']['all']['jige']);
+        $sheet->setCellValue($colname[$colBiankuang] . '12', $temp['cj']['all']['jigelv']);
         $sheet->mergeCells($colname[$colBiankuang] . '12:' . $colname[$colcnt - 1] . '12');
         $sheet->getStyle($colname[$colBiankuang - 1] . '3:' . $colname[$colcnt - 1] . '12')->applyFromArray($styleArrayJZ);
         $sheet->getStyle($colname[$colBiankuang - 1] . '3:' . $colname[$colcnt - 1] . '12')->applyFromArray($styleArrayBK);
