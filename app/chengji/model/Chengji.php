@@ -46,6 +46,7 @@ class Chengji extends BaseModel
             ,'subject_id' => ''
             ,'searchval' => ''
             ,'user_id' => ''
+            ,'user_group' =>''
         );
         $src = array_cover($srcfrom, $src) ;
         $src['kaoshi_id'] = strToarray($src['kaoshi_id']);
@@ -77,9 +78,11 @@ class Chengji extends BaseModel
             ->when(count($src['kaoshi_id']) == 0 && count($src['banji_id']) ==0, function($query) {
                 $query->whereMonth('update_time');
             })
-            ->when(strlen($src['user_id']) > 0, function ($query) use($src){
-                $query->where('user_id', $src['user_id']);
+            ->when(strlen($src['user_id']) > 0 && strlen($src['user_group']) > 0, function ($query) use($src){
+                $query->where('user_id', $src['user_id'])
+                    ->where('user_group', $src['user_group']);
             })
+
             ->when(count($src['subject_id']) > 0, function ($query) use ($src) {
                 $query->where('subject_id', 'in', $src['subject_id']);
             })

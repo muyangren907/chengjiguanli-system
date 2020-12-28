@@ -381,7 +381,7 @@ class OneStudentChengji extends BaseModel
         $khInfo = $kh->where('id', $src['kaohao_id'])
                 ->with([
                     'ksChengji' => function ($query) {
-                        $query->field('id, subject_id, defen, kaohao_id, defenlv, qweizhi')
+                        $query->field('id, subject_id, defen, kaohao_id, defenlv, bweizhi, xweizhi, qweizhi')
                             ->with([
                                 'subjectName' => function($q) {
                                     $q->field('id, title');
@@ -405,6 +405,8 @@ class OneStudentChengji extends BaseModel
                 ,'subject_id' => $value->subject_id
                 ,'defen' => $value->defen
                 ,'defenlv' => $value->defenlv
+                ,'bweizhi' => $value->bweizhi
+                ,'xweizhi' => $value->xweizhi
                 ,'qweizhi' => $value->qweizhi
                 ,'max' => $schtjInfo[$value->subject_id]['max']
                 ,'min' => $schtjInfo[$value->subject_id]['min']
@@ -476,12 +478,15 @@ class OneStudentChengji extends BaseModel
 
         // 获取学生成绩
         $list = $this->oneChengji($src);
+
+
         $category = array();
         $data = array();
         foreach ($list as $key => $value) {
             $category[] = $value['subject_name'];
-            $data[] = round($value['qweizhi'], 0);
+            $data[] = round($value['xweizhi'], 0);
         }
+        
         $data = [
             'xAxis' => [
                 'type' => 'value'
