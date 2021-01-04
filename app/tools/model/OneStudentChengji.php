@@ -215,11 +215,11 @@ class OneStudentChengji extends BaseModel
 
         // 循环写入成绩
         $indicator = array();
-        $legend = ['得分','全体平均分'];
+        $legend = ['得分','年级平均分'];
         $stucjArray = array();
         $stucjArray['name'] = '得分';
         $nianjichengji = array();
-        $nianjichengji['name'] = '全体平均分';
+        $nianjichengji['name'] = '年级平均分';
         $i = 0;
 
         // 循环参加本次考试的学科
@@ -248,7 +248,7 @@ class OneStudentChengji extends BaseModel
             }
             if(isset($stucjArray['value'][$i]) == false)
             {
-                $stucjArray['value'][$i] = null;
+                $stucjArray['value'][$i] = '无';
             }
 
             // 学校年级成绩
@@ -266,7 +266,7 @@ class OneStudentChengji extends BaseModel
             }
             if(isset($nianjichengji['value'][$i]) == false)
             {
-                $nianjichengji['value'][$i] = null;
+                $nianjichengji['value'][$i] = '无';
             }
 
             $i++;
