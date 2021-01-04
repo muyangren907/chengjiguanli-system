@@ -1266,7 +1266,7 @@ class Rule extends Seeder
                 ],
                 ['id' => 70605
                     ,'title' => '参与统计'
-                    ,'name' => 'kaoshi/tongjixiangmu/tongji'
+                    ,'name' => 'kaoshi/tongjixiangmu/settongji'
                     ,'paixu' => 5
                     ,'pid'  => 706
                 ],
@@ -1277,7 +1277,7 @@ class Rule extends Seeder
                     ,'pid'  => 706
                 ],
                 ['id' => 70607
-                    ,'title' => 'shanchu'
+                    ,'title' => '删除'
                     ,'name' => 'kaoshi/tongjixiangmu/delete'
                     ,'paixu' => 7
                     ,'pid'  => 706
