@@ -181,17 +181,28 @@ class OneStudentChengji extends BaseModel
         $khInfo = $kh->where('id', $src['kaohao_id'])
                     ->with([
                         'ksChengji'=>function($query){
-                            $query->field('id,kaohao_id,subject_id,defen');
+                            $query->field('id, kaohao_id, subject_id, defen')
+                                ->with([
+                                    'subjectName' => function ($q) {
+                                        $q->field('id, title, jiancheng');
+                                    }
+                                ]);
                         }
                     ])
                     ->find();
+        $stuCj = $khInfo->ksChengji;    # 拿出学生成绩
+
+        // dump($khInfo->toArray());
 
         // 参加考试学科
-        $sbj = new \app\teach\model\Subject;
-        $subject = subjectKaoshiList();
+        // $sbj = new \app\teach\model\Subject;
+        // $subject = subjectKaoshiList();
         // 获取参加考试学科满分
+        $src['kaoshi_id'] = $khInfo->kaoshi_id;
+        $src['ruxuenian'] = $khInfo->ruxuenian;
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $manfen = $ksset->srcSubject($khInfo->kaoshi, '', $khInfo->ruxuenian);
+        $manfen = $ksset->srcSubject($src);
+        // dump($manfen);
 
         // 查询区成绩
         $SchoolChengji = new \app\chengji\model\TongjiSch;
@@ -200,67 +211,62 @@ class OneStudentChengji extends BaseModel
                     ->where('ruxuenian',$khInfo->ruxuenian)
                     ->select();
 
+        // halt($schcj->toArray());
+
         // 循环写入成绩
         $indicator = array();
         $legend = ['得分','全体平均分'];
-        $bjcj = array();
-        $bjcj['name'] = '得分';
-        $qcj = array();
-        $qcj['name'] = '全体平均分';
+        $stucjArray = array();
+        $stucjArray['name'] = '得分';
+        $nianjichengji = array();
+        $nianjichengji['name'] = '全体平均分';
         $i = 0;
 
-        foreach ($subject as $sbj_k => $sbj_val) {
+        // 循环参加本次考试的学科
+        foreach ($manfen as $mf_k => $mf_v) {
 
             // 试卷满分
             if(isset($indicator[$i]) == false)
             {
-                $indicator[$i]['name'] = $sbj_val->title;
-                foreach ($manfen  as $mf_k => $mf_val) {
-                    if($sbj_val['id'] == $mf_val['id'])
-                    {
-                        $indicator[$i]['max'] = $mf_val['fenshuxian']['manfen'];
-                        continue;
-                    }
-                    if(isset($indicator[$i]) == false)
-                    {
-                        $indicator[$i]['max'] = null;
-                    }
-                }
+                $indicator[$i]['name'] = $mf_v['title'];
+                $indicator[$i]['max'] = $mf_v['fenshuxian']['manfen'];
             }
 
-            // 学生成绩
-            if(isset($bjcj['value'][$i]) == false)
+            // 循环学生成绩
+            if(isset($stucjArray['value'][$i]) == false)
             {
-                foreach ($khInfo->ksChengji as $cj_k => $cj_val) {
-                    if($sbj_val['id'] == $cj_val->subject_id)
+                foreach ($stuCj as $stucj_k => $stucj_v) {
+
+                    if($stucj_v->subject_id == $mf_v['id'])
                     {
-                        $bjcj['value'][$i] = $cj_val->defen;
-                        unset($khInfo->ksChengji[$cj_k]);
+                        $stucjArray['value'][$i] = $stucj_v->defen;
+                        unset($stuCj[$stucj_k]);
                         continue;
                     }
+
                 }
             }
-            if(isset($bjcj['value'][$i]) == false)
-                    {
-                        $bjcj['value'][$i] = null;
-                    }
-
-            // 班级成绩
-            if(isset($qcj['value'][$i]) == false)
+            if(isset($stucjArray['value'][$i]) == false)
             {
-                foreach ($schcj as $sch_k => $sch_val) {
-                    if($sbj_val['id'] == $sch_val->subject_id)
+                $stucjArray['value'][$i] = null;
+            }
+
+            // 学校年级成绩
+            if(isset($nianjichengji['value'][$i]) == false)
+            {
+                foreach ($schcj as $sch_k => $sch_v) {
+                    if($sch_v->subject_id == $mf_v['id'])
                     {
-                        $qcj['value'][$i] = $sch_val->avg;
+                        $nianjichengji['value'][$i] = $sch_v->avg;
                         unset($schcj[$sch_k]);
                         continue;
                     }
 
                 }
             }
-            if(isset($qcj['value'][$i]) == false)
+            if(isset($nianjichengji['value'][$i]) == false)
             {
-                $qcj['value'][$i] = null;
+                $nianjichengji['value'][$i] = null;
             }
 
             $i++;
@@ -273,7 +279,7 @@ class OneStudentChengji extends BaseModel
             ,'series' => [
                 'name'=>'成绩'
                 ,'type' => 'radar'
-                ,'data' => [$bjcj, $qcj]
+                ,'data' => [$stucjArray, $nianjichengji]
             ]
         ];
 
@@ -357,7 +363,7 @@ class OneStudentChengji extends BaseModel
                     'name'=>'总成绩'
                     ,'type' => 'gauge'
                     // ,'detail' => $rank . '%'
-                    ,'data' => [['value'=>$paixu['ban']['weizhi'], 'name'=>'位置']]
+                    ,'data' => [['value'=>$paixu['ban']['weizhi'], 'name'=>'超过']]
                 ]
             ];
 
@@ -486,7 +492,7 @@ class OneStudentChengji extends BaseModel
             $category[] = $value['subject_name'];
             $data[] = round($value['xweizhi'], 0);
         }
-        
+
         $data = [
             'xAxis' => [
                 'type' => 'value'
@@ -499,7 +505,7 @@ class OneStudentChengji extends BaseModel
             ,'series' => [
                 [
                     'data' => $data
-                    ,'name' => '排名%'
+                    ,'name' => '超过%'
                     ,'type' => 'bar'
                     ,'label' => [
                         'show' => true
@@ -756,7 +762,7 @@ class OneStudentChengji extends BaseModel
             {
                 $zheng = $zheng . reset($avgCha) .'分';
             }else{
-                $zheng = $zheng . ',其中' . $xk .'成绩高于班级平均' . reset($avgCha) .'分';
+                $zheng = $zheng . '其中' . $xk .'成绩高于班级平均' . reset($avgCha) .'分';
             }
 
         }
