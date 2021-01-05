@@ -36,19 +36,24 @@ class BanjiChengji extends BaseModel
                 ];
             }else{
                 $data[$value->kaoshi_id]['chengji'][$value->bjSubject->lieming] = [
-                    'cj_cnt' => $value->chengji_cnt,
+                    'chengji_cnt' => $value->chengji_cnt,
                     'avg' => $value->avg,
                     'defenlv' => $value->defenlv,
+                    'youxiu' => $value->youxiu,
+                    'jige' => $value->jige,
                     'youxiulv' => $value->youxiulv,
                     'jigelv' => $value->jigelv,
                     'biaozhuncha' => $value->biaozhuncha,
-                    'sifenwei' => [
-                        'min' => $value->min,
-                        'q1' => $value->q1,
-                        'q2' => $value->q2,
-                        'q3' => $value->mq3,
-                        'max' => $value->max,
-                    ],
+                    'min' => $value->min,
+                    'q1' => $value->q1,
+                    'q2' => $value->q2,
+                    'q3' => $value->q3,
+                    'max' => $value->max,
+                    'stu_cnt' => $value->stu_cnt,
+                    'zhongshu' => $value->zhongshu,
+                    'zhongweishu' => $value->zhongweishu,
+                    'canshilv' => $value->canshilv,
+                    'chashenglv' => $value->chashenglv,
                 ];
             }
         }

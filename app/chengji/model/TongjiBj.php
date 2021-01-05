@@ -559,6 +559,7 @@ class TongjiBj extends BaseModel
                     $query->field('id, kaoshi_id, subject_id, defenlv');
                 }
             ])
+            ->append(['banjiTitle', 'youxiulv', 'jigelv', 'chashenglv', 'canshilv'])
             ->select();
 
         return $data;

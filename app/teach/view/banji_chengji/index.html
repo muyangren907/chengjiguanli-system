@@ -88,31 +88,32 @@
 	// 获取学科
 	var xk = '<?php echo json_encode($list["subject_id"]);?>';
 	xk = eval(decodeURIComponent(xk));
-	var xiangmu = {cj_cnt:'人数',avg:'平均分',jigelv:'及格率%',youxiulv:'优秀率%'};		// 要显示哪些统计结果
-
+	var xiangmu = '<?php echo json_encode($list["tjxm"]);?>';// 要显示哪些统计结果
+  xiangmu = eval(decodeURIComponent(xiangmu));
+  xiangmuCnt = xiangmu.length;
 
 	$.each(xk,function(index,value){
-		options.cols[0].push({title: xk[index].title,colspan:4,align:'center'});
-		$.each(xiangmu,function(i,val){
-			var colname = xk[index].lieming;
-      var colinfo = {
-       title:val
-       ,minWidth:100
-       ,templet:function(d){
-        var str = "";
-        if(d.chengji)
-        {
-          if(d.chengji[colname])
-          {
-            str = d.chengji[colname][i];
+    options.cols[0].push({title: xk[index].title,colspan:xiangmuCnt,align:'center'});
+    $.each(xiangmu,function(i,val){
+      var colname = xk[index].lieming;
+        var colinfo = {
+          title:val.title
+          ,minWidth:100
+          ,templet:function(d){
+            var str = "";
+            if(d.chengji)
+            {
+              if(d.chengji[colname])
+              {
+                str = d.chengji[colname][val.biaoshi];
+              }
+            }
+            return str;
           }
-        }
-        return str;
-      }
-    };
-    options.cols[1].push(colinfo);
-  });
-  });
+        };
+        options.cols[1].push(colinfo);
+      });
+    });
  options.cols[0].push({title: '全科及格率%',minWidth:100,rowspan:2,templet:function(d){
   var str = d.quanke.jigelv;
   return str;

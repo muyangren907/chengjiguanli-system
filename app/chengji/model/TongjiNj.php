@@ -89,7 +89,7 @@ class TongjiNj extends BaseModel
                             'q2' => $cj['sifenwei'][1],
                             'q3' => $cj['sifenwei'][2],
                             'zhongshu' => $cj['zhongshu'],
-                            'zhongweihu' => $cj['zhongweishu'],
+                            'zhongweishu' => $cj['zhongweishu'],
                             'defenlv' => $cj['defenlv'],
                         ];
                         $data = $this::create($tongjiJg);
@@ -184,7 +184,7 @@ class TongjiNj extends BaseModel
                         ,'max' => $val->max
                         ,'zhongshu' => $val->zhongshu
                         ,'zhongweishu' => $val->zhongweishu
-                        ,'canyulv' => $val->canyulv
+                        ,'canshilv' => $val->canshilv
                         ,'chashenglv' => $val->chashenglv
                     ];
                 }else{
@@ -272,7 +272,7 @@ class TongjiNj extends BaseModel
         $data = $this->hasMany('\app\chengji\model\TongjiNj', 'school_id', 'school_id')
             ->where('ruxuenian', $ruxuenian)
             ->where('kaoshi_id', $kaoshi)
-            ->append(['youxiulv', 'jigelv']);
+            ->append(['youxiulv', 'jigelv', 'chashenglv', 'canshilv']);
         return $data;
     }
 
