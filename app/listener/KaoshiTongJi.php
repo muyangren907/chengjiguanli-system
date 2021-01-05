@@ -22,7 +22,7 @@ class KaoshiTongJi
         $ksInfo = $event->ksInfo($kaoshi_id);
         if($ksInfo->luru == 1)
         {
-            return $this->error('请先禁止成绩编辑，再进行其它操作！', '/login/err');
+            return $this->error('请先在考试列表中禁止成绩编辑，再进行统计操作！', '/login/err');
         }
         if($ksInfo->status == 0)
         {

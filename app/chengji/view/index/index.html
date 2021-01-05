@@ -105,7 +105,7 @@
           return str;
         }});
     $.each(tjxm, function(t, val){
-      options.cols[0].push({field: val.biaoshi, title: value.title + val.title , minWidth:120,sort: true,templet:function(d){
+      options.cols[0].push({field: val.biaoshi, title: value.title + val.title , minWidth:120,templet:function(d){
             var str = d[value.lieming][val.biaoshi];
             if(str == null)
             {
