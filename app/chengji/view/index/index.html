@@ -96,8 +96,8 @@
   tjxm = eval(decodeURIComponent(tjxm));
 
   $.each(xk,function(index,value){
-    options.cols[0].push({field: value.lieming, title: value.title , minWidth:120,sort: true,edit:'text',templet:function(d){
-            var str = d[value.lieming].defen;
+    options.cols[0].push({field:value.lieming + 'defen', title: value.title , minWidth:120,sort: true,edit:'text',templet:function(d){
+            var str = d[value.lieming + 'defen'];
             if(str == null)
             {
               str = '';
@@ -105,8 +105,8 @@
           return str;
         }});
     $.each(tjxm, function(t, val){
-      options.cols[0].push({field: val.biaoshi, title: value.title + val.title , minWidth:120,templet:function(d){
-            var str = d[value.lieming][val.biaoshi];
+      options.cols[0].push({field: value.lieming + val.biaoshi,sort: true, title: value.title + val.title , minWidth:120,templet:function(d){
+            var str = d[value.lieming + val.biaoshi];
             if(str == null)
             {
               str = '';
@@ -188,6 +188,8 @@
       		,colname = obj.field
       		,rowdata = obj.data;
 
+        colname = colname.replace('defen', '')
+
       	// 修改服务器数据
         $.ajax({
           url:"/luru/index/update/"+rowdata.id,
@@ -196,12 +198,14 @@
               "colname":colname,
               "newdefen":newdefen
           },
-          success:function(result,obj){
+          success:function(result,objs){
               if(result.val == 0 || result.code==0)
               {
                 layer.msg(result.msg,{icon:5});
               }else{
-              	// 这个地方重新赋值平均分和总分
+              	obj.update({
+                  val:newdefen
+                });
               }
           },
           error:function(result){

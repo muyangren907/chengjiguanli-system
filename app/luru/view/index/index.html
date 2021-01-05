@@ -139,7 +139,10 @@
 	      			{
 	      				layer.msg(result.msg,{icon:5});
 	      			}else{
-              }
+                        obj.update({
+                          val:newdefen
+                        });
+                    }
             },
             error:function(result){
             	layer.msg('数据扔半道啦。',function(){});

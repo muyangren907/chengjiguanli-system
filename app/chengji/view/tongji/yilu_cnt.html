@@ -147,17 +147,17 @@
     });
 
     // 添加班级列表
-      function addBanji(){
-        // 获取参数
-        var formval;
-        formval = formval = form.val("search");
-        if(formval.school_id == '')
-        {
-          $('#banji').children().remove();
-        }else{
-          cjgl.createCheckbox('banji', formval, '/tools/kscy/class', 'banji_id', 'banTitle');
-        }
+    function addBanji(){
+      // 获取参数
+      var formval;
+      formval = formval = form.val("search");
+      if(formval.school_id == '')
+      {
+        $('#banji').children().remove();
+      }else{
+        cjgl.createCheckbox('banji', formval, '/tools/kscy/class', 'banji_id', 'banTitle');
       }
+    }
   });
 
 

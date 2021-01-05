@@ -145,7 +145,7 @@ class Chengji extends BaseModel
                 $data[$key]['subject_id'] = $value->subjectName->id;
                 $data[$key]['subject_lieming'] = $value->subjectName->lieming;
             }
-            $data[$key]['defen'] = $value->defen;
+            $data[$key]['defen'] = $value->defen * 1;
             $data[$key]['status'] = $value->status;
             $data[$key]['update_time'] = $value->update_time;
 

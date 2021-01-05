@@ -198,9 +198,9 @@ class TongjiBj extends BaseModel
         // 获取并统计各班级成绩
         $data = array();
         $cj = $more->srcChengjiList($src);
-        if (array_key_exists($lieming, $cj[0]))
+        if (array_key_exists($lieming . 'defen', $cj[0]))
         {
-            $cjcol = array_column($cj, $lieming);
+            $cjcol = array_column($cj, $lieming . 'defen');
             $cjcol = array_filter($cjcol, function($item){
                 return $item !== null;
             });
