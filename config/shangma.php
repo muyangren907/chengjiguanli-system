@@ -7,6 +7,7 @@ use think\facade\Env;
 
 return [
     // 版本号
+    'webtitle'         => '码蚁成绩管理',   # 系统版本
     'version'         => 'v1.3.7',   # 系统版本
     'weihu'         => Env::get('shangma.weihu', false),  # 是否开启维护跳转
     'shijian'       => Env::get('shangma.weihushijian', '2020-1-1 0:00'),  # 开始时间

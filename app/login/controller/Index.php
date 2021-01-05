@@ -19,10 +19,14 @@ class Index
 
         // 获取信息
         $sysbasemod = new \app\system\model\SystemBase;     # 关键字
-        $list = $sysbasemod::sysInfo();     # 描述
+        if(!$sysbasemod)
+        {
+            $list = $sysbasemod::sysInfo();     # 描述
+        } else {
+            $list['sys_title'] = config('shangma.webtitle');
+        }
         // 获取系统名称和版本号
         $list['version'] = config('shangma.version');
-
 
         View::assign('list',$list);
 
