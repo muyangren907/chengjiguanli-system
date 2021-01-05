@@ -237,6 +237,7 @@ class Index extends TeacherSearchBase
         // 设置要给模板赋值的信息
         $list['webtitle'] = '班级成绩列表';
         $list['dataurl'] = '/teacherSearchChengji/index/banjidata';
+        $list['tjxm'] = srcTjxm(12207);
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -294,6 +295,7 @@ class Index extends TeacherSearchBase
         // 设置要给模板赋值的信息
         $list['webtitle'] = $list->banjiTitle . $list->bjSubject->title . '成绩';
         $list['dataurl'] = '/teacherSearchChengji/index/detaildata';
+        $list['tjxm'] = srcTjxm(12208);
 
         // 模板赋值
         $this->view->assign('list', $list);

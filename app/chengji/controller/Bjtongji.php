@@ -174,12 +174,7 @@ class Bjtongji extends AdminBase
             ->setCategory("成绩管理"); //分类
 
         // 设置要导出的项目、列名、起始行
-        $sbjcol = [
-            'chengji_cnt' => '人数'
-            ,'avg' => '平均分'
-            ,'jigelv' => '及格率%'
-            ,'youxiulv' => '优秀率%'
-        ];
+        $sbjcol = srcTjxm(12202);
         $sbjcolcnt = count($sbjcol);
         $colname = excelColumnName();
         $colcnt = $sbjcolcnt*count($xk)+3;
@@ -188,7 +183,7 @@ class Bjtongji extends AdminBase
         $sheet->mergeCells('A1:' . $colname[$colcnt] . '1');
         $sheet->setCellValue('A1', $tabletitle);
         $sheet->mergeCells('A2:' . $colname[$colcnt] . '2');
-        $sheet->setCellValue('A2', '考试时间：' . $ksinfo->bfdate . ' ~ '. $ksinfo->enddate);
+        $sheet->setCellValue('A2', '考试时间：' . $ksinfo->bfdate . ' ～ '. $ksinfo->enddate);
         $sheet->mergeCells('A3:A4');
         $sheet->setCellValue('A3', '序号');
         $sheet->mergeCells('B3:B4');
@@ -199,7 +194,7 @@ class Bjtongji extends AdminBase
             $sheet->mergeCells($colname[$col].'3:'.$colname[$colend].'3');
             $sheet->setCellValue($colname[$col].'3', $value['title'].' ('.$value['fenshuxian']['manfen'].')');
             foreach ($sbjcol as $k => $val) {
-                 $sheet->setCellValue($colname[$col].'4', $val);
+                 $sheet->setCellValue($colname[$col].'4', $val['title']);
                  $col++;
             }
         }
@@ -225,7 +220,7 @@ class Bjtongji extends AdminBase
 
             foreach ($xk as $ke => $val) {
                 foreach ($sbjcol as $k => $v) {
-                     $sheet->setCellValue($colname[$col].$row, $value['chengji'][$val['lieming']][$k]);
+                     $sheet->setCellValue($colname[$col].$row, $value['chengji'][$val['lieming']][$v['biaoshi']]);
                      $col++;
                 }
             }

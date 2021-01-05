@@ -53,8 +53,8 @@ class TongjiNj extends BaseModel
                         $tongjiJg->school_id = $school['id'];
                         $tongjiJg->ruxuenian = $nianji['ruxuenian'];
                         $tongjiJg->subject_id = $cj['id'];
-                        $tongjiJg->stu_cnt = $cj['stucnt'];
-                        $tongjiJg->chengji_cnt = $cj['xkcnt'];
+                        $tongjiJg->stu_cnt = $cj['stu_cnt'];
+                        $tongjiJg->chengji_cnt = $cj['chengji_cnt'];
                         $tongjiJg->sum = $cj['sum'];
                         $tongjiJg->avg = $cj['avg'];
                         $tongjiJg->biaozhuncha = $cj['biaozhuncha'];
@@ -76,8 +76,8 @@ class TongjiNj extends BaseModel
                             'school_id' => $school['id'],
                             'ruxuenian' => $nianji['ruxuenian'],
                             'subject_id' => $cj['id'],
-                            'stu_cnt' => $cj['stucnt'],
-                            'chengji_cnt' => $cj['xkcnt'],
+                            'stu_cnt' => $cj['stu_cnt'],
+                            'chengji_cnt' => $cj['chengji_cnt'],
                             'sum' => $cj['sum'],
                             'avg' => $cj['avg'],
                             'biaozhuncha' => $cj['biaozhuncha'],

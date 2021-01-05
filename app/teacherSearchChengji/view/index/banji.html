@@ -26,7 +26,7 @@
   <div class="layui-input-block">
     {php} $category = categoryChildren(109);{/php}
     {volist name="category" id="vo"}
-    <input type="checkbox" name="category_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+    <input type="radio" name="category_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
     {/volist}
   </div>
 </div>
@@ -34,7 +34,7 @@
   <label for="subject_id" class="layui-form-label" style="height: 100%">学科</label>
   <div class="layui-input-block">
     {volist name="list.subject" id="vo"}
-    <input type="checkbox" name="subject_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+    <input type="radio" name="subject_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
     {/volist}
   </div>
 </div>
@@ -80,7 +80,7 @@
   	options.cols=[[ //表头
     	{type:'numbers', title:'序号', fixed:true, minWidth:10},
       {field: 'id', title: '操作', toolbar: '#barDemo', minWidth:10, fixed:true},
-    	{field: 'banji_id', title: '班级',sort: true, minWidth:140, fixed:true, templet:function(d){
+    	{field: 'banji_id', title: '班级',sort: true, minWidth:120, fixed:true, templet:function(d){
         var str = d.banjiTitle;
         return str;
       }},
@@ -92,7 +92,7 @@
         }
         return str;
       }},
-      {field: 'subject_id', title: '学科',sort: true, templet:function(d){
+      {field: 'subject_id', title: '学科', minWidth:90,sort: true, templet:function(d){
         var str = '';
         if(d.bjSubject)
         {
@@ -100,17 +100,30 @@
         }
         return str;
       }},
-      {field: 'chengji_cnt', title: '人数',sort: true},
-      {field: 'avg', title: '平均分',sort: true},
-      {field: 'jigelv', title: '及格率%',sort: true},
-      {field: 'youxiulv', title: '优秀率%',sort: true},
-      {field: 'biaozhuncha', title: '标准差',sort: true},
-      {field: 'max', title: '最高分',sort: true},
-      {field: 'min', title: '最低分',sort: true},
-      {field: 'zhongweishu', title: '中位数',sort: true},
-      {field: 'zhongshu', title: '众数',sort: true},
     ]
     ];
+
+    var xiangmu = '<?php echo json_encode($list["tjxm"]);?>';
+    xiangmu = eval(decodeURIComponent(xiangmu));
+    xiangmuCnt = xiangmu.length;
+
+    $.each(xiangmu, function(i,val){
+        var colinfo = {
+          field: val.biaoshi
+          ,title:val.title
+          ,minWidth:100
+          ,sort: true
+          ,templet:function(d){
+            var str = "";
+            if(d[val.biaoshi])
+            {
+              str = d[val.biaoshi];
+            }
+            return str;
+          }
+        };
+        options.cols[0].push(colinfo);
+    });
 
   // 提交搜索条件后重载表格
   layui.use(['table','cjgl','laydate'],function(){

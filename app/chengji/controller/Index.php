@@ -29,6 +29,7 @@ class Index extends AdminBase
         $list['set']['school_id'] = $cy->school($src);
         $list['kaoshi_id'] = $kaoshi_id;
         $list['dataurl'] = '/chengji/index/data';
+        $list['tjxm'] = srcTjxm(12205);
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -252,6 +253,8 @@ class Index extends AdminBase
         $chengjiinfo = $more->srcChengjiList($src);
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $subject_id = $ksset->srcSubject($src);
+        $tjxm_left = srcTjxm(12210);
+        $tjxm_right = srcTjxm(12206);
 
         // 获取考试标题
         $ks = new \app\kaoshi\model\Kaoshi;
@@ -281,57 +284,75 @@ class Index extends AdminBase
 
 
         // 设置表头信息
-        $sheet->setCellValue('A1', $tabletitle);
-        $hb = 5 + count($subject_id);
-        $sheet->mergeCells('A1:' . $colname[$hb] . '1');
-        $sheet->mergeCells('A2:' . $colname[$hb] . '2');
-        $sheet->setCellValue('A2', '考试时间：' . $ks->bfdate . ' ~ '. $ks->enddate);
-        $sheet->setCellValue('A3', '序号');
-        $sheet->setCellValue('B3', '班级');
-        $sheet->setCellValue('C3', '姓名');
-        $sheet->setCellValue('D3', '性别');
-        $i = 4;
+        $row = 1;
+        $sheet->setCellValue('A' . $row, $tabletitle);
+        $row ++;
+        $sheet->setCellValue('A' . $row, '考试时间：' . $ks->bfdate . ' ～ '. $ks->enddate);
+        $row ++;
+        $sheet->setCellValue('A' . $row, '序号');
+        $sheet->setCellValue('B' . $row, '班级');
+        $sheet->setCellValue('C' . $row, '姓名');
+        $sheet->setCellValue('D' . $row, '性别');
+        $i = 4;  # 跳过上面4列
         foreach ($subject_id as $key => $value) {
-            $sheet->setCellValue($colname[$i] . '3', $value['title']);
+            $sheet->setCellValue($colname[$i] . $row, $value['title']);
             $i ++;
+            foreach ($tjxm_left as $tjxml_k => $tjxml_v) {
+                $sheet->setCellValue($colname[$i] . $row, $value['title'] . $tjxml_v['title']);
+                $i ++;
+            }
         }
-        $sheet->setCellValue($colname[$i] . '3', '平均分');
-        $sheet->setCellValue($colname[$i + 1] . '3', '总分');
-        $i = $i + 4;
-        $sheet->setCellValue($colname[$i] . '3', '项目');
-        $sheet->setCellValue($colname[$i] . '4', '人数');
-        $sheet->setCellValue($colname[$i] . '5', '平均分');
-        $sheet->setCellValue($colname[$i] . '6', '优秀率%');
-        $sheet->setCellValue($colname[$i] . '7', '及格率%');
-        $sheet->setCellValue($colname[$i] . '8', '标准差');
-        $sheet->setCellValue($colname[$i] . '9', '中位数');
-        $sheet->setCellValue($colname[$i] . '10', '众数');
 
+        $sheet->setCellValue($colname[$i] . '3', '平均分');
+        $i ++;
+        $sheet->setCellValue($colname[$i] . '3', '总分');
+        $sheet->mergeCells('A1:' . $colname[$i] . '1');   # 合并标题行
+        $sheet->mergeCells('A2:' . $colname[$i] . '2');   # 合并时间行
+        $col_null = 3;  # 统计结果与成绩列表空两列
+        $i = $i + $col_null;
+
+        $sheet->setCellValue($colname[$i] . $row, '项目');
+        $row_temp = $row + 1;
+        foreach ($tjxm_right as $tjxmr_k => $tjxmr_v) {
+            $sheet->setCellValue($colname[$i] . $row_temp, $tjxmr_v['title']);
+            $row_temp++;
+        }
         $i ++;
         foreach ($subject_id as $key => $value) {
-            $sheet->setCellValue($colname[$i] . '3', $value['title']);
+            $sheet->setCellValue($colname[$i] . $row, $value['title']);
             $i ++;
         }
 
         // 循环写出成绩及个人信息
-        $i = 4;
+        $i = 0;
+        $row++;
+        $row_temp = $row;
         foreach ($chengjiinfo as $key => $value) {
+            $i = 0;
             // 表格赋值
-            $sheet->setCellValue('A' . $i, $i - 2);
-            $sheet->setCellValue('B' . $i, $value['banji_title']);
-            $sheet->setCellValue('C' . $i, $value['student_xingming']);
-            $sheet->setCellValue('D' . $i, $value['sex']);
-            $colcnt = 4;
+            $sheet->setCellValue($colname[$i] . $row_temp, $row_temp - 3);
+            $i++;
+            $sheet->setCellValue($colname[$i] . $row_temp, $value['banji_title']);
+            $i++;
+            $sheet->setCellValue($colname[$i] . $row_temp, $value['student_xingming']);
+            $i++;
+            $sheet->setCellValue($colname[$i] . $row_temp, $value['sex']);
+            $i++;
             foreach ($subject_id as $k => $val) {
-                if(isset($value[$val['lieming']]))
+                if(isset($value[$val['lieming']]['defen']))
                 {
-                    $sheet->setCellValue($colname[$colcnt] . $i, $value[$val['lieming']]);
+                    $sheet->setCellValue($colname[$i] . $row_temp, $value[$val['lieming']]['defen']);
+                    $i++;
+                    foreach ($tjxm_left as $tjxml_k => $tjxml_v) {
+                        $sheet->setCellValue($colname[$i] . $row_temp, $value[$val['lieming']][$tjxml_v['biaoshi']]);
+                        $i++;
+                    }
                 }
-                $colcnt ++;
             }
-            $sheet->setCellValue($colname[$colcnt] . $i, $value['avg']);
-            $sheet->setCellValue($colname[$colcnt + 1] . $i, $value['sum']);
-            $i ++;
+            $sheet->setCellValue($colname[$i] . $row_temp, $value['avg']);
+            $i++;
+            $sheet->setCellValue($colname[$i] . $row_temp, $value['sum']);
+            $row_temp++;
         }
 
         // 表格格式
@@ -341,14 +362,14 @@ class Index extends AdminBase
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, //垂直居中
             ],
         ];
-        $sheet->getStyle('A1:'.$colname[$colcnt + 1] . ($i - 1))->applyFromArray($styleArrayJZ);
-        // 表格格式
-        $styleArrayJZ = [  # 居中
+        $sheet->getStyle('A1:'.$colname[$i] . $row_temp)->applyFromArray($styleArrayJZ);
+        // 考试时间居左 表格格式
+        $styleArrayJZ = [  # 居左
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
             ],
         ];
-        $sheet->getStyle('A2:'.$colname[$colcnt + 1] . ($i - 1))->applyFromArray($styleArrayJZ);
+        $sheet->getStyle('A2')->applyFromArray($styleArrayJZ);
         $styleArrayBK = [ # 加边框
             'borders' => [
                 'allBorders' => [
@@ -357,44 +378,44 @@ class Index extends AdminBase
                 ],
             ],
         ];
-        $sheet->getStyle('A3:'.$colname[$colcnt + 1] . ($i - 1))->applyFromArray($styleArrayBK);
+        $sheet->getStyle('A3:'.$colname[$i] . ($row_temp - 1))->applyFromArray($styleArrayBK);
 
         $tj = new \app\chengji\model\Tongji;
+
         $temp = $tj->tongjiSubject($chengjiinfo, $subject_id);
 
-        isset($colcnt) ? $colcnt = $colcnt + 5 : $colcnt = 12;
-        $colBiankuang = $colcnt;
+        // 左侧开始列
+        $i = $i + $col_null ;
+        $col_r = $i;
+
         // 循环写出统计结果
         foreach ($subject_id as $key => $value) {
-            $xkcnt = $temp['cj'][$value['lieming']]['xkcnt'];
-            if ($xkcnt > 0 ) {
-                $youxiulv = round($temp['cj'][$value['lieming']]['youxiu'] / $xkcnt * 100, 2);
-                $jigelv = round($temp['cj'][$value['lieming']]['jige'] / $xkcnt * 100, 2);
+            $i ++;
+            $row_temp = $row;
+            $chengji_cnt = $temp['cj'][$value['lieming']]['chengji_cnt'];
+            if ($chengji_cnt > 0 ) {
+                $temp['cj'][$value['lieming']]['youxiulv'] = round($temp['cj'][$value['lieming']]['youxiu'] / $chengji_cnt * 100, 2);
+                $temp['cj'][$value['lieming']]['jigelv'] = round($temp['cj'][$value['lieming']]['jige'] / $chengji_cnt * 100, 2);
             } else {
-                $youxiulv = 0;
-                $jigelv = 0;
+                $temp['cj'][$value['lieming']]['youxiulv'] = 0;
+                $temp['cj'][$value['lieming']]['jigelv'] = 0;
             }
-
-            $sheet->setCellValue($colname[$colcnt] . '4', $temp['cj'][$value['lieming']]['xkcnt']);
-            $sheet->setCellValue($colname[$colcnt] . '5', $temp['cj'][$value['lieming']]['avg']);
-
-            $sheet->setCellValue($colname[$colcnt] . '6', $youxiulv);
-            $sheet->setCellValue($colname[$colcnt] . '7', $jigelv);
-            $sheet->setCellValue($colname[$colcnt] . '8', $temp['cj'][$value['lieming']]['biaozhuncha']);
-            $sheet->setCellValue($colname[$colcnt] . '9', $temp['cj'][$value['lieming']]['zhongweishu']);
-            $sheet->setCellValue($colname[$colcnt] . '10', $temp['cj'][$value['lieming']]['zhongshu']);
-            $colcnt ++;
+            foreach ($tjxm_right as $tjxmr_k => $tjxmr_v) {
+                $sheet->setCellValue($colname[$i] . $row_temp, $temp['cj'][$value['lieming']][$tjxmr_v['biaoshi']]);
+                $row_temp++;
+            }
         }
 
 
-        $sheet->setCellValue($colname[$colBiankuang - 1] . '11', '总平均分');
-        $sheet->setCellValue($colname[$colBiankuang] . '11', $temp['cj']['all']['avg']);
-        $sheet->mergeCells($colname[$colBiankuang] . '11:' . $colname[$colcnt - 1] . '11');
-        $sheet->setCellValue($colname[$colBiankuang - 1] . '12', '全科及格率%');
-        $sheet->setCellValue($colname[$colBiankuang] . '12', $temp['cj']['all']['jigelv']);
-        $sheet->mergeCells($colname[$colBiankuang] . '12:' . $colname[$colcnt - 1] . '12');
-        $sheet->getStyle($colname[$colBiankuang - 1] . '3:' . $colname[$colcnt - 1] . '12')->applyFromArray($styleArrayJZ);
-        $sheet->getStyle($colname[$colBiankuang - 1] . '3:' . $colname[$colcnt - 1] . '12')->applyFromArray($styleArrayBK);
+        $sheet->setCellValue($colname[$col_r] . $row_temp, '总平均分');
+        $sheet->setCellValue($colname[$col_r + 1] . $row_temp, $temp['cj']['all']['avg']);
+        $sheet->mergeCells($colname[$col_r + 1] . $row_temp . ':' . $colname[$i] . $row_temp);
+        $row_temp++;
+        $sheet->setCellValue($colname[$col_r] . $row_temp, '全科及格率%');
+        $sheet->setCellValue($colname[$col_r + 1] . $row_temp, $temp['cj']['all']['jigelv']);
+        $sheet->mergeCells($colname[$col_r + 1] . $row_temp . ':' . $colname[$i] . $row_temp);
+        $sheet->getStyle($colname[$col_r] . ($row - 1) . ':' . $colname[$i] . $row_temp)->applyFromArray($styleArrayJZ);
+        $sheet->getStyle($colname[$col_r] . ($row - 1) . ':' . $colname[$i] . $row_temp)->applyFromArray($styleArrayBK);
 
 
         $sheet->getStyle('A1')->getFont()->setBold(true)->setName('宋体')->setSize(16); # 修改标题字号
@@ -403,7 +424,7 @@ class Index extends AdminBase
         $sheet->getDefaultColumnDimension()->setWidth(9); # 设置列宽
         $sheet->getColumnDimension('A')->setWidth(6);
         $sheet->getColumnDimension('B')->setWidth(12);
-        $sheet->getColumnDimension($colname[$colBiankuang-1])->setWidth(13);
+        $sheet->getColumnDimension($colname[$i])->setWidth(13);
 
         // 页面设置
         $sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);

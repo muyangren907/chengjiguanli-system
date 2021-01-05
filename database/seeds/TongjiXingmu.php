@@ -31,20 +31,20 @@ class TongjiXingmu extends Seeder
                 ,'paixu' => 2
                 ,'category_id' => 12201
             ]
-            ,[
-                'title'      =>  '总分'
-                ,'biaoshi'   =>  'sum'
-                ,'tongji'        =>  0
-                ,'paixu' => 3
-                ,'category_id' => 12201
-            ]
-            ,[
-                'title'      =>  '平均分'
-                ,'biaoshi'   =>  'avg'
-                ,'tongji'        =>  1
-                ,'paixu' => 4
-                ,'category_id' => 12201
-            ]
+            // ,[
+            //     'title'      =>  '总分'
+            //     ,'biaoshi'   =>  'sum'
+            //     ,'tongji'        =>  0
+            //     ,'paixu' => 3
+            //     ,'category_id' => 12201
+            // ]
+            // ,[
+            //     'title'      =>  '平均分'
+            //     ,'biaoshi'   =>  'avg'
+            //     ,'tongji'        =>  1
+            //     ,'paixu' => 4
+            //     ,'category_id' => 12201
+            // ]
             ,[
                 'title'      =>  '得分率'
                 ,'biaoshi'   =>  'defenlv'
@@ -141,6 +141,13 @@ class TongjiXingmu extends Seeder
                 ,'biaoshi'   =>  'chashenglv'
                 ,'tongji'    =>  0
                 ,'paixu' => 18
+                ,'category_id' => 12201
+            ]
+            ,[
+                'title'      =>  '参试率'
+                ,'biaoshi'   =>  'canshilv'
+                ,'tongji'    =>  0
+                ,'paixu' => 19
                 ,'category_id' => 12201
             ]
 
@@ -159,20 +166,20 @@ class TongjiXingmu extends Seeder
                 ,'paixu' => 2
                 ,'category_id' => 12202
             ]
-            ,[
-                'title'      =>  '总分'
-                ,'biaoshi'   =>  'sum'
-                ,'tongji'        =>  0
-                ,'paixu' => 3
-                ,'category_id' => 12202
-            ]
-            ,[
-                'title'      =>  '平均分'
-                ,'biaoshi'   =>  'avg'
-                ,'tongji'        =>  1
-                ,'paixu' => 4
-                ,'category_id' => 12202
-            ]
+            // ,[
+            //     'title'      =>  '总分'
+            //     ,'biaoshi'   =>  'sum'
+            //     ,'tongji'        =>  0
+            //     ,'paixu' => 3
+            //     ,'category_id' => 12202
+            // ]
+            // ,[
+            //     'title'      =>  '平均分'
+            //     ,'biaoshi'   =>  'avg'
+            //     ,'tongji'        =>  1
+            //     ,'paixu' => 4
+            //     ,'category_id' => 12202
+            // ]
             ,[
                 'title'      =>  '得分率'
                 ,'biaoshi'   =>  'defenlv'
@@ -269,6 +276,13 @@ class TongjiXingmu extends Seeder
                 ,'biaoshi'   =>  'chashenglv'
                 ,'tongji'    =>  0
                 ,'paixu' => 18
+                ,'category_id' => 12202
+            ]
+            ,[
+                'title'      =>  '参试率'
+                ,'biaoshi'   =>  'canshilv'
+                ,'tongji'    =>  0
+                ,'paixu' => 19
                 ,'category_id' => 12202
             ]
 
@@ -287,20 +301,20 @@ class TongjiXingmu extends Seeder
                 ,'paixu' => 2
                 ,'category_id' => 12203
             ]
-            ,[
-                'title'      =>  '总分'
-                ,'biaoshi'   =>  'sum'
-                ,'tongji'        =>  0
-                ,'paixu' => 3
-                ,'category_id' => 12203
-            ]
-            ,[
-                'title'      =>  '平均分'
-                ,'biaoshi'   =>  'avg'
-                ,'tongji'        =>  1
-                ,'paixu' => 4
-                ,'category_id' => 12203
-            ]
+            // ,[
+            //     'title'      =>  '总分'
+            //     ,'biaoshi'   =>  'sum'
+            //     ,'tongji'        =>  0
+            //     ,'paixu' => 3
+            //     ,'category_id' => 12203
+            // ]
+            // ,[
+            //     'title'      =>  '平均分'
+            //     ,'biaoshi'   =>  'avg'
+            //     ,'tongji'        =>  1
+            //     ,'paixu' => 4
+            //     ,'category_id' => 12203
+            // ]
             ,[
                 'title'      =>  '得分率'
                 ,'biaoshi'   =>  'defenlv'
@@ -399,6 +413,13 @@ class TongjiXingmu extends Seeder
                 ,'biaoshi'   =>  'chashenglv'
                 ,'tongji'    =>  0
                 ,'paixu' => 18
+                ,'category_id' => 12203
+            ]
+            ,[
+                'title'      =>  '参试率'
+                ,'biaoshi'   =>  'canshilv'
+                ,'tongji'    =>  0
+                ,'paixu' => 19
                 ,'category_id' => 12203
             ]
 
@@ -417,20 +438,20 @@ class TongjiXingmu extends Seeder
                 ,'paixu' => 2
                 ,'category_id' => 12204
             ]
-            ,[
-                'title'      =>  '总分'
-                ,'biaoshi'   =>  'sum'
-                ,'tongji'        =>  0
-                ,'paixu' => 3
-                ,'category_id' => 12204
-            ]
-            ,[
-                'title'      =>  '平均分'
-                ,'biaoshi'   =>  'avg'
-                ,'tongji'        =>  1
-                ,'paixu' => 4
-                ,'category_id' => 12204
-            ]
+            // ,[
+            //     'title'      =>  '总分'
+            //     ,'biaoshi'   =>  'sum'
+            //     ,'tongji'        =>  0
+            //     ,'paixu' => 3
+            //     ,'category_id' => 12204
+            // ]
+            // ,[
+            //     'title'      =>  '平均分'
+            //     ,'biaoshi'   =>  'avg'
+            //     ,'tongji'        =>  1
+            //     ,'paixu' => 4
+            //     ,'category_id' => 12204
+            // ]
             ,[
                 'title'      =>  '得分率'
                 ,'biaoshi'   =>  'defenlv'
@@ -530,19 +551,19 @@ class TongjiXingmu extends Seeder
                 ,'paixu' => 18
                 ,'category_id' => 12204
             ]
+            ,[
+                'title'      =>  '参试率'
+                ,'biaoshi'   =>  'canshilv'
+                ,'tongji'    =>  0
+                ,'paixu' => 19
+                ,'category_id' => 12204
+            ]
 
             // 管理员-学生-网页
             ,[
-                'title' => '平均分'
-                ,'biaoshi' => 'avg'
-                ,'tongji' => 1
-                ,'paixu' => 1
-                ,'category_id' => 12205
-            ]
-            ,[
-                'title' => '总分'
-                ,'biaoshi' => 'sum'
-                ,'tongji' => 1
+                'title' => '得分率'
+                ,'biaoshi' => 'defenlv'
+                ,'tongji' => 0
                 ,'paixu' => 2
                 ,'category_id' => 12205
             ]
@@ -555,7 +576,7 @@ class TongjiXingmu extends Seeder
             ]
             ,[
                 'title' => '班位置'
-                ,'biaoshi' => 'bpaixu'
+                ,'biaoshi' => 'bweizhi'
                 ,'tongji' => 1
                 ,'paixu' => 4
                 ,'category_id' => 12205
@@ -569,7 +590,7 @@ class TongjiXingmu extends Seeder
             ]
             ,[
                 'title' => '年级位置'
-                ,'biaoshi' => 'xpaixu'
+                ,'biaoshi' => 'xweizhi'
                 ,'tongji' => 1
                 ,'paixu' => 6
                 ,'category_id' => 12205
@@ -578,14 +599,14 @@ class TongjiXingmu extends Seeder
                 'title' => '区排序'
                 ,'biaoshi' => 'qpaixu'
                 ,'tongji' => 0
-                ,'paixu' => 5
+                ,'paixu' => 7
                 ,'category_id' => 12205
             ]
             ,[
                 'title' => '区位置'
-                ,'biaoshi' => 'qpaixu'
+                ,'biaoshi' => 'qweizhi'
                 ,'tongji' => 1
-                ,'paixu' => 6
+                ,'paixu' => 8
                 ,'category_id' => 12205
             ]
 
@@ -717,6 +738,13 @@ class TongjiXingmu extends Seeder
                 ,'paixu' => 18
                 ,'category_id' => 12207
             ]
+            ,[
+                'title'      =>  '参试率'
+                ,'biaoshi'   =>  'canshilv'
+                ,'tongji'    =>  0
+                ,'paixu' => 19
+                ,'category_id' => 12207
+            ]
 
             // 管理员-学生-下载右
             ,[
@@ -845,19 +873,19 @@ class TongjiXingmu extends Seeder
                 ,'paixu' => 18
                 ,'category_id' => 12206
             ]
+            ,[
+                'title'      =>  '参试率'
+                ,'biaoshi'   =>  'canshilv'
+                ,'tongji'    =>  0
+                ,'paixu' => 19
+                ,'category_id' => 12206
+            ]
 
             // 管理员-学生-下载左
             ,[
-                'title' => '平均分'
-                ,'biaoshi' => 'avg'
-                ,'tongji' => 1
-                ,'paixu' => 1
-                ,'category_id' => 12210
-            ]
-            ,[
-                'title' => '总分'
-                ,'biaoshi' => 'sum'
-                ,'tongji' => 1
+                'title' => '得分率'
+                ,'biaoshi' => 'defenlv'
+                ,'tongji' => 0
                 ,'paixu' => 2
                 ,'category_id' => 12210
             ]
@@ -870,7 +898,7 @@ class TongjiXingmu extends Seeder
             ]
             ,[
                 'title' => '班位置'
-                ,'biaoshi' => 'bpaixu'
+                ,'biaoshi' => 'bweizhi'
                 ,'tongji' => 1
                 ,'paixu' => 4
                 ,'category_id' => 12210
@@ -884,7 +912,7 @@ class TongjiXingmu extends Seeder
             ]
             ,[
                 'title' => '年级位置'
-                ,'biaoshi' => 'xpaixu'
+                ,'biaoshi' => 'xweizhi'
                 ,'tongji' => 1
                 ,'paixu' => 6
                 ,'category_id' => 12210
@@ -893,29 +921,22 @@ class TongjiXingmu extends Seeder
                 'title' => '区排序'
                 ,'biaoshi' => 'qpaixu'
                 ,'tongji' => 0
-                ,'paixu' => 5
+                ,'paixu' => 7
                 ,'category_id' => 12210
             ]
             ,[
                 'title' => '区位置'
-                ,'biaoshi' => 'qpaixu'
+                ,'biaoshi' => 'qweizhi'
                 ,'tongji' => 1
-                ,'paixu' => 6
+                ,'paixu' => 8
                 ,'category_id' => 12210
             ]
 
             // 教师-各学生-网页
             ,[
-                'title' => '平均分'
-                ,'biaoshi' => 'avg'
-                ,'tongji' => 1
-                ,'paixu' => 1
-                ,'category_id' => 12208
-            ]
-            ,[
-                'title' => '总分'
-                ,'biaoshi' => 'sum'
-                ,'tongji' => 1
+                'title' => '得分率'
+                ,'biaoshi' => 'defenlv'
+                ,'tongji' => 0
                 ,'paixu' => 2
                 ,'category_id' => 12208
             ]
@@ -928,7 +949,7 @@ class TongjiXingmu extends Seeder
             ]
             ,[
                 'title' => '班位置'
-                ,'biaoshi' => 'bpaixu'
+                ,'biaoshi' => 'bweizhi'
                 ,'tongji' => 1
                 ,'paixu' => 4
                 ,'category_id' => 12208
@@ -942,7 +963,7 @@ class TongjiXingmu extends Seeder
             ]
             ,[
                 'title' => '年级位置'
-                ,'biaoshi' => 'xpaixu'
+                ,'biaoshi' => 'xweizhi'
                 ,'tongji' => 1
                 ,'paixu' => 6
                 ,'category_id' => 12208
@@ -951,29 +972,22 @@ class TongjiXingmu extends Seeder
                 'title' => '区排序'
                 ,'biaoshi' => 'qpaixu'
                 ,'tongji' => 0
-                ,'paixu' => 5
+                ,'paixu' => 7
                 ,'category_id' => 12208
             ]
             ,[
                 'title' => '区位置'
-                ,'biaoshi' => 'qpaixu'
+                ,'biaoshi' => 'qweizhi'
                 ,'tongji' => 1
-                ,'paixu' => 6
+                ,'paixu' => 8
                 ,'category_id' => 12208
             ]
 
             // 学生-各考试-网页
             ,[
-                'title' => '平均分'
-                ,'biaoshi' => 'avg'
-                ,'tongji' => 1
-                ,'paixu' => 1
-                ,'category_id' => 12209
-            ]
-            ,[
-                'title' => '总分'
-                ,'biaoshi' => 'sum'
-                ,'tongji' => 1
+                'title' => '得分率'
+                ,'biaoshi' => 'defenlv'
+                ,'tongji' => 0
                 ,'paixu' => 2
                 ,'category_id' => 12209
             ]
@@ -986,8 +1000,8 @@ class TongjiXingmu extends Seeder
             ]
             ,[
                 'title' => '班位置'
-                ,'biaoshi' => 'bpaixu'
-                ,'tongji' => 1
+                ,'biaoshi' => 'bweizhi'
+                ,'tongji' => 0
                 ,'paixu' => 4
                 ,'category_id' => 12209
             ]
@@ -1000,8 +1014,8 @@ class TongjiXingmu extends Seeder
             ]
             ,[
                 'title' => '年级位置'
-                ,'biaoshi' => 'xpaixu'
-                ,'tongji' => 1
+                ,'biaoshi' => 'xweizhi'
+                ,'tongji' => 0
                 ,'paixu' => 6
                 ,'category_id' => 12209
             ]
@@ -1009,14 +1023,14 @@ class TongjiXingmu extends Seeder
                 'title' => '区排序'
                 ,'biaoshi' => 'qpaixu'
                 ,'tongji' => 0
-                ,'paixu' => 5
+                ,'paixu' => 7
                 ,'category_id' => 12209
             ]
             ,[
                 'title' => '区位置'
-                ,'biaoshi' => 'qpaixu'
-                ,'tongji' => 1
-                ,'paixu' => 6
+                ,'biaoshi' => 'qweizhi'
+                ,'tongji' => 0
+                ,'paixu' => 8
                 ,'category_id' => 12209
             ]
     ];

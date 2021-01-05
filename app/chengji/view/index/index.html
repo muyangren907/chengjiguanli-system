@@ -85,17 +85,39 @@
 		{type:'checkbox', fixed: 'left'},
 		{field: 'school_jiancheng', title: '学校', minWidth:100,sort: true},
 		// {field: 'nianji', title: '年级 ', minWidth:100,sort: true},
-		{field: "ban_title",title: '班级',sort: true},
+		{field: "ban_title",title: '班级', minWidth:120,sort: true},
 		{field: "student_xingming", title: '学生姓名',sort: true, minWidth:100},
 	]];
 
 
 	var xk = '<?php echo json_encode($list["set"]["subject_id"]);?>';
 	xk = eval(decodeURIComponent(xk));
-	for(x in xk)
-  {
-      options.cols[0].push({field: xk[x].lieming, title: xk[x].title , minWidth:100,sort: true,edit:'text'});
-  }
+  var tjxm = '<?php echo json_encode($list["tjxm"]);?>';
+  tjxm = eval(decodeURIComponent(tjxm));
+
+  $.each(xk,function(index,value){
+    options.cols[0].push({field: value.lieming, title: value.title , minWidth:120,sort: true,edit:'text',templet:function(d){
+            var str = d[value.lieming].defen;
+            if(str == null)
+            {
+              str = '';
+            }
+          return str;
+        }});
+    $.each(tjxm, function(t, val){
+      options.cols[0].push({field: val.biaoshi, title: value.title + val.title , minWidth:120,sort: true,templet:function(d){
+            var str = d[value.lieming][val.biaoshi];
+            if(str == null)
+            {
+              str = '';
+            }
+          return str;
+        }});
+    })
+
+  });
+
+
   options.cols[0].push({field: 'avg', title: '平均分', minWidth:100,sort: true});
   options.cols[0].push({field: 'sum', title: '总分', minWidth:100,sort: true});
   options.cols[0].push({field: 'id', title: '操作',toolbar: '#barDemo',minWidth:125});

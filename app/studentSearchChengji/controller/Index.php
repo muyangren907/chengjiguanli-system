@@ -40,6 +40,7 @@ class Index extends StudentSearchBase
         $list['banjiTitle'] = $stuInfo->stuBanji->banjiTitle;
         $list['student_id'] = session('user_id');
         $list['sbj'] = subjectKaoshiList();
+        $list['tjxm'] = srcTjxm(12207);
 
 
         // 模板赋值

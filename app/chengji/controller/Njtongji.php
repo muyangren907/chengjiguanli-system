@@ -150,12 +150,7 @@ class Njtongji extends AdminBase
             ->setCategory("成绩管理"); //分类
 
         // 设置导出项目、列表等
-        $sbjcol = [
-            'cjCnt' => '人数'
-            ,'avg' => '平均分'
-            ,'jigelv' => '及格率%'
-            ,'youxiulv' => '优秀率%'
-        ];
+        $sbjcol = srcTjxm(12204);
         $sbjcolcnt = count($sbjcol);
         $colname = excelColumnName();
         $colcnt = $sbjcolcnt * count($xk) + 3;
@@ -175,7 +170,7 @@ class Njtongji extends AdminBase
             $sheet->mergeCells($colname[$col] . '3:' . $colname[$colend] . '3');
             $sheet->setCellValue($colname[$col] . '3', $value['title'] . ' (' . $value['fenshuxian']['manfen'] . ')');
             foreach ($sbjcol as $k => $val) {
-                 $sheet->setCellValue($colname[$col] . '4', $val);
+                 $sheet->setCellValue($colname[$col] . '4', $val['title']);
                  $col++;
             }
         }
@@ -194,8 +189,8 @@ class Njtongji extends AdminBase
             $sheet->setCellValue('B' . $row, $value['school_jiancheng']);
             foreach ($xk as $ke => $val) {
                 foreach ($sbjcol as $k => $v) {
-                     $sheet->setCellValue($colname[$col] . $row, $value['chengji'][$val['lieming']][$k]);
-                     $col ++;
+                    $sheet->setCellValue($colname[$col] . $row, $value['chengji'][$val['lieming']][$v['biaoshi']]);
+                    $col ++;
                 }
             }
             $sheet->setCellValue($colname[$col] . $row, $value['quanke']['jigelv']);

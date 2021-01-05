@@ -21,7 +21,7 @@
               autocomplete="off" class="layui-input" placeholder="学生姓名" placeholder="输入关键字并回车">
           </div>
     </div>
-    
+
 		<input type="hidden" id="kaoshi_id" name="kaoshi_id" value="{$list.kaoshi_id}">
     <input type="hidden" id="banji_id" name="banji_id" value="{$list.banji_id}">
     <input type="hidden" id="subject_id" name="subject_id" value="{$list.subject_id}">
@@ -52,10 +52,31 @@
 		{type:'checkbox', fixed: 'left'},
 		{field: "student", title: '学生姓名',sort: true, minWidth:100},
     {field: "defen", title: '得分',sort: true, minWidth:100},
-    {field: "defenlv", title: '得分率',sort: true, minWidth:100},
-    {field: "bweizhi", title: '班级位置',sort: true, minWidth:100},
-    {field: "xweizhi", title: '学校位置',sort: true, minWidth:100},
 	]];
+
+  var xiangmu = '<?php echo json_encode($list["tjxm"]);?>';
+  xiangmu = eval(decodeURIComponent(xiangmu));
+  xiangmuCnt = xiangmu.length;
+
+
+  $.each(xiangmu, function(i,val){
+        var colinfo = {
+          field: val.biaoshi
+          ,title: val.title
+          ,minWidth: 100
+          ,sort: true
+          ,templet:function(d){
+            var str = "";
+            if(d[val.biaoshi])
+            {
+              str = d[val.biaoshi];
+            }
+            return str;
+          }
+        };
+        options.cols[0].push(colinfo);
+    });
+
 
 	// 设置每页显示条数
 	options.limit = 10;
@@ -66,7 +87,7 @@
       var table = layui.table
       		cjgl = layui.cjgl;
 
-      addBanji();
+      // addBanji();
 
       //表头工具栏事件
       table.on('toolbar(mytable)', function(obj){
@@ -132,15 +153,12 @@
         $("#srcsubmit").click();
       });
 
-      // 添加班级列表
-      function addBanji(){
-        // 获取参数
-        var formval = form.val('search');
-        cjgl.createCheckbox('banji_id', formval, '/tools/kscy/class', 'banji_id', 'banTitle');
-      }
-
-
-
+      // // 添加班级列表
+      // function addBanji(){
+      //   // 获取参数
+      //   var formval = form.val('search');
+      //   cjgl.createCheckbox('banji_id', formval, '/tools/kscy/class', 'banji_id', 'banTitle');
+      // }
     });
 </script>
 {/block}

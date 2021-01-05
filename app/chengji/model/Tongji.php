@@ -32,7 +32,7 @@ class Tongji extends BaseModel
     {
         // 设置默认值
         $tempNull = [
-            'xkcnt' => 0
+            'chengji_cnt' => 0
             ,'sum' => null
             ,'biaozhuncha' => null
             ,'avg' => null
@@ -43,11 +43,16 @@ class Tongji extends BaseModel
                 ,'1' => null
                 ,'2' => null
             ]
+            ,'q1' => 0
+            ,'q2' => 0
+            ,'q3' => 0
             ,'max' => null
             ,'min' => null
             ,'zhongshu' => null
             ,'zhongweishu' => null
             ,'defenlv' => null
+            ,'chashenglv' => 0
+            ,'canshilv' => 0
         ];
 
         $data = array();
@@ -55,22 +60,25 @@ class Tongji extends BaseModel
 
         // 循环统计各学科成绩
         foreach ($subject as $key => $value) {
+            $cjcol = array();
             $sbjdefencnt = $sbjdefencnt + $value['fenshuxian']['manfen'];
-            $cjcol = array_column($cj,$value['lieming']);
-            $stucnt = count($cjcol);
+            foreach ($cj as $cj_k => $cj_v) {
+                $cjcol[] = $cj_v[$value['lieming']]['defen'];
+            }
+            $stu_cnt = count($cjcol);
             $cjcol = array_filter($cjcol, function($item){
                 return $item !== null;
             });
 
             $temp = $tempNull;
             $temp['id'] = $value['id'];
-            $temp['stucnt'] = $stucnt;
+            $temp['stu_cnt'] = $stu_cnt;
 
             if($cjcol != null) {
-                $temp['xkcnt'] = count($cjcol);
+                $temp['chengji_cnt'] = count($cjcol);
                 $temp['sum'] = array_sum($cjcol);
-                if ($temp['xkcnt'] > 0) {
-                    $temp['avg'] = $temp['sum'] / $temp['xkcnt'];
+                if ($temp['chengji_cnt'] > 0) {
+                    $temp['avg'] = $temp['sum'] / $temp['chengji_cnt'];
                     $temp['defenlv'] = $temp['avg'] / $value['fenshuxian']['manfen'];
                 }
                 $temp['biaozhuncha'] = round($this->getVariance($temp['avg'], $cjcol, true), 2);
@@ -80,9 +88,15 @@ class Tongji extends BaseModel
                 $temp['max'] = max($cjcol);
                 $temp['min'] = min($cjcol);
                 $temp['sifenwei'] = $this->myquartile($cjcol);
+                $temp['q1'] = $temp['sifenwei'][0];
+                $temp['q2'] = $temp['sifenwei'][1];
+                $temp['q3'] = $temp['sifenwei'][2];
                 $temp['zhongshu'] = $this->zhongshu($cjcol);
                 $temp['zhongweishu'] = $this->zhongweishu($cjcol);
                 $temp['defenlv'] = round($temp['defenlv'] * 100, 2);
+                $temp['canshilv'] = round($temp['chengji_cnt'] / $temp['stu_cnt'] * 100, 2);
+                $temp['chashenglv'] = round(($temp['chengji_cnt'] - $temp['jige']) / $temp['chengji_cnt'] * 100, 2);
+
             }
             $data['cj'][$value['lieming']] = $temp;
         }
@@ -90,31 +104,37 @@ class Tongji extends BaseModel
 
         $temp = $tempNull;
         $cjcol = array_column($cj, 'sum');
-        $stucnt = count($cjcol);
+        $stu_cnt = count($cjcol);
         $cjcol = array_filter($cjcol, function ($item) {
                 return $item !== null;
             });
         $temp['id'] = 0;
-        $temp['stucnt'] = $stucnt;
+        $temp['stu_cnt'] = $stu_cnt;
         if ($cjcol != null) {
-            $temp['xkcnt'] = count($cjcol);   # 报名人数
+            $temp['chengji_cnt'] = count($cjcol);   # 报名人数
             $temp['sum'] = array_sum($cjcol);
-            if( $temp['xkcnt'] > 0) {
-                $temp['avg'] = $temp['sum'] / $temp['xkcnt'];
+            if( $temp['chengji_cnt'] > 0) {
+                $temp['avg'] = $temp['sum'] / $temp['chengji_cnt'];
                 $temp['defenlv'] = $temp['avg'] / $sbjdefencnt;
             }
             $temp['biaozhuncha'] = round($this->getVariance($temp['avg'], $cjcol, true), 2);
+
             $temp['avg'] = round($temp['avg'], 2);
             $temp['max'] = max($cjcol);
             $temp['min'] = min($cjcol);
             $temp['youxiu'] = $this->rateAll($cj, $subject, 'youxiu');
             $temp['jige'] = $this->rateAll($cj, $subject, 'jige'); #全科及格率
             $temp['sifenwei'] = $this->myquartile($cjcol);
+            $temp['q1'] = $temp['sifenwei'][0];
+            $temp['q2'] = $temp['sifenwei'][1];
+            $temp['q3'] = $temp['sifenwei'][2];
             $temp['zhongshu'] = $this->zhongshu($cjcol);
             $temp['zhongweishu'] = $this->zhongweishu($cjcol);
             $temp['defenlv'] = round($temp['defenlv'] * 100, 2);
-            $temp['youxiulv'] = round($temp['youxiu'] / $temp['xkcnt'] * 100, 2);
-            $temp['jigelv'] = round($temp['jige'] / $temp['xkcnt'] * 100, 2);
+            $temp['youxiulv'] = round($temp['youxiu'] / $temp['chengji_cnt'] * 100, 2);
+            $temp['jigelv'] = round($temp['jige'] / $temp['chengji_cnt'] * 100, 2);
+            $temp['canshilv'] = round($temp['chengji_cnt'] / $temp['stu_cnt'] * 100, 2);
+            $temp['chashenglv'] = round(($temp['chengji_cnt'] - $temp['jige']) / $temp['chengji_cnt'] * 100, 2);
         }
         $data['cj']['all'] = $temp;
 

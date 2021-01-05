@@ -44,7 +44,7 @@ class SearchMore extends BaseModel
             })
             ->with([
                 'ksChengji' => function($query){
-                    $query->field('id, kaohao_id, subject_id, defen, bpaixu, xpaixu')
+                    $query->field('id, kaohao_id, subject_id, defen, defenlv, bpaixu, xpaixu, qpaixu, bweizhi, xweizhi, qweizhi')
                         ->with([
                             'subjectName' => function ($q) {
                                 $q->field('id, title, jiancheng, lieming');
@@ -107,23 +107,43 @@ class SearchMore extends BaseModel
             $dfsum = 0;
             $sbjcnt = 0;
 
-
             if (!$value->ksChengji->isEmpty()) {
 
                 $value->ksChengji = self::zzcj($value->ksChengji);
                 foreach ($xk as $k => $val) {
                     if(isset($value->ksChengji[$val['lieming']]))
                     {
-                        $data[$key][$val['lieming']]=$value->ksChengji[$val['lieming']]->defen * 1;
-                        $dfsum = $dfsum + $data[$key][$val['lieming']];
+                        $data[$key][$val['lieming']]['defen'] = $value->ksChengji[$val['lieming']]->defen * 1;
+                        $data[$key][$val['lieming']]['defenlv'] = $value->ksChengji[$val['lieming']]->defenlv * 1;
+                        $data[$key][$val['lieming']]['bpaixu'] = $value->ksChengji[$val['lieming']]->bpaixu * 1;
+                        $data[$key][$val['lieming']]['bweizhi'] = $value->ksChengji[$val['lieming']]->bweizhi;
+                        $data[$key][$val['lieming']]['xpaixu'] = $value->ksChengji[$val['lieming']]->xpaixu * 1;
+                        $data[$key][$val['lieming']]['xweizhi'] = $value->ksChengji[$val['lieming']]->xweizhi;
+                        $data[$key][$val['lieming']]['qpaixu'] = $value->ksChengji[$val['lieming']]->qpaixu * 1;
+                        $data[$key][$val['lieming']]['qweizhi'] = $value->ksChengji[$val['lieming']]->qweizhi;
+                        $dfsum = $dfsum + $data[$key][$val['lieming']]['defen'];
                         $sbjcnt++;
                     }else{
-                        $data[$key][$val['lieming']]= null;
+                        $data[$key][$val['lieming']] = null;
+                        $data[$key][$val['lieming']]['defenlv'] = null;
+                        $data[$key][$val['lieming']]['bpaixu'] = null;
+                        $data[$key][$val['lieming']]['bweizhi'] = null;
+                        $data[$key][$val['lieming']]['xpaixu'] = null;
+                        $data[$key][$val['lieming']]['xweizhi'] = null;
+                        $data[$key][$val['lieming']]['qpaixu'] = null;
+                        $data[$key][$val['lieming']]['qweizhi'] = null;
                     }
                 }
             }else{
                 foreach ($xk as $k => $val) {
-                    $data[$key][$val['lieming']]= null;
+                    $data[$key][$val['lieming']]['defen'] = null;
+                    $data[$key][$val['lieming']]['defenlv'] = null;
+                    $data[$key][$val['lieming']]['bpaixu'] = null;
+                    $data[$key][$val['lieming']]['bweizhi'] = null;
+                    $data[$key][$val['lieming']]['xpaixu'] = null;
+                    $data[$key][$val['lieming']]['xweizhi'] = null;
+                    $data[$key][$val['lieming']]['qpaixu'] = null;
+                    $data[$key][$val['lieming']]['qweizhi'] = null;
                 }
             }
 
