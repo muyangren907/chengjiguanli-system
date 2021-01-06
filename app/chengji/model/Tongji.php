@@ -63,7 +63,7 @@ class Tongji extends BaseModel
             $cjcol = array();
             $sbjdefencnt = $sbjdefencnt + $value['fenshuxian']['manfen'];
             foreach ($cj as $cj_k => $cj_v) {
-                $cjcol[] = $cj_v[$value['lieming']]['defen'];
+                $cjcol[] = $cj_v[$value['lieming'] . 'defen'];
             }
             $stu_cnt = count($cjcol);
             $cjcol = array_filter($cjcol, function($item){

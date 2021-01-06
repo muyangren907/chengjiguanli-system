@@ -35,6 +35,16 @@ class OneStudentChengji extends BaseModel
             ->where('status', 1)
             ->field('id, lieming')
             ->column('lieming', 'id');
+        $cjDengji = true; # 开启成绩等级状态
+        $category = session('onlineCategory');
+
+        if($category == "student"){
+            $sys = new \app\system\model\SystemBase;
+            $sysInfo = $sys::sysInfo();
+            if($sysInfo->studefen === 0){
+                $cjDengji = false; # 开启成绩等级状态
+            }
+        }
 
         // 整理数据
         $data = array();
@@ -43,6 +53,7 @@ class OneStudentChengji extends BaseModel
             {
                 continue;
             }
+
             $data[$key] = [
                 'kaoshi_id' => $value->kaoshi_id,
                 'kaoshiTitle' => $value->cjKaoshi->title,
@@ -54,36 +65,42 @@ class OneStudentChengji extends BaseModel
                 'enddate' => $value->cjKaoshi->enddate,
             ];
 
+            $mf = array(); # 本次考试各学科分数线
+            foreach ($value->banjiFenshuxian as $mf_k => $mf_v) {
+                $mf[$mf_v['subject_id']]['youxiu'] = $mf_v['youxiu'];
+                $mf[$mf_v['subject_id']]['jige'] = $mf_v['jige'];
+            }
 
-            $cjcnt = count($value->ksChengji);
-
-            if($cjcnt > 0)
-            {
-                $sbj = $value->ksChengji->column('subject_id');
-                foreach ($sbjList as $sbj_k => $sbj_val) {
-                    // 通过学科ID获取这个学科成绩对应的成绩下标。
-                    // 这个地方需要再核实。
-                    $xb = array_search($sbj_k, $sbj);      # ksChengji下标
-                    if($xb === false)
-                    {
-                        $data[$key][$sbj_val] = '';
-                    }else{
-                        $data[$key][$sbj_val] = $value->ksChengji[$xb]->defen;
-                    }
+            // 整理成绩
+            $cj = array();
+            if($cjDengji === true){
+                foreach ($value->ksChengji as $cj_k => $cj_v) {
+                    $cj[$cj_v->subject_id] = $cj_v->defen * 1;
                 }
-                $defen = array_column($value->ksChengji->toArray(), 'defen');
-                $sum = array_sum($defen );
-                $avg = $sum / $cjcnt;
-                $data[$key]['sum'] = $sum;
-                $data[$key]['avg'] = round($avg,2);
             }else{
-                foreach ($sbjList as $sbj_k => $sbj_val) {
+                foreach ($value->ksChengji as $cj_k => $cj_v) {
+                    $cj[$cj_v->subject_id] = $this->toDengji($mf[$cj_v->subject_id], $cj_v->defen);
+                }
+            }
+            $cjcnt = count($cj);
+
+            // 为学科成绩赋值
+            foreach ($sbjList as $sbj_k => $sbj_val) {
+                if(isset($cj[$sbj_k]))
+                {
+                    $data[$key][$sbj_val] = $cj[$sbj_k];
+                }else{
                     $data[$key][$sbj_val] = '';
                 }
-                $data[$key]['sum'] = '';
-                $data[$key]['avg'] = '';
             }
+
+            $defen = array_column($value->ksChengji->toArray(), 'defen');
+            $sum = array_sum($defen );
+            $avg = $sum / $cjcnt;
+            $data[$key]['sum'] = $sum;
+            $data[$key]['avg'] = round($avg,2);
         }
+
         return $data;
     }
 
@@ -383,19 +400,14 @@ class OneStudentChengji extends BaseModel
         $src = array_cover($srcfrom, $src);
 
         // 成绩查询信息
-        $kh = new \app\kaohao\model\Kaohao;         #该考号对应的考试信息。
-        $khInfo = $kh->where('id', $src['kaohao_id'])
-                ->with([
-                    'ksChengji' => function ($query) {
-                        $query->field('id, subject_id, defen, kaohao_id, defenlv, bweizhi, xweizhi, qweizhi')
-                            ->with([
-                                'subjectName' => function($q) {
-                                    $q->field('id, title');
-                                }
-                            ]);
-                    }
-                ])
-                ->find();
+        $kh = new \app\kaohao\model\SearchOne;         #该考号对应的考试信息。
+        $khInfo = $kh->oneKaohaoChengji($src['kaohao_id']);
+
+        $mf = array(); # 本次考试各学科分数线
+        foreach ($khInfo->banjiFenshuxian as $mf_k => $mf_v) {
+            $mf[$mf_v['subject_id']]['youxiu'] = $mf_v['youxiu'];
+            $mf[$mf_v['subject_id']]['jige'] = $mf_v['jige'];
+        }
 
         $data = array();
 
@@ -404,8 +416,18 @@ class OneStudentChengji extends BaseModel
                 ->field('max,min,subject_id')
                 ->column(('max,min'),'subject_id');
 
+        $cjDengji = true; # 开启成绩等级状态
+        $category = session('onlineCategory');
+        if($category == "student"){
+            $sys = new \app\system\model\SystemBase;
+            $sysInfo = $sys::sysInfo();
+            if($sysInfo->studefen === 0){
+                $cjDengji = false; # 开启成绩等级状态
+            }
+        }
+
         foreach ($khInfo->ksChengji as $key => $value) {
-            $data[] = [
+            $data[$key] = [
                 'id' => $value->id
                 ,'subject_name' => $value->subjectName->title
                 ,'subject_id' => $value->subject_id
@@ -417,6 +439,10 @@ class OneStudentChengji extends BaseModel
                 ,'max' => $schtjInfo[$value->subject_id]['max']
                 ,'min' => $schtjInfo[$value->subject_id]['min']
             ];
+            if($cjDengji === false)
+            {
+                $data[$key]['defen'] = $this->toDengji($mf[$value->subject_id], $value->defen);
+            }
         }
 
         return $data;
@@ -535,8 +561,6 @@ class OneStudentChengji extends BaseModel
 
         $oneCj = new \app\kaohao\model\SearchOne;
         $thisCj = $oneCj->oneKaohaoChengji($src['kaohao_id']);
-        // halt($thisCj->toArray());
-
 
         $xingming = $thisCj->cjStudent->xingming;
         $ksTitle = $thisCj->cjKaoshi->title;
@@ -766,7 +790,6 @@ class OneStudentChengji extends BaseModel
             }
 
         }
-
 
         // 与平均分同样多
         if($zhengfu['ling'] > 0)
@@ -1037,6 +1060,29 @@ class OneStudentChengji extends BaseModel
         }
 
         return $py;
+    }
+
+
+    // 将分数转换成等级
+    private function toDengji($fsx, $defen)
+    {
+        $defen = $defen * 1;
+        $djarr = excelColumnName();
+        $fsx = array_values($fsx);
+        $cnt = count($fsx);
+        arsort($fsx);
+        $dj = "";
+        foreach ($fsx as $key => $value) {
+            if($defen >= $value)
+            {
+                $dj = $djarr[$key];
+                continue;
+            }
+        }
+        if($dj == "" && isset($djarr[$cnt])){
+            $dj = $djarr[$cnt];
+        }
+        return $dj;
     }
 
 

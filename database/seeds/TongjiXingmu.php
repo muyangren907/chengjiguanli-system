@@ -591,7 +591,7 @@ class TongjiXingmu extends Seeder
             ,[
                 'title' => '年级位置'
                 ,'biaoshi' => 'xweizhi'
-                ,'tongji' => 1
+                ,'tongji' => 0
                 ,'paixu' => 6
                 ,'category_id' => 12205
             ]
@@ -605,7 +605,7 @@ class TongjiXingmu extends Seeder
             ,[
                 'title' => '区位置'
                 ,'biaoshi' => 'qweizhi'
-                ,'tongji' => 1
+                ,'tongji' => 0
                 ,'paixu' => 8
                 ,'category_id' => 12205
             ]
@@ -913,7 +913,7 @@ class TongjiXingmu extends Seeder
             ,[
                 'title' => '年级位置'
                 ,'biaoshi' => 'xweizhi'
-                ,'tongji' => 1
+                ,'tongji' => 0
                 ,'paixu' => 6
                 ,'category_id' => 12210
             ]
@@ -927,7 +927,7 @@ class TongjiXingmu extends Seeder
             ,[
                 'title' => '区位置'
                 ,'biaoshi' => 'qweizhi'
-                ,'tongji' => 1
+                ,'tongji' => 0
                 ,'paixu' => 8
                 ,'category_id' => 12210
             ]
@@ -964,7 +964,7 @@ class TongjiXingmu extends Seeder
             ,[
                 'title' => '年级位置'
                 ,'biaoshi' => 'xweizhi'
-                ,'tongji' => 1
+                ,'tongji' => 0
                 ,'paixu' => 6
                 ,'category_id' => 12208
             ]
@@ -974,65 +974,65 @@ class TongjiXingmu extends Seeder
                 ,'tongji' => 0
                 ,'paixu' => 7
                 ,'category_id' => 12208
-            ]
-            ,[
-                'title' => '区位置'
-                ,'biaoshi' => 'qweizhi'
-                ,'tongji' => 1
-                ,'paixu' => 8
-                ,'category_id' => 12208
-            ]
-
-            // 学生-各考试-网页
-            ,[
-                'title' => '得分率'
-                ,'biaoshi' => 'defenlv'
-                ,'tongji' => 0
-                ,'paixu' => 2
-                ,'category_id' => 12209
-            ]
-            ,[
-                'title' => '班排序'
-                ,'biaoshi' => 'bpaixu'
-                ,'tongji' => 0
-                ,'paixu' => 3
-                ,'category_id' => 12209
-            ]
-            ,[
-                'title' => '班位置'
-                ,'biaoshi' => 'bweizhi'
-                ,'tongji' => 0
-                ,'paixu' => 4
-                ,'category_id' => 12209
-            ]
-            ,[
-                'title' => '年级排序'
-                ,'biaoshi' => 'xpaixu'
-                ,'tongji' => 0
-                ,'paixu' => 5
-                ,'category_id' => 12209
-            ]
-            ,[
-                'title' => '年级位置'
-                ,'biaoshi' => 'xweizhi'
-                ,'tongji' => 0
-                ,'paixu' => 6
-                ,'category_id' => 12209
-            ]
-            ,[
-                'title' => '区排序'
-                ,'biaoshi' => 'qpaixu'
-                ,'tongji' => 0
-                ,'paixu' => 7
-                ,'category_id' => 12209
             ]
             ,[
                 'title' => '区位置'
                 ,'biaoshi' => 'qweizhi'
                 ,'tongji' => 0
                 ,'paixu' => 8
-                ,'category_id' => 12209
+                ,'category_id' => 12208
             ]
+
+            // 学生-各考试-网页
+            // ,[
+            //     'title' => '得分率'
+            //     ,'biaoshi' => 'defenlv'
+            //     ,'tongji' => 0
+            //     ,'paixu' => 2
+            //     ,'category_id' => 12209
+            // ]
+            // ,[
+            //     'title' => '班排序'
+            //     ,'biaoshi' => 'bpaixu'
+            //     ,'tongji' => 0
+            //     ,'paixu' => 3
+            //     ,'category_id' => 12209
+            // ]
+            // ,[
+            //     'title' => '班位置'
+            //     ,'biaoshi' => 'bweizhi'
+            //     ,'tongji' => 0
+            //     ,'paixu' => 4
+            //     ,'category_id' => 12209
+            // ]
+            // ,[
+            //     'title' => '年级排序'
+            //     ,'biaoshi' => 'xpaixu'
+            //     ,'tongji' => 0
+            //     ,'paixu' => 5
+            //     ,'category_id' => 12209
+            // ]
+            // ,[
+            //     'title' => '年级位置'
+            //     ,'biaoshi' => 'xweizhi'
+            //     ,'tongji' => 0
+            //     ,'paixu' => 6
+            //     ,'category_id' => 12209
+            // ]
+            // ,[
+            //     'title' => '区排序'
+            //     ,'biaoshi' => 'qpaixu'
+            //     ,'tongji' => 0
+            //     ,'paixu' => 7
+            //     ,'category_id' => 12209
+            // ]
+            // ,[
+            //     'title' => '区位置'
+            //     ,'biaoshi' => 'qweizhi'
+            //     ,'tongji' => 0
+            //     ,'paixu' => 8
+            //     ,'category_id' => 12209
+            // ]
     ];
         // 保存数据
         $this->table('tongji_xiangmu')->insert($rows)->save();

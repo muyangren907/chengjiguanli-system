@@ -85,7 +85,7 @@ class SearchOne extends BaseModel
                 }
             ])
             ->field('id ,kaoshi_id, student_id, ruxuenian, nianji, banji_id, paixu')
-            ->append(['banjiTitle'])
+            ->append(['banjiTitle', 'banjiFenshuxian'])
             ->select();
 
         return $stuCj;
@@ -127,7 +127,7 @@ class SearchOne extends BaseModel
                 }
             ])
             ->field('id, kaoshi_id, student_id, ruxuenian, nianji, banji_id, paixu')
-            ->append(['banjiTitle'])
+            ->append(['banjiTitle', 'banjiFenshuxian'])
             ->find();
 
         return $stuCj;

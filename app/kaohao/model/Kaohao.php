@@ -57,6 +57,38 @@ class Kaohao extends BaseModel
     }
 
 
+    // 获取该班级各学科成绩满分
+    public function getBanjiFenshuxianAttr()
+    {
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $srcfrom = [
+            'kaoshi_id' => $this->kaoshi_id
+            ,'ruxuenian' => $this->ruxuenian
+        ];
+
+        // 初始化参数
+        $src = array(
+            'kaoshi_id' => '0'
+            ,'ruxuenian' => array()
+            ,'subject_id' => array()
+            ,'searchval' => ''
+        );
+        $src = array_cover($srcfrom, $src);
+        $src['ruxuenian'] = strToarray($src['ruxuenian']);
+        $src['subject_id'] = strToarray($src['subject_id']);
+
+        $manfen = $ksset->search($src)
+                ->visible([
+                    'subject_id'
+                    ,'youxiu'
+                    ,'jige'
+                ])
+                ->toArray();
+
+        return $manfen;
+    }
+
+
     // 获取不带年级的班级名
     public function getBanTitleAttr()
     {
@@ -76,7 +108,6 @@ class Kaohao extends BaseModel
         }
         return $title;
     }
-
 
 
     // 获取参加考试班级数字名
