@@ -339,12 +339,12 @@ class Index extends AdminBase
             $sheet->setCellValue($colname[$i] . $row_temp, $value['sex']);
             $i++;
             foreach ($subject_id as $k => $val) {
-                if(isset($value[$val['lieming']]['defen']))
+                if(isset($value[$val['lieming'] . 'defen']))
                 {
-                    $sheet->setCellValue($colname[$i] . $row_temp, $value[$val['lieming']]['defen']);
+                    $sheet->setCellValue($colname[$i] . $row_temp, $value[$val['lieming'] . 'defen']);
                     $i++;
                     foreach ($tjxm_left as $tjxml_k => $tjxml_v) {
-                        $sheet->setCellValue($colname[$i] . $row_temp, $value[$val['lieming']][$tjxml_v['biaoshi']]);
+                        $sheet->setCellValue($colname[$i] . $row_temp, $value[$val['lieming'] . $tjxml_v['biaoshi']]);
                         $i++;
                     }
                 }
