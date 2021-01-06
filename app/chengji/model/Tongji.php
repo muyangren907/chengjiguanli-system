@@ -37,7 +37,9 @@ class Tongji extends BaseModel
             ,'biaozhuncha' => null
             ,'avg' => null
             ,'youxiu' => null
+            ,'youxiulv' => null
             ,'jige' => null
+            ,'jigelv' => null
             ,'sifenwei' => [
                 '0' => null
                 ,'1' => null
@@ -84,7 +86,9 @@ class Tongji extends BaseModel
                 $temp['biaozhuncha'] = round($this->getVariance($temp['avg'], $cjcol, true), 2);
                 $temp['avg'] = round($temp['avg'], 2);
                 $temp['youxiu'] = $this->rate($cjcol, $value['fenshuxian']['youxiu']);
+                $temp['youxiulv'] = round($temp['youxiu'] / $temp['chengji_cnt'] * 100, 2);
                 $temp['jige'] = $this->rate($cjcol, $value['fenshuxian']['jige']);
+                $temp['jigelv'] = round($temp['jige'] / $temp['chengji_cnt'] * 100, 2);
                 $temp['max'] = max($cjcol);
                 $temp['min'] = min($cjcol);
                 $temp['sifenwei'] = $this->myquartile($cjcol);

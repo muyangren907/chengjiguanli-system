@@ -422,7 +422,7 @@ class OneStudentChengji extends BaseModel
             $sys = new \app\system\model\SystemBase;
             $sysInfo = $sys::sysInfo();
             if($sysInfo->studefen === 0){
-                $cjDengji = false; # 开启成绩等级状态
+                $cjDengji = false;  # 开启成绩等级状态
             }
         }
 
@@ -1064,7 +1064,7 @@ class OneStudentChengji extends BaseModel
 
 
     // 将分数转换成等级
-    private function toDengji($fsx, $defen)
+    public function toDengji($fsx, $defen)
     {
         $defen = $defen * 1;
         $djarr = excelColumnName();

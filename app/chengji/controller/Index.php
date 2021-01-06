@@ -508,6 +508,7 @@ class Index extends AdminBase
         $chengjiinfo = $more->srcChengjiList($src);
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $subject_id = $ksset->srcSubject($src);
+        $onestucj = new \app\tools\model\OneStudentChengji;
 
         $tj = new \app\chengji\model\Tongji;
         $srcAll = [
@@ -528,6 +529,23 @@ class Index extends AdminBase
         $njlist = nianJiNameList('str', $ks->getData('bfdate'));
         $nianji = $njlist[$src['ruxuenian']];
         $tabletitle = $ks->title . ' ' . $schoolname . ' ' . $nianji . ' ' . '学生成绩条';
+
+        $cjDengji = true; # 开启成绩等级状态
+        $sys = new \app\system\model\SystemBase;
+        $sysInfo = $sys::sysInfo();
+        if($sysInfo->studefen === 0){
+            $cjDengji = false; # 开启成绩等级状态
+        }
+
+        $mf = array(); # 本次考试各学科分数线
+        foreach ($subject_id as $mf_k => $mf_v) {
+            $mf[$mf_v['id']]['youxiu'] = $mf_v['fenshuxian']['youxiu'];
+            $mf[$mf_v['id']]['jige'] = $mf_v['fenshuxian']['jige'];
+        }
+
+        $tjxm_stu = srcTjxm(12211);   # 统计项目
+        $tjxm_bj = srcTjxm(12212);   # 统计项目
+        $colname = excelColumnName();
 
         // set_time_limit(0);
         // 创建表格
@@ -575,18 +593,20 @@ class Index extends AdminBase
             $sheet->setCellValue('C' . ($row + 1), $value['student_xingming']);
             $sheet->setCellValue('D' . $row, '学科');
             $sheet->setCellValue('E' . $row, '得分');
-            $sheet->setCellValue('F' . $row, '平均分');
-            $sheet->setCellValue('G' . $row, '优秀率%');
-            $sheet->setCellValue('H' . $row, '及格率%');
-            $sheet->setCellValue('I' . $row, '最高分');
-            $sheet->setCellValue('J' . $row, '%25');
-            $sheet->setCellValue('K' . $row, '%50');
-            $sheet->setCellValue('L' . $row, '%75');
+            $col = 5;
+            foreach ($tjxm_stu as $tjxmstu_k => $tjxmstu_v) {
+                $sheet->setCellValue($colname[$col] . $row, $tjxmstu_v['title']);
+                $col++;
+            }
+            foreach ($tjxm_bj as $tjxmbf_k => $tjxmbf_v) {
+                $sheet->setCellValue($colname[$col] . $row, $tjxmbf_v['title']);
+                $col++;
+            }
             $row = $row + 1 ;
 
             // 写入成绩
             foreach ($subject_id as $k => $val) {
-                $xkcnt = $njtj['cj'][$val['lieming']]['xkcnt'];
+                $xkcnt = $njtj['cj'][$val['lieming']]['chengji_cnt'];
                 if ($xkcnt > 0 ) {
                     $youxiulv = round($njtj['cj'][$val['lieming']]['youxiu'] / $xkcnt * 100, 2);
                     $jigelv = round($njtj['cj'][$val['lieming']]['jige'] / $xkcnt * 100, 2);
@@ -595,18 +615,30 @@ class Index extends AdminBase
                     $jigelv = 0;
                 }
                 $sheet->setCellValue('D' . ($row + $k), $val['title']);
-                $sheet->setCellValue('E' . ($row + $k), $value[$val['lieming']]);   # 得分
-                $sheet->setCellValue('F' . ($row + $k), $njtj['cj'][$val['lieming']]['avg']);
-                $sheet->setCellValue('G' . ($row + $k), $youxiulv);
-                $sheet->setCellValue('H' . ($row + $k), $jigelv);
-                $sheet->setCellValue('I' . ($row + $k), $njtj['cj'][$val['lieming']]['max']);
-                $sheet->setCellValue('J' . ($row + $k), $njtj['cj'][$val['lieming']]['sifenwei'][0]);
-                $sheet->setCellValue('K' . ($row + $k), $njtj['cj'][$val['lieming']]['sifenwei'][1]);
-                $sheet->setCellValue('L' . ($row + $k), $njtj['cj'][$val['lieming']]['sifenwei'][2]);
+                $df = '';
+
+                if($cjDengji === false)
+                {
+                    $df = $onestucj->toDengji($mf[$val['id']], $value[$val['lieming'] . 'defen']);
+                }else{
+                    $df = $value[$val['lieming'] . 'defen'];
+                }
+                $sheet->setCellValue('E' . ($row + $k), $df);   # 得分
+
+                $col = 5;
+
+                foreach ($tjxm_stu as $tjxmstu_k => $tjxmstu_v) {
+                    $sheet->setCellValue($colname[$col] . ($row + $k), $value[$val['lieming'] . $tjxmstu_v['biaoshi']]);
+                    $col++;
+                }
+                foreach ($tjxm_bj as $tjxmbj_k => $tjxmbj_v) {
+                    $sheet->setCellValue($colname[$col] . ($row + $k), $njtj['cj'][$val['lieming']][$tjxmbj_v['biaoshi']]);
+                    $col++;
+                }
             }
 
             // 设置格式
-            $sheet->getStyle('A' . ($row - 1) . ':L' . ($row + $rows - 1))->applyFromArray($styleArray);
+            $sheet->getStyle('A' . ($row - 1) . ':' . $colname[$col - 1] . ($row + $rows - 1))->applyFromArray($styleArray);
             $row = $row + $rows + 1 ;
         }
 

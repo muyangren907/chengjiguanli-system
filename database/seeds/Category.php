@@ -288,12 +288,14 @@ class Category extends Seeder
                 ['id' => 12202,'title' => '管理员-各班级-下载','p_id' => 122,'paixu' => 2,'isupdate' => 0],
                 ['id' => 12203,'title' => '管理员-各学校-网页','p_id' => 122,'paixu' => 3,'isupdate' => 0],
                 ['id' => 12204,'title' => '管理员-各学校-下载','p_id' => 122,'paixu' => 4,'isupdate' => 0],
-                ['id' => 12205,'title' => '管理员-学生-网页','p_id' => 122,'paixu' => 5,'isupdate' => 0],
-                ['id' => 12206,'title' => '管理员-学生-下载右','p_id' => 122,'paixu' => 6,'isupdate' => 0],
+                ['id' => 12205,'title' => '管理员-学生成绩列表-网页','p_id' => 122,'paixu' => 5,'isupdate' => 0],
+                ['id' => 12206,'title' => '管理员-学生成绩列表-下载右','p_id' => 122,'paixu' => 6,'isupdate' => 0],
                 ['id' => 12207,'title' => '教师-各学科-网页','p_id' => 122,'paixu' => 7,'isupdate' => 0],
                 ['id' => 12208,'title' => '教师-各学生-网页','p_id' => 122,'paixu' => 8,'isupdate' => 0],
                 ['id' => 12209,'title' => '学生-各考试-网页','p_id' => 122,'paixu' => 9,'isupdate' => 0,'status'=>0],
-                ['id' => 12210,'title' => '管理员-学生-下载左','p_id' => 122,'paixu' => 10,'isupdate' => 0],
+                ['id' => 12210,'title' => '管理员-学生成绩列表-下载左','p_id' => 122,'paixu' => 10,'isupdate' => 0],
+                ['id' => 12211,'title' => '管理员-学生成绩列表-成绩条(学生)','p_id' => 122,'paixu' => 10,'isupdate' => 0],
+                ['id' => 12212,'title' => '管理员-学生成绩列表-成绩条(班级)','p_id' => 122,'paixu' => 10,'isupdate' => 0],
         ];
         // 保存数据
         $this->table('category')->insert($rows)->save();
