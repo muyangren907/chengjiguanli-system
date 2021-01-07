@@ -214,16 +214,26 @@ class Chengji extends BaseModel
             return true;
         }
 
-        asort($cj);
+        arsort($cj);
         $khids = array_keys($cj);   # 获取考号即键值
         $data = array();    # 新数据容器
+        $mc = 1;
 
         foreach ($khids as $key => $value) {
-            $data[$key]['id'] = $value;
-            $data[$key][$col[0]] = $cnt - $key;
-            $data[$key][$col[1]] = round(($key) / $cnt * 100, 2);
+            if($cnt == 1)
+            {
+                $data[$key]['id'] = $value;
+                $data[$key][$col[0]] = 1;
+                $data[$key][$col[1]] = 100;
+            }else{
+                $data[$key]['id'] = $value;
+                $data[$key][$col[0]] = $mc;
+                $data[$key][$col[1]] = round(($cnt - $mc) / ($cnt - 1) * 100, 2);
+            }
+            $mc++;
         }
         $temp = $this->saveAll($data);
+
 
         return true;
     }
