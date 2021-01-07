@@ -41,6 +41,7 @@ class Index extends AdminBase
                 ,'field' => 'id'
                 ,'order' => 'desc'
                 ,'searchval' => ''
+                ,'user_group' => 'admin'
             ], 'POST');
         // 根据条件查询数据
         $ks = new KS;
@@ -101,6 +102,9 @@ class Index extends AdminBase
         if(!$result){
             return json(['msg' => $msg, 'val' => 0]);
         }
+        $list['user_id'] = session('user_id');
+        $list['user_group'] = 'admin';
+        // $list['jibie_id'] = 1;
 
         // 保存数据
         $ks = new KS();

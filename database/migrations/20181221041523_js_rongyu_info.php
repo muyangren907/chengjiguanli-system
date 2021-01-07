@@ -26,7 +26,7 @@ class JsRongyuInfo extends Migrator
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function up()
+    public function change()
     {
         // 定义数据表名称
         $table = $this->table('js_rongyu_info');

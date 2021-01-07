@@ -3,7 +3,7 @@
 use think\migration\Migrator;
 use think\migration\db\Column;
 
-class DwRongyuCanyu extends Migrator
+class KaoshiUp extends Migrator
 {
     /**
      * Change Method.
@@ -26,19 +26,26 @@ class DwRongyuCanyu extends Migrator
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change()
+    public function up()
     {
         // 定义数据表名称
-        $table = $this->table('dw_rongyu_canyu');
+        $table = $this->table('kaoshi');
 
-        // 添加当前表字段
         $table
-            ->addColumn('rongyu_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'荣誉id'])
-            ->addColumn('teacher_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'获奖单位'])
-            ->addColumn('create_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'创建时间'])
-            ->addColumn('update_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'更新时间'])
-            ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
-            ->create();
+            ->addColumn('user_id','integer',array('after' => 'category_id'),['limit'=>11,'default'=>0,'null'=>false,'comment'=>'用户ID'])
+            ->addColumn('user_group','string',array('after' => 'user_id'),['limit'=>25,'default'=>'a','null'=>false,'comment'=>'用户组'])
+            ->addColumn('jibie_id','integer',array('after' => 'user_group'),['limit'=>11,'default'=>1,'null'=>false,'comment'=>'级别ID'])
+            ->update();
+    }
 
+
+    public function down()
+    {
+        // 定义数据表名称
+        $table = $this->table('kaoshi');
+
+        $table
+            ->removeColumn('user_id', 'user_group', 'jibie_id')
+            ->update();
     }
 }
