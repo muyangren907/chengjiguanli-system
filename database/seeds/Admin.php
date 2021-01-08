@@ -14,7 +14,7 @@ class Admin extends Seeder
      */
     public function run()
     {
-        // 初始化超级管理员
+        // 定义表的名称
         $rows = [
             [
                 'id'        =>  1,
@@ -30,10 +30,17 @@ class Admin extends Seeder
                 'school_id'    =>  1,
                 'password'  =>  '$apr1$RSUodBwI$zOhVq9RQWfQDOW2sbeCDS1',
             ],
+        ];
 
-    ];
+        $serRows = $this->fetchAll('select * from cj_admin');
+        if(is_array($serRows) && count($serRows) > 0)
+        {
+            $rows = array();
+            return true;
+        }
+        
         // 保存数据
-        $this->table('admin')->insert($rows)->save();
+        $this->table('admin')->insert($rows)->update();
     }
 
 }

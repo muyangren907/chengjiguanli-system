@@ -45,7 +45,9 @@ class KaoshiUp extends Migrator
         $table = $this->table('kaoshi');
 
         $table
-            ->removeColumn('user_id', 'user_group', 'jibie_id')
+            ->removeColumn('user_id')
+            ->removeColumn('user_group')
+            ->removeColumn('jibie_id')
             ->update();
     }
 }

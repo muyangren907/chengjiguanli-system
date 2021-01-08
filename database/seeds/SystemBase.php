@@ -28,6 +28,14 @@ class SystemBase extends Seeder
             'classalias'    =>  0,
             'studefen' =>  1,
         ];
+
+        $serRows = $this->fetchAll('select * from cj_system_base');
+        if(is_array($serRows) && count($serRows) > 0)
+        {
+            $rows = [];
+            return true;
+        }
+
         // 保存数据
         $this->table('system_base')->insert($rows)->save();
     }

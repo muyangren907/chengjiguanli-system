@@ -191,9 +191,15 @@ class Subject extends Seeder
             ],
 
         ];
+
+        $serRows = $this->fetchAll('select * from cj_subject');
+        if(is_array($serRows) && count($serRows) > 0)
+        {
+            $rows = [];
+            return true;
+        }
+
         // 保存数据
-        $this->table('subject')
-            ->insert($rows)
-            ->save();
+        $this->table('subject')->insert($rows)->save();
     }
 }

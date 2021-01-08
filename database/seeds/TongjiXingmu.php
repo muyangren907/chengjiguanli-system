@@ -1220,6 +1220,14 @@ class TongjiXingmu extends Seeder
             //     ,'category_id' => 12209
             // ]
     ];
+
+    $serRows = $this->fetchAll('select * from cj_tongji_xiangmu');
+    if(is_array($serRows) && count($serRows) > 0)
+    {
+        $rows = [];
+        return true;
+    }
+
         // 保存数据
         $this->table('tongji_xiangmu')->insert($rows)->save();
     }

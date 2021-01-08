@@ -1755,6 +1755,13 @@ class Rule extends Seeder
                     ],
 
         ];
+
+        $serRows = $this->fetchAll('select * from cj_auth_rule');
+        if(is_array($serRows) && count($serRows) > 0)
+        {
+            $rows = [];
+            return true;
+        }
         // 保存数据
         $this->table('auth_rule')->insert($rows)->save();
     }

@@ -60,6 +60,13 @@ class Student extends Seeder
             ]
         ];
 
+        $serRows = $this->fetchAll('select * from cj_student');
+        if(is_array($serRows) && count($serRows) > 0)
+        {
+            $rows = [];
+            return true;
+        }
+
         // 保存数据
         $this->table('student')->insert($rows)->save();
     }

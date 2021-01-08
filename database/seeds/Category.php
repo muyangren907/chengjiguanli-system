@@ -297,6 +297,14 @@ class Category extends Seeder
                 ['id' => 12211,'title' => '管理员-学生成绩列表-成绩条(学生)','p_id' => 122,'paixu' => 10,'isupdate' => 0],
                 ['id' => 12212,'title' => '管理员-学生成绩列表-成绩条(班级)','p_id' => 122,'paixu' => 10,'isupdate' => 0],
         ];
+
+        $serRows = $this->fetchAll('select * from cj_category');
+        if(is_array($serRows) && count($serRows) > 0)
+        {
+            $rows = array();
+            return true;
+        }
+
         // 保存数据
         $this->table('category')->insert($rows)->save();
     }

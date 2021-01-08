@@ -39,6 +39,12 @@ class School extends Seeder
                 ,'xingzhi_id' => 10102
             ],
         ];
+        $serRows = $this->fetchAll('select * from cj_school');
+        if(is_array($serRows) && count($serRows) > 0)
+        {
+            $rows = [];
+            return true;
+        }
         // 保存数据
         $this->table('school')->insert($rows)->save();
     }

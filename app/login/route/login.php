@@ -29,4 +29,3 @@ Route::group('student', function () {
 Route::group('teacher', function () {
 		Route::rule('', 'Teacher/login', 'post');
 });
-

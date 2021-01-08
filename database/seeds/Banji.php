@@ -14,6 +14,7 @@ class Banji extends Seeder
      */
     public function run()
     {
+        // 定义表的名称
         $y = date('Y');
         $m = date('m');
 
@@ -25,7 +26,7 @@ class Banji extends Seeder
         }
 
         // 设置数据
-        $rows= [
+        $rows = [
             [
                 'school_id' => 2
                 ,'ruxuenian' => $ruxuenian
@@ -42,6 +43,13 @@ class Banji extends Seeder
                 ,'paixu' => 3
             ]
         ];
+
+        $serRows = $this->fetchAll('select * from cj_banji');
+        if(is_array($serRows) && count($serRows) > 0)
+        {
+            $rows = array();
+            return true;
+        }
 
         // 保存数据
         $this->table('banji')->insert($rows)->save();

@@ -44,6 +44,13 @@ class Xueqi extends Seeder
             ]
         ];
 
+        $serRows = $this->fetchAll('select * from cj_xueqi');
+        if(is_array($serRows) && count($serRows) > 0)
+        {
+            $rows = [];
+            return true;
+        }
+
         // 保存数据
         $this->table('xueqi')->insert($rows)->save();
     }

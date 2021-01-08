@@ -29,6 +29,13 @@ class Teacher extends Seeder
             ]
         ];
 
+        $serRows = $this->fetchAll('select * from cj_teacher');
+        if(is_array($serRows) && count($serRows) > 0)
+        {
+            $rows = [];
+            return true;
+        }
+
         // 保存数据
         $this->table('teacher')->insert($rows)->save();
     }

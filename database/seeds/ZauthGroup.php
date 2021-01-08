@@ -2,7 +2,7 @@
 
 use think\migration\Seeder;
 
-class AuthGroup extends Seeder
+class ZauthGroup extends Seeder
 {
     /**
      * Run Method.
@@ -14,10 +14,8 @@ class AuthGroup extends Seeder
      */
     public function run()
     {
-        $auth = new \app\admin\model\AuthRule;
-        $authList = $auth
-                ->where('status', 1)
-                ->column('id');
+        $authList = $this->fetchAll('select * from cj_auth_rule where status = 1');
+        $authList = array_column($authList, 'id');
         $authList = implode(',', $authList);
 
         // 设置数据
@@ -28,6 +26,13 @@ class AuthGroup extends Seeder
                 ,'miaoshu' => '拥有所有权限'
             ]
         ];
+
+        $serRows = $this->fetchAll('select * from cj_auth_group');
+        if($rows[0]['rules'] == '' || (is_array($serRows) && count($serRows) > 0))
+        {
+            $rows = array();
+            return true;
+        }
 
         // 保存数据
         $this->table('auth_group')->insert($rows)->save();
