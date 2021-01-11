@@ -21,10 +21,10 @@ Route::group('index', function () {
     Route::rule('update/<id>', 'Index/update', 'put');			# 更新信息
     Route::rule('delete/<id>', 'Index/delete', 'delete');		# 删除信息
     Route::rule('status', 'Index/setStatus', 'post');		# 删除信息
-    Route::rule('resetpassword/<id>', 'Index/resetpassword', 'post');		# 重置密码
+    Route::rule('resetpassword/<id>', 'Index/resetPassword', 'post');		# 重置密码
     Route::rule('editpassword', 'Index/editPassword', 'get');		# 修改密码
     Route::rule('updatepassword/<id>', 'Index/updatePassword', 'put');		# 更新密码
-    Route::rule('myinfo', 'Index/myinfo', 'get');		# 用户信息
+    Route::rule('myinfo', 'Index/myInfo', 'get');		# 用户信息
     Route::rule('adminlist', 'Index/adminList', 'post');       # 用户信息
 });
 

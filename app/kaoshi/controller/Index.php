@@ -93,6 +93,8 @@ class Index extends AdminBase
             ,'bfdate'
             ,'enddate'
             ,'zuzhi_id'
+            ,'user_group' => session('onlineCategory')
+            ,'user_id' => session('user_id')
         ], 'post');
 
         // 验证表单数据
@@ -102,9 +104,6 @@ class Index extends AdminBase
         if(!$result){
             return json(['msg' => $msg, 'val' => 0]);
         }
-        $list['user_id'] = session('user_id');
-        $list['user_group'] = 'admin';
-        // $list['jibie_id'] = 1;
 
         // 保存数据
         $ks = new KS();
@@ -173,9 +172,6 @@ class Index extends AdminBase
         // 返回信息
         return json($data);
     }
-
-
-
 
 
     // 设置成绩是否允许操作

@@ -149,7 +149,7 @@ class Index extends AdminBase
 
 
     // 读取用户信息
-    public function myinfo()
+    public function myInfo()
     {
         $id = session('user_id');
         $ad = new AD;
@@ -289,7 +289,7 @@ class Index extends AdminBase
 
 
     // 重置密码
-    public function resetpassword($id)
+    public function resetPassword($id)
     {
         // 生成密码
         $md5 = new APR1_MD5();
