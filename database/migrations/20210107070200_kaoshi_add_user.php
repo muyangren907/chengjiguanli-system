@@ -3,7 +3,7 @@
 use think\migration\Migrator;
 use think\migration\db\Column;
 
-class KaoshiUp extends Migrator
+class KaoshiAddUser extends Migrator
 {
     /**
      * Change Method.
@@ -45,7 +45,7 @@ class KaoshiUp extends Migrator
         $table = $this->table('kaoshi');
 
         $table
-            ->removeColumn('jibie_id')
+            ->removeColumn('user_id')
             ->removeColumn('user_group')
             ->removeColumn('jibie_id')
             ->update();
