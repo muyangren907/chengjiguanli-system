@@ -32,9 +32,9 @@ class KaoshiUp extends Migrator
         $table = $this->table('kaoshi');
 
         $table
-            ->addColumn('user_id','integer',array('after' => 'category_id'),['limit'=>11,'default'=>0,'null'=>false,'comment'=>'用户ID'])
-            ->addColumn('user_group','string',array('after' => 'user_id'),['limit'=>25,'default'=>'a','null'=>false,'comment'=>'用户组'])
-            ->addColumn('jibie_id','integer',array('after' => 'user_group'),['limit'=>11,'default'=>1,'null'=>false,'comment'=>'级别ID'])
+            ->addColumn('user_id','integer',['after' => 'category_id','limit'=>11,'default'=>0,'null'=>false,'comment'=>'用户ID'])
+            ->addColumn('user_group','string',['after' => 'user_id','limit'=>25,'default'=>'a','null'=>false,'comment'=>'用户组'])
+            ->addColumn('jibie_id','integer',['after' => 'user_group','limit'=>11,'default'=>1,'null'=>false,'comment'=>'级别ID'])
             ->update();
     }
 
@@ -45,7 +45,9 @@ class KaoshiUp extends Migrator
         $table = $this->table('kaoshi');
 
         $table
-            ->removeColumn('user_id', 'user_group', 'jibie_id')
+            ->removeColumn('jibie_id')
+            ->removeColumn('user_group')
+            ->removeColumn('jibie_id')
             ->update();
     }
 }
