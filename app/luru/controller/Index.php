@@ -523,7 +523,15 @@ class Index extends BaseController
                 $sheet->setCellValue('A' . $i, $i - 3);
                 $sheet->setCellValue('B' . $i, $md5::encrypt((string)$kh->id, 'dlbz'));
                 $sheet->setCellValue('C' . $i, $bj->banjiTitle);
-                $sheet->setCellValue('D' . $i, $kh->cjStudent->xingming);
+                $sheet->setCellValue('D' . $i, $kh->cjStudent['xingming']);
+                // if(isset($kh->cjStudent->xingming))
+                // {
+                //     $sheet->setCellValue('D' . $i, $kh->cjStudent->xingming);
+                // }else{
+                //     halt($kh->toArray());
+                //     $sheet->setCellValue('D' . $i, '学生已经被删除');
+                // }
+
                 $i ++;
             }
         }
