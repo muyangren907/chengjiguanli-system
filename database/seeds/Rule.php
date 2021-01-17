@@ -1282,6 +1282,13 @@ class Rule extends Seeder
                     ,'paixu' => 7
                     ,'pid'  => 706
                 ],
+            ['id' => 707
+                ,'title' => '删除演示数据'
+                ,'name' => 'system/systembase/resetmayi'
+                ,'paixu' => 7
+                ,'pid'  => 7
+                ,'ismenu'  => 1
+            ],
 
             /*======================================================================
              * 考试管理

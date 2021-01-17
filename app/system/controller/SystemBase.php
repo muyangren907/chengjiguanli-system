@@ -95,4 +95,30 @@ class SystemBase extends AdminBase
         return json($data);
     }
 
+
+    // 系统初始化
+    public function resetMayi()
+    {
+        // 删除班级
+        $bjObj = new \app\teach\model\Banji;
+        $bjList = $bjObj->where('id', '>', 0)->select();
+        $bj = $bjList->force()->delete();
+
+        // 删除学生信息
+        $stuObj = new \app\student\model\Student;
+        $stuList = $stuObj->where('id', '>', 0)->select();
+        $stu = $stuList->force()->delete();
+
+        // 删除教师信息
+        $terObj = new \app\teacher\model\Teacher;
+        $terList = $terObj->where('id', '>', 0)->select();
+        $ter = $terList->force()->delete();
+
+        $bj && $stu && $ter ? $data = ['msg' => '添加成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
+
+        // 返回信息
+        return json($data);
+    }
+
 }
