@@ -3,7 +3,7 @@
 use think\migration\Migrator;
 use think\migration\db\Column;
 
-class KaoshiUp extends Migrator
+class KaoshiAddUser extends Migrator
 {
     /**
      * Change Method.
@@ -32,8 +32,9 @@ class KaoshiUp extends Migrator
         $table = $this->table('kaoshi');
 
         $table
-            ->addColumn('user_id','integer',['after' => 'category_id', 'limit'=>11,'default'=>0,'null'=>false,'comment'=>'用户ID'])
-            ->addColumn('user_group','string',['after' => 'user_id', 'limit'=>25,'default'=>'admin','null'=>false,'comment'=>'用户组'])
+            ->addColumn('user_id','integer',['after' => 'category_id','limit'=>11,'default'=>0,'null'=>false,'comment'=>'用户ID'])
+            ->addColumn('user_group','string',['after' => 'user_id','limit'=>25,'default'=>'a','null'=>false,'comment'=>'用户组'])
+            ->addColumn('jibie_id','integer',['after' => 'user_group','limit'=>11,'default'=>1,'null'=>false,'comment'=>'级别ID'])
             ->update();
     }
 
@@ -46,6 +47,7 @@ class KaoshiUp extends Migrator
         $table
             ->removeColumn('user_id')
             ->removeColumn('user_group')
+            ->removeColumn('jibie_id')
             ->update();
     }
 }

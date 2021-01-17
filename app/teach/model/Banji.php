@@ -295,16 +295,14 @@ class Banji extends BaseModel
                 break;
             }
         }
+         // 去掉年级，获取班级
+        $str = str_replace($njlist[$nj], '', $str);
         // 获取班级
         foreach ($bjlist as $key => $value) {
-            $bj = stripos($str, $value, 0);
-            $bjLen = strlen($value);
-            if(($bj + $bjLen) === $len)
-            {
+            if ($value === $str) {
                 $bj = $key;
                 break;
             }
-
         }
 
         if($nj > 0 && $bj > 0)

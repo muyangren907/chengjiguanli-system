@@ -216,7 +216,7 @@ class Student extends BaseModel
             // 获取电子表格中身份证号
             $xlsStuList = array_column($value, 2);
             $xlsStuList = array_map('strtoupper', $xlsStuList);  # 将小写字母转换成大写字母
-            $xlsStuList = array_map('trim', $xlsStuList);  # 将大写字母转换成小写字母
+            $xlsStuList = array_map('trim', $xlsStuList);  # 过滤空格
 
             // 获取数据库中身份证号
             $serStulist = self::withTrashed()
@@ -230,8 +230,10 @@ class Student extends BaseModel
             $add = array_diff($xlsStuList, $sfzh);
             $del = array_diff($sfzh, $xlsStuList);
 
+            
+
             // 从新增的数据中查找是否有已经存在，但是班级不正确的信息。
-            $add_temp = self::onlyTrashed()
+            $add_temp = self::withTrashed()
                         ->where('shenfenzhenghao', 'in', $add)
                         ->field('shenfenzhenghao')
                         ->column('shenfenzhenghao', 'id');
@@ -259,7 +261,7 @@ class Student extends BaseModel
                 $shoupin = $pinyin->abbr($value[$jj_k][1]);
 
                 $oneStu->xingming = $value[$jj_k][1];
-                $oneStu->banji = $key;
+                $oneStu->banji_id = $key;
                 $oneStu->quanpin = trim(strtolower(str_replace(' ', '', $quanpin)));
                 $oneStu->shoupin = trim(strtolower(str_replace(' ', '', $shoupin)));
                 $oneStu->save();
