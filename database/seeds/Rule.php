@@ -1232,6 +1232,13 @@ class Rule extends Seeder
                     ,'paixu' => 1
                     ,'pid'  => 705
                 ],
+                // // 下次要添加上
+                // ['id' => 70502
+                //     ,'title' => '初始化'
+                //     ,'name' => 'system/systembase/resetmayi'
+                //     ,'paixu' => 2
+                //     ,'pid'  => 705
+                // ],
             ['id' => 706
                 ,'title' => '统计项目'
                 ,'name' => 'kaoshi/tongjixiangmu/index'
@@ -1282,13 +1289,7 @@ class Rule extends Seeder
                     ,'paixu' => 7
                     ,'pid'  => 706
                 ],
-            ['id' => 707
-                ,'title' => '删除演示数据'
-                ,'name' => 'system/systembase/resetmayi'
-                ,'paixu' => 7
-                ,'pid'  => 7
-                ,'ismenu'  => 1
-            ],
+
 
             /*======================================================================
              * 考试管理

@@ -29,12 +29,11 @@ class RuleAddsystemreset extends Migrator
     public function up()
     {
         $singleRow = [
-            ['id' => 707
-                ,'title' => '删除演示数据'
+            ['id' => 70502
+                ,'title' => '初始化'
                 ,'name' => 'system/systembase/resetmayi'
-                ,'paixu' => 7
-                ,'pid'  => 7
-                ,'ismenu'  => 1
+                ,'paixu' => 2
+                ,'pid'  => 705
             ],
         ];
 

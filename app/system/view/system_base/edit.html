@@ -51,11 +51,11 @@
           </div>
           <div class="layui-form-item">
               <label for="classmax" class="layui-form-label">
-                  <span class="x-red">*</span>班级最大数
+                  <span class="x-red">*</span>最多班级数
               </label>
               <div class="layui-input-block">
                   <input type="text" id="classmax" name="classmax" required="true" lay-verify="required"
-                  autocomplete="off" class="layui-input" value="{$list.data.classmax|default=''}">
+                  autocomplete="off" placeholder="各年级的最多班级数" class="layui-input" value="{$list.data.classmax|default=''}">
               </div>
           </div>
           <div class="layui-form-item" pane>
@@ -191,6 +191,15 @@
                   autocomplete="off" class="layui-input" value="{$list.data.danwei|default=''}">
               </div>
           </div>
+          <div class="layui-form-item">
+              <label for="danwei" class="layui-form-label">
+                  <span class="x-red">*</span>初如化
+              </label>
+              <div class="layui-input-block">
+                  <input type="input" class="layui-input" value="会清除权限、类别、学科、统计项目、系统设置以外的数据，但是会保留超级管理员帐号2个，教师1位，单位1个，学期1个。" readonly="true" style="width: 80%; float: left;">
+                  <a href="javascript:;" onclick="resetMayi()" class="layui-btn layui-btn-danger" style="float: left; margin-left: 10px;">初始化</a>
+              </div>
+          </div>
           <div class="layui-form-item" style="text-align: center;">
               <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
                   设置
@@ -232,6 +241,26 @@
         });
 
       });
+
+      // 初始化系统
+      function resetMayi() {
+        $.ajax({
+            url:'/system/reset',
+            type:'POST',
+            dataType:'json',
+            success:function(result){
+              // 弹出提示
+              layer.msg(result.msg);
+            },
+            error:function(xhr,status,error) {
+              layer.msg('数据处理错误',{
+                  icon: 2,
+                  time: 2000 //2秒关闭（如果不配置，默认是3秒）
+              });
+            }
+        });
+        return false;
+      }
   </script>
   </body>
 </html>
