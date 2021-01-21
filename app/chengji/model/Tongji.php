@@ -13,7 +13,7 @@ class Tongji extends BaseModel
         $data = array();
         // 循环统计各学科成绩
         foreach ($subject_id as $key => $value) {
-            $cjcol = array_column($cj, $value['lieming']);
+            $cjcol = array_column($cj, $value['lieming'] . 'defen');
 
             $cjcol = array_filter($cjcol, function($item){
                 return $item != null;
