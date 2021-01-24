@@ -63,6 +63,16 @@ class Index extends TeacherSearchBase
                     ]
                 ]
             ]
+            ,[
+                'title' => '考试管理'
+                ,'font' => '&#xe6ee;'
+                ,'authCid' => [
+                    [
+                        'title' => '考试列表'
+                        ,'url' => '/teacherSearchChengji/kaoshi'
+                    ]
+                ]
+            ]
         ];
 
         if($sysClass->teacherrongyu)

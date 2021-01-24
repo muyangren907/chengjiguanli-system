@@ -18,6 +18,8 @@ class Kaoshi extends BaseModel
             ,'xueqi_id' => ''
             ,'category_id' => array()
             ,'searchval' => ''
+            ,'user_group' => 'everyone'
+            ,'user_id' => ''
         ];
         // 用新值替换初始值
         $src = array_cover($srcfrom, $src);
@@ -30,6 +32,12 @@ class Kaoshi extends BaseModel
             ->order([$src['field'] =>$src['order']])
             ->when(strlen($src['searchval']) > 0, function($query) use($src){
                     $query->where('title', 'like', '%' . $src['searchval']. ' %');
+                })
+            ->when(strlen($src['user_group']) > 0, function($query) use($src){
+                    $query->where('user_group', $src['user_group'])
+                        ->when($src['user_group'] == 'teacher', function($q) use($src){
+                            $q->where('user_id', $src['user_id']);
+                    });
                 })
             ->when(count($src['zuzhi_id']) > 0, function($query) use($src){
                     $query->where('zuzhi_id', 'in', $src['zuzhi_id']);

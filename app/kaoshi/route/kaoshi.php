@@ -22,12 +22,7 @@ Route::group('index', function () {
     Route::rule('delete/<id>','Index/delete','delete');		# 删除信息
     Route::rule('status','Index/setStatus','post');		# 删除信息
     Route::rule('more/<kaoshi_id>','Index/moreAction','get');				# 修改信息
-    Route::rule('cyschool','Index/cySchool','post');				# 获取参加考试班级
-    Route::rule('cynianji','Index/cyNianji','post');				# 获取参加考试班级
-    Route::rule('cybanji','Index/cyBanji','post');				# 获取参加考试班级
-    Route::rule('cysubject','Index/cySubject','post');				# 获取参加考试学科
-    Route::rule('kaoshiinfo/<id>','Index/kaoshiInfo','post');				# 获取参加考试的学校、学科、班级、年级等信息
-    Route::rule('luru','Index/luru','post');     # 删除信息
+    Route::rule('luru','Index/luru','post');     # 考试编辑状态
 });
 
 

@@ -40,6 +40,7 @@ abstract class BaseController
         'online'
     ];
 
+
     /**
      * 构造方法
      * @access public

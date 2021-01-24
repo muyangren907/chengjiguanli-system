@@ -6,22 +6,32 @@ namespace app\TeacherSearchChengji\controller;
 // 引用学生查询基类
 use \app\base\controller\TeacherSearchBase;
 
+// 引用考试数据模型类
+use app\kaoshi\model\Kaoshi as KS;
+use app\middleware\KaoshiStatus;
+
 class Kaoshi extends TeacherSearchBase
 {
     // 显示考试列表
     public function index()
     {
         // 设置要给模板赋值的信息
+        $url = '/TeacherSearchChengji/kaoshi/';
         $list['webtitle'] = '考试列表';
-        $list['dataurl'] = '/kaoshi/index/data';
-        $list['status'] = '/kaoshi/index/status';
-        $list['luru'] = '/kaoshi/index/luru';
-        $list['create'] = '/kaoshi/index/create';
+        $list['dataurl'] = $url . 'data';
+        $list['status'] = $url . 'status';
+        $list['luru'] = $url . 'luru';
+        $list['create'] = $url . 'create';
+        $list['edit'] = $url . 'edit';
+        $list['delete'] = $url . 'delete';
+        $list['more'] = $url . 'more';
+        $list['user_group'] = 'teacher';
+        $list['user_id'] = session('user_id');
 
         // 模板赋值
         $this->view->assign('list', $list);
         // 渲染模板
-        return $this->view->fetch('kaoshi@index/create');
+        return $this->view->fetch('kaoshi@index/index');
     }
 
 
@@ -38,7 +48,8 @@ class Kaoshi extends TeacherSearchBase
                 ,'field' => 'id'
                 ,'order' => 'desc'
                 ,'searchval' => ''
-                ,'user_group' => 'admin'
+                ,'user_group' => ''
+                ,'user_id' => ''
             ], 'POST');
         // 根据条件查询数据
         $ks = new KS;
@@ -69,13 +80,13 @@ class Kaoshi extends TeacherSearchBase
             'webtitle' => '新建考试'
             ,'butname' => '创建'
             ,'formpost' => 'POST'
-            ,'url' => '/kaoshi/index/save'
+            ,'url' => '/TeacherSearchChengji/kaoshi/save'
         );
 
         // 模板赋值
         $this->view->assign('list', $list);
         // 渲染
-        return $this->view->fetch('kaoshi@inex/create');
+        return $this->view->fetch('kaoshi@index/create');
     }
 
 
@@ -127,7 +138,7 @@ class Kaoshi extends TeacherSearchBase
             'webtitle' => '编辑考试'
             ,'butname' => '修改'
             ,'formpost' => 'PUT'
-            ,'url' => '/kaoshi/index/update/' . $id
+            ,'url' => '/TeacherSearchChengji/kaoshi/update/' . $id
         );
 
         // 模板赋值
@@ -234,8 +245,91 @@ class Kaoshi extends TeacherSearchBase
         // 设置页面标题
         $list['webtitle'] = $kaoshi->title  . '（' .  $kaoshi->bfdate . '~' . $kaoshi->enddate . '）';
         $list['kaoshi_id'] = $kaoshi->id;
+
+        // 设置操作
+        $url = '/TeacherSearchChengji/';
+        $list['menu'] = [
+            [
+                'title' => '一、前期操作'
+                ,'top' =>[
+                    [
+                        'title' => '考试设置'
+                        ,'oncleck' => 'addteb'
+                        ,'url' => $url . 'kaoshiset/index/' . $list['kaoshi_id']
+                        ,'font' => '&#xe716;'
+                        ,'w' => 600
+                        ,'h' => 300
+                    ]
+                    ,[
+                        'title' => '生成考号'
+                        ,'oncleck' => 'addlayer'
+                        ,'url' => $url . 'kaohao/createall/' . $list['kaoshi_id']
+                        ,'font' => '&#xe66e;'
+                        ,'w' => 600
+                        ,'h' => 300
+                    ]
+                    ,[
+                        'title' => '下载试卷标签数据'
+                        ,'oncleck' => 'addlayer'
+                        ,'url' => $url . 'excel/biaoqian/' . $list['kaoshi_id']
+                        ,'font' => '&#xe663;'
+                        ,'w' => 600
+                        ,'h' => 300
+                    ]
+
+                ]
+            ]
+            ,[
+                'title' => '二、表格录入'
+               ,'top' =>[
+                    [
+                        'title' => '下载成绩录入表格'
+                        ,'oncleck' => 'addlayer'
+                        ,'url' => $url . 'excel/caiji/' . $list['kaoshi_id']
+                        ,'font' => '&#xe656;'
+                        ,'w' => 600
+                        ,'h' => 300
+                    ]
+                    ,[
+                        'title' => '已录成绩数量'
+                        ,'oncleck' => 'addteb'
+                        ,'url' => $url . '/chengji/tongji/yilucnt/' . $list['kaoshi_id']
+                        ,'font' => '&#xe629;'
+                        ,'w' => 600
+                        ,'h' => 300
+                    ]
+
+                ]
+            ]
+            ,[
+                'title' => '三、成绩统计'
+               ,'top' =>[
+                    [
+                        'title' => '考试设置'
+                        ,'oncleck' => 'addteb'
+                        ,'url' => $url . 'kaoshiset/index/' . $list['kaoshi_id']
+                        ,'font' => '&#xe716;'
+                    ]
+
+                ]
+            ]
+            ,[
+                'title' => '四、统计结果'
+               ,'top' =>[
+                    [
+                        'title' => '考试设置'
+                        ,'oncleck' => 'addteb'
+                        ,'url' => $url . 'kaoshiset/index/' . $list['kaoshi_id']
+                        ,'font' => '&#xe716;'
+                    ]
+
+                ]
+            ]
+        ];
+
+
         $this->view->assign('list', $list);
         // 渲染
-        return $this->view->fetch();
+        return $this->view->fetch('kaoshi@index/more_action');
     }
 }

@@ -21,6 +21,18 @@ class Index extends AdminBase
         $list['status'] = '/kaoshi/index/status';
         $list['luru'] = '/kaoshi/index/luru';
 
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = '考试列表';
+        $list['dataurl'] = '/kaoshi/index/data';
+        $list['status'] = '/kaoshi/index/status';
+        $list['luru'] = '/kaoshi/index/luru';
+        $list['create'] = '/kaoshi/index/create';
+        $list['edit'] = '/kaoshi/index/edit';
+        $list['delete'] = '/kaoshi/index/delete';
+        $list['more'] = '/kaoshi/index/more';
+        $list['user_group'] = 'admin';
+        $list['user_id'] = session('user_id');
+
         // 模板赋值
         $this->view->assign('list', $list);
         // 渲染模板

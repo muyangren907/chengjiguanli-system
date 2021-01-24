@@ -38,6 +38,8 @@
 	    		<input type="radio" name="category_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
+      <input type="hidden" id="user_group" name="user_group" value="{$list.user_group}">
+      <input type="hidden" id="user_id" name="user_id" value="{$list.user_id}">
 	</div>
 {/block}
 {block name="table"}
@@ -107,10 +109,10 @@
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus, 'index/delete', 'mytable');
+            cjgl.delAll(checkStatus, "{$list.delete}", 'mytable');
             break;
           case 'add':
-            cjgl.add('新建考试', 'index/create', '600', '400', false);
+            cjgl.add('新建考试', "{$list.create}", '600', '400', false);
             break;
         };
       });
@@ -122,13 +124,13 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
 	        case 'del':// 删除
-	          cjgl.del(obj, "index/delete");
+	          cjgl.del(obj, "{$list.delete}");
 	          break;
 	        case 'edit':// 编辑
-	          cjgl.add('编辑考试', 'index/edit/' + obj.data.id, '600', '400', false);
+	          cjgl.add('编辑考试', "{$list.edit}/" + obj.data.id, '600', '400', false);
 	          break;
 	        case 'more':// 状态
-	          cjgl.addTab(obj.data.title + ' 操作', '/kaoshi/index/more/' + obj.data.id, true);
+	          cjgl.addTab(obj.data.title + ' 操作', "{$list.more}/" + obj.data.id, true);
 	          break;
         };
       });
