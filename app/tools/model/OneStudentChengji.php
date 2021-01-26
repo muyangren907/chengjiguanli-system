@@ -820,7 +820,7 @@ class OneStudentChengji extends BaseModel
         {
             if($zhengfu['fu'] == $cjCnt)
             {
-                $fu = $fu . '所有学科成绩低于班级平均分，';
+                $fu = $fu . '所有学科成绩低于班级平均分';
             }else{
                 $xk = '';
                 foreach ($avgCha as $key => $value) {
@@ -841,9 +841,9 @@ class OneStudentChengji extends BaseModel
             $xk = $src['cj'][$key]['subjectName']['title'];
             if($zhengfu['fu'] == 1)
             {
-                $fu = $fu . abs(end($avgCha)) .'分。';
+                $fu = $fu . abs(end($avgCha)) .'分';
             }else{
-                $fu = $fu . ',其中' . $xk .'成绩低与班级平均' . abs(end($avgCha)) .'分。';
+                $fu = $fu . ',其中' . $xk .'成绩低与班级平均' . abs(end($avgCha)) .'分';
             }
 
         }
@@ -852,9 +852,9 @@ class OneStudentChengji extends BaseModel
         {
             if(strlen($ling)>0 || strlen($fu)>0)
             {
-                $py = $bjdbpy . $zheng . ',';
+                $py = $zheng . '，';
             }else{
-                $py = $bjdbpy . $zheng . '。';
+                $py = $zheng . '。';
             }
         }
 
@@ -862,13 +862,18 @@ class OneStudentChengji extends BaseModel
         {
             if(strlen($fu) > 0)
             {
-                $py = $py . $ling . '，' . $fu;
+                $py = $py . $ling . '，';
             }else{
                 $py = $py . $ling . '。';
             }
         }
 
-        return $py;
+        if(strlen($fu) > 0)
+        {
+            $py = $py . $fu . '。';
+        }
+
+        return $bjdbpy . $py;
     }
 
 
@@ -1038,9 +1043,9 @@ class OneStudentChengji extends BaseModel
         {
             if(strlen($ling)>0 || strlen($fu)>0)
             {
-                $py = $bjdbpy . $zheng . ',';
+                $py = $zheng . ',';
             }else{
-                $py = $bjdbpy . $zheng . '。';
+                $py = $zheng . '。';
             }
         }
 
@@ -1048,7 +1053,7 @@ class OneStudentChengji extends BaseModel
         {
             if(strlen($fu) > 0)
             {
-                $py = $py . $ling . '，' . $fu;
+                $py = $py . $ling . '，';
             }else{
                 $py = $py . $ling . '。';
             }
@@ -1059,7 +1064,8 @@ class OneStudentChengji extends BaseModel
             $py = $py . $fu . '。';
         }
 
-        return $py;
+
+        return $bjdbpy . $py;
     }
 
 
