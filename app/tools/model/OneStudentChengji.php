@@ -523,6 +523,7 @@ class OneStudentChengji extends BaseModel
             'xAxis' => [
                 'type' => 'value'
                 ,'data' => ''
+                ,'scale' => true
             ]
             ,'yAxis' => [
                 'type' => 'category'
@@ -535,7 +536,7 @@ class OneStudentChengji extends BaseModel
                     ,'type' => 'bar'
                     ,'label' => [
                         'show' => true
-                        ,'position'=>'insideRight' // 在上方显示
+                        ,'position'=>'right' // 在上方显示
                         ,'textStyle' => [
                             'color' => 'black',
                             'fontSize' => 12
