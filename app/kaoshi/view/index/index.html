@@ -65,7 +65,7 @@
 
 </script>
 <script type="text/html" id="luru">
-  <input type="checkbox" myurl="{$list.luru ? $list.luru : url('luru')}" {{d.luru == 1 ? "checked" :""}} id="{{d.id}}" lay-skin="switch" lay-filter="luru" lay-text="允许|不允许">
+  <input type="checkbox" myurl="{$list.luru ? $list.luru : url('luru')}" {{d.luru == 1 ? "checked" :""}} id="{{d.id}}" lay-skin="switch" lay-filter="luru" lay-text="允许|禁止">
 </script>
 <script type="text/html" id="jieshu">
   <input type="checkbox" myurl="{$list.status ? $list.status : url('status')}" {{d.status == 1 ? "checked" :""}} id="{{d.id}}" lay-skin="switch" lay-filter="status" lay-text="进行|结束">

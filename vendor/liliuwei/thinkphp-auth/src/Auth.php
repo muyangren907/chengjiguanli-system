@@ -211,7 +211,9 @@ class Auth{
             return array();
         }
         $map[] = ['id','in',$ids];
-        $map[] = ['type','=',$type];
+        if (strlen($type) > 0) {
+            $map[] = [$type,'=', 1];
+        }
         $map[] = ['status','=',1];
         //读取用户组所有权限规则
         $rules = \think\facade\Db::table($this->_config['auth_rule'])->where($map)->field('condition,name')->select();

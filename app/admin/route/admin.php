@@ -39,6 +39,8 @@ Route::group('authrule', function () {
     Route::rule('update/<id>', 'AuthRule/update', 'put');			# 更新信息
     Route::rule('delete/<id>', 'AuthRule/delete', 'delete');		# 删除信息
     Route::rule('status', 'AuthRule/setStatus', 'post');		# 删除信息
+    Route::rule('teacher', 'AuthRule/setTeacher', 'post');     # 删除信息
+    Route::rule('student', 'AuthRule/setStudent', 'post');     # 删除信息
     Route::rule('menu/<user_id>', 'AuthRule/menu', 'get');        # 删除信息
 });
 

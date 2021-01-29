@@ -3,7 +3,7 @@
 use think\migration\Migrator;
 use think\migration\db\Column;
 
-class RuleAddsystemreset extends Migrator
+class RuleAddShenfen extends Migrator
 {
     /**
      * Change Method.
@@ -28,23 +28,26 @@ class RuleAddsystemreset extends Migrator
      */
     public function up()
     {
-        $singleRow = [
-            ['id' => 70502
-                ,'title' => '初始化'
-                ,'name' => 'system/systembase/resetmayi'
-                ,'paixu' => 2
-                ,'pid'  => 705
-            ],
-        ];
+        // 定义数据表名称
+        $table = $this->table('auth_rule');
+
+        $table
+            ->addColumn('teacher','boolean',['after' => 'type', 'limit'=>1,'default'=>0,'null'=>false,'comment'=>'0=禁用，1=正常'])
+            ->addColumn('student','boolean',['after' => 'teacher', 'limit'=>1,'default'=>0,'null'=>false,'comment'=>'0=禁用，1=正常'])
+            ->update();
 
         $this->execute('DELETE FROM cj_auth_rule where id=707');
-
-        // this is a handy shortcut
-        $this->insert('auth_rule',  $singleRow);
     }
+
 
     public function down()
     {
-        $this->execute('DELETE FROM cj_auth_rule where id=70502');
+        // 定义数据表名称
+        $table = $this->table('auth_rule');
+
+        $table
+            ->removeColumn('teacher')
+            ->removeColumn('student')
+            ->update();
     }
 }

@@ -19,6 +19,15 @@
         <input type="text" id="searchval" name="searchval" autocomplete="off" class="layui-input" placeholder="输入关键字并回车">
       </div>
     </div>
+    <div class="layui-form-item" style="margin-bottom: 0;">
+      <label for="category" class="layui-form-label" style="height: 100%">用户身份</label>
+      <div class="layui-input-block">
+        <input type="radio" name="category" title="管理员(全部)" value="" lay-skin="primary" checked>
+        <input type="radio" name="category" title="教师" value="teacher" lay-skin="primary">
+        <input type="radio" name="category" title="学生" value="student" lay-skin="primary">
+      </div>
+    </div>
+  </div>
 {/block}
 {block name="table"}
 	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
@@ -40,6 +49,12 @@
 	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
 	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
 </script>
+<script type="text/html" id="teacher">
+  <input type="checkbox" myurl="{$list.teacher ? $list.teacher : url('teacher')}" {{d.teacher == 1 ? "checked" :""}} id="{{d.id}}" lay-skin="switch" lay-filter="teacher" lay-text="允许|禁止">
+</script>
+<script type="text/html" id="student">
+  <input type="checkbox" myurl="{$list.student ? $list.student : url('student')}" {{d.student == 1 ? "checked" :""}} id="{{d.id}}" lay-skin="switch" lay-filter="student" lay-text="允许|禁止">
+</script>
 <!-- 表格操作 -->
 <script>
   // 设置列
@@ -58,6 +73,8 @@
       }} ,
       {field: 'paixu', title: '排序',sort: true},
       {field: 'url', title: '菜单地址', sort: true},
+      {field: 'teacher', title: '教师权限', sort: true,templet:'#teacher'},
+      {field: 'student', title: '学生权限', sort: true,templet:'#student'},
       {field: 'status', title: '状态',templet:'#status', sort: true},
       {field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
     ]];

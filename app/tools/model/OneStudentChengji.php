@@ -844,7 +844,7 @@ class OneStudentChengji extends BaseModel
             {
                 $fu = $fu . abs(end($avgCha)) .'分';
             }else{
-                $fu = $fu . ',其中' . $xk .'成绩低与班级平均' . abs(end($avgCha)) .'分';
+                $fu = $fu . '，' . $xk .'成绩低与班级平均' . abs(end($avgCha)) .'分';
             }
 
         }
@@ -1034,7 +1034,7 @@ class OneStudentChengji extends BaseModel
             }else{
                 end($cha);
                 $t = key($cha);
-                $fu = $xk .  '成绩下降，其中' . $subject_title[$t] . '成绩下降最多';
+                $fu = $xk .  '成绩下降，' . $subject_title[$t] . '成绩下降最多';
             }
         }
 

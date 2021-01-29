@@ -4,7 +4,9 @@ declare (strict_types = 1);
 namespace app\teacherSearchChengji\controller;
 
 // 引用学生查询基类
-use \app\base\controller\TeacherSearchBase;
+// use \app\base\controller\TeacherSearchBase;
+use app\base\controller\AdminBase;
+
 // 引用与此控制器同名的数据模型
 use \app\system\model\SystemBase as  sysbasemod;
 // 引用学生数据模型类
@@ -14,7 +16,7 @@ use \app\teacher\model\Teacher as TCH;
 // 引用加密类
 use WhiteHat101\Crypt\APR1_MD5;
 
-class Index extends TeacherSearchBase
+class Index extends AdminBase
 {
     // 学生查询页首页
     public function index()

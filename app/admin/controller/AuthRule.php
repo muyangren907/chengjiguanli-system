@@ -15,6 +15,8 @@ class AuthRule extends AdminBase
         // 设置要给模板赋值的信息
         $list['webtitle'] = '权限列表';
         $list['dataurl'] = '/admin/authrule/data';
+        $list['teacher'] = '/admin/authrule/teacher';
+        $list['student'] = '/admin/authrule/student';
         $list['status'] = '/admin/authrule/status';
 
         // 模板赋值
@@ -31,7 +33,8 @@ class AuthRule extends AdminBase
         // 获取参数
         $src = $this->request
             ->only([
-                'page'=>'1'
+                'category' => ''
+                ,'page'=>'1'
                 ,'limit' => '10'
                 ,'field' => 'id'
                 ,'order' => 'asc'
@@ -182,6 +185,44 @@ class AuthRule extends AdminBase
 
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '状态设置成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
+    // 设置权限状态
+    public function setTeacher()
+    {
+        //  获取id变量
+        $id = request()->post('id');
+        $value = request()->post('value');
+
+        // 获取权限信息
+        $data = AR::where('id', $id)->update(['teacher' => $value]);
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data = ['msg' => '教师权限设置成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
+    // 设置权限状态
+    public function setStudent()
+    {
+        //  获取id变量
+        $id = request()->post('id');
+        $value = request()->post('value');
+
+        // 获取权限信息
+        $data = AR::where('id', $id)->update(['student' => $value]);
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data = ['msg' => '学生权限设置成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息
