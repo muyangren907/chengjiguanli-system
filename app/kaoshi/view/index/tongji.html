@@ -2,17 +2,26 @@
 
 {block name="form"}
     <form class="layui-form layui-form-pane" lay-filter="myform">
+      <div class="layui-form-item" style="text-align: left;">
+          <button type="button" class="layui-btn" onclick="checkAll()">
+              {$list.set.butname}
+          </button>
+      </div>
       <table class="layui-table">
           <colgroup>
-            <col width="150">
+            <col width="10">
             <col width="200">
+            <col width="80">
+            <col>
             <col>
           </colgroup>
           <thead>
             <tr>
               <th>序号</th>
               <th>统计项目</th>
+              <th>统计开关</th>
               <th>统计状态</th>
+              <th>操作</th>
             </tr> 
           </thead>
           <tbody>
@@ -20,7 +29,11 @@
               <tr>
                 <td>{$i}</td>
                 <td>{$vo.title}</td>
-                <td>成功</td>
+                <td>
+                    <input type="checkbox" name="tj" lay-skin="switch" lay-text="开启|关闭" checked="{$vo.checked}">
+                </td>
+                <td id="showtd{$i}">等待统计</i></td>
+                <td><a href="javascript:;" title="统计" onclick="tongji(this)" url="{$vo.url}" val="{$i}"><i class="layui-icon layui-icon-form"></i></a></td>
               </tr>
             {/volist}
           </tbody>
@@ -31,28 +44,50 @@
 {block name="myjs"}
 <script>
 
-  layui.use('laydate', function(){
-    var laydate = layui.laydate;
-    //开始时间
-    laydate.render({
-      elem: '#bfdate'
-      ,type: 'datetime'
-      ,trigger: 'click' //采用click弹出
-      ,min: 0 //今天
-      ,max: 20 //20天后
-      ,format: 'yyyy-M-d' //可任意组合
+  function checkAll()
+  {
+    var inputs;
+    inputs = $(":checked");
+    inputs.each(function(){
+      var obj;
+      obj = $(this).parents("tr").children().last().find("a");
+      tongji(obj);
     });
-    //结束时间
-    laydate.render({
-      elem: '#enddate'
-      ,type: 'datetime'
-      ,trigger: 'click' //采用click弹出
-      ,min: 0 //今天
-      ,max: 20 //20天后
-      ,format: 'yyyy-M-d' //可任意组合
+    return false;
+  }
+
+  function tongji(obj)
+  {
+    var data;
+    data = {
+      'kaoshi_id': "{$list.set.kaoshi_id}"
+    }
+    var url;
+    url = $(obj).attr('url');
+    var val;
+    val = $(obj).attr('val');
+
+    // 到服务器去删除数据。
+    $.ajax({
+      url:url,
+      type:'POST',
+      async: true,
+      data:data,
+      beforeSend: function () {
+        $('#showtd' + val).text('正在统计');
+        $('#showtd' + val).append("<i class='layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop'>");
+      },
+      success:function(result){
+          $('#showtd' + val).text(result.msg);
+      },
+      error:function(result){
+          $('#showtd' + val).text(result.msg);
+      },
     });
-  });
+
+  }
 
 </script>
 {/block}
 
+''

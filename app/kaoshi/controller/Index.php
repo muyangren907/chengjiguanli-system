@@ -131,39 +131,47 @@ class Index extends AdminBase
         // 设置页面标题
         $list['set'] = array(
             'webtitle' => '统计成绩'
-            ,'butname' => '开始统计'
+            ,'butname' => '一键统计'
             ,'formpost' => 'POST'
             ,'url' => '/kaoshi/index/save'
+            ,'kaoshi_id' => $kaoshi_id
         );
 
         $list['tjxm'] = [
             [
                 'title' => '学生成绩在班级位置'
                 ,'url' => '/chengji/bjtj/bjorder'
+                ,'checked' => ' checked'
             ]
             ,[
                 'title' => '学生成绩在学校位置'
                 ,'url' => '/chengji/njtj/njorder'
+                ,'checked' => ' checked'
             ]
             ,[
                 'title' => '学生成绩在学校位置'
                 ,'url' => '/chengji/njtj/njorder'
+                ,'checked' => ' checked'
             ]
             ,[
                 'title' => '学生成绩在全区位置'
                 ,'url' => '/chengji/schtj/schorder'
+                ,'checked' => ' checked'
             ]
             ,[
                 'title' => '班级成绩'
                 ,'url' => '/chengji/bjtj/tongji'
+                ,'checked' => ' checked'
             ]
             ,[
                 'title' => '各学校各年级成绩'
                 ,'url' => '/chengji/njtj/tongji'
+                ,'checked' => ' checked'
             ]
             ,[
                 'title' => '统计各年级成绩'
                 ,'url' => '/chengji/schtj/tongji'
+                ,'checked' => ' checked'
             ]
             // ,[
             //     'title' => '重算得分率'
