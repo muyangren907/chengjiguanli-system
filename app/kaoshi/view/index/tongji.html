@@ -1,0 +1,58 @@
+{extend name=".././view/create.html" /}
+
+{block name="form"}
+    <form class="layui-form layui-form-pane" lay-filter="myform">
+      <table class="layui-table">
+          <colgroup>
+            <col width="150">
+            <col width="200">
+            <col>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>序号</th>
+              <th>统计项目</th>
+              <th>统计状态</th>
+            </tr> 
+          </thead>
+          <tbody>
+            {volist name="$list['tjxm']" id="vo"}
+              <tr>
+                <td>{$i}</td>
+                <td>{$vo.title}</td>
+                <td>成功</td>
+              </tr>
+            {/volist}
+          </tbody>
+      </table>
+    </form>
+{/block}
+
+{block name="myjs"}
+<script>
+
+  layui.use('laydate', function(){
+    var laydate = layui.laydate;
+    //开始时间
+    laydate.render({
+      elem: '#bfdate'
+      ,type: 'datetime'
+      ,trigger: 'click' //采用click弹出
+      ,min: 0 //今天
+      ,max: 20 //20天后
+      ,format: 'yyyy-M-d' //可任意组合
+    });
+    //结束时间
+    laydate.render({
+      elem: '#enddate'
+      ,type: 'datetime'
+      ,trigger: 'click' //采用click弹出
+      ,min: 0 //今天
+      ,max: 20 //20天后
+      ,format: 'yyyy-M-d' //可任意组合
+    });
+  });
+
+</script>
+{/block}
+

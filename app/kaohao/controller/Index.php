@@ -6,7 +6,7 @@ use app\base\controller\AdminBase;
 
 // 引用数据模型类
 use app\kaoshi\model\Kaoshi as KS;
-use app\kaoshi\model\KaoshiSet as ksset;
+
 use app\kaohao\model\Kaohao as KH;
 use think\Validate;
 

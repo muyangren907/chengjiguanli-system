@@ -38,8 +38,6 @@
 	    		<input type="radio" name="category_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
 	    	{/volist}
 	    </div>
-      <input type="hidden" id="user_group" name="user_group" value="{$list.user_group}">
-      <input type="hidden" id="user_id" name="user_id" value="{$list.user_id}">
 	</div>
 {/block}
 {block name="table"}
@@ -52,6 +50,9 @@
 		<button class="layui-btn layui-btn-danger" lay-event="dels">
 			<i class="iconfont">&#xe69d;</i> 批量删除
 		</button>
+		<button class="layui-btn" lay-event="addxd">
+			<i class="iconfont">&#xe6b9;</i> 新建考试向导
+		</button>
 		<button class="layui-btn" lay-event="add">
 			<i class="iconfont">&#xe6b9;</i> 新建
 		</button>
@@ -61,11 +62,12 @@
 <script type="text/html" id="barDemo">
 	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
 	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon layui-icon-edit"></i></a>
+	<a class="layui-btn-xs" lay-event="tongji" title="统计"><i class="layui-icon layui-icon-chart"></i></a>
 	<a class="layui-btn-xs" lay-event="more" title="更多操作"><i class="layui-icon layui-icon-more-vertical"></i></a>
 
 </script>
 <script type="text/html" id="luru">
-  <input type="checkbox" myurl="{$list.luru ? $list.luru : url('luru')}" {{d.luru == 1 ? "checked" :""}} id="{{d.id}}" lay-skin="switch" lay-filter="luru" lay-text="允许|禁止">
+  <input type="checkbox" myurl="{$list.luru ? $list.luru : url('luru')}" {{d.luru == 1 ? "checked" :""}} id="{{d.id}}" lay-skin="switch" lay-filter="luru" lay-text="允许|不允许">
 </script>
 <script type="text/html" id="jieshu">
   <input type="checkbox" myurl="{$list.status ? $list.status : url('status')}" {{d.status == 1 ? "checked" :""}} id="{{d.id}}" lay-skin="switch" lay-filter="status" lay-text="进行|结束">
@@ -77,6 +79,7 @@
   options.cols=[[ //表头
 			{type:'checkbox', fixed:'left'},
 			{field:'id', title:'操作', toolbar:'#barDemo', minWidth:120},
+			{field:'luru', title:'成绩编辑', minWidth:100, templet:'#luru', sort:true},
 			{field:'status', title:'状态', minWidth:80, templet:'#jieshu', sort:true},
 			{field:'title', title:'考试名称', sort:true, minWidth:240},
 		    {field:'xueqi_id', title:'学期', sort:true, minWidth:200, templet:function(d){
@@ -108,10 +111,13 @@
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus, "{$list.delete}", 'mytable');
+            cjgl.delAll(checkStatus, '/kaoshi/index/delete', 'mytable');
             break;
           case 'add':
-            cjgl.add('新建考试向导', "{$list.create}", '', '', true);
+            cjgl.add('新建考试', '/kaoshi/index/create', '600', '400', false);
+            break;
+          case 'addxd':
+            cjgl.add('创建考试向导', '/kaoshi/index/setp1', '', '', true);
             break;
         };
       });
@@ -123,13 +129,16 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
 	        case 'del':// 删除
-	          cjgl.del(obj, "{$list.delete}");
+	          cjgl.del(obj, '/kaoshi/index/delete');
 	          break;
 	        case 'edit':// 编辑
-	          cjgl.add('编辑考试', "{$list.edit}/" + obj.data.id, '600', '400', false);
+	          cjgl.add('编辑考试', '/kaoshi/index/edit/' + obj.data.id, '600', '400', false);
 	          break;
 	        case 'more':// 状态
-	          cjgl.addTab(obj.data.title + ' 操作', "{$list.more}/" + obj.data.id, true);
+	          cjgl.addTab(obj.data.title + ' 操作', '/kaoshi/index/more/' + obj.data.id, true);
+	          break;
+	        case 'tongji':// 状态
+	          cjgl.addTab(obj.data.title + ' 成绩统计', '/kaoshi/index/tongji/' + obj.data.id, true);
 	          break;
         };
       });

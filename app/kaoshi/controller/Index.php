@@ -21,18 +21,6 @@ class Index extends AdminBase
         $list['status'] = '/kaoshi/index/status';
         $list['luru'] = '/kaoshi/index/luru';
 
-        // 设置要给模板赋值的信息
-        $list['webtitle'] = '考试列表';
-        $list['dataurl'] = '/kaoshi/index/data';
-        $list['status'] = '/kaoshi/index/status';
-        $list['luru'] = '/kaoshi/index/luru';
-        $list['create'] = '/kaoshi/index/create';
-        $list['edit'] = '/kaoshi/index/edit';
-        $list['delete'] = '/kaoshi/index/delete';
-        $list['more'] = '/kaoshi/index/more';
-        $list['user_group'] = 'admin';
-        $list['user_id'] = session('user_id');
-
         // 模板赋值
         $this->view->assign('list', $list);
         // 渲染模板
@@ -81,8 +69,8 @@ class Index extends AdminBase
     {
         // 设置页面标题
         $list['set'] = array(
-            'webtitle' => '新建考试向导'
-            ,'butname' => '下一步'
+            'webtitle' => '新建考试'
+            ,'butname' => '创建'
             ,'formpost' => 'POST'
             ,'url' => '/kaoshi/index/save'
         );
@@ -91,6 +79,126 @@ class Index extends AdminBase
         $this->view->assign('list', $list);
         // 渲染
         return $this->view->fetch('create');
+    }
+
+
+    // 创建考试向导
+    public function createSetp1()
+    {
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle' => '创建考试向导'
+            ,'butname' => '下一步'
+            ,'formpost' => 'POST'
+            ,'url' => '/kaoshi/index/save'
+        );
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+        // 渲染
+        return $this->view->fetch();
+    }
+
+
+    // 创建考试向导
+    public function createSetp2($kaoshi_id)
+    {
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle' => '设置考试'
+            ,'butname' => '添加'
+            ,'formpost' => 'POST'
+            ,'url' => '/kaoshi/kaoshiset/save'
+            ,'kaoshi_id' => $kaoshi_id
+        );
+
+                // 获取考试时间
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $enddate = $ks->kaoshiInfo($kaoshi_id);
+        $enddate = $enddate->getData('enddate');
+        $list['set']['nianji'] = nianJiNameList('str', $enddate);
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+        // 渲染
+        return $this->view->fetch();
+    }
+
+
+    // 统计成绩
+    public function tongji($kaoshi_id)
+    {
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle' => '统计成绩'
+            ,'butname' => '开始统计'
+            ,'formpost' => 'POST'
+            ,'url' => '/kaoshi/index/save'
+        );
+
+        $list['tjxm'] = [
+            [
+                'title' => '学生成绩在班级位置'
+                ,'url' => '/chengji/bjtj/bjorder'
+            ]
+            ,[
+                'title' => '学生成绩在学校位置'
+                ,'url' => '/chengji/njtj/njorder'
+            ]
+            ,[
+                'title' => '学生成绩在学校位置'
+                ,'url' => '/chengji/njtj/njorder'
+            ]
+            ,[
+                'title' => '学生成绩在全区位置'
+                ,'url' => '/chengji/schtj/schorder'
+            ]
+            ,[
+                'title' => '班级成绩'
+                ,'url' => '/chengji/bjtj/tongji'
+            ]
+            ,[
+                'title' => '各学校各年级成绩'
+                ,'url' => '/chengji/njtj/tongji'
+            ]
+            ,[
+                'title' => '统计各年级成绩'
+                ,'url' => '/chengji/schtj/tongji'
+            ]
+            // ,[
+            //     'title' => '重算得分率'
+            //     ,'url' => '/chengji/tongji/editdfl/' . $kaoshi_id
+            // ]
+        ];
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+        // 渲染
+        return $this->view->fetch();
+    }
+
+
+     // 生成考号
+    public function createSetp3($kaoshi_id)
+    {
+        // 获取参考年级
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $list['data']['nianji'] = $ksset->srcGrade($kaoshi_id);
+        $list['data']['nianjiNum'] = array_column($list['data']['nianji'], 'ruxuenian');
+
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle' => '生成考号'
+            ,'butname' => '生成'
+            ,'formpost' => 'POST'
+            ,'url' => '/kaohao/index/saveall'
+            ,'kaoshi_id' => $kaoshi_id
+        );
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+        // 渲染
+        return $this->view->fetch();
     }
 
 
@@ -105,8 +213,6 @@ class Index extends AdminBase
             ,'bfdate'
             ,'enddate'
             ,'zuzhi_id'
-            ,'user_group' => session('onlineCategory')
-            ,'user_id' => session('user_id')
         ], 'post');
 
         // 验证表单数据
@@ -116,11 +222,14 @@ class Index extends AdminBase
         if(!$result){
             return json(['msg' => $msg, 'val' => 0]);
         }
+        $list['user_id'] = session('user_id');
+        $list['user_group'] = 'admin';
+        // $list['jibie_id'] = 1;
 
         // 保存数据
         $ks = new KS();
         $ksdata = $ks->create($list);
-        $ksdata ? $data = ['msg' => '添加成功', 'val' => 1, 'kaoshi_id' => $ksdata->id]
+        $ksdata ? $data = ['msg' => '添加成功', 'val' => 1, 'kaoshi_id'=> $ksdata->id]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息
@@ -184,6 +293,9 @@ class Index extends AdminBase
         // 返回信息
         return json($data);
     }
+
+
+
 
 
     // 设置成绩是否允许操作

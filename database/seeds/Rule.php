@@ -102,6 +102,13 @@ class Rule extends Seeder
                         ,'pid' => 1
                         ,'url' => '/chengji/tongji/yilucnt'
                     ],
+                // 占位
+                ['id' => 10501
+                    ,'title' => '占位'
+                    ,'name' => 'yilucnt1'
+                    ,'paixu' => 1
+                    ,'pid' => 105
+                ],    
             ['id' => 106
                 ,'title' => '下载标签'
                 ,'name' => 'kaohao/excel/biaoqian'
@@ -110,6 +117,13 @@ class Rule extends Seeder
                 ,'pid'  => 1
                 ,'url' => '/kaohao/excel/biaoqian'
             ],
+                // 占位
+                ['id' => 10561
+                    ,'title' => '占位'
+                    ,'name' => 'biaoqian1'
+                    ,'paixu' => 1
+                    ,'pid' => 106
+                ], 
 
             /*======================================================================
              * 考试管理
