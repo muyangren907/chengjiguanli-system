@@ -67,6 +67,12 @@ class Rule extends Seeder
                     ,'paixu'  => 2
                     ,'pid' => 102
                 ],
+                ['id' => 10203
+                    ,'title' => '下载表格'
+                    ,'name' => 'kaohao/excel/caiji'
+                    ,'paixu' => 3
+                    ,'pid' => 102
+                ],
             ['id' => 103
                 ,'title' => '已录列表'
                 ,'name' => 'luru/index/index'
@@ -88,6 +94,22 @@ class Rule extends Seeder
                     ,'paixu' => 2
                     ,'pid' => 103
                 ],
+            ['id' => 105
+                        ,'title' => '已录统计'
+                        ,'name' => 'chengji/tongji/yilucnt'
+                        ,'paixu' => 5
+                        ,'ismenu'  => 1
+                        ,'pid' => 1
+                        ,'url' => '/chengji/tongji/yilucnt'
+                    ],
+            ['id' => 106
+                ,'title' => '下载标签'
+                ,'name' => 'kaohao/excel/biaoqian'
+                ,'paixu' => 6
+                ,'ismenu'  => 1
+                ,'pid'  => 1
+                ,'url' => '/kaohao/excel/biaoqian'
+            ],
 
             /*======================================================================
              * 考试管理
@@ -258,38 +280,7 @@ class Rule extends Seeder
                             ,'paixu' => 2
                             ,'pid' => 3020103
                         ],
-
-                    ['id' => 3020104
-                        ,'title' => '下载试卷标签信息'
-                        ,'name' => 'kaohao/excel/biaoqian'
-                        ,'paixu' => 4
-                        ,'pid' => 30201
-                    ],
-                        ['id' => 290000000
-                            ,'title' => '生成考号备用'
-                            ,'name' => 'zhanwei_302010401'
-                            ,'paixu' => 2
-                            ,'pid' => 3020104
-                        ],
-                ['id' => 30202
-                    ,'title' => '成绩录入'
-                    ,'name' => 'erluru'
-                    ,'paixu' => 2
-                    ,'pid' => 302
-                ],
-                    // 录入成绩
-                    ['id' => 3020201
-                        ,'title' => '下载成绩采集表'
-                        ,'name' => 'kaohao/excel/caiji'
-                        ,'paixu' => 1
-                        ,'pid' => 30202
-                    ],
-                    ['id' => 3020202
-                        ,'title' => '已录成绩数量'
-                        ,'name' => 'chengji/tongji/yilucnt'
-                        ,'paixu' => 2
-                        ,'pid' => 30202
-                    ],
+                    
                 ['id' => 30203
                     ,'title' => '成绩统计'
                     ,'name' => 'santongji'
@@ -1233,12 +1224,12 @@ class Rule extends Seeder
                     ,'pid'  => 705
                 ],
                 // 下次要添加上
-                // ['id' => 70502
-                //     ,'title' => '初始化'
-                //     ,'name' => 'system/systembase/resetmayi'
-                //     ,'paixu' => 2
-                //     ,'pid'  => 705
-                // ],
+                ['id' => 70502
+                    ,'title' => '初始化'
+                    ,'name' => 'system/systembase/resetmayi'
+                    ,'paixu' => 2
+                    ,'pid'  => 705
+                ],
             ['id' => 706
                 ,'title' => '统计项目'
                 ,'name' => 'kaoshi/tongjixiangmu/index'
@@ -1764,12 +1755,8 @@ class Rule extends Seeder
 
         ];
 
-        // $serRows = $this->fetchAll('select * from cj_auth_rule');
-        // if(is_array($serRows) && count($serRows) > 0)
-        // {
-        //     $rows = [];
-        //     return true;
-        // }
+        $this->execute('DELETE FROM cj_auth_rule where id>0');
+
         // 保存数据
         $this->table('auth_rule')->insert($rows)->save();
     }

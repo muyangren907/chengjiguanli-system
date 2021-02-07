@@ -1,7 +1,16 @@
 {extend name=".././view/create.html" /}
 
 {block name="form"}
-<form class="layui-form layui-form-pane" lay-filter="myform">
+  <div class="layui-progress layui-progress-big" lay-showPercent="yes" style="margin-bottom: 20px;">
+    <div class="layui-progress-bar layui-bg-green" lay-percent="90%"></div>
+  </div>
+
+  <div style="height: 30px; padding-left: 30px;">
+    <span>一、填写考试信息</span>
+    <span>二、设置参加考试年级及学科信息</span>
+    <span>三、生成考号</span>
+  </div>
+  <form class="layui-form layui-form-pane" lay-filter="myform">
   <div class="layui-form-item">
     <label for="school_id" class="layui-form-label"><span class="x-red">*</span>参考学校</label>
     <div class="layui-input-block">
@@ -26,16 +35,19 @@
 </div>
 <input type="hidden" name="kaoshi_id" id="kaoshi_id" value="{$list.set.kaoshi_id}">
 <div class="layui-form-item" style="text-align: right;">
-  <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
-    {$list.set.butname}
+  <button  class="layui-btn" lay-filter="kssubmit" lay-submit="">
+    添加
   </button>
+
+  <a href="javascript:;" onclick="nextSet()" class="layui-btn layui-btn-danger" style="margin-left: 10px;">完成</a>
 </div>
+
 </form>
 {/block}
 
 {block name="myjs"}
 <script>
-  layui.use('form', function(){
+  layui.use(['form','cjgl'], function(){
     var form = layui.form;
     form.on('select(school_id)', function(data){
 	  // 声明变量
@@ -67,7 +79,46 @@
               }
               );
     });
+
+    //监听提交
+    form.on('submit(kssubmit)', function(data){
+      $.ajax({
+        url:"{$list.set.url}",
+        type:"{$list.set.formpost}",
+        data:data.field,
+        dataType:'json',
+        success:function(result){
+          if(result.val == 1)
+          {
+            // $(location).attr('href', '/kaohao/index/createall/' + "{$list['set']['kaoshi_id']}");
+            parent.layer.msg(result.msg);
+          }else{
+            layer.msg(result.msg);
+          }
+        },
+        error:function(xhr,status,error) {
+          layer.msg('数据处理错误',{
+              icon: 2,
+              time: 2000 //2秒关闭（如果不配置，默认是3秒）
+          });
+        }
+      });
+      return false;
+    });
+
 });
+
+function nextSet()
+{
+  //先得到当前iframe层的索引
+  var index = parent.layer.getFrameIndex(window.name);
+  //再执行关闭
+  if(parent.layui.table){
+    parent.layui.table.reload('mytable');
+  }
+  parent.layer.close(index);
+  parent.layer.msg('创建考试完成');
+}
 
 </script>
 {/block}

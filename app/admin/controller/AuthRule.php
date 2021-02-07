@@ -190,42 +190,4 @@ class AuthRule extends AdminBase
         // 返回信息
         return json($data);
     }
-
-
-    // 设置权限状态
-    public function setTeacher()
-    {
-        //  获取id变量
-        $id = request()->post('id');
-        $value = request()->post('value');
-
-        // 获取权限信息
-        $data = AR::where('id', $id)->update(['teacher' => $value]);
-
-        // 根据更新结果设置返回提示信息
-        $data ? $data = ['msg' => '教师权限设置成功', 'val' => 1]
-            : $data = ['msg' => '数据处理错误', 'val' => 0];
-
-        // 返回信息
-        return json($data);
-    }
-
-
-    // 设置权限状态
-    public function setStudent()
-    {
-        //  获取id变量
-        $id = request()->post('id');
-        $value = request()->post('value');
-
-        // 获取权限信息
-        $data = AR::where('id', $id)->update(['student' => $value]);
-
-        // 根据更新结果设置返回提示信息
-        $data ? $data = ['msg' => '学生权限设置成功', 'val' => 1]
-            : $data = ['msg' => '数据处理错误', 'val' => 0];
-
-        // 返回信息
-        return json($data);
-    }
 }

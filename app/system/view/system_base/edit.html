@@ -244,20 +244,22 @@
 
       // 初始化系统
       function resetMayi() {
-        $.ajax({
-            url:'/system/reset',
-            type:'POST',
-            dataType:'json',
-            success:function(result){
-              // 弹出提示
-              layer.msg(result.msg);
-            },
-            error:function(xhr,status,error) {
-              layer.msg('数据处理错误',{
-                  icon: 2,
-                  time: 2000 //2秒关闭（如果不配置，默认是3秒）
-              });
-            }
+        layer.confirm('初始化系统会删除原来的数据，确定要继续操作吗？', {btn:['我确定要继续删除！','我再想想']}, function(index){
+          $.ajax({
+              url:'/system/reset',
+              type:'POST',
+              dataType:'json',
+              success:function(result){
+                // 弹出提示
+                layer.msg(result.msg);
+              },
+              error:function(xhr,status,error) {
+                layer.msg('数据处理错误',{
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                });
+              }
+          });
         });
         return false;
       }

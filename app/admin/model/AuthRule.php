@@ -49,7 +49,7 @@ class AuthRule extends BaseModel
                     $query->field('id, title');
                 }
             ])
-            ->field('id, name, title, condition, paixu, ismenu, url, pid, type, status, teacher, student')
+            ->field('id, name, title, condition, paixu, ismenu, url, pid, type, status')
             ->select();
 
         return $data;

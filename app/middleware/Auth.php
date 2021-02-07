@@ -20,8 +20,6 @@ class Auth
      */
     public function handle($request, \Closure $next)
     {
-        $category = session('onlineCategory');
-
         $admins = Config::get('auth.auth_config.administrator');
         // 如果当前用户ID在配置排除的列表中，愚昧取消验证
         if(in_array(session('user_id'), $admins)){
@@ -108,7 +106,7 @@ class Auth
         $auth = new AuthHandle;
 
         // 验证方法
-        if( $auth->check($url, session('user_id'), $category) == false && $except == false && $admin == false ){// 第一个参数是规则名称,第二个参数是用户UID
+        if( $auth->check($url, session('user_id')) == false && $except == false && $admin == false ){// 第一个参数是规则名称,第二个参数是用户UID
             $this->error('哎哟~  因为权限不足', '/login/err');
         }
 

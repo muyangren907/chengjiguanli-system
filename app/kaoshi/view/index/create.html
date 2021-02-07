@@ -1,6 +1,14 @@
 {extend name=".././view/create.html" /}
 
 {block name="form"}
+<div class="layui-progress layui-progress-big" lay-showPercent="yes" style="margin-bottom: 20px;">
+  <div class="layui-progress-bar layui-bg-green" lay-percent="10%"></div>
+</div>
+
+<div style="height: 30px; padding-left: 30px;">
+  <span>一、填写考试信息</span>
+</div>
+    
     <form class="layui-form layui-form-pane" lay-filter="myform">
           <div class="layui-form-item">
             <label for="zuzhi" class="layui-form-label"><span class="x-red">*</span>组织单位</label>
@@ -89,18 +97,22 @@
             </div>
           </div>
           <div class="layui-form-item" style="text-align: right;">
-              <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
+              <button  class="layui-btn" lay-filter="kssubmit" lay-submit="">
                   {$list.set.butname}
               </button>
           </div>
       </form>
+      
 {/block}
 
 {block name="myjs"}
 <script>
 
-  layui.use('laydate', function(){
-    var laydate = layui.laydate;
+  layui.use(['laydate','form','cjgl'], function(){
+    var form = layui.form
+        cjgl = layui.cjgl
+        laydate = layui.laydate;
+
     //开始时间
     laydate.render({
       elem: '#bfdate'
@@ -119,7 +131,35 @@
       ,max: 20 //20天后
       ,format: 'yyyy-M-d' //可任意组合
     });
+
+
+    //监听提交
+    form.on('submit(kssubmit)', function(data){
+      $.ajax({
+        url:"{$list.set.url}",
+        type:"{$list.set.formpost}",
+        data:data.field,
+        dataType:'json',
+        success:function(result){
+          if(result.val == 1)
+          {
+            $(location).attr('href', '/kaoshi/kaoshiset/create/' + result.kaoshi_id);
+          }else{
+            layer.msg(result.msg);
+          }
+        },
+        error:function(xhr,status,error) {
+          layer.msg('数据处理错误',{
+              icon: 2,
+              time: 2000 //2秒关闭（如果不配置，默认是3秒）
+          });
+        }
+      });
+      return false;
+    });
   });
+
+  
 
 </script>
 {/block}

@@ -77,7 +77,6 @@
   options.cols=[[ //表头
 			{type:'checkbox', fixed:'left'},
 			{field:'id', title:'操作', toolbar:'#barDemo', minWidth:120},
-			{field:'luru', title:'成绩编辑', minWidth:100, templet:'#luru', sort:true},
 			{field:'status', title:'状态', minWidth:80, templet:'#jieshu', sort:true},
 			{field:'title', title:'考试名称', sort:true, minWidth:240},
 		    {field:'xueqi_id', title:'学期', sort:true, minWidth:200, templet:function(d){
@@ -112,7 +111,7 @@
             cjgl.delAll(checkStatus, "{$list.delete}", 'mytable');
             break;
           case 'add':
-            cjgl.add('新建考试', "{$list.create}", '600', '400', false);
+            cjgl.add('新建考试向导', "{$list.create}", '', '', true);
             break;
         };
       });

@@ -27,47 +27,69 @@
   <body class="">
     <div class="x-nav">
       <span class="layui-breadcrumb">
-    		<a href="">考试管理</a>
-    		<a href="">考试列表</a>
-    		<a><cite>考试操作</cite></a>
-    	</span>
+        <a href="">考试管理</a>
+        <a href="">考试列表</a>
+        <a><cite>考试操作</cite></a>
+      </span>
       <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
         <i class="iconfont" style="line-height:30px">&#xe6aa;</i></a>
     </div>
-  {php} $kaoshi_id = $list['kaoshi_id'];{/php}
-	<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
-	  <ul class="layui-tab-title">
-      {volist name="list.menu" id="vo"}
-        <li {eq name="key" value="0" } class="layui-this" {/eq} >{$vo.title}</li>
-      {/volist}
-	  </ul>
-	  <div class="layui-tab-content" style="height: 100px;">
-      {volist name="list.menu" id="vo"}
-        <div class="layui-tab-item layui-show">
+  {php}$kaoshi_id =$list['kaoshi_id']; {/php}
+  <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+      <li class="layui-this">一、前期操作</li>
+      <li>二、表格录入</li>
+      <li>三、成绩统计</li>
+      <li>四、统计结果</li>
+    </ul>
+    <div class="layui-tab-content" style="height: 100px;">
+      <div class="layui-tab-item layui-show">
         <!-- 内容开始 -->
         <div class="layui-row" style="margin-top:30px">
           <div class="layui-container">
-            {volist name="vo.top" id="vot"}
-              {eq name="key" value="addteb" }
-                <a href="javascript:void(0);"
-                onclick="addteb({$vot.title},{$vot.url})" class="x-admin-backlog-body">
-                  <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
-                    <i class="layui-icon" style="font-size: 100px;">{php} echo $vot['font']{/php}</i>
-                    <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">{$vot.title}</div>
-                  </div>
-                </a>
-              {else/}
-                <a href="javascript:void(0);" onclick="addlayer({$vot.title},{$vot.url},{$vot.w},{$vot.h})" class="x-admin-backlog-body">
-                <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
-                  <i class="layui-icon" style="font-size: 100px;">{php} echo $vot['font']{/php}</i>
-                  <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">{$vot.title}</div>
-                </div>
-              </a>
-              {/eq}
-            {/volist}
+            <a href="javascript:void(0);"
+            onclick="addteb('考试设置','/kaoshi/kaoshiset/index/{$kaoshi_id}')" class="x-admin-backlog-body">
+              <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
+                <i class="layui-icon layui-icon-set" style="font-size: 100px;"></i>
+                <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">考试设置</div>
+              </div>
+            </a>
+            <a href="javascript:void(0);"
+            onclick="addlayer('生成考号','/kaohao/index/createall/{$kaoshi_id}','800','400')" class="x-admin-backlog-body">
+              <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
+                <i class="layui-icon layui-icon-note" style="font-size: 100px;"></i>
+                <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">生成考号</div>
+              </div>
+            </a>
+            <a href="javascript:void(0);" onclick="addlayer('下载试卷标签数据','/kaohao/excel/biaoqian/{$kaoshi_id}','600','300')" class="x-admin-backlog-body">
+              <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
+                <i class="layui-icon layui-icon-template" style="font-size: 100px;"></i>
+                <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">下载试卷标签数据</div>
+              </div>
+            </a>
           </div>
         </div>
-      {/volist}
+      </div>
+      <div class="layui-tab-item">
+        <!-- 内容开始 -->
+        <div class="layui-row" style="margin-top:30px">
+          <div class="layui-container">
+            <a href="javascript:void(0);" onclick="addlayer('下载成绩录入表格','/kaohao/excel/caiji/{$kaoshi_id}','600','400')" class="x-admin-backlog-body">
+              <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
+                <i class="layui-icon layui-icon-template-1" style="font-size: 100px;"></i>
+                <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">下载成绩录入表格</div>
+              </div>
+            </a>
+            <a href="javascript:void(0);" onclick="addteb('已录成绩数量','/chengji/tongji/yilucnt/{$kaoshi_id}')" class="x-admin-backlog-body">
+              <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
+                <i class="layui-icon layui-icon-chart-screen" style="font-size: 100px;"></i>
+                <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">已录成绩数量</div>
+              </div>
+            </a>
+            <div style="height: 30px">　</div>
+          </div>
+        </div>
+      </div>
       <div class="layui-tab-item">
         <!-- 内容开始 -->
         <div class="layui-row" style="margin-top:30px">
@@ -123,16 +145,16 @@
           </div>
         </div>
       </div>
-	    <div class="layui-tab-item">
+      <div class="layui-tab-item">
         <!-- 内容开始 -->
         <div class="layui-row" style="margin-top: 30px">
           <div class="layui-container">
-            <!-- <a href="javascript:void(0);" onclick="addteb('检测统计结果是否是最新结果','/kaoshi/tjlog/index/{$kaoshi_id}')" class="x-admin-backlog-body">
+            <a href="javascript:void(0);" onclick="addteb('检测统计结果是否是最新结果','/kaoshi/tjlog/index/{$kaoshi_id}')" class="x-admin-backlog-body">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
                 <i class="layui-icon layui-icon-layouts" style="font-size: 100px;"></i>
                 <div style="height: 30px; vertical-align: middle;padding-top: 14px;margin-top: 38px">检测统计结果是否是最新结果</div>
               </div>
-            </a> -->
+            </a>
             <a href="javascript:void(0);"
             onclick="addteb('任教教师','/chengji/bjtj/renke/{$kaoshi_id}')" class="x-admin-backlog-body">
               <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" style="padding-top: 38px; height: 230px;" align="center">
@@ -168,8 +190,8 @@
         </div>
         <div class="layui-container">&nbsp;</div>
       </div>
-	  </div>
-	</div>
+    </div>
+  </div>
   </body>
 <script>
 

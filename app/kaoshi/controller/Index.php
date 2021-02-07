@@ -81,8 +81,8 @@ class Index extends AdminBase
     {
         // 设置页面标题
         $list['set'] = array(
-            'webtitle' => '新建考试'
-            ,'butname' => '创建'
+            'webtitle' => '新建考试向导'
+            ,'butname' => '下一步'
             ,'formpost' => 'POST'
             ,'url' => '/kaoshi/index/save'
         );
@@ -120,7 +120,7 @@ class Index extends AdminBase
         // 保存数据
         $ks = new KS();
         $ksdata = $ks->create($list);
-        $ksdata ? $data = ['msg' => '添加成功', 'val' => 1]
+        $ksdata ? $data = ['msg' => '添加成功', 'val' => 1, 'kaoshi_id' => $ksdata->id]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息
