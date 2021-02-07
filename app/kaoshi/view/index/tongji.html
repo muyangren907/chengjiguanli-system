@@ -77,12 +77,16 @@
         $('#showtd' + val).text('正在统计');
         $('#showtd' + val).append("<i class='layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop'>");
       },
+      complete: function () {
+       $('#showtd' + val).children("i").remove();
+      },
       success:function(result){
           $('#showtd' + val).text(result.msg);
       },
       error:function(result){
           $('#showtd' + val).text(result.msg);
       },
+      
     });
 
   }

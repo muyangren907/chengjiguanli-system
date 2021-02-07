@@ -20,9 +20,9 @@ class TongjiNj extends BaseModel
         $more = new \app\kaohao\model\SearchMore;
         $schoolList = $cy->school($src);
 
-        if(count($schoolList) == 0){
-            return false;
-        }
+        // if(count($schoolList) == 0){
+        //     return false;
+        // }
         // 查询要统计的年级
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $njList = $ksset->srcGrade($kaoshi_id);
