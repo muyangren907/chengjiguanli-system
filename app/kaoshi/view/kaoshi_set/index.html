@@ -93,7 +93,7 @@
 		            cjgl.delAll(checkStatus,'/kaoshi/kaoshiset/delete','mytable');
 		            break;
 	            case 'add':
-		            cjgl.add('添加参考学科','/kaoshi/kaoshiset/create/'+"{$list.kaoshi_id}",'','',true);
+		            cjgl.add('添加参考学科','/kaoshi/kaoshiset/create/'+"{$list.kaoshi_id}",'650','400', false);
 		            break;
 	        };
 	    });
@@ -111,7 +111,7 @@
 			        defenlv(obj.data);
 			        break;
 		        case 'edit':// 编辑
-			        cjgl.add('编辑','/kaoshi/kaoshiset/edit/'+obj.data.id,'','',true);
+			        cjgl.add('编辑','/kaoshi/kaoshiset/edit/'+obj.data.id,'650','400', false);
 			        break;
 		    };
 		});
@@ -136,12 +136,12 @@
 	    	val = {
 	    		'kaoshi_id':obj.kaoshi_id
 	    		,'subject_id':obj.subject_id
-	    		,'nianji':obj.nianji
+	    		,'ruxuenian':obj.ruxuenian
 	    	}
 	    	$.ajax({
-	    		url:'/chengji/tongji/editdfl/'+ obj.kaoshi_id,
+	    		url:'/chengji/tongji/editdfl',
 	    		data:val,
-	    		type:'PUT',
+	    		type:'POST',
 	    		success: function(data, status) {
 	    			layer.msg(data.msg);
 	    		},

@@ -27,6 +27,7 @@ Route::group('index', function () {
     Route::rule('setp2/<kaoshi_id>','Index/createSetp2','get');              # 添加信息
     Route::rule('setp3/<kaoshi_id>','Index/createSetp3','get');              # 添加信息
     Route::rule('tongji/<kaoshi_id>','Index/tongji','get');              # 添加信息
+    Route::rule('chengji/<kaoshi_id>','Index/chengji','get');              # 添加信息
 });
 
 

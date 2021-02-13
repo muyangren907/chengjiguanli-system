@@ -9,9 +9,9 @@
       </div>
       <table class="layui-table">
           <colgroup>
-            <col width="10">
-            <col width="200">
-            <col width="80">
+            <col width="10px">
+            <col width="200px">
+            <col width="80px">
             <col>
             <col>
           </colgroup>
@@ -30,7 +30,7 @@
                 <td>{$i}</td>
                 <td>{$vo.title}</td>
                 <td>
-                    <input type="checkbox" name="tj" lay-skin="switch" lay-text="开启|关闭" checked="{$vo.checked}">
+                    <input type="checkbox" name="tj" lay-skin="switch" lay-text="开启|关闭" {$vo.checked}>
                 </td>
                 <td id="showtd{$i}">等待统计</i></td>
                 <td><a href="javascript:;" title="统计" onclick="tongji(this)" url="{$vo.url}" val="{$i}"><i class="layui-icon layui-icon-form"></i></a></td>

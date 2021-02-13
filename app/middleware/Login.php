@@ -3,6 +3,8 @@ declare (strict_types = 1);
 
 namespace app\middleware;
 
+use \app\login\controller\YanZheng as yz;
+
 class Login
 {
     /**
@@ -15,24 +17,22 @@ class Login
     public function handle($request, \Closure $next)
     {
         $category = session('onlineCategory');
+        $ya = 0;
         switch ($category) {
             case 'admin':
-                $yz = new \app\login\controller\Index;
-                $yz = $yz->yz(session('username'), session('password'));
+                $yz = yz::admin(session('username'), session('password'));
                 break;
             case 'teacher':
-                $yz = new \app\login\controller\Teacher;
-                $yz = $yz->yz(session('username'), session('password'));
+                $yz = yz::teacher(session('username'), session('password'));
                 break;
             case 'student':
-                $yz = new \app\login\controller\Student;
-                $yz = $yz->yz(session('username'), session('password'));
+                $yz = yz::student(session('username'), session('password'));
                 break;
             default:
                 \app\facade\OnLine::jump('/login', '请选择用户角色');
                 break;
         }
-        if($yz['val'] == 0)
+        if($yz['val'] === 0)
         {
             \app\facade\OnLine::jump('/login', $yz['msg']);
         }

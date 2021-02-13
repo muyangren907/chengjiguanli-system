@@ -173,10 +173,11 @@ class Index extends AdminBase
                 ,'url' => '/chengji/schtj/tongji'
                 ,'checked' => ' checked'
             ]
-            // ,[
-            //     'title' => '重算得分率'
-            //     ,'url' => '/chengji/tongji/editdfl/' . $kaoshi_id
-            // ]
+            ,[
+                'title' => '重算得分率'
+                ,'url' => '/chengji/tongji/editdfl'
+                ,'checked' => ''
+            ]
         ];
 
         // 模板赋值
@@ -303,9 +304,6 @@ class Index extends AdminBase
     }
 
 
-
-
-
     // 设置成绩是否允许操作
     public function luru()
     {
@@ -360,6 +358,23 @@ class Index extends AdminBase
 
     // 考试更多操作页面
     public function moreAction($kaoshi_id)
+    {
+        // 获取考试信息
+        $kaoshi = KS::where('id', $kaoshi_id)
+            ->field('id, title, bfdate, enddate')
+            ->find();
+
+        // 设置页面标题
+        $list['webtitle'] = $kaoshi->title  . '（' .  $kaoshi->bfdate . '~' . $kaoshi->enddate . '）';
+        $list['kaoshi_id'] = $kaoshi->id;
+        $this->view->assign('list', $list);
+        // 渲染
+        return $this->view->fetch();
+    }
+
+
+    // 查询考试成绩
+    public function chengji($kaoshi_id)
     {
         // 获取考试信息
         $kaoshi = KS::where('id', $kaoshi_id)

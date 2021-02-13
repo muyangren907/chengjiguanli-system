@@ -14,18 +14,10 @@ use think\facade\Route;
 // 系统设置systembase
 Route::group('', function () {
 		Route::rule('', 'Index/index', 'get');
-		Route::rule('', 'Index/login', 'post');
+		Route::rule('', 'Index/admin', 'post');
+		Route::rule('teacher', 'Index/teacher', 'post');
+		Route::rule('student', 'Index/student', 'post');
 		Route::rule('log', 'Index/shangmaLog', 'get');		# 配置更新
 		Route::rule('err', 'Index/myerror', 'get');			//错误页
 		Route::rule('weihu', 'Index/weihu', 'get');			//错误页
-});
-
-// 学生查询成绩登录
-Route::group('student', function () {
-		Route::rule('', 'Student/login', 'post');
-});
-
-// 学生查询成绩登录
-Route::group('teacher', function () {
-		Route::rule('', 'Teacher/login', 'post');
 });

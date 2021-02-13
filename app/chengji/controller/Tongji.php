@@ -73,65 +73,36 @@ class Tongji extends AdminBase
     }
 
 
-    // 按学科重新计算得分率
-    public function editDefenlv($kaoshi_id) {
-
-        // 设置页面标题
-        $list['set'] = array(
-            'webtitle'=>'编辑课题',
-            'butname'=>'修改',
-            'formpost'=>'PUT',
-            'url'=>'/chengji/tongji/editdfl',
-            'kaoshi_id'=>$kaoshi_id
-        );
-
-        // 模板赋值
-        $this->view->assign('list', $list);
-        // 渲染
-        return $this->view->fetch();
-    }
-
-
-    // 更新得分率
+    // 批量统计得分率
     public function updateDefenLv() {
         // 获取参数
         $src = $this->request
             ->only([
                 'kaoshi_id' => 0
-                ,'subject_id' => 0
-                ,'ruxuenian' => 0
-            ], 'PUT');
+                ,'ruxuenian'
+                ,'subject_id'
+            ], 'POST');
 
-        // 获取满分
-        $ksSet = new \app\kaoshi\model\KaoshiSet;
-        $manfen = $ksSet->where('kaoshi_id', $src['kaoshi_id'])
-                    ->where('subject_id', $src['subject_id'])
-                    ->where('ruxuenian', $src['ruxuenian'])
-                    ->field('id,title')
-                    ->value('manfen');
-        // 获取考号
-        $kaohao = new \app\kaohao\model\Kaohao;
-        $kaohaoid = $kaohao->where('kaoshi_id', $src['kaoshi_id'])
-                        ->where('ruxuenian', $src['ruxuenian'])
-                        ->column('id');
-        // 查询成绩
-        $cj = new \app\chengji\model\Chengji;
-        $cjList = $cj->where('kaohao_id', 'in', $kaohaoid)
-                    ->where('subject_id', $src['subject_id'])
-                    ->whereNotNull('defen')
-                    ->field('id, defen, defenlv')
-                    ->select();
+        $tj = new TJ();
+        if(isset($src['ruxuenian']) && isset($src['subject_id']))
+        {
+            $data = $tj->updateDfl($src);
+        }else{
+            $ksset = new \app\kaoshi\model\KaoshiSet;
 
-        $data = array();
-        foreach ($cjList as $key => $value) {
-           $data[] = [
-                'id' => $value->id
-                ,'defenlv' => $value->defen / $manfen *100
-           ];
+            // 重新计算得分率
+            $nj = $ksset->srcGrade($src['kaoshi_id']); # 获取参考年级
+            foreach ($nj as $key => $value) { # 循环获取各年级参考学科
+                $src['ruxuenian'] = $value['ruxuenian'];
+                $manfen = $ksset->srcSubject($src); # 获取本年级各学科满分
+                // 循环取出当前学科成绩
+                foreach ($manfen as $mf_k => $mf_v) {
+                    $src['subject_id'] = $mf_v['id'];
+                    $data = $tj->updateDfl($src);
+                }
+            }
         }
-
-        $data = $cj->saveAll($data);
-
+        
         $data ? $data = ['msg' => '重新计算完成', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 

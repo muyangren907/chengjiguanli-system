@@ -5,7 +5,7 @@ declare (strict_types = 1);
 namespace app\luru\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\ToolBase;
 use app\chengji\model\Chengji;
 use app\teach\model\Subject;
 
@@ -17,31 +17,8 @@ use app\kaoshi\model\KaoshiSet as ksset;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 
-class Index extends BaseController
+class Index extends ToolBase
 {
-    protected $middleware = [];
-    protected $luruTeacherId = '';
-    protected $online = '';
-
-    protected function initialize()
-    {
-        $this->online = session('onlineCategory');
-        if($this->online == 'teacher')
-        {
-            $this->middleware = [
-                'online'
-                ,'login'
-            ];
-        }else{
-            $this->middleware = [
-                'online'
-                ,'login'
-                ,'auth'
-            ];
-        }
-        $this->luruTeacherId = session('user_id');
-    }
-
     // 成绩列表
     public function index()
     {

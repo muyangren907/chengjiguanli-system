@@ -76,7 +76,7 @@ class Rule extends Seeder
             ['id' => 103
                 ,'title' => '已录列表'
                 ,'name' => 'luru/index/index'
-                ,'paixu' => 2
+                ,'paixu' => 4
                 ,'ismenu'  => 1
                 ,'pid'  => 1
                 ,'url' => '/luru/index/index'
@@ -95,13 +95,13 @@ class Rule extends Seeder
                     ,'pid' => 103
                 ],
             ['id' => 105
-                        ,'title' => '已录统计'
-                        ,'name' => 'chengji/tongji/yilucnt'
-                        ,'paixu' => 5
-                        ,'ismenu'  => 1
-                        ,'pid' => 1
-                        ,'url' => '/chengji/tongji/yilucnt'
-                    ],
+                ,'title' => '已录统计'
+                ,'name' => 'chengji/tongji/yilucnt'
+                ,'paixu' => 5
+                ,'ismenu'  => 1
+                ,'pid' => 1
+                ,'url' => '/chengji/tongji/yilucnt'
+            ],
                 // 占位
                 ['id' => 10501
                     ,'title' => '占位'
@@ -118,9 +118,24 @@ class Rule extends Seeder
                 ,'url' => '/kaohao/excel/biaoqian'
             ],
                 // 占位
-                ['id' => 10561
+                ['id' => 10601
                     ,'title' => '占位'
                     ,'name' => 'biaoqian1'
+                    ,'paixu' => 1
+                    ,'pid' => 106
+                ], 
+            ['id' => 107
+                ,'title' => '在线录入'
+                ,'name' => 'luru/index/online'
+                ,'paixu' => 3
+                ,'ismenu'  => 1
+                ,'pid'  => 1
+                ,'url' => '/luru/index/online'
+            ],
+                // 占位
+                ['id' => 10701
+                    ,'title' => '占位'
+                    ,'name' => 'zaixian1'
                     ,'paixu' => 1
                     ,'pid' => 106
                 ], 
@@ -240,12 +255,12 @@ class Rule extends Seeder
                             ,'paixu' => 6
                             ,'pid' => 3020101
                         ],
-                        ['id' => 302010108
-                            ,'title' => '统计得分率'
-                            ,'name' => 'chengji/tongji/editdefenlv'
-                            ,'paixu' => 4
-                            ,'pid' => 3020101
-                        ],
+                        // ['id' => 302010108
+                        //     ,'title' => '统计得分率'
+                        //     ,'name' => 'chengji/tongji/editdefenlv'
+                        //     ,'paixu' => 4
+                        //     ,'pid' => 3020101
+                        // ],
                         ['id' => 302010109
                             ,'title' => '更新得分率'
                             ,'name' => 'chengji/tongji/updatedefenLv'

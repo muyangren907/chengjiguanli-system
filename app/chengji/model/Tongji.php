@@ -375,5 +375,45 @@ class Tongji extends BaseModel
     }
 
 
+    // 重新计算得分率
+    public function updateDfl($srcfrom)
+    {
+        $src = [
+            'kaoshi_id' => 0
+            ,'ruxuenian' => 0
+            ,'subject_id' => 0
+        ];
+        // 用新值替换初始值
+        $src = array_cover($srcfrom, $src);
+        $cj = new \app\chengji\model\Chengji;
+        $kh = new \app\kaohao\model\Kaohao;
+
+        // 查询考号
+        $kaohaoid = $kh->where('kaoshi_id', $src['kaoshi_id'])
+
+            ->where('ruxuenian', $src['ruxuenian'])
+            ->column('id');
+        // 查询成绩
+        $cjList = $cj->where('kaohao_id', 'in', $kaohaoid)
+            ->where('subject_id', $src['subject_id'])
+            ->whereNotNull('defen')
+            ->field('id, defen, defenlv')
+            ->select();
+        // 循环写入新成绩
+        $data = array();
+        foreach ($cjList as $cj_k => $cj_v) {
+            $data[] = [
+                    'id' => $cj_v->id
+                    ,'defenlv' => $cj_v->defen / $mf_v['fenshuxian']['manfen'] *100
+            ];
+        }
+        $data = $cj->saveAll($data);
+
+        $data ? $data = true : false;
+
+        return $data;
+    }
+
+
 
 }

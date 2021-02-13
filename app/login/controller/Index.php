@@ -1,11 +1,13 @@
 <?php
 namespace app\login\controller;
 
-// 引用view类
-use think\facade\View;
+// 引用控制器基类
+use app\BaseController;
+
+use app\login\controller\YanZheng as yz;
 
 
-class Index
+class Index extends BaseController
 {
     // 显示登录选择界面
     public function index()
@@ -28,20 +30,22 @@ class Index
         // 获取系统名称和版本号
         $list['version'] = config('shangma.version');
 
-        View::assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染输出
-        return View::fetch('index');
+        return $this->view->fetch('index');
     }
 
 
-    // 学生登录验证
-    public function login()
+    // 管理员登录验证
+    public function admin()
     {
-        session('onlineCategory', null);
-        session('user_id', null);
-        session('username', null);
-        session('password', null);
+        // 清除cookie
+        cookie('userid', null);
+        cookie('username', null);
+        cookie('password', null);
+        // 清除session（当前作用域）
+        session(null);
 
         // 获取表单数据
         $list = request()
@@ -58,7 +62,7 @@ class Index
             return json(['msg' => $msg, 'val' => 0]);
         }
 
-        $yz = $this->yz($list['username'], $list['password']);
+        $yz = yz::admin($list['username'], $list['password']);
 
         if($yz['val'] === 1)
         {
@@ -81,39 +85,100 @@ class Index
     }
 
 
-    // 获学生帐号密码信息
-    public function yz($username, $password)
+    // 学生登录验证
+    public function teacher()
     {
-        // 获取服务器密码
-        $admin = new \app\admin\model\Admin;
-        $userinfo = $admin::where('username', $username)
-            ->where('status', 1)
-            ->field('id, lastip, username, ip, denglucishu, lasttime, thistime, password')
-            ->find();
-        if ($userinfo == null)
-        {
-            // 验证结果;
-            $data = ['msg' => '管理员帐号不存在或被禁用', 'val' => 0];
-            return $data;
+        // 清除cookie
+        cookie('userid', null);
+        cookie('username', null);
+        cookie('password', null);
+        // 清除session（当前作用域）
+        session(null);
+
+        // 获取表单数据
+        $list = request()
+            ->only([
+                'username'
+                ,'password'
+                ,'category'
+            ]);
+
+
+        $validate = new \app\login\validate\Yanzheng;
+        $result = $validate->scene('admin')->check($list);
+        $msg = $validate->getError();
+        if(!$result){
+            return json(['msg' => $msg, 'val' => 0]);
         }
 
-        // 验证用户名和密码
-        $check = loginCheck($password, $userinfo->password);
+        $yz = yz::teacher($list['username'], $list['password']);
 
-        if ($check === true)
+        if($yz['val'] === 1)
         {
-            session('onlineCategory', 'admin');
-            session('user_id', $userinfo->id);
-            session('username', $username);
-            session('password', $password);
-            // 跳转到首页
-            $data = ['msg' => '验证成功', 'val' => 1, 'url' =>'\\'];
-        } else {
-            // 提示错误信息
-            $data = ['msg' => '用户名或密码错误', 'val' => 0];
+            // 获取服务器密码
+            $ter = new \app\teacher\model\Teacher;
+            $userinfo = $ter::where('phone', $list['username'])
+                ->where('status', 1)
+                ->field('id, lastip, phone, ip, denglucishu, lasttime, thistime, password')
+                ->find();
+            // 将本次信息上传到服务器上
+            $userinfo->lastip = $userinfo->ip;
+            $userinfo->ip = request()->ip();
+            $userinfo->denglucishu = ['inc', 1];
+            $userinfo->lasttime = $userinfo->getData('thistime');
+            $userinfo->thistime = time();
+            $userinfo->save();
         }
 
-        return $data;
+        return json($yz);
+    }
+
+
+    // 学生登录验证
+    public function student()
+    {
+        // 清除cookie
+        cookie('userid', null);
+        cookie('username', null);
+        cookie('password', null);
+        // 清除session（当前作用域）
+        session(null);
+
+        // 获取表单数据
+        $list = request()
+            ->only([
+                'username'
+                ,'password'
+                ,'category'
+            ]);
+
+        $validate = new \app\login\validate\Yanzheng;
+        $result = $validate->scene('admin')->check($list);
+        $msg = $validate->getError();
+        if(!$result){
+            return json(['msg' => $msg, 'val' => 0]);
+        }
+
+        $yz = yz::student($list['username'], $list['password']);
+
+        if($yz['val'] === 1)
+        {
+            // 获取服务器密码
+            $stu = new \app\student\model\Student;
+            $userinfo = $stu::where('shenfenzhenghao', $list['username'])
+                ->where('status', 1)
+                ->field('id, lastip, shenfenzhenghao, ip, denglucishu, lasttime, thistime, password')
+                ->find();
+            // 将本次信息上传到服务器上
+            $userinfo->lastip = $userinfo->ip;
+            $userinfo->ip = request()->ip();
+            $userinfo->denglucishu = ['inc', 1];
+            $userinfo->lasttime = $userinfo->getData('thistime');
+            $userinfo->thistime = time();
+            $userinfo->save();
+        }
+
+        return json($yz);
     }
 
 
@@ -121,7 +186,7 @@ class Index
     public function shangmaLog()
     {
         // 渲染模板
-        return View::fetch();
+        return $this->view->fetch();
     }
 
 
@@ -132,10 +197,10 @@ class Index
         $list['webtitle'] = config('shangma.webtitle');
         $list['version'] = config('shangma.version');
 
-        View::assign('list',$list);
+        $this->view->assign('list',$list);
 
         // 渲染输出
-        return View::fetch();
+        return $this->view->fetch();
     }
 
 
@@ -150,8 +215,8 @@ class Index
             ,'version' => config('shangma.version')
         ];
 
-        View::assign('list',$list);
-        return View::fetch();
+        $this->view->assign('list',$list);
+        return $this->view->fetch();
     }
 
 }
