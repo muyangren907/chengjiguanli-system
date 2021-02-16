@@ -41,6 +41,16 @@ class Member extends Migrator
             ->addColumn('teacher_id','string',['limit'=>11,'null'=>true,'comment'=>'教师编号'])
             ->addColumn('school_id','integer',['limit'=>11,'null'=>false,'default'=>0,'comment'=>'所在单位'])
             ->addColumn('phone','string',['limit'=>11,'null'=>true,'comment'=>'联系方式'])
+            ->addColumn('worktime','integer',['limit'=>11,'null'=>true,'comment'=>'工作时间'])
+            ->addColumn('zhiwu_id','integer',['limit'=>11,'null'=>true,'comment'=>'职务'])
+            ->addColumn('zhicheng_id','integer',['limit'=>11,'null'=>true,'comment'=>'职称'])
+            ->addColumn('biye','string',['limit'=>50,'null'=>true,'comment'=>'毕业学校'])
+            ->addColumn('zhuanye','string',['limit'=>20,'null'=>true,'comment'=>'专业'])
+            ->addColumn('xueli_id','integer',['limit'=>11,'null'=>true,'comment'=>'学历'])
+            ->addColumn('subject_id','integer',['limit'=>11,'null'=>true,'comment'=>'学科'])
+            ->addColumn('quanpin','string',['limit'=>30,'default'=>'a','null'=>false,'comment'=>'全拼'])
+            ->addColumn('shoupin','string',['limit'=>5,'default'=>'a','null'=>false,'comment'=>'简拼'])
+            ->addColumn('tuixiu','boolean',['limit'=>1,'default'=>0,'null'=>false,'comment'=>'是否已经退休'])
             ->addColumn('denglucishu','integer',['limit'=>5,'default'=>0,'null'=>false,'comment'=>'登录次数'])
             ->addColumn('lastip','string',['limit'=>55,'default'=>'127.0.0.1','null'=>false,'comment'=>'最后一次登录IP'])
             ->addColumn('ip','string',['limit'=>55,'default'=>'127.0.0.1','null'=>false,'comment'=>'登录IP'])
@@ -52,6 +62,7 @@ class Member extends Migrator
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
             ->addColumn('beizhu','string',['limit'=>80,'null'=>true,'comment'=>'备注'])
             ->addIndex(array('username'), array('unique' => true))
+            ->addIndex(array('phone'), array('unique' => true))
             ->create();
     }
 }

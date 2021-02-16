@@ -2,7 +2,7 @@
   扩展cjgl模块
   **/
 
-layui.define(['table'],function(exports){ //提示：模块也可以依赖其它模块，如：layui.define('layer', callback);
+layui.define(['table', 'form'],function(exports){ //提示：模块也可以依赖其它模块，如：layui.define('layer', callback);
   var table = layui.table
   form = layui.form;
   var obj = {
@@ -391,7 +391,6 @@ layui.define(['table'],function(exports){ //提示：模块也可以依赖其它
     checkboxParentList:function(parentId){
       cnt = $('#'+parentId).children("input[checkall='c']").length;
       checkedCnt = $('#'+parentId).children("input:checkbox[checkall='c']:checked").length;
-      console.log(cnt, checkedCnt);
       if(cnt == checkedCnt)
       {
         $('#'+parentId).find("input[checkall='p']").prop('checked',true);

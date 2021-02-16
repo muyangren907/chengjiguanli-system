@@ -55,7 +55,7 @@ class SearchMore extends BaseModel
                     $query->field('id, jiancheng');
                 }
                 ,'cjStudent' => function($query){
-                    $query->field('id, xingming, sex');
+                    $query->field('id, xingming, sex, shengri');
                 }
             ])
             ->append(['banjiTitle', 'banTitle'])
@@ -156,6 +156,49 @@ class SearchMore extends BaseModel
             }
         }
 
+        return $data;
+    }
+
+
+    // 获取在线编辑成绩数据
+    public function srcOnlineEdit($srcfrom)
+    {
+        // 初始化参数
+        $src = array(
+            'kaoshi_id' => '0'
+            ,'banji_id' => array()
+            ,'subject_id' => array()
+        );
+        // 用新值替换初始值
+        $src = array_cover($srcfrom, $src);
+        $khlist = $this->search($src);
+        if($khlist->isEmpty())
+        {
+            return $data = array();
+        }
+        $sbj = new \app\teach\model\Subject;
+        $sbjList = $sbj->where('id', 'in', $src['subject_id'])
+            ->field('id, title, jiancheng, lieming')
+            ->select();
+        $data = array();
+        foreach ($khlist as $key => $value) {
+            $data[$key]['id'] = $value['id'];
+            $data[$key]['school_jiancheng'] = $value->cjSchool->jiancheng;
+            $data[$key]['ban_title'] = $value->banTitle;
+            $data[$key]['student_xingming'] = $value->cjStudent->xingming;
+            $data[$key]['sex'] = $value->cjStudent->sex;
+            $data[$key]['shengri'] = $value->cjStudent->shengri;
+
+            foreach ($sbjList as $sbj_k => $sbj_v) {
+                $data[$key][$sbj_v->lieming] = '';
+                foreach ($value->ksChengji as $cj_k => $cj_v) {
+                    if($cj_v->subject_id == $sbj_v->id)
+                    {
+                        $data[$key][$sbj_v->lieming] = $cj_v->defen * 1;
+                    }
+                }
+            }
+        }
         return $data;
     }
 

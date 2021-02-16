@@ -2,7 +2,7 @@
 namespace app\kaohao\controller;
 
 // 引用控制器基类
-use app\base\controller\AdminBase;
+use app\base\controller\ToolBase;
 
 // 引用数据模型类
 use app\kaoshi\model\Kaoshi as KS;
@@ -11,7 +11,7 @@ use app\kaohao\model\Kaohao as KH;
 use think\Validate;
 
 
-class Index extends AdminBase
+class Index extends ToolBase
 {
     // 生成考号
     public function createAll($kaoshi_id)

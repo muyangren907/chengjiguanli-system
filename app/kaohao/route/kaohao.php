@@ -19,11 +19,3 @@ Route::group('index', function () {
     Route::rule('saveall', 'Index/saveAll', 'post');					# 保存信息
     Route::rule('read/<id>', 'Index/read', 'get');             # 读取信息
 });
-
-
-// 考号管理
-Route::group('excel', function () {
-    Route::rule('biaoqian/<kaoshi_id>', 'Excel/biaoqian', 'get'); # 信息列表
-    Route::rule('biaoqianxls', 'Excel/biaoqianXls', 'post');  # 信息列表
-    Route::rule('caiji/<kaoshi_id>', 'Excel/caiji', 'get');   # 成绩采集下载页面
-});

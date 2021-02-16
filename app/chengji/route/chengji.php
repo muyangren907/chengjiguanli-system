@@ -30,8 +30,7 @@ Route::group('index', function () {
 
 // 成绩统计
 Route::group('tongji', function () {
-	Route::rule('yilucnt/<kaoshi_id>','Tongji/yiluCnt');			# 更新信息
-	Route::rule('data','Tongji/ajaxData','post');			# 扫码界面
+	
     // Route::rule('editdfl/<kaoshi_id>','Tongji/editDefenLv','get');           # 扫码界面
     Route::rule('editdfl','Tongji/updateDefenLv','post');           # 扫码界面
 });

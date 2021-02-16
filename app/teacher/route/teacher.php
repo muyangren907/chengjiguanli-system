@@ -32,4 +32,6 @@ Route::group('index', function () {
     Route::rule('datadel','Index/ajaxDataDel','post');				# 获取数据
     Route::rule('redel/<id>','Index/reDel','delete');		# 获取学生成绩
     Route::rule('resetpassword/<id>','Index/resetpassword','post');       # 重置教师密码
+
+    Route::rule('tongbu','Index/tongbu','get');             # 添加信息
 });

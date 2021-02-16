@@ -234,6 +234,8 @@ class Index extends ToolBase
             $data = Chengji::create($data);
         }
 
+        halt($data);
+
         // 判断返回内容
         $data  ? $data = ['msg' => '录入成功','val' => 1]
             : $data = ['msg' => '数据处理错误','val' => 0];
@@ -550,5 +552,303 @@ class Index extends ToolBase
         ob_flush();
         flush();
         exit();
+    }
+
+
+
+    // 标签下载
+    public function biaoqian()
+    {
+        $ks = new \app\kaoshi\model\Kaoshi;
+        // 获取参考年级
+        $list['data'] = $ks::order(['id' => 'desc'])
+                ->field('id, title')
+                ->where('luru', 1)
+                ->where('status', 1)
+                ->select();
+
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle' => '表格录入'
+            ,'butname' => '下载'
+            ,'formpost' => 'POST'
+            ,'url' => '/luru/index/biaoqianxls'
+        );
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+        // 渲染
+        return $this->view->fetch();
+    }
+
+
+    //生成标签信息
+    public function biaoqianXls()
+    {
+        // 获取表单数据
+        $list = request()->only([
+            'banji_id'=>array()
+            ,'kaoshi_id'
+            ,'subject_id'=>array()
+        ], 'POST');
+        event('kslu', $list['kaoshi_id']);
+        $kaoshi_id = $list['kaoshi_id'];
+        $banji_id = $list['banji_id'];
+        $subject = $list['subject_id'];
+
+        // 实例化验证模型
+        $validate = new \app\kaoshi\validate\Biaoqian;
+        $result = $validate->scene('biaoqian')->check($list);
+        $msg = $validate->getError();
+        if(!$result){
+            $this->error($msg);
+        }
+
+        ob_start();
+        $ks = new KS();
+        $kslist = $ks::where('id', $kaoshi_id)
+                    ->field('id, title')
+                    ->find();
+        // 获取参考学科
+        $ksset = new ksset();
+        $ksSubject = $ksset->srcSubject($list);
+
+        // 查询考号
+        $srcMore = new srcMore();
+        $src = [
+            'kaoshi_id' => $kaoshi_id
+            ,'banji_id' => $banji_id
+        ];
+        $kaohao = $srcMore->srcBanjiKaohao($src);
+
+        $thistime = date("Y-m-d h:i:sa");
+        // 创建表格
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $thistime = date("Y-m-d h:i:sa");
+        // 设置文档属性
+        $spreadsheet->getProperties()
+            ->setCreator("尚码成绩管理系统")    //作者
+            ->setTitle("尚码成绩管理")  //标题
+            ->setLastModifiedBy(session('username')) //最后修改者
+            ->setDescription("该表格由" . session('username') . session('id') . "于" . $thistime . "在尚码成绩管理系统中下载，只作为内部交流材料,不允许外泄。")  //描述
+            ->setKeywords("尚码 成绩管理") //关键字
+            ->setCategory("成绩管理"); //分类
+
+        // 设置表头信息
+        $sheet->setCellValue('A1', '序号');
+        $sheet->setCellValue('B1', '考号');
+        $sheet->setCellValue('C1', '学校');
+        $sheet->setCellValue('D1', '班级');
+        $sheet->setCellValue('E1', '学科');
+        $sheet->setCellValue('F1', '姓名');
+
+        // 循环写出信息
+        $i = 2;
+        foreach ($kaohao as $key=>$bj)
+        {
+            foreach ($ksSubject as $ksbj => $sbj)
+            {
+                foreach ($bj->banjiKaohao as $kkh => $kh)
+                {
+                    // 表格赋值
+                    $sheet->setCellValue('A' . $i, $i-1);
+                    $stuKaohao = '';
+                    $stuKaohao = \app\facade\Tools::encrypt($kh->id . '|' . $sbj['id'], 'dlbz');
+                    $sheet->setCellValue('C' . $i, $bj->cjSchool->jiancheng);
+                    $sheet->setCellValue('B' . $i, $stuKaohao);
+                    $sheet->setCellValue('D' . $i, $bj->numBanjiTitle);
+                    $sheet->setCellValue('E' . $i, $sbj['jiancheng']);
+                    $sheet->setCellValue('F' . $i, $kh->cjStudent['xingming']);
+                    $i++;
+                }
+            }
+        }
+
+        // 保存文件
+        $filename = $kslist->title . ' 标签数据' . date('ymdHis') . '.xls';
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
+        $writer->save('php://output');
+
+        ob_flush();
+        flush();
+        exit();
+    }
+
+
+    // 标签下载
+    public function online()
+    {
+        $ks = new \app\kaoshi\model\Kaoshi;
+        // 获取参考年级
+        $list['data'] = $ks::order(['id' => 'desc'])
+                ->field('id, title')
+                ->where('luru', 1)
+                ->where('status', 1)
+                ->select();
+
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle' => '在线录入选择'
+            ,'butname' => '打开学生名单'
+            ,'formpost' => 'POST'
+            ,'url' => '/luru/index/onlineedit'
+        );
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+        // 渲染
+        return $this->view->fetch();
+    }
+
+
+    // 在线编辑成绩
+    public function onlineedit()
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'kaoshi_id'
+                ,'banji_id' => array()
+                ,'subject_id' => array()
+            ], 'POST');
+        event('kslu', $src['kaoshi_id']);
+
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = '学生成绩列表';
+
+        // 获取参加考试的年级和学科
+        $sbj = new \app\teach\model\Subject;
+        $sbjList = $sbj->where('id', 'in', $src['subject_id'])
+                    ->field('id, title, lieming')
+                    ->select();
+        $list['dataurl'] = '/luru/index/onlinedata';
+        $list['set']['src'] = $src;
+        $list['set']['subjectList'] = $sbjList;
+        $list['backurl'] = '/luru/index/online';
+
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+        return $this->view->fetch();
+    }
+
+
+    // 获取在线编辑成绩数据
+    public function ajaxDataOnline()
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'page'
+                ,'limit'
+                ,'field' => 'id'
+                ,'order' => 'asc'
+                ,'kaoshi_id'
+                ,'banji_id' => array()
+                ,'subject_id' => array()
+            ], 'POST');
+
+        // 实例化并查询成绩
+        $cj = new \app\kaohao\model\SearchMore;
+        $data = $cj->srcOnlineEdit($src);
+        $data = reSetArray($data, $src);
+
+        return json($data);
+    }
+
+
+    // 统计已经录入成绩数量--选择页面
+    public function yiluCnt()
+    {
+        $ks = new \app\kaoshi\model\Kaoshi;
+        // 获取参考年级
+        $list['data'] = $ks::order(['id' => 'desc'])
+                ->field('id, title')
+                ->where('status', 1)
+                ->select();
+
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle' => '已录统计'
+            ,'butname' => '打开'
+            ,'formpost' => 'POST'
+            ,'url' => '/luru/index/yilutable'
+        );
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+        // 渲染
+        return $this->view->fetch();
+    }
+
+
+    // 统计已经录入成绩数量
+    public function yiluCntTable()
+    {
+        // 获取参数
+        $kaoshi_id = input('kaoshi_id');
+
+        // 获取考试信息
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $ksinfo = $ks->where('id', $kaoshi_id)
+            ->field('id, title')
+            ->find();
+
+        // 获取参加考试的年级和学科
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $list['nianji'] = $ksset->srcGrade($kaoshi_id);
+        $src = [
+            'kaoshi_id' => $kaoshi_id
+        ];
+        $list['subject_id'] = $ksset->srcSubject($src);
+
+        // 获取参与学校
+        if(count($list['nianji']) > 0)
+        {
+            $khSrc = new \app\kaohao\model\SearchCanYu;
+            $src['ruxuenian'] = [$list['nianji'][0]['ruxuenian']];
+            $src['kaoshi_id'] = $kaoshi_id;
+            $list['school_id'] = $khSrc->school($src);
+        }
+
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = '各年级的班级成绩列表';
+        $list['kaoshi_id'] = $kaoshi_id;
+        $list['kaoshititle'] = $ksinfo->title;
+        $list['dataurl'] = '/luru/index/datatj';
+        // 模板赋值
+        $this->view->assign('list', $list);
+
+        // 渲染模板
+        return $this->view->fetch();
+    }
+
+
+    // 获取年级成绩统计结果
+    public function ajaxDatayltj()
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'page' => '1'
+                ,'limit' => '10'
+                ,'kaoshi_id' => ''
+                ,'ruxuenian' => ''
+                ,'school_id' => array()
+                ,'banji_id' => array()
+                ,'field' => 'banji_id'
+                ,'order' => 'asc'
+            ], 'POST');
+
+        // 统计成绩
+        $btj = new \app\chengji\model\TongjiBj;
+        $data = $btj->tjBanjiCnt($src);
+        $data = reSetArray($data, $src);
+
+        return json($data);
     }
 }

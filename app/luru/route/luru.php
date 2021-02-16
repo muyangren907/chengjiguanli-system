@@ -22,5 +22,12 @@ Route::group('index', function () {
     Route::rule('index', 'Index/index', 'get');			# 成绩获取
     Route::rule('data', 'Index/ajaxData', 'post');			# 成绩获取
     Route::rule('dwcaiji', 'Index/dwcaiji', 'post');  # 成绩采集下载
+    Route::rule('biaoqian', 'Index/biaoqian', 'get'); # 信息列表
+    Route::rule('biaoqianxls', 'Index/biaoqianXls', 'post');  # 信息列表
+    Route::rule('online', 'Index/online', 'get'); # 在线录入
+    Route::rule('onlineedit', 'index/onlineedit', 'post'); # 在线录入
+    Route::rule('onlinedata', 'index/ajaxDataOnline', 'post'); # 在线录入
+    Route::rule('yilucnt','Index/yiluCnt','get');          # 更新信息
+    Route::rule('yilutable','Index/yiluCntTable','post');          # 更新信息
+    Route::rule('datatj','Index/ajaxDatayltj','post');           # 扫码界面
 });
-

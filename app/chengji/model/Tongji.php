@@ -387,10 +387,10 @@ class Tongji extends BaseModel
         $src = array_cover($srcfrom, $src);
         $cj = new \app\chengji\model\Chengji;
         $kh = new \app\kaohao\model\Kaohao;
+        $ksset = new \app\kaoshi\model\KaoshiSet;
 
         // 查询考号
         $kaohaoid = $kh->where('kaoshi_id', $src['kaoshi_id'])
-
             ->where('ruxuenian', $src['ruxuenian'])
             ->column('id');
         // 查询成绩
@@ -399,12 +399,16 @@ class Tongji extends BaseModel
             ->whereNotNull('defen')
             ->field('id, defen, defenlv')
             ->select();
+        $manfen = $ksset->where('kaoshi_id', $src['kaoshi_id'])
+            ->where('subject_id', $src['subject_id'])
+            ->where('ruxuenian', $src['ruxuenian'])
+            ->value('manfen');
         // 循环写入新成绩
         $data = array();
         foreach ($cjList as $cj_k => $cj_v) {
             $data[] = [
-                    'id' => $cj_v->id
-                    ,'defenlv' => $cj_v->defen / $mf_v['fenshuxian']['manfen'] *100
+                'id' => $cj_v->id
+                ,'defenlv' => $cj_v->defen / $manfen *100
             ];
         }
         $data = $cj->saveAll($data);

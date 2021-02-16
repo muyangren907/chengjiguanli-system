@@ -69,7 +69,7 @@ class Rule extends Seeder
                 ],
                 ['id' => 10203
                     ,'title' => '下载表格'
-                    ,'name' => 'kaohao/excel/caiji'
+                    ,'name' => 'luru/index/caiji'
                     ,'paixu' => 3
                     ,'pid' => 102
                 ],
@@ -96,11 +96,11 @@ class Rule extends Seeder
                 ],
             ['id' => 105
                 ,'title' => '已录统计'
-                ,'name' => 'chengji/tongji/yilucnt'
+                ,'name' => 'luru/index/yilucnt'
                 ,'paixu' => 5
                 ,'ismenu'  => 1
                 ,'pid' => 1
-                ,'url' => '/chengji/tongji/yilucnt'
+                ,'url' => '/luru/index/yilucnt'
             ],
                 // 占位
                 ['id' => 10501
@@ -111,11 +111,11 @@ class Rule extends Seeder
                 ],    
             ['id' => 106
                 ,'title' => '下载标签'
-                ,'name' => 'kaohao/excel/biaoqian'
+                ,'name' => 'luru/index/biaoqian'
                 ,'paixu' => 6
                 ,'ismenu'  => 1
                 ,'pid'  => 1
-                ,'url' => '/kaohao/excel/biaoqian'
+                ,'url' => '/luru/index/biaoqian'
             ],
                 // 占位
                 ['id' => 10601
@@ -1252,7 +1252,6 @@ class Rule extends Seeder
                     ,'paixu' => 1
                     ,'pid'  => 705
                 ],
-                // 下次要添加上
                 ['id' => 70502
                     ,'title' => '初始化'
                     ,'name' => 'system/systembase/resetmayi'

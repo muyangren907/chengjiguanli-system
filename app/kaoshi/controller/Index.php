@@ -41,7 +41,6 @@ class Index extends AdminBase
                 ,'field' => 'id'
                 ,'order' => 'desc'
                 ,'searchval' => ''
-                ,'user_group' => 'admin'
             ], 'POST');
         // 根据条件查询数据
         $ks = new KS;
@@ -344,10 +343,16 @@ class Index extends AdminBase
         $id = request()->post('id');
         $value = request()->post('value');
 
-        // 获取考试信息
-        $data = KS::where('id', $id)->update(['status' => $value]);
+        $ks = new KS();
+        $ksInfo = $ks->where('id', $id)->field('id, luru, status')->find();
+        if($value == 0){
+            $ksInfo->status = $value;
+            $ksInfo->luru = $value;
+        }else{
+            $ksInfo->status = $value;
+        }
 
-        // 根据更新结果设置返回提示信息
+        $data = $ksInfo->save();
         $data ? $data = ['msg' => '状态设置成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 

@@ -280,7 +280,7 @@ class TongjiNj extends BaseModel
     // 获取优秀率
     public function getYouxiulvAttr()
     {
-        $youxiu = 0;
+        $youxiu = null;
         $ycnt = $this->youxiu;
         $cjcnt = $this->chengji_cnt;
         if ($cjcnt > 0) {
@@ -294,7 +294,7 @@ class TongjiNj extends BaseModel
     // 获取优秀率
     public function getJigelvAttr()
     {
-        $jige = 0;
+        $jige = null;
         $jcnt = $this->jige;
         $cjcnt = $this->chengji_cnt;
         if ($cjcnt > 0) {
@@ -310,7 +310,7 @@ class TongjiNj extends BaseModel
     {
         $cjCnt = $this->chengji_cnt;
         $chaCnt = $cjCnt - $this->jige;
-        $chalv = 0;
+        $chalv = null;
         if ($cjCnt > 0) {
             $chalv = round($chaCnt / $cjCnt * 100, 2);
         }
@@ -324,12 +324,12 @@ class TongjiNj extends BaseModel
     {
         $cjCnt = $this->chengji_cnt;
         $stu_cnt = $this->stu_cnt;
-        $canshilv = 0;
+        $canshilv = null;
         if ($stu_cnt > 0) {
-            $chalv = round($cjCnt / $stu_cnt * 100, 2);
+            $canshilv = round($cjCnt / $stu_cnt * 100, 2);
         }
 
-        return $chalv;
+        return $canshilv;
     }
 
 }

@@ -1,0 +1,113 @@
+{extend name=".././view/createhref.html" /}
+
+{block name="form"}
+  <form class="layui-form layui-form-pane" id="dwform" lay-filter="dwform" method="{$list.set.formpost}" action="{$list.set.url}">
+      <div class="layui-form-item">
+        <label for="kaoshi_id" class="layui-form-label"><span class="x-red">*</span>考试</label>
+        <div class="layui-input-block">
+          <select name="kaoshi_id" id="kaoshi_id" lay-verify="required" lay-filter="kaoshi_id">
+            {volist name="list.data" id="vo"}
+              <option value="{$vo.id}"> {$vo.title} </option>
+            {/volist}
+          </select>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label for="school_id" class="layui-form-label"><span class="x-red">*</span>学校</label>
+        <div class="layui-input-block">
+          <select name="school_id" id="school_id" lay-verify="required" lay-filter="school_id">
+            <option value="">请选择学校</option>
+          </select>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label for="ruxuenian" class="layui-form-label">
+          <span class="x-red">*</span>年级
+        </label>
+        <div class="layui-input-block">
+          <select name="ruxuenian" id="ruxuenian" lay-verify="required" class="layui-form-label" lay-filter="ruxuenian">
+            <option value="">请选择年级</option>
+          </select>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label for="banji_id" class="layui-form-label">
+          <span class="x-red">*</span>班级
+        </label>
+        <div class="layui-input-block" id="banji_id">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label for="subject_id" class="layui-form-label">
+          <span class="x-red">*</span>学科
+        </label>
+        <div class="layui-input-block" id="subject_id">
+        </div>
+      </div>
+      <input type="hidden" name="__token__" value="{:token()}" />
+      <div class="layui-form-item" style="text-align: center;">
+          <button  class="layui-btn" lay-filter="download" lay-submit="">
+              {$list.set.butname}
+          </button>
+      </div>
+
+    </form>
+{/block}
+
+{block name="myjs"}
+<script>
+  layui.use(['form','cjgl'], function(){
+    var form = layui.form
+    cjgl = layui.cjgl;
+
+    // 加载学校列表
+    addSchool();
+
+    // 监听学校下拉菜单
+    form.on('select(kaoshi_id)', function (data) {
+      addSchool();
+    })
+
+    // 监听学校下拉菜单
+    form.on('select(school_id)', function (data) {
+      addNianji();
+    })
+    // 监听学校下拉菜单
+    form.on('select(ruxuenian)', function (data) {
+      addBanji();
+      addSubject();
+    })
+
+    // 添加学校
+    function addSchool(){
+      // 获取参数
+      formval = form.val("dwform");
+      cjgl.createSelectOption('school_id', formval, '/tools/kscy/school', 'id', 'title');
+    }
+
+    // 添加年级
+    function addNianji(){
+      // 获取参数
+      formval = form.val("dwform");
+      cjgl.createSelectOption('ruxuenian', formval, '/tools/kscy/grade', 'ruxuenian', 'nianjiname');
+    }
+
+    // 添加学科
+    function addBanji(){
+      // 获取参数
+      formval = form.val("dwform");
+      cjgl.createCheckbox('banji_id', formval, '/tools/kscy/class', 'banji_id', 'banTitle');
+    }
+
+
+    // 添加学校
+    function addSubject(){
+      // 获取参数
+      formval = form.val("dwform");
+      cjgl.createCheckbox('subject_id', formval, '/tools/kscy/subject', 'subject_id', 'title');
+    }
+  });
+
+</script>
+{/block}
+

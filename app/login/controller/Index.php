@@ -40,12 +40,12 @@ class Index extends BaseController
     // 管理员登录验证
     public function admin()
     {
-        // 清除cookie
-        cookie('userid', null);
-        cookie('username', null);
-        cookie('password', null);
-        // 清除session（当前作用域）
-        session(null);
+        // // 清除cookie
+        // cookie('userid', null);
+        // cookie('username', null);
+        // cookie('password', null);
+        // // 清除session（当前作用域）
+        // session(null);
 
         // 获取表单数据
         $list = request()
@@ -88,12 +88,12 @@ class Index extends BaseController
     // 学生登录验证
     public function teacher()
     {
-        // 清除cookie
-        cookie('userid', null);
-        cookie('username', null);
-        cookie('password', null);
-        // 清除session（当前作用域）
-        session(null);
+        // // 清除cookie
+        // cookie('userid', null);
+        // cookie('username', null);
+        // cookie('password', null);
+        // // 清除session（当前作用域）
+        // session(null);
 
         // 获取表单数据
         $list = request()
@@ -137,12 +137,12 @@ class Index extends BaseController
     // 学生登录验证
     public function student()
     {
-        // 清除cookie
-        cookie('userid', null);
-        cookie('username', null);
-        cookie('password', null);
-        // 清除session（当前作用域）
-        session(null);
+        // // 清除cookie
+        // cookie('userid', null);
+        // cookie('username', null);
+        // cookie('password', null);
+        // // 清除session（当前作用域）
+        // session(null);
 
         // 获取表单数据
         $list = request()
