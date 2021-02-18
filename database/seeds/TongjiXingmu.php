@@ -31,20 +31,20 @@ class TongjiXingmu extends Seeder
                 ,'paixu' => 2
                 ,'category_id' => 12201
             ]
-            // ,[
-            //     'title'      =>  '总分'
-            //     ,'biaoshi'   =>  'sum'
-            //     ,'tongji'        =>  0
-            //     ,'paixu' => 3
-            //     ,'category_id' => 12201
-            // ]
-            // ,[
-            //     'title'      =>  '平均分'
-            //     ,'biaoshi'   =>  'avg'
-            //     ,'tongji'        =>  1
-            //     ,'paixu' => 4
-            //     ,'category_id' => 12201
-            // ]
+            ,[
+                'title'      =>  '总分'
+                ,'biaoshi'   =>  'sum'
+                ,'tongji'        =>  0
+                ,'paixu' => 3
+                ,'category_id' => 12201
+            ]
+            ,[
+                'title'      =>  '平均分'
+                ,'biaoshi'   =>  'avg'
+                ,'tongji'        =>  1
+                ,'paixu' => 4
+                ,'category_id' => 12201
+            ]
             ,[
                 'title'      =>  '得分率'
                 ,'biaoshi'   =>  'defenlv'
@@ -166,20 +166,20 @@ class TongjiXingmu extends Seeder
                 ,'paixu' => 2
                 ,'category_id' => 12202
             ]
-            // ,[
-            //     'title'      =>  '总分'
-            //     ,'biaoshi'   =>  'sum'
-            //     ,'tongji'        =>  0
-            //     ,'paixu' => 3
-            //     ,'category_id' => 12202
-            // ]
-            // ,[
-            //     'title'      =>  '平均分'
-            //     ,'biaoshi'   =>  'avg'
-            //     ,'tongji'        =>  1
-            //     ,'paixu' => 4
-            //     ,'category_id' => 12202
-            // ]
+            ,[
+                'title'      =>  '总分'
+                ,'biaoshi'   =>  'sum'
+                ,'tongji'        =>  0
+                ,'paixu' => 3
+                ,'category_id' => 12202
+            ]
+            ,[
+                'title'      =>  '平均分'
+                ,'biaoshi'   =>  'avg'
+                ,'tongji'        =>  1
+                ,'paixu' => 4
+                ,'category_id' => 12202
+            ]
             ,[
                 'title'      =>  '得分率'
                 ,'biaoshi'   =>  'defenlv'
@@ -301,20 +301,20 @@ class TongjiXingmu extends Seeder
                 ,'paixu' => 2
                 ,'category_id' => 12203
             ]
-            // ,[
-            //     'title'      =>  '总分'
-            //     ,'biaoshi'   =>  'sum'
-            //     ,'tongji'        =>  0
-            //     ,'paixu' => 3
-            //     ,'category_id' => 12203
-            // ]
-            // ,[
-            //     'title'      =>  '平均分'
-            //     ,'biaoshi'   =>  'avg'
-            //     ,'tongji'        =>  1
-            //     ,'paixu' => 4
-            //     ,'category_id' => 12203
-            // ]
+            ,[
+                'title'      =>  '总分'
+                ,'biaoshi'   =>  'sum'
+                ,'tongji'        =>  0
+                ,'paixu' => 3
+                ,'category_id' => 12203
+            ]
+            ,[
+                'title'      =>  '平均分'
+                ,'biaoshi'   =>  'avg'
+                ,'tongji'        =>  1
+                ,'paixu' => 4
+                ,'category_id' => 12203
+            ]
             ,[
                 'title'      =>  '得分率'
                 ,'biaoshi'   =>  'defenlv'
@@ -438,20 +438,20 @@ class TongjiXingmu extends Seeder
                 ,'paixu' => 2
                 ,'category_id' => 12204
             ]
-            // ,[
-            //     'title'      =>  '总分'
-            //     ,'biaoshi'   =>  'sum'
-            //     ,'tongji'        =>  0
-            //     ,'paixu' => 3
-            //     ,'category_id' => 12204
-            // ]
-            // ,[
-            //     'title'      =>  '平均分'
-            //     ,'biaoshi'   =>  'avg'
-            //     ,'tongji'        =>  1
-            //     ,'paixu' => 4
-            //     ,'category_id' => 12204
-            // ]
+            ,[
+                'title'      =>  '总分'
+                ,'biaoshi'   =>  'sum'
+                ,'tongji'        =>  0
+                ,'paixu' => 3
+                ,'category_id' => 12204
+            ]
+            ,[
+                'title'      =>  '平均分'
+                ,'biaoshi'   =>  'avg'
+                ,'tongji'        =>  1
+                ,'paixu' => 4
+                ,'category_id' => 12204
+            ]
             ,[
                 'title'      =>  '得分率'
                 ,'biaoshi'   =>  'defenlv'
@@ -577,7 +577,7 @@ class TongjiXingmu extends Seeder
             ,[
                 'title' => '班超过'
                 ,'biaoshi' => 'bweizhi'
-                ,'tongji' => 1
+                ,'tongji' => 0
                 ,'paixu' => 4
                 ,'category_id' => 12205
             ]
@@ -998,20 +998,20 @@ class TongjiXingmu extends Seeder
                 ,'paixu' => 2
                 ,'category_id' => 12212
             ]
-            // ,[
-            //     'title'      =>  '总分'
-            //     ,'biaoshi'   =>  'sum'
-            //     ,'tongji'        =>  0
-            //     ,'paixu' => 3
-            //     ,'category_id' => 12212
-            // ]
-            // ,[
-            //     'title'      =>  '平均分'
-            //     ,'biaoshi'   =>  'avg'
-            //     ,'tongji'        =>  1
-            //     ,'paixu' => 4
-            //     ,'category_id' => 12212
-            // ]
+            ,[
+                'title'      =>  '总分'
+                ,'biaoshi'   =>  'sum'
+                ,'tongji'        =>  0
+                ,'paixu' => 3
+                ,'category_id' => 12212
+            ]
+            ,[
+                'title'      =>  '平均分'
+                ,'biaoshi'   =>  'avg'
+                ,'tongji'        =>  1
+                ,'paixu' => 4
+                ,'category_id' => 12212
+            ]
             ,[
                 'title'      =>  '得分率'
                 ,'biaoshi'   =>  'defenlv'

@@ -207,18 +207,6 @@ class Teacher extends BaseModel
     }
 
 
-
-    // 根据手机号查询教师
-    public function phoneSrc($phone)
-    {
-        $data = self::withTrashed()
-            ->where('phone', $phone)
-            ->field('id, delete_time')
-            ->find();
-        return $data;
-    }
-
-
     // 查询教师荣誉
     public function srcRongyu($teacher_id)
     {
@@ -362,57 +350,16 @@ class Teacher extends BaseModel
     // 年龄获取器
     public function getAgeAttr()
     {
-        return $this->fBirth($this->getdata('shengri'), 2);
+        return \app\facade\Tools::fBirth($this->getdata('shengri'), 2);
     }
 
 
     // 工龄获取器
     public function getGonglingAttr()
     {
-        return $this->fBirth($this->getdata('worktime'), 2);
+        return \app\facade\Tools::fBirth($this->getdata('worktime'), 2);
     }
 
 
-    // 分割表格上传数据
-    private function cutStr($value)
-    {
-        $value = explode('|', $value);
-        $str = '';
-        if(isset($value[1]) && $value >0 )
-        {
-            $str = $value[1];
-        }
-
-        return $str;
-    }
-
-
-    /**
-    * $date是时间戳
-    * $type为1的时候是虚岁,2的时候是周岁
-    */
-    function fBirth($date = 0, $type = 1){
-        $nowYear = date("Y", time());
-        $nowMonth = date("m", time());
-        $nowDay = date("d", time());
-        $birthYear = date("Y", $date);
-        $birthMonth = date("m", $date);
-        $birthDay = date("d", $date);
-        if($type == 1){
-            $age = $nowYear - ($birthYear - 1);
-        }elseif($type == 2){
-            if($nowMonth < $birthMonth){
-                $age = $nowYear - $birthYear - 1;
-            }elseif($nowMonth == $birthMonth){
-                if($nowDay < $birthDay){
-                    $age = $nowYear - $birthYear - 1;
-                }else{
-                    $age = $nowYear - $birthYear;
-                }
-            }else{
-                $age = $nowYear - $birthYear;
-            }
-        }
-       return $age;
-    }
+    
 }

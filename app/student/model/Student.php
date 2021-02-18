@@ -23,8 +23,8 @@ class Student extends BaseModel
         if(strlen($shengri) == 0 ){
             return '';
         };
-        $tearch = new \app\teacher\model\Teacher;
-        $age = $tearch->fBirth($shengri, 1);
+        $tearch = new \app\teacher\model\Teacher; 
+        $age = \app\facade\Tools::fBirth($shengri, 1);
         return $age;
     }
 

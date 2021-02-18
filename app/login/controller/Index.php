@@ -40,13 +40,6 @@ class Index extends BaseController
     // 管理员登录验证
     public function admin()
     {
-        // // 清除cookie
-        // cookie('userid', null);
-        // cookie('username', null);
-        // cookie('password', null);
-        // // 清除session（当前作用域）
-        // session(null);
-
         // 获取表单数据
         $list = request()
             ->only([
@@ -86,64 +79,8 @@ class Index extends BaseController
 
 
     // 学生登录验证
-    public function teacher()
-    {
-        // // 清除cookie
-        // cookie('userid', null);
-        // cookie('username', null);
-        // cookie('password', null);
-        // // 清除session（当前作用域）
-        // session(null);
-
-        // 获取表单数据
-        $list = request()
-            ->only([
-                'username'
-                ,'password'
-                ,'category'
-            ]);
-
-
-        $validate = new \app\login\validate\Yanzheng;
-        $result = $validate->scene('admin')->check($list);
-        $msg = $validate->getError();
-        if(!$result){
-            return json(['msg' => $msg, 'val' => 0]);
-        }
-
-        $yz = yz::teacher($list['username'], $list['password']);
-
-        if($yz['val'] === 1)
-        {
-            // 获取服务器密码
-            $ter = new \app\teacher\model\Teacher;
-            $userinfo = $ter::where('phone', $list['username'])
-                ->where('status', 1)
-                ->field('id, lastip, phone, ip, denglucishu, lasttime, thistime, password')
-                ->find();
-            // 将本次信息上传到服务器上
-            $userinfo->lastip = $userinfo->ip;
-            $userinfo->ip = request()->ip();
-            $userinfo->denglucishu = ['inc', 1];
-            $userinfo->lasttime = $userinfo->getData('thistime');
-            $userinfo->thistime = time();
-            $userinfo->save();
-        }
-
-        return json($yz);
-    }
-
-
-    // 学生登录验证
     public function student()
     {
-        // // 清除cookie
-        // cookie('userid', null);
-        // cookie('username', null);
-        // cookie('password', null);
-        // // 清除session（当前作用域）
-        // session(null);
-
         // 获取表单数据
         $list = request()
             ->only([

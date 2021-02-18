@@ -99,7 +99,6 @@ class SystemBase extends AdminBase
     // 系统初始化
     public function resetMayi()
     {
-
         $data = ['msg' => '初始化成功', 'val' => 1];
         try {
             // 删除管理员

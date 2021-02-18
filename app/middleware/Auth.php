@@ -56,6 +56,9 @@ class Auth
             'admin/index/editpassword',   # 编辑密码
             'admin/index/updatepassword',   # 更新密码
             'admin/index/adminlist',   # 更新密码
+            'admin/index/srcadmin',    # 搜索教师
+            'admin/index/srcry',    # 获取当前教师荣誉列表
+            'admin/index/srckt',    # 获取当前教师课题列表
             // Teach应用
             'teach/banji/mybanji',  # 获取班级数据
             'teach/banji/banjilist',  # 获取班级数据
@@ -77,9 +80,6 @@ class Auth
             'student/studentchengji/ajaxonestudentchengjileida',    # 获取学生成绩雷达图数据
             'student/studentchengji/ajaxonestudentchengjiyibiao',    # 获取学生成绩雷达图数据
             'teacher/index/ajaxdatadel',   # 获取删除教师列表
-            'teacher/index/srcteacher',    # 搜索教师
-            'teacher/index/srcry',    # 获取当前教师荣誉列表
-            'teacher/index/srckt',    # 获取当前教师课题列表
             // Chengji应用
             'chengji/index/ajaxaddinfo',    # 获取录入该学生成绩人员的信息
             'chengji/index/dwchengjixlsx',    # 下载学生成绩
@@ -92,6 +92,9 @@ class Auth
             'chengji/njtongji/dwnianjixlsx',    # 下载年级成绩统计表
             'chengji/njtongji/myavg',    # 获取单项成绩数据
             'chengji/njtongji/myxiangti',    # 获取成绩箱体图数据
+            // Luru应用
+            'luru/index/ajaxdatayltj',   # 获取已录成绩统计结果
+            'luru/index/biaoqianxls',   # 获取试卷标签数据
         );
 
 
@@ -102,6 +105,8 @@ class Auth
         }else{
             $except = false;
         }
+
+        // halt($mod, $con, $act);
 
         $auth = new AuthHandle;
 

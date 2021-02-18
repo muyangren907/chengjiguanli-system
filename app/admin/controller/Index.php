@@ -389,4 +389,135 @@ class Index extends AdminBase
         return json($data);
     }
 
+
+    // 批量添加
+    public function createAll()
+    {
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle' => '批量上传管理员信息'
+            ,'butname' => '批传'
+            ,'formpost' => 'POST'
+            ,'url' => 'saveall'
+        );
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+        // 渲染
+        return $this->view->fetch();
+    }
+
+
+    // 批量保存
+    public function saveAll()
+    {
+        // 获取表单数据
+        $list = request()->only([
+            'school_id'
+            ,'url'
+        ], 'POST');
+
+        // 实例化操作表格类
+        $teacherinfo = \app\facade\File::readXls(public_path() . 'uploads/' . $list['url']);
+
+        // 判断表格是否正确
+        if("教师基本情况表" != $teacherinfo[0][0] || '姓名*' != $teacherinfo[2][1] || '性别*' != $teacherinfo[2][2])
+        {
+            $this->error('请使用模板上传', '/login/err');
+            return json($data);
+        }
+
+        $admin = new AD;
+        $data = $admin->createAll($teacherinfo, $list['school_id']);
+        $data ? $data = ['msg' => '数据上传成功', 'val' => 1]
+            : ['msg' => '数据上传失败', 'val' => 0];
+
+        return json($data);
+    }
+
+
+    // 下载表格模板
+    public function downloadXls()
+    {
+        $fengefu = DIRECTORY_SEPARATOR;
+        $url = public_path() . 'uploads' . $fengefu . 'admin' . $fengefu . 'AdminInfo.xlsx';
+        return download($url, '管理员模板.xlsx');
+    }
+
+
+    // 根据教师姓名、首拼、全拼搜索教师信息
+    public function srcAdmin()
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'str' => ''
+                ,'danwei_id' => ''
+                ,'field' => 'id'
+                ,'order' => 'desc'
+                ,'teacher_id' => ''
+            ], 'POST');
+
+        $ad = new AD();
+        $data = $ad->strSrcTeachers($src);
+
+        $data = reSetObject($data, $src);
+
+        return json($data);
+    }
+
+
+    // 查询教师荣誉
+    public function srcRy()
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'page' => '1'
+                ,'limit' => '10'
+                ,'field' => 'update_time'
+                ,'order' => 'desc'
+                ,'admin_id' => ''
+            ], 'POST');
+
+        // 查询数据
+        $rongyu = new \app\rongyu\model\JsRongyuInfo;
+        $data = $rongyu->srcTeacherRongyu($src['admin_id'])
+            ->visible([
+                'id'
+                ,'title'
+                ,'ryTuce' => [
+                    'title'
+                    ,'fzSchool'
+                ]
+                ,'jiangxiang_id'
+                ,'hjshijian'
+                ,'update_time'
+            ]);
+        $data = reSetObject($data, $src);
+        return json($data);
+    }
+
+
+    // 查询教师课题
+    public function srcKt()
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'page' => '1'
+                ,'limit' => '10'
+                ,'field' => 'update_time'
+                ,'order' => 'desc'
+                ,'admin_id' => ''
+            ], 'POST');
+
+        // 查询数据
+        $keti = new \app\keti\model\KetiInfo;
+        $data = $keti->srcTeacherKeti($src['admin_id']);
+        $data = reSetObject($data, $src);
+
+        return json($data);
+    }
+
 }

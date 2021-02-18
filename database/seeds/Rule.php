@@ -104,8 +104,8 @@ class Rule extends Seeder
             ],
                 // 占位
                 ['id' => 10501
-                    ,'title' => '占位'
-                    ,'name' => 'yilucnt1'
+                    ,'title' => '已录统计列表'
+                    ,'name' => 'luru/index/yilucnttable'
                     ,'paixu' => 1
                     ,'pid' => 105
                 ],    
@@ -137,7 +137,7 @@ class Rule extends Seeder
                     ,'title' => '占位'
                     ,'name' => 'zaixian1'
                     ,'paixu' => 1
-                    ,'pid' => 106
+                    ,'pid' => 107
                 ], 
 
             /*======================================================================
@@ -255,12 +255,6 @@ class Rule extends Seeder
                             ,'paixu' => 6
                             ,'pid' => 3020101
                         ],
-                        // ['id' => 302010108
-                        //     ,'title' => '统计得分率'
-                        //     ,'name' => 'chengji/tongji/editdefenlv'
-                        //     ,'paixu' => 4
-                        //     ,'pid' => 3020101
-                        // ],
                         ['id' => 302010109
                             ,'title' => '更新得分率'
                             ,'name' => 'chengji/tongji/updatedefenLv'
@@ -308,6 +302,30 @@ class Rule extends Seeder
                             ,'name' => 'chengji/bjtongji/renkeupdateteacher'
                             ,'paixu' => 2
                             ,'pid' => 3020103
+                        ],
+                    ['id' => 3020104
+                        ,'title' => '创建考试向导'
+                        ,'name' => 'kaoshi/index/xiangdao'
+                        ,'paixu' => 4
+                        ,'pid' => 30201
+                    ],
+                        ['id' => 302010401
+                            ,'title' => '创建考试向导 Setp1'
+                            ,'name' => 'kaoshi/index/createSetp1'
+                            ,'paixu' => 1
+                            ,'pid' => 3020104
+                        ],
+                        ['id' => 302010402
+                            ,'title' => '创建考试向导 Setp2'
+                            ,'name' => 'kaoshi/index/createSetp2'
+                            ,'paixu' => 2
+                            ,'pid' => 3020104
+                        ],
+                        ['id' => 302010403
+                            ,'title' => '创建考试向导 Setp3'
+                            ,'name' => 'kaoshi/index/createSetp3'
+                            ,'paixu' => 3
+                            ,'pid' => 3020104
                         ],
                     
                 ['id' => 30203
@@ -358,9 +376,15 @@ class Rule extends Seeder
                         ,'paixu' => 7
                         ,'pid' => 30203
                     ],
+                    ['id' => 3020308
+                        ,'title' => '一键统计'
+                        ,'name' => 'kaoshi/index/tongji'
+                        ,'paixu' => 8
+                        ,'pid' => 30203
+                    ],
                 ['id' => 30204
-                    ,'title' => '统计结果'
-                    ,'name' => 'sijieguo'
+                    ,'title' => '查看成绩统计结果'
+                    ,'name' => 'kaoshi/index/chengji'
                     ,'paixu' => 4
                     ,'pid' => 302
                 ],
@@ -773,6 +797,12 @@ class Rule extends Seeder
                     ,'paixu' => 7
                     ,'pid' => 502
                 ],
+                    ['id' => 5020701
+                        ,'title' => '占位'
+                        ,'name' => 'teach/banji/zhanwei1'
+                        ,'paixu' => 1
+                        ,'pid' => 50207
+                    ],
                 ['id' => 50208
                     ,'title' => '班主任管理'
                     ,'name' => 'teach/banzhuren/index'
@@ -939,6 +969,24 @@ class Rule extends Seeder
                     ,'title' => '重置密码'
                     ,'name' => 'admin/index/resetpassword'
                     ,'paixu'  => 8
+                    ,'pid' => 601
+                ],
+                ['id' => 60109
+                    ,'title' => '下载模板'
+                    ,'name' => 'admin/index/downloadxls'
+                    ,'paixu'  => 9
+                    ,'pid' => 601
+                ],
+                ['id' => 60110
+                    ,'title' => '批量上传'
+                    ,'name' => 'admin/index/createall'
+                    ,'paixu' => 9
+                    ,'pid' => 601
+                ],
+                ['id' => 60111
+                    ,'title' => '批量保存'
+                    ,'name' => 'admin/index/saveall'
+                    ,'paixu' => 10
                     ,'pid' => 601
                 ],
             ['id' => 602

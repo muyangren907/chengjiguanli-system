@@ -17,22 +17,6 @@ class File extends BaseController
     // 初始化变量
     protected function initialize()
     {
-        $this->online = session('onlineCategory');
-        if($this->online == 'teacher')
-        {
-            $this->middleware = [
-                'online'
-                ,'login'
-            ];
-        }else{
-            $this->middleware = [
-                'online'
-                ,'login'
-                ,'auth'
-            ];
-        }
-        $this->luruTeacherId = session('user_id');
-    }
 
     /**
      * 获取文件信息并保存
@@ -74,8 +58,7 @@ class File extends BaseController
                 ,strripos($savename, '/') + 1
                 ,strlen($savename) - strripos($savename, '/'));
             $list['hash'] = $file->hash('sha1');
-            $list['user_id'] = $this->luruTeacherId;
-            $list['user_group'] = $this->online;
+            $list['user_id'] = session('user_id');
             $list['oldname'] = $file->getOriginalName();
             $list['fieldsize'] = $file->getSize();
             $list['category_id'] = $list['category_id'];

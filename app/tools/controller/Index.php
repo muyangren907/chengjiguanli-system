@@ -241,4 +241,45 @@ class Index extends BaseController
         }
         return $str;
     }
+
+
+    /**
+    * $date是时间戳
+    * $type为1的时候是虚岁,2的时候是周岁
+    */
+    public function fBirth($date = 0, $type = 1){
+        $nowYear = date("Y", time());
+        $nowMonth = date("m", time());
+        $nowDay = date("d", time());
+        $birthYear = date("Y", $date);
+        $birthMonth = date("m", $date);
+        $birthDay = date("d", $date);
+        if($type == 1){
+            $age = $nowYear - ($birthYear - 1);
+        }elseif($type == 2){
+            if($nowMonth < $birthMonth){
+                $age = $nowYear - $birthYear - 1;
+            }elseif($nowMonth == $birthMonth){
+                if($nowDay < $birthDay){
+                    $age = $nowYear - $birthYear - 1;
+                }else{
+                    $age = $nowYear - $birthYear;
+                }
+            }else{
+                $age = $nowYear - $birthYear;
+            }
+        }
+       return $age;
+    }
+
+
+    // 随机生成字符串
+    //取随机10位字符串
+    public function sjStr($len = 4)
+    {
+        $strs="1234567890qwertyuiopasdfghjklzxcvbnm";
+        $name=substr(str_shuffle($strs),mt_rand(0,strlen($strs)-11),$len);
+        return $name;
+    }
+
 }

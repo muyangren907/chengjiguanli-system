@@ -169,7 +169,6 @@
         },
       });
     });
-
   });
 
 	/*班级移动*/
@@ -194,12 +193,11 @@
 					var paixu = $(yd).find('td[data-field="paixu"]').children('div');
 					mytitle.text(data.title);
 					paixu.text(data.paixu);
-
-					layer.alert(data.msg);
+					layer.msg(data.msg);
 					return true;
 				},
 				error:function(data) {
-					layer.alert('移动失败');
+					layer.msg('移动失败');
 				},
 			});
 		});

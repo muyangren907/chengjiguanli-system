@@ -66,9 +66,9 @@
       {field: 'bfdate', title: '接任时间',sort: true, minWidth:240},
       {field: 'teacher_id', title: '教师',sort: true,templet:function(d){
         var str='';
-        if(d.glTeacher)
+        if(d.glAdmin)
         {
-          str = d.glTeacher.xingming;
+          str = d.glAdmin.xingming;
         }
         return str;
       }},

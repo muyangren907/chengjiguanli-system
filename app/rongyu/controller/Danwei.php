@@ -191,7 +191,7 @@ class Danwei extends AdminBase
 
         $data = DW::create($createInfo);
 
-        $data ? $data = ['msg' => '批传成功','val' => 1] :
+        $data ? $data = ['msg' => '批传成功，请关闭对话框并刷新列表。','val' => 1] :
             $data = ['msg' => '数据处理错误','val' => 0];
 
         return json($data);

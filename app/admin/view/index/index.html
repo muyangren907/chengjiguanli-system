@@ -33,6 +33,12 @@
 		<button class="layui-btn" lay-event="add">
 			<i class="iconfont">&#xe6b9;</i> 添加
 		</button>
+		<button class="layui-btn" lay-event="upload">
+			<i class="iconfont">&#xe71d;</i> 导入数据
+		</button>
+		<button class="layui-btn" lay-event="download">
+			<i class="iconfont">&#xe714;</i> 下载模板
+		</button>
 	</div>
 </script>
 <!-- 记录操作按钮模板 -->
@@ -86,10 +92,16 @@
         switch(obj.event){
            case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'index/delete','mytable');
+            cjgl.delAll(checkStatus,'/admin/index/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加管理员','index/create','','',true);
+            cjgl.add('添加管理员','/admin/index/create','','',true);
+            break;
+          case 'upload':
+            cjgl.add('导入管理员','/admin/index/createall','600','300');
+            break;
+          case 'download':
+          	window.open("/admin/index/downloadxls");
             break;
         };
       });
@@ -101,16 +113,16 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
           case 'detail':// 查看
-	          cjgl.add(obj.data.xingming+'信息','index/read/'+obj.data.id,'','',true);
+	          cjgl.add(obj.data.xingming+'信息','/admin/index/read/'+obj.data.id,'','',true);
 	          break;
 	      case 'del':// 删除
-	          cjgl.del(obj,"index/delete");
+	          cjgl.del(obj,"/admin/index/delete");
 	          break;
 	      case 'edit':// 编辑
-	          cjgl.add('编辑管理员','index/edit/'+obj.data.id,'','',true);
+	          cjgl.add('编辑管理员','/admin/index/edit/'+obj.data.id,'','',true);
 	          break;
 	      case 'reset':// 编辑
-	          cjgl.resetpassword(obj.data.xingming,"index/resetpassword/"+obj.data.id);
+	          cjgl.resetpassword(obj.data.xingming,"/admin/index/resetpassword/"+obj.data.id);
 	          break;
         };
       });

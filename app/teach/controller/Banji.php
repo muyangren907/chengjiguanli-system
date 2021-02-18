@@ -227,7 +227,8 @@ class Banji extends AdminBase
             ->where('paixu', '>=', $thisbj->paixu)
             ->order(['paixu'])
             ->limit('2')
-            ->field('id, paixu')
+            ->field('id, paixu, ruxuenian')
+            ->append(['banjiTitle'])
             ->select();
         }else{
             $bjinfo = bjmod::withTrashed()
@@ -236,7 +237,8 @@ class Banji extends AdminBase
             ->where('paixu', '<=', $thisbj->paixu)
             ->order(['paixu' => 'desc'])
             ->limit('2')
-            ->field('id, paixu')
+            ->field('id, paixu, ruxuenian')
+            ->append(['banjiTitle'])
             ->select();
         }
 
@@ -256,7 +258,6 @@ class Banji extends AdminBase
             // 更新信息
             $bj = new bjmod;
             $data = $bj->saveAll($data);
-            $bjtitle = $bj->myBanjiTitle($bjinfo[0]['id']);
 
             $data ? $data = ['msg' => '移动成功', 'val' => 1]
                 : $data = ['msg' => '数据处理错误', 'val' => 0];

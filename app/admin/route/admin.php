@@ -26,6 +26,12 @@ Route::group('index', function () {
     Route::rule('updatepassword/<id>', 'Index/updatePassword', 'put');		# 更新密码
     Route::rule('myinfo', 'Index/myInfo', 'get');		# 用户信息
     Route::rule('adminlist', 'Index/adminList', 'post');       # 用户信息
+    Route::rule('downloadxls', 'Index/downloadxls', 'get');       # 用户信息
+    Route::rule('createall','Index/createAll','get');              # 批量导入
+    Route::rule('saveall','Index/saveAll','post');                  # 批量保存
+    Route::rule('srcteacher','Index/srcAdmin','post');        # 查询教师
+    Route::rule('srcry','Index/srcRy','post');      # 查询荣誉
+    Route::rule('srckt','Index/srcKt','post');      # 查询课题
 });
 
 
@@ -63,4 +69,19 @@ Route::group('authgroupaccess', function () {
     Route::rule('create/<group_id>','AuthGroupAccess/create','get');             # 添加信息
     Route::rule('save','AuthGroupAccess/save','post');                    # 保存信息
     Route::rule('delete/<id>','AuthGroupAccess/delete','delete');     # 删除信息
+});
+
+
+// 角色用户对应表
+Route::group('tongbu', function () {
+    Route::rule('index','Tongbu/index','get');                        
+    Route::rule('teacher','Tongbu/teacher','post');                        
+    Route::rule('bzr','Tongbu/bzr','post');
+    Route::rule('chengji','Tongbu/chengji','post');
+    Route::rule('dwry','Tongbu/dwry','post');
+    Route::rule('file','Tongbu/file','post');
+    Route::rule('jsry','Tongbu/jsry','post');
+    Route::rule('kaoshi','Tongbu/kaoshi','post');
+    Route::rule('ktcy','Tongbu/ktcy','post');
+    Route::rule('tjbj','Tongbu/tjbj','post');
 });

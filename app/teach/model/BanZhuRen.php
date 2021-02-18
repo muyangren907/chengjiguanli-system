@@ -12,9 +12,9 @@ use app\BaseModel;
 class BanZhuRen extends BaseModel
 {
     // 教师关联模型
-    public function glTeacher()
+    public function glAdmin()
     {
-        return $this->belongsTo('\app\teacher\model\Teacher', 'teacher_id', 'id');
+        return $this->belongsTo('\app\admin\model\Admin', 'teacher_id', 'id');
     }
 
 
@@ -111,7 +111,7 @@ class BanZhuRen extends BaseModel
             })
             ->with(
                 [
-                    'glTeacher'=>function($query){
+                    'glAdmin'=>function($query){
                         $query->field('id, xingming');
                     },
                 ]

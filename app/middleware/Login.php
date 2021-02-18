@@ -22,9 +22,6 @@ class Login
             case 'admin':
                 $yz = yz::admin(session('username'), session('password'));
                 break;
-            case 'teacher':
-                $yz = yz::teacher(session('username'), session('password'));
-                break;
             case 'student':
                 $yz = yz::student(session('username'), session('password'));
                 break;

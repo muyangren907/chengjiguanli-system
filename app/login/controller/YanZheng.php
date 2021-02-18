@@ -41,42 +41,6 @@ class YanZheng
 
 
     // 获学生帐号密码信息
-    public static function teacher($username, $password)
-    {
-        // 获取服务器密码
-        $ter = new \app\teacher\model\Teacher;
-        $userinfo = $ter::where('phone', $username)
-            ->where('status', 1)
-            ->field('id, lastip, phone, ip, denglucishu, lasttime, thistime, password')
-            ->find();
-        if ($userinfo == null)
-        {
-            // 验证结果;
-            $data = ['msg' => '教师帐号不存在或被禁用', 'val' => 0];
-            return $data;
-        }
-
-        // 验证用户名和密码
-        $check = loginCheck($password, $userinfo->password);
-
-        if ($check === true)
-        {
-            session('onlineCategory', 'teacher');
-            session('user_id', $userinfo->id);
-            session('username', $username);
-            session('password', $password);
-            // 跳转到首页
-            $data = ['msg' => '验证成功', 'val' => 1, 'url' =>'\\teacherSearchChengji\\index\\index'];
-        } else {
-            // 提示错误信息
-            $data = ['msg' => '用户名或密码错误', 'val' => 0];
-        }
-
-        return $data;
-    }
-
-
-    // 获学生帐号密码信息
     public static function student($username, $password)
     {
         // 获取服务器密码

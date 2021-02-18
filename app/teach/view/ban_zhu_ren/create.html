@@ -8,9 +8,10 @@
               </label>
               <div class="layui-input-block">
                   <input type="text" id="xingming" name="xingming" lay-verify="required"
-                  autocomplete="off" class="layui-input " value="{$list.data.xingming|default=''}" placeholder="输入姓名或姓名拼音搜索教师">
+                  autocomplete="off" class="layui-input " value="{$list.data.xingming|default=''}" 
+                  placeholder="输入姓名或姓名拼音搜索教师">
                   <input type="hidden" id="teacher_id"  name="teacher_id" value="{$list.data.teacher_id|default=''}">
-                  <div id="src"></div>
+                  <div id="src" style="margin-top: 15px;"></div>
               </div>
           </div>
           <div class="layui-form-item">
@@ -22,7 +23,7 @@
               </div>
           </div>
           <input name="banji_id" id="banji_id" value="{$list.data.banji_id}" type="hidden">
-          <input name="danwei_id" id="danwei_id" value="{$list.data.school_id}" type="hidden">
+          <input name="school_id" id="school_id" value="{$list.data.school_id}" type="hidden">
           <div class="layui-form-item" style="text-align: right;">
               <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
                   {$list.set.butname}
@@ -58,8 +59,8 @@
   {
     id = myId(obj);
     var val = $.trim($(obj).val());
-    var danwei_id = $('#danwei_id').val();
-    if(danwei_id <= 0)
+    var school_id = $('#school_id').val();
+    if(school_id <= 0)
     {
       layer.msg('请选选择学校');
       return true;
@@ -67,10 +68,10 @@
     if(val.length > 0){
       // 获取数据
       $.post(
-          "/teacher/index/srcteacher",
+          "/admin/index/srcteacher",
           {
               "str": val,
-              'danwei_id' : danwei_id
+              'school_id':school_id
           },
           function(data,status){
               data = data.data;

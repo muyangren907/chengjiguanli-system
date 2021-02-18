@@ -590,7 +590,7 @@ class Index extends AdminBase
             $sheet->setCellValue('B' . ($row + 1), $value['banji_title']);
             $sheet->setCellValue('C' . $row, '姓名');
             $sheet->mergeCells('C' . ($row + 1) . ':' . 'C' . ($row + $rows)); # 输入学科名
-            $sheet->setCellValue('C' . ($row + 1), $value['student_xingming']);
+            $sheet->setCellValue('C' . ($row + 1), $this->hideName($value['student_xingming']));
             $sheet->setCellValue('D' . $row, '学科');
             $sheet->setCellValue('E' . $row, '得分');
             $col = 5;
@@ -714,6 +714,50 @@ class Index extends AdminBase
         ];
 
         return json($data);
+    }
+
+
+    // 隐藏学生全名
+    private function hideName($str)
+    {
+        $arr = $this->mb_str_split($str);
+        $cnt = count($arr);
+        if ($cnt <= 0) {
+            $newStr = '***';
+        } else if ($cnt == 1) {
+            $newStr = reset($arr) . '**';
+        } else if ($cnt ==2 or $cnt ==3) {
+            $newStr = reset($arr) . '*' . end($arr);
+        }else if ($cnt == 4){
+            $newStr = reset($arr) . next($arr) . '*' . end($arr);
+        } else {
+            $l = round($cnt * 0.3,0);
+            $newStr = '';
+            for($i=0; $i<$l; $i++)
+            {
+                $newStr = $newStr . $arr[$i];
+                $i++;
+            }
+            $newStr = $newStr . '*';
+            for ($i=$cnt - $l; $i < $cnt; $i++) { 
+                $newStr = $newStr . $arr[$i];
+            }
+        }
+        return $newStr;
+    }
+
+    private function mb_str_split($str,$split_length=1,$charset="UTF-8"){
+      if(func_num_args()==1){
+        return preg_split('/(?<!^)(?!$)/u', $str);
+      }
+      if($split_length<1)return false;
+      $len = mb_strlen($str, $charset);
+      $arr = array();
+      for($i=0;$i<$len;$i+=$split_length){
+        $s = mb_substr($str, $i, $split_length, $charset);
+        $arr[] = $s;
+      }
+      return $arr;
     }
 
 }

@@ -161,7 +161,7 @@ class Category extends Seeder
                 ,'isupdate' => 0
             ],
                 //  文件
-                ['id' => 11101,'title' => '教师名单','p_id' => 111,'paixu' => 1,'isupdate' => 0],
+                ['id' => 11101,'title' => '管理员名单','p_id' => 111,'paixu' => 1,'isupdate' => 0],
                 ['id' => 11102,'title' => '学生名单','p_id' => 111,'paixu' => 2,'isupdate' => 0],
                 ['id' => 11103,'title' => '考试成绩','p_id' => 111,'paixu' => 3,'isupdate' => 0],
             ['id' => 112

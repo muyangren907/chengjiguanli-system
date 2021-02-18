@@ -5,7 +5,7 @@ declare (strict_types = 1);
 namespace app\luru\controller;
 
 // 引用控制器基类
-use app\base\controller\ToolBase;
+use app\base\controller\AdminBase;
 use app\chengji\model\Chengji;
 use app\teach\model\Subject;
 
@@ -17,7 +17,7 @@ use app\kaoshi\model\KaoshiSet as ksset;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 
-class Index extends ToolBase
+class Index extends AdminBase
 {
     // 成绩列表
     public function index()
@@ -53,8 +53,7 @@ class Index extends ToolBase
                 ,'order' => 'desc'
                 ,'subject_id' => ''
                 ,'searchval'
-                ,'user_id' => $this->luruTeacherId
-                ,'user_group' => $this->online
+                ,'user_id' => session('user_id')
             ], 'POST');
 
         // 根据条件查询数据
@@ -137,15 +136,14 @@ class Index extends ToolBase
             }
 
             $cjone->defen = $list['defen'];
-            $cjone->user_group = $this->online;
-            $cjone->user_id = $this->luruTeacherId;
+            $cjone->user_id = session('user_id');
             $cjone->defenlv = $list['defen'] / $manfen * 100;
             $data = $cjone->save();
         } else {
             $data = [
                 'kaohao_id' => $list['kaohao_id']
                 ,'subject_id' => $list['subject_id']
-                ,'user_id' => $this->luruTeacherId
+                ,'user_id' => session('user_id')
                 ,'defen' => $list['defen']
                 ,'defenlv' => $list['defen'] / $manfen * 100
             ];
@@ -219,22 +217,18 @@ class Index extends ToolBase
 
             $cjone->defen = $list['newdefen'];
             $cjone->defenlv = $list['newdefen'] / $manfen * 100;
-            $cjone->user_id = $this->luruTeacherId;
-            $cjone->user_group = $this->online;
+            $cjone->user_id = session('user_id');
             $data = $cjone->save();
         } else {
             $data = [
                 'kaohao_id' => $list['kaohao_id']
                 ,'subject_id' => $subject_id
-                ,'user_id' => $this->luruTeacherId
-                ,'user_group' => $this->online
+                ,'user_id' => session('user_id')
                 ,'defen' => $list['newdefen']
                 ,'defenlv' => $list['newdefen'] / $manfen * 100
             ];
             $data = Chengji::create($data);
         }
-
-        halt($data);
 
         // 判断返回内容
         $data  ? $data = ['msg' => '录入成功','val' => 1]
@@ -345,8 +339,7 @@ class Index extends ToolBase
             }
         }
 
-        $user_id = $this->luruTeacherId;   # 获取用户id
-        $user_group = $this->online;   # 获取用户id
+        $user_id = session('user_id');   # 获取用户id
         $data = array();
         $md5 = new \app\facade\Tools;
 
@@ -465,7 +458,7 @@ class Index extends ToolBase
             ->setCreator("尚码成绩管理系统")    //作者
             ->setTitle("尚码成绩管理")  //标题
             ->setLastModifiedBy(session('username')) //最后修改者
-            ->setDescription("该表格由" . $this->luruTeacherId . "于" . $thistime . "在尚码成绩管理系统中下载，只作为内部交流材料,不允许外泄。")  //描述
+            ->setDescription("该表格由" . session('user_id') . "于" . $thistime . "在尚码成绩管理系统中下载，只作为内部交流材料,不允许外泄。")  //描述
             ->setKeywords("尚码 成绩管理") //关键字
             ->setCategory("成绩管理"); //分类
 
@@ -631,7 +624,7 @@ class Index extends ToolBase
             ->setCreator("尚码成绩管理系统")    //作者
             ->setTitle("尚码成绩管理")  //标题
             ->setLastModifiedBy(session('username')) //最后修改者
-            ->setDescription("该表格由" . session('username') . session('id') . "于" . $thistime . "在尚码成绩管理系统中下载，只作为内部交流材料,不允许外泄。")  //描述
+            ->setDescription("该表格由" . session('username') . session('user_id') . "于" . $thistime . "在尚码成绩管理系统中下载，只作为内部交流材料,不允许外泄。")  //描述
             ->setKeywords("尚码 成绩管理") //关键字
             ->setCategory("成绩管理"); //分类
 
