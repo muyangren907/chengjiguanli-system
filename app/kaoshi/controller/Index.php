@@ -231,8 +231,6 @@ class Index extends AdminBase
             return json(['msg' => $msg, 'val' => 0]);
         }
         $list['user_id'] = session('user_id');
-        $list['user_group'] = 'admin';
-        // $list['jibie_id'] = 1;
 
         // 保存数据
         $ks = new KS();

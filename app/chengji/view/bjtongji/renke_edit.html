@@ -56,10 +56,10 @@
     if(val.length > 0){
       // 获取数据
       $.post(
-          "/teacher/index/srcteacher",
+          "/admin/index/srcteacher",
           {
               "str": val,
-              'danwei_id': "{$list.set.danwei_id}"
+              'school_id': "{$list.set.danwei_id}"
           },
           function(data,status){
               data = data.data;

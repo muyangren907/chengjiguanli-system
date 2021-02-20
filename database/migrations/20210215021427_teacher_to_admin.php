@@ -53,6 +53,14 @@ class TeacherToAdmin extends Migrator
             $table
             ->addColumn('kaoshifanwei','boolean',['limit'=>1,'default'=>0,'null'=>false,'comment'=>'默认不限制']);
         }
+
+        $table = $this->table('kaoshi');
+        $column = $table->hasColumn('user_id');
+        if (!$column) {
+            $table
+            ->addColumn('user_id','integer',['after' => 'category_id','limit'=>11,'default'=>0,'null'=>false,'comment'=>'用户ID']);
+        }
+
     }
 
 
@@ -78,6 +86,35 @@ class TeacherToAdmin extends Migrator
         $table
             ->removeColumn('kaoshifanwei')
             ->update();
+    }
+
+
+    public function downnNext()
+    {
+        $table = $this->table('kaoshi');
+        $column = $table->hasColumn('user_group');
+        if (!$column) {
+            $table
+                ->removeColumn('user_group')
+                ->update();
+        }
+
+        $table = $this->table('fileds');
+        $column = $table->hasColumn('user_group');
+        if (!$column) {
+            $table
+                ->removeColumn('user_group')
+                ->update();
+        }
+
+        $table = $this->table('chengji');
+        $column = $table->hasColumn('user_group');
+        if (!$column) {
+            $table
+                ->removeColumn('user_group')
+                ->update();
+        }
+
     }
 
 

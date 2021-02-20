@@ -168,7 +168,12 @@ class Tongbu extends BaseController
                 ,'teacher_id' => ad::newId($value->teacher_id)
             ];
         }
-        $data = $bzr->saveAll($arr);
+        if(count($arr)>0)
+        {
+            $data = $bzr->saveAll($arr);
+        }else{
+            $data = true;
+        }
 
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '班主任同步完成', 'val' => 1]
@@ -189,7 +194,12 @@ class Tongbu extends BaseController
                 ,'user_id' => ad::newId($value->user_id)
             ];
         }
-        $data = $chengji->saveAll($arr);
+        if(count($arr)>0)
+        {
+            $data = $chengji->saveAll($arr);
+        }else{
+            $data = true;
+        }
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '成绩同步完成', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
@@ -209,7 +219,12 @@ class Tongbu extends BaseController
                 ,'teacher_id' => ad::newId($value->teacher_id)
             ];
         }
-        $data = $dwry->saveAll($arr);
+        if(count($arr)>0)
+        {
+            $data = $dwry->saveAll($arr);
+        }else{
+            $data = true;
+        }
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '单位荣誉同步完成', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
@@ -229,7 +244,12 @@ class Tongbu extends BaseController
                 ,'user_id' => ad::newId($value->user_id)
             ];
         }
-        $data = $file->saveAll($arr);
+        if(count($arr)>0)
+        {
+            $data = $file->saveAll($arr);
+        }else{
+            $data = true;
+        }
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '文件同步完成', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
@@ -249,7 +269,12 @@ class Tongbu extends BaseController
                 ,'teacher_id' => ad::newId($value->teacher_id)
             ];
         }
-        $data = $jsry->saveAll($arr);
+        if(count($arr)>0)
+        {
+            $data = $jsry->saveAll($arr);
+        }else{
+            $data = true;
+        }
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '教师同步完成', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
@@ -263,8 +288,8 @@ class Tongbu extends BaseController
         $kaoshi = new \app\kaoshi\model\Kaoshi;
         $kaoshiList = $kaoshi::withTrashed()->select();
         $data = false;
-        if(isset($kaoshiList[0]['user_id']))
-        {
+        // if(isset($kaoshiList[0]['user_id']))
+        // {
             $arr = array();
             foreach ($kaoshiList as $key => $value) {
                 if($value->user_id > 0){
@@ -274,8 +299,13 @@ class Tongbu extends BaseController
                     ];
                 }
             }
-            $data = $kaoshi->saveAll($arr);
-        }
+            if(count($arr)>0)
+            {
+                $data = $kaoshi->saveAll($arr);
+            }else{
+                $data = true;
+            }
+
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '考试同步完成', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
@@ -295,7 +325,12 @@ class Tongbu extends BaseController
                 ,'teacher_id' => ad::newId($value->teacher_id)
             ];
         }
-        $data = $ktcy->saveAll($arr);
+        if(count($arr)>0)
+        {
+            $data = $ktcy->saveAll($arr);
+        }else{
+            $data = true;
+        }
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '课题同步完成', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
@@ -315,7 +350,12 @@ class Tongbu extends BaseController
                 ,'teacher_id' => ad::newId($value->teacher_id)
             ];
         }
-        $data = $tjbj->saveAll($arr);
+        if(count($arr)>0)
+        {
+            $data = $tjbj->saveAll($arr);
+        }else{
+            $data = true;
+        }
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '统计班级同步完成', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
