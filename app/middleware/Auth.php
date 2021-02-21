@@ -95,6 +95,7 @@ class Auth
             // Luru应用
             'luru/index/ajaxdatayltj',   # 获取已录成绩统计结果
             'luru/index/biaoqianxls',   # 获取试卷标签数据
+            'luru/index/ajaxdataonline',   # 获取试卷标签数据
         );
 
 

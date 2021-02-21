@@ -58,7 +58,7 @@
 </div>
 <input type="hidden" name="kaoshi_id" id="kaoshi_id" value="{$list.set.kaoshi_id}">
 <div class="layui-form-item" style="text-align: right;">
-  <button  class="layui-btn" lay-filter="kssubmit" lay-submit="">
+  <button  class="layui-btn" lay-filter="kssubmit" lay-submit=""> 
     {$list.set.butname}
   </button>
   <a href="javascript:;" onclick="nextSet()" class="layui-btn layui-btn-danger" style="margin-left: 10px;">完成</a>
@@ -99,6 +99,33 @@
                 form.render('checkbox');
               }
               );
+    });
+
+
+    //监听提交
+    form.on('submit(kssubmit)', function(data){
+      $.ajax({
+        url:"{$list.set.url}",
+        type:"{$list.set.formpost}",
+        data:data.field,
+        dataType:'json',
+        success:function(result){
+          if(result.val == 1)
+          {
+            // $(location).attr('href', '/kaoshi/kaoshiset/create/' + "{$list['set']['kaoshi_id']}");
+            parent.layer.msg(result.msg);
+          }else{
+            layer.msg(result.msg);
+          }
+        },
+        error:function(xhr,status,error) {
+          layer.msg('数据处理错误',{
+              icon: 2,
+              time: 2000 //2秒关闭（如果不配置，默认是3秒）
+          });
+        }
+      });
+      return false;
     });
 });
 

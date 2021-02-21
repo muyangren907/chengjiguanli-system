@@ -134,8 +134,8 @@ class Rule extends Seeder
             ],
                 // 占位
                 ['id' => 10701
-                    ,'title' => '占位'
-                    ,'name' => 'zaixian1'
+                    ,'title' => '编辑'
+                    ,'name' => 'luru/index/onlineedit'
                     ,'paixu' => 1
                     ,'pid' => 107
                 ], 

@@ -25,8 +25,8 @@ Route::group('index', function () {
     Route::rule('biaoqian', 'Index/biaoqian', 'get'); # 信息列表
     Route::rule('biaoqianxls', 'Index/biaoqianXls', 'post');  # 信息列表
     Route::rule('online', 'Index/online', 'get'); # 在线录入
-    Route::rule('onlineedit', 'index/onlineedit', 'post'); # 在线录入
-    Route::rule('onlinedata', 'index/ajaxDataOnline', 'post'); # 在线录入
+    Route::rule('onlineedit', 'Index/onlineedit', 'post'); # 在线录入
+    Route::rule('onlinedata', 'Index/ajaxDataOnline', 'post'); # 在线录入
     Route::rule('yilucnt','Index/yiluCnt','get');          # 更新信息
     Route::rule('yilutable','Index/yiluCntTable','post');          # 更新信息
     Route::rule('datatj','Index/ajaxDatayltj','post');           # 扫码界面

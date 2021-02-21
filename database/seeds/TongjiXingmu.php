@@ -1221,12 +1221,7 @@ class TongjiXingmu extends Seeder
             // ]
     ];
 
-    $serRows = $this->fetchAll('select * from cj_tongji_xiangmu');
-    if(is_array($serRows) && count($serRows) > 0)
-    {
-        $rows = [];
-        return true;
-    }
+        $this->execute('DELETE FROM cj_tongji_xiangmu where id>0');
 
         // 保存数据
         $this->table('tongji_xiangmu')->insert($rows)->save();
