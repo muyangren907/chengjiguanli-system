@@ -86,7 +86,7 @@ class Admin extends BaseModel
             ->whereOr('xingming', 'like', '%' . $src['str'] . '%')
             ->whereOr('shoupin', 'like', $src['str'] . '%')
             ->when(strlen($src['school_id']) > 0, function ($query) use($src) {
-                $query->where('school_id', $src['school_id']);
+                $query->where('school_id', $src['danwei_id']);
             })
             ->with(
                 [

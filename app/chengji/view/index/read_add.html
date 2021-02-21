@@ -45,13 +45,9 @@
 		{field: 'defen', title: '得分 ', minWidth:100,sort:false},
 		{field:'user_id', title: '成绩录入',templet:function(d){
         var str='';
-        if(d.cjAdmin)
+        if(d.userInfo)
         {
-          str = d.cjAdmin.xingming;
-          if(d.cjAdmin.adSchool)
-          {
-            str = str + ' (' + d.cjAdmin.adSchool.jiancheng + ')';
-          }
+          str = d.userInfo;
         }
         return str;
       }},

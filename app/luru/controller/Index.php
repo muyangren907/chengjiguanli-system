@@ -379,6 +379,7 @@ class Index extends AdminBase
                         $cjone->defen = $defen;
                         $cjone->defenlv = $defen / $manfen * 100;
                         $cjone->user_id = $user_id;
+                        $cjone->user_group = $user_group;
                         $cjone->save();
                     }
                 } else {
@@ -387,6 +388,7 @@ class Index extends AdminBase
                         'kaohao_id' => $temp_id
                         ,'subject_id' => $value['id']
                         ,'user_id' => $user_id
+                        ,'user_group' => $user_group
                         ,'defen' => $defen
                         ,'defenlv' => $defen / $manfen * 100
                     ];

@@ -452,7 +452,7 @@ class Index extends AdminBase
         $src = $this->request
             ->only([
                 'str' => ''
-                ,'school_id' => ''
+                ,'danwei_id' => ''
                 ,'field' => 'id'
                 ,'order' => 'desc'
                 ,'teacher_id' => ''

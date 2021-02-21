@@ -4,15 +4,19 @@ declare (strict_types = 1);
 namespace app\tools\controller;
 
 // 引用控制器基类
-use app\base\controller\AdminBase;
+use app\BaseController;
 
 // 引用PhpSpreadsheet类
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
-class File extends AdminBase
+class File extends BaseController
 {
+
+    // 初始化变量
+    protected function initialize()
+    {
 
     /**
      * 获取文件信息并保存

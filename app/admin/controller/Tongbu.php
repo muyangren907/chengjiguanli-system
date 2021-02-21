@@ -143,11 +143,6 @@ class Tongbu extends BaseController
             }
         }
 
-        // $data = [
-        //     'mas' => '已经将教师信息同步到管理员表中：1、教师信息与管理员信息已经关联：使用教师信息替换管理员信息；2、教师与管理员信息未关联：在管理员表中创建教师信息。帐号为手机号，密码为原密码。'
-        //     ,'val' => 1
-        // ]
-
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '教师信息同步成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
@@ -168,12 +163,7 @@ class Tongbu extends BaseController
                 ,'teacher_id' => ad::newId($value->teacher_id)
             ];
         }
-        if(count($arr)>0)
-        {
-            $data = $bzr->saveAll($arr);
-        }else{
-            $data = true;
-        }
+        $data = $bzr->saveAll($arr);
 
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '班主任同步完成', 'val' => 1]
@@ -194,12 +184,7 @@ class Tongbu extends BaseController
                 ,'user_id' => ad::newId($value->user_id)
             ];
         }
-        if(count($arr)>0)
-        {
-            $data = $chengji->saveAll($arr);
-        }else{
-            $data = true;
-        }
+        $data = $chengji->saveAll($arr);
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '成绩同步完成', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
@@ -219,12 +204,7 @@ class Tongbu extends BaseController
                 ,'teacher_id' => ad::newId($value->teacher_id)
             ];
         }
-        if(count($arr)>0)
-        {
-            $data = $dwry->saveAll($arr);
-        }else{
-            $data = true;
-        }
+        $data = $dwry->saveAll($arr);
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '单位荣誉同步完成', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
@@ -244,12 +224,7 @@ class Tongbu extends BaseController
                 ,'user_id' => ad::newId($value->user_id)
             ];
         }
-        if(count($arr)>0)
-        {
-            $data = $file->saveAll($arr);
-        }else{
-            $data = true;
-        }
+        $data = $file->saveAll($arr);
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '文件同步完成', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
@@ -269,12 +244,7 @@ class Tongbu extends BaseController
                 ,'teacher_id' => ad::newId($value->teacher_id)
             ];
         }
-        if(count($arr)>0)
-        {
-            $data = $jsry->saveAll($arr);
-        }else{
-            $data = true;
-        }
+        $data = $jsry->saveAll($arr);
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '教师同步完成', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
@@ -288,8 +258,8 @@ class Tongbu extends BaseController
         $kaoshi = new \app\kaoshi\model\Kaoshi;
         $kaoshiList = $kaoshi::withTrashed()->select();
         $data = false;
-        // if(isset($kaoshiList[0]['user_id']))
-        // {
+        if(isset($kaoshiList[0]['user_id']))
+        {
             $arr = array();
             foreach ($kaoshiList as $key => $value) {
                 if($value->user_id > 0){
@@ -299,13 +269,8 @@ class Tongbu extends BaseController
                     ];
                 }
             }
-            if(count($arr)>0)
-            {
-                $data = $kaoshi->saveAll($arr);
-            }else{
-                $data = true;
-            }
-
+            $data = $kaoshi->saveAll($arr);
+        }
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '考试同步完成', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
@@ -325,12 +290,7 @@ class Tongbu extends BaseController
                 ,'teacher_id' => ad::newId($value->teacher_id)
             ];
         }
-        if(count($arr)>0)
-        {
-            $data = $ktcy->saveAll($arr);
-        }else{
-            $data = true;
-        }
+        $data = $ktcy->saveAll($arr);
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '课题同步完成', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
@@ -350,12 +310,7 @@ class Tongbu extends BaseController
                 ,'teacher_id' => ad::newId($value->teacher_id)
             ];
         }
-        if(count($arr)>0)
-        {
-            $data = $tjbj->saveAll($arr);
-        }else{
-            $data = true;
-        }
+        $data = $tjbj->saveAll($arr);
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '统计班级同步完成', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];

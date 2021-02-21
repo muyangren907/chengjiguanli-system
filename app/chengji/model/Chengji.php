@@ -16,6 +16,13 @@ class Chengji extends BaseModel
 
 
     // 学科关联
+    public function cjTeacher()
+    {
+        return $this->belongsTo('\app\teacher\model\Teacher','user_id','id');
+    }
+
+
+    // 学科关联
     public function cjAdmin()
     {
         return $this->belongsTo('\app\admin\model\Admin','user_id','id');
@@ -230,4 +237,44 @@ class Chengji extends BaseModel
 
         return true;
     }
+
+
+    // 上传人信息获取器
+    public function getUserInfoAttr($value, $data)
+    {
+        // halt($data);
+        $xm = '';
+        if($data['user_group'] === 'admin')
+        {
+            if($this->cjAdmin)
+            {
+                $xm = $this->cjAdmin->xingming . '(' .  $this->cjAdmin->adSchool->jiancheng . ')';
+            }
+        }elseif ($data['user_group'] === 'teacher') {
+            if($this->cjTeacher)
+            {
+                $xm = $this->cjTeacher->xingming . '(' . $this->cjTeacher->jsDanwei->jiancheng . ')';
+            }
+        }else {
+            $xm = '';
+        }
+
+        $arr = [
+            'admin' => '管理员'
+            ,'teacher' => '教师'
+            ,'student' => '学生'
+        ];
+
+        if(isset($arr[$data['user_group']]))
+        {
+            $group = $arr[$data['user_group']];
+        }else{
+            $group = '未知';
+        }
+
+        $str = $group . ' ' . $xm;
+
+        return $str;
+    }
+
 }

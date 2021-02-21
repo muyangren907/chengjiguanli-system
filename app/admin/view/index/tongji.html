@@ -1,6 +1,10 @@
 {extend name=".././view/create.html" /}
 
 {block name="form"}
+  <div style="font-size: 20px; margin: 10px;">
+    将教师信息同步到管理员表说明：1、教师信息与管理员信息已经有关联cj_admin表中teacher_id字段：使用教师信息替换管理员信息；2、教师与管理员信息未关联：在管理员表中创建教师信息。帐号为手机号，密码为原密码。原来cj_admin表中数据不变。
+
+  </div>
     <form class="layui-form layui-form-pane" lay-filter="myform">
       <div class="layui-form-item" style="text-align: left;">
           <button type="button" class="layui-btn" onclick="checkAll()">

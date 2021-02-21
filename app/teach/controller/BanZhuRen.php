@@ -56,7 +56,7 @@ class BanZhuRen extends AdminBase
                 'id'
                 ,'glAdmin' => ['xingming']
                 ,'banji_id'
-                ,'teacher_id'
+                ,'admin_id'
                 ,'bfdate'
                 ,'update_time'
             ]);  # 查询数据
@@ -100,7 +100,7 @@ class BanZhuRen extends AdminBase
         // 获取表单数据
         $list = request()->only([
             'banji_id'
-            ,'teacher_id'
+            ,'admin_id'
             ,'bfdate'
         ], 'post');
 
@@ -133,7 +133,7 @@ class BanZhuRen extends AdminBase
         $bzr = new bzr;
         $bjInfo = $bzr
             ->where('id', $id)
-            ->field('id,teacher_id, banji_id, bfdate')
+            ->field('id,admin_id, banji_id, bfdate')
             ->with([
                 'glAdmin' => function ($query) {
                     $query->field('id, xingming');
@@ -145,7 +145,7 @@ class BanZhuRen extends AdminBase
             ->find();
         $list['data']['school_id'] = $bjInfo->glBanji->school_id;
         $list['data']['banji_id'] = $bjInfo->banji_id;
-        $list['data']['teacher_id'] = $bjInfo->teacher_id;
+        $list['data']['admin_id'] = $bjInfo->admin_id;
         $list['data']['xingming'] = $bjInfo->glAdmin->xingming;
         $list['data']['bfdate'] = $bjInfo->bfdate;
 
@@ -170,7 +170,7 @@ class BanZhuRen extends AdminBase
         // 获取表单数据
         $list = request()->only([
             'bfdate'
-            ,'teacher_id'
+            ,'admin_id'
         ], 'put');
         $list['id'] = $id;
 
@@ -184,7 +184,7 @@ class BanZhuRen extends AdminBase
 
         // 更新数据
         $bzrlist = bzr::find($id);
-        $bzrlist->teacher_id = $list['teacher_id'];
+        $bzrlist->admin_id = $list['admin_id'];
         $bzrlist->bfdate = $list['bfdate'];
         $data = $bzrlist->save();
 
