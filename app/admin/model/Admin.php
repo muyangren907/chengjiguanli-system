@@ -81,12 +81,19 @@ class Admin extends BaseModel
             ,'school_id' => ''
         ];
         $src = array_cover($srcfrom, $src);
+        trim($src['str']);
         // 如果有数据则查询教师信息
         $list = self::field('id, xingming, school_id, shengri, sex')
-            ->whereOr('xingming', 'like', '%' . $src['str'] . '%')
-            ->whereOr('shoupin', 'like', $src['str'] . '%')
             ->when(strlen($src['school_id']) > 0, function ($query) use($src) {
                 $query->where('school_id', $src['danwei_id']);
+            })
+            ->when(strlen($src['str']) <= 0, function ($query) use($src) {
+                $query->where('id', '<=', 0);
+            })
+            ->when(strlen($src['str']) > 0, function ($query) use($src) {
+                $query
+                    ->whereOr('xingming', 'like', '%' . $src['str'] . '%')
+                    ->whereOr('shoupin', 'like', $src['str'] . '%');
             })
             ->with(
                 [
@@ -97,7 +104,7 @@ class Admin extends BaseModel
             )
             ->append(['age'])
             ->select();
-
+       
         return $list;
     }
 

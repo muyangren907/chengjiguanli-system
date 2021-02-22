@@ -43,7 +43,7 @@ class TeacherToAdmin extends Migrator
             ->addColumn('quanpin','string',['limit'=>30,'default'=>'a','null'=>false,'comment'=>'全拼'])
             ->addColumn('shoupin','string',['limit'=>5,'default'=>'a','null'=>false,'comment'=>'简拼'])
             ->addColumn('tuixiu','boolean',['limit'=>1,'default'=>0,'null'=>false,'comment'=>'是否已经退休'])
-            ->addIndex(array('phone'), array('unique' => true))
+            // ->addIndex(array('phone'), array('unique' => true))
             ->update();
         }
 

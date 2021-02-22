@@ -204,7 +204,7 @@ layui.define(['table', 'form'],function(exports){ //提示：模块也可以依�
 
       // 获取数据
       $.post(
-        "/teacher/index/srcteacher",
+        "/admin/index/srcteacher",
         {
           "str":val,
         },
@@ -222,9 +222,9 @@ layui.define(['table', 'form'],function(exports){ //提示：模块也可以依�
             str = str + 'onclick="cjgl.'+myfunction+'(this)"' + ' ';
             str = str + 'addname=' + addname + ' ';
             str = str + 'teachername=' + data[i].xingming + ' ';
-            str = str + 'schoolID=' + data[i].jsDanwei.id + ' ';
-            str = str + 'schoolName=' + data[i].jsDanwei.jiancheng +'>';
-            str = str + data[i].xingming+'　'+data[i].jsDanwei.jiancheng+'　'+data[i].shengri;
+            str = str + 'schoolID=' + data[i].adSchool.id + ' ';
+            str = str + 'schoolName=' + data[i].adSchool.jiancheng +'>';
+            str = str + data[i].xingming+'　'+data[i].adSchool.jiancheng+'　'+data[i].shengri;
             str = str + '</dd>';
             mydl.append(str);
           }

@@ -88,56 +88,57 @@ class Tongbu extends BaseController
                 ->find();
             if($temp)
             {
-                $temp->xingming = $value->xingming;
-                $temp->sex = $value->getData("sex");
-                $temp->shengri = $value->getData("shengri");
-                $temp->password = $value->password;
-                $temp->teacher_id = $value->id;
-                $temp->school_id = $value->danwei_id;
-                $temp->phone = $value->phone;
-                $temp->worktime = $value->getData("worktime");
-                $temp->zhiwu_id = $value->zhiwu_id;
-                $temp->zhicheng_id = $value->zhicheng_id;
-                $temp->biye = $value->biye;
-                $temp->zhuanye = $value->zhuanye;
-                $temp->xueli_id = $value->xueli_id;
-                $temp->subject_id = $value->subject_id;
-                $temp->quanpin = $value->quanpin;
-                $temp->shoupin = $value->shoupin;
-                $temp->tuixiu = $value->getData("tuixiu");
-                $temp->denglucishu = $value->denglucishu + $temp->denglucishu;
+                $arr['id'] = $value->id;
+                $arr['xingming'] = $value->xingming;
+                $arr['sex'] = $value->getData("sex");
+                $arr['shengri'] = strtotime($value->shengri);
+                $arr['password'] = $value->password;
+                $arr['teacher_id'] = $value->id;
+                $arr['school_id'] = $value->danwei_id;
+                $arr['phone'] = $value->phone;
+                $arr['worktime'] = strtotime($value->worktime);
+                $arr['zhiwu_id'] = $value->zhiwu_id;
+                $arr['zhicheng_id'] = $value->zhicheng_id;
+                $arr['biye'] = $value->biye;
+                $arr['zhuanye'] = $value->zhuanye;
+                $arr['xueli_id'] = $value->xueli_id;
+                $arr['subject_id'] = $value->subject_id;
+                $arr['quanpin'] = $value->quanpin;
+                $arr['shoupin'] = $value->shoupin;
+                $arr['tuixiu'] = $value->getData("tuixiu");
+                $arr['denglucishu'] = $value->denglucishu + $temp->denglucishu;
                 if($temp->this_time < $value->this_time)
                 {
-                    $temp->lastip = $value->lastip;
-                    $temp->ip = $value->ip;
-                    $temp->lasttime = $value->getData('lasttime');
-                    $temp->thistime = $value->getData('thistime');
+                    $arr['lastip'] = $value->lastip;
+                    $arr['ip'] = $value->ip;
+                    $arr['lasttime'] = strtotime($value->lasttime);
+                    $arr['thistime'] = strtotime($value->thistime);
                 }
                 $temp->status = $value->status;
                 if($temp->create_time > $value->create_time)
                 {
-                    $temp->create_time = $value->getData('create_time');
+                    $arr['create_time'] = strtotime($value->create_time);
                 }
                 if($temp->delete_time < $value->delete_time)
                 {
-                    $temp->delete_time = $value->getData('delete_time');
+                    $arr['delete_time'] = $value->delete_time;
                 }
-                $temp->beizhu = $value->beizhu;
-                $data = $temp->save();
+                $arr['beizhu'] = $value->beizhu;
+                $data = $ad::update($arr);
             } else {
                 $data = $value->toArray();
                 $data['teacher_id'] = $value->id;
                 unset($data['id']);
                 $data['sex'] = $value->getData('sex');
-                $data['shengri'] = $value->getData('shengri');
+                $data['shengri'] = strtotime($value->shengri);
                 $data['username'] = $value->phone;
                 $data['school_id'] = $value->danwei_id;
                 unset($data['danwei_id']);
-                $data['delete_time'] = $value->getData('delete_time');
-                $data['worktime'] = $value->getData('worktime');
+                $data['delete_time'] = $value->delete_time;
+                $data['worktime'] = strtotime($value->worktime);
                 $data['tuixiu'] = $value->getData('tuixiu');
-                $data['create_time'] = $value->getData('create_time');
-                $data['delete_time'] = $value->getData('delete_time');
+                $data['create_time'] = strtotime($value->create_time);
+                $data['delete_time'] = $value->delete_time;
                 unset($data['update_time']);
                 $data = $ad->create($data);
             }
