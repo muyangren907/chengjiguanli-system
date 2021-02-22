@@ -252,7 +252,9 @@ class BackUp extends AdminBase
        $db= new up($this->upcnf);
        $list = $db->getFile('timeverif', $time);
        $url = $list['1']['1'];
-       $title = date('Ymdhis') . '.sql';
+       $l = strripos($url, '\\', 0) + 1;
+       $title = substr($url, $l, strlen($url) - $l);
+       $title = str_replace('-', '', $title);
        return download($url, $title);
    }
 

@@ -51,7 +51,7 @@ class Fields extends AdminBase
                 ,'fieldsize'
                 ,'bianjitime'
                 ,'update_time'
-                ,'userInfo'
+                ,'flAdmin'
             ]);
         $data = reSetObject($data, $src);
 

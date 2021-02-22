@@ -692,8 +692,16 @@ class Index extends AdminBase
                 ->field('id, kaohao_id, subject_id, user_id, user_group, defen, update_time')
                 ->order([$src['field']=>$src['order']])
                 ->with([
-                    'subjectName'=>function($query){
+                    'subjectName' => function ($query) {
                         $query->field('id,title');
+                    },
+                    'cjAdmin' => function ($query) {
+                        $query->field('id, xingming, school_id')
+                        ->with([
+                            'adSchool' => function ($q) {
+                                $q->field('id, jiancheng');
+                            }
+                        ]);
                     }
                 ])
                 ->append(['userInfo'])

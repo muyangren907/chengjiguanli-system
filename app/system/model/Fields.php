@@ -42,21 +42,20 @@ class Fields extends BaseModel
             ->with([
                 'flCategory' => function ($query) {
                     $query->field('id, title');
+                },
+                'flAdmin' => function ($query) {
+                    $query->field('id, xingming, school_id')
+                        ->with([
+                            'adSchool' => function ($q) {
+                                $q->field('id, jiancheng');
+                            }
+                        ]);
                 }
             ])
-            ->append(['userInfo'])
             ->select();
 
         return $data;
     }
-
-
-    // 上传人数据关联
-    public function  flTeacher()
-    {
-        return $this->belongsTo('\app\teacher\model\Teacher', 'user_id', 'id');
-    }
-
 
     // 上传人数据关联
     public function  flAdmin()

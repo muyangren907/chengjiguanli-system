@@ -63,9 +63,13 @@
 		      }},
 			{field: 'user_id', title: '上传人', minWidth:150,sort: true,templet:function(d){
 		        var str='';
-		        if(d.userInfo)
+		        if(d.flAdmin)
 		        {
-		          str = d.userInfo;
+		          str = d.flAdmin.xingming;
+		          if(d.flAdmin.adSchool)
+		          {
+		          	str = str + ' (' + d.flAdmin.adSchool.jiancheng + ')'
+		          }
 		        }
 		        return str;
 		      }},
