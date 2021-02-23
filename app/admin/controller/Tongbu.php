@@ -24,7 +24,7 @@ class Tongbu extends BaseController
 
         $list['tjxm'] = [
             [
-                'title' => '教师信息（必须最先统计）'
+                'title' => '教师信息（必须最先同步，此项同步完成后再进行其它项同步）'
                 ,'url' => '/admin/tongbu/teacher'
                 ,'checked' => ' checked'
             ]

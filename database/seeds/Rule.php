@@ -1724,110 +1724,110 @@ class Rule extends Seeder
             //     ,'url' => '/keti/ketiinfo/tongji'
             // ],
 
-            // 教师管理
-            ['id' => 10
-                ,'title'  => '教师管理'
-                ,'name' => 'teacher'
-                ,'paixu'  => 4
-                ,'ismenu'  => 1
-                ,'font' => '&#xe83a;'
-            ],
-                ['id' => 1001
-                    ,'title' => '教师列表'
-                    ,'name' => 'teacher/index/index'
-                    ,'paixu' => 1
-                    ,'ismenu'  => 1
-                    ,'pid'  => 10
-                    ,'url' => '/teacher/index/index'
-                ],
-                    // 教师管理权限
-                    ['id' => 100101
-                        ,'title' => '添加'
-                        ,'name' => 'teacher/index/create'
-                        ,'paixu'  => 1
-                        ,'pid' => 1001
-                    ],
-                    ['id' => 100102
-                        ,'title' => '保存'
-                        ,'name' => 'teacher/index/save'
-                        ,'paixu'  => 2
-                        ,'pid' => 1001
-                    ],
-                    ['id' => 100103
-                        ,'title' => '删除'
-                        ,'name' => 'teacher/index/delete'
-                        ,'paixu' => 3
-                        ,'pid' => 1001
-                    ],
-                    ['id' => 100104
-                        ,'title' => '编辑'
-                        ,'name' => 'teacher/index/edit'
-                        ,'paixu' => 4
-                        ,'pid' => 1001
-                    ],
-                    ['id' => 100105
-                        ,'title' => '更新'
-                        ,'name' => 'teacher/index/update'
-                        ,'paixu'  => 5
-                        ,'pid' => 1001
-                    ],
-                    ['id' => 100106
-                        ,'title' => '查看'
-                        ,'name' => 'teacher/index/read'
-                        ,'paixu' => 6
-                        ,'pid' => 1001
-                    ],
-                    ['id' => 100107
-                        ,'title' => '状态'
-                        ,'name' => 'teacher/index/setstatus'
-                        ,'paixu' => 7
-                        ,'pid' => 1001
-                    ],
-                    ['id' => 100108
-                        ,'title' => '查询教师'
-                        ,'name' => 'teacher/index/srcteacher'
-                        ,'paixu' => 8
-                        ,'pid' => 1001
-                    ],
-                    ['id' => 100109
-                        ,'title' => '批量上传'
-                        ,'name' => 'teacher/index/createall'
-                        ,'paixu' => 9
-                        ,'pid' => 1001
-                    ],
-                    ['id' => 100110
-                        ,'title' => '批量保存'
-                        ,'name' => 'teacher/index/saveall'
-                        ,'paixu' => 10
-                        ,'pid' => 1001
-                    ],
-                    ['id' => 100111
-                        ,'title' => '表格模板下载'
-                        ,'name' => 'teacher/index/downloadxls'
-                        ,'paixu' => 11
-                        ,'pid' => 1001
-                    ],
-                    ['id' => 100112
-                        ,'title' => '重置密码'
-                        ,'name' => 'teacher/index/resetpassword'
-                        ,'paixu' => 7
-                        ,'pid' => 1001
-                    ],
-                ['id' => 1002
-                    ,'title' => '删除教师'
-                    ,'name' => 'teacher/index/dellist'
-                    ,'paixu' => 2
-                    ,'ismenu'  => 1
-                    ,'pid'  => 10
-                    ,'url' => '/teacher/index/dellist'
-                ],
-                    // 删除教师
-                    ['id' => 100201
-                        ,'title' => '恢复删除'
-                        ,'name' => 'teacher/index/redel'
-                        ,'paixu' => 1
-                        ,'pid' => 1002
-                    ],
+            // // 教师管理
+            // ['id' => 10
+            //     ,'title'  => '教师管理'
+            //     ,'name' => 'teacher'
+            //     ,'paixu'  => 4
+            //     ,'ismenu'  => 1
+            //     ,'font' => '&#xe83a;'
+            // ],
+            //     ['id' => 1001
+            //         ,'title' => '教师列表'
+            //         ,'name' => 'teacher/index/index'
+            //         ,'paixu' => 1
+            //         ,'ismenu'  => 1
+            //         ,'pid'  => 10
+            //         ,'url' => '/teacher/index/index'
+            //     ],
+            //         // 教师管理权限
+            //         ['id' => 100101
+            //             ,'title' => '添加'
+            //             ,'name' => 'teacher/index/create'
+            //             ,'paixu'  => 1
+            //             ,'pid' => 1001
+            //         ],
+            //         ['id' => 100102
+            //             ,'title' => '保存'
+            //             ,'name' => 'teacher/index/save'
+            //             ,'paixu'  => 2
+            //             ,'pid' => 1001
+            //         ],
+            //         ['id' => 100103
+            //             ,'title' => '删除'
+            //             ,'name' => 'teacher/index/delete'
+            //             ,'paixu' => 3
+            //             ,'pid' => 1001
+            //         ],
+            //         ['id' => 100104
+            //             ,'title' => '编辑'
+            //             ,'name' => 'teacher/index/edit'
+            //             ,'paixu' => 4
+            //             ,'pid' => 1001
+            //         ],
+            //         ['id' => 100105
+            //             ,'title' => '更新'
+            //             ,'name' => 'teacher/index/update'
+            //             ,'paixu'  => 5
+            //             ,'pid' => 1001
+            //         ],
+            //         ['id' => 100106
+            //             ,'title' => '查看'
+            //             ,'name' => 'teacher/index/read'
+            //             ,'paixu' => 6
+            //             ,'pid' => 1001
+            //         ],
+            //         ['id' => 100107
+            //             ,'title' => '状态'
+            //             ,'name' => 'teacher/index/setstatus'
+            //             ,'paixu' => 7
+            //             ,'pid' => 1001
+            //         ],
+            //         ['id' => 100108
+            //             ,'title' => '查询教师'
+            //             ,'name' => 'teacher/index/srcteacher'
+            //             ,'paixu' => 8
+            //             ,'pid' => 1001
+            //         ],
+            //         ['id' => 100109
+            //             ,'title' => '批量上传'
+            //             ,'name' => 'teacher/index/createall'
+            //             ,'paixu' => 9
+            //             ,'pid' => 1001
+            //         ],
+            //         ['id' => 100110
+            //             ,'title' => '批量保存'
+            //             ,'name' => 'teacher/index/saveall'
+            //             ,'paixu' => 10
+            //             ,'pid' => 1001
+            //         ],
+            //         ['id' => 100111
+            //             ,'title' => '表格模板下载'
+            //             ,'name' => 'teacher/index/downloadxls'
+            //             ,'paixu' => 11
+            //             ,'pid' => 1001
+            //         ],
+            //         ['id' => 100112
+            //             ,'title' => '重置密码'
+            //             ,'name' => 'teacher/index/resetpassword'
+            //             ,'paixu' => 7
+            //             ,'pid' => 1001
+            //         ],
+            //     ['id' => 1002
+            //         ,'title' => '删除教师'
+            //         ,'name' => 'teacher/index/dellist'
+            //         ,'paixu' => 2
+            //         ,'ismenu'  => 1
+            //         ,'pid'  => 10
+            //         ,'url' => '/teacher/index/dellist'
+            //     ],
+            //         // 删除教师
+            //         ['id' => 100201
+            //             ,'title' => '恢复删除'
+            //             ,'name' => 'teacher/index/redel'
+            //             ,'paixu' => 1
+            //             ,'pid' => 1002
+            //         ],
 
         ];
 
