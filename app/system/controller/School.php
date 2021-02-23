@@ -55,7 +55,7 @@ class School extends AdminBase
                 ,'paixu'
                 ,'status'
                 ,'kaoshi'
-                ,'dw_teacher_count'
+                ,'dw_admin_count'
                 ,'dwXingzhi'=>['title']
                 ,'dwXueduan'=>['title']
                 ,'dwJibie'=>['title']

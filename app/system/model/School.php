@@ -8,9 +8,9 @@ class School extends BaseModel
 {
 
     // 教师数据模型关联
-    public function dwTeacher()
+    public function dwAdmin()
     {
-        return $this->hasMany('\app\teacher\model\Teacher', 'danwei_id', 'id');
+        return $this->hasMany('\app\admin\model\Admin', 'school_id', 'id');
     }
 
     // 单位性质数据模型关联
@@ -86,7 +86,7 @@ class School extends BaseModel
             )
             ->withCount(
                 [
-                    'dwTeacher' => function($query){
+                    'dwAdmin' => function($query){
                         $query->where('status', 1);
                     }
                 ]
