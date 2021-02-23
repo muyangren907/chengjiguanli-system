@@ -82,13 +82,14 @@ class Tongbu extends BaseController
         $ad = new \app\admin\model\Admin;
         $tc = new \app\teacher\model\Teacher;
         $tclist = $tc::withTrashed()->select();
+        $i = 0;
         foreach ($tclist as $key => $value) {
             $temp = $ad::withTrashed()
                 ->where('teacher_id', $value->id)
                 ->find();
             if($temp)
             {
-                $arr['id'] = $value->id;
+                $arr['id'] = $temp->id;
                 $arr['xingming'] = $value->xingming;
                 $arr['sex'] = $value->getData("sex");
                 $arr['shengri'] = $value->shengri;
@@ -142,10 +143,11 @@ class Tongbu extends BaseController
                 unset($data['update_time']);
                 $data = $ad->create($data);
             }
+            $i = $i+1;
         }
 
         // 根据更新结果设置返回提示信息
-        $data ? $data = ['msg' => '教师信息同步成功', 'val' => 1]
+        $data ? $data = ['msg' => '教师信息同步成功,共' . $i . '条记录', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
        return json($data);
@@ -281,13 +283,12 @@ class Tongbu extends BaseController
         $data = false;
         if(isset($kaoshiList[0]['user_id']))
         {
-            dump('aa');
             $arr = array();
             foreach ($kaoshiList as $key => $value) {
                 if($value->user_id > 0){
                    $arr[] = [
                         'id' => $value->id
-                        ,'user_id' => ad::newId($value->user_id)
+                        ,'user_id' => ad::newId($value->teacher_id)
                     ];
                 }
             }
@@ -316,6 +317,7 @@ class Tongbu extends BaseController
         foreach ($ktcyList as $key => $value) {
              $arr[] = [
                 'id' => $value->id
+                ,'oldid' => $value->teacher_id
                 ,'teacher_id' => ad::newId($value->teacher_id)
             ];
         }

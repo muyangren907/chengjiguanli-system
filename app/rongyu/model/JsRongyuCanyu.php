@@ -17,6 +17,6 @@ class JsRongyuCanyu extends BaseModel
     // 教师关联
     public function teacher()
     {
-    	return $this->belongsTo('\app\teacher\model\Teacher', 'teacher_id', 'id');
+    	return $this->belongsTo('\app\admin\model\Admin', 'teacher_id', 'id');
     }
 }

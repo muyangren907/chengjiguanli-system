@@ -43,7 +43,7 @@
               <div class="layui-input-block">
                   <input type="text" id="username" name="username" lay-verify="required"
                   autocomplete="off" class="layui-input" value="{$list.data.username|default=''}" placeholder="由字母、数字-_组成 6-12个字符"
-                  {eq name="$list.set.formpost" value="PUT1" }
+                  {eq name="$list.set.formpost" value="PUT" }
                      disabled
                   {/eq}>
               </div>
@@ -166,7 +166,7 @@
     $('#teacher_id').bind({
       keyup:function(){
         var val = $.trim($(this).val());
-        cjgl.searchTeacher(this, val, 'teacher_id', 'addTeacherID');
+        cjgl.searchTeacherOld(this, val, 'teacher_id', 'addTeacherID');
       },
     });
 </script>

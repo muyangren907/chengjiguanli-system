@@ -232,6 +232,48 @@ layui.define(['table', 'form'],function(exports){ //提示：模块也可以依�
       );
     },
 
+
+    // Select获取焦点
+    searchTeacherOld:function(myobj,val,addname,myfunction){
+      // 声明变量
+      var srcInput = $(myobj);
+      // 删除原来列表
+      srcInput.next().remove();
+      // 添加列表div
+      srcInput.after('<div class="srcSelectStyly"><dl><dd onclick="cjgl.'+myfunction+'(this)">请选择</dd></dl></div>');
+      // 声明变量
+      var mydl = srcInput.next().children('dl');
+
+      // 获取数据
+      $.post(
+        "/teacher/index/srcteacher",
+        {
+          "str":val,
+        },
+        function(data,status){
+          data = data.data;
+          if($.isEmptyObject(data))
+          {
+            return true;
+          }
+          var str;
+          for (var i = data.length - 1; i >= 0; i--) {
+            str = '';
+            str = '<dd ';
+            str = str + 'id=' + data[i].id + ' ';
+            str = str + 'onclick="cjgl.'+myfunction+'(this)"' + ' ';
+            str = str + 'addname=' + addname + ' ';
+            str = str + 'teachername=' + data[i].xingming + ' ';
+            str = str + 'schoolID=' + data[i].jsDanwei.id + ' ';
+            str = str + 'schoolName=' + data[i].jsDanwei.jiancheng +'>';
+            str = str + data[i].xingming+'　'+data[i].jsDanwei.jiancheng+'　'+data[i].shengri;
+            str = str + '</dd>';
+            mydl.append(str);
+          }
+        }
+      );
+    },
+
     // 添加教师
     addTeacher:function(myobj){
       var myId = $(myobj).attr('id')

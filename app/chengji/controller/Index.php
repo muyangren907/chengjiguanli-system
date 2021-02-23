@@ -689,7 +689,7 @@ class Index extends AdminBase
 
         $data = $chengji
                 ->where('kaohao_id',$src['kaohao'])
-                ->field('id, kaohao_id, subject_id, user_id, user_group, defen, update_time')
+                ->field('id, kaohao_id, subject_id, user_id, defen, update_time')
                 ->order([$src['field']=>$src['order']])
                 ->with([
                     'subjectName' => function ($query) {

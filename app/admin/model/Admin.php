@@ -327,7 +327,7 @@ class Admin extends BaseModel
 
     static function newId($oldId)
     {
-        $id = self::withTrashed()->whereTeacherId($oldId)->value('id');
+        $id = self::withTrashed()->where('teacher_id', $oldId)->value('id');
         return $id;
     }
 

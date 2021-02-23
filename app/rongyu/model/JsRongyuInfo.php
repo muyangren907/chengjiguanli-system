@@ -61,7 +61,7 @@ class JsRongyuInfo extends BaseModel
                             $q->name('JsRongyuCanyu')
                                 ->distinct(true)
                                 ->where('teacher_id', 'in', function($w) use($src){
-                                    $w->name('Teacher')
+                                    $w->name('Admin')
                                         ->where('xingming', 'like', '%' . $src['searchval'] . '%')
                                         ->field('id');
                                     })
