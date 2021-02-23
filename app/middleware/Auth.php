@@ -52,13 +52,14 @@ class Auth
             'index/index/index',    # 主页
             'index/index/welcome',  # 欢迎页
             // Admin应用
-            'admin/index/myinfo',   # 个人信息
+            'admin/admininfo/myinfo',   # 个人信息
             'admin/index/editpassword',   # 编辑密码
             'admin/index/updatepassword',   # 更新密码
             'admin/index/adminlist',   # 更新密码
             'admin/index/srcadmin',    # 搜索教师
-            'admin/index/srcry',    # 获取当前教师荣誉列表
-            'admin/index/srckt',    # 获取当前教师课题列表
+            'admin/admininfo/srcry',    # 获取当前教师荣誉列表
+            'admin/admininfo/srckt',    # 获取当前教师课题列表
+            'admin/admininfo/srcbzr',    # 获取当前教师担任班主任情况列表
             // Teach应用
             'teach/banji/mybanji',  # 获取班级数据
             'teach/banji/banjilist',  # 获取班级数据

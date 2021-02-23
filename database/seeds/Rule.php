@@ -955,7 +955,7 @@ class Rule extends Seeder
                 ],
                 ['id' => 60106
                     ,'title' => '查看'
-                    ,'name' => 'admin/index/read'
+                    ,'name' => 'admin/admininfo/readadmin'
                     ,'paixu' => 6
                     ,'pid' => 601
                 ],

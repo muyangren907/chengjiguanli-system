@@ -21,7 +21,7 @@ class Admin extends BaseModel
             ->where('id', '>', 2)
             ->where('id', '<>', session('userid'))
             ->when(strlen($src['searchval']) > 0, function($query) use($src){
-                    $query->where('xingming|username', 'like', '%' . $src['searchval'] . '%');
+                    $query->where('xingming|username|quanpin|shoupin', 'like', '%' . $src['searchval'] . '%');
                 })
             ->with([
                 'adSchool' => function($query){
@@ -310,6 +310,70 @@ class Admin extends BaseModel
     }
 
 
+    // 退休获取器
+    public function getTuixiuAttr($value)
+    {
+        $sex = array('0' => '退休', '1' => '在职');
+        $str = '';
+        if(isset($sex[$value]))
+        {
+            $str = $sex[$value];
+        }else{
+            $str = '未知';
+        }
+        return $str;
+    }
+
+
+    // 年龄获取器
+    public function getAgeAttr()
+    {
+        return \app\facade\Tools::fBirth($this->getdata('shengri'), 2);
+    }
+
+
+    // 工龄获取器
+    public function getGonglingAttr()
+    {
+        return \app\facade\Tools::fBirth($this->getdata('worktime'), 2);
+    }
+
+
+    // 职务关联模型
+    public function adZhiwu()
+    {
+        return $this->belongsTo('\app\system\model\Category', 'zhiwu_id', 'id');
+    }
+
+
+    // 职称关联模型
+    public function adZhicheng()
+    {
+        return $this->belongsTo('\app\system\model\Category', 'zhicheng_id', 'id');
+    }
+
+
+    // 学历关联模型
+    public function adXueli()
+    {
+        return $this->belongsTo('\app\system\model\Category', 'xueli_id', 'id');
+    }
+
+
+    // 单位关联模型
+    public function adDanwei()
+    {
+        return $this->belongsTo('\app\system\model\School', 'danwei_id', 'id');
+    }
+
+
+    // 学科关联模型
+    public function adSubject()
+    {
+        return $this->belongsTo('\app\teach\model\Subject', 'subject_id', 'id');
+    }
+
+
     // 分割表格上传数据
     private function cutStr($value)
     {
@@ -322,8 +386,6 @@ class Admin extends BaseModel
 
         return $str;
     }
-
-
 
     static function newId($oldId)
     {

@@ -29,7 +29,6 @@ class AuthRule extends BaseModel
         $src = [
             'searchval' => ''
             ,'status' => ''
-            ,'category' => ''
         ];
         $src = array_cover($srcfrom, $src);
 
@@ -37,9 +36,6 @@ class AuthRule extends BaseModel
         $data = $this
             ->when(strlen($src['searchval']) > 0, function($query) use($src){
                     $query->where('title|name', 'like', '%' . $src['searchval'] . '%');
-                })
-            ->when(strlen($src['category']) > 0, function($query) use($src){
-                    $query->where($src['category'], 1);
                 })
             ->when(strlen($src['status']) > 0, function($query) use($src){
                     $query->where('status', $src['status']);

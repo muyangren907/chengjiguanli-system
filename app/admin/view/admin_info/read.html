@@ -17,17 +17,31 @@
     </head>
     <body>
     <div class="x-body">
-
         <fieldset class="layui-elem-field">
             <legend>个人信息</legend>
             <div class="layui-field-box">
-                <table class="layui-table">
+                <table class="layui-table"> 
                     <tbody>
+                        <tr>
+                            <th>帐号</th>
+                            <td>{$list.username}</td>
+                            <th>登录次数</th>
+                            <td>{$list.denglucishu}</td>
+                        </tr>
                         <tr>
                             <th width="150px">姓名</th>
                             <td>{$list.xingming}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$list.quanpin}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$list.shoupin}</td>
                             <th>性别</th>
                             <td>{$list.sex}</td>
+                        </tr>
+                        <tr>
+                            <th>用户组</th>
+                            <td>
+                                {$list.groupnames}
+                            </td>
+                            <th>最后一次登录</th>
+                            <td>{$list.lastip}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            {$list.lasttime}</td>
                         </tr>
                         <tr>
                             <th>出生日期</th>
@@ -39,13 +53,13 @@
                             <th>在职状态</th>
                             <td>{$list.tuixiu}</td>
                             <th>职务</th>
-                            <td>{$list.js_zhiwu.title}</td>
+                            <td>{$list.adZhiwu.title}</td>
                           </tr>
                         <tr>
                             <th>职称</th>
-                            <td>{$list.js_zhicheng.title}</td>
+                            <td>{$list.adZhicheng.title}</td>
                             <th>工作单位</th>
-                            <td>{$list.js_danwei.title}</td>
+                            <td>{$list.adSchool.title}</td>
                           </tr>
                         <tr>
                             <th>毕业院校</th>
@@ -55,14 +69,14 @@
                           </tr>
                         <tr>
                             <th>学历</th>
-                            <td>{$list.js_xueli.title}</td></tr>
-
+                            <td>{$list.adXueli.title}</td>
+                            <th>联系电话</th>
+                            <td>{$list.phone}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </fieldset>
-
-   <!--      荣誉信息 -->
         <fieldset class="layui-elem-field">
             <legend>获奖情况</legend>
             <div class="layui-field-box" style="width: 100%">
@@ -81,7 +95,6 @@
                 <table id="banzhuren" lay-filter="banzhuren" lay-size="sm" class="layui-table"></table>
             </div>
         </fieldset>
-    </div>
     <script>
         //config的设置是全局的
         layui.config({
@@ -138,7 +151,7 @@
           var ry =table.render({
             elem: '#rongyu'
             ,method:"POST"   //数据接口
-            ,url: '/tools/teacherinfo/srcry' //数据接口
+            ,url: '/admin/info/srcry' //数据接口
             ,where:{
               'teacher_id': "{$list.id}"
             }
@@ -200,7 +213,7 @@
           var kt =table.render({
             elem: '#keti'
             ,method:"POST"   //数据接口
-            ,url: '/tools/teacherinfo/srckt' //数据接口
+            ,url: '/admin/info/srckt' //数据接口
             ,where:{
               'teacher_id': "{$list.id}"
             }
@@ -260,7 +273,7 @@
           var bzr =table.render({
             elem: '#banzhuren'
             ,method:"POST"   //数据接口
-            ,url: '/tools/teacherinfo/srcbzr' //数据接口
+            ,url: '/admin/info/srcbzr' //数据接口
             ,where:{
               'teacher_id': "{$list.id}"
             }

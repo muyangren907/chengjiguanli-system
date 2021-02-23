@@ -21,17 +21,12 @@ Route::group('index', function () {
     Route::rule('update/<id>', 'Index/update', 'put');			# 更新信息
     Route::rule('delete/<id>', 'Index/delete', 'delete');		# 删除信息
     Route::rule('status', 'Index/setStatus', 'post');		# 删除信息
-    Route::rule('resetpassword/<id>', 'Index/resetPassword', 'post');		# 重置密码
-    Route::rule('editpassword', 'Index/editPassword', 'get');		# 修改密码
-    Route::rule('updatepassword/<id>', 'Index/updatePassword', 'put');		# 更新密码
-    Route::rule('myinfo', 'Index/myInfo', 'get');		# 用户信息
     Route::rule('adminlist', 'Index/adminList', 'post');       # 用户信息
     Route::rule('downloadxls', 'Index/downloadxls', 'get');       # 用户信息
     Route::rule('createall','Index/createAll','get');              # 批量导入
     Route::rule('saveall','Index/saveAll','post');                  # 批量保存
     Route::rule('srcteacher','Index/srcAdmin','post');        # 查询教师
-    Route::rule('srcry','Index/srcRy','post');      # 查询荣誉
-    Route::rule('srckt','Index/srcKt','post');      # 查询课题
+    Route::rule('resetpassword/<id>', 'Index/resetPassword', 'post');       # 重置密码
 });
 
 
@@ -84,4 +79,16 @@ Route::group('tongbu', function () {
     Route::rule('kaoshi','Tongbu/kaoshi','post');
     Route::rule('ktcy','Tongbu/ktcy','post');
     Route::rule('tjbj','Tongbu/tjbj','post');
+});
+
+
+// 管理员信息
+Route::group('info', function () {
+    Route::rule('read/<id>','AdminInfo/readAdmin','get');
+    Route::rule('editpassword', 'AdminInfo/editPassword', 'get');       # 修改密码
+    Route::rule('updatepassword/<id>', 'AdminInfo/updatePassword', 'put');      # 更新密码
+    Route::rule('myinfo', 'AdminInfo/myInfo', 'get');       # 用户信息
+    Route::rule('srcry','AdminInfo/srcRy','post');      # 查询荣誉
+    Route::rule('srckt','AdminInfo/srcKt','post');      # 查询课题
+    Route::rule('srcbzr','AdminInfo/srcBzr','post');      # 查询课题
 });

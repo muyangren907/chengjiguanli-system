@@ -33,8 +33,7 @@ class AuthRule extends AdminBase
         // 获取参数
         $src = $this->request
             ->only([
-                'category' => ''
-                ,'page'=>'1'
+                'page'=>'1'
                 ,'limit' => '10'
                 ,'field' => 'id'
                 ,'order' => 'asc'
