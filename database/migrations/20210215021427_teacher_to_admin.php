@@ -43,7 +43,7 @@ class TeacherToAdmin extends Migrator
             ->addColumn('quanpin','string',['limit'=>30,'default'=>'a','null'=>false,'comment'=>'全拼'])
             ->addColumn('shoupin','string',['limit'=>5,'default'=>'a','null'=>false,'comment'=>'简拼'])
             ->addColumn('tuixiu','boolean',['limit'=>1,'default'=>0,'null'=>false,'comment'=>'是否已经退休'])
-            // ->addIndex(array('phone'), array('unique' => true))
+            ->addIndex(array('phone'), array('unique' => true))
             ->update();
         }
 
@@ -60,31 +60,51 @@ class TeacherToAdmin extends Migrator
             $table
             ->addColumn('user_id','integer',['after' => 'category_id','limit'=>11,'default'=>0,'null'=>false,'comment'=>'用户ID']);
         }
+
+        $table = $this->table('system_base');
+        $column = $table->hasColumn('sys_title');
+        if (!$column) {
+            $table
+            ->addColumn('sys_title','string',['limit'=>60,'null'=>false,'default'=>'码蚁成绩管理系统','comment'=>'系统名称']);
+        }
     }
 
 
     //版本退回
     public function down()
     {
-        $table = $this->table('admin');
-        $table
-            ->removeColumn('worktime')
-            ->removeColumn('zhiwu_id')
-            ->removeColumn('zhicheng_id')
-            ->removeColumn('biye')
-            ->removeColumn('zhuanye')
-            ->removeColumn('xueli_id')
-            ->removeColumn('subject_id')
-            ->removeColumn('quanpin')
-            ->removeColumn('shoupin')
-            ->removeColumn('worktime')
-            ->removeColumn('tuixiu')
-            ->update();
+        $table = $this->table('fields');
+        $column = $table->hasColumn('user_group');
+        if ($column) {
+            $table
+            ->removeColumn('user_group');
+        }
 
-        $table = $this->table('system_base');
-        $table
-            ->removeColumn('kaoshifanwei')
-            ->update();
+        $table = $this->table('chengji');
+        $column = $table->hasColumn('user_group');
+        if ($column) {
+            $table
+            ->removeColumn('user_group');
+        }
+
+        $table = $this->table('kaoshi');
+        $column = $table->hasColumn('user_group');
+        if ($column) {
+            $table
+            ->removeColumn('user_group');
+        }
+
+        $table = $this->table('admin');
+        $column = $table->hasColumn('teacher_id');
+        if ($column) {
+            $table
+            ->removeColumn('teacher_id');
+        }
+
+        $exists = $this->hasTable('teacher');
+        if ($exists) {
+            $this->dropTable('teacher');
+        }
     }
 
 
