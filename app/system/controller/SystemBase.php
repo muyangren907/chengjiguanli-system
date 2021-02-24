@@ -102,52 +102,29 @@ class SystemBase extends AdminBase
         $data = ['msg' => '初始化成功', 'val' => 1];
         try {
             // 删除管理员
-            $obj = new \app\admin\model\Admin;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 2);
-            });
+            \think\facade\Db::query("Delete From cj_admin where id>2");
 
             // 删除用户组
-            $obj = new \app\admin\model\AuthGroup;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 1);
-            });
+            \think\facade\Db::query("Delete From cj_auth_group where id>1");
+
 
             // 删除用户与用户组对应
-            $obj = new \app\admin\model\AuthGroupAccess;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 0);
-            });
+            \think\facade\Db::query("Delete From cj_auth_group_access where id>0");
 
             // 删除班主任
-            $obj = new \app\teach\model\BanZhuRen;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 0);
-            });
+            \think\facade\Db::query("Delete From cj_ban_zhu_ren where id>0");
 
             // 删除班级
-            $obj = new \app\teach\model\Banji;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 0);
-            });
+            \think\facade\Db::query("Delete From cj_banji where id>0");
 
             // 删除成绩
-            $obj = new \app\chengji\model\Chengji;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 0);
-            });
+            \think\facade\Db::query("Delete From cj_chengji where id>0");
 
             // 删除单位荣誉
-            $obj = new \app\rongyu\model\DwRongyu;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 0);
-            });
+            \think\facade\Db::query("Delete From cj_dw_rongyu where id>0");
 
             // 删除单位荣誉参与
-            $obj = new \app\rongyu\model\DwRongyuCanyu;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 0);
-            });
+            \think\facade\Db::query("Delete From cj_dw_rongyu_canyu where id>0");
 
             // // 删除分工
             // $obj = new \app\rongyu\model\FenGong;
@@ -156,53 +133,28 @@ class SystemBase extends AdminBase
             // });
             //
             // 删除文件
-            $obj = new \app\system\model\Fields;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 0);
-            });
-
+            \think\facade\Db::query("Delete From cj_fields where id>0");
+ 
             // 删除教师荣誉
-            $obj = new \app\rongyu\model\JsRongyu;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 0);
-            });
+            \think\facade\Db::query("Delete From cj_js_rongyu where id>0");
 
             // 删除教师荣誉参与
-            $obj = new \app\rongyu\model\JsRongyuCanyu;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 0);
-            });
+            \think\facade\Db::query("Delete From cj_js_rongyu_canyu where id>0");
 
             // 删除教师荣誉信息
-            $obj = new \app\rongyu\model\JsRongyuInfo;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 0);
-            });
+            \think\facade\Db::query("Delete From cj_js_rongyu_info where id>0");
 
             // 删除考号
-            $obj = new \app\kaohao\model\Kaohao;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 0);
-            });
+            \think\facade\Db::query("Delete From cj_kaohao where id>0");
 
             // 删除考试
-            $obj = new \app\kaoshi\model\Kaoshi;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 0);
-            });
+            \think\facade\Db::query("Delete From cj_kaoshi where id>0");
 
             // 删除单位荣誉参与
-            $obj = new \app\kaoshi\model\KaoshiSet;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 0);
-            });
+            \think\facade\Db::query("Delete From cj_kaoshi_set where id>0");
 
             // 删除课程表
-            // $obj = new \app\rongyu\model\DwRongyuCanyu;
-            // $list = $obj::destroy(function ($query) {
-            //     $query->where('id', '>', 0);
-            // });
-            //
+          //
             // 删除课程表临时表
             // $obj = new \app\rongyu\model\DwRongyuCanyu;
             // $list = $obj::destroy(function ($query) {
@@ -213,71 +165,41 @@ class SystemBase extends AdminBase
             // $obj = new \app\rongyu\model\DwRongyuCanyu;
             // $list = $obj::destroy(function ($query) {
             //     $query->where('id', '>', 0);
+            // });            // $obj = new \app\rongyu\model\DwRongyuCanyu;
+            // $list = $obj::destroy(function ($query) {
+            //     $query->where('id', '>', 0);
             // });
+  
             //
             // 删除课题删
-            $obj = new \app\keti\model\Keti;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 0);
-            });
+            \think\facade\Db::query("Delete From cj_keti where id>0");
 
             // 删除课题参与
-            $obj = new \app\keti\model\KetiCanyu;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 0);
-            });
+            \think\facade\Db::query("Delete From cj_keti_canyu where id>0");
 
             // 删除课题信息
-            $obj = new \app\keti\model\ketiInfo;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 0);
-            });
+            \think\facade\Db::query("Delete From cj_keti_info where id>0");
 
             // 删除单位
-            $obj = new \app\system\model\School;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 0);
-            });
+            \think\facade\Db::query("Delete From cj_school where id>0");
 
             // 删除学生信息
-            $obj = new \app\student\model\Student;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 0);
-            });
-
-            // 删除教师信息
-            $obj = new \app\teacher\model\Teacher;
-            $list = $obj::where('id', '>', 1)->delete();
+            \think\facade\Db::query("Delete From cj_student where id>0");
 
             // 删除班级成绩统计
-            $obj = new \app\chengji\model\TongjiBj;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 0);
-            });
+            \think\facade\Db::query("Delete From cj_tongji_bj where id>0");
 
             // 删除统计记录
-            $obj = new \app\kaoshi\model\TongjiLog;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 0);
-            });
+            \think\facade\Db::query("Delete From cj_tongji_log where id>0");
 
             // 删除年级成绩统计
-            $obj = new \app\chengji\model\TongjiNj;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 0);
-            });
+            \think\facade\Db::query("Delete From cj_tongji_nj where id>0");
 
             // 删除学校成绩统计
-            $obj = new \app\chengji\model\TongjiSch;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 0);
-            });
+            \think\facade\Db::query("Delete From cj_tongji_sch where id>0");
 
             // 删除学期
-            $obj = new \app\teach\model\Xueqi;
-            $list = $obj::destroy(function ($query) {
-                $query->where('id', '>', 1);
-            });
+            \think\facade\Db::query("Delete From cj_xueqi where id>1");
 
         } catch (ValidateException $e) {
             $data = ['msg' => '初始化失败', 'val' => 0];
