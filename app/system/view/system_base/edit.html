@@ -83,54 +83,6 @@
             </div>
           </div>
           <div class="layui-form-item" pane>
-            <label for="teacherrongyu" class="layui-form-label">
-              <span class="x-red">*</span>教师查荣誉
-            </label>
-            <div class="layui-input-block">
-              <input type="radio" name="teacherrongyu" value="1" title="允许"
-                {present name="$list.data.teacherrongyu"}
-                {$list.data.teacherrongyu}
-                    {eq name="$list.data.teacherrongyu" value="1" }
-                     checked
-                    {/eq}
-                {/present}>
-              <input type="radio" name="teacherrongyu" value="0" title="不允许"
-                {present name="$list.data.teacherrongyu"}
-                    {eq name="list.data.teacherrongyu" value="0" }
-                     checked
-                    {/eq}
-                {/present}
-                {notpresent name="$list.data.teacherrongyu"}
-                 checked
-                {/notpresent}
-                >
-            </div>
-          </div>
-          <div class="layui-form-item" pane>
-            <label for="teacherketi" class="layui-form-label">
-              <span class="x-red">*</span>教师查课题
-            </label>
-            <div class="layui-input-block">
-              <input type="radio" name="teacherketi" value="1" title="允许"
-                {present name="$list.data.teacherketi"}
-                {$list.data.teacherketi}
-                    {eq name="$list.data.teacherketi" value="1" }
-                     checked
-                    {/eq}
-                {/present}>
-              <input type="radio" name="teacherketi" value="0" title="不允许"
-                {present name="$list.data.teacherketi"}
-                    {eq name="list.data.teacherketi" value="0" }
-                     checked
-                    {/eq}
-                {/present}
-                {notpresent name="$list.data.teacherketi"}
-                 checked
-                {/notpresent}
-                >
-            </div>
-          </div>
-          <div class="layui-form-item" pane>
             <label for="studefen" class="layui-form-label">
               <span class="x-red">*</span>成绩显示
             </label>

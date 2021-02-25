@@ -101,6 +101,14 @@ class TeacherToAdmin extends Migrator
             ->removeColumn('teacher_id');
         }
 
+        $table = $this->table('system_base');
+        $column = $table->hasColumn('teacherrongyu');
+        if ($column) {
+            $table
+            ->removeColumn('teacherrongyu')
+            ->removeColumn('teacherketi');
+        }
+
         $exists = $this->hasTable('teacher');
         if ($exists) {
             $this->dropTable('teacher');

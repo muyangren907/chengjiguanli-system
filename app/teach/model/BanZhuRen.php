@@ -144,4 +144,25 @@ class BanZhuRen extends BaseModel
         return $data;
     }
 
+
+    // 查询教师担任班主任情况
+    public function srcTeacherNow($admin_id)
+    {
+        $teacher = $this->where('teacher_id', $admin_id)
+                ->field('id, banji_id');
+                ->order(['before'=>'desc'])
+                ->find();
+        $banji = $this->where('banji_id', $teacher->banji_id)
+                ->order(['before'=>'desc'])
+                ->field('id')
+                ->find();
+        if($teacher->id == $banji->id)
+        {
+            $banji_id = $teacher_id->banji_id;
+        }else{
+            $banji_id = 0;
+        }
+        return $banji_id;
+    }
+
 }

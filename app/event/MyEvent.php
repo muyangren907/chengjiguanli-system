@@ -57,7 +57,7 @@ class MyEvent
     public function userInfo()
     {
         $ad = new AdminInfo;
-        $adinfo = $kaoshi->myInfo();
+        $adinfo = $ad->myQuanxian();
         return $adinfo;
     }
 
