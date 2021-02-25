@@ -52,4 +52,13 @@ class MyEvent
         return $data;
     }
 
+
+    // 获取考试状态
+    public function userInfo()
+    {
+        $ad = new AdminInfo;
+        $adinfo = $kaoshi->myInfo();
+        return $adinfo;
+    }
+
 }

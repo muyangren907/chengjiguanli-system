@@ -13,14 +13,24 @@ class Admin extends Validate
      * @var array
      */
 	protected $rule = [
+        'id|用户编号'  =>  'require:number',
         'xingming|用户姓名'  =>  'require|chs|length:2,6',
+        'quanpin|姓名全拼'     =>  'require|alpha|length:1,30',
+        'shoupin|姓名首拼'     =>  'require|alpha|length:1,5',
         'username|帐号'  =>  ['require', 'uset'=>'/^[a-z][a-z0-9-_]*$/'],
-        'teacher_id|用户编号'  =>  'require|number|length:1,11',
         'group_id|角色'   =>  'require|array',
         'shengri|出生日期'   =>  'date',
-        'xingbie|性别'   =>  'in:0,1,2',
+        'sex|性别'   =>  'in:0,1,2',
         'phone|手机'     =>  'mobile',
         'beizhu|备注'    =>  'max:80',
+        'zhiwu_id|职务'      =>      'number',
+        'zhicheng_id|职称'     =>  'number',
+        'xueli_id|学历'    =>  'number',
+        'biye|毕业院校'    =>  'length:1,50',
+        'zhuanye|专业'     =>  'length:1,20',
+        'worktime|参加工作时间'     =>  'date',
+        'tuixiu|退休'        =>      'require|number|max:2',
+        'beizhu|备注'        =>      'max:80',
     ];
 
     /**
@@ -30,4 +40,59 @@ class Admin extends Validate
      * @var array
      */
     protected $message = [];
+
+    protected $scene = [
+        'admincreate'  =>  [
+             'xingming'
+             ,'username'
+             ,'shoupin'
+             ,'quanpin'
+             ,'group_id'
+             ,'shengri'
+             ,'sex'
+             ,'phone'
+             ,'beizhu'
+             ,'zhiwu_id'
+             ,'zhicheng_id'
+             ,'xueli_id'
+             ,'biye'
+             ,'zhuanye'
+             ,'worktime'
+             ,'tuixiu'
+        ],
+        'adminedit'  =>  [
+            'id'
+             ,'xingming'
+             ,'username'
+             ,'shoupin'
+             ,'quanpin'
+             ,'group_id'
+             ,'shengri'
+             ,'sex'
+             ,'phone'
+             ,'beizhu'
+             ,'zhiwu_id'
+             ,'zhicheng_id'
+             ,'xueli_id'
+             ,'biye'
+             ,'zhuanye'
+             ,'worktime'
+             ,'tuixiu'
+        ],
+        'infoedit'  =>  [
+            'id'
+             ,'xingming'
+             ,'username'
+             ,'shoupin'
+             ,'quanpin'
+             ,'shengri'
+             ,'sex'
+             ,'phone'
+             ,'zhicheng_id'
+             ,'xueli_id'
+             ,'biye'
+             ,'zhuanye'
+             ,'worktime'
+        ],
+    ];
 }

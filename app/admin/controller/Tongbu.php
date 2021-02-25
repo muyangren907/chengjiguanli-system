@@ -1,14 +1,12 @@
 <?php
-declare (strict_types = 1);
-
 namespace app\admin\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 
 use app\admin\model\Admin as ad;
 
-class Tongbu extends BaseController
+class Tongbu extends AdminBase
 {
     // 统计成绩
     public function index()

@@ -4,7 +4,6 @@ namespace app\base\controller;
 // 引用控制器基类
 use app\BaseController;
 
-
 /**
  * 控制器基础类
  */
@@ -26,7 +25,7 @@ abstract class AdminBase extends BaseController
         $this->online = session('onlineCategory');
         if($this->online != 'admin')
         {
-            \app\facade\OnLine::jump('/login', '请使用管理员帐号登录');
+            \app\facade\OnLine::jump('/login', '请使用教师帐号登录');
         }
     }
 }

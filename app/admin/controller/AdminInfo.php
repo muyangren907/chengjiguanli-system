@@ -138,6 +138,16 @@ class AdminInfo extends AdminBase
     }
 
 
+    public function myQuanxian()
+    {
+        $id = session('user_id');
+        $ad = new AD;
+        // $adInfo = $ad->where('id', session('user_id'))
+        //         ->field('zhiwu_id, ')
+        //         ->find();
+    }
+
+
     // 查询教师荣誉
     public function srcRy()
     {
@@ -211,5 +221,75 @@ class AdminInfo extends AdminBase
         $data = reSetObject($data, $src);
 
         return json($data); 
+    }
+
+
+    // 修改信息
+    public function edit()
+    {
+       $id = session('user_id');
+       // 获取用户信息
+       $list['data'] = AD::where('id', $id)
+            ->field('id, xingming, quanpin, shoupin, username, shengri, sex, phone, zhiwu_id, zhicheng_id, xueli_id, biye, zhuanye, worktime')
+            ->with([
+                'adSchool'=>function($query){
+                    $query->field('id, jiancheng');
+                }
+            ])
+            ->find();
+
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle' => '编辑管理员'
+            ,'butname' => '修改'
+            ,'formpost' => 'PUT'
+            ,'url' => '/admin/info/update/' . $id
+        );
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+        // 渲染
+        return $this->view->fetch('edit');
+    }
+
+
+    // 更新管理员信息
+    public function update($id)
+    {
+        // 获取表单数据
+        $list = request()->only([
+            'xingming'
+            ,'quanpin'
+            ,'shoupin'
+            ,'username'
+            ,'shengri'
+            ,'sex'
+            ,'phone'
+            ,'school_id'
+            ,'zhicheng_id'
+            ,'xueli_id'
+            ,'biye'
+            ,'zhuanye'
+            ,'worktime'
+        ], 'PUT');
+        $list['id'] = $id;
+
+        // 验证表单数据
+        $validate = new \app\admin\validate\Admin;
+        $result = $validate->scene('infoedit')->check($list);
+        $msg = $validate->getError();
+        if(!$result){
+            return json(['msg' => $msg, 'val' => 0]);;
+        }
+
+        // 更新我的信息
+        $admindata = AD::update($list);
+
+        // 根据更新结果设置返回提示信息
+        $admindata ? $data = ['msg' => '更新成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
+
+        // 返回信息
+        return json($data);
     }
 }

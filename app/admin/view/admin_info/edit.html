@@ -99,63 +99,6 @@
               </div>
           </div>
           <div class="layui-form-item">
-            <label for="school_id" class="layui-form-label"><span class="x-red">*</span>工作单位</label>
-            <div class="layui-input-block">
-              {php} $schlist = danweiJibie('校级', '区级');{/php}
-              <select name="school_id" lay-verify="required">
-                <option value=""></option>
-                {volist name="schlist" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.school_id"}
-                    {eq name="$list.data.school_id" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    {$vo.title}
-                  </option>
-                {/volist}
-              </select>
-            </div>
-          </div>
-          <div class="layui-form-item">
-            <label for="group_id" class="layui-form-label"><span class="x-red">*</span>角色设置</label>
-            <div class="layui-input-block">
-              {php}
-                $authgroup = new \app\admin\model\AuthGroup;
-                $authgrouplist = $authgroup->where('status',1)->select();
-              {/php}
-                {volist name="authgrouplist" id="vo"}
-                <input type="checkbox" name="group_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary" {present name="$list.data.gl_group"}
-                    {volist name="list.data.gl_group" id="va"}
-                      {eq name="$va.title" value="$vo.title"}checked{/eq}
-                    {/volist}
-                  {/present}>
-                {/volist}
-              </select>
-            </div>
-          </div>
-          <div class="layui-form-item">
-            <label for="zhiwu_id" class="layui-form-label">
-              职务
-            </label>
-            <div class="layui-input-block">
-              {php} $category = categoryChildren(107);{/php}
-              <select name="zhiwu_id">
-                <option value=""></option>
-                {volist name="category" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.zhiwu_id"_id}
-                    {eq name="$list.data.zhiwu_id" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    {$vo.title}
-                  </option>
-                {/volist}
-              </select>
-            </div>
-          </div>
-          <div class="layui-form-item">
             <label for="zhicheng_id" class="layui-form-label">
               职称
             </label>
@@ -222,32 +165,10 @@
                   <input type="input" id="worktime" name="worktime" class="layui-input" value="{$list.data.worktime|default=''}" placeholder="入职时间" autocomplete="off">
               </div>
           </div>
-          <div class="layui-form-item" pane>
-            <label for="tuixiu" class="layui-form-label"><span class="x-red">*</span>是否已经退体</label>
-            <div class="layui-input-block">
-              {if (isset($list.data.tuixiu)) }
-                <input type="radio" name="tuixiu" value="0" title="在职"
-                    {eq name="$list.data.tuixiu" value="在职" }
-                     checked
-                    {/eq}>
-                <input type="radio" name="tuixiu" value="1" title="退休"
-                    {eq name="$list.data.tuixiu" value="退休" }
-                     checked
-                    {/eq}>
-                
-              {else /}
-                <input type="radio" name="tuixiu" value="0" title="在职" checked>
-                <input type="radio" name="tuixiu" value="1" title="退休">
-              {/if}
-            </div>
-          </div>
-          <div class="layui-form-item">
-              <label for="beizhu" class="layui-form-label">
-                  备注
-              </label>
-              <div class="layui-input-block">
-                  <input type="text" id="beizhu" name="beizhu" lay-verify="required" class="layui-input " value="{$list.data.beizhu|default=''}" placeholder="0-80个字符">
-              </div>
+          <div class="layui-form-item" style="text-align: right;">
+              <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
+                  {$list.set.butname}
+              </button>
           </div>
       </form>
 {/block}

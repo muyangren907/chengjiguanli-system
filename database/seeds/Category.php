@@ -277,6 +277,7 @@ class Category extends Seeder
                 //  课题或荣誉角色
                 ['id' => 12101,'title' => '班级统计','p_id' => 121,'paixu' => 1,'isupdate' => 0],
                 ['id' => 12102,'title' => '班级排序','p_id' => 121,'paixu' => 2,'isupdate' => 0],
+            // 统计项目
             ['id' => 122
                 ,'title' => '统计项目'
                 ,'p_id' => 0
@@ -296,6 +297,18 @@ class Category extends Seeder
                 ['id' => 12210,'title' => '管理员-学生成绩列表-下载左','p_id' => 122,'paixu' => 10,'isupdate' => 0],
                 ['id' => 12211,'title' => '管理员-学生成绩列表-成绩条(学生)','p_id' => 122,'paixu' => 10,'isupdate' => 0],
                 ['id' => 12212,'title' => '管理员-学生成绩列表-成绩条(班级)','p_id' => 122,'paixu' => 10,'isupdate' => 0],
+            // 教师评语
+            ['id' => 123
+                ,'title' => '教师评语'
+                ,'p_id' => 0
+                ,'paixu' => 23
+                ,'isupdate' => 0
+            ],
+                //  教师评语
+                ['id' => 12301,'title' => '学年评语','p_id' => 123,'paixu' => 1,'isupdate' => 0],
+                ['id' => 12302,'title' => '学期评语','p_id' => 123,'paixu' => 1,'isupdate' => 0],
+                ['id' => 12303,'title' => '月评语','p_id' => 123,'paixu' => 1,'isupdate' => 0],
+                ['id' => 12304,'title' => '周评语','p_id' => 123,'paixu' => 1,'isupdate' => 0],
         ];
 
         $serRows = $this->fetchAll('select * from cj_category');

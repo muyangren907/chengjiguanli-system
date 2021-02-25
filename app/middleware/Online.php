@@ -14,7 +14,6 @@ class Online
      */
     public function handle($request, \Closure $next)
     {
-
         $weihu = config('shangma.weihu');
         // 判断是否在线，如果不在线则跳转
         $online = session('?onlineCategory');

@@ -13,11 +13,6 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class File extends BaseController
 {
-
-    // 初始化变量
-    protected function initialize()
-    {
-
     /**
      * 获取文件信息并保存
      *
@@ -39,7 +34,7 @@ class File extends BaseController
 
         if($serFile)
         {
-            $serFile->user_id = $this->luruTeacherId;
+            $serFile->user_id = session('user_id');
             $serFile->save();
             $data['msg'] = '文件已经存在';
             $data['val'] = true;

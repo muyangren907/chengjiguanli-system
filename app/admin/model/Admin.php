@@ -124,51 +124,38 @@ class Admin extends BaseModel
         $i = 0;
         $teacherlist = array();
         foreach ($arr as $key => $value) {
-            $phone = str_replace(' ', '', $value[4]);
+            $phone = str_replace(' ', '', $value[5]);
+            $temp = $this->wherePhone($phone)->find();
+            if($temp)
+            {
+                continue;
+            }
+            $temp = $this->whereUsername(trim($value[2]))->find();
+            if($temp)
+            {
+                continue;
+            }
             $teacherlist[$i]['xingming'] = $value[1];
-            $teacherlist[$i]['sex'] = $this->cutStr($value[2]);
-            $teacherlist[$i]['shengri'] = $value[3];
+            $teacherlist[$i]['username'] = $value[2];
+            $teacherlist[$i]['sex'] = $this->cutStr($value[3]);
+            $teacherlist[$i]['shengri'] = $value[4];
             $teacherlist[$i]['phone'] = $phone;
-            $teacherlist[$i]['worktime'] = $value[5];
-            $teacherlist[$i]['zhiwu_id'] = $this->cutStr($value[6]);
-            $teacherlist[$i]['zhicheng_id'] = $this->cutStr($value[7]);
+            $teacherlist[$i]['worktime'] = $value[6];
+            $teacherlist[$i]['zhiwu_id'] = $this->cutStr($value[7]);
+            $teacherlist[$i]['zhicheng_id'] = $this->cutStr($value[8]);
             $teacherlist[$i]['school_id'] = $School_id;
             $teacherlist[$i]['biye'] = $value[9];
-            $teacherlist[$i]['subject_id'] = $this->cutStr($value[8]);
-            $teacherlist[$i]['zhuanye'] = $value[9];
+            $teacherlist[$i]['zhuanye'] = $value[10];
             $teacherlist[$i]['xueli_id'] = $this->cutStr($value[11]);
             $quanpin = $pinyin->sentence($value[1]);
             $jianpin = $pinyin->abbr($value[1]);
             $teacherlist[$i]['quanpin'] = trim(strtolower(str_replace(' ', '', $quanpin)));
             $teacherlist[$i]['shoupin'] = trim(strtolower($jianpin));
-            $teacherlist[$i]['username'] = $teacherlist[$i]['quanpin'] .'.'. \app\facade\Tools::sjStr(3);
-            $temp = $this->whereOrPhone($phone)->find();
-            if($temp)
-            {
-                if($temp->delete_time > 0)
-                {
-                    $temp->restore();
-                }
-                $teacherlist[$i]['id'] = $temp->id;
-            }
             $i++;
         }
 
-
-        // 查找相同值，如果重复则重新命名。
-        $teacherlist = \app\facade\Tools::sortArrByManyField($teacherlist,'username');
-        foreach ($teacherlist as $key => $value) {
-            if ($key > 1) {
-                if($value['username'] == $teacherlist[$key-1]['username']){
-                    $teacherlist[$key]['username'] = $teacherlist[$key]['quanpin'] .'.'. \app\facade\Tools::sjStr(4);
-                }else{
-                    break;
-                }
-            }
-        }
-
         $teacherlist = array_filter($teacherlist, function($q){ ## 过滤姓名、身份证号或班级为空的数据
-            return $q['xingming'] != null && $q['sex'] != null && $q['zhiwu_id'] != null && $q['zhicheng_id'] != null && $q['subject_id'] != null  && $q['xueli_id'] != null;
+            return $q['xingming'] != null && $q['username'] != null && $q['sex'] != null && $q['zhiwu_id'] != null && $q['zhicheng_id'] != null && $q['xueli_id'] != null;
         });
 
         // 保存或更新信息
@@ -313,7 +300,7 @@ class Admin extends BaseModel
     // 退休获取器
     public function getTuixiuAttr($value)
     {
-        $sex = array('0' => '退休', '1' => '在职');
+        $sex = array('0' => '在职', '1' => '退休');
         $str = '';
         if(isset($sex[$value]))
         {

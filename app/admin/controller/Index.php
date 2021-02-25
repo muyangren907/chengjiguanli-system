@@ -88,14 +88,22 @@ class Index extends AdminBase
         // 获取表单数据
         $list = request()->only([
             'xingming'
-            ,'school_id'
+            ,'quanpin'
+            ,'shoupin'
             ,'username'
-            ,'teacher_id'
-            ,'sex'
             ,'shengri'
+            ,'sex'
             ,'phone'
-            ,'beizhu'
+            ,'school_id'
             ,'group_id'
+            ,'zhiwu_id'
+            ,'zhicheng_id'
+            ,'xueli_id'
+            ,'biye'
+            ,'zhuanye'
+            ,'worktime'
+            ,'tuixiu'
+            ,'beizhu'
         ], 'POST');
 
         // 设置密码，默认为123456
@@ -104,7 +112,7 @@ class Index extends AdminBase
 
         // 验证表单数据
         $validate = new \app\admin\validate\Admin;
-        $result = $validate->check($list);
+        $result = $validate->scene('admincreate')->check($list);
         $msg = $validate->getError();
         if(!$result){
             return json(['msg' => $msg, 'val' => 0]);;
@@ -128,7 +136,7 @@ class Index extends AdminBase
     {
         // 获取用户信息
        $list['data'] = AD::where('id',$id)
-            ->field('id, school_id, username, xingming, teacher_id, sex, shengri, phone, beizhu')
+            ->field('id, xingming, quanpin, shoupin, username, shengri, sex, phone, school_id, zhiwu_id, zhicheng_id, xueli_id, biye, zhuanye, worktime, tuixiu, beizhu')
             ->with([
                 'adSchool'=>function($query){
                     $query->field('id, jiancheng');
@@ -160,14 +168,22 @@ class Index extends AdminBase
         // 获取表单数据
         $list = request()->only([
             'xingming'
-            ,'school_id'
+            ,'quanpin'
+            ,'shoupin'
             ,'username'
-            ,'teacher_id'
-            ,'sex'
             ,'shengri'
+            ,'sex'
             ,'phone'
+            ,'school_id'
+            ,'group_id' => array()
+            ,'zhiwu_id'
+            ,'zhicheng_id'
+            ,'xueli_id'
+            ,'biye'
+            ,'zhuanye'
+            ,'worktime'
+            ,'tuixiu'
             ,'beizhu'
-            ,'group_id'
         ], 'PUT');
         $list['id'] = $id;
 
@@ -175,7 +191,7 @@ class Index extends AdminBase
 
         // 验证表单数据
         $validate = new \app\admin\validate\Admin;
-        $result = $validate->check($list);
+        $result = $validate->scene('adminedit')->check($list);
         $msg = $validate->getError();
         if(!$result){
             return json(['msg' => $msg, 'val' => 0]);;
@@ -309,7 +325,7 @@ class Index extends AdminBase
         $teacherinfo = \app\facade\File::readXls(public_path() . 'uploads/' . $list['url']);
 
         // 判断表格是否正确
-        if("教师基本情况表" != $teacherinfo[0][0] || '姓名*' != $teacherinfo[2][1] || '性别*' != $teacherinfo[2][2])
+        if("教师基本情况表" != $teacherinfo[0][0] || '姓名*' != $teacherinfo[2][1] || '帐号*' != $teacherinfo[2][2])
         {
             $this->error('请使用模板上传', '/login/err');
             return json($data);

@@ -17,7 +17,10 @@ class Login
     public function handle($request, \Closure $next)
     {
         $category = session('onlineCategory');
-        $ya = 0;
+        $yz = [
+            'val' => 0
+            ,'msg' => '已经掉线啦~'
+        ];
         switch ($category) {
             case 'admin':
                 $yz = yz::admin(session('username'), session('password'));

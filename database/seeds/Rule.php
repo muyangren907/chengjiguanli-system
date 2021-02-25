@@ -1300,12 +1300,12 @@ class Rule extends Seeder
                     ,'paixu' => 1
                     ,'pid'  => 705
                 ],
-                ['id' => 70502
-                    ,'title' => '初始化'
-                    ,'name' => 'system/systembase/resetmayi'
-                    ,'paixu' => 2
-                    ,'pid'  => 705
-                ],
+                // ['id' => 70502
+                //     ,'title' => '初始化'
+                //     ,'name' => 'system/systembase/resetmayi'
+                //     ,'paixu' => 2
+                //     ,'pid'  => 705
+                // ],
             ['id' => 706
                 ,'title' => '统计项目'
                 ,'name' => 'kaoshi/tongjixiangmu/index'
