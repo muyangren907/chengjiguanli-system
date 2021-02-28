@@ -88,6 +88,25 @@
               </div>
             </div>
           </div>
+          <div class="layui-form-item">
+            <label for="fanwei_id" class="layui-form-label"><span class="x-red">*</span>查看范围</label>
+            <div class="layui-input-block">
+              {php} $category = categoryChildren(124);{/php}
+              <select name="fanwei_id" lay-verify="required">
+                <option value=""></option>
+                {volist name="category" id="vo"}
+                  <option value="{$vo.id}"
+                  {present name="$list.data.fanwei_id"}
+                    {eq name="$list.data.fanwei_id" value="$vo.id" }
+                      selected
+                    {/eq}
+                  {/present}>
+                    {$vo.title}
+                  </option>
+                {/volist}
+              </select>
+            </div>
+          </div>
           <div class="layui-form-item" style="text-align: right;">
               <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
                   {$list.set.butname}

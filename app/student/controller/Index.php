@@ -55,6 +55,9 @@ class Index extends AdminBase
             $src['banji_id'] = $banji->search($bjsrc)->column('id');
         }
 
+        $mybanji = event('mybanji');
+        halt($mybanji);
+
         // 根据条件查询数据
         $stu = new STU;
         $data = $stu->search($src);

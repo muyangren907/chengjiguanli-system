@@ -381,4 +381,18 @@ class Admin extends BaseModel
     }
 
 
+    public function myQuanxian()
+    {
+        $id = session('user_id');
+        $adInfo = $this->where('id', session('user_id'))
+                ->field('zhiwu_id')
+                ->find();
+
+        $bzr = new \app\teach\model\BanZhuRen;
+        $banji_id = $bzr->srcTeacherNow($id);
+
+        return $banji_id;
+    }
+
+
 }

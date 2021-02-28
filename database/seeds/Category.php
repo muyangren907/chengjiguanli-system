@@ -306,9 +306,21 @@ class Category extends Seeder
             ],
                 //  教师评语
                 ['id' => 12301,'title' => '学年评语','p_id' => 123,'paixu' => 1,'isupdate' => 0],
-                ['id' => 12302,'title' => '学期评语','p_id' => 123,'paixu' => 1,'isupdate' => 0],
-                ['id' => 12303,'title' => '月评语','p_id' => 123,'paixu' => 1,'isupdate' => 0],
-                ['id' => 12304,'title' => '周评语','p_id' => 123,'paixu' => 1,'isupdate' => 0],
+                ['id' => 12302,'title' => '学期评语','p_id' => 123,'paixu' => 2,'isupdate' => 0],
+                ['id' => 12303,'title' => '月评语','p_id' => 123,'paixu' => 3,'isupdate' => 0],
+                ['id' => 12304,'title' => '周评语','p_id' => 123,'paixu' => 4,'isupdate' => 0],
+            // 考试查看范围
+            ['id' => 124
+                ,'title' => '查看考试范围'
+                ,'p_id' => 0
+                ,'paixu' => 24
+                ,'isupdate' => 0
+            ],
+                //  考试查看范围
+                ['id' => 12401,'title' => '区级','p_id' => 124,'paixu' => 1,'isupdate' => 0],
+                ['id' => 12402,'title' => '学校','p_id' => 124,'paixu' => 2,'isupdate' => 0],
+                ['id' => 12403,'title' => '年级组','p_id' => 124,'paixu' => 3,'isupdate' => 0],
+                ['id' => 12404,'title' => '班级','p_id' => 124,'paixu' => 4,'isupdate' => 0],
         ];
 
         $serRows = $this->fetchAll('select * from cj_category');

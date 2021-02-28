@@ -55,6 +55,7 @@ class Index extends AdminBase
                 ,'ksCategory' => ['id', 'title']
                 ,'ksZuzhi' => ['id', 'title']
                 ,'ksXueqi' => ['id', 'title']
+                ,'ksFanwei' => ['id', 'title']
                 ,'update_time'
             ]);
         $data = reSetObject($data, $src);
@@ -218,6 +219,7 @@ class Index extends AdminBase
             'title'
             ,'xueqi_id'
             ,'category_id'
+            ,'fanwei_id'
             ,'bfdate'
             ,'enddate'
             ,'zuzhi_id'
@@ -250,7 +252,7 @@ class Index extends AdminBase
     {
         // 获取考试信息
         $list['data'] = KS::where('id', $id)
-            ->field('id, title, xueqi_id, category_id, bfdate, enddate, zuzhi_id')
+            ->field('id, title, xueqi_id, category_id, bfdate, enddate, zuzhi_id, fanwei_id')
             ->append(['nianjiids', 'manfenedit'])
             ->find();
 
@@ -280,7 +282,8 @@ class Index extends AdminBase
             'category_id',
             'bfdate',
             'enddate',
-            'zuzhi_id'
+            'zuzhi_id',
+            'fanwei_id'
         ], 'post');
         $list['id'] = $id;
 

@@ -20,6 +20,9 @@ return [
         'kstj' => [
             '\app\listener\KaoshiTongJi'
         ],
+        'mybanji' => [
+            '\app\listener\MyBanjiIds'
+        ],
     ],
     'subscribe' => [
     ],

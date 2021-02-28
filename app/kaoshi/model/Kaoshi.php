@@ -55,6 +55,9 @@ class Kaoshi extends BaseModel
                     ,'ksXueqi' => function ($query) {
                         $query->field('id, title');
                     }
+                    ,'ksFanwei' => function ($query) {
+                        $query->field('id, title');
+                    }
                 ]
             )
             ->append(['ckSubject', 'ckNianji'])
@@ -192,6 +195,13 @@ class Kaoshi extends BaseModel
     public function ksXueqi()
     {
         return $this->belongsTo('\app\teach\model\Xueqi', 'xueqi_id', 'id');
+    }
+
+
+    // 学期
+    public function ksFanwei()
+    {
+        return $this->belongsTo('\app\system\model\Category', 'fanwei_id', 'id');
     }
 
 

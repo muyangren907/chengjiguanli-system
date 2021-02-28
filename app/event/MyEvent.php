@@ -56,7 +56,7 @@ class MyEvent
     // 获取考试状态
     public function userInfo()
     {
-        $ad = new AdminInfo;
+        $ad = new \app\admin\model\Admin;
         $adinfo = $ad->myQuanxian();
         return $adinfo;
     }

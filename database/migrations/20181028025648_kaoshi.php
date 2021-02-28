@@ -37,6 +37,7 @@ class Kaoshi extends Migrator
             ->addColumn('zuzhi_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'组织考试单位'])
             ->addColumn('xueqi_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'学期'])
             ->addColumn('category_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'类别'])
+            ->addColumn('fanwei_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'允许查看范围ID'])
             ->addColumn('bfdate','integer',['limit'=>11,'default'=>1539158918,'null'=>false,'comment'=>'开始日期'])
             ->addColumn('enddate','integer',['limit'=>11,'default'=>1539158918,'null'=>false,'comment'=>'结束日期'])
             ->addColumn('status','boolean',['limit'=>1,'default'=>'1','null'=>false,'comment'=>'0=禁用，1=正常'])

@@ -138,22 +138,6 @@ class AdminInfo extends AdminBase
     }
 
 
-    public function myQuanxian()
-    {
-        $id = session('user_id');
-        $ad = new AD;
-        $adInfo = $ad->where('id', session('user_id'))
-                ->field('zhiwu_id')
-                ->find();
-
-        $bzr = new \app\teach\model\BanZhuRen;
-        $banji_id = $bzr->srcTeacherNow($id);
-
-        return $banji_id;
-
-    }
-
-
     // 查询教师荣誉
     public function srcRy()
     {

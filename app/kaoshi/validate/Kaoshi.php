@@ -18,6 +18,7 @@ class Kaoshi extends Validate
         'zuzhi_id|组织单位'      =>  'require|number',
         'xueqi_id|学期'      =>  'require|number',
         'category_id|分类'      =>  'require|number',
+        'fanwei_id|查看范围'      =>  'require|number',
         'bfdate|考试时间'      =>  'require|date',
         'enddate|考试时间'      =>  'require|date',
     ];
@@ -36,6 +37,7 @@ class Kaoshi extends Validate
             ,'zuzhi_id'
             ,'xueqi_id'
             ,'category_id'
+            ,'fanwei_id'
             ,'bfdate'
             ,'enddate'
         ],
@@ -45,6 +47,7 @@ class Kaoshi extends Validate
             ,'zuzhi_id'
             ,'xueqi_id'
             ,'category_id'
+            ,'fanwei_id'
             ,'bfdate'
             ,'enddate'
         ],

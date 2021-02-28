@@ -60,6 +60,8 @@ class TeacherToAdmin extends Migrator
             $table
             ->addColumn('user_id','integer',['after' => 'category_id','limit'=>11,'default'=>0,'null'=>false,'comment'=>'用户ID']);
         }
+        $table
+            ->addColumn('fanwei_id','integer',['after' => 'category_id','limit'=>11,'default'=>0,'null'=>false,'comment'=>'允许查看范围ID']);
 
         $table = $this->table('system_base');
         $column = $table->hasColumn('sys_title');
@@ -67,6 +69,9 @@ class TeacherToAdmin extends Migrator
             $table
             ->addColumn('sys_title','string',['limit'=>60,'null'=>false,'default'=>'码蚁成绩管理系统','comment'=>'系统名称']);
         }
+
+        $table = $this->table('cj_migrations');
+        $this->execute('DELETE FROM cj_migrations WHERE version="20210107070200" and migration_name="KaoshiAddUser"');
     }
 
 
