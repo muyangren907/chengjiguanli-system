@@ -40,12 +40,7 @@
               <select name="zuzhi_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="schoollist" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.zuzhi_id"}
-                    {eq name="$list.data.zuzhi_id" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
+                  <option value="{$vo.id}">
                     {$vo.title}
                   </option>
                 {/volist}
@@ -75,12 +70,7 @@
               <select name="xueqi_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="xueqilist" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.xueqi_id"}
-                    {eq name="$list.data.xueqi_id" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
+                  <option value="{$vo.id}">
                     {$vo.title}
                   </option>
                 {/volist}
@@ -94,12 +84,7 @@
               <select name="category_id" lay-verify="required">
                 <option value=""></option>
                 {volist name="category" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.category_id"}
-                    {eq name="$list.data.category_id" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
+                  <option value="{$vo.id}">
                     {$vo.title}
                   </option>
                 {/volist}
@@ -112,11 +97,25 @@
                 <span class="x-red">*</span>考试时间
               </label>
               <div class="layui-input-inline">
-                  <input type="text" class="layui-input" id="bfdate" name="bfdate" placeholder="开始时间" value="{$list.data.bfdate|default=''}" autocomplete="off">
+                  <input type="text" class="layui-input" id="bfdate" name="bfdate" placeholder="开始时间" value="" autocomplete="off">
               </div>
               <div class="layui-input-inline">
-                  <input type="text" class="layui-input" id="enddate" name="enddate" placeholder="结束时间" value="{$list.data.enddate|default=''}" autocomplete="off">
+                  <input type="text" class="layui-input" id="enddate" name="enddate" placeholder="结束时间" value="" autocomplete="off">
               </div>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label for="fanwei_id" class="layui-form-label"><span class="x-red">*</span>查看范围</label>
+            <div class="layui-input-block">
+              {php} $category = categoryChildren(124);{/php}
+              <select name="fanwei_id" lay-verify="required">
+                <option value=""></option>
+                {volist name="category" id="vo"}
+                  <option value="{$vo.id}">
+                    {$vo.title}
+                  </option>
+                {/volist}
+              </select>
             </div>
           </div>
           <div class="layui-form-item" style="text-align: right;">
