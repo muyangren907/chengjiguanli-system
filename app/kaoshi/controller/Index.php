@@ -210,7 +210,7 @@ class Index extends AdminBase
     }
 
 
-     // 生成考号
+    // 生成考号
     public function createSetp3($kaoshi_id)
     {
         // 获取参考年级
@@ -231,6 +231,33 @@ class Index extends AdminBase
         $this->view->assign('list', $list);
         // 渲染
         return $this->view->fetch();
+    }
+
+
+    // 生成考号
+    public function createSetp4($kaoshi_id)
+    {
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle' => '录入成绩分工'
+            ,'butname' => '分工'
+            ,'formpost' => 'POST'
+            ,'url' => '/kaoshi/lrfg/save'
+            ,'kaoshi_id' => $kaoshi_id
+        );
+
+        // 获取考试时间
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $enddate = $ks->kaoshiInfo($kaoshi_id);
+        $enddate = $enddate->getData('enddate');
+        $list['set']['nianji'] = nianJiNameList('str', $enddate);
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+        // 渲染
+        return $this->view->fetch();
+
+
     }
 
 

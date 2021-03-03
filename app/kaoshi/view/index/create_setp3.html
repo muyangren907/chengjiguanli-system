@@ -29,8 +29,9 @@
 <div class="layui-form-item">
   <div class="dh wancheng" style="width: 10%;">开始</div>
   <div class="dh wancheng" style="width: 20%;">考试信息</div>
-  <div class="dh wancheng" style="width: 30%;">各年级参加考试学科和分数线</div>
-  <div class="dh jinxing" style="width: 30%;">生成参加考试学生名单</div>
+  <div class="dh wancheng" style="width: 20%;">各年级参加考试学科和分数线</div>
+  <div class="dh jinxing" style="width: 20%;">生成参加考试学生名单</div>
+  <div class="dh weicaozuo" style="width: 20%;">分配录入成绩任务</div>
   <div class="dh weicaozuo" style="width: 9%;">完成</div>
 </div>
 <form class="layui-form layui-form-pane" lay-filter="myform">
@@ -62,7 +63,7 @@
   <button  class="layui-btn" lay-filter="kssubmit" lay-submit=""> 
     {$list.set.butname}
   </button>
-  <a href="javascript:;" onclick="nextSet()" class="layui-btn layui-btn-danger" style="margin-left: 10px;">完成</a>
+  <a href="javascript:;" onclick="nextSet()" class="layui-btn layui-btn-danger" style="margin-left: 10px;">下一步</a>
 </div>
 </form>
 {/block}
@@ -132,14 +133,7 @@
 
   function nextSet()
   {
-    //先得到当前iframe层的索引
-    var index = parent.layer.getFrameIndex(window.name);
-    //再执行关闭
-    if(parent.layui.table){
-      parent.layui.table.reload('mytable');
-    }
-    parent.layer.close(index);
-    parent.layer.msg('考试创建完成');
+    $(location).attr('href', '/kaoshi/index/setp4/' + "{$list['set']['kaoshi_id']}");
     return false;
   }
 
