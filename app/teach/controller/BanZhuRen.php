@@ -104,6 +104,11 @@ class BanZhuRen extends AdminBase
             ,'bfdate'
         ], 'post');
 
+        if(is_array($list['teacher_id']))
+        {
+            $list['teacher_id'] = $list['teacher_id'][0];
+        }
+
         // 验证表单数据
         $validate = new \app\teach\validate\BanZhuRen;
         $result = $validate->scene('create')->check($list);
