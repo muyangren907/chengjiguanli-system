@@ -30,6 +30,7 @@ return [
         '__STATIC__'=>'/static',
         '__UPLOAD__'=>'/uploads',
         '__XADMIN__'=>'/static/x-admin2.2',
+        '__MAYI__'=>'/static/mayi',
     ]
 
 ];

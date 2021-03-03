@@ -81,7 +81,7 @@ class LuruFengong extends BaseModel
         $admin_id = session('user_id');
         $data = $this->where('user_id', $admin_id)
                 ->where('kaoshi_id', $src['kaoshi_id'])
-                ->->group('banji_id')
+                ->group('banji_id')
                 ->column(['banji_id']);
         return $data;
     }

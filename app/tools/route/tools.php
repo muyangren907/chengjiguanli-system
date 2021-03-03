@@ -10,14 +10,14 @@
 // +----------------------------------------------------------------------
 use think\facade\Route;
 
-// 教师管理
-Route::group('kscy', function () {
-    Route::rule('school','KsCanyu/school','post');    # 参与学科
-    Route::rule('grade','KsCanyu/grade','post');    # 参与学科
-    Route::rule('class','KsCanyu/class','post');    # 参与学科
-    Route::rule('tjclass','KsCanyu/tjClass','post');    # 参与学科
-    Route::rule('subject','KsCanyu/subject','post');    # 参与学科
-});
+// // 教师管理
+// Route::group('kscy', function () {
+//     Route::rule('school','KsCanyu/school','post');    # 参与学科
+//     Route::rule('grade','KsCanyu/grade','post');    # 参与学科
+//     Route::rule('class','KsCanyu/class','post');    # 参与学科
+//     Route::rule('tjclass','KsCanyu/tjClass','post');    # 参与学科
+//     Route::rule('subject','KsCanyu/subject','post');    # 参与学科
+// });
 
 // 教师管理
 Route::group('file', function () {

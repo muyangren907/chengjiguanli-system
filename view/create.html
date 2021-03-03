@@ -38,15 +38,15 @@
     <script>
       //config的设置是全局的
       layui.config({
-          base: "__XADMIN__/js/" //假设这是你存放拓展模块的根目录
+          base: "__MAYI__/js/" //假设这是你存放拓展模块的根目录
       });
     </script>
 
     <script>
 
-      layui.use(['form','cjgl'], function(){
+      layui.use(['form','caozuo'], function(){
         var form = layui.form
-            cjgl = layui.cjgl;
+            cjgl = layui.caozuo;
 
         //监听提交
         form.on('submit(mysubmit)', function(data){

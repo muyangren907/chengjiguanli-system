@@ -149,19 +149,25 @@ class BanZhuRen extends BaseModel
     public function srcTeacherNow($admin_id)
     {
         $teacher = $this->where('teacher_id', $admin_id)
-                // ->field('id, banji_id, before')
                 ->order(['bfdate'=>'desc'])
                 ->find();
-        $banji = $this->where('banji_id', $teacher->banji_id)
+        if(!isset($teacher->banji_id))
+        {
+           $tempid = -1;
+        } else {
+            $tempid = $teacher->banji_id;
+        }
+        $banji = $this->where('banji_id', $tempid)
                 ->order(['bfdate'=>'desc'])
                 // ->field('id, before')
                 ->find();
-        if($teacher->id == $banji->id)
+        if(isset($banji->teacher_id) && $banji->teacher_id == $admin_id)
         {
-            $banji_id = $teacher->banji_id;
+           $banji_id = $banji->id;
         }else{
             $banji_id = 0;
-        }
+        } 
+
         return $banji_id;
     }
 

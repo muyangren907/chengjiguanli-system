@@ -68,7 +68,7 @@
     <script type="text/javascript">
         //config的设置是全局的
         layui.config({
-            base: "__XADMIN__/js/" //假设这是你存放拓展模块的根目录
+            base: "__MAYI__/js/" //假设这是你存放拓展模块的根目录
         });
 
         // 设置表格初始变量
@@ -156,13 +156,13 @@
           return true;
         })
 
-
         // 表格重载
         function tablereload()
         {
           options.where = lForm.val("search");
           userTable = lTable.render(options);  //获取数据并渲染
         }
+        
       });
     </script>
 </html>

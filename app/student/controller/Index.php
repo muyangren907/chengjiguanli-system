@@ -56,7 +56,6 @@ class Index extends AdminBase
         }
 
         $mybanji = event('mybanji');
-        halt($mybanji);
 
         // 根据条件查询数据
         $stu = new STU;

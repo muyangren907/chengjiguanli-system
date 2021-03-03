@@ -1,12 +1,12 @@
 <?php
-declare (strict_types = 1);
 
-namespace app\tools\controller;
+namespace app\kaoshi\controller;
 
 // 引用控制器基类
-use app\BaseController;
+use app\base\controller\AdminBase;
 
-class KsCanYu extends BaseController
+
+class KsCanYu extends AdminBase
 {
     // 根据考试ID和年级获取参加考试学校
     public function school()
