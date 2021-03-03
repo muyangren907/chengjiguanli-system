@@ -12,6 +12,15 @@
 {block name="search"}
 <input type="hidden" name="kaoshi_id" id="kaoshi_id" value="{$list.kaoshi_id}">
 <div class="layui-form-item">
+      <label for="searchval" class="layui-form-label">
+          关键字
+      </label>
+      <div class="layui-input-block">
+          <input type="text" id="searchval" name="searchval"
+          autocomplete="off" class="layui-input">
+      </div>
+    </div>
+<div class="layui-form-item">
     <label for="ruxuenian" class="layui-form-label" style="height: 100%">年级</label>
     <div class="layui-input-block">
     	<input type="radio" name="ruxuenian" title="无" value="" lay-skin="primary" checked="">
@@ -45,8 +54,6 @@
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
 	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
-	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon layui-icon-edit"></i></a>
-	<a class="layui-btn-xs" lay-event="tongji" title="统计得分率"><i class="layui-icon layui-icon-chart"></i></a>
 </script>
 <!-- 表格操作 -->
 <script>
@@ -54,26 +61,30 @@
   // 设置列
   options.cols=[[ //表头
 	  {type:'checkbox', fixed: 'left'},
-	  {field: 'nianji', title: '年级',sort: true,templet:function(d){
+	  {field: 'admin_id', title: '教师',sort: true,templet:function(d){
 	  	var str='';
-	  	if(d.nianjiname)
+	  	if(d.fgAdmin)
 	  	{
-	  		str = d.nianjiname;
+	  		str = d.fgAdmin.xingming;
 	  	}
 	  	return str;
 	  }},
-	  {field: "subject_id",title: '考试学科',sort: true,templet:function(d){
+	  {field: "banji_id",title: '班级',sort: true,templet:function(d){
 	  	var str='';
-	  	if(d.subjectName)
+	  	if(d.fgBanji)
 	  	{
-	  		str = d.subjectName.title;
+	  		str = d.fgBanji.banjiTitle;
 	  	}
 	  	return str;
 	  }},
-	  {field: 'manfen', title: '满分线',sort: true} ,
-	  {field: 'youxiu', title: '优秀线',sort: true},
-	  {field: 'jige', title: '及格线',sort: true},
-	  {field: 'status', title: '状态', minWidth:80,templet:'#status', sort: true},
+	  {field: 'subject_id', title: '学科',sort: true,templet:function(d){
+	  	var str='';
+	  	if(d.fgSubject)
+	  	{
+	  		str = d.fgSubject.title;
+	  	}
+	  	return str;
+	  }},
 	  {field: 'id', title: '操作',toolbar: '#barDemo',minWidth:80},
   ]];
 
@@ -89,10 +100,10 @@
 	      	switch(obj.event){
 	      		case 'dels':
 		            var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-		            cjgl.delAll(checkStatus,'/kaoshi/kaoshiset/delete','mytable');
+		            cjgl.delAll(checkStatus,'/kaoshi/lrfg/delete','mytable');
 		            break;
 	            case 'add':
-		            cjgl.add('添加参考学科','/kaoshi/kaoshiset/create/'+"{$list.kaoshi_id}",'650','400', false);
+		            cjgl.add('成绩录入分工设置','/kaoshi/lrfg/create/'+"{$list.kaoshi_id}",'650','400', false);
 		            break;
 	        };
 	    });
@@ -104,13 +115,13 @@
 	        var tr = obj.tr; //获得当前行 tr 的DOM对象
 	        switch(layEvent){
 		        case 'del':// 删除
-		        	cjgl.del(obj,"/kaoshi/kaoshiset/delete");
+		        	cjgl.del(obj,"/kaoshi/lrfg/delete");
 		        	break;
 		        case 'tongji':// 编辑
 			        defenlv(obj.data);
 			        break;
 		        case 'edit':// 编辑
-			        cjgl.add('编辑','/kaoshi/kaoshiset/edit/'+obj.data.id,'650','400', false);
+			        cjgl.add('编辑','/kaoshi/lrfg/edit/' + obj.data.id, '650', '400', false);
 			        break;
 		    };
 		});
@@ -126,7 +137,7 @@
 		function addSubject(){
 	    	// 获取参数
 	    	formval = form.val("search");
-	    	cjgl.createCheckbox('subject_id',formval,'/tools/kscy/subject','subject_id');
+	    	cjgl.createCheckbox('subject_id', formval, '/tools/kscy/subject', 'subject_id');
 	    }
 
 	    // 统计成绩

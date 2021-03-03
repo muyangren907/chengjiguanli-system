@@ -34,7 +34,7 @@ class LuRuFenGong extends Migrator
         // 添加当前表字段
         $table
             ->addColumn('kaoshi_id','integer',['limit'=>11,'null'=>false,'comment'=>'考试id'])
-            ->addColumn('user_id','integer',['limit'=>11,'null'=>false,'comment'=>'用户id'])
+            ->addColumn('admin_id','integer',['limit'=>11,'null'=>false,'comment'=>'用户id'])
             ->addColumn('banji_id','integer',['limit'=>11,'null'=>false,'comment'=>'班级id'])
             ->addColumn('subject_id','integer',['limit'=>11,'null'=>false,'comment'=>'学科id'])
             ->addColumn('create_time','integer',['limit'=>11,'default'=>1539158918,'null'=>false,'comment'=>'创建时间'])

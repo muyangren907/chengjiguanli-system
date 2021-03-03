@@ -63,6 +63,7 @@
 	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon layui-icon-edit"></i></a>
 	<a class="layui-btn-xs" lay-event="fenshuxian" title="分数线"><i class="layui-icon layui-icon-set-fill"></i></a>
 	<a class="layui-btn-xs" lay-event="kaohao" title="生成考号"><i class="layui-icon layui-icon-user"></i></a>
+	<a class="layui-btn-xs" lay-event="lurufengong" title="录入分工"><i class="layui-icon layui-icon-set-fill"></i></a>
 	<a class="layui-btn-xs" lay-event="tongji" title="统计"><i class="layui-icon layui-icon-chart"></i></a>
 	<a class="layui-btn-xs" lay-event="chengji" title="查看成绩"><i class="layui-icon layui-icon-website"></i></a>
 	<a class="layui-btn-xs" lay-event="renke" title="任课教师"><i class="layui-icon layui-icon-friends"></i></a>
@@ -153,6 +154,9 @@
 	          break;
 	        case 'renke':// 查询成绩
 	          cjgl.addTab(obj.data.title + ' 任课教师设置', '/chengji/bjtj/renke/' + obj.data.id, true);
+	          break;
+	        case 'lurufengong':// 查询成绩
+	          cjgl.addTab(obj.data.title + ' 录入成绩分工', '/kaoshi/lrfg/index/' + obj.data.id, true);
 	          break;
         };
       });

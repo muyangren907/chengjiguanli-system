@@ -58,6 +58,7 @@
 </div>
 <input type="hidden" name="kaoshi_id" id="kaoshi_id" value="{$list.set.kaoshi_id}">
 <div class="layui-form-item" style="text-align: right;">
+  <a href="javascript:;" onclick="preSet()" class="layui-btn layui-btn-danger" style="margin-left: 10px;">上一步</a>
   <button  class="layui-btn" lay-filter="kssubmit" lay-submit=""> 
     {$list.set.butname}
   </button>
@@ -139,6 +140,13 @@
     }
     parent.layer.close(index);
     parent.layer.msg('考试创建完成');
+    return false;
+  }
+
+
+  function preSet()
+  {
+    $(location).attr('href', '/kaoshi/index/setp2/' + "{$list['set']['kaoshi_id']}");
     return false;
   }
 

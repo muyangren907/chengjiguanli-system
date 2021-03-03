@@ -122,6 +122,29 @@ class Index extends AdminBase
         $this->view->assign('list', $list);
         // 渲染
         return $this->view->fetch();
+    } 
+
+
+    // 修改考试信息
+    public function editSetp1($id)
+    {
+        // 获取考试信息
+        $list['data'] = KS::where('id', $id)
+            ->field('id, title, xueqi_id, category_id, bfdate, enddate, zuzhi_id, fanwei_id')
+            ->find();
+
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle' => '编辑考试'
+            ,'butname' => '修改'
+            ,'formpost' => 'PUT'
+            ,'url' => '/kaoshi/index/update/' . $id
+        );
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+        // 渲染
+        return $this->view->fetch('create_setp1');
     }
 
 
@@ -298,7 +321,7 @@ class Index extends AdminBase
         // 更新数据
         $ks = new KS();
         $ksdata = $ks::update($list);
-        $ksdata ? $data = ['msg' => '更新成功', 'val' => 1]
+        $ksdata ? $data = ['msg' => '更新成功', 'val' => 1, 'kaoshi_id'=> $ksdata->id]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息

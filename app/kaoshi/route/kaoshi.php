@@ -28,6 +28,8 @@ Route::group('index', function () {
     Route::rule('setp3/<kaoshi_id>','Index/createSetp3','get');              # 添加信息
     Route::rule('tongji/<kaoshi_id>','Index/tongji','get');              # 添加信息
     Route::rule('chengji/<kaoshi_id>','Index/chengji','get');              # 添加信息
+    Route::rule('editsetp1/<id>','Index/editSetp1','get');            # 更新信息
+    Route::rule('updatesetp1/<id>','Index/updateSetp1','put');            # 更新信息
 });
 
 
@@ -65,7 +67,14 @@ Route::group('tjxm', function () {
 });
 
 
-
+// 考试设置
+Route::group('lrfg', function () {
+    Route::rule('index/<kaoshi_id>','LuruFengong/index','get');                       # 信息列表
+    Route::rule('data','LuruFengong/ajaxdata','post');                # 获取数据
+    Route::rule('create/<kaoshi_id>','LuruFengong/create','get');     # 添加信息
+    Route::rule('save','LuruFengong/save','post');                    # 保存信息
+    Route::rule('delete/<id>','LuruFengong/delete','delete');     # 删除信息
+});
 
 
 

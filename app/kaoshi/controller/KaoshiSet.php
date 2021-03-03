@@ -28,6 +28,7 @@ class KaoshiSet extends AdminBase
         $src['kaoshi_id'] = $kaoshi_id;
         $list['subject'] = $ksset->srcSubject($src);
         $nj = $ksset->srcGrade($kaoshi_id);
+        $list['nj'] = $nj;
         $kaoshi = new \app\kaoshi\model\Kaoshi;
         $list['sj']  = $kaoshi::where('id', $kaoshi_id)->value('bfdate');
 
