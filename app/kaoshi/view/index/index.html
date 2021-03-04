@@ -61,9 +61,9 @@
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
 	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon layui-icon-edit"></i></a>
-	<a class="layui-btn-xs" lay-event="fenshuxian" title="分数线"><i class="layui-icon layui-icon-set-fill"></i></a>
+	<a class="layui-btn-xs" lay-event="fenshuxian" title="分数线"><i class="layui-icon layui-icon-slider"></i></a>
 	<a class="layui-btn-xs" lay-event="kaohao" title="生成考号"><i class="layui-icon layui-icon-user"></i></a>
-	<a class="layui-btn-xs" lay-event="lurufengong" title="录入分工"><i class="layui-icon layui-icon-set-fill"></i></a>
+	<a class="layui-btn-xs" lay-event="lurufengong" title="录入分工"><i class="layui-icon layui-icon-senior"></i></a>
 	<a class="layui-btn-xs" lay-event="tongji" title="统计"><i class="layui-icon layui-icon-chart"></i></a>
 	<a class="layui-btn-xs" lay-event="chengji" title="查看成绩"><i class="layui-icon layui-icon-website"></i></a>
 	<a class="layui-btn-xs" lay-event="renke" title="任课教师"><i class="layui-icon layui-icon-friends"></i></a>
@@ -81,7 +81,7 @@
   // 设置列
   options.cols=[[ //表头
 			{type:'checkbox', fixed:'left'},
-			{field:'id', title:'操作', toolbar:'#barDemo', minWidth:220},
+			{field:'id', title:'操作', toolbar:'#barDemo', minWidth:250},
 			{field:'luru', title:'成绩编辑', minWidth:100, templet:'#luru', sort:true},
 			{field:'status', title:'状态', minWidth:80, templet:'#jieshu', sort:true},
 			{field:'title', title:'考试名称', sort:true, minWidth:240},

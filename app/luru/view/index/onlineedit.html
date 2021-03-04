@@ -21,10 +21,13 @@
     {volist name="list.set.src.subject_id" id="vo"}
       <input type="hidden" name="subject_id[]" value="{$vo}">
     {/volist}
-
 {/block}
 {block name="table"}
   <table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
+  <div>
+    <span>Enter 换下一行     Shift+Eenter 移动到上一行</span><br>
+    <span>Tab 移动移动到下一列   Shift+Tab 移动到下一列</span>
+  </div>
 {/block}
 {block name="myjs"}
 <!-- 表格上面按钮模板 -->

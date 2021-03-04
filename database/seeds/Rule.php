@@ -15,7 +15,7 @@ class Rule extends Seeder
     public function run()
     {
         // 01010101 1-2一级、3-4二级、5-6三级、7-8四级
-        // 初始化超级管理员
+        // 初始化超级教师
         $rows = [
             /*======================================================================
              * 成绩采集
@@ -907,7 +907,7 @@ class Rule extends Seeder
              * 考试管理
              */
             ['id' => 6
-                ,'title'  => '管理员管理'
+                ,'title'  => '教师管理'
                 ,'name' => 'admin'
                 ,'paixu'  => 8
                 ,'ismenu'  => 1
@@ -915,14 +915,14 @@ class Rule extends Seeder
             ],
             /*====================================*/
             ['id' => 601
-                ,'title' => '管理员列表'
+                ,'title' => '教师列表'
                 ,'name' => 'admin/index/index'
                 ,'paixu' => 3
                 ,'ismenu'  => 1
                 ,'pid'  => 6
                 ,'url' => '/admin/index'
             ],
-                // 管理员列表权限
+                // 教师列表权限
                 ['id' => 60101
                     ,'title' => '添加'
                     ,'name' => 'admin/index/create'

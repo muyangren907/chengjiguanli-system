@@ -7,8 +7,6 @@
 {block name="nav"}
 <span class="layui-breadcrumb">
 	<a href="">考试管理</a>
-	<a href="">更多操作</a>
-	<a href="">前期操作</a>
 	<a href="">任课教师</a>
 	<a><cite>{$list['kaoshititle']}</cite></a>
 </span>
@@ -156,7 +154,7 @@
         {
         	$('#banji_id').children().remove();
         }else{
-        	cjgl.createCheckbox('banji_id', formval, '/tools/kscy/class', 'banji_id', 'banTitle');
+        	cjgl.createCheckbox('banji_id', formval, '/kaoshi/kscy/class', 'banji_id', 'banTitle');
         }
     }
 

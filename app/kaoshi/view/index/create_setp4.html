@@ -114,9 +114,11 @@
     </div>
   </div>
   <div class="layui-form-item" style="text-align: right;">
-      <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
-          {$list.set.butname}
+      <a href="javascript:;" onclick="preSet()" class="layui-btn layui-btn-danger" style="margin-left: 10px;">上一步</a>
+      <button  class="layui-btn" lay-filter="kssubmit" lay-submit=""> 
+        {$list.set.butname}
       </button>
+      <a href="javascript:;" onclick="nextSet()" class="layui-btn layui-btn-danger" style="margin-left: 10px;">完成</a>
   </div>
 </form>
 {/block}
@@ -126,6 +128,32 @@
   layui.use(['form','cjgl'], function(){
     var form = layui.form
         ,cjgl = layui.cjgl;
+
+    //监听提交
+    form.on('submit(kssubmit)', function(data){
+      $.ajax({
+        url:"{$list.set.url}",
+        type:"{$list.set.formpost}",
+        data:data.field,
+        dataType:'json',
+        success:function(result){
+          if(result.val == 1)
+          {
+            // $(location).attr('href', '/kaoshi/kaoshiset/create/' + "{$list['set']['kaoshi_id']}");
+            parent.layer.msg(result.msg);
+          }else{
+            layer.msg(result.msg);
+          }
+        },
+        error:function(xhr,status,error) {
+          layer.msg('数据处理错误',{
+              icon: 2,
+              time: 2000 //2秒关闭（如果不配置，默认是3秒）
+          });
+        }
+      });
+      return false;
+    });
 
     // 加载学校列表
     addSchool();
@@ -144,14 +172,14 @@
     function addSchool(){
       // 获取参数
       formval = form.val("myform");
-      cjgl.createSelectOption('school_id', formval, '/tools/kscy/school', 'id', 'title');
+      cjgl.createSelectOption('school_id', formval, '/kaoshi/kscy/school', 'id', 'title');
     }
 
     // 添加年级
     function addNianji(){
       // 获取参数
       formval = form.val("myform");
-      cjgl.createSelectOption('ruxuenian', formval, '/tools/kscy/grade', 'ruxuenian', 'nianjiname');
+      cjgl.createSelectOption('ruxuenian', formval, '/kaoshi/kscy/grade', 'ruxuenian', 'nianjiname');
     }
 
     // 添加学科
@@ -159,7 +187,7 @@
       // 获取参数
       formval = form.val("myform");
       console.log(formval);
-      cjgl.createCheckbox('banji_id', formval, '/tools/kscy/class', 'banji_id', 'banTitle');
+      cjgl.createCheckbox('banji_id', formval, '/kaoshi/kscy/class', 'banji_id', 'banTitle');
     }
 
 
@@ -167,7 +195,7 @@
     function addSubject(){
       // 获取参数
       formval = form.val("myform");
-      cjgl.createCheckbox('subject_id', formval, '/tools/kscy/subject', 'subject_id', 'title');
+      cjgl.createCheckbox('subject_id', formval, '/kaoshi/kscy/subject', 'subject_id', 'title');
     }
 
 

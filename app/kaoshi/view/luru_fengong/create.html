@@ -111,14 +111,14 @@ layui.use(['form','cjgl'], function(){
     function addSchool(){
       // 获取参数
       formval = form.val("myform");
-      cjgl.createSelectOption('school_id', formval, '/tools/kscy/school', 'id', 'title');
+      cjgl.createSelectOption('school_id', formval, '/kaoshi/kscy/school', 'id', 'title');
     }
 
     // 添加年级
     function addNianji(){
       // 获取参数
       formval = form.val("myform");
-      cjgl.createSelectOption('ruxuenian', formval, '/tools/kscy/grade', 'ruxuenian', 'nianjiname');
+      cjgl.createSelectOption('ruxuenian', formval, '/kaoshi/kscy/grade', 'ruxuenian', 'nianjiname');
     }
 
     // 添加学科
@@ -126,7 +126,7 @@ layui.use(['form','cjgl'], function(){
       // 获取参数
       formval = form.val("myform");
       console.log(formval);
-      cjgl.createCheckbox('banji_id', formval, '/tools/kscy/class', 'banji_id', 'banTitle');
+      cjgl.createCheckbox('banji_id', formval, '/kaoshi/kscy/class', 'banji_id', 'banTitle');
     }
 
 
@@ -134,7 +134,7 @@ layui.use(['form','cjgl'], function(){
     function addSubject(){
       // 获取参数
       formval = form.val("myform");
-      cjgl.createCheckbox('subject_id', formval, '/tools/kscy/subject', 'subject_id', 'title');
+      cjgl.createCheckbox('subject_id', formval, '/kaoshi/kscy/subject', 'subject_id', 'title');
     }
 
 
