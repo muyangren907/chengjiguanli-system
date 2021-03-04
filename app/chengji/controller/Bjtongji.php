@@ -531,8 +531,8 @@ class Bjtongji extends AdminBase
             'webtitle'=>'设置任课教师'
             ,'butname'=>'修改'
             ,'formpost'=>'PUT'
-            ,'danwei_id' => $school
-            ,'url'=>'/chengji/bjtj/renkeupdate/'.$id,
+            ,'school_id' => $school
+            ,'url'=>'/chengji/bjtj/renkeupdate/' . $id,
         );
 
         // 模板赋值

@@ -59,7 +59,7 @@
           "/admin/index/srcteacher",
           {
               "str": val,
-              'danwei_id': "{$list.set.school_id}"
+              'school_id': "{$list.set.school_id|default=''}"
           },
           function(data,status){
               data = data.data;

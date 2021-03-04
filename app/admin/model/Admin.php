@@ -85,7 +85,7 @@ class Admin extends BaseModel
         // 如果有数据则查询教师信息
         $list = self::field('id, xingming, school_id, shengri, sex')
             ->when(strlen($src['school_id']) > 0, function ($query) use($src) {
-                $query->where('school_id', $src['danwei_id']);
+                $query->where('school_id', $src['school_id']);
             })
             ->when(strlen($src['str']) <= 0, function ($query) use($src) {
                 $query->where('id', '<=', 0);
