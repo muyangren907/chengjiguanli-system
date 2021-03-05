@@ -136,8 +136,6 @@ class Category extends AdminBase
     // 更新类别信息
     public function update($id)
     {
-
-
         // 获取表单数据
         $list = request()->only([
             'title'
@@ -211,6 +209,26 @@ class Category extends AdminBase
             : $data=['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息
+        return json($data);
+    }
+
+
+    // 获取类别
+    public function srcChildren()
+    {
+        // 获取表单数据
+        $src = request()->only([
+            'p_id'
+        ], 'post');
+        // 查询类别
+        $category = new \app\system\model\Category;
+        $data = $category->srcChild($src)
+            ->visible([
+                'id'
+                ,'title'
+            ]);
+        $data = reSetObject($data, $src);
+
         return json($data);
     }
 }

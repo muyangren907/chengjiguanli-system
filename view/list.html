@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html class="x-admin-sm">
+
 <head>
   <meta charset="UTF-8">
   <title>{$list.webtitle}</title>
@@ -17,9 +18,9 @@
   <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
-<!-- // 百度统计代码  -->
-<script>
+  <![endif]-->
+  <!-- // 百度统计代码  -->
+  <script>
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
@@ -29,34 +30,35 @@
   })();
 </script>
 </head>
+
 <body>
-    <div class="x-nav">
-        {block name="nav"}{/block}
-        <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
-            <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
-        </a>
-    </div>
-    <div class="layui-fluid">
-        <div class="layui-row layui-col-space15">
-            <div class="layui-collapse" lay-filter="test">
-                <div class="layui-colla-item">
-                    <h2 class="layui-colla-title">条件筛选<i class="layui-icon layui-colla-icon"></i></h2>
-                    <div class="layui-colla-content">
-                        <form class="layui-form layui-form-pane" id="search" lay-filter="search">
-                            {block name="search"}{/block}
-                            <div class="layui-form-item" style="text-align: right;">
-                                <button  class="layui-btn" lay-filter="searchSubmit" lay-submit="">搜索</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+  <div class="x-nav">
+    {block name="nav"}{/block}
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+      <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+    </a>
+  </div>
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-collapse" lay-filter="test">
+        <div class="layui-colla-item">
+          <h2 class="layui-colla-title">条件筛选<i class="layui-icon layui-colla-icon"></i></h2>
+          <div class="layui-colla-content">
+            <form class="layui-form layui-form-pane" id="search" lay-filter="search">
+              {block name="search"}{/block}
+              <div class="layui-form-item" style="text-align: right;">
+                <button class="layui-btn" lay-filter="searchSubmit" lay-submit="">搜索</button>
+              </div>
+            </form>
+          </div>
         </div>
-        <div class="layui-row layui-col-space15" style="margin-top: 8px;">
-            {block name="table"}{/block}
-        </div>
+      </div>
     </div>
-    {block name="echart"}{/block}
+    <div class="layui-row layui-col-space15" style="margin-top: 8px;">
+      {block name="table"}{/block}
+    </div>
+  </div>
+  {block name="echart"}{/block}
 </body>
 <!-- 状态按钮 -->
 <script type="text/html" id="status">
@@ -65,116 +67,119 @@
   lay-skin="switch" lay-filter="status" lay-text="启用|禁用">
 </script>
 <script type="text/javascript">
-    //config的设置是全局的
-    layui.config({
-        base: "__XADMIN__/js/" //假设这是你存放拓展模块的根目录
-    });
-    // 设置表格初始变量
-    options = {
-        elem: '#tabledemo',
-        toolbar: '#toolbarDemo',
-        url:"{$list['dataurl']}",
-        method:"POST",   //数据接口
-        page: true, //开启分页
-        loading:true,
-        autoSort:false,
-        id:'mytable',
-        defaultToolbar:['filter'],
-        limits:[10,25,50,75,100],
-        limit:10,
-    };
+//config的设置是全局的
+layui.config({
+  base: "__XADMIN__/js/" //假设这是你存放拓展模块的根目录
+});
+// 设置表格初始变量
+options = {
+  elem: '#tabledemo',
+  toolbar: '#toolbarDemo',
+  url: "{$list['dataurl']}",
+  method: "POST", //数据接口
+  page: true, //开启分页
+  loading: true,
+  autoSort: false,
+  id: 'mytable',
+  defaultToolbar: ['filter'],
+  limits: [10, 25, 50, 75, 100],
+  limit: 10,
+};
+
 </script>
 {block name="myjs"}{/block}
 <script type="text/javascript">
-    // 提交搜索条件后重载表格
+// 提交搜索条件后重载表格
 layui.use(['table', 'form'], function() {
-    var table = layui.table
-    ,form = layui.form;
-    
-    //监听状态开关
-    form.on('switch', function(data){
-        mytable.onoff(data);
-    });
+  var table = layui.table,
+    form = layui.form;
 
-    // 监听筛选
-    form.on('submit(searchSubmit)', function(data){
-      options.where = form.val("search");
-      table.render(options);  //获取数据并渲染
-      return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
-    });
+  //监听状态开关
+  form.on('switch', function(data) {
+    mytable.onoff(data);
+  });
+
+  // 监听筛选
+  form.on('submit(searchSubmit)', function(data) {
+    options.where = form.val("search");
+    table.render(options); //获取数据并渲染
+    return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+  });
 });
-   //    // 实例化表格
-   //    layui.use('table',function(){
-   //      var lTable = layui.table
-   //      lForm = layui.form;
+//    // 实例化表格
+//    layui.use('table',function(){
+//      var lTable = layui.table
+//      lForm = layui.form;
 
-   //      // 监听排序
-   //      lTable.on('sort(mytable)', function(obj){
-   //          val = lForm.val();
-   //          val.field = obj.field;
-   //          val.order = obj.type;
-   //          userTable.reload({
-   //              initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
-   //              ,where: val
-   //          })
-   //      });
+//      // 监听排序
+//      lTable.on('sort(mytable)', function(obj){
+//          val = lForm.val();
+//          val.field = obj.field;
+//          val.order = obj.type;
+//          userTable.reload({
+//              initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+//              ,where: val
+//          })
+//      });
 
-   //      //监听状态开关
-   //      lForm.on('switch', function(data){
-   //        cjgl.onoff(data);
-   //    });
+//      //监听状态开关
+//      lForm.on('switch', function(data){
+//        cjgl.onoff(data);
+//    });
 
-   //      // 监听下拉菜单
-   //      lForm.on('select', function(data){
-   //        $("#srcsubmit").click();
-   //    });
+//      // 监听下拉菜单
+//      lForm.on('select', function(data){
+//        $("#srcsubmit").click();
+//    });
 
-   //      // 监听复选框
-   //      lForm.on('checkbox', function(data){
-   //        checkall = $(data.elem).attr('checkall');
-   //        parentId = $(data.elem).parents("div").attr('id');
-   //        if(checkall == 'p'){
-   //          cjgl.checkboxAll(parentId, data.elem.checked);
-   //          $("#srcsubmit").click();
-   //          return true;
-   //      }else if(checkall == 'c'){
-   //          cjgl.checkboxParentList(parentId);
-   //          $("#srcsubmit").click();
-   //          return true;
-   //      }else{
-   //          // $("#srcsubmit").click();
-   //          return false;
-   //      }
-   //  });
+//      // 监听复选框
+//      lForm.on('checkbox', function(data){
+//        checkall = $(data.elem).attr('checkall');
+//        parentId = $(data.elem).parents("div").attr('id');
+//        if(checkall == 'p'){
+//          cjgl.checkboxAll(parentId, data.elem.checked);
+//          $("#srcsubmit").click();
+//          return true;
+//      }else if(checkall == 'c'){
+//          cjgl.checkboxParentList(parentId);
+//          $("#srcsubmit").click();
+//          return true;
+//      }else{
+//          // $("#srcsubmit").click();
+//          return false;
+//      }
+//  });
 
-   //      // 监听单选
-   //      lForm.on('radio', function(data){
-   //        $("#srcsubmit").click();
-   //    });
+//      // 监听单选
+//      lForm.on('radio', function(data){
+//        $("#srcsubmit").click();
+//    });
 
-   //      // 监听表单提交
-   //      lForm.on('submit(srcsubmit)', function(data){
-   //        tablereload();
-   //        return false;
-   //    });
+//      // 监听表单提交
+//      lForm.on('submit(srcsubmit)', function(data){
+//        tablereload();
+//        return false;
+//    });
 
-   //      // 禁止使用回车提交表单
-   //      $('#searchval').on("keydown", function(e){
-   //        var e = e || window.event;
-   //        if(e.keyCode == 13){
-   //         $("#srcsubmit").click();
-   //         return false;
-   //     }
-   //     return true;
-   // })
+//      // 禁止使用回车提交表单
+//      $('#searchval').on("keydown", function(e){
+//        var e = e || window.event;
+//        if(e.keyCode == 13){
+//         $("#srcsubmit").click();
+//         return false;
+//     }
+//     return true;
+// })
 
-   //      // 表格重载
-   //      function tablereload()
-   //      {
-   //        options.where = lForm.val("search");
-   //        userTable = lTable.render(options);  //获取数据并渲染
-   //    }
+//      // 表格重载
+//      function tablereload()
+//      {
+//        options.where = lForm.val("search");
+//        userTable = lTable.render(options);  //获取数据并渲染
+//    }
 
-  // });
+// });
+
 </script>
+
 </html>

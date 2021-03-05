@@ -30,61 +30,23 @@
               </div>
           </div>
           <div class="layui-form-item">
-    		    <label for="xingzhi_id" class="layui-form-label"><span class="x-red">*</span>单位性质</label>
-    		    <div class="layui-input-block">
-    		    	{php} $category = categoryChildren(101);{/php}
-    		      <select name="xingzhi_id" lay-verify="required">
-    		      	<option value=""></option>
-    		      	{volist name="category" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.xingzhi_id"}
-                    {eq name="$list.data.xingzhi_id" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    {$vo.title}
-                  </option>
-    		        {/volist}
-    		      </select>
-    		    </div>
-    		  </div>
-          <div class="layui-form-item">
-            <label for="jibie_id" class="layui-form-label"><span class="x-red">*</span>单位级别</label>
+            <label for="xingzhi_id" class="layui-form-label"><span class="x-red">*</span>单位性质</label>
             <div class="layui-input-block">
-              {php} $category = categoryChildren(102);{/php}
-              <select name="jibie_id" lay-verify="required">
-                <option value=""></option>
-                {volist name="category" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.jibie_id"}
-                    {eq name="$list.data.jibie_id" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    {$vo.title}
-                  </option>
-                {/volist}
+              <select name="xingzhi_id" id="xingzhi_id" lay-verify="required">
               </select>
             </div>
           </div>
           <div class="layui-form-item">
-            <label for="xueduan_id" class="layui-form-label">
-              <span class="x-red">*</span>学段
-            </label>
+            <label for="jibie_id" class="layui-form-label"><span class="x-red">*</span>单位级别</label>
             <div class="layui-input-block">
-              {php} $category = categoryChildren(103);{/php}
-              <select name="xueduan_id" lay-verify="required">
-                <option value=""></option>
-                {volist name="category" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.xueduan_id"}
-                    {eq name="$list.data.xueduan_id" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    {$vo.title}
-                  </option>
-                {/volist}
+              <select name="jibie_id" id="jibie_id" lay-verify="required">
+              </select>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label for="xueduan_id" class="layui-form-label"><span class="x-red">*</span>学段</label>
+            <div class="layui-input-block">
+              <select name="xueduan_id" id="xueduan_id" lay-verify="required">
               </select>
             </div>
           </div>
@@ -106,6 +68,13 @@
 {/block}
 
 {block name="myjs"}
-
+<script>
+  layui.use(['createInput'], function() {
+    var cInput = layui.createInput;
+    cInput.categorySelect('xingzhi_id', 101, "{$list.data.xingzhi_id||default=''}");
+    cInput.categorySelect('jibie_id', 102, "{$list.data.jibie_id||default=''}");
+    cInput.categorySelect('xueduan_id', 103, "{$list.data.xueduan_id||default=''}");
+  });
+</script>
 {/block}
 

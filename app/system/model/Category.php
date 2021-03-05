@@ -55,9 +55,15 @@ class Category extends BaseModel
     }
 
     // 查询子类别
-    public function srcChild($p_id)
+    public function srcChild($srcfrom)
     {
-        $child = self::where('p_id', $p_id)
+        $src = [
+            'p_id'=>''
+        ];
+
+        // 用新值替换初始值
+        $src = array_cover($srcfrom, $src) ;
+        $child = self::where('p_id', $src['p_id'])
             ->where('status', 1)
             ->select();
         return $child;

@@ -118,6 +118,39 @@
         },
 
 
+        // 提交表单数据
+        saveForm: function(url, type, formData){
+            $.ajax({
+                url: url,
+                type: type,
+                data: formData,
+                dataType: 'json',
+                success: function(result) {
+                  if (result.val == 1) {
+                    // layer.msg(result.msg);
+                    //先得到当前iframe层的索引
+                    var index = parent.layer.getFrameIndex(window.name);
+                    //再执行关闭
+                    if (parent.layui.table) {
+                      parent.layui.table.reload('mytable');
+                    }
+                    // 关闭表单并跳出提示
+                    parent.layer.close(index);
+                    parent.layer.msg(result.msg);
+                  } else {
+                    layer.msg(result.msg);
+                  }
+                },
+                error: function(xhr, status, error) {
+                  layer.msg('数据处理错误', {
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                  });
+                }
+              });
+        },
+
+
 
 
     // 恢复单条记录
@@ -145,10 +178,10 @@
   },
 
 
-        
 
 
-    
+
+
 
 
     // 重置密码

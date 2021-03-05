@@ -11,15 +11,15 @@
 
 // 应用公共文件
 
-	// 获取类别列表
-	function categoryChildren($p_id = 0)
-	{
-		// 查询类别
-        $category = new \app\system\model\Category;
-        $list = $category->srcChild($p_id);
-		// 返回类别列表
-		return $list;
-	}
+	// // 获取类别列表
+	// function categoryChildren($p_id = 0)
+	// {
+	// 	// 查询类别
+ //        $category = new \app\system\model\Category;
+ //        $list = $category->srcChild($p_id);
+	// 	// 返回类别列表
+	// 	return $list;
+	// }
 
 
 	function nianJiNameList($value = 'str', $riqi = 0)
