@@ -33,7 +33,7 @@ Route::group('school', function () {
 	    Route::rule('save', 'School/save', 'post');					# 保存信息
 	    Route::rule('edit/<id>', 'School/edit', 'get');				# 修改信息
 	    Route::rule('update/<id>', 'School/update', 'put');			# 更新信息
-	    Route::rule('delete/<id>', 'School/delete', 'delete');		# 删除信息
+	    Route::rule('delete', 'School/delete', 'delete');		# 删除信息
 	    Route::rule('status', 'School/setStatus', 'post');		# 删除信息
         Route::rule('kaoshi', 'School/setKaoshi', 'post');        # 删除信息
 	});
