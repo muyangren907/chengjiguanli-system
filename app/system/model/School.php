@@ -108,21 +108,51 @@ class School extends BaseModel
 
 
     // 根据级别查询单位
-    public function srcJibie($low = '班级', $high = '其它级', $order = 'asc')
+    public function srcJibie($srcfrom)
     {
+        // 整理参数
+        $src = [
+            'low' => '班级'
+            ,'high' => '其他级'
+            ,'order' => 'asc'
+        ];
+        $src = array_cover($srcfrom, $src);
+
         // 实例化类别数据模型
         $cat = new \app\system\model\Category;
-        $catlist = $cat->where('p_id', 102)
+        $paixuList = $cat->where('p_id', 102)
             ->where('status', 1)
-            ->column('id', 'title');
-
-        // 查询学校
-        $schlist = $this->where('jibie_id', 'between', [$catlist[$low], $catlist[$high]])
-            ->where('status', 1)
-            ->order(['jibie_id' => $order, 'paixu'])
-            ->field('id, title, jiancheng')
+            ->order(['paixu'=>'asc'])
+            ->field('id, title, paixu')
             ->select();
 
+        $ids = array();
+        $bf = false;
+        // 取出low-high之间的类别id
+        foreach ($paixuList as $key => $value) {
+           // 开始
+           if($src['low'] == $value->title)
+           {
+            $bf = true;
+           }
+           
+           if($bf == true)
+           {
+            $ids[] = $value->id;
+           }
+           // 结束
+            if($src['high'] == $value->title)
+            {
+             break;
+            }
+        }
+
+        // 查询单位
+        $schlist = $this->where('jibie_id', 'in', $ids)
+            ->where('status', 1)
+            ->order(['jibie_id' => $src['order'], 'paixu'])
+            ->field('id, title, jiancheng')
+            ->select();
         return $schlist;
     }
 

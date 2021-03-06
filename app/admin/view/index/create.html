@@ -34,7 +34,7 @@
               </label>
               <div class="layui-input-block">
                   <input type="text" id="xingming" name="xingming" lay-verify="required"
-                  autocomplete="off" class="layui-input " value="{$list.data.xingming|default=''}" placeholder="中文2-25个字符" onBlur="convertName()">
+                  autocomplete="off" class="layui-input " value="{$list.data.xingming|default=''}" placeholder="中文2-25个字符">
               </div>
           </div>
           <div class="layui-form-item">
@@ -101,23 +101,11 @@
           <div class="layui-form-item">
             <label for="school_id" class="layui-form-label"><span class="x-red">*</span>工作单位</label>
             <div class="layui-input-block">
-              {php} $schlist = danweiJibie('校级', '区级');{/php}
-              <select name="school_id" lay-verify="required">
-                <option value=""></option>
-                {volist name="schlist" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.school_id"}
-                    {eq name="$list.data.school_id" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    {$vo.title}
-                  </option>
-                {/volist}
+              <select name="school_id" id="school_id" lay-verify="required">
               </select>
             </div>
           </div>
-          <div class="layui-form-item">
+          <div class="layui-form-item" pane>
             <label for="group_id" class="layui-form-label"><span class="x-red">*</span>角色设置</label>
             <div class="layui-input-block">
               {php}
@@ -135,65 +123,23 @@
             </div>
           </div>
           <div class="layui-form-item">
-            <label for="zhiwu_id" class="layui-form-label">
-              职务
-            </label>
+            <label for="zhiwu_id" class="layui-form-label">职务</label>
             <div class="layui-input-block">
-              {php} $category = categoryChildren(107);{/php}
-              <select name="zhiwu_id">
-                <option value=""></option>
-                {volist name="category" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.zhiwu_id"_id}
-                    {eq name="$list.data.zhiwu_id" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    {$vo.title}
-                  </option>
-                {/volist}
+              <select name="zhiwu_id" id="zhiwu_id" lay-verify="required">
               </select>
             </div>
           </div>
           <div class="layui-form-item">
-            <label for="zhicheng_id" class="layui-form-label">
-              职称
-            </label>
+            <label for="zhicheng_id" class="layui-form-label">职称</label>
             <div class="layui-input-block">
-              {php} $category = categoryChildren(106);{/php}
-              <select name="zhicheng_id">
-                <option value=""></option>
-                {volist name="category" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.zhicheng_id"}
-                    {eq name="$list.data.zhicheng_id" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    {$vo.title}
-                  </option>
-                {/volist}
+              <select name="zhicheng_id" id="zhicheng_id" lay-verify="required">
               </select>
             </div>
           </div>
           <div class="layui-form-item">
-            <label for="xueli_id" class="layui-form-label">
-              学历
-            </label>
+            <label for="xueli_id" class="layui-form-label">学历</label>
             <div class="layui-input-block">
-              {php} $category = categoryChildren(105);{/php}
-              <select name="xueli_id">
-                <option value=""></option>
-                {volist name="category" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.xueli_id"}
-                    {eq name="$list.data.xueli_id" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    {$vo.title}
-                  </option>
-                {/volist}
+              <select name="xueli_id" id="xueli_id" lay-verify="required">
               </select>
             </div>
           </div>
@@ -259,8 +205,16 @@
 
 {block name="myjs"}
 <script>
-    layui.use('laydate', function(){
-      var laydate = layui.laydate;
+    layui.use(['laydate', 'createInput'], function(){
+      var laydate = layui.laydate
+      ,cInput = layui.createInput;
+
+      // 填充下拉菜单
+      cInput.schoolSelect('school_id','校级','区级',"{$list.data.school_id||default=''}");
+      cInput.categorySelect('zhiwu_id', 107, "{$list.data.zhiwu_id||default=''}");
+      cInput.categorySelect('zhicheng_id', 106, "{$list.data.zhicheng_id||default=''}");
+      cInput.categorySelect('xueli_id', 105, "{$list.data.xueli_id||default=''}");
+
       //开始时间
       laydate.render({
         elem: '#shengri'
@@ -273,19 +227,19 @@
           elem: '#worktime' //指定元素
           ,trigger: 'click' //采用click弹出
         });
+
+        $('#xingming').blur(function () {
+          var xingming = $('#xingming').val();
+          //获取全写拼音（调用js中方法）
+          var quanpin = pinyin.getFullChars(xingming);
+          //获取简写拼音（调用js中方法）
+          var shoupin = pinyin.getCamelChars(xingming);
+          //给两个文本框赋值
+          $('#quanpin').val(quanpin);
+          $('#shoupin').val(shoupin);
+        })
+
     });
-
-    function convertName(){
-        var xingming = $('#xingming').val();
-        //获取全写拼音（调用js中方法）
-        var quanpin = pinyin.getFullChars(xingming);
-        //获取简写拼音（调用js中方法）
-        var shoupin = pinyin.getCamelChars(xingming);
-        //给两个文本框赋值
-        $('#quanpin').val(quanpin);
-        $('#shoupin').val(shoupin);
-    }
-
 </script>
 {/block}
 

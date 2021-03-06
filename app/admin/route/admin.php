@@ -19,7 +19,7 @@ Route::group('index', function () {
     Route::rule('read/<id>', 'Index/read', 'get');				# 读取信息
     Route::rule('edit/<id>', 'Index/edit', 'get');				# 修改信息
     Route::rule('update/<id>', 'Index/update', 'put');			# 更新信息
-    Route::rule('delete/<id>', 'Index/delete', 'delete');		# 删除信息
+    Route::rule('delete', 'Index/delete', 'delete');		# 删除信息
     Route::rule('status', 'Index/setStatus', 'post');		# 删除信息
     Route::rule('adminlist', 'Index/adminList', 'post');       # 用户信息
     Route::rule('downloadxls', 'Index/downloadxls', 'get');       # 用户信息
@@ -38,7 +38,7 @@ Route::group('authrule', function () {
     Route::rule('save', 'AuthRule/save', 'post');					# 保存信息
     Route::rule('edit/<id>', 'AuthRule/edit', 'get');				# 修改信息
     Route::rule('update/<id>', 'AuthRule/update', 'put');			# 更新信息
-    Route::rule('delete/<id>', 'AuthRule/delete', 'delete');		# 删除信息
+    Route::rule('delete', 'AuthRule/delete', 'delete');		# 删除信息
     Route::rule('status', 'AuthRule/setStatus', 'post');		# 删除信息
     Route::rule('menu/<user_id>', 'AuthRule/menu', 'get');        # 删除信息
 });
@@ -52,7 +52,7 @@ Route::group('authgroup', function () {
     Route::rule('save','AuthGroup/save','post');					# 保存信息
     Route::rule('edit/<id>','AuthGroup/edit','get');				# 修改信息
     Route::rule('update/<id>','AuthGroup/update','put');			# 更新信息
-    Route::rule('delete/<id>','AuthGroup/delete','delete');		# 删除信息
+    Route::rule('delete','AuthGroup/delete','delete');		# 删除信息
     Route::rule('status','AuthGroup/setStatus','post');		# 删除信息
 });
 
@@ -63,7 +63,7 @@ Route::group('authgroupaccess', function () {
     Route::rule('data','AuthGroupAccess/ajaxData','post');                # 获取数据
     Route::rule('create/<group_id>','AuthGroupAccess/create','get');             # 添加信息
     Route::rule('save','AuthGroupAccess/save','post');                    # 保存信息
-    Route::rule('delete/<id>','AuthGroupAccess/delete','delete');     # 删除信息
+    Route::rule('delete','AuthGroupAccess/delete','delete');     # 删除信息
 });
 
 

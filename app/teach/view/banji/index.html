@@ -12,15 +12,10 @@
 {/block}
 {block name="search"}
 <div class="layui-form-item">
-	<label for="school" class="layui-form-label" style="height: 100%">学校</label>
+	<label for="school_id" class="layui-form-label"><span class="x-red">*</span>学校</label>
 	<div class="layui-input-block">
-		<input type="radio" name="school_id" title="无" value="" lay-skin="primary" checked>
-		{php}
-		$schoollist =  danweiJibie('校级','校级');
-		{/php}
-		{volist name="schoollist" id="vo"}
-		<input type="radio" name="school_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
-		{/volist}
+	  <select name="school_id" id="school_id">
+	  </select>
 	</div>
 </div>
 <div class="layui-form-item" style="margin-bottom: 0;">
@@ -59,50 +54,56 @@
 </script>
 <!-- 表格操作 -->
 <script>
-	// 设置列
-	options.cols=[[ //表头
-	{type:'checkbox', fixed: 'left'},
-	{field: 'id', title: 'ID', minWidth:100,sort: true},
-	{field: 'banjiTitle', title: '班级名称', minWidth:100,templet:function(d){
-	    var str='';
-	    if(d.grade && d.ban)
-	    {
-	      str = d.grade + d.ban;
-	    }
-	    return str;
-	  }},
-	{field: 'alias', title: '别名', minWidth:60, edit:'text'},
-	{field: 'banzhuren', title: '现任班主任',sort: true, minWidth:60,templet:function(d){
-		var str='';
-		if(d.bzr)
-		{
-			str = d.bzr;
-		}
-		return str;
-	}},
-	{field: 'school', title: '单位名称',sort: true, minWidth:240,templet:function(d){
-		var str='';
-		if(d.glSchool)
-		{
-			str = d.glSchool.title;
-		}
-		return str;
-	}},
-	{field: "ruxuenian",title: '入学年',sort: true},
-	{field: 'paixu', title: '排序', sort: true},
-	{field:"gl_student_count",title: '学生数',sort: true},
-	{field: 'status', title: '状态',templet:'#status', sort: true},
-	{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:180}
-	]];
-	// 设置查询条件
-	options.where = {
-		ruxuenian:$("input[name='ruxuenian']:checked").val()
-	}
 
 	// 提交搜索条件后重载表格
-	layui.use(['table','cjgl'],function(){
+	layui.use(['table', 'mytable', 'createInput'],function(){
 		var table = layui.table
-		cjgl = layui.cjgl;
+		mytable = layui.mytable
+		cInput = layui.createInput;
+
+		cInput.schoolSelect('school_id','校级','校级',"{$list.data.school_id||default=''}");
+
+		// 设置列
+	options.cols=[[ //表头
+		{type:'checkbox', fixed: 'left'},
+		{field: 'id', title: 'ID', minWidth:100,sort: true},
+		{field: 'banjiTitle', title: '班级名称', minWidth:100,templet:function(d){
+		    var str='';
+		    if(d.grade && d.ban)
+		    {
+		      str = d.grade + d.ban;
+		    }
+		    return str;
+		  }},
+		{field: 'alias', title: '别名', minWidth:60, edit:'text'},
+		{field: 'banzhuren', title: '现任班主任',sort: true, minWidth:60,templet:function(d){
+			var str='';
+			if(d.bzr)
+			{
+				str = d.bzr;
+			}
+			return str;
+		}},
+		{field: 'school', title: '单位名称',sort: true, minWidth:240,templet:function(d){
+			var str='';
+			if(d.glSchool)
+			{
+				str = d.glSchool.title;
+			}
+			return str;
+		}},
+		{field: "ruxuenian",title: '入学年',sort: true},
+		{field: 'paixu', title: '排序', sort: true},
+		{field:"gl_student_count",title: '学生数',sort: true},
+		{field: 'status', title: '状态',templet:'#status', sort: true},
+		{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:180}
+		]];
+
+		// 获取筛选条件并加载表格
+      options.where = form.val("search");
+      userTable = table.render(options); //获取数据并渲染
+
+
       //表头工具栏事件
       table.on('toolbar(mytable)', function(obj){
       	switch(obj.event){
@@ -110,10 +111,10 @@
             layer.msg('暂时不允许删除');
             break;
       			var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-      			cjgl.delAll(checkStatus,'/teach/banji/delete','mytable');
+      			mytable.delAll(checkStatus,'/teach/banji/delete','mytable');
       			break;
       		case 'add':
-      			cjgl.add('添加班级','/teach/banji/create','600','300');
+      			xadmin.open('添加班级','/teach/banji/create','600','300');
       			break;
       		};
       	});
@@ -136,13 +137,13 @@
 	      case 'del':// 删除
             layer.msg('暂时不允许删除');
             break;
-  	        cjgl.del(obj,"/teach/banji/delete");
+  	        mytable.del(obj,"/teach/banji/delete");
 	         break;
 	      case 'edit':// 编辑
-  	        cjgl.add('编辑班级','/teach/banji/edit/'+obj.data.id,'600','300');
+  	        xadmin.open('编辑班级','/teach/banji/edit/'+obj.data.id,'600','300');
   	        break;
   	      case 'banzhuren':   //编辑
-  	        cjgl.addTab('班主任','/teach/banzhuren/index/'+obj.data.id,'','',true);
+  	        parent.xadmin.add_tab('班主任','/teach/banzhuren/index/'+obj.data.id,'','',true);
   	        break;
        };
      });

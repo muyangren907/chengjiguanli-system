@@ -1,16 +1,5 @@
 {extend name=".././view/create.html" /}
-{block name="jscss"}
-<style>
-/*mycheckbox
-{
-    style:{
-      padding-left: 10px;
-      padding-right: 10px;
-  };
-}*/
-</style>
-
-{/block}
+{block name="jscss"}{/block}
 {block name="form"}
     <form class="layui-form layui-form-pane" lay-filter="myform">
           <div class="layui-form-item">
@@ -44,8 +33,9 @@
 {block name="myjs"}
     <script type="text/javascript">
       // 监测复选框按钮
-      layui.use(['form'], function(){
-        var form = layui.form;
+      layui.use(['form','createInput'], function(){
+        var cInput = layui.createInput;
+
         // 加载权限
         auth = <?php echo json_encode($list['auth']);?>;
         auth = eval(auth);
@@ -54,12 +44,10 @@
         // 创建权限按钮
         function createCheckbox(arr,pid)
         {
-
           if(arr.length==0)
           {
             return false;
           }
-
           // 创建div
           if(pid == 0)
           {
@@ -73,17 +61,25 @@
           for(var i in arr){
             if(arr[i].select == true)
             {
-              mycheckbox = '<input type="checkbox" name="rules[]" title="'+arr[i].title+'" value="'+arr[i].id+'" lay-skin="primary" lay-filter="auth" lay-verify="required" id ="'+arr[i].id+'" pid="'+arr[i].pid+'" checked>';
+              mycheckbox = '<input type="checkbox" name="rules[]" title="'+arr[i].title+'" value="'+arr[i].id+'" lay-skin="primary" lay-filter="auth" lay-verify="required" id ="'+arr[i].id+'" pid="'+arr[i].pid+'" cid="'+arr[i].id+'" checked>';
             }else{
-              mycheckbox = '<input type="checkbox" name="rules[]" title="'+arr[i].title+'" value="'+arr[i].id+'" lay-skin="primary" lay-filter="auth" lay-verify="required" id ="'+arr[i].id+'" pid="'+arr[i].pid+'">';
+              mycheckbox = '<input type="checkbox" name="rules[]" title="'+arr[i].title+'" value="'+arr[i].id+'" lay-skin="primary" lay-filter="auth" lay-verify="required" id ="'+arr[i].id+'" pid="'+arr[i].pid+'" cid="'+arr[i].id+'">';
             }
 
             $('#p'+pid).append(mycheckbox);
             createCheckbox(arr[i].child,arr[i].id);
           }
-
           form.render();
         }
+
+        form.on('checkbox(auth)', function(data){
+            pid = $(data.elem).attr('pid');
+            cid = $(data.elem).attr('cid');
+            check = data.elem.checked;
+            cInput.checkboxChildren(cid, check);
+            cInput.checkboxParent(pid, check);
+        });
+
       });
     </script>
 {/block}

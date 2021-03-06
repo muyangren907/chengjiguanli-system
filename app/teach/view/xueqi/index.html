@@ -21,18 +21,18 @@
       </div>
     </div>
     <div class="layui-form-item">
-    <div class="layui-inline">
-      <label for="title" class="layui-form-label">
-        时间
-      </label>
-      <div class="layui-input-inline">
-        <input type="text" class="layui-input layui-input-date" id="bfdate" name="bfdate" placeholder="" value="" autocomplete="off" lay-filter="riqi">
-      </div>
-      <div class="layui-input-inline">
-        <input type="text" class="layui-input layui-input-date" id="enddate" name="enddate" placeholder="" value="" autocomplete="off" lay-filter="riqi">
+      <div class="layui-inline">
+        <label for="title" class="layui-form-label">
+          时间
+        </label>
+        <div class="layui-input-inline">
+          <input type="text" class="layui-input layui-input-date" id="bfdate" name="bfdate" placeholder="" value="" autocomplete="off" lay-filter="riqi">
+        </div>
+        <div class="layui-input-inline">
+          <input type="text" class="layui-input layui-input-date" id="enddate" name="enddate" placeholder="" value="" autocomplete="off" lay-filter="riqi">
+        </div>
       </div>
     </div>
-  </div>
 {/block}
 {block name="table"}
 	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
@@ -56,7 +56,15 @@
 </script>
 <!-- 表格操作 -->
 <script>
-  // 设置列
+  
+
+  // 提交搜索条件后重载表格
+    layui.use(['table','mytable','laydate'],function(){
+      var table = layui.table
+          mytable = layui.mytable;
+          laydate = layui.laydate;
+
+      // 设置列
   options.cols=[[ //表头
       {type:'checkbox', fixed: 'left'},
       {field: 'id', title: 'ID',sort: true},
@@ -76,20 +84,20 @@
       {field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
     ]];
 
-  // 提交搜索条件后重载表格
-    layui.use(['table','cjgl','laydate'],function(){
-      var table = layui.table
-          cjgl = layui.cjgl;
-          laydate = layui.laydate;
+    // 获取筛选条件并加载表格
+      options.where = form.val("search");
+      userTable = table.render(options); //获取数据并渲染
+
+
       //表头工具栏事件
       table.on('toolbar(mytable)', function(obj){
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'xueqi/delete','mytable');
+            mytable.delAll(checkStatus,'xueqi/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加学期','xueqi/create','','',true);
+            xadmin.open('添加学期','xueqi/create','650','450',false);
             break;
         };
       });
@@ -104,21 +112,12 @@
             layer.msg('查看' + data.id);
             break;
           case 'del':// 删除
-            cjgl.del(obj,"xueqi/delete");
+            mytable.del(obj,"xueqi/delete");
             break;
           case 'edit':// 编辑
-            cjgl.add('编辑学期','xueqi/edit/'+obj.data.id,'','',true);
+            xadmin.open('编辑学期','xueqi/edit/'+obj.data.id,'650','450',false);
             break;
         };
-      });
-      lay('.layui-input-date').each(function(){
-        laydate.render({
-          elem: this
-          ,trigger: 'click'
-            ,done: function(value, date, endDate){
-              $("#srcsubmit").click();
-            }
-        });
       });
     });
 </script>

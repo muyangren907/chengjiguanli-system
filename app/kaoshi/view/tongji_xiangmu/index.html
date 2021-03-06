@@ -18,18 +18,14 @@
           <input type="text" id="searchval" name="searchval"
           autocomplete="off" class="layui-input">
       </div>
+  </div>
       <div class="layui-form-item">
-          <label for="category_id" class="layui-form-label" style="height: 100%">统计类型</label>
-          <div class="layui-input-block">
-            <input type="radio" name="category_id" title="无" value="" lay-skin="primary" checked>
-            {php} $category = categoryChildren(122);{/php}
-            {volist name="category" id="vo"}
-              <input type="radio" name="category_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
-            {/volist}
-          </div>
+        <label for="category_id" class="layui-form-label" style="height: 100%">统计类别</label>
+        <div class="layui-input-block">
+          <select name="category_id" id="category_id">
+          </select>
+        </div>
       </div>
-    </div>
-	</div>
 {/block}
 {block name="table"}
 	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
@@ -57,9 +53,19 @@
 <!-- 表格操作 -->
 <script>
 
-  // 设置列
+  
+
+  // 提交搜索条件后重载表格
+    layui.use(['table', 'mytable', 'createInput'], function(){
+      var table = layui.table
+          ,mytable = layui.mytable
+          ,cInput = layui.createInput;
+
+    cInput.categorySelect('category_id', 122);;
+
+      // 设置列
   options.cols=[[ //表头
-			{type:'checkbox', fixed:'left'},
+      {type:'checkbox', fixed:'left'},
       {field: 'category_id', title: '类别',sort: true, minWidth:140,templet:function(d){
         var str='';
         if(d.tjxmCategory)
@@ -68,26 +74,26 @@
         }
         return str;
       }} ,
-			{field:'title', title:'标题', minWidth:100, sort:true},
+      {field:'title', title:'标题', minWidth:100, sort:true},
       {field:'tongji', title:'参与统计', minWidth:80, templet:'#tongji', sort:true},
       {field:'paixu', title:'排序', minWidth:80, sort:true},
       {field:'status', title:'状态', minWidth:80, templet:'#status', sort:true},
       {field:'id', title:'操作', toolbar:'#barDemo', minWidth:120},
-		]];
+    ]];
 
-  // 提交搜索条件后重载表格
-    layui.use(['table', 'cjgl'], function(){
-      var table = layui.table
-          cjgl = layui.cjgl;
+    // 加载表格
+    options.where = form.val("search");
+      userTable = table.render(options); //获取数据并渲染
+
       //表头工具栏事件
       table.on('toolbar(mytable)', function(obj){
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus, '/kaoshi/tjxm/delete', 'mytable');
+            mytable.delAll(checkStatus, '/kaoshi/tjxm/delete', 'mytable');
             break;
           case 'add':
-            cjgl.add('新建项目', '/kaoshi/tjxm/create', '600', '300', false);
+            mytable.add('新建项目', '/kaoshi/tjxm/create', '600', '300', false);
             break;
         };
       });
@@ -99,10 +105,10 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
 	        case 'del':// 删除
-	          cjgl.del(obj, "/kaoshi/tjxm/delete");
+	          mytable.del(obj, "/kaoshi/tjxm/delete");
 	          break;
 	        case 'edit':// 编辑
-	          cjgl.add('编辑项目', '/kaoshi/tjxm/edit/' + obj.data.id, '600', '300', false);
+	          mytable.add('编辑项目', '/kaoshi/tjxm/edit/' + obj.data.id, '600', '300', false);
 	          break;
         };
       });

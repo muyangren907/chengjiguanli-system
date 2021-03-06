@@ -236,4 +236,29 @@ class School extends AdminBase
         // 返回信息
         return json($data);
     }
+
+
+    // 查询单位列表
+    public function srcSchool()
+    {
+        // 获取表单数据
+        $src = request()->only([
+            'low' => '班级'
+            ,'high' => '其它级'
+            ,'order' => 'asc'
+        ], 'post');
+
+        // 实例化单位模型
+        $sch = new sch;
+        $data = $sch->srcJibie($src)
+            ->visible([
+                'id'
+                ,'title'
+                ,'jiancheng'
+            ]);
+
+        $data = reSetObject($data, $src);
+
+        return json($data);
+    }
 }

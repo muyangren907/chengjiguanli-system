@@ -104,7 +104,7 @@ class BanZhuRen extends BaseModel
                 })
             ->when(strlen($src['searchval']) > 0, function ($query) use($src) {
                 $query->where('teacher_id', 'in', function ($q) use($src) {
-                    $q->name('teacher')
+                    $q->name('admin')
                         ->where('xingming', 'like', '%'.$src['searchval'].'%')
                         ->field('id');
                 });

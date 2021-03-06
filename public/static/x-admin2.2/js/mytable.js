@@ -93,6 +93,13 @@
                         if (result.val == 1) {
                             layer.msg('已修改成：' + title);
                         } else {
+                            if(obj.val.value == 1) {
+                                data.elem.checked = false;
+
+                            }else{
+                                data.elem.checked = true;
+                            }
+                            form.render();
                             layer.msg(result.msg);
                         }
                     },
@@ -101,19 +108,13 @@
                     }
                 });
             }, function() {
-                mydiv = $(data.elem).next('div');
-                kg = data.elem.checked;
-                if ($(mydiv).hasClass("layui-form-onswitch")) {
-                    $(mydiv).removeClass("layui-form-onswitch");
-                    $(mydiv).children('em').text('禁用');
-                    $(data.elem).attr('checked', !kg);
-                    data.elem.checked = !kg;
-                } else {
-                    $(mydiv).addClass("layui-form-onswitch");
-                    $(mydiv).children('em').text('启用');
-                    $(data.elem).attr('checked', !kg);
-                    data.elem.checked = !kg;
+                if(obj.val.value == 1) {
+                    data.elem.checked = false;
+
+                }else{
+                    data.elem.checked = true;
                 }
+                form.render();
             });
         },
 

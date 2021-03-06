@@ -3,24 +3,12 @@
 {block name="form"}
     <form class="layui-form layui-form-pane" lay-filter="myform">
           <div class="layui-form-item">
-    		    <label for="school" class="layui-form-label"><span class="x-red">*</span>学校</label>
-    		    <div class="layui-input-block">
-    		    	{php} $schoollist = danweiJibie('校级', '校级'){/php}
-    		      <select name="school_id" lay-verify="required">
-    		      	<option value=""></option>
-    		      	{volist name="schoollist" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.school"}
-                    {eq name="$list.data.school" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    {$vo.title}
-                  </option>
-    		        {/volist}
-    		      </select>
-    		    </div>
-    		  </div>
+            <label for="school_id" class="layui-form-label"><span class="x-red">*</span>学校</label>
+            <div class="layui-input-block">
+              <select name="school_id" id="school_id" lay-verify="required">
+              </select>
+            </div>
+          </div>
           <div class="layui-form-item">
             <label for="ruxuenian" class="layui-form-label"><span class="x-red">*</span>年级</label>
             <div class="layui-input-block">
@@ -50,6 +38,13 @@
 {/block}
 
 {block name="myjs"}
+<script>
+    layui.use('createInput', function(){
+      var cInput = layui.createInput;
 
+      // 填充下拉菜单
+      cInput.schoolSelect('school_id','校级','校级',"{$list.data.school_id||default=''}");
+    });
+</script>
 {/block}
 

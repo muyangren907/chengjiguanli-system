@@ -157,7 +157,7 @@ class AuthRule extends AdminBase
 
 
     // 删除权限
-    public function delete($id)
+    public function delete()
     {
         // 整理数据
         $id = request()->delete('id');

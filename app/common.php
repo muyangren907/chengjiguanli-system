@@ -40,14 +40,14 @@
         return $njList;
 	}
 
-	// 单位列表
-	function danweiJibie($low = '班级', $high = '其它级', $order = 'asc')
-	{
-		// 实例化单位模型
-		$sch = new \app\system\model\School;
-		$data = $sch->srcJibie($low, $high, $order);
-		return $data;
-	}
+	// // 单位列表
+	// function danweiJibie($low = '班级', $high = '其它级', $order = 'asc')
+	// {
+	// 	// 实例化单位模型
+	// 	$sch = new \app\system\model\School;
+	// 	$data = $sch->srcJibie($low, $high, $order);
+	// 	return $data;
+	// }
 
 
     // 查询统计项目

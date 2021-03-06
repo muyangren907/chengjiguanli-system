@@ -21,7 +21,7 @@ Route::group('/', function () {
 Route::group('file', function () {
 	    Route::rule('','Fields/index', 'get');		# 文件列表
 		Route::rule('data','Fields/ajaxData', 'post');			# 获取数据
-		Route::rule('delete/<id>', 'Fields/delete', 'delete');		# 删除记录
+		Route::rule('delete', 'Fields/delete', 'delete');		# 删除记录
 		Route::rule('download/<id>', 'Fields/download', 'get');		# 文件下载
 	});
 
@@ -36,6 +36,7 @@ Route::group('school', function () {
 	    Route::rule('delete', 'School/delete', 'delete');		# 删除信息
 	    Route::rule('status', 'School/setStatus', 'post');		# 删除信息
         Route::rule('kaoshi', 'School/setKaoshi', 'post');        # 删除信息
+        Route::rule('srcschool', 'School/srcSchool', 'post');               # 获取数据
 	});
 
 // 类别管理
@@ -46,7 +47,7 @@ Route::group('category', function () {
 	    Route::rule('save', 'Category/save', 'post');					# 保存信息
 	    Route::rule('edit/<id>', 'Category/edit', 'get');				# 修改信息
 	    Route::rule('update/<id>', 'Category/update', 'put');			# 更新信息
-	    Route::rule('delete/<id>', 'Category/delete', 'delete');		# 删除信息
+	    Route::rule('delete', 'Category/delete', 'delete');		# 删除信息
 	    Route::rule('status', 'Category/setStatus', 'post');		# 删除信息
         Route::rule('children', 'Category/srcChildren', 'post');               # 获取数据
 	});

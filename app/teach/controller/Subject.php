@@ -173,7 +173,7 @@ class Subject extends AdminBase
 
 
     // 删除学科
-    public function delete($id)
+    public function delete()
     {
         // 整理数据
         $id = request()->delete('id');

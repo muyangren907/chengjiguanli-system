@@ -19,7 +19,7 @@ Route::group('xueqi', function () {
 	    Route::rule('save','xueqi/save','post');					# 保存信息
 	    Route::rule('edit/<id>','xueqi/edit','get');				# 修改信息
 	    Route::rule('update/<id>','xueqi/update','put');			# 更新信息
-	    Route::rule('delete/<id>','xueqi/delete','delete');		# 删除信息
+	    Route::rule('delete','xueqi/delete','delete');		# 删除信息
 	    Route::rule('status','xueqi/setStatus','post');		# 删除信息
 	});
 
@@ -29,7 +29,7 @@ Route::group('banji', function () {
 	    Route::rule('data','banji/ajaxdata','post');				# 获取数据
 	    Route::rule('create','banji/create','get');				# 添加信息
 	    Route::rule('save','banji/save','post');					# 保存信息
-	    Route::rule('delete/<id>','banji/delete','delete');		# 删除信息
+	    Route::rule('delete','banji/delete','delete');		# 删除信息
 	    Route::rule('status','banji/setStatus','post');		# 删除信息
 	    Route::rule('yidong/<id>','banji/yidong','post');		# 删除信息
 	    Route::rule('mybanji','banji/mybanji','post');		# 删除信息
@@ -55,7 +55,7 @@ Route::group('subject', function () {
 	    // Route::rule('read/<id>','subject/read','get');				# 读取信息
 	    Route::rule('edit/<id>','subject/edit','get');				# 修改信息
 	    Route::rule('update/<id>','subject/update','put');			# 更新信息
-	    Route::rule('delete/<id>','subject/delete','delete');		# 删除信息
+	    Route::rule('delete','subject/delete','delete');		# 删除信息
 	    Route::rule('status','subject/setStatus','post');		# 删除信息
 	    Route::rule('kaoshi','subject/kaoshi','post');		# 删除信息
 	});
@@ -69,7 +69,7 @@ Route::group('banzhuren', function () {
         Route::rule('save','BanZhuRen/save','post');                    # 保存信息
         Route::rule('edit/<id>','BanZhuRen/edit','get');                # 修改信息
         Route::rule('update/<id>','BanZhuRen/update','put');            # 更新信息
-        Route::rule('delete/<id>','BanZhuRen/delete','delete');     # 删除信息
+        Route::rule('delete','BanZhuRen/delete','delete');     # 删除信息
         Route::rule('status','BanZhuRen/setStatus','post');     # 删除信息
     });
 

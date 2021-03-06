@@ -44,29 +44,37 @@
 <!-- 表格操作 -->
 <script>
 
-  // 设置列
-  options.cols=[[ //表头
-      {type:'checkbox', fixed: 'left'},
-      {field: 'id', title: 'ID',sort: true},
-      {field: 'title', title: '名称',sort: true, minWidth:240},
-      {field: "miaoshu",title: '描述',sort: true},
-      {field: 'status', title: '状态',templet:'#status', sort: true},
-      {field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
-    ]];
+  
 
   // 提交搜索条件后重载表格
-    layui.use(['table','cjgl'],function(){
+    layui.use(['table','mytable'],function(){
       var table = layui.table
-          cjgl = layui.cjgl;
+          ,mytable = layui.mytable;
+
+      // 设置列
+      options.cols=[[ //表头
+          {type:'checkbox', fixed: 'left'},
+          {field: 'id', title: 'ID',sort: true},
+          {field: 'title', title: '名称',sort: true, minWidth:240},
+          {field: "miaoshu",title: '描述',sort: true},
+          {field: 'status', title: '状态',templet:'#status', sort: true},
+          {field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
+        ]];
+
+      // 获取筛选条件并加载表格
+      options.where = form.val("search");
+      userTable = table.render(options); //获取数据并渲染
+
+
       //表头工具栏事件
       table.on('toolbar(mytable)', function(obj){
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'authgroup/delete','mytable');
+            mytable.delAll(checkStatus,'/admin/authgroup/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加角色','authgroup/create','','',true);
+            xadmin.open('添加角色','/admin/authgroup/create','','',true);
             break;
         };
       });
@@ -78,16 +86,16 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
           case 'del':// 删除
-            cjgl.del(obj,"/admin/authgroup/delete");
+            mytable.del(obj,"/admin/authgroup/delete");
             break;
           case 'edit':// 编辑
-            cjgl.add('编辑角色','/admin/authgroup/edit/'+obj.data.id,'','',true);
+            xadmin.open('编辑角色','/admin/authgroup/edit/'+obj.data.id,'','',true);
             break;
           case 'adduser':// 分配用户
-            cjgl.addTab('分配用户','/admin/authgroupaccess/index/'+obj.data.id,true);
+            parent.xadmin.add_tab('分配用户','/admin/authgroupaccess/index/'+obj.data.id,true);
             break;
         };
-      });
+      });    
     });
 </script>
 {/block}

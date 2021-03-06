@@ -40,8 +40,15 @@
 </script>
 <!-- 表格操作 -->
 <script>
-	// 设置列
-  options.cols=[[ //表头
+	
+
+  // 提交搜索条件后重载表格
+    layui.use(['table','mytable'],function(){
+      var table = layui.table
+          mytable = layui.mytable;
+
+          // 设置列
+  		options.cols=[[ //表头
 			{type:'checkbox', fixed: 'left'},
 			{field: 'category_id', title: '文件分类',sort: true, minWidth:100,templet:function(d){
 				var str='';
@@ -77,16 +84,16 @@
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:90}
 		]];
 
-  // 提交搜索条件后重载表格
-    layui.use(['table','cjgl'],function(){
-      var table = layui.table
-          cjgl = layui.cjgl;
+	options.where = form.val("search");
+      userTable = table.render(options); //获取数据并渲染
+
+
       //表头工具栏事件
       table.on('toolbar(mytable)', function(obj){
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'file/delete','mytable');
+            mytable.delAll(checkStatus,'file/delete','mytable');
             break;
         };
       });
@@ -98,10 +105,10 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
           case 'del':// 删除
-          	cjgl.del(obj,"file/delete");
+          	mytable.del(obj,"file/delete");
           	break;
           case 'download':// 编辑
-          	var data = cjgl.add('下载文件', 'file/download/' + obj.data.id, '350', '150', false);
+          	var data = mytable.add('下载文件', 'file/download/' + obj.data.id, '350', '150', false);
           	break;
         };
       });

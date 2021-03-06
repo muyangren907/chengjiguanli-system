@@ -50,8 +50,15 @@
 </script>
 <!-- 表格操作 -->
 <script>
-	// 设置列
-  options.cols=[[ //表头
+	
+
+  // 提交搜索条件后重载表格
+    layui.use(['table','mytable'],function(){
+      var table = layui.table
+          mytable = layui.mytable;
+
+      // 设置列
+	  options.cols=[[ //表头
 			{type:'checkbox', fixed: 'left'},
 			{field: 'status', title: '状态',templet:'#status', sort: true},
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140},
@@ -83,22 +90,24 @@
 			{field: 'ip', title: '最后登录地址', minWidth:130, sort: true},
 		]];
 
-  // 提交搜索条件后重载表格
-    layui.use(['table','cjgl'],function(){
-      var table = layui.table
-          cjgl = layui.cjgl;
+
+		// 获取筛选条件并加载表格
+	     options.where = form.val("search");
+	     userTable = table.render(options); //获取数据并渲染
+
+
       //表头工具栏事件
       table.on('toolbar(mytable)', function(obj){
         switch(obj.event){
            case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/admin/index/delete','mytable');
+            mytable.delAll(checkStatus,'/admin/index/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加管理员','/admin/index/create','','',true);
+            xadmin.open('添加管理员','/admin/index/create','','',true);
             break;
           case 'upload':
-            cjgl.add('导入管理员','/admin/index/createall','600','300');
+            xadmin.open('导入管理员','/admin/index/createall','600','300');
             break;
           case 'download':
           	window.open("/admin/index/downloadxls");
@@ -113,16 +122,16 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
           case 'detail':// 查看
-	          cjgl.add(obj.data.xingming+'信息','/admin/info/read/'+obj.data.id,'','',true);
+	          xadmin.open(obj.data.xingming+'信息','/admin/info/read/'+obj.data.id,'','',true);
 	          break;
 	      case 'del':// 删除
-	          cjgl.del(obj,"/admin/index/delete");
+	          mytable.del(obj,"/admin/index/delete");
 	          break;
 	      case 'edit':// 编辑
-	          cjgl.add('编辑管理员','/admin/index/edit/'+obj.data.id,'','',true);
+	          xadmin.open('编辑管理员','/admin/index/edit/'+obj.data.id,'','',true);
 	          break;
 	      case 'reset':// 编辑
-	          cjgl.resetpassword(obj.data.xingming,"/admin/index/resetpassword/"+obj.data.id);
+	          mytable.resetpassword(obj.data.xingming,"/admin/index/resetpassword/"+obj.data.id);
 	          break;
         };
       });

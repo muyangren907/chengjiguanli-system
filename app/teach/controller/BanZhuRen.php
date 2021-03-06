@@ -207,7 +207,7 @@ class BanZhuRen extends AdminBase
      *
      * @return \think\Response
      */
-    public function delete($id)
+    public function delete()
     {
 
         $id = request()->delete('id');

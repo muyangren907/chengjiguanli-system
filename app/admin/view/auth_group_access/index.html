@@ -57,42 +57,51 @@
 <!-- 表格操作 -->
 <script>
 
-  // 设置列
-  options.cols=[[ //表头
-      {type:'checkbox', fixed: 'left'},
-      {field: 'uid', title: '用户名',sort: true, width:120, templet:function(d){
-        if(d.jsUser){
-          return d.jsUser.xingming;
-        }
-      }},
-      {field: 'uid', title: '帐号',sort: true, width:120, templet:function(d){
-        if(d.jsUser){
-          return d.jsUser.username;
-        }
-      }},
-      {field: "miaoshu", title: '单位', sort:true, minWidth:120, templet:function(d){
-        if(d.jsUser){
-          if(d.jsUser.adSchool){
-            return d.jsUser.adSchool.title;
-          }
-        }
-      }},
-      {field: 'id', title: '操作',toolbar: '#barDemo',width:140}
-    ]];
+  
 
   // 提交搜索条件后重载表格
-    layui.use(['table','cjgl'],function(){
+    layui.use(['table','mytable'],function(){
       var table = layui.table
-          cjgl = layui.cjgl;
+          mytable = layui.mytable;
+
+      // 设置列
+      options.cols=[[ //表头
+          {type:'checkbox', fixed: 'left'},
+          {field: 'uid', title: '用户名',sort: true, width:120, templet:function(d){
+            if(d.jsUser){
+              return d.jsUser.xingming;
+            }
+          }},
+          {field: 'uid', title: '帐号',sort: true, width:120, templet:function(d){
+            if(d.jsUser){
+              return d.jsUser.username;
+            }
+          }},
+          {field: "miaoshu", title: '单位', sort:true, minWidth:120, templet:function(d){
+            if(d.jsUser){
+              if(d.jsUser.adSchool){
+                return d.jsUser.adSchool.title;
+              }
+            }
+          }},
+          {field: 'id', title: '操作',toolbar: '#barDemo',width:140}
+        ]];
+
+
+      // 获取筛选条件并加载表格
+      options.where = form.val("search");
+      userTable = table.render(options); //获取数据并渲染
+
+
       //表头工具栏事件
       table.on('toolbar(mytable)', function(obj){
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/admin/authgroupaccess/delete','mytable');
+            mytable.delAll(checkStatus,'/admin/authgroupaccess/delete','mytable');
             break;
           case 'add':
-            cjgl.add('角色用户分配','/admin/authgroupaccess/create/' + "{$list.group_id}",'500','300',false);
+            xadmin.open('角色用户分配','/admin/authgroupaccess/create/' + "{$list.group_id}",'500','300',false);
             break;
         };
       });
@@ -104,10 +113,11 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
           case 'del':// 删除
-            cjgl.del(obj,"/admin/authgroupaccess/delete");
+            mytable.del(obj,"/admin/authgroupaccess/delete");
             break;
         };
       });
+
     });
 </script>
 {/block}

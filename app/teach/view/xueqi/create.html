@@ -21,24 +21,12 @@
               </div>
           </div>
           <div class="layui-form-item">
-    		    <label for="category" class="layui-form-label"><span class="x-red">*</span>类别</label>
-    		    <div class="layui-input-block">
-    		    	{php} $category = categoryChildren('108');{/php}
-    		      <select name="category_id" lay-verify="required">
-    		      	<option value=""></option>
-    		      	{volist name="category" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.category_id"}
-                    {eq name="$list.data.category_id" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    {$vo.title}
-                  </option>
-    		        {/volist}
-    		      </select>
-    		    </div>
-    		  </div>
+            <label for="category_id" class="layui-form-label"><span class="x-red">*</span>类别</label>
+            <div class="layui-input-block">
+              <select name="category_id" id="category_id" lay-verify="required">
+              </select>
+            </div>
+          </div>
           <div class="layui-form-item">
             <div class="layui-inline">
               <label for="title" class="layui-form-label">
@@ -63,8 +51,10 @@
 {block name="myjs"}
 <script>
 
-  layui.use('laydate', function(){
-    var laydate = layui.laydate;
+  layui.use(['laydate', 'createInput'], function(){
+    var laydate = layui.laydate
+    ,cInput = layui.createInput;
+    cInput.categorySelect('category_id', 108, "{$list.data.category_id||default=''}");
     //开始时间
     laydate.render({
       elem: '#bfdate'
