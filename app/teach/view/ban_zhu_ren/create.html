@@ -28,22 +28,10 @@
 {block name="form"}
     <form class="layui-form layui-form-pane" lay-filter="myform">
           <div class="layui-form-item">
-              <label for="teacher_id" class="layui-form-label">
+              <label for="teacher_name" class="layui-form-label">
                   <span class="x-red">*</span>教师姓名
               </label>
-              <div class="layui-inline">
-                <div class="layui-input-inline">
-                  <input name="teacher_id" id="teacher_id" type="text" class="layui-input" autocomplete="off" placeholder="多选取第一个">
-                </div>
-                {present name="$list.data.kt_zcr"}
-                  {volist name="$list.data.kt_zcr" id="vo"}
-                  <div class="layui-input-inline" style="width:60px">
-                    <div onclick="cjgl.delTeacher(this)" class="layui-btn layui-btn-normal">
-                      {$vo.teacher.xingming}
-                    </div>
-                    <input type="hidden" name="teacher_id[]" value="{$vo.teacher.id}"></div>
-                  {/volist}
-                {/present}
+              <div class="layui-input-block" id="teacher_id" school_id="{$list.data.school_id|default=''}">
               </div>
           </div>
           <div class="layui-form-item">
@@ -51,11 +39,10 @@
                   接任时间
               </label>
               <div class="layui-input-block">
-                  <input type="text" id="bfdate" name="bfdate" autocomplete="off" class="layui-input " value="{$list.data.bfdate|default=''}" placeholder="接到这个任务的开始时间">
+                  <input type="text" id="bfdate" lay-verify="required" name="bfdate" autocomplete="off" class="layui-input " value="{$list.data.bfdate|default=''}" placeholder="接到这个任务的开始时间">
               </div>
           </div>
           <input name="banji_id" id="banji_id" value="{$list.data.banji_id}" type="hidden">
-          <input name="school_id" id="school_id" value="{$list.data.school_id}" type="hidden">
           <div class="layui-form-item" style="text-align: right;">
               <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
                   {$list.set.butname}
@@ -68,9 +55,9 @@
 <script>
   
 // 日期控件
-layui.use(['form','upload','cjgl','laydate'], function(){
+layui.use(['form','laydate','createInput'], function(){
     var form = layui.form
-        ,cjgl = layui.cjgl
+        ,cInput = layui.createInput
         ,laydate = layui.laydate;
 
     //执行一个laydate实例
@@ -79,17 +66,25 @@ layui.use(['form','upload','cjgl','laydate'], function(){
       ,trigger: 'click' //采用click弹出
     });
 
-  // 搜索教师
-  $('#teacher_id').bind({
-    keyup:function(){
-      var val = $.trim($(this).val());
-      if(val.length>0){
-        cjgl.searchTeacher(this, val, 'teacher_id[]', 'addTeacher');
-      }
-    },
-  })
-   
+    // 搜索教师
+    xmselect = cInput.searchTeacher('teacher_id');
+
+    // 添加数据库值
+    formpost = "{$list.set.formpost|default=''}".toLocaleUpperCase();
+    if(formpost == 'PUT')
+    {
+      xmselect.update({
+      data: [
+          {xingming: "{$list.data.selectname|default=''}",
+          id:"{$list.data.teacher_id|default=''}",
+          selected: true
+        },
+        ]
+      })
+    }
 });
+
+
 
 </script>
 {/block}

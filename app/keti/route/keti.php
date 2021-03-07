@@ -18,7 +18,7 @@ Route::group('ketice', function () {
 	    Route::rule('save','Ketice/save','post');					# 保存信息
 	    Route::rule('edit/<id>','Ketice/edit','get');				# 修改信息
 	    Route::rule('update/<id>','Ketice/update','put');			# 更新信息
-	    Route::rule('delete/<id>','Ketice/delete','delete');		# 删除信息
+	    Route::rule('delete','Ketice/delete','delete');		# 删除信息
 	    Route::rule('status','Ketice/setStatus','post');		# 删除信息
 	});
 
@@ -30,7 +30,7 @@ Route::group('ketiinfo', function () {
 	    Route::rule('save','KetiInfo/save','post');					# 保存信息
 	    Route::rule('edit/<id>','KetiInfo/edit','get');				# 修改信息
 	    Route::rule('update/<id>','KetiInfo/update','put');			# 更新信息
-	    Route::rule('delete/<id>','KetiInfo/delete','delete');		# 删除信息
+	    Route::rule('delete','KetiInfo/delete','delete');		# 删除信息
 	    Route::rule('status','KetiInfo/setStatus','post');		# 删除信息
 	    Route::rule('list/<ketice_id>','KetiInfo/ketiList','get');		# 课题册列表
 	    Route::rule('createall/<ketice_id>','KetiInfo/createAll','get');				# 批量导入

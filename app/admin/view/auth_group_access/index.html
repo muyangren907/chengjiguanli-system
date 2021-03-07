@@ -23,13 +23,10 @@
         </div>
       </div>
       <div class="layui-form-item">
-        <label for="danwei_id" class="layui-form-label" style="height: 100%">单位</label>
+        <label for="school_id" class="layui-form-label"><span class="x-red">*</span>单位</label>
         <div class="layui-input-block">
-          {php} $schoollist = danweiJibie('教研组', '区级');{/php}
-          <input type="radio" name="school_id" title="无" value="" lay-skin="primary" checked>
-          {volist name="schoollist" id="vo"}
-            <input type="radio" name="school_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
-          {/volist}
+          <select name="school_id" id="school_id">
+          </select>
         </div>
       </div>
       <input type="hidden" id="group_id" name="group_id" value="{$list.group_id}">
@@ -60,9 +57,12 @@
   
 
   // 提交搜索条件后重载表格
-    layui.use(['table','mytable'],function(){
+    layui.use(['table','mytable','createInput'],function(){
       var table = layui.table
-          mytable = layui.mytable;
+          ,cInput = layui.createInput
+          ,mytable = layui.mytable;
+
+      cInput.schoolSelect('school_id','教研组','区级');
 
       // 设置列
       options.cols=[[ //表头

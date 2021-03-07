@@ -63,7 +63,7 @@ class File extends BaseController
         }
 
         $data['msg'] = '上传成功';
-        $data['val'] = true;
+        $data['val'] = 1;
         $data['url'] = $savename;
 
         return $data;

@@ -144,7 +144,12 @@ class BanZhuRen extends AdminBase
                     $query->field('id, xingming');
                 },
                 'glBanji' => function ($query) {
-                    $query->field('id, school_id');
+                    $query->field('id, school_id')
+                        ->with([
+                            'glSchool' => function($query){
+                                $query->field('id, title, jiancheng');
+                            },
+                        ]);
                 }
             ])
             ->find();
@@ -153,6 +158,7 @@ class BanZhuRen extends AdminBase
         $list['data']['teacher_id'] = $bjInfo->teacher_id;
         $list['data']['xingming'] = $bjInfo->glAdmin->xingming;
         $list['data']['bfdate'] = $bjInfo->bfdate;
+        $list['data']['selectname'] = $bjInfo->glBanji->glSchool->jiancheng . ' -- ' . $bjInfo->glAdmin->xingming;
 
        // 设置页面标题
         $list['set'] = array(

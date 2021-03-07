@@ -210,10 +210,10 @@
       ,cInput = layui.createInput;
 
       // 填充下拉菜单
-      cInput.schoolSelect('school_id','校级','区级',"{$list.data.school_id||default=''}");
-      cInput.categorySelect('zhiwu_id', 107, "{$list.data.zhiwu_id||default=''}");
-      cInput.categorySelect('zhicheng_id', 106, "{$list.data.zhicheng_id||default=''}");
-      cInput.categorySelect('xueli_id', 105, "{$list.data.xueli_id||default=''}");
+      cInput.schoolSelect('school_id','校级','区级',"{$list.data.school_id|default=''}");
+      cInput.categorySelect('zhiwu_id', 107, "{$list.data.zhiwu_id|default=''}");
+      cInput.categorySelect('zhicheng_id', 106, "{$list.data.zhicheng_id|default=''}");
+      cInput.categorySelect('xueli_id', 105, "{$list.data.xueli_id|default=''}");
 
       //开始时间
       laydate.render({

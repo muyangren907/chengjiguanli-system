@@ -71,9 +71,9 @@
 <script>
   layui.use(['createInput'], function() {
     var cInput = layui.createInput;
-    cInput.categorySelect('xingzhi_id', 101, "{$list.data.xingzhi_id||default=''}");
-    cInput.categorySelect('jibie_id', 102, "{$list.data.jibie_id||default=''}");
-    cInput.categorySelect('xueduan_id', 103, "{$list.data.xueduan_id||default=''}");
+    cInput.categorySelect('xingzhi_id', 101, "{$list.data.xingzhi_id|default=''}");
+    cInput.categorySelect('jibie_id', 102, "{$list.data.jibie_id|default=''}");
+    cInput.categorySelect('xueduan_id', 103, "{$list.data.xueduan_id|default=''}");
   });
 </script>
 {/block}

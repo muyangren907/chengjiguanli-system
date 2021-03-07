@@ -2,15 +2,15 @@
   扩展cjgl模块
   **/
 
-  layui.define(['table', 'form'], function(exports){
+  layui.define(['table', 'form','upload'], function(exports){
     //提示：模块也可以依赖其它模块，如：layui.define('layer', callback);
     var table = layui.table
-    form = layui.form;
+    ,upload = layui.upload
+    ,form = layui.form;
 
     var obj = {
         // 删除单条记录
         del: function(obj, url) {
-            console.log(obj);
             layer.confirm('确认要删除吗？', function(index){
                 $.ajax({
                     url: url,
@@ -149,6 +149,33 @@
                   });
                 }
               });
+        },
+
+
+        // 上传文件
+        upload: function(uploadId, url, category, serurl, backId){
+            upload.render({
+              elem: '#' + uploadId //绑定元素
+              ,url: url //上传接口
+              ,done: function(res){
+                if(res.val == 1){
+                    $('#' + backId).val(res.url);
+                    document.getElementById("img").src="__UPLOAD__/"+res.url;
+                }
+                layer.msg(res.msg);
+              }
+              ,data: {
+                text: category
+                ,serurl:serurl
+
+              }
+              ,acceptMime:'.jpg,.jpeg,.png'
+              ,exts:'jpg|jpeg|png'
+              ,auto:true
+              ,error: function(){
+                //请求异常回调
+              }
+            });
         },
 
 

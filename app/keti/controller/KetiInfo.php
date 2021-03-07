@@ -133,7 +133,7 @@ class KetiInfo extends AdminBase
             ,'subject_id'
             ,'category_id'
             ,'jhjtshijian'
-            ,'hjteachers'
+            ,'teacher_id'
             ,'lxpic'
         ], 'POST');
 
@@ -150,8 +150,9 @@ class KetiInfo extends AdminBase
 
         // 声明教师数组
             $teacherlist = [];
+            $list['teacher_id'] = explode(',', $list['teacher_id']);
             // 循环组成获奖教师信息
-            foreach ($list['hjteachers'] as $key => $value) {
+            foreach ($list['teacher_id'] as $key => $value) {
                 $canyulist[] = [
                     'teacher_id' => $value
                     ,'category_id' => 11901
@@ -321,7 +322,7 @@ class KetiInfo extends AdminBase
      * @param  int  $id
      * @return \think\Response
      */
-    public function delete($id)
+    public function delete()
     {
 
         // 整理数据

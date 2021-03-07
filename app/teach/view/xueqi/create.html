@@ -54,7 +54,7 @@
   layui.use(['laydate', 'createInput'], function(){
     var laydate = layui.laydate
     ,cInput = layui.createInput;
-    cInput.categorySelect('category_id', 108, "{$list.data.category_id||default=''}");
+    cInput.categorySelect('category_id', 108, "{$list.data.category_id|default=''}");
     //开始时间
     laydate.render({
       elem: '#bfdate'

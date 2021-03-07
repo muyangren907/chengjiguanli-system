@@ -13,40 +13,16 @@
               </div>
           </div>
           <div class="layui-form-item">
-    		    <label for="category_id" class="layui-form-label"><span class="x-red">*</span>课题类型</label>
-    		    <div class="layui-input-block">
-    		    	{php} $category = categoryChildren(115);{/php}
-    		      <select name="category_id" lay-verify="required">
-    		      	<option value=""></option>
-    		      	{volist name="category" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.category_id"}
-                    {eq name="$list.data.category_id" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    {$vo.title}
-                  </option>
-    		        {/volist}
-    		      </select>
-    		    </div>
-    		  </div>
-          <div class="layui-form-item">
-            <label for="lxdanwei_id" class="layui-form-label"><span class="x-red">*</span>立项单位</label>
+            <label for="category_id" class="layui-form-label">课题类别</label>
             <div class="layui-input-block">
-              {php} $school = danweiJibie('区级','其它级');{/php}
-              <select name="lxdanwei_id" lay-verify="required">
-                <option value=""></option>
-                {volist name="school" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.lxdanwei_id"}
-                    {eq name="$list.data.lxdanwei_id" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    {$vo.title}
-                  </option>
-                {/volist}
+              <select name="category_id" id="category_id">
+              </select>
+            </div>
+          </div>
+        <div class="layui-form-item">
+            <label for="lxdanwei_id" class="layui-form-label">立项单位</label>
+            <div class="layui-input-block">
+              <select name="lxdanwei_id" id="lxdanwei_id">
               </select>
             </div>
           </div>
@@ -71,8 +47,15 @@
 
 <script>
   // 日期控件
-  layui.use(['laydate'], function(){
-    var laydate = layui.laydate;
+  layui.use(['laydate', 'createInput'], function(){
+    var laydate = layui.laydate
+    ,cInput = layui.createInput;
+
+    // 加载菜单
+    cInput.categorySelect('category_id', 115,"{$list.data.category_id|default=''}");
+    cInput.schoolSelect('lxdanwei_id','校级','区级',"{$list.data.lxdanwei_id|default=''}");
+
+
     //执行一个laydate实例
     laydate.render({
       elem: '#lxshijian' //指定元素

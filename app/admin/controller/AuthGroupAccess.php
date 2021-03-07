@@ -74,16 +74,16 @@ class AuthGroupAccess extends AdminBase
     {
         // 获取表单数据
         $list = request()->only([
-            'select'
+            'uid'
             ,'group_id'
         ], 'POST');
-        $list['select'] = strToArray($list['select']);
+        $list['uid'] = strToArray($list['uid']);
         $data = array();
 
         // 验证表单数据
         $validate = new \app\admin\validate\AuthGroupAccess;
         $aga = new AGA;
-        foreach ($list['select'] as $key => $value) {
+        foreach ($list['uid'] as $key => $value) {
             // 组合数组
             $temp = [
                 'group_id' => $list['group_id']

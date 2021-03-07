@@ -17,7 +17,7 @@ class KetiInfo extends Validate
         'ketice_id|课题册ID丢失'      =>    'require',
         'title|课题名称'     =>  'require|length:1,100',
         'bianhao|课题编号'     =>  'require|length:1,50',
-        'hjteachers|课题主持人'     =>  'require|array',
+        'teacher_id|课题主持人'     =>  'require',
         'fzdanwei_id|课题负责单位'     =>  'require|number',
         'subject_id|课题所属学科'     =>  'require|number',
         'category_id|课题研究类型'     =>  'require|number',
@@ -38,8 +38,8 @@ class KetiInfo extends Validate
 
     // 验证场景
     protected $scene = [
-        'create'  =>  ['ketice_id','title','bianhao','fzdanwei_id','subject_id','category','jhjtshijian','hjteachers'],
-        'edit'  =>  ['id','title','hjteachers','hjschool_id','subject_id','hjshijian','jiangxiang'],
+        'create'  =>  ['ketice_id','title','bianhao','fzdanwei_id','subject_id','category','jhjtshijian','teacher_id'],
+        'edit'  =>  ['id','title','teacher_id','hjschool_id','subject_id','hjshijian','jiangxiang'],
         'jieti'  =>  ['id','jtpic','jddengji_id','jtshijian'],
     ];
 }

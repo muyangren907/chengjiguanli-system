@@ -14,11 +14,11 @@
 {/block}
 {block name="form"}
     <form class="layui-form layui-form-pane" lay-filter="myform">
-          <div class="layui-form-item" style="margin-top: 10px;">
-              <label for="title" class="layui-form-label" style="height: 38px">
-                  <span style="height: 38px" class="x-red">*</span>管理员姓名
+          <div class="layui-form-item">
+              <label for="teacher_name" class="layui-form-label">
+                  <span class="x-red">*</span>教师姓名
               </label>
-              <div class="layui-input-block" id="search">
+              <div class="layui-input-block" id="uid" school_id="{$list.data.school_id|default=''}">
               </div>
           </div>
           <input type="hidden" id="group_id" name="group_id" value="{$list.set.group_id}">
@@ -31,51 +31,16 @@
 {/block}
 
 {block name="myjs"}
-  {load href="__XADMIN__/js/xm-select.js" /}
     <script type="text/javascript">
       // 监测复选框按钮
-      layui.use(['form'], function(){
-        var form = layui.form;
-        var formSelects = layui.formSelects;
+      layui.use(['form','createInput'], function(){
+        var form = layui.form
+         ,cInput = layui.createInput;
         
+        // 搜索教师
+        cInput.searchTeacher('uid');
       });
       
-
-      var demo1 = xmSelect.render({
-        el: '#search', 
-        autoRow: true,
-        toolbar: { show: true },
-        filterable: true,
-        remoteSearch: true,
-        tips: '请选择管理员',
-        style: {
-          height: '30px',
-        },
-        prop: {
-          name: 'xingming',
-          value: 'id',
-        },
-        remoteMethod: function(val, cb, show){
-          //这里如果val为空, 则不触发搜索
-          if(!val){
-            return cb([]);
-          }
-
-          $.ajax({
-            url:'/admin/index/adminlist',
-            type:'POST',
-            data:{
-              searchval:val
-            },
-            success:function(result){
-              cb(result)
-            },
-            error:function(result){
-              layer.msg('数据扔半道啦。',function(){});
-            },
-          });
-        },
-      })
 
     </script>
 {/block}

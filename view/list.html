@@ -108,6 +108,16 @@ layui.use(['table', 'form', 'mytable'], function() {
     table.render(options); //获取数据并渲染
     return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
   });
+  //监听排序
+  table.on('sort(mytable)', function(obj){
+    val = form.val();
+    val.field = obj.field;
+    val.order = obj.type;
+    userTable.reload({
+      initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+      ,where: val
+    })
+  });
 });
 //    // 实例化表格
 //    layui.use('table',function(){

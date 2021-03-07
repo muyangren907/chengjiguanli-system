@@ -56,12 +56,13 @@
 <script>
 
 	// 提交搜索条件后重载表格
-	layui.use(['table', 'mytable', 'createInput'],function(){
+	layui.use(['table', 'mytable', 'createInput','form'],function(){
 		var table = layui.table
-		mytable = layui.mytable
-		cInput = layui.createInput;
+		,mytable = layui.mytable
+		,form = layui.form
+		,cInput = layui.createInput;
 
-		cInput.schoolSelect('school_id','校级','校级',"{$list.data.school_id||default=''}");
+		cInput.schoolSelect('school_id','校级','校级');
 
 		// 设置列
 	options.cols=[[ //表头

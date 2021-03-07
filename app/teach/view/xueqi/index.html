@@ -59,10 +59,11 @@
   
 
   // 提交搜索条件后重载表格
-    layui.use(['table','mytable','laydate'],function(){
+    layui.use(['table','mytable','laydate','form'],function(){
       var table = layui.table
-          mytable = layui.mytable;
-          laydate = layui.laydate;
+          ,mytable = layui.mytable
+          ,form = layui.form
+          ,laydate = layui.laydate;
 
       // 设置列
   options.cols=[[ //表头

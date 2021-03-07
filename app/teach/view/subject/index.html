@@ -49,39 +49,47 @@
 
 <!-- 表格操作 -->
 <script>
-  // 设置列
-  options.cols=[[ //表头
-      {type:'checkbox', fixed: 'left'},
-      {field: 'title', title: '名称',sort: true, minWidth:240},
-      {field: 'jiancheng', title: '简称', minWidth:100,sort: true},
-      {field: "category_id",title: '类别',sort: true,templet:function(d){
-        var str='';
-        if(d.sbjCategory){
-          str = d.sbjCategory.title;
-        }
-        return str;
-      }},
-      {field: 'lieming', title: '列标识',sort: true},
-      {field: 'kaoshi', title: '是否参加考试', templet:'#kaoshi', sort: true},
-      {field: 'paixu', title: '排序', sort: true},
-      {field: 'status', title: '状态',templet:'#status', sort: true},
-      {field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
-    ]];
+  
 
   // 提交搜索条件后重载表格
-    layui.use(['table','cjgl','form'],function(){
+    layui.use(['table','mytable','form'],function(){
       var table = layui.table
-          lForm = layui.form
-          cjgl = layui.cjgl;
+          ,form = layui.form
+          ,mytable = layui.mytable;
+
+          // 设置列
+          options.cols=[[ //表头
+              {type:'checkbox', fixed: 'left'},
+              {field: 'title', title: '名称',sort: true, minWidth:240},
+              {field: 'jiancheng', title: '简称', minWidth:100,sort: true},
+              {field: "category_id",title: '类别',sort: true,templet:function(d){
+                var str='';
+                if(d.sbjCategory){
+                  str = d.sbjCategory.title;
+                }
+                return str;
+              }},
+              {field: 'lieming', title: '列标识',sort: true},
+              {field: 'kaoshi', title: '是否参加考试', templet:'#kaoshi', sort: true},
+              {field: 'paixu', title: '排序', sort: true},
+              {field: 'status', title: '状态',templet:'#status', sort: true},
+              {field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
+            ]];
+
+            // 获取筛选条件并加载表格
+      options.where = form.val("search");
+      userTable = table.render(options); //获取数据并渲染
+
+
       //表头工具栏事件
       table.on('toolbar(mytable)', function(obj){
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'subject/delete','mytable');
+            mytable.delAll(checkStatus,'/teach/subject/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加学科','subject/create','650','450');
+            xadmin.open('添加学科','/teach/subject/create','650','450');
             break;
         };
       });
@@ -96,10 +104,10 @@
             layer.msg('查看' + data.id);
             break;
           case 'del':// 删除
-            cjgl.del(obj,"subject/delete");
+            mytable.del(obj,'/teach/subject/delete');
             break;
           case 'edit':// 编辑
-            cjgl.add('编辑学科','subject/edit/'+obj.data.id,'650','450');
+            xadmin.open('编辑学科','/teach/subject/edit/'+obj.data.id,'650','450');
             break;
         };
       });

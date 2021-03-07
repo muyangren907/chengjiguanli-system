@@ -21,11 +21,9 @@
             </div>
           </div>
           <div class="layui-form-item">
-              <label for="bjsum" class="layui-form-label">
-                  班级数
-              </label>
+              <label for="bjsum" class="layui-form-label"><span class="x-red">*</span>班级数</label>
               <div class="layui-input-block">
-                  <input type="input" id="bjsum" name="bjsum" lay-verify=""
+                  <input type="input" id="bjsum" name="bjsum" lay-verify="number"
                   autocomplete="off" class="layui-input" value="" placeholder="最多可填{$list.set.classmax}个班级">
               </div>
           </div>
@@ -43,7 +41,7 @@
       var cInput = layui.createInput;
 
       // 填充下拉菜单
-      cInput.schoolSelect('school_id','校级','校级',"{$list.data.school_id||default=''}");
+      cInput.schoolSelect('school_id','校级','校级',"{$list.data.school_id|default=''}");
     });
 </script>
 {/block}
