@@ -146,7 +146,7 @@ class Danwei extends AdminBase
             'webtitle' => '批量上传荣誉图片'
             ,'butname' => '批传'
             ,'formpost' => 'POST'
-            ,'url' => 'saveall'
+            ,'url' => '/rongyu/danwei/saveall'
         );
 
         // 模板赋值

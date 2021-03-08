@@ -26,9 +26,9 @@ body {
 {/block}
 {block name="myjs"}
 <script>
-layui.use('mytable', function() {
-	var mytable = layui.mytable;
-	mytable.uploadPicMore('upload', "{$list.set.url}", '立项图片', 'keti\\lixiang');
+layui.use('createInput', function() {
+	var createInput = layui.createInput;
+	cInput.uploadPicMore('upload', "{$list.set.url}", '立项图片', 'keti\\lixiang');
 });
 
 </script>

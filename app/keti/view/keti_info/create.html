@@ -95,9 +95,8 @@
 {block name="myjs"}
 <script>
 // 日期控件
-layui.use(['laydate', 'mytable', 'createInput'], function() {
+layui.use(['laydate','createInput'], function() {
 	var laydate = layui.laydate,
-		mytable = layui.mytable,
 		cInput = layui.createInput;
 
 	// 填充下拉菜单
@@ -124,7 +123,7 @@ layui.use(['laydate', 'mytable', 'createInput'], function() {
 		trigger: 'click' //采用click弹出
 	});
 
-	mytable.uploadPic('upload', "/rongyu/danwei/upload", '课题', 'keti\\lixiang', 'lxpic');
+	cInput.uploadPic('upload', "/rongyu/danwei/upload", '课题', 'keti\\lixiang', 'lxpic');
 
 });
 

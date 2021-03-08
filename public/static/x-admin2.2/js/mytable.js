@@ -2,10 +2,9 @@
   扩展cjgl模块
   **/
 
-layui.define(['table', 'form', 'upload'], function(exports) {
+layui.define(['table', 'form'], function(exports) {
 	//提示：模块也可以依赖其它模块，如：layui.define('layer', callback);
 	var table = layui.table,
-		upload = layui.upload,
 		form = layui.form;
 
 	var obj = {
@@ -151,87 +150,6 @@ layui.define(['table', 'form', 'upload'], function(exports) {
 			});
 		},
 
-
-		// 上传图片
-		uploadPic: function(uploadId, url, category, serurl, backId) {
-			upload.render({
-				elem: '#' + uploadId, //绑定元素
-				url: url, //上传接口
-				done: function(res) {
-					if (res.val == 1) {
-						$('#' + backId).val(res.url);
-						document.getElementById("img").src = "/uploads/" + res.url;
-					}
-					layer.msg(res.msg);
-				},
-				data: {
-					text: category,
-					serurl: serurl
-				},
-				acceptMime: '.jpg,.jpeg,.png',
-				exts: 'jpg|jpeg|png',
-				auto: true,
-				error: function() {
-					//请求异常回调
-				}
-			});
-		},
-
-
-		// 上传图片
-		uploadPicMore: function(uploadId, url, category, serurl) {
-			upload.render({
-				elem: '#' + uploadId, //绑定元素
-				url: url, //改成您自己的上传接口
-				async: false,
-				done: function(res) {
-					layer.msg('上传成功');
-					layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', res.files.file);
-				},
-				data: {
-					text: category,
-					serurl: serurl
-				},
-				multiple: true,
-				number: 100,
-				acceptMime: '.jpg,.jpeg,.png',
-				exts: 'jpg|jpeg|png',
-				auto: true,
-				error: function() {
-					//请求异常回调
-					layer.msg('上传错误');
-				},
-			})
-		},
-
-
-		// 上传图片
-		uploadXls: function(uploadId, url, category, serurl, backId) {
-			upload.render({
-				elem: '#' + uploadId, //绑定元素
-				url: url, //上传接口
-				done: function(res) {
-					if (res.val == 1) {
-						$('#' + backId).val(res.url);
-					}
-					layer.msg(res.msg);
-				},
-				data: {
-					category_id: category,
-					serurl: serurl
-				},
-				acceptMime: '.xls,.xlsx',
-				exts: 'xls|xlsx',
-				auto: true,
-				error: function() {
-					//请求异常回调
-				}
-			});
-		},
-
-
-
-
 		// 恢复单条记录
 		redel: function(obj, url) {
 			layer.confirm('确认要恢复删除吗？', function(index) {
@@ -256,13 +174,6 @@ layui.define(['table', 'form', 'upload'], function(exports) {
 			});
 		},
 
-
-
-
-
-
-
-
 		// 重置密码
 		resetpassword: function(xingming, url) {
 			layer.confirm('确认要重置' + xingming + '的密码为“123456”吗？', function(index) {
@@ -279,25 +190,22 @@ layui.define(['table', 'form', 'upload'], function(exports) {
 			});
 		},
 
-
-		// 表格重载
-		reLoadTable: function(formname, tableID, mydata = {}) {
-			var formval = this.getSearchVal(formname);
-			var wheredata = $.extend(formval, mydata);
-			table.reload(tableID, {
-				where: formval,
-				done: function() {
-					for (x in formval) {
-						delete this.where[x];
-					}
-				},
-				page: {
-					curr: 1
-				}
-			});
-		},
-
-
+		// // 表格重载
+		// reLoadTable: function(formname, tableID, mydata = {}) {
+		// 	var formval = this.getSearchVal(formname);
+		// 	var wheredata = $.extend(formval, mydata);
+		// 	table.reload(tableID, {
+		// 		where: formval,
+		// 		done: function() {
+		// 			for (x in formval) {
+		// 				delete this.where[x];
+		// 			}
+		// 		},
+		// 		page: {
+		// 			curr: 1
+		// 		}
+		// 	});
+		// },
 	};
 	//输出test接口
 	exports('mytable', obj);
