@@ -386,7 +386,7 @@ class JsRongyuInfo extends AdminBase
      * @param  int  $id
      * @return \think\Response
      */
-    public function delete($id)
+    public function delete()
     {
         // 整理数据
         $id = request()->delete('id');

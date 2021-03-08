@@ -18,7 +18,7 @@ Route::group('danwei', function () {
 	    Route::rule('save', 'Danwei/save', 'post');					# 保存信息
 	    Route::rule('edit/<id>', 'Danwei/edit', 'get');				# 修改信息
 	    Route::rule('update/<id>', 'Danwei/update', 'put');			# 更新信息
-	    Route::rule('delete/<id>' ,'Danwei/delete', 'delete');		# 删除信息
+	    Route::rule('delete' ,'Danwei/delete', 'delete');		# 删除信息
 	    Route::rule('status', 'Danwei/setStatus', 'post');		# 删除信息
 	    Route::rule('upload', 'Danwei/upload', 'post');		# 上传图片
 	    Route::rule('createall', 'Danwei/createAll', 'get');				# 批量导入
@@ -35,7 +35,7 @@ Route::group('jiaoshi', function () {
 	    // Route::rule('read/<id>','Jiaoshi/read','get');				# 读取信息
 	    Route::rule('edit/<id>','Jiaoshi/edit','get');				# 修改信息
 	    Route::rule('update/<id>','Jiaoshi/update','put');			# 更新信息
-	    Route::rule('delete/<id>','Jiaoshi/delete','delete');		# 删除信息
+	    Route::rule('delete','Jiaoshi/delete','delete');		# 删除信息
 	    Route::rule('status','Jiaoshi/setStatus','post');		# 删除信息
 
 	});
@@ -49,7 +49,7 @@ Route::group('jsryinfo', function () {
 	    Route::rule('save','JsRongyuInfo/save','post');					# 保存信息
 	    Route::rule('edit/<id>','JsRongyuInfo/edit','get');				# 修改信息
 	    Route::rule('update/<id>','JsRongyuInfo/update','put');			# 更新信息
-	    Route::rule('delete/<id>','JsRongyuInfo/delete','delete');		# 删除信息
+	    Route::rule('delete','JsRongyuInfo/delete','delete');		# 删除信息
 	    Route::rule('status','JsRongyuInfo/setStatus','post');		# 删除信息
 	    Route::rule('createall/<rongyuce_id>','JsRongyuInfo/createAll','get');				# 批量导入
 	    Route::rule('saveall/<rongyuce_id>','JsRongyuInfo/saveAll','post');					# 批量保存

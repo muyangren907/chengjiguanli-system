@@ -19,36 +19,29 @@
           autocomplete="off" class="layui-input" placeholder="输入关键字并回车">
       </div>
     </div>
-    <div class="layui-form-item">
-	    <label for="category_id" class="layui-form-label" style="height: 100%">荣誉类别</label>
-	    <div class="layui-input-block">
-	    	<input type="radio" name="category_id" title="无" value="" lay-skin="primary" checked>
-	    	{php} $category = categoryChildren(112);{/php}
-	    	{volist name="category" id="vo"}
-	    		<input type="radio" name="category_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
-	    	{/volist}
-	    </div>
-	</div>
+
 	<div class="layui-form-item">
-	    <label for="fzschool_id" class="layui-form-label" style="height: 100%">颁奖单位</label>
-	    <div class="layui-input-block">
-	    	<input type="radio" name="fzschool_id" title="无" value="" lay-skin="primary" checked>
-	    	{php} $school = danweiJibie('区级','其它级'); {/php}
-	    	{volist name="school" id="vo"}
-	    		<input type="radio" name="fzschool_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
-	    	{/volist}
-	    </div>
+	<label for="category_id" class="layui-form-label">荣誉类别</label>
+	<div class="layui-input-block">
+		<select name="category_id" id="category_id">
+		</select>
 	</div>
-	<div class="layui-form-item" style="margin-bottom: 0;">
-	    <label for="hjschool_id" class="layui-form-label" style="height: 100%">获奖单位</label>
-	    <div class="layui-input-block">
-	    	<input type="radio" name="hjschool_id" title="无" value="" lay-skin="primary" checked>
-	    	{php} $school = danweiJibie('校级','区级'); {/php}
-	    	{volist name="school" id="vo"}
-	    		<input type="radio" name="hjschool_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
-	    	{/volist}
-	    </div>
+</div>
+<div class="layui-form-item">
+	<label for="fzschool_id" class="layui-form-label">颁奖单位</label>
+	<div class="layui-input-block">
+		<select name="fzschool_id" id="fzschool_id">
+		</select>
 	</div>
+</div>
+<div class="layui-form-item">
+	<label for="hjschool_id" class="layui-form-label">获奖单位</label>
+	<div class="layui-input-block">
+		<select name="hjschool_id" id="hjschool_id">
+		</select>
+	</div>
+</div>
+
 {/block}
 {block name="table"}
 	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
@@ -75,7 +68,22 @@
 </script>
 <!-- 表格操作 -->
 <script>
-	// 设置列
+	
+
+    // 提交搜索条件后重载表格
+    layui.use(['table','mytable','form','createInput'],function(){
+      var table = layui.table,
+      form = layui.form,
+      cInput = layui.createInput;
+          mytable = layui.mytable;
+
+          // 填充下拉菜单
+	cInput.categorySelect('category_id', 112);
+	cInput.schoolSelect('fzdanwei_id', '区级','其它级');
+	cInput.schoolSelect('hjdanwei_id', '校级','区级');
+	
+
+          // 设置列
   options.cols=[[ //表头
 			{type:'checkbox', fixed: 'left'},
 			{field: 'project', title: '项目名称', sort: true},
@@ -125,22 +133,22 @@
 			{field: 'id', title:'操作', toolbar: '#barDemo', minWidth:140}
 		]];
 
-    // 提交搜索条件后重载表格
-    layui.use(['table','cjgl'],function(){
-      var table = layui.table
-          cjgl = layui.cjgl;
+		// 获取筛选条件并加载表格
+	options.where = form.val("search");
+	userTable = table.render(options); //获取数据并渲染
+
       //表头工具栏事件
       table.on('toolbar(mytable)', function(obj){
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus, 'danwei/delete', 'mytable');
+            mytable.delAll(checkStatus, '/rongyu/danwei/delete', 'mytable');
             break;
           case 'add':
-            cjgl.add('添加单位荣誉', 'danwei/create', '', '', true);
+            xadmin.open('添加单位荣誉', '/rongyu/danwei/create', '', '', true);
             break;
           case 'more':
-            cjgl.add('批传', 'danwei/createall', '300', '200');
+            xadmin.open('批传', '/rongyu/danwei/createall', '300', '200');
             break;
         };
       });
@@ -155,10 +163,10 @@
 	          layer.msg('查看' + data.id);
 	          break;
 	        case 'del':// 删除
-	          cjgl.del(obj, "danwei/delete");
+	          mytable.del(obj, '/rongyudanwei/delete');
 	          break;
 	        case 'edit':// 编辑
-	          cjgl.add('编辑单位荣誉', 'danwei/edit/' + obj.data.id, '', '', true);
+	          xadmin.open('编辑单位荣誉', '/rongyu/danwei/edit/' + obj.data.id, '', '', true);
 	          break;
         };
       });
