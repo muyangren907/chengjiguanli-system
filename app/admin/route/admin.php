@@ -21,7 +21,7 @@ Route::group('index', function () {
     Route::rule('update/<id>', 'Index/update', 'put');			# 更新信息
     Route::rule('delete', 'Index/delete', 'delete');		# 删除信息
     Route::rule('status', 'Index/setStatus', 'post');		# 删除信息
-    Route::rule('adminlist', 'Index/adminList', 'post');       # 用户信息
+    // Route::rule('adminlist', 'Index/adminList', 'post');       # 用户信息
     Route::rule('downloadxls', 'Index/downloadxls', 'get');       # 用户信息
     Route::rule('createall','Index/createAll','get');              # 批量导入
     Route::rule('saveall','Index/saveAll','post');                  # 批量保存

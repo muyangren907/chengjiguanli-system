@@ -363,14 +363,6 @@ class KetiInfo extends AdminBase
         // 获取课题信息
         $list['data'] = ktinfo::where('id', $id)
                 ->field('id, title, jddengji_id, jtshijian, jtpic,beizhu')
-                ->with([
-                    'ktCy'=>function($query){
-                        $query->field('ketiinfo_id,teacher_id')
-                        ->with(['teacher'=>function($query){
-                            $query->field('id, xingming');
-                        }]);
-                    },
-                ])
                 ->find();
 
         // 设置页面标题
@@ -396,7 +388,7 @@ class KetiInfo extends AdminBase
             'jtpic'
             ,'jddengji_id'
             ,'jtshijian'
-            ,'cyteachers'=>array()
+            ,'teacher_id'=>array()
             ,'beizhu'
         ], 'PUT');
         $list['id'] = $id;
@@ -420,7 +412,8 @@ class KetiInfo extends AdminBase
             $teacherlist = [];
             $canyulist = [];
             // 循环组成获奖教师信息
-            foreach ($list['cyteachers'] as $key => $value) {
+            $list['teacher_id'] = explode(',', $list['teacher_id']);
+            foreach ($list['teacher_id'] as $key => $value) {
                 $canyulist[] = [
                     'teacher_id' => $value
                     ,'category_id' => 11902
@@ -541,5 +534,38 @@ class KetiInfo extends AdminBase
         ob_flush();
         flush();
         exit();
+    }
+
+
+    // 查询课题参与人信息
+    public function srcCy()
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'str' => ''
+                ,'ketiinfo_id' => ''
+                ,'category_id' => ''
+                ,'field' => 'id'
+                ,'order' => 'desc'
+                ,'teacher_id' => ''
+            ], 'POST');
+
+        $cy = new \app\keti\model\KetiCanyu;
+        $list = $cy->searchCanyu($src);
+        $data = array();
+        foreach ($list as $key => $value) {
+            if($value->teacher)
+            {
+                $data[] = [
+                    'xingming' => $value->teacher->adSchool->jiancheng . '--' .$value->teacher->xingming
+                    ,'id' => $value->teacher_id
+                    ,'selected' => true
+                ];
+            }
+        }
+        $data = reSetArray($data, $src);
+
+        return json($data);
     }
 }

@@ -38,6 +38,7 @@ Route::group('ketiinfo', function () {
 	    Route::rule('jieti/<id>','KetiInfo/jieTi','get');					# 批量保存
 	    Route::rule('jietiupdate/<id>','KetiInfo/jtUpdate','put');					# 批量保存
 	    Route::rule('download/<ketice_id>','KetiInfo/outXlsx','get');					# 批量保存
+	    Route::rule('srccy','KetiInfo/srcCy','post');				# 获取数据
 	});
 
 

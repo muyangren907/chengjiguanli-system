@@ -47,7 +47,7 @@
         },
 
 
-        // 选中子后代的复选框
+        // 选中后代的复选框
         checkboxChildren:function(cid, check){
           edit(cid, check);
           function edit(cid, check)
@@ -161,14 +161,14 @@
               }
 
               $.ajax({
-                url:'/admin/index/adminlist',
+                url:'/admin/index/srcteacher',
                 type:'POST',
                 data:{
                   searchval:val
                   ,school_id:school_id
                 },
                 success:function(result){
-                  cb(result)
+                  cb(result.data)
                 },
                 error:function(result){
                   layer.msg('数据扔半道啦。',function(){});
@@ -177,6 +177,24 @@
             },
           })
           return x;
+        },
+
+
+        // 载入搜索框中已经保存的教师
+        loadTeacher: function(obj, url, data) {
+          $.ajax({
+            url:url,
+            type:'POST',
+            data:data,
+            success:function(result){
+              obj.update({
+                data: result.data
+              })
+            },
+            error:function(result){
+              layer.msg('数据扔半道啦。',function(){});
+            },
+          });
         }
 
 };

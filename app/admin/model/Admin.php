@@ -77,23 +77,22 @@ class Admin extends BaseModel
     public function strSrcTeachers($srcfrom)
     {
         $src = [
-            'str' => ''
+            'searchval' => ''
             ,'school_id' => ''
         ];
         $src = array_cover($srcfrom, $src);
-        trim($src['str']);
+        trim($src['searchval']);
         // 如果有数据则查询教师信息
         $list = self::field('id, xingming, school_id, shengri, sex')
             ->when(strlen($src['school_id']) > 0, function ($query) use($src) {
                 $query->where('school_id', $src['school_id']);
             })
-            ->when(strlen($src['str']) <= 0, function ($query) use($src) {
+            ->when(strlen($src['searchval']) <= 0, function ($query) use($src) {
                 $query->where('id', '<=', 0);
             })
-            ->when(strlen($src['str']) > 0, function ($query) use($src) {
+            ->when(strlen($src['searchval']) > 0, function ($query) use($src) {
                 $query
-                    ->whereOr('xingming', 'like', '%' . $src['str'] . '%')
-                    ->whereOr('shoupin', 'like', $src['str'] . '%');
+                    ->where('xingming|shoupin', 'like', '%' . $src['searchval'] . '%');
             })
             ->with(
                 [
@@ -104,7 +103,6 @@ class Admin extends BaseModel
             )
             ->append(['age'])
             ->select();
-       
         return $list;
     }
 

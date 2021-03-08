@@ -1,185 +1,118 @@
 {extend name=".././view/create.html" /}
 {block name="jscss"}
-<style type="text/css">
-  .srcSelectStyly{
-    /*margin-top:20px;*/
-    border-width: 1px;
-    border-color:#e2e2e2;
-    border-style:solid;
-    background-color:#ffffff;
-    position:absolute;
-    left:0;
-    right:0;
-    z-index:100;
-  }
-  .srcSelectStyly dl{
-    padding-top: 3px;
-    padding-left: 6px;
-    background-color:#ffffff;
-  }
-  .srcSelectStyly dd{
-    /*margin-bottom: 3px;*/
-    /*background-color:#f2f2f2;*/
-    height: 30px;
-    padding-top: 10px;
-  }
-</style>
 {/block}
 {block name="form"}
-    <div class="layui-form-item" align="center">
-      {eq name="$list.set.formpost" value="PUT" }
-        {if strlen($list.data.jtpic)>0}
-          <img id="img" style="max-height: 300px;max-width: 500px" src="__UPLOAD__/{$list.data.jtpic}" onclick="imgMax(this,true)">
-        {else /}
-          <img id="img" style="max-height: 300px;max-width: 500px" src="__UPLOAD__/rongyu_teacher/404.png" onclick="imgMax(this,true)">
-        {/if}
-      {/eq}
-    </div>
-    <form class="layui-form layui-form-pane" lay-filter="myform">
-          <div class="layui-form-item">
-              <label for="title" class="layui-form-label">
-                  图片
-              </label>
-              <div class="layui-inline">
-                <div class="layui-input-inline" style="min-width: 300px">
-                  <input type="text" id="jtpic" name="jtpic"
-                  autocomplete="off" class="layui-input " value="{$list.data.jtpic|default=''}" placeholder="地址" readonly>
-                </div>
-                <div class="layui-input-inline" style="min-width: 100px">
-                  <button type="button" class="layui-btn" id="upload">
-                    <i class="layui-icon">&#xe67c;</i>上传图片
-                  </button>
-                </div>
-              </div>
-          </div>
-          <div class="layui-form-item">
-              <label for="cyselect" class="layui-form-label">
-                  参与人
-              </label>
-              <div class="layui-inline">
-                <div class="layui-input-inline">
-                  <input name="hjSearch" id="hjSearch" type="text" class="layui-input" autocomplete="off">
-                </div>
-                {present name="$list.data.kt_cy"}
-                  {volist name="$list.data.kt_cy" id="vo"}
-                  <div class="layui-input-inline" style="width:60px">
-                    <div onclick="cjgl.delTeacher(this)" class="layui-btn layui-btn-normal">
-                      {$vo.teacher.xingming}
-                    </div>
-                    <input type="hidden" name="cyteachers[]" value="{$vo.teacher.id}"></div>
-                  {/volist}
-                {/present}
-              </div>
-          </div>
-          <div class="layui-form-item">
-            <label for="jddengji_id" class="layui-form-label"><span class="x-red">*</span>结题鉴定 </label>
-            <div class="layui-input-block">
-              {php}$jddengji = categoryChildren(118);{/php}
-              <select name="jddengji_id" lay-verify="required">
-                <option value=""></option>
-                {volist name="jddengji" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.jddengji_id"}
-                    {eq name="$list.data.jddengji_id" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    {$vo.title}
-                  </option>
-                {/volist}
-              </select>
-            </div>
-          </div>
-          <div class="layui-form-item">
-              <label for="jtshijian" class="layui-form-label">
-                  <span class="x-red">*</span>结题时间
-              </label>
-              <div class="layui-input-block">
-                  <input type="text" id="jtshijian" name="jtshijian" lay-verify="required"
-                  autocomplete="off" class="layui-input " value="{$list.data.jtshijian|default=''}" placeholder="结题时间">
-              </div>
-          </div>
-          <div class="layui-form-item">
-              <label for="beizhu" class="layui-form-label">
-                  备注
-              </label>
-              <div class="layui-input-block">
-                  <input type="text" id="beizhu" name="beizhu" autocomplete="off" class="layui-input " value="{$list.data.beizhu|default=''}" placeholder="填写流失原因等情况">
-              </div>
-          </div>
-          <div class="layui-form-item" style="text-align: right;">
-              <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
-                  {$list.set.butname}
-              </button>
-          </div>
-      </form>
+<div class="layui-form-item" align="center">
+	{eq name="$list.set.formpost" value="PUT" }
+	{if strlen($list.data.jtpic)>0}
+	<img id="img" style="max-height: 300px;max-width: 500px" src="__UPLOAD__/{$list.data.jtpic}" onclick="imgMax(this,true)">
+	{else /}
+	<img id="img" style="max-height: 300px;max-width: 500px" src="__UPLOAD__/rongyu_teacher/404.png" onclick="imgMax(this,true)">
+	{/if}
+	{/eq}
+</div>
+<form class="layui-form layui-form-pane" lay-filter="myform">
+	<div class="layui-form-item">
+		<label for="title" class="layui-form-label">
+			图片
+		</label>
+		<div class="layui-inline">
+			<div class="layui-input-inline" style="min-width: 300px">
+				<input type="text" id="jtpic" name="jtpic" autocomplete="off" class="layui-input " value="{$list.data.jtpic|default=''}" placeholder="地址" readonly>
+			</div>
+			<div class="layui-input-inline" style="min-width: 100px">
+				<button type="button" class="layui-btn" id="upload">
+					<i class="layui-icon">&#xe67c;</i>上传图片
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label for="teacher_name" class="layui-form-label">
+			参与人
+		</label>
+		<div class="layui-input-block" id="teacher_id" school_id="{$list.data.school_id|default=''}">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label for="jddengji_id" class="layui-form-label" style="height: 100%">
+			<span class="x-red">*</span>结题鉴定
+		</label>
+		<div class="layui-input-block">
+			<select name="jddengji_id" id="jddengji_id">
+			</select>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label for="jtshijian" class="layui-form-label">
+			<span class="x-red">*</span>结题时间
+		</label>
+		<div class="layui-input-block">
+			<input type="text" id="jtshijian" name="jtshijian" lay-verify="required" autocomplete="off" class="layui-input " value="{$list.data.jtshijian|default=''}" placeholder="结题时间">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label for="beizhu" class="layui-form-label">
+			备注
+		</label>
+		<div class="layui-input-block">
+			<input type="text" id="beizhu" name="beizhu" autocomplete="off" class="layui-input " value="{$list.data.beizhu|default=''}" placeholder="填写流失原因等情况">
+		</div>
+	</div>
+	<div class="layui-form-item" style="text-align: right;">
+		<button class="layui-btn" lay-filter="mysubmit" lay-submit="">
+			{$list.set.butname}
+		</button>
+	</div>
+</form>
 {/block}
-
 {block name="myjs"}
-
 <script>
-  // 日期控件
-  layui.use(['laydate','upload'], function(){
-    var laydate = layui.laydate
-        ,upload = layui.upload;
-    //执行一个laydate实例
-    laydate.render({
-      elem: '#jtshijian' //指定元素
-      ,trigger: 'click' //采用click弹出
-    });
+// 日期控件
+layui.use(['laydate', 'mytable', 'createInput'], function() {
+	var laydate = layui.laydate,
+		mytable = layui.mytable,
+		cInput = layui.createInput;
 
-    //执行实例
-    var uploadInst = upload.render({
-      elem: '#upload' //绑定元素
-      ,url: "/rongyu/danwei/upload" //上传接口
-      ,done: function(res){
-        if(res.val == 1){
-          $('#jtpic').val(res.url);
-          document.getElementById("img").src="__UPLOAD__/"+res.url;
-        }
-        layer.msg(res.msg);
-      }
-      ,data: {
-        text: '课题'
-        ,serurl:'keti\\jieti'
+	cInput.categorySelect('jddengji_id', 118, "{$list.data.jddengji_id|default=''}");
 
-      }
-      ,acceptMime:'.jpg,.jpeg,.png'
-      ,exts:'jpg|jpeg|png'
-      ,auto:true
-      ,error: function(){
-        //请求异常回调
-      }
-    });
-  });
+	//执行一个laydate实例
+	laydate.render({
+		elem: '#jtshijian' //指定元素
+			,
+		trigger: 'click' //采用click弹出
+	});
 
-  var cjgl = parent.layui.cjgl;
+	mytable.uploadPic('upload', "/rongyu/danwei/upload", '课题', 'keti\\jieti', 'jtpic');
 
-  // 搜索教师
-  $('#hjSearch').bind({
-    keyup:function(){
-      var val = $.trim($(this).val());
-      if(val.length>0){
-        cjgl.searchTeacher(this, val, 'cyteachers[]', 'addTeacher');
-      }
-    },
-  })
+	// 搜索教师
+	xmselect = cInput.searchTeacher('teacher_id');
 
-  // 图片放大
-  function imgMax(obj,max=false)
-  {
-    if(max == true){
-      $(obj).css("max-width","800px");
-      $(obj).css("max-height","1000px");
-      $(obj).attr('onclick',"imgMax(this)");
-    }else{
-      $(obj).css("max-width","500px");
-      $(obj).css("max-height","300px");
-      $(obj).attr('onclick',"imgMax(this,true)");
-    }
-  }
+	// 添加已有表单值
+	formpost = "{$list.set.formpost|default=''}".toLocaleUpperCase();
+	if (formpost == 'PUT') {
+		data = {
+			ketiinfo_id: "{$list.data.id}",
+			category_id: 11902
+		}
+		cInput.loadTeacher(xmselect, '/keti/ketiinfo/srccy', data);
+	}
 
+});
+
+
+// 图片放大
+function imgMax(obj, max = false) {
+	if (max == true) {
+		$(obj).css("max-width", "800px");
+		$(obj).css("max-height", "1000px");
+		$(obj).attr('onclick', "imgMax(this)");
+	} else {
+		$(obj).css("max-width", "500px");
+		$(obj).css("max-height", "300px");
+		$(obj).attr('onclick', "imgMax(this,true)");
+	}
+}
 
 </script>
 {/block}
-

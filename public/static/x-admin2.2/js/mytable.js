@@ -160,7 +160,7 @@ layui.define(['table', 'form', 'upload'], function(exports) {
 				done: function(res) {
 					if (res.val == 1) {
 						$('#' + backId).val(res.url);
-						document.getElementById("img").src = "__UPLOAD__/" + res.url;
+						document.getElementById("img").src = "/uploads/" + res.url;
 					}
 					layer.msg(res.msg);
 				},
@@ -179,9 +179,36 @@ layui.define(['table', 'form', 'upload'], function(exports) {
 
 
 		// 上传图片
+		uploadPicMore: function(uploadId, url, category, serurl) {
+			upload.render({
+				elem: '#' + uploadId, //绑定元素
+				url: url, //改成您自己的上传接口
+				async: false,
+				done: function(res) {
+					layer.msg('上传成功');
+					layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', res.files.file);
+				},
+				data: {
+					text: category,
+					serurl: serurl
+				},
+				multiple: true,
+				number: 100,
+				acceptMime: '.jpg,.jpeg,.png',
+				exts: 'jpg|jpeg|png',
+				auto: true,
+				error: function() {
+					//请求异常回调
+					layer.msg('上传错误');
+				},
+			})
+		},
+
+
+		// 上传图片
 		uploadXls: function(uploadId, url, category, serurl, backId) {
 			upload.render({
-				elem: '#'+ uploadId, //绑定元素
+				elem: '#' + uploadId, //绑定元素
 				url: url, //上传接口
 				done: function(res) {
 					if (res.val == 1) {

@@ -272,26 +272,26 @@ class Index extends AdminBase
     }
 
 
-    // 查询管理员
-    public function adminList()
-    {
-        $src = request()->only([
-            'searchval'
-        ],'POST');
+    // // 查询管理员
+    // public function adminList()
+    // {
+    //     $src = request()->only([
+    //         'searchval'
+    //     ],'POST');
 
-        $ad = new AD;
-        $list = $ad->search($src);
-        $cnt = $list->count();
-        $data = array();
-        foreach ($list as $key => $value) {
-            $data[] = [
-                'xingming' => $value->adSchool->jiancheng . ' -- ' .$value->xingming
-                ,'id' => $value->id
-            ];
-        }
+    //     $ad = new AD;
+    //     $list = $ad->search($src);
+    //     $cnt = $list->count();
+    //     $data = array();
+    //     foreach ($list as $key => $value) {
+    //         $data[] = [
+    //             'xingming' => $value->adSchool->jiancheng . ' -- ' .$value->xingming
+    //             ,'id' => $value->id
+    //         ];
+    //     }
 
-        return json($data);
-    }
+    //     return json($data);
+    // }
 
 
     // 批量添加
@@ -355,7 +355,7 @@ class Index extends AdminBase
         // 获取参数
         $src = $this->request
             ->only([
-                'str' => ''
+                'searchval' => ''
                 ,'school_id' => ''
                 ,'field' => 'id'
                 ,'order' => 'desc'
@@ -363,9 +363,20 @@ class Index extends AdminBase
             ], 'POST');
 
         $ad = new AD();
-        $data = $ad->strSrcTeachers($src);
-
-        $data = reSetObject($data, $src);
+        $list = $ad->strSrcTeachers($src)
+            ->visible([
+                'id'
+                ,'xingming'
+                ,'adSchool' => ['jiancheng']
+            ]);
+        $data = array();
+        foreach ($list as $key => $value) {
+            $data[] = [
+                'xingming' => $value->adSchool->jiancheng . ' -- ' .$value->xingming
+                ,'id' => $value->id
+            ];
+        }
+        $data = reSetArray($data, $src);
 
         return json($data);
     }
