@@ -1,22 +1,20 @@
-
 {extend name=".././view/list.html" /}
 {block name="jsset"}
-
 {/block}
 {block name="nav"}
-	<span class="layui-breadcrumb">
-		<a href="">系统管理</a>
-		<a href="">数据备份</a>
-		<a><cite>备份列表</cite></a>
-	</span>
+<span class="layui-breadcrumb">
+	<a href="">系统管理</a>
+	<a href="">数据备份</a>
+	<a><cite>备份列表</cite></a>
+</span>
 {/block}
 {block name="search"}
 {/block}
 {block name="table"}
-	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
+<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
 {/block}
 {block name="myjs"}
-	<!-- 表格上面按钮模板 -->
+<!-- 表格上面按钮模板 -->
 <script type="text/html" id="toolbarDemo">
 	<div class="layui-btn-container">
 		<button class="layui-btn" lay-event="add">
@@ -32,165 +30,166 @@
 </script>
 <!-- 表格操作 -->
 <script>
-	
+// 提交搜索条件后重载表格
+layui.use(['table', 'backUp', 'form'], function() {
+	var table = layui.table,
+		form = layui.form,
+		backUp = layui.backUp;
 
-  // 提交搜索条件后重载表格
-    layui.use(['table','backUp'],function(){
-      var table = layui.table
-          backUp = layui.backUp;
+	// 设置列
+	options.cols = [
+		[ //表头
+			{ field: 'time', type: 'checkbox', fixed: 'left' },
+			{ field: 'ltime', title: '时间', sort: true, minWidth: 100 },
+			{ field: 'juan', title: '卷数', sort: true, minWidth: 100 },
+			{ field: 'yasuo', title: '压缩', sort: true, minWidth: 100 },
+			{ field: 'lsize', title: '文件大小', minWidth: 100, sort: true },
+			{ field: 'status', title: '状态', minWidth: 100, sort: true },
+			{ field: 'id', title: '操作', toolbar: '#barDemo', minWidth: 90 }
+		]
+	];
 
-      // 设置列
-  options.cols=[[ //表头
-      {field:'time', type:'checkbox', fixed: 'left'},
-      {field: 'ltime', title: '时间', sort: true, minWidth:100},
-      {field: 'juan', title: '卷数', sort: true, minWidth:100},
-      {field: 'yasuo', title: '压缩', sort: true, minWidth:100},
-      {field: 'lsize', title: '文件大小', minWidth:100,sort: true},
-      {field: 'status', title: '状态', minWidth:100,sort: true},
-      {field: 'id', title: '操作',toolbar: '#barDemo',minWidth:90}
-    ]];
+	// 获取筛选条件并加载表格
+	options.where = form.val("search");
+	userTable = table.render(options); //获取数据并渲染
 
-    // 获取筛选条件并加载表格
-    options.where = form.val("search");
-    userTable = table.render(options); //获取数据并渲染
+	//表头工具栏事件
+	table.on('toolbar(mytable)', function(obj) {
+		switch (obj.event) {
+			case 'add': // 删除
+				backUp.post();
+				break;
+		};
+	});
 
-      //表头工具栏事件
-      table.on('toolbar(mytable)', function(obj){
-        switch(obj.event){
-          case 'add':// 删除
-          	backUp.post();
-          	break;
-        };
-      });
-
-      //监听行工具条
-      table.on('tool(mytable)', function(obj){
-        var data = obj.data; //获得当前行数据
-        var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
-        var tr = obj.tr; //获得当前行 tr 的DOM对象
-        switch(layEvent){
-          case 'del':// 删除
-          	backUp.del('/system/backup/delete/' + obj.data.time);
-          	break;
-          case 'huifu':// 删除
-            backUp.back('/system/backup/import', this, obj.data.time);
-            break;
-          case 'down':// 删除
-            window.open("/system/backup/down/" + obj.data.time);
-            break;
-        };
-      });
-
-
-      // // 删除备份
-      // function mydel(url)
-      // {
-      //   $.post(
-      //     url,
-      //     '',
-      //     function(data){
-      //       layer.msg(data.msg);
-      //       if(data.val === 1)
-      //       {
-      //         userTable = table.render(options);  //获取数据并渲染
-      //       }
-      //     }, "json");
-      // }
-
-      // // 创建备份
-      // function mypost()
-      // {
-      // 	layer.msg("正在发送备份请求...");
-
-      //   $.post(
-      //     '/system/backup/export',
-      //     '',
-      //     function(data){
-      //       if(data.code==1){
-      //         layer.alert( "开始备份，请不要关闭本页面！");
-      //         backup(data.data.tab);
-      //       }else{
-      //         layer.msg(data.msg);
-      //       }
-
-      //     }, "json");
-      //   return false;
-      // }
-
-      //   //递归备份表
-      //   function backup(tab,status){
-      //     $.ajax({
-      //       url:"/system/backup/export",
-      //       data:tab,
-      //       async:false,
-      //       type:"GET",
-      //       dataType:"json",
-      //       timeout:0,
-      //       success:function(data){
-      //         if(data.code==1){
-      //             if(!$.isPlainObject(data.data.tab)){
-      //               layer.msg("备份完成");
-      //               // window.onbeforeunload = function(){ return null }
-      //               return;
-      //             }
-
-      //             backup(data.data.tab, tab.id != data.data.tab.id);
-      //           } else {
-      //             userTable = table.render(options);  //获取数据并渲染
-      //             layer.msg("备份完成");
-      //           }
-      //       }
-      //     });
-      //   }
+	//监听行工具条
+	table.on('tool(mytable)', function(obj) {
+		var data = obj.data; //获得当前行数据
+		var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+		var tr = obj.tr; //获得当前行 tr 的DOM对象
+		switch (layEvent) {
+			case 'del': // 删除
+				backUp.del('/system/backup/delete/' + obj.data.time);
+				break;
+			case 'huifu': // 删除
+				backUp.back('/system/backup/import', this, obj.data.time);
+				break;
+			case 'down': // 删除
+				window.open("/system/backup/down/" + obj.data.time);
+				break;
+		};
+	});
 
 
-      // 创建备份
-      function myhuifu(url, a, time)
-      {
-        myStatus = $(a).parent().parent().prev().children('div');
-        $(myStatus).text('等待还原');
-        $.ajax({
-          url:url,
-          type:'POST',
-          async: true,
-          data:{
-            time:time,
-          },
-          success,
-          error:function(result){
-            layer.msg('数据扔半道，回不来啦。',function(){});
-          }
-        });
-        
-        layer.alert('正在还原数据库，请不要关闭！');
-        return false;
+	// // 删除备份
+	// function mydel(url)
+	// {
+	//   $.post(
+	//     url,
+	//     '',
+	//     function(data){
+	//       layer.msg(data.msg);
+	//       if(data.val === 1)
+	//       {
+	//         userTable = table.render(options);  //获取数据并渲染
+	//       }
+	//     }, "json");
+	// }
 
-        function success(data){
-            if (data.code==1) {
-              $(myStatus).text(data.msg);
-                if (data.data.part) {
-                    $.ajax({
-                      url:url,
-                      type:'POST',
-                      async: true,
-                      data:{
-                        time:time,
-                        part:data.data.part,
-                        start:data.data.start,
-                      },
-                      success,
-                      error:function(result){
-                        layer.msg('数据扔半道，回不来啦。',function(){});
-                      }
-                    });
-                } else {
-                    layer.msg(data.msg);
-                }
-            } else {
-                layer.msg(data.msg);
-            }
-        }
-      }
-    });
+	// // 创建备份
+	// function mypost()
+	// {
+	// 	layer.msg("正在发送备份请求...");
+
+	//   $.post(
+	//     '/system/backup/export',
+	//     '',
+	//     function(data){
+	//       if(data.code==1){
+	//         layer.alert( "开始备份，请不要关闭本页面！");
+	//         backup(data.data.tab);
+	//       }else{
+	//         layer.msg(data.msg);
+	//       }
+
+	//     }, "json");
+	//   return false;
+	// }
+
+	//   //递归备份表
+	//   function backup(tab,status){
+	//     $.ajax({
+	//       url:"/system/backup/export",
+	//       data:tab,
+	//       async:false,
+	//       type:"GET",
+	//       dataType:"json",
+	//       timeout:0,
+	//       success:function(data){
+	//         if(data.code==1){
+	//             if(!$.isPlainObject(data.data.tab)){
+	//               layer.msg("备份完成");
+	//               // window.onbeforeunload = function(){ return null }
+	//               return;
+	//             }
+
+	//             backup(data.data.tab, tab.id != data.data.tab.id);
+	//           } else {
+	//             userTable = table.render(options);  //获取数据并渲染
+	//             layer.msg("备份完成");
+	//           }
+	//       }
+	//     });
+	//   }
+
+
+	// 创建备份
+	function myhuifu(url, a, time) {
+		myStatus = $(a).parent().parent().prev().children('div');
+		$(myStatus).text('等待还原');
+		$.ajax({
+			url: url,
+			type: 'POST',
+			async: true,
+			data: {
+				time: time,
+			},
+			success,
+			error: function(result) {
+				layer.msg('数据扔半道，回不来啦。', function() {});
+			}
+		});
+
+		layer.alert('正在还原数据库，请不要关闭！');
+		return false;
+
+		function success(data) {
+			if (data.code == 1) {
+				$(myStatus).text(data.msg);
+				if (data.data.part) {
+					$.ajax({
+						url: url,
+						type: 'POST',
+						async: true,
+						data: {
+							time: time,
+							part: data.data.part,
+							start: data.data.start,
+						},
+						success,
+						error: function(result) {
+							layer.msg('数据扔半道，回不来啦。', function() {});
+						}
+					});
+				} else {
+					layer.msg(data.msg);
+				}
+			} else {
+				layer.msg(data.msg);
+			}
+		}
+	}
+});
+
 </script>
 {/block}

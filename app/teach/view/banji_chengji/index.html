@@ -1,4 +1,3 @@
-
 {extend name=".././view/list.html" /}
 {block name="jsset"}
 {load href="__STATIC__/echarts/echarts.js" /}
@@ -12,51 +11,50 @@
 {/block}
 {block name="search"}
 <div class="layui-form-item">
-  <label for="searchval" class="layui-form-label">
-    关键字
-  </label>
-  <div class="layui-input-block">
-    <input type="text" id="searchval" name="searchval" autocomplete="off" class="layui-input" placeholder="输入关键字并回车">
-  </div>
+	<label for="searchval" class="layui-form-label">
+		关键字
+	</label>
+	<div class="layui-input-block">
+		<input type="text" id="searchval" name="searchval" autocomplete="off" class="layui-input" placeholder="输入关键字并回车">
+	</div>
 </div>
 <div class="layui-form-item">
-  <label for="xueqi_id" class="layui-form-label" style="height: 100%">学期</label>
-  <div class="layui-input-block">
-    <input type="radio" name="xueqi_id" title="无" value="" lay-skin="primary">
-    {php} $category = categoryChildren(108);{/php}
-    {volist name="category" id="vo"}
-    <input type="radio" name="xueqi_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
-    {/volist}
-  </div>
+	<label for="xueqi_id" class="layui-form-label" style="height: 100%">学期</label>
+	<div class="layui-input-block">
+		<input type="radio" name="xueqi_id" title="无" value="" lay-skin="primary">
+		{php} $category = categoryChildren(108);{/php}
+		{volist name="category" id="vo"}
+		<input type="radio" name="xueqi_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+		{/volist}
+	</div>
 </div>
 <div class="layui-form-item">
-  <label for="category_id" class="layui-form-label" style="height: 100%">考试类型</label>
-  <div class="layui-input-block">
-    {php} $category = categoryChildren(109);{/php}
-    {volist name="category" id="vo"}
-    <input type="checkbox" name="category_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
-    {/volist}
-  </div>
+	<label for="category_id" class="layui-form-label" style="height: 100%">考试类型</label>
+	<div class="layui-input-block">
+		{php} $category = categoryChildren(109);{/php}
+		{volist name="category" id="vo"}
+		<input type="checkbox" name="category_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
+		{/volist}
+	</div>
 </div>
 <div class="layui-form-item">
-  <div class="layui-inline">
-    <label for="title" class="layui-form-label">
-      <span class="x-red">*</span>考试时间
-    </label>
-    <div class="layui-input-inline">
-      <input type="text" class="layui-input" id="bfdate" name="bfdate" placeholder="起始：默认二年前的今天" value="{$list.data.bfdate|default=''}" autocomplete="off" lay-filter="riqi">
-    </div>
-    <div class="layui-input-inline">
-      <input type="text" class="layui-input" id="enddate" name="enddate" placeholder="结束：默认明天" value="{$list.data.enddate|default=''}" autocomplete="off" lay-filter="riqi">
-    </div>
-  </div>
+	<div class="layui-inline">
+		<label for="title" class="layui-form-label">
+			<span class="x-red">*</span>考试时间
+		</label>
+		<div class="layui-input-inline">
+			<input type="text" class="layui-input" id="bfdate" name="bfdate" placeholder="起始：默认二年前的今天" value="{$list.data.bfdate|default=''}" autocomplete="off" lay-filter="riqi">
+		</div>
+		<div class="layui-input-inline">
+			<input type="text" class="layui-input" id="enddate" name="enddate" placeholder="结束：默认明天" value="{$list.data.enddate|default=''}" autocomplete="off" lay-filter="riqi">
+		</div>
+	</div>
 </div>
 <input type="hidden" name="banji_id" value="{$list.banji_id}">
 {/block}
 {block name="table"}
 <table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
 {/block}
-
 {block name="echart"}
 {volist name="$list.subject_id" id="vo"}
 <div class="layui-col-xs6" style="width:100%; height:400px; margin-top: 45px; margin-bottom: 45px;" id="{$vo.lieming}"></div>
@@ -65,7 +63,7 @@
 {block name="myjs"}
 <!-- 表格上面按钮模板 -->
 <script type="text/html" id="toolbarDemo">
- <div class="layui-btn-container">
+	<div class="layui-btn-container">
   <button class="layui-btn" lay-event="download">
    <i class="layui-icon layui-icon-download-circle"></i> 下载
  </button>
@@ -78,216 +76,223 @@
 </script>
 <!-- 表格操作 -->
 <script>
-	// 设置列
-  options.cols=[[ //表头
-  {type:'numbers',title:'序号',rowspan:2},
-  {field: 'ks_title', title: '考试名称',sort: false,minWidth:80,rowspan:2},
-  ]
-  ,[]
-  ];
-	// 获取学科
-	var xk = '<?php echo json_encode($list["subject_id"]);?>';
-	xk = eval(decodeURIComponent(xk));
-	var xiangmu = '<?php echo json_encode($list["tjxm"]);?>';// 要显示哪些统计结果
-  xiangmu = eval(decodeURIComponent(xiangmu));
-  xiangmuCnt = xiangmu.length;
+// 设置列
+options.cols = [
+	[ //表头
+		{ type: 'numbers', title: '序号', rowspan: 2 },
+		{ field: 'ks_title', title: '考试名称', sort: false, minWidth: 80, rowspan: 2 },
+	],
+	[]
+];
+// 获取学科
+var xk = '<?php echo json_encode($list["subject_id"]);?>';
+xk = eval(decodeURIComponent(xk));
+var xiangmu = '<?php echo json_encode($list["tjxm"]);?>'; // 要显示哪些统计结果
+xiangmu = eval(decodeURIComponent(xiangmu));
+xiangmuCnt = xiangmu.length;
 
-	$.each(xk,function(index,value){
-    options.cols[0].push({title: xk[index].title,colspan:xiangmuCnt,align:'center'});
-    $.each(xiangmu,function(i,val){
-      var colname = xk[index].lieming;
-        var colinfo = {
-          title:val.title
-          ,minWidth:100
-          ,templet:function(d){
-            var str = "";
-            if(d.chengji)
-            {
-              if(d.chengji[colname])
-              {
-                str = d.chengji[colname][val.biaoshi];
-              }
-            }
-            return str;
-          }
-        };
-        options.cols[1].push(colinfo);
-      });
-    });
- options.cols[0].push({title: '全科及格率%',minWidth:100,rowspan:2,templet:function(d){
-  var str = d.quanke.jigelv;
-  return str;
-}});
- options.cols[0].push({ title: '总平均分',minWidth:100,rowspan:2,templet:function(d){
-  var str = d.quanke.avg;
-  return str;
-}});
+$.each(xk, function(index, value) {
+	options.cols[0].push({ title: xk[index].title, colspan: xiangmuCnt, align: 'center' });
+	$.each(xiangmu, function(i, val) {
+		var colname = xk[index].lieming;
+		var colinfo = {
+			title: val.title,
+			minWidth: 100,
+			templet: function(d) {
+				var str = "";
+				if (d.chengji) {
+					if (d.chengji[colname]) {
+						str = d.chengji[colname][val.biaoshi];
+					}
+				}
+				return str;
+			}
+		};
+		options.cols[1].push(colinfo);
+	});
+});
+options.cols[0].push({
+	title: '全科及格率%',
+	minWidth: 100,
+	rowspan: 2,
+	templet: function(d) {
+		var str = d.quanke.jigelv;
+		return str;
+	}
+});
+options.cols[0].push({
+	title: '总平均分',
+	minWidth: 100,
+	rowspan: 2,
+	templet: function(d) {
+		var str = d.quanke.avg;
+		return str;
+	}
+});
 
-  // 提交搜索条件后重载表格
-  layui.use(['table','cjgl','laydate'],function(){
-  	var table = layui.table
-  	cjgl = layui.cjgl
-  	form = layui.form
-    laydate = layui.laydate;
+// 提交搜索条件后重载表格
+layui.use(['table', 'cjgl', 'laydate'], function() {
+	var table = layui.table
+	cjgl = layui.cjgl
+	form = layui.form
+	laydate = layui.laydate;
 
-    //开始时间
-    laydate.render({
-      elem: '#bfdate'
-      ,type: 'datetime'
-      ,trigger: 'click' //采用click弹出
-      ,format: 'yyyy-M-d' //可任意组合
-      ,done: function(value, date, endDate){
-        form.val("search",{
-          "bfdate" : value,
-        });
-        $("#srcsubmit").click();
-        // 添加图表中内容
-        for(x in xk)
-        {
-          getDefenlv(xk[x].id,xk[x].lieming,xk[x].title);
-        }
-      }
-    });
-    //结束时间
-    laydate.render({
-      elem: '#enddate'
-      ,type: 'datetime'
-      ,trigger: 'click' //采用click弹出
-      ,format: 'yyyy-M-d' //可任意组合
-      ,done: function(value, date, endDate){
-        form.val("search",{
-          "enddate" : value,
-        });
-        $("#srcsubmit").click();
-        // 添加图表中内容
-        for(x in xk)
-        {
-          getDefenlv(xk[x].id,xk[x].lieming,xk[x].title);
-        }
-      }
-    });
+	//开始时间
+	laydate.render({
+		elem: '#bfdate',
+		type: 'datetime',
+		trigger: 'click' //采用click弹出
+			,
+		format: 'yyyy-M-d' //可任意组合
+			,
+		done: function(value, date, endDate) {
+			form.val("search", {
+				"bfdate": value,
+			});
+			$("#srcsubmit").click();
+			// 添加图表中内容
+			for (x in xk) {
+				getDefenlv(xk[x].id, xk[x].lieming, xk[x].title);
+			}
+		}
+	});
+	//结束时间
+	laydate.render({
+		elem: '#enddate',
+		type: 'datetime',
+		trigger: 'click' //采用click弹出
+			,
+		format: 'yyyy-M-d' //可任意组合
+			,
+		done: function(value, date, endDate) {
+			form.val("search", {
+				"enddate": value,
+			});
+			$("#srcsubmit").click();
+			// 添加图表中内容
+			for (x in xk) {
+				getDefenlv(xk[x].id, xk[x].lieming, xk[x].title);
+			}
+		}
+	});
 
-    // 添加图表中内容
-    for(x in xk)
-    {
-      getDefenlv(xk[x].id,xk[x].lieming,xk[x].title);
-    }
-
-
-    //表头工具栏事件
-    table.on('toolbar(mytable)', function(obj){
-      switch(obj.event){
-        case 'dels':
-	        var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-	        cjgl.delAll(checkStatus,'/school','mytable');
-	        break;
-	      case 'add':
-	        cjgl.add('添加单位','/school/create','650','500');
-	        break;
-	      case 'download':
-          layer.msg('正在开发……');
-          break;
-	        cjgl.add('下载成绩','','650','300');
-	        break;
-       };
-     });
-
-    //监听行工具条
-    table.on('tool(mytable)', function(obj){
-        var data = obj.data; //获得当前行数据
-        var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
-        var tr = obj.tr; //获得当前行 tr 的DOM对象
-        switch(layEvent){
-        	case 'del':// 删除
-            cjgl.del(obj,"/school");
-            break;
-        	case 'edit':// 编辑
-            cjgl.add('编辑单位','','650','500');
-            break;
-        };
-      });
-
-    // 监听表单提交
-    form.on('radio', function(data){
-      $("#srcsubmit").click();
-      // 添加图表中内容
-      for(x in xk)
-      {
-        getDefenlv(xk[x].id,xk[x].lieming,xk[x].title);
-      }
-    });
+	// 添加图表中内容
+	for (x in xk) {
+		getDefenlv(xk[x].id, xk[x].lieming, xk[x].title);
+	}
 
 
-  	// 监听表单提交
-  	form.on('checkbox', function(data){
-      $("#srcsubmit").click();
-      // 添加图表中内容
-      for(x in xk)
-      {
-        getDefenlv(xk[x].id,xk[x].lieming,xk[x].title);
-      }
-    });
+	//表头工具栏事件
+	table.on('toolbar(mytable)', function(obj) {
+		switch (obj.event) {
+			case 'dels':
+				var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
+				cjgl.delAll(checkStatus, '/school', 'mytable');
+				break;
+			case 'add':
+				cjgl.add('添加单位', '/school/create', '650', '500');
+				break;
+			case 'download':
+				layer.msg('正在开发……');
+				break;
+				cjgl.add('下载成绩', '', '650', '300');
+				break;
+		};
+	});
+
+	//监听行工具条
+	table.on('tool(mytable)', function(obj) {
+		var data = obj.data; //获得当前行数据
+		var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+		var tr = obj.tr; //获得当前行 tr 的DOM对象
+		switch (layEvent) {
+			case 'del': // 删除
+				cjgl.del(obj, "/school");
+				break;
+			case 'edit': // 编辑
+				cjgl.add('编辑单位', '', '650', '500');
+				break;
+		};
+	});
+
+	// 监听表单提交
+	form.on('radio', function(data) {
+		$("#srcsubmit").click();
+		// 添加图表中内容
+		for (x in xk) {
+			getDefenlv(xk[x].id, xk[x].lieming, xk[x].title);
+		}
+	});
 
 
-    // 条形统计图--平均分
-    function getDefenlv(sbjid,sbjlieming,sbjtitle){
-      var id = sbjlieming;
-      var url = '/teach/banjicj/datatx';
-      var val = form.val('search');
-      val.subject_id = sbjid;
-      var title = sbjtitle;
-      createZhexian(id,url,val,title);
-    }
+	// 监听表单提交
+	form.on('checkbox', function(data) {
+		$("#srcsubmit").click();
+		// 添加图表中内容
+		for (x in xk) {
+			getDefenlv(xk[x].id, xk[x].lieming, xk[x].title);
+		}
+	});
 
-  });
 
-  /**
-  * 异步获取图表中的数据
-  *
-  * @access public
-  * @param id 要添加数据的div
-  * @param url 异步地址
-  * @param val 异步时携带的参数
-  * @param val 图表标题
-  * @return array 返回类型
-  */
-  function createZhexian(id,url,val,title)
-  {
-    var myZhexian = echarts.init(document.getElementById(id));
-    $.post(url,val).done(function (data) {
-      myZhexian.setOption({
-        title: {
-          text: title
-        },
-        tooltip: {
-          trigger: 'axis'
-        },
-        legend: {
-          data: data.legend
-        },
-        grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
-        },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
-        },
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          data: data.xAxis,
-        },
-        yAxis: {
-          type: 'value'
-        },
-        series: data.series,
-      });
-    });
-  }
+	// 条形统计图--平均分
+	function getDefenlv(sbjid, sbjlieming, sbjtitle) {
+		var id = sbjlieming;
+		var url = '/teach/banjicj/datatx';
+		var val = form.val('search');
+		val.subject_id = sbjid;
+		var title = sbjtitle;
+		createZhexian(id, url, val, title);
+	}
 
-  </script>
-  {/block}
+});
+
+/**
+ * 异步获取图表中的数据
+ *
+ * @access public
+ * @param id 要添加数据的div
+ * @param url 异步地址
+ * @param val 异步时携带的参数
+ * @param val 图表标题
+ * @return array 返回类型
+ */
+function createZhexian(id, url, val, title) {
+	var myZhexian = echarts.init(document.getElementById(id));
+	$.post(url, val).done(function(data) {
+		myZhexian.setOption({
+			title: {
+				text: title
+			},
+			tooltip: {
+				trigger: 'axis'
+			},
+			legend: {
+				data: data.legend
+			},
+			grid: {
+				left: '3%',
+				right: '4%',
+				bottom: '3%',
+				containLabel: true
+			},
+			toolbox: {
+				feature: {
+					saveAsImage: {}
+				}
+			},
+			xAxis: {
+				type: 'category',
+				boundaryGap: false,
+				data: data.xAxis,
+			},
+			yAxis: {
+				type: 'value'
+			},
+			series: data.series,
+		});
+	});
+}
+
+</script>
+{/block}
