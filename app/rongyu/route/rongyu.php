@@ -23,6 +23,7 @@ Route::group('danwei', function () {
 	    Route::rule('upload', 'Danwei/upload', 'post');		# 上传图片
 	    Route::rule('createall', 'Danwei/createAll', 'get');				# 批量导入
 	    Route::rule('saveall', 'Danwei/saveAll', 'post');					# 批量保存
+	    Route::rule('srccy','Danwei/srcCy','post');				# 获取数据
 	});
 
 
@@ -37,7 +38,6 @@ Route::group('jiaoshi', function () {
 	    Route::rule('update/<id>','Jiaoshi/update','put');			# 更新信息
 	    Route::rule('delete','Jiaoshi/delete','delete');		# 删除信息
 	    Route::rule('status','Jiaoshi/setStatus','post');		# 删除信息
-
 	});
 
 
@@ -55,6 +55,5 @@ Route::group('jsryinfo', function () {
 	    Route::rule('saveall/<rongyuce_id>','JsRongyuInfo/saveAll','post');					# 批量保存
 	    Route::rule('list/<rongyuce_id>','JsRongyuInfo/rongyuList','get');					# 批量保存
 	    Route::rule('outxlsx/<rongyuce_id>','JsRongyuInfo/outXlsx','get');					# 批量保存
-
-
+	    Route::rule('srccy','JsRongyuInfo/srcCy','post');				# 获取数据
 	});

@@ -169,6 +169,7 @@ class Index extends BaseController
                 : $src['order'] = SORT_ASC;   # 数据排序
                 $arr = $this->sortArrByManyField($arr, $src['field'], $src['order']);
             }
+            // halt($arr);
             $limit_start = $src['page'] * $src['limit'] - $src['limit']; # 获取当前页数据
             $limit_length = $src['limit'];
             $arr = array_slice($arr, $limit_start, $limit_length);

@@ -269,6 +269,88 @@ layui.extend({
       });
     },
 
+
+    // 放大、缩小图片
+    imgMax: function(obj) {
+      var max;
+      max = $(obj).attr('max');
+      if (max == 0) {
+        $(obj).css("max-width", "800px");
+        $(obj).css("max-height", "1000px");
+        $(obj).attr('max', 1);
+      } else {
+        $(obj).css("max-width", "500px");
+        $(obj).css("max-height", "300px");
+        $(obj).attr('max', 0);
+      }
+    },
+
+
+    // 创建类别的Select
+    subjectSelect: function(myid, value = '', kaoshi='', hasNull = true) {
+      $.ajax({
+        url: '/teach/subject/data',
+        type: 'POST',
+        data: {
+          status:1,
+          kaoshi:kaoshi
+        },
+        success: function(result) {
+          if (hasNull == true) {
+            str = '<option value=""></option>';
+          } else {
+            str = '';
+          }
+          temp = "";
+          $(result.data).each(function(i, el) {
+            if (value != '' && value == el.id) {
+              temp = '<option value="' + el.id + '" selected>' + el.title + '</option>';
+            } else {
+              temp = '<option value="' + el.id + '">' + el.title + '</option>';
+            }
+            str = str + temp;
+          });
+          $('#' + myid).append(str);
+          form.render('select');
+        },
+        error: function(result) {
+          layer.msg('数据扔半道啦。', function() {});
+        },
+      });
+    },
+
+
+    // 创建班级checkbox
+    banjiCheckbox: function (myid, data, value, hasAll=true) {
+      $.ajax({
+        url: '/teach/banji/mybanji',
+        type: 'POST',
+        data: data,
+        success: function(result) {
+          $('#' + myid).children().remove();
+          if (hasAll == true) {
+            str = '<input type="checkbox" title="全选" lay-skin="primary" value="" cid="1" lay-filter="mycheackbox">';
+          } else {
+            str = '';
+          }
+          temp = "";
+          $(result.data).each(function(i, el) {
+            if (value != '' && value == el.id) {
+              temp = '<input type="checkbox" name="' + myid + '_id[]' + '" title="' + el.banTitle + '" value="' + el.id + '" lay-skin="primary" value="" pid="1" checked lay-filter="mycheackbox">';
+            } else {
+              temp = '<input type="checkbox" name="' + myid + '_id[]' + '" title="' + el.banTitle + '" value="' + el.id + '" lay-skin="primary" value="" pid="1" lay-filter="mycheackbox">';
+            }
+            str = str + temp;
+          });
+          $('#' + myid).append(str);
+          form.render('checkbox');
+        },
+        error: function(result) {
+          layer.msg('数据扔半道啦。', function() {});
+        },
+      });
+    }
+
   };
   //输出test接口
   exports('createInput', obj);

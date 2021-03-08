@@ -58,6 +58,7 @@ Route::group('subject', function () {
 	    Route::rule('delete','subject/delete','delete');		# 删除信息
 	    Route::rule('status','subject/setStatus','post');		# 删除信息
 	    Route::rule('kaoshi','subject/kaoshi','post');		# 删除信息
+	    Route::rule('srccy','subject/srcsbj','post');				# 获取数据
 	});
 
 

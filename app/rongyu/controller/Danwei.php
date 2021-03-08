@@ -96,7 +96,7 @@ class Danwei extends AdminBase
             'url'
             ,'project'
             ,'title'
-            ,'teachers' => array()
+            ,'teacher_id' => array()
             ,'hjschool_id'
             ,'category_id'
             ,'fzshijian'
@@ -116,8 +116,8 @@ class Danwei extends AdminBase
         $data = DW::create($list);
 
         // 重组教师id
-        $teachers = array();
-        foreach ($list['teachers'] as $key => $value) {
+        $list['teacher_id'] = explode(',', $list['teacher_id']);
+        foreach ($list['teacher_id'] as $key => $value) {
            $teachers[]['teacher_id'] = $value;
         }
 
@@ -277,7 +277,7 @@ class Danwei extends AdminBase
             ,'fzshijian'
             ,'fzschool_id'
             ,'jiangxiang_id'
-            ,'teachers' => array()
+            ,'teacher_id' => array()
             ,'url'
         ], 'put');
         $list['id'] = $id;
@@ -299,8 +299,9 @@ class Danwei extends AdminBase
 
         // 声明参与教师数组
         $canyulist = [];
+        $list['teacher_id'] = explode(',', $list['teacher_id']);
         // 循环组成参与教师
-        foreach ($list['teachers'] as $key => $value) {
+        foreach ($list['teacher_id'] as $key => $value) {
             $canyulist[] = [
                 'teacher_id' => $value,
             ];
@@ -355,6 +356,38 @@ class Danwei extends AdminBase
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息
+        return json($data);
+    }
+
+
+    // 查询单位参与人信息
+    public function srcCy()
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'str' => ''
+                ,'rongyu_id' => ''
+                ,'field' => 'id'
+                ,'order' => 'desc'
+                ,'teacher_id' => ''
+            ], 'POST');
+
+        $cy = new \app\rongyu\model\DwRongyuCanyu;
+        $list = $cy->searchCanyu($src);
+        $data = array();
+        foreach ($list as $key => $value) {
+            if($value->teacher)
+            {
+                $data[] = [
+                    'xingming' => $value->teacher->adSchool->jiancheng . '--' .$value->teacher->xingming
+                    ,'id' => $value->teacher_id
+                    ,'selected' => true
+                ];
+            }
+        }
+        $data = reSetArray($data, $src);
+
         return json($data);
     }
 }

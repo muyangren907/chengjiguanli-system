@@ -40,6 +40,8 @@ class Subject extends AdminBase
                 ,'limit' => '10'
                 ,'field' => 'update_time'
                 ,'order' => 'asc'
+                ,'kaoshi' => ''
+                ,'status' => ''
                 ,'xingzhi' => array()
                 ,'searchval' => ''
             ],'POST');
@@ -229,5 +231,4 @@ class Subject extends AdminBase
         // 返回信息
         return json($data);
     }
-
 }

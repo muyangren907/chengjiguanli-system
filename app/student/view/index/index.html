@@ -20,31 +20,31 @@
           autocomplete="off" class="layui-input" placeholder="输入关键字并回车">
       </div>
     </div>
-    <div class="layui-form-item">
-	    <label for="school_id" class="layui-form-label" style="height: 100%">学校</label>
-	    <div class="layui-input-block">
-        <input type="radio" name="school_id" title="无" value="" lay-skin="primary" checked>
-	    	{php} $schoollist =  danweiJibie('校级', '校级');{/php}
-	    	{volist name="schoollist" id="vo"}
-	    		<input type="radio" name="school_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" lay-filter="src">
-	    	{/volist}
-	    </div>
-	</div>
+  <div class="layui-form-item">
+  <label for="school_id" class="layui-form-label">学校</label>
+  <div class="layui-input-block">
+    <select name="school_id" id="school_id">
+    </select>
+  </div> 
+</div>
 	<div class="layui-form-item">
 	    <label for="ruxuenian" class="layui-form-label" style="height: 100%">年级 </label>
 	    <div class="layui-input-block">
-        <input type="radio" name="ruxuenian" title="无" value="" lay-skin="primary" checked>
 	    	{php}
           $njlist = nianJiNameList('str', time());
         {/php}
-        {volist name="njlist" id="vo"}
-	    		<input type="radio" name="ruxuenian" title="{$vo}" value="{$key}" lay-skin="primary"  lay-filter="src">
-	    	{/volist}
-	    </div>
+         <select name="ruxuenian" id="ruxuenian">
+          <option value=""></option>
+          {volist name="njlist" id="vo"}
+          <option value="{$key}">{$vo}</option>
+          {/volist}
+        </select>
+        
+	    </div> 
 	</div>
 	<div class="layui-form-item" style="margin-bottom: 0;">
     <label for="banji_id" class="layui-form-label" style="height: 100%">班级</label>
-    <div class="layui-input-block" id="banji_id">
+    <div class="layui-input-block" id="banji">
     </div>
   </div>
 {/block}
@@ -85,53 +85,66 @@
 </script>
 <!-- 表格操作 -->
 <script>
-	// 设置列
-  options.cols=[[ //表头
-			{type:'checkbox', fixed: 'left'},
-			{field: 'xingming', title: '姓名',sort: true},
-			{field: 'sex', title: '性别',sort: true},
-			{field: "shengri",title: '周岁',sort: true,templet:function(d){
-				return d.age;
-			}},
-			{field: 'banji', title: '班级',sort: true,templet:function(d){
-				var str='';
-				if(d.stuBanji)
-				{
-					str = d.stuBanji.banjiTitle;
-				}
-				return str;
-			}},
-			{field: 'status', title: '是否参加考试',templet:'#kaoshi', sort: true},
-			{field: 'status', title: '状态',templet:'#status', sort: true},
-			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:180}
-		]];
+	
 
   // 提交搜索条件后重载表格
-    layui.use(['table','cjgl'],function(){
-      var table = layui.table
-          cjgl = layui.cjgl;
+    layui.use(['table','mytable', 'createInput','form'],function(){
+      var table = layui.table,
+      form = layui.form,
+    cInput = layui.createInput,
+          mytable = layui.mytable;
+
+          cInput.schoolSelect('school_id', '校级', '校级');
 
       // 添加班级
-      addBanji();
+      // addBanji();
+
+          // 设置列
+  options.cols=[[ //表头
+      {type:'checkbox', fixed: 'left'},
+      {field: 'xingming', title: '姓名',sort: true},
+      {field: 'sex', title: '性别',sort: true},
+      {field: "shengri",title: '周岁',sort: true,templet:function(d){
+        return d.age;
+      }},
+      {field: 'banji', title: '班级',sort: true,templet:function(d){
+        var str='';
+        if(d.stuBanji)
+        {
+          str = d.stuBanji.banjiTitle;
+        }
+        return str;
+      }},
+      {field: 'status', title: '是否参加考试',templet:'#kaoshi', sort: true},
+      {field: 'status', title: '状态',templet:'#status', sort: true},
+      {field: 'id', title: '操作',toolbar: '#barDemo',minWidth:180}
+    ]];
+
+
+    // 获取筛选条件并加载表格
+  options.where = form.val("search");
+  userTable = table.render(options); //获取数据并渲染
+
+     
 
       //表头工具栏事件
       table.on('toolbar(mytable)', function(obj){
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/student/index/delete','mytable');
+            mytable.delAll(checkStatus,'/student/index/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加学生','/student/index/create','','',true);
+            x.admin.open('添加学生','/student/index/create','','',true);
             break;
           case 'upload':
-            cjgl.add('校对导入','/student/index/createall','600','300',false);
+            x.admin.open('校对导入','/student/index/createall','600','300',false);
             break;
           case 'download':
           	window.open("/student/index/download");
             break;
           case 'jdsc':
-            cjgl.add('表格删除','/student/index/deletes', '600', '300', false);
+            x.admin.open('表格删除','/student/index/deletes', '600', '300', false);
             break;
         };
       });
@@ -143,44 +156,40 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
           case 'detail':// 查看
-	          cjgl.addTab(obj.data.xingming + '－信息','/student/index/read/' + obj.data.id, true);
+	          parent.xadmin.add_tap(obj.data.xingming + '－信息','/student/index/read/' + obj.data.id, true);
 	          break;
           case 'chengji':// 查看
-            cjgl.addTab(obj.data.xingming + ' － 成绩','/student/chengji/index/' + obj.data.id, true);
+            parent.xadmin.add_tap(obj.data.xingming + ' － 成绩','/student/chengji/index/' + obj.data.id, true);
             break;
 	        case 'del':// 删除
-	          cjgl.del(obj,"/student/index/delete");
+	          mytable.del(obj,"/student/index/delete");
 	          break;
 	        case 'edit':// 编辑
-	          cjgl.add('编辑学生','/student/index/edit/'+obj.data.id,'','',true);
+	          x.admin.open('编辑学生','/student/index/edit/'+obj.data.id,'','',true);
 	          break;
 	        case 'status':// 状态
-	          cjgl.status(obj,"{:url('setstatus')}");
+	          mytable.status(obj,"{:url('setstatus')}");
 	          break;
           case 'reset':// 编辑
-            cjgl.resetpassword(obj.data.xingming,"/student/index/resetpassword/"+obj.data.id);
+            mytable.resetpassword(obj.data.xingming,"/student/index/resetpassword/"+obj.data.id);
             break;
         };
       });
 
-      // 监听表单提交
-      form.on('radio', function(data){
-        addBanji();
-        $("#srcsubmit").click();
+      form.on('select()', function(data){
+        var formval;
+          formval = formval = form.val("search");
+          cInput.banjiCheckbox('banji', formval);
       });
 
-      // 添加班级列表
-      function addBanji(){
-          // 获取参数
-          var formval;
-          formval = formval = form.val("search");
-          if(formval.school == '')
-          {
-            $('#banji_id').children().remove();
-          }else{
-            cjgl.createCheckbox('banji_id', formval, '/teach/banji/mybanji', 'banji_id', 'banTitle');
-          }
-      }
+      form.on('checkbox(mycheackbox)', function(data) {
+        pid = $(data.elem).attr('pid');
+        cid = $(data.elem).attr('cid');
+        check = data.elem.checked;
+        cInput.checkboxChildren(cid, check);
+        cInput.checkboxParent(pid, check);
+      });
+
     });
 </script>
 {/block}

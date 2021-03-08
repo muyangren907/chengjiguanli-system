@@ -19,4 +19,35 @@ class JsRongyuCanyu extends BaseModel
     {
     	return $this->belongsTo('\app\admin\model\Admin', 'teacher_id', 'id');
     }
+
+    //搜索课题册
+    public function searchCanyu($srcfrom)
+    {
+        $src = [
+            'rongyu_id' => ''
+            ,'category_id' => ''
+        ];
+        $src = array_cover($srcfrom, $src);
+
+        $list = $this
+            ->where('rongyu_id', $src['rongyu_id'])
+            ->where('category_id', $src['category_id'])
+            ->with(
+                [
+                    'teacher' => function($query){
+                        $query->field('id, xingming, school_id')
+                            ->with([
+                                'adSchool' => function ($q) {
+                                    $q->field('id, jiancheng');
+                                }
+                            ]);
+                    },
+                    'rongyu' => function($query){
+                        $query->field('id, title');
+                    },
+                ]
+            )
+            ->select();
+        return $list;
+    }
 }

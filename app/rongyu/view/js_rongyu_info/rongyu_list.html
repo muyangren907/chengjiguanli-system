@@ -21,28 +21,19 @@
       </div>
     </div>
     <div class="layui-form-item">
-	    <label for="subject_id" class="layui-form-label" style="height: 100%">所属学科</label>
-	    <div class="layui-input-block">
-	    	<input type="radio" name="subject_id" title="无" value="" lay-skin="primary" checked>
-	    	{php}
-	    		$sbj = new \app\teach\model\Subject;
-	    		$subject = $sbj->field('id,title')->where('status',1)->order('paixu')->select();
-	    	{/php}
-	    	{volist name="subject" id="vo"}
-	    		<input type="radio" name="subject_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
-	    	{/volist}
-	    </div>
+	<label for="subject_id" class="layui-form-label">所属学科</label>
+	<div class="layui-input-block">
+		<select name="subject_id" id="subject_id">
+		</select>
 	</div>
-	<div class="layui-form-item" style="margin-bottom: 0;">
-	    <label for="hjschool_id" class="layui-form-label" style="height: 100%">获奖单位</label>
-	    <div class="layui-input-block">
-	    	<input type="radio" name="hjschool_id" title="无" value="" lay-skin="primary" checked>
-	    	{php} $school = danweiJibie('校级','区级'); {/php}
-	    	{volist name="school" id="vo"}
-	    		<input type="radio" name="hjschool_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary">
-	    	{/volist}
-	    </div>
-	</div>
+</div>
+	<div class="layui-form-item">
+			<label for="hjschool_id" class="layui-form-label">获奖单位</label>
+			<div class="layui-input-block">
+				<select name="hjschool_id" id="hjschool_id">
+				</select>
+			</div> 
+		</div>
 	<input type="hidden" name="rongyuce_id" value="{$list.rongyuce_id}">
 {/block}
 {block name="table"}
@@ -70,7 +61,19 @@
 </script>
 <!-- 表格操作 -->
 <script>
-	// 设置列
+	
+
+  // 提交搜索条件后重载表格
+    layui.use(['table','form','mytable','createInput'],function(){
+      var table = layui.table,
+      form = layui.form,
+      cInput = layui.createInput,
+          mytable = layui.mytable;
+
+          cInput.subjectSelect('subject_id','',1);
+	cInput.schoolSelect('hjschool_id', '校级', '区级');
+
+          // 设置列
   options.cols=[[ //表头
 			{type:'checkbox', fixed: 'left'},
 			{field: 'title', title: '荣誉名称',sort: true, minWidth:240},
@@ -126,19 +129,20 @@
 			{field: 'id', title: '操作',toolbar: '#barDemo',minWidth:140}
 		]];
 
-  // 提交搜索条件后重载表格
-    layui.use(['table','cjgl'],function(){
-      var table = layui.table
-          cjgl = layui.cjgl;
+		// 获取筛选条件并加载表格
+	options.where = form.val("search");
+	userTable = table.render(options); //获取数据并渲染
+
+
       //表头工具栏事件
       table.on('toolbar(mytable)', function(obj){
         switch(obj.event){
           case 'dels':
             var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/rongyu/jsryinfo/delete','mytable');
+            mytable.delAll(checkStatus,'/rongyu/jsryinfo/delete','mytable');
             break;
           case 'add':
-            cjgl.add('添加荣誉','/rongyu/jsryinfo/create/'+"{$list.rongyuce_id}",'','',true);
+            xadmin.open('添加荣誉','/rongyu/jsryinfo/create/'+"{$list.rongyuce_id}",'','',true);
             break;
           case 'download':
           	window.open('/rongyu/jsryinfo/outxlsx/'+"{$list.rongyuce_id}");
@@ -153,10 +157,10 @@
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         switch(layEvent){
           	case 'del':// 删除
-	          cjgl.del(obj,"/rongyu/jsryinfo/delete");
+	          mytable.del(obj,"/rongyu/jsryinfo/delete");
 	          break;
 	        case 'edit':// 编辑
-	          cjgl.add('编辑荣誉','/rongyu/jsryinfo/edit/'+obj.data.id,'','',true);
+	          xadmin.open('编辑荣誉','/rongyu/jsryinfo/edit/'+obj.data.id,'','',true);
 	          break;
         };
       });

@@ -13,40 +13,20 @@
               </div>
           </div>
           <div class="layui-form-item">
-    		    <label for="category_id" class="layui-form-label"><span class="x-red">*</span>荣誉类型</label>
-    		    <div class="layui-input-block">
-    		    	{php} $category = categoryChildren(114);{/php}
-    		      <select name="category_id" lay-verify="required">
-    		      	<option value=""></option>
-    		      	{volist name="category" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.category_id"}
-                    {eq name="$list.data.category_id" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    {$vo.title}
-                  </option>
-    		        {/volist}
-    		      </select>
-    		    </div>
-    		  </div>
-          <div class="layui-form-item">
-            <label for="fzschool_id" class="layui-form-label"><span class="x-red">*</span>颁奖单位</label>
+            <label for="category_id" class="layui-form-label" style="height: 100%">
+              <span class="x-red">*</span>荣誉类型
+            </label>
             <div class="layui-input-block">
-              {php} $school = danweiJibie('区级', '其它级');{/php}
-              <select name="fzschool_id" lay-verify="required">
-                <option value=""></option>
-                {volist name="school" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.fzschool_id"}
-                    {eq name="$list.data.fzschool_id" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    {$vo.title}
-                  </option>
-                {/volist}
+              <select name="category_id" id="category_id">
+              </select>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label for="fzschool_id" class="layui-form-label">
+              <span class="x-red">*</span>颁奖单位
+            </label>
+            <div class="layui-input-block">
+              <select name="fzschool_id" id="fzschool_id">
               </select>
             </div>
           </div>
@@ -71,14 +51,21 @@
 
 <script>
   // 日期控件
-  layui.use(['laydate'], function(){
-    var laydate = layui.laydate;
+  layui.use(['laydate','createInput'], function(){
+    var laydate = layui.laydate,
+    cInput = layui.createInput;
+
+    cInput.categorySelect('category_id', 112, "{$list.data.category_id|default=''}");
+    cInput.schoolSelect('fzschool_id', '区级', '其它级', "{$list.data.fzschool_id|default=''}");
+
+
     //执行一个laydate实例
     laydate.render({
-      elem: '#fzshijian' //指定元素
-      ,trigger: 'click' //采用click弹出
+      elem: '#fzshijian', //指定元素
+      trigger: 'click' //采用click弹出
     });
-  });
+    
+    });
 </script>
 {/block}
 

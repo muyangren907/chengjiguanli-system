@@ -163,20 +163,20 @@ class JsRongyuInfo extends AdminBase
         // 声明教师数组
         $teacherlist = [];
         // 循环组成获奖教师信息
+        $list['hjteachers'] = explode(',', $list['hjteachers']);
         foreach ($list['hjteachers'] as $key => $value) {
             $canyulist[] = [
                 'teacher_id' => $value
                 ,'category_id' => 11901
             ];
         }
-        if(!empty($list['cyteachers'])){
-            // 循环组成参与教师信息
-            foreach ($list['cyteachers'] as $key => $value) {
-                $canyulist[] = [
-                    'teacher_id' => $value
-                    ,'category_id' => 11902
-                ];
-            }
+        // 循环组成参与教师信息
+        $list['cyteachers'] = explode(',', $list['cyteachers']);
+        foreach ($list['cyteachers'] as $key => $value) {
+            $canyulist[] = [
+                'teacher_id' => $value
+                ,'category_id' => 11902
+            ];
         }
 
         // 添加新的获奖人与参与人信息
@@ -352,21 +352,21 @@ class JsRongyuInfo extends AdminBase
         // 声明教师数组
             $teacherlist = [];
             // 循环组成获奖教师信息
+            $list['hjteachers'] = explode(',', $list['hjteachers']);
             foreach ($list['hjteachers'] as $key => $value) {
                 $canyulist[] = [
                     'teacher_id' => $value
                     ,'category_id' => 11901
                 ];
             }
-            if(!empty($list['cyteachers'])){
                 // 循环组成参与教师信息
+            $list['cyteachers'] = explode(',', $list['cyteachers']);
                 foreach ($list['cyteachers'] as $key => $value) {
                     $canyulist[] = [
                         'teacher_id' => $value
                         ,'category_id' => 11902
                     ];
                 }
-            }
 
         // 添加新的获奖人与参与人信息
         $data->allJsry()->saveAll($canyulist);
@@ -518,5 +518,38 @@ class JsRongyuInfo extends AdminBase
         ob_flush();
         flush();
         exit();
+    }
+
+
+    // 查询荣誉参与人信息
+    public function srcCy()
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'str' => ''
+                ,'rongyu_id' => ''
+                ,'category_id' => ''
+                ,'field' => 'serid'
+                ,'order' => 'asc'
+            ], 'POST');
+
+        $cy = new \app\rongyu\model\JsRongyuCanyu;
+        $list = $cy->searchCanyu($src);
+        $data = array();
+        foreach ($list as $key => $value) {
+            if($value->teacher)
+            {
+                $data[] = [
+                    'xingming' => $value->teacher->adSchool->jiancheng . '--' .$value->teacher->xingming
+                    ,'id' => $value->teacher_id
+                    ,'selected' => true
+                    ,'serid' => $value->id
+                ];
+            }
+        }
+        $data = reSetArray($data, $src);
+
+        return json($data);
     }
 }
