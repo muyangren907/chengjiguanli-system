@@ -26,7 +26,7 @@ class KaoshiSet extends AdminBase
 
         $ksset = new ksset;
         $src['kaoshi_id'] = $kaoshi_id;
-        $list['subject'] = $ksset->srcSubject($src);
+        // $list['subject'] = $ksset->srcSubject($src);
         $nj = $ksset->srcGrade($kaoshi_id);
         $list['nj'] = $nj;
         $kaoshi = new \app\kaoshi\model\Kaoshi;
