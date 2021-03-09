@@ -33,15 +33,12 @@
 {/block}
 {block name="myjs"}
 <script>
-layui.use(['mytable', 'createInput'], function() {
-	var mytable = layui.mytable,
-		cInput = layui.createInput;
-
+layui.use(['createInput'], function() {
+	var cInput = layui.createInput;
 	// 填充下拉菜单
 	cInput.schoolSelect('school_id', '校级', '区级', "{$list.data.school_id|default=''}");
 	// 上传文件
-	mytable.uploadXls('upload', '/tools/file/upload', '11101', 'admin', 'url');
-
+	cInput.uploadXls('upload', '11101', 'admin', 'url');
 });
 
 </script>

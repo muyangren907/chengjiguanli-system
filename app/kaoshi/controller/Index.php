@@ -374,7 +374,7 @@ class Index extends AdminBase
 
 
     // 删除考试
-    public function delete($id)
+    public function delete()
     {
         // 整理数据
         $id = request()->delete('id');

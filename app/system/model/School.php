@@ -101,7 +101,7 @@ class School extends BaseModel
     {
         $data = $this->where('kaoshi', 1)
             ->order(['jibie_id', 'paixu'])
-            ->field('id, title, jiancheng')
+            ->field('id, title, jiancheng, jibie_id')
             ->select();
         return $data;
     }

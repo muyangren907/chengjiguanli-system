@@ -19,7 +19,7 @@ Route::group('index', function () {
     Route::rule('edit/<id>','Index/edit','get');				# 修改信息
     Route::rule('update/<id>','Index/update','put');			# 更新信息
     Route::rule('read/<id>','Index/read','get');              # 读取信息
-    Route::rule('delete/<id>','Index/delete','delete');		# 删除信息
+    Route::rule('delete','Index/delete','delete');		# 删除信息
     Route::rule('status','Index/setStatus','post');		# 删除信息
     Route::rule('createall','Index/createAll','get');				# 批量导入
     Route::rule('saveall','Index/saveAll','post');				# 批量保存

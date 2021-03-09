@@ -51,9 +51,10 @@
 <!-- 表格操作 -->
 <script>
 // 提交搜索条件后重载表格
-layui.use(['table', 'mytable', 'createInput'], function() {
+layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 	var table = layui.table,
 		cInput = layui.createInput,
+		form = layui.form,
 		mytable = layui.mytable;
 
 	cInput.schoolSelect('school_id', '教研组', '区级');

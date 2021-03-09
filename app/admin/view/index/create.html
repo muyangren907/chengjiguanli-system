@@ -141,7 +141,7 @@
 {/block}
 {block name="myjs"}
 <script>
-layui.use(['laydate', 'createInput'], function() {
+layui.use(['laydate','createInput'], function() {
 	var laydate = layui.laydate,
 		cInput = layui.createInput;
 
@@ -155,8 +155,7 @@ layui.use(['laydate', 'createInput'], function() {
 	laydate.render({
 		elem: '#shengri',
 		type: 'datetime',
-		trigger: 'click' //采用click弹出
-			,
+		trigger: 'click', //采用click弹出
 		format: 'yyyy-M-d' //可任意组合
 	});
 	//参加工作时间

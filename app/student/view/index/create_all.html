@@ -1,74 +1,45 @@
 {extend name=".././view/createhref.html" /}
-
 {block name="form"}
-    <form action="{$list.set.url}" method="{$list.set.formpost}" class="layui-form layui-form-pane" lay-filter="myform">
-          <div class="layui-form-item">
-              <label for="title" class="layui-form-label">
-                  文件
-              </label>
-              <div class="layui-input-block">
-                <div class="layui-input-inline" style="min-width: 250px">
-                  <input type="text" id="url" name="url"
-                  autocomplete="off" class="layui-input " value="{$list.data.url|default=''}" placeholder="地址" readonly>
-                </div>
-                <div class="layui-input-inline" style="min-width: 100px">
-                  <button type="button" class="layui-btn" id="upload">
-                    <i class="layui-icon">&#xe67c;</i>上传文件
-                  </button>
-                </div>
-              </div>
-          </div>
-          <div class="layui-form-item">
-            <label for="school_id" class="layui-form-label"><span class="x-red">*</span>所在学校</label>
-            <div class="layui-input-block">
-              {php} $schoollist = danweiJibie('校级', '校级');{/php}
-              <select name="school_id" lay-verify="required">
-                <option value=""></option>
-                {volist name="schoollist" id="vo"}
-                  <option value="{$vo.id}">
-                    {$vo.title}
-                  </option>
-                {/volist}
-              </select>
-            </div>
-          </div>
-          <div class="layui-form-item" style="text-align: right;">
-              <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
-                  {$list.set.butname}
-              </button>
-          </div>
-      </form>
+<form action="{$list.set.url}" method="{$list.set.formpost}" class="layui-form layui-form-pane" lay-filter="myform">
+	<div class="layui-form-item">
+		<label for="title" class="layui-form-label">
+			文件
+		</label>
+		<div class="layui-input-block">
+			<div class="layui-input-inline" style="min-width: 250px">
+				<input type="text" id="url" name="url" autocomplete="off" class="layui-input " value="{$list.data.url|default=''}" placeholder="地址" readonly>
+			</div>
+			<div class="layui-input-inline" style="min-width: 100px">
+				<button type="button" class="layui-btn" id="upload">
+					<i class="layui-icon">&#xe67c;</i>上传文件
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label for="school_id" class="layui-form-label">学校</label>
+		<div class="layui-input-block">
+			<select name="school_id" id="school_id" autocomplete="off">
+			</select>
+		</div>
+	</div>
+	<div class="layui-form-item" style="text-align: right;">
+		<button class="layui-btn" lay-filter="mysubmit" lay-submit="">
+			{$list.set.butname}
+		</button>
+	</div>
+</form>
 {/block}
-
 {block name="myjs"}
 <script>
+layui.use(['createInput'], function() {
+	var cInput = layui.createInput;
+	cInput.schoolSelect('school_id', '校级', '校级');
 
-layui.use('upload', function(){
-  var upload = layui.upload;
-  //执行实例
-  var uploadInst = upload.render({
-    elem: '#upload' //绑定元素
-    ,url: "/tools/file/upload" //上传接口
-    ,done: function(res){
-      if(res.val == 1){
-        $('#url').val(res.url);
-      }
-      layer.msg(res.msg);
-    }
-    ,data: {
-      category_id: '11102'
-      ,serurl:'student'
+	cInput.uploadXls('upload', "11102", 'student', 'url');
 
-    }
-    ,acceptMime:'.xls,.xlsx'
-    ,exts:'xls|xlsx'
-    ,auto:true
-    ,error: function(){
-      //请求异常回调
-    }
-  });
+
 });
 
 </script>
 {/block}
-

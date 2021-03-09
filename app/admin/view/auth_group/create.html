@@ -75,11 +75,7 @@ layui.use(['form', 'createInput'], function() {
 	}
 
 	form.on('checkbox(auth)', function(data) {
-		pid = $(data.elem).attr('pid');
-		cid = $(data.elem).attr('cid');
-		check = data.elem.checked;
-		cInput.checkboxChildren(cid, check);
-		cInput.checkboxParent(pid, check);
+		cInput.checkboxChecked(data);
 	});
 
 });

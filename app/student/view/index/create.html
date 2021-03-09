@@ -1,214 +1,147 @@
 {extend name=".././view/create.html" /}
 {block name="jscss"}
-  {load href="__MAYI__/js/Convert_Pinyin.js" /}
+{load href="__MAYI__/js/Convert_Pinyin.js" /}
 {/block}
 {block name="form"}
-    <form class="layui-form layui-form-pane" lay-filter="myform">
-          <div class="layui-form-item">
-              <label for="xingming" class="layui-form-label">
-                  <span class="x-red">*</span>姓名
-              </label>
-              <div class="layui-input-block">
-                  <input type="text" id="xingming" name="xingming" lay-verify="required"
-                  autocomplete="off" class="layui-input " value="{$list.data.xingming|default=''}" placeholder="中文2-25个字符" onBlur="convertName()">
-              </div>
-          </div>
-          <div class="layui-form-item">
-            <div class="layui-inline">
-              <label class="layui-form-label">
-                  <span class="x-red">*</span>姓名拼音
-              </label>
-              <div class="layui-input-inline" style="width: 35%; margin-right: 20px">
-                <input type="text" id="quanpin" name="quanpin" placeholder="全拼" autocomplete="off" class="layui-input" lay-verify="required" value="{$list.data.quanpin|default=''}">
-              </div>
-              <div class="layui-input-inline" style="width: 25%;">
-                <input type="text" id="shoupin" name="shoupin" placeholder="简拼" autocomplete="off" class="layui-input" lay-verify="required" value="{$list.data.shoupin|default=''}">
-              </div>
-            </div>
-          </div>
-          <div class="layui-form-item">
-              <label for="shenfenzhenghao" class="layui-form-label">
-                  <span class="x-red">*</span>身份证号
-              </label>
-              <div class="layui-input-block">
-                  <input type="text" id="shenfenzhenghao" name="shenfenzhenghao" lay-verify="required" autocomplete="off" class="layui-input " value="{$list.data.shenfenzhenghao|default=''}" placeholder="18位身份证号">
-              </div>
-          </div>
-          <div class="layui-form-item" pane>
-            <label for="sex" class="layui-form-label"><span class="x-red">*</span>性别</label>
-            <div class="layui-input-block">
-              <input type="radio" name="sex" value="1" title="男"
-                {present name="$list.data.sex"}
-                {$list.data.sex}
-                    {eq name="$list.data.sex" value="男" }
-                     checked
-                    {/eq}
-                {/present}>
-              <input type="radio" name="sex" value="0" title="女"
-                {present name="$list.data.sex"}
-                    {eq name="list.data.sex" value="女" }
-                     checked
-                    {/eq}
-                {/present}
-                {notpresent name="$list.data.sex"}
-                 checked
-                {/notpresent}
-                >
-            </div>
-          </div>
-          <div class="layui-form-item" pane>
-            <label for="kaoshi" class="layui-form-label"><span class="x-red">*</span>是否参加考试</label>
-            <div class="layui-input-block">
-              {if (isset($list.data.kaoshi)) }
-                <input type="radio" name="kaoshi" value="1" title="是"
-                    {eq name="$list.data.kaoshi" value="参加" }
-                     checked
-                    {/eq}>
-                <input type="radio" name="kaoshi" value="0" title="否"
-                    {eq name="$list.data.kaoshi" value="不参加" }
-                     checked
-                    {/eq}>
-              {else /}
-                <input type="radio" name="kaoshi" value="1" title="是" checked>
-                <input type="radio" name="kaoshi" value="0" title="否">
-              {/if}
-            </div>
-          </div>
-          <div class="layui-form-item">
-              <label for="shengri" class="layui-form-label">
-                  出生日期
-              </label>
-              <div class="layui-input-block">
-                  <input type="text" id="shengri" name="shengri" autocomplete="off" class="layui-input " value="{$list.data.shengri|default=''}" placeholder="出生日期">
-              </div>
-          </div>
-          <div class="layui-form-item">
-            <label for="school_id" class="layui-form-label"><span class="x-red">*</span>学校</label>
-            <div class="layui-input-block">
-              {php} $schoollist = danweiJibie('校级', '校级');{/php}
-              <select name="school_id" id="school_id" lay-verify="required">
-                <option value=""></option>
-                {volist name="schoollist" id="vo"}
-                  <option value="{$vo.id}"
-                  {present name="$list.data.stuBanji.school_id"}
-                    {eq name="$list.data.stuBanji.school_id" value="$vo.id" }
-                      selected
-                    {/eq}
-                  {/present}>
-                    {$vo.title}
-                  </option>
-                {/volist}
-              </select>
-            </div>
-          </div>
-          <div class="layui-form-item">
-            <label for="ruxuenian" class="layui-form-label">
-              <span class="x-red">*</span>年级
-            </label>
-            <div class="layui-input-block">
-              {php} $njlist = nianJiNameList();{/php}
-              <select name="ruxuenian" id="ruxuenian" lay-verify="required" class="layui-form-label">
-                <option value=""></option>
-                {foreach $njlist as $key=>$vo}
-                	<option value="{$key}" {present name="$list.data.stuBanji"}{eq name="$list.data.stuBanji.ruxuenian" value="$key" }selected{/eq}{/present}>
-                		{$vo}
-                	</option>
-                {/foreach}
-              </select>
-            </div>
-          </div>
-          <div class="layui-form-item">
-            <label for="banji_id" class="layui-form-label">
-              <span class="x-red">*</span>班级
-            </label>
-            <div class="layui-input-block">
-              <select name="banji_id" class="layui-form-label" id="banji_id" lay-filter="banji">
-              </select>
-            </div>
-          </div>
-          <div class="layui-form-item" style="text-align: right;">
-              <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
-                  {$list.set.butname}
-              </button>
-          </div>
-      </form>
+<form class="layui-form layui-form-pane" lay-filter="myform">
+	<div class="layui-form-item">
+		<label for="xingming" class="layui-form-label">
+			<span class="x-red">*</span>姓名
+		</label>
+		<div class="layui-input-block">
+			<input type="text" id="xingming" name="xingming" lay-verify="required" autocomplete="off" class="layui-input " value="{$list.data.xingming|default=''}" placeholder="中文2-25个字符">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">
+				<span class="x-red">*</span>姓名拼音
+			</label>
+			<div class="layui-input-inline" style="width: 35%; margin-right: 20px">
+				<input type="text" id="quanpin" name="quanpin" placeholder="全拼" autocomplete="off" class="layui-input" lay-verify="required" value="{$list.data.quanpin|default=''}">
+			</div>
+			<div class="layui-input-inline" style="width: 25%;">
+				<input type="text" id="shoupin" name="shoupin" placeholder="简拼" autocomplete="off" class="layui-input" lay-verify="required" value="{$list.data.shoupin|default=''}">
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label for="shenfenzhenghao" class="layui-form-label">
+			<span class="x-red">*</span>身份证号
+		</label>
+		<div class="layui-input-block">
+			<input type="text" id="shenfenzhenghao" name="shenfenzhenghao" lay-verify="required" autocomplete="off" class="layui-input " value="{$list.data.shenfenzhenghao|default=''}" placeholder="18位身份证号">
+		</div>
+	</div>
+	<div class="layui-form-item" pane>
+		<label for="sex" class="layui-form-label"><span class="x-red">*</span>性别</label>
+		<div class="layui-input-block">
+			<input type="radio" name="sex" value="1" title="男" {present name="$list.data.sex" } {$list.data.sex} {eq name="$list.data.sex" value="男" } checked {/eq} {/present}> <input type="radio" name="sex" value="0" title="女" {present name="$list.data.sex" } {eq name="list.data.sex" value="女" } checked {/eq} {/present} {notpresent name="$list.data.sex" } checked {/notpresent}> </div> </div> <div class="layui-form-item" pane>
+			<label for="kaoshi" class="layui-form-label"><span class="x-red">*</span>是否参加考试</label>
+			<div class="layui-input-block">
+				{if (isset($list.data.kaoshi)) }
+				<input type="radio" name="kaoshi" value="1" title="是" {eq name="$list.data.kaoshi" value="参加" } checked {/eq}> <input type="radio" name="kaoshi" value="0" title="否" {eq name="$list.data.kaoshi" value="不参加" } checked {/eq}> {else /} <input type="radio" name="kaoshi" value="1" title="是" checked>
+				<input type="radio" name="kaoshi" value="0" title="否">
+				{/if}
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label for="shengri" class="layui-form-label">
+				出生日期
+			</label>
+			<div class="layui-input-block">
+				<input type="text" id="shengri" name="shengri" autocomplete="off" class="layui-input " value="{$list.data.shengri|default=''}" placeholder="出生日期">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label for="school_id" class="layui-form-label">学校</label>
+			<div class="layui-input-block">
+				<select name="school_id" id="school_id" autocomplete="off" lay-filter="srcbanji">
+				</select>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label for="ruxuenian" class="layui-form-label">年级</label>
+			<div class="layui-input-block">
+				{php} $njlist = nianJiNameList();{/php}
+				<select name="ruxuenian" id="ruxuenian" autocomplete="off" class="layui-form-label" lay-filter="srcbanji">
+					<option value=""></option>
+					{foreach $njlist as $key=>$vo}
+					<option value="{$key}" {present name="$list.data.stuBanji" }{eq name="$list.data.stuBanji.ruxuenian" value="$key" }selected{/eq}{/present}> {$vo} </option> {/foreach} </select> </div> </div>
+			<div class="layui-form-item">
+				<label for="banji_id" class="layui-form-label"><span class="x-red">*</span>班级</label>
+				<div class="layui-input-block">
+					<select name="banji_id" id="banji_id" lay-verify="required">
+					</select>
+				</div>
+			</div>
+			<div class="layui-form-item" style="text-align: right;">
+				<button class="layui-btn" lay-filter="mysubmit" lay-submit="">
+					{$list.set.butname}
+				</button>
+			</div>
+</form>
 {/block}
-
 {block name="myjs"}
 <script>
-layui.use(['laydate','form','cjgl'], function(){
-	var laydate = layui.laydate
-		,form = layui.form
-    ,cjgl = layui.cjgl;
+layui.use(['laydate', 'form', 'mytable', 'createInput'], function() {
+	var laydate = layui.laydate,
+		form = layui.form,
+		mytable = layui.mytable,
+		cInput = layui.createInput;
 
-    addBanji();
+	// 填充下拉菜单
+	cInput.schoolSelect('school_id', '校级', '校级', "{$list.data.stuBanji.school_id|default=''}");
+	cInput.banjiSelect('banji_id', form.val("myform"), "{$list.data.banji_id|default=''}");
 
 	//执行一个laydate实例
 	laydate.render({
-		elem: '#shengri' //指定元素
-    ,trigger: 'click' //采用click弹出
+		elem: '#shengri', //指定元素
+		trigger: 'click' //采用click弹出
 	});
 
-	// 监听选择按钮
-	form.on('select', function(data){
-	  var myselectname = $(data.elem).attr('name');
-	  if(myselectname == 'school_id' || myselectname == 'ruxuenian'){
-      addBanji();
-	  }
+	form.on('select(srcbanji)', function(data) {
+		data = form.val("myform");
+		if (data.school_id > 0 && data.ruxuenian > 0) {
+			cInput.banjiSelect('banji_id', data);
+		}
 	});
 
-  // 班级列表
-  function addBanji()
-  {
-    formval = form.val("myform");
-    if(formval.school_id.length == 0 || formval.ruxuenian.length == 0)
-    {
-      return true;
-    }
-    val = {         // ajax时的参数
-        school_id: formval.school_id
-        ,ruxuenian: formval.ruxuenian
-      }
-    checkval = "{$list.data.banji_id|default=''}";
-    cjgl.createSelectOption('banji_id', val, '/teach/banji/mybanji', 'id', 'banTitle', checkval);
-  }
+	// 根据身份证号添加出生日期和
+	$('#shenfenzhenghao').bind('change', function sfz() {
+		// 获取身份证号 210281198510288213
+		var str = $(this).val();
+		// 如果身份证号为18位则自动填表
+		if (str.length == 18) {
+			// 填写性别
+			var sex = str.substr(16, 1) % 2;
+			if (sex == 1) {
+				// 选择性别男
+				$("input[name='sex']:first").prop('checked', true);
+			} else {
+				// 选择性别女
+				$("input[name='sex']:last").prop('checked', true);
+			}
+			form.render('radio');
 
-
-  // 根据身份证号添加出生日期和
-  $('#shenfenzhenghao').bind('change',function sfz(){
-    // 获取身份证号 210281198510288213
-    var str = $(this).val();
-    // 如果身份证号为18位则自动填表
-    if(str.length == 18){
-      // 填写性别
-      var sex = str.substr(16,1) % 2;
-      if(sex == 1){
-        // 选择性别男
-        $("input[name='sex']:first").prop('checked', true);
-      }else{
-        // 选择性别女
-        $("input[name='sex']:last").prop('checked', true);
-      }
-      form.render('radio');
-
-      // 填写出生日期
-      $("#shengri").val(str.substr(6,4) +'-'+ str.substr(10,2) +'-'+ str.substr(12,2));
-      $("#school").focus();
-    }
-  })
+			// 填写出生日期
+			$("#shengri").val(str.substr(6, 4) + '-' + str.substr(10, 2) + '-' + str.substr(12, 2));
+			$("#school").focus();
+		}
+	})
 
 });
 
-function convertName() {
-        var xingming = $('#xingming').val();
-        //获取全写拼音（调用js中方法）
-        var quanpin = pinyin.getFullChars(xingming);
-        //获取简写拼音（调用js中方法）
-        var shoupin = pinyin.getCamelChars(xingming);
-        //给两个文本框赋值
-        $('#quanpin').val(quanpin);
-        $('#shoupin').val(shoupin);
-    }
+$('#xingming').blur(function() {
+	var xingming = $('#xingming').val();
+	//获取全写拼音（调用js中方法）
+	var quanpin = pinyin.getFullChars(xingming);
+	//获取简写拼音（调用js中方法）
+	var shoupin = pinyin.getCamelChars(xingming);
+	//给两个文本框赋值
+	$('#quanpin').val(quanpin);
+	$('#shoupin').val(shoupin);
+})
+
 </script>
 {/block}
-

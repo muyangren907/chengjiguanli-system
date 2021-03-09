@@ -261,4 +261,23 @@ class School extends AdminBase
 
         return json($data);
     }
+
+
+    // 查询单位列表
+    public function srcKaoshi()
+    {
+        // 获取表单数据
+        $src = request()->only([
+            'page' => '1'
+            ,'limit' => '10'
+            ,'field' => 'jibie_id'
+            ,'order' => 'asc'
+        ], 'post');
+        // 实例化单位模型
+        $sch = new sch;
+        $data = $sch->kaoshi();
+        $data = reSetObject($data, $src);
+
+        return json($data);
+    }
 }

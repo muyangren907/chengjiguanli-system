@@ -161,7 +161,7 @@ class LuruFengong extends AdminBase
      * @return \think\Response
      */
     // 删除考号
-    public function delete($id)
+    public function delete()
     {
 
         // 整理数据

@@ -21,6 +21,7 @@ Route::group('xueqi', function () {
 	    Route::rule('update/<id>','xueqi/update','put');			# 更新信息
 	    Route::rule('delete','xueqi/delete','delete');		# 删除信息
 	    Route::rule('status','xueqi/setStatus','post');		# 删除信息
+	    Route::rule('srcxueqi','Xueqi/srcXueqi','post');				# 获取数据
 	});
 
 // 班级管理
@@ -35,6 +36,7 @@ Route::group('banji', function () {
 	    Route::rule('mybanji','banji/mybanji','post');		# 删除信息
 	    Route::rule('mybanjis','banji/banjiList','post');		# 删除信息
         Route::rule('alias','banji/setAlias','put');       # 删除信息
+
 	});
 
 

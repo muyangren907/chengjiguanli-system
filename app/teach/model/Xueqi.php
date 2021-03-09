@@ -85,4 +85,16 @@ class Xueqi extends BaseModel
 
         return $data;
     }
+
+
+    // 获取最近6个学期
+    public function lastXueqi()
+    {
+        $list = $this
+          ->limit(6)
+          ->order(['bfdate'=>'desc'])
+          ->field('id,title')
+          ->select();
+        return $list;
+    }
 }

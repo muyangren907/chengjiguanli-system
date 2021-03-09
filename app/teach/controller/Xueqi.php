@@ -206,4 +206,24 @@ class Xueqi extends AdminBase
         // 返回信息
         return json($data);
     }
+
+
+    // 获取最近6个学期
+    // 查询单位列表
+    public function srcXueqi()
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'page' => '1'
+                ,'limit' => '10'
+            ], 'POST');
+
+            // 实例化单位模型
+        $xq = new XQ;
+        $data = $xq->lastXueqi();
+        $data = reSetObject($data, $src);
+
+        return json($data);
+    }
 }

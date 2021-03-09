@@ -35,8 +35,9 @@ Route::group('school', function () {
 	    Route::rule('update/<id>', 'School/update', 'put');			# 更新信息
 	    Route::rule('delete', 'School/delete', 'delete');		# 删除信息
 	    Route::rule('status', 'School/setStatus', 'post');		# 删除信息
-        Route::rule('kaoshi', 'School/setKaoshi', 'post');        # 删除信息
-        Route::rule('srcschool', 'School/srcSchool', 'post');               # 获取数据
+      Route::rule('kaoshi', 'School/setKaoshi', 'post');        # 删除信息
+      Route::rule('srcschool', 'School/srcSchool', 'post');               # 获取数据
+      Route::rule('srckaoshi', 'School/srcKaoshi', 'post');               # 获取数据
 	});
 
 // 类别管理

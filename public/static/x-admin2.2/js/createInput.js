@@ -45,47 +45,54 @@ layui.extend({
       });
     },
 
+    // 选中checkbox
+    checkboxChecked: function(data) {
+      pid = $(data.elem).attr('pid');
+      cid = $(data.elem).attr('cid');
+      check = data.elem.checked;
+      editCid(cid, check);
+      editPid(pid, check);
 
-    // 选中后代的复选框
-    checkboxChildren: function(cid, check) {
-      edit(cid, check);
-
-      function edit(cid, check) {
+      function editCid(cid, check) {
         $("input[pid='" + cid + "']").each(function(i, el) {
           this.checked = check;
           cid = $(this).attr('cid');
-          edit(cid, check);
+          editCid(cid, check);
         });
       }
-      form.render('checkbox');
-    },
 
-
-    // 选中父级的复选框
-    checkboxParent: function(pid, check) {
-      if (check == true) {
-        edit(pid, check)
-      };
-
-      function edit(pid, check) {
-        $("input[cid='" + pid + "']").each(function(i, el) {
-          this.checked = check;
-          pid = $(this).attr('pid');
-          edit(pid, check);
-        });
+      function editPid(pid, check) {
+        if (check == true) {
+          $("input[cid='" + pid + "']").each(function(i, el) {
+            this.checked = check;
+            pid = $(this).attr('pid');
+            editPid(pid, check);
+          });
+        } else {
+          cnt = $("input[pid='" + pid + "']:checked").length;
+          if (cnt == 0) {
+            $("input[cid='" + pid + "']").each(function(i, el) {
+              this.checked = check;
+              pid = $(this).attr('pid');
+              editPid(pid, check);
+            });
+          }
+        }
       }
+
       form.render('checkbox');
     },
 
 
     // 创建单位的Select
-    schoolSelect: function(myid, low = '班级', high = '其它级', value, hasNull = true) {
+    schoolSelect: function(myid, low = '班级', high = '其它级', value, kaoshi='', hasNull = true) {
       $.ajax({
         url: '/system/school/srcschool',
         type: 'POST',
         data: {
           low: low,
-          high: high
+          high: high,
+          kaoshi:kaoshi
         },
         success: function(result) {
           if (hasNull == true) {
@@ -245,11 +252,11 @@ layui.extend({
     },
 
 
-    // 上传图片
-    uploadXls: function(uploadId, url, category, serurl, backId) {
+    // 上传电子表格
+    uploadXls: function(uploadId, category, serurl, backId) {
       upload.render({
         elem: '#' + uploadId, //绑定元素
-        url: url, //上传接口
+        url: '/tools/file/upload', //上传接口
         done: function(res) {
           if (res.val == 1) {
             $('#' + backId).val(res.url);
@@ -287,13 +294,13 @@ layui.extend({
 
 
     // 创建类别的Select
-    subjectSelect: function(myid, value = '', kaoshi='', hasNull = true) {
+    subjectSelect: function(myid, value = '', kaoshi = '', hasNull = true) {
       $.ajax({
         url: '/teach/subject/data',
         type: 'POST',
         data: {
-          status:1,
-          kaoshi:kaoshi
+          status: 1,
+          kaoshi: kaoshi
         },
         success: function(result) {
           if (hasNull == true) {
@@ -321,7 +328,7 @@ layui.extend({
 
 
     // 创建班级checkbox
-    banjiCheckbox: function (myid, data, value, hasAll=true) {
+    banjiCheckbox: function(myid, data, value, hasAll = true) {
       $.ajax({
         url: '/teach/banji/mybanji',
         type: 'POST',
@@ -336,9 +343,9 @@ layui.extend({
           temp = "";
           $(result.data).each(function(i, el) {
             if (value != '' && value == el.id) {
-              temp = '<input type="checkbox" name="' + myid + '_id[]' + '" title="' + el.banTitle + '" value="' + el.id + '" lay-skin="primary" value="" pid="1" checked lay-filter="mycheackbox">';
+              temp = '<input type="checkbox" name="' + myid + '_id[]' + '" title="' + el.banTitle + '" value="' + el.id + '" lay-skin="primary" pid="1" lay-filter="mycheackbox" checked>';
             } else {
-              temp = '<input type="checkbox" name="' + myid + '_id[]' + '" title="' + el.banTitle + '" value="' + el.id + '" lay-skin="primary" value="" pid="1" lay-filter="mycheackbox">';
+              temp = '<input type="checkbox" name="' + myid + '_id[]' + '" title="' + el.banTitle + '" value="' + el.id + '" lay-skin="primary" pid="1" lay-filter="mycheackbox">';
             }
             str = str + temp;
           });
@@ -349,7 +356,68 @@ layui.extend({
           layer.msg('数据扔半道啦。', function() {});
         },
       });
-    }
+    },
+
+
+    // 创建班级checkbox
+    banjiSelect: function(myid, data, value, hasAll = true) {
+      $.ajax({
+        url: '/teach/banji/mybanji',
+        type: 'POST',
+        data: data,
+        success: function(result) {
+          $('#' + myid).children().remove();
+          if (hasAll == true) {
+            str = '<option></option>';
+          } else {
+            str = '';
+          }
+          temp = "";
+          $(result.data).each(function(i, el) {
+            if (value != '' && value == el.id) {
+              temp = '<option value="' + el.id + '" selected>' + el.banTitle + '</option>';
+            } else {
+              temp = '<option value="' + el.id + '">' + el.banTitle + '</option>';
+            }
+            str = str + temp;
+          });
+          $('#' + myid).append(str);
+          form.render('select');
+        },
+        error: function(result) {
+          layer.msg('数据扔半道啦。', function() {});
+        },
+      });
+    },
+
+    // 创建学期的Select
+    xueqiSelect: function(myid, value = '', hasNull = true) {
+      $.ajax({
+        url: '/teach/xueqi/srcxueqi',
+        type: 'POST',
+        success: function(result) {
+          if (hasNull == true) {
+            str = '<option value=""></option>';
+          } else {
+            str = '';
+          }
+          temp = "";
+          $(result.data).each(function(i, el) {
+            if (value != '' && value == el.id) {
+              temp = '<option value="' + el.id + '" selected>' + el.title + '</option>';
+            } else {
+              temp = '<option value="' + el.id + '">' + el.title + '</option>';
+            }
+            str = str + temp;
+          });
+          $('#' + myid).append(str);
+          form.render('select');
+        },
+        error: function(result) {
+          layer.msg('数据扔半道啦。', function() {});
+        },
+      });
+    },
 
   };
   //输出test接口
