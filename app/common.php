@@ -22,15 +22,6 @@
 	// }
 
 
-	function nianJiNameList($value = 'str', $riqi = 0)
-	{
-		// 实例化年级控制器
-        $bj = new \app\teach\model\Banji;
-        $njList= $bj->gradeName($value, $riqi);
-		return $njList;
-	}
-
-
 	// 班级列表
 	function banJiNamelist()
 	{
@@ -156,15 +147,6 @@
     {
         $data = \app\facade\Tools::sortArrByManyField($arr, $srcfrom);
         return $data;
-    }
-
-
-    // 学科列表
-    function subjectKaoshiList()
-    {
-        $sbj = new \app\teach\model\Subject;
-        $subject = $sbj->kaoshi();
-        return $subject;
     }
 
 

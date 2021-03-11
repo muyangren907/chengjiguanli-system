@@ -2,15 +2,11 @@
   扩展cjgl模块
   **/
 
-layui.extend({
-  // 根路径下的具体路径（xmSelect/xmSelect.js）
-  xmSelect: "xm-select"
-}).define(['table', 'form', 'xmSelect', 'upload'], function(exports) {
+layui.define(['table', 'form', 'upload'], function(exports) {
   //提示：模块也可以依赖其它模块，如：layui.define('layer', callback);
   var table = layui.table,
     form = layui.form,
-    upload = layui.upload,
-    xmSelect = layui.xmSelect;
+    upload = layui.upload;
 
   var obj = {
     gradeSelect: function(myid, kaoshi_id, hasNull = true) {
@@ -77,6 +73,35 @@ layui.extend({
         },
       });
     },
+
+
+    // 已经参与本次考试学科
+    subjectCheckbox: function(myid, data,hasAll = true){
+      $.ajax({
+        url: '/kaoshi/kscy/subject',
+        type: 'POST',
+        data: data,
+        success: function(result) {
+          $('#' + myid).children().remove();
+          if (hasAll == true) {
+            str = '<input type="checkbox" title="全选" lay-skin="primary" value="" cid="1" lay-filter="mycheackbox">';
+          } else {
+            str = '';
+          }
+          temp = "";
+          $(result.data).each(function(i, el) {
+            temp = '<input type="checkbox" name="' + myid + '_id[]' + '" title="' + el.title + '" value="' + el.id + '" lay-skin="primary" pid="1" lay-filter="mycheackbox">';
+            str = str + temp;
+          });
+          $('#' + myid).append(str);
+          form.render('checkbox');
+        },
+        error: function(result) {
+          layer.msg('数据扔半道啦。', function() {});
+        },
+      });
+    },
+
 
   };
   //输出test接口

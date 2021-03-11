@@ -37,25 +37,6 @@ class Subject extends BaseModel
         return $data;
     }
 
-    // 获取参加考试的学科
-    public function kaoshi()
-    {
-        // 整理变量
-        $src = [
-            'status' => ''
-            ,'kaoshi' => ''
-            ,'searchval' => ''
-        ];
-        $src = array_cover($srcfrom, $src) ;
-
-        $data = self::where('kaoshi&status', 1)
-                ->field('id, title, jiancheng, lieming')
-                ->order(['paixu'=>'asc'])
-                ->select();
-
-        return $data;
-    }
-
 
     // 大类别关联
     public function sbjCategory()

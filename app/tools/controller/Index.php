@@ -149,8 +149,8 @@ class Index extends BaseController
         $src = [
             'field' => ''
             ,'order' => 'desc'
-            ,'page' => 1
-            ,'limit' => 10
+            ,'page' => ''
+            ,'limit' => ''
         ];
         $src = array_cover($srcfrom, $src) ;
         $data = [   # 数据合并
@@ -170,9 +170,13 @@ class Index extends BaseController
                 $arr = $this->sortArrByManyField($arr, $src['field'], $src['order']);
             }
             // halt($arr);
-            $limit_start = $src['page'] * $src['limit'] - $src['limit']; # 获取当前页数据
-            $limit_length = $src['limit'];
-            $arr = array_slice($arr, $limit_start, $limit_length);
+            if($src['page'] > 0 and $src['limit'] > 0)
+            {
+                $limit_start = $src['page'] * $src['limit'] - $src['limit']; # 获取当前页数据
+                $limit_length = $src['limit'];
+                $arr = array_slice($arr, $limit_start, $limit_length);
+            }
+
             $data = [   # 数据合并
                 'code' => 0 , # ajax请求次数，作为标识符
                 'msg' => "",  # 获取到的结果数(每页显示数量)
@@ -281,6 +285,16 @@ class Index extends BaseController
         $strs="1234567890qwertyuiopasdfghjklzxcvbnm";
         $name=substr(str_shuffle($strs),mt_rand(0,strlen($strs)-11),$len);
         return $name;
+    }
+
+
+    // 根据时间获取年级列表,$value='str'时，键为2020，值为一年级,否则反过来
+    public function nianJiNameList($value = 'str', $riqi = 0)
+    {
+        // 实例化年级控制器
+        $bj = new \app\teach\model\Banji;
+        $njList= $bj->gradeName($value, $riqi);
+        return $njList;
     }
 
 }

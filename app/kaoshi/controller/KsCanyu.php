@@ -105,7 +105,7 @@ class KsCanYu extends AdminBase
     }
 
 
-    // 根据考试ID和年级获取参加考试学科
+    // 根据考试ID和年级获取已经参加本次考试学科
     public function subject()
     {
         // 获取参数
@@ -125,4 +125,5 @@ class KsCanYu extends AdminBase
         $sbj = reSetArray($sbj, $src);
         return json($sbj);
     }
+
 }

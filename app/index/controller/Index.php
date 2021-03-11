@@ -80,7 +80,7 @@ class Index extends AdminBase
         $list['kaoshi'] = $con->count();
         // 学生数
         $con = new \app\teach\model\Banji;
-        $tempsrc['ruxuenian'] = array_keys(nianJiNameList());
+        $tempsrc['ruxuenian'] = array_keys(\app\facade\Tools::nianJiNameList());
         $bjids = $con->search($tempsrc)->column('id');
         $con = new \app\student\model\Student;
         $list['student'] =  $con->where('banji_id', 'in', $bjids)

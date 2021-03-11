@@ -390,6 +390,38 @@ layui.extend({
       });
     },
 
+
+    // 创建学期的Select
+   nanjiSelect: function(myid, data, value, hasNull = true) {
+        $.ajax({
+        url: '/teach/banji/njlist',
+        type: 'POST',
+        data: data,
+        success: function(result) {
+          if (hasNull == true) {
+            str = '<option value=""></option>';
+          } else {
+            str = '';
+          }
+          temp = "";
+          layui.each(result.data, function(x, val){
+            if (value != '' && value == x) {
+              temp = '<option value="' + x + '" selected>' + val + '</option>';
+            } else {
+              temp = '<option value="' + x + '">' + val + '</option>';
+            }
+            str = str + temp;
+          })
+          $('#' + myid).append(str);
+          form.render('select');
+        },
+        error: function(result) {
+          layer.msg('数据扔半道啦。', function() {});
+        },
+      });
+    },
+
+
     // 创建学期的Select
     xueqiSelect: function(myid, value = '', hasNull = true) {
       $.ajax({

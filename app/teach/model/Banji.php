@@ -327,14 +327,14 @@ class Banji extends BaseModel
 
 
     // 生成年级名
-    public function gradeName($value = 'str', $riqi=0)
+    public function gradeName($riqi, $category = 'str')
     {
         // 定义学年时间节点日期为每年的8月1日
         // $yd = '8-1';
         $sysClass = \app\facade\System::sysClass();
         $jd = date('-m-d', $sysClass->getData('xuenian'));
 
-        if($riqi == 0)
+        if($riqi == 0 || $riqi == '')
         {
             $jiedian = strtotime(date('Y') . $jd);
             $thisday = time();
@@ -353,7 +353,7 @@ class Banji extends BaseModel
         $gradeMax = count($gradelist);
 
         $njlist = array();
-        if($value != 'str')
+        if($category != 'str')
         {
             for($i = 0; $i < $gradeMax; $i ++)
             {

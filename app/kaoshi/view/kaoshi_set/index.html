@@ -12,16 +12,15 @@
 {block name="search"}
 <input type="hidden" name="kaoshi_id" id="kaoshi_id" value="{$list.kaoshi_id}">
 <div class="layui-form-item">
-  <label for="ruxuenian" class="layui-form-label" style="height: 100%">年级</label>
+  <label for="ruxuenian" class="layui-form-label">年级</label>
   <div class="layui-input-block">
     <select name="ruxuenian" id="ruxuenian">
     </select>
   </div>
 </div>
 <div class="layui-form-item">
-  <label for="subject_id" class="layui-form-label" style="height: 100%">学科</label>
+  <label for="subject_id" class="layui-form-label">学科</label>
   <div class="layui-input-block" id="subject_id">
-
   </div>
 </div>
 {/block}
@@ -60,7 +59,11 @@
         cInput = layui.createInput;
 
         canyu.gradeSelect('ruxuenian', {$list.kaoshi_id});
-        canyu.subjectSelect('ruxuenian', {$list.kaoshi_id}, form.val("search").ruxuenian);
+        data = {
+          kaoshi_id:"{$list.kaoshi_id}",
+          ruxuenian:form.val("search").ruxuenian
+        };
+        canyu.subjectCheckbox('subject_id', data);
 
 
         // 设置列
@@ -124,19 +127,6 @@
         };
     });
 
-    // 监听表单提交
-    form.on('radio', function(data){
-      // 获取数据
-      addSubject();
-      $("#srcsubmit").click();
-    });
-
-    // 添加班级列表
-    function addSubject(){
-        // 获取参数
-        formval = form.val("search");
-        mytable.createCheckbox('subject_id',formval,'/tools/kscy/subject','subject_id');
-      }
 
       // 统计成绩
       function defenlv(obj){

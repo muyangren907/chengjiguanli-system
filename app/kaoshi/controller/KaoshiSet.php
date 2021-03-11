@@ -83,11 +83,11 @@ class KaoshiSet extends AdminBase
             ,'kaoshi_id' => $kaoshi_id
         );
 
-                // 获取考试时间
+        // 获取考试时间
         $ks = new \app\kaoshi\model\Kaoshi;
         $enddate = $ks->kaoshiInfo($kaoshi_id);
-        $enddate = $enddate->getData('enddate');
-        $list['set']['nianji'] = nianJiNameList('str', $enddate);
+        $list['enddate'] = $enddate->getData('enddate');
+        // $list['set']['nianji'] = nianJiNameList('str', $enddate);
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -287,4 +287,5 @@ class KaoshiSet extends AdminBase
         // 返回信息
         return json($data);
     }
+
 }

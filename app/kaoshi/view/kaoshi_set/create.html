@@ -5,22 +5,20 @@
           <div class="layui-form-item">
             <label for="ruxuenian" class="layui-form-label"><span class="x-red">*</span>参考年级</label>
             <div class="layui-input-block">
-              <select name="ruxuenian" lay-verify="required">
-                <option value="">请选择年级</option>
-                {foreach $list.set.nianji as $key=>$vo }
-                  <option value="{$key}">
-                    {$vo}
-                  </option>
-                {/foreach}
+              <select id="ruxuenian" name="ruxuenian" lay-verify="required">
               </select>
-              <input id="nianjiname" name="nianjiname" value="" type="hidden">
             </div>
           </div>
           <div class="layui-form-item">
             <label for="sbjtable" class="layui-form-label"><span class="x-red">*</span>学科分数线</label>
             <div class="layui-input-block">
               {php}
-                $subject = subjectKaoshiList();
+                $sbj = new \app\teach\model\Subject;
+                $src = [
+                  'status' => 1,
+                  'kaoshi' => 1
+                ];
+                $subject = $sbj->search($src);
               {/php}
               <table class="layui-table" lay-skin="line" lay-size="sm" id="sbjtable">
                   <colgroup>
@@ -66,9 +64,15 @@
 {block name="myjs"}
 <script>
 
-  layui.use(['laydate','form'], function(){
+  layui.use(['form','createInput'], function(){
     var laydate = layui.laydate
-        ,form = layui.form;
+        ,form = layui.form
+        ,cInput = layui.createInput;
+
+        data = {
+          riqi:"{$list.enddate}"
+        };
+        cInput.nanjiSelect('ruxuenian', data);
 
     // 监听年级
     // 监测表单复选框按钮

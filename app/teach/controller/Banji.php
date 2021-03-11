@@ -387,5 +387,24 @@ class Banji extends AdminBase
     }
 
 
+    // 根据考试结束时间获取当时的年级列表
+    public function njList()
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'riqi' => ''
+                ,'category' => 'str'
+            ], 'POST');
+
+        $bj = new bjmod;
+        $njList = $bj->gradeName($src['riqi'], $src['category']);
+        $njList = reSetArray($njList, $src);
+
+        return json($njList);
+
+    }
+
+
 
 }

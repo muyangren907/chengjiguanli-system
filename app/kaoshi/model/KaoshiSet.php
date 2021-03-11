@@ -153,5 +153,4 @@ class KaoshiSet extends BaseModel
         return $bj;
     }
 
-
 }
