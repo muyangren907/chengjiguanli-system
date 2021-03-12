@@ -47,11 +47,8 @@
 </script>
 <!-- 表格操作 -->
 <script>
-
-
-
   // 提交搜索条件后重载表格
-  layui.use(['table','mytable','form','canyuKaoshi'],function(){
+  layui.use(['table','mytable','form','canyuKaoshi', 'createInput'],function(){
       var table = layui.table,
         mytable = layui.mytable,
         form = layui.form,
@@ -65,8 +62,7 @@
         };
         canyu.subjectCheckbox('subject_id', data);
 
-
-        // 设置列
+  // 设置列
   options.cols=[[ //表头
     {type:'checkbox', fixed: 'left'},
     {field: 'nianji', title: '年级',sort: true,templet:function(d){
@@ -87,9 +83,13 @@
     }},
     {field: 'manfen', title: '满分线',sort: true} ,
     {field: 'youxiu', title: '优秀线',sort: true},
+    {field: 'lianghao', title: '良好线',sort: true},
     {field: 'jige', title: '及格线',sort: true},
+    {field: 'youxiubi', title: '优秀人数比',sort: true},
+    {field: 'lianghaobi', title: '良好人数比',sort: true},
+    {field: 'jigebi', title: '及格人数比',sort: true},
     {field: 'status', title: '状态', minWidth:80,templet:'#status', sort: true},
-    {field: 'id', title: '操作',toolbar: '#barDemo',minWidth:80},
+    {field: 'id', title: '操作',toolbar: '#barDemo',minWidth:100},
   ]];
 
   // 获取筛选条件并加载表格
@@ -104,7 +104,7 @@
                 mytable.delAll(checkStatus,'/kaoshi/kaoshiset/delete','mytable');
                 break;
               case 'add':
-                xadmin.open('添加参考学科','/kaoshi/kaoshiset/create/'+"{$list.kaoshi_id}",'650','400', false);
+                parent.xadmin.add_tab('添加参考学科','/kaoshi/kaoshiset/create/'+"{$list.kaoshi_id}",'650','400', false);
                 break;
           };
       });
@@ -127,27 +127,31 @@
         };
     });
 
+    form.on('checkbox(mycheackbox)', function(data) {
+      cInput.checkboxChecked(data);
+    });
 
-      // 统计成绩
-      function defenlv(obj){
-        var val;
-        val = {
-          'kaoshi_id':obj.kaoshi_id
-          ,'subject_id':obj.subject_id
-          ,'ruxuenian':obj.ruxuenian
-        }
-        $.ajax({
-          url:'/chengji/tongji/editdfl',
-          data:val,
-          type:'POST',
-          success: function(data, status) {
-            layer.msg(data.msg);
-          },
-          error: function(data, status) {
-            layer.msg(data.msg);
-          },
-        });
+
+    // 统计成绩
+    function defenlv(obj){
+      var val;
+      val = {
+        'kaoshi_id':obj.kaoshi_id
+        ,'subject_id':obj.subject_id
+        ,'ruxuenian':obj.ruxuenian
       }
+      $.ajax({
+        url:'/chengji/tongji/editdfl',
+        data:val,
+        type:'POST',
+        success: function(data, status) {
+          layer.msg(data.msg);
+        },
+        error: function(data, status) {
+          layer.msg(data.msg);
+        },
+      });
+    }
   });
 </script>
 {/block}

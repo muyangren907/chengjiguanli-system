@@ -24,14 +24,14 @@
 		</select>
 	</div>
 </div>
-<div class="layui-form-item">
-	<label for="ruxuenian" class="layui-form-label" style="height: 100%">毕业年</label>
+		<div class="layui-form-item">
+	<label for="ruxuenian" class="layui-form-label">年级</label>
 	<div class="layui-input-block">
-		{php}
-		$njlist = nianJiNameList('str', $list['thistime']);
-		{/php}
-		{volist name="njlist" id="vo"}
-		<input type="radio" name="ruxuenian" title="{$key+6}年" value="{$key}" lay-skin="primary" lay-filter="src" {eq name="i" value="1" }checked{/eq}> {/volist} </div> </div> <div class="layui-form-item" style="margin-bottom: 0;">
+		<select id="ruxuenian" name="ruxuenian" lay-verify="required">
+		</select>
+	</div>
+</div>
+<div class="layui-form-item" style="margin-bottom: 0;">
 		<label for="banji_id" class="layui-form-label" style="height: 100%">班级</label>
 		<div class="layui-input-block" id="banji">
 		</div>
@@ -64,6 +64,7 @@
 			mytable = layui.mytable;
 
 		cInput.schoolSelect('school_id', '校级', '校级');
+		cInput.nanjiSelect('ruxuenian', {riqi:"{$list['thistime']}"});
 
 		// 设置列
 		options.cols = [

@@ -16,14 +16,11 @@
 		</select>
 	</div>
 </div>
-<div class="layui-form-item" style="margin-bottom: 0;">
-	<label for="ruxuenian" class="layui-form-label" style="height: 100%">年级</label>
+<div class="layui-form-item">
+	<label for="ruxuenian" class="layui-form-label">年级</label>
 	<div class="layui-input-block">
-		<input type="radio" name="ruxuenian" title="无" value="" lay-skin="primary" checked="checked">
-		{php} $njlist = nianJiNameList(); {/php}
-		{volist name="njlist" id="vo"}
-		<input type="radio" name="ruxuenian" title="{$vo}" value="{$key}" lay-skin="primary">
-		{/volist}
+		<select id="ruxuenian" name="ruxuenian" lay-verify="required">
+		</select>
 	</div>
 </div>
 {/block}
@@ -69,6 +66,7 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 		cInput = layui.createInput;
 
 	cInput.schoolSelect('school_id', '校级', '校级');
+	cInput.nanjiSelect('ruxuenian');
 
 	// 设置列
 	options.cols = [
@@ -79,13 +77,6 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 				field: 'banjiTitle',
 				title: '班级名称',
 				minWidth: 100,
-				templet: function(d) {
-					var str = '';
-					if (d.grade && d.ban) {
-						str = d.grade + d.ban;
-					}
-					return str;
-				}
 			},
 			{ field: 'alias', title: '别名', minWidth: 60, edit: 'text' },
 			{

@@ -175,7 +175,7 @@ class Banji extends BaseModel
     // 班级名获取器
     public function getGradeAttr()
     {
-        $njList = $this->gradeName('str', time());
+        $njList = $this->gradeName(time());
         if(isset($njList[$this->getAttr('ruxuenian')]))
         {
             $title = $njList[$this->getAttr('ruxuenian')];

@@ -113,7 +113,11 @@ class KaoshiSet extends AdminBase
                     ,'subject_id' => array()
                     ,'manfen' => array()
                     ,'youxiu' => array()
+                    ,'lianghao' => array()
                     ,'jige' => array()
+                    ,'youxiubi' => array()
+                    ,'lianghaobi' => array()
+                    ,'jigebi' => array()
                 ], 'POST');
 
         event('kslu', $src['kaoshi_id']);
@@ -137,7 +141,11 @@ class KaoshiSet extends AdminBase
                 'subject_id' => $value,
                 'manfen' => $src['manfen'][$key],
                 'youxiu' => $src['youxiu'][$key],
+                'lianghao' => $src['lianghao'][$key],
                 'jige' => $src['jige'][$key],
+                'youxiubi' => $src['youxiubi'][$key],
+                'lianghaobi' => $src['lianghaobi'][$key],
+                'jigebi' => $src['jigebi'][$key],
             ];
         }
 
@@ -175,7 +183,7 @@ class KaoshiSet extends AdminBase
         // 获取考试信息
         $ksset = new ksset;
         $list['data'] = $ksset::where('id',$id)
-            ->field('id, kaoshi_id, nianjiname, subject_id, manfen, youxiu, jige')
+            ->field('id, kaoshi_id, nianjiname, subject_id, manfen, youxiu, lianghao, jige, youxiubi, lianghaobi, jigebi')
             ->with([
                 'subjectName' => function($query){
                     $query->field('id, title, jiancheng');
@@ -213,7 +221,11 @@ class KaoshiSet extends AdminBase
             ,'kaoshi_id'
             ,'manfen'
             ,'youxiu'
+            ,'lianghao'
             ,'jige'
+            ,'youxiubi'
+            ,'lianghaobi'
+            ,'jigebi'
         ], 'POST');
 
         // 验证表单数据

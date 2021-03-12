@@ -33,12 +33,48 @@
               </div>
           </div>
           <div class="layui-form-item">
-              <label for="title" class="layui-form-label">
+              <label for="lianghao" class="layui-form-label">
+                  <span class="x-red">*</span>良好分数线
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="lianghao" name="lianghao" lay-verify="required"
+                  autocomplete="off" class="layui-input " value="{$list.data.lianghao|default=''}" placeholder="2-25个字符">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="jige" class="layui-form-label">
                   <span class="x-red">*</span>及格分数线
               </label>
               <div class="layui-input-block">
                   <input type="text" id="jige" name="jige" lay-verify="required"
                   autocomplete="off" class="layui-input " value="{$list.data.jige|default=''}" placeholder="2-25个字符">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="youxiubi" class="layui-form-label">
+                  <span class="x-red">*</span>优秀人数比
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="youxiubi" name="youxiubi" lay-verify="required"
+                  autocomplete="off" class="layui-input " value="{$list.data.youxiubi|default=''}" placeholder="0-100">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="lianghaobi" class="layui-form-label">
+                  <span class="x-red">*</span>良好人数比
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="lianghaobi" name="lianghaobi" lay-verify="required"
+                  autocomplete="off" class="layui-input " value="{$list.data.lianghaobi|default=''}" placeholder="0-100">
+              </div>
+          </div>
+          <div class="layui-form-item">
+              <label for="jigebi" class="layui-form-label">
+                  <span class="x-red">*</span>及格人数比
+              </label>
+              <div class="layui-input-block">
+                  <input type="text" id="jigebi" name="jigebi" lay-verify="required"
+                  autocomplete="off" class="layui-input " value="{$list.data.jigebi|default=''}" placeholder="0-100">
               </div>
           </div>
           <input id="id" name="id" value="{$list.data.id}" type="hidden">

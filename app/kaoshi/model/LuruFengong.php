@@ -23,6 +23,7 @@ class LuruFengong extends BaseModel
         $src = array_cover($srcfrom, $src) ;
         $src['kaoshi_id'] = strToarray($src['kaoshi_id']);
         $src['banji_id'] = strToarray($src['banji_id']); 
+        $src['subject_id'] = strToarray($src['subject_id']); 
 
         $logList = self::where('kaoshi_id', 'in', $src['kaoshi_id'])
         			->when(count($src['banji_id']) > 0, function($query) use($src){

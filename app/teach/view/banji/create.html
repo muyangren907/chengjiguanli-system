@@ -9,13 +9,9 @@
 		</div>
 	</div>
 	<div class="layui-form-item">
-		<label for="ruxuenian" class="layui-form-label"><span class="x-red">*</span>年级</label>
+		<label for="ruxuenian" class="layui-form-label">年级</label>
 		<div class="layui-input-block">
-			<select name="ruxuenian" lay-verify="required">
-				<option value=""></option>
-				{foreach :nianJiNameList() as $key=>$vo }
-				<option value="{$key}">{$vo}</option>
-				{/foreach}
+			<select id="ruxuenian" name="ruxuenian" lay-verify="required">
 			</select>
 		</div>
 	</div>
@@ -39,6 +35,7 @@ layui.use('createInput', function() {
 
 	// 填充下拉菜单
 	cInput.schoolSelect('school_id', '校级', '校级', "{$list.data.school_id|default=''}");
+	cInput.nanjiSelect('ruxuenian');
 });
 
 </script>

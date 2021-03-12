@@ -1,7 +1,7 @@
 {extend name=".././view/create.html" /}
 {block name="jscss"}
-  <style>
-    .dh {
+<style>
+  .dh {
       min-height:50px;
       size:24px;
       padding-top:10px;
@@ -24,208 +24,165 @@
   </style>
 {/block}
 {block name="form"}
-    <div class="layui-form-item">
-      <div class="dh wancheng" style="width: 10%;">开始</div>
-      <div class="dh wancheng" style="width: 20%;">考试信息</div>
-      <div class="dh jinxing" style="width: 20%;">以年级为单位设置参加考试学科和分数线</div>
-      <div class="dh weicaozuo" style="width: 20%;">生成参加考试学生名单</div>
-      <div class="dh weicaozuo" style="width: 20%;">分配录入成绩任务</div>
-      <div class="dh weicaozuo" style="width: 9%;">完成</div>
+<div class="layui-form-item">
+  <div class="dh wancheng" style="width: 10%;">开始</div>
+  <div class="dh wancheng" style="width: 20%;">考试信息</div>
+  <div class="dh jinxing" style="width: 20%;">以年级为单位设置参加考试学科和分数线</div>
+  <div class="dh weicaozuo" style="width: 20%;">生成参加考试学生名单</div>
+  <div class="dh weicaozuo" style="width: 20%;">分配录入成绩任务</div>
+  <div class="dh weicaozuo" style="width: 9%;">完成</div>
+</div>
+<form class="layui-form layui-form-pane" lay-filter="myform">
+  <div class="layui-form-item">
+    <label for="ruxuenian" class="layui-form-label"><span class="x-red">*</span>参考年级</label>
+    <div class="layui-input-block">
+      <select id="ruxuenian" name="ruxuenian" lay-verify="required">
+      </select>
     </div>
-    <form class="layui-form layui-form-pane" lay-filter="myform">
-          <div class="layui-form-item">
-            <label for="ruxuenian" class="layui-form-label"><span class="x-red">*</span>参考年级</label>
-            <div class="layui-input-block">
-              <select name="ruxuenian" lay-verify="required">
-                <option value="">请选择年级</option>
-                {foreach $list.set.nianji as $key=>$vo }
-                  <option value="{$key}">
-                    {$vo}
-                  </option>
-                {/foreach}
-              </select>
-              <input id="nianjiname" name="nianjiname" value="" type="hidden">
-            </div>
-          </div>
-          <div class="layui-form-item">
-            <label for="sbjtable" class="layui-form-label"><span class="x-red">*</span>学科分数线</label>
-            <div class="layui-input-block">
-              {php}
-                $subject = subjectKaoshiList();
-              {/php}
-              <table class="layui-table" lay-skin="line" lay-size="sm" id="sbjtable">
-                  <colgroup>
-                    <col width="150">
-                    <col width="200">
-                    <col>
-                  </colgroup>
-                  <thead>
-                    <tr>
-                      <th>选择</th>
-                      <th>学科</th>
-                      <th>满分</th>
-                      <th>优秀分数线</th>
-                      <th>及格分数线</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {volist name="subject" id="vo"}
-                      <tr>
-                        <td>
-                          <input type="checkbox" id="{$vo.lieming}" action="btmOnclick" name="subject_id[{$vo.id}]" lay-skin="primary" value="{$vo.id}">
-<!--                           <input id="lieming" name="lieming[{$vo.id}]" value="{$vo.lieming}" type="hidden">
- -->                        </td>
-                        <td>{$vo.title}</td>
-                        <td><input type="text" title="manfen" name="manfen[{$vo.id}]" placeholder="满分" lay-skin="primary" class="layui-input"></td>
-                        <td><input type="text" name="youxiu[{$vo.id}]" placeholder="优秀分" lay-skin="primary" class="layui-input"></td>
-                        <td><input type="text" name="jige[{$vo.id}]" placeholder="及格分" lay-skin="primary" class="layui-input"></td>
-                      </tr>
-                    {/volist}
-                  </tbody>
-              </table>
-            </div>
-          </div>
-          <input id="kaoshi_id" name="kaoshi_id" value="{$list.set.kaoshi_id}" type="hidden">
-          <div class="layui-form-item" style="text-align: right;">
-              <a href="javascript:;" onclick="preSet()" class="layui-btn layui-btn-danger" style="margin-left: 10px;">上一步</a>
-              <button  class="layui-btn" lay-filter="kssubmit" lay-submit="">
-                  {$list.set.butname}
-              </button>
-              <a href="javascript:;" onclick="nextSet()" class="layui-btn layui-btn-danger" style="margin-left: 10px;">下一步</a>
-          </div>
-      </form>
+  </div>
+  <input id="nianjiname" name="nianjiname" value="" type="hidden">
+  <div class="layui-form-item">
+    <label for="sbjtable" class="layui-form-label"><span class="x-red">*</span>学科分数线</label>
+    <div class="layui-input-block">
+      {php}
+      $sbj = new \app\teach\model\Subject;
+      $src = [
+      'status' => 1,
+      'kaoshi' => 1
+      ];
+      $subject = $sbj->search($src);
+      {/php}
+      <table class="layui-table" lay-skin="line" lay-size="sm" id="sbjtable">
+        <thead>
+          <tr>
+            <th>选择</th>
+            <th>学科</th>
+            <th>满分</th>
+            <th>优秀分数线</th>
+            <th>良好分数线</th>
+            <th>及格分数线</th>
+            <th>优秀人数比</th>
+            <th>良好人数比</th>
+            <th>及格人数比</th>
+          </tr>
+        </thead>
+        <tbody>
+          {volist name="subject" id="vo"}
+          <tr>
+            <td>
+              <input type="checkbox" id="{$vo.lieming}" action="btmOnclick" name="subject_id[{$vo.id}]" lay-skin="primary" value="{$vo.id}">
+            </td>
+            <td>{$vo.title}</td>
+            <td><input type="text" title="manfen" name="manfen[{$vo.id}]" placeholder="满分" lay-skin="primary" class="layui-input"></td>
+            <td><input type="text" name="youxiu[{$vo.id}]" placeholder="优秀分" lay-skin="primary" class="layui-input"></td>
+            <td><input type="text" name="lianghao[{$vo.id}]" placeholder="良好分" lay-skin="primary" class="layui-input"></td>
+            <td><input type="text" name="jige[{$vo.id}]" placeholder="及格分" lay-skin="primary" class="layui-input"></td>
+            <td><input type="text" name="youxiubi[{$vo.id}]" placeholder="0-100整数" lay-skin="primary" class="layui-input"></td>
+            <td><input type="text" name="lianghaobi[{$vo.id}]" placeholder="0-100整数" lay-skin="primary" class="layui-input"></td>
+            <td><input type="text" name="jigebi[{$vo.id}]" placeholder="0-100整数" lay-skin="primary" class="layui-input"></td>
+          </tr>
+          {/volist}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <input id="kaoshi_id" name="kaoshi_id" value="{$list.set.kaoshi_id}" type="hidden">
+  <div class="layui-form-item" style="text-align: right;">
+    <a href="javascript:;" onclick="preSet()" class="layui-btn layui-btn-danger" style="margin-left: 10px;">上一步</a>
+    <button class="layui-btn" lay-filter="kssubmit" lay-submit="">
+      {$list.set.butname}
+    </button>
+    <a href="javascript:;" onclick="nextSet()" class="layui-btn layui-btn-danger" style="margin-left: 10px;">下一步</a>
+  </div>
+</form>
 {/block}
-
 {block name="myjs"}
 <script>
+layui.use(['form', 'createInput'], function() {
+  var laydate = layui.laydate,
+    form = layui.form,
+    cInput = layui.createInput;
 
-  layui.use(['laydate','form'], function(){
-    var laydate = layui.laydate
-        ,form = layui.form;
+  cInput.nanjiSelect('ruxuenian', { riqi: "{$list.enddate}" });
 
-    // 监听年级
-    // 监测表单复选框按钮
-    form.on('select()', function(data){
-      val = data.elem[data.elem.selectedIndex].text
-      $('#nianjiname').val(val);
-      $('#sbjtable').find("input[type='checkbox']").prop('checked',false);
-      $('#sbjtable').find("input[type='text']").val('');
-      form.render();
-    });
-
-    // 监听满分文本框
-    $("[title^='manfen']").on("input",function(obj){
-      mydiv = $(obj.delegateTarget).parents("tr");
-      val = $(obj.delegateTarget).val();
-      if(isRealNum(val))
-      {
-        // 选中复选框
-        $(mydiv).find("td:eq(0)").children("input").prop('checked',true);
-        // 设置优秀率和及格率
-        $(mydiv).find("td:eq(3)").children("input:eq(0)").val(Math.round(val*0.9));
-        $(mydiv).find("td:eq(4)").children("input:eq(0)").val(Math.round(val*0.6));
-      }else{
-        // 选中复选框
-        $(mydiv).find("td:eq(0)").children("input").prop('checked',false);
-        // 设置优秀率和及格率
-        $(mydiv).find("td:eq(3)").children("input:eq(0)").val('');
-        $(mydiv).find("td:eq(4)").children("input:eq(0)").val('');
-      }
-
-      // 重载表格
-      form.render();
-
-    });
-
-
-    //监听提交
-    form.on('submit(kssubmit)', function(data){
-      $.ajax({
-        url:"{$list.set.url}",
-        type:"{$list.set.formpost}",
-        data:data.field,
-        dataType:'json',
-        success:function(result){
-          if(result.val == 1)
-          {
-            // $(location).attr('href', '/kaoshi/kaoshiset/create/' + "{$list['set']['kaoshi_id']}");
-            parent.layer.msg(result.msg);
-          }else{
-            layer.msg(result.msg);
-          }
-        },
-        error:function(xhr,status,error) {
-          layer.msg('数据处理错误',{
-              icon: 2,
-              time: 2000 //2秒关闭（如果不配置，默认是3秒）
-          });
-        }
-      });
-      return false;
-    });
-
+  // 监听年级
+  form.on('select()', function(data) {
+    $('#nianjiname').val($(data.elem).find("option:selected").text());
+    $('#sbjtable').find("input[type='checkbox']").prop('checked', false);
+    $('#sbjtable').find("input[type='text']").val('');
+    form.render();
   });
 
-
-  function nextSet()
-  {
-    $(location).attr('href', '/kaoshi/index/setp3/' + "{$list['set']['kaoshi_id']}");
-    return false;
-  }
-
-
-  function preSet()
-  {
-    $(location).attr('href', '/kaoshi/index/editsetp1/' + "{$list['set']['kaoshi_id']}");
-    return false;
-  }
-
-
-  // 下层按钮
-  function btmOnclick(id,ischecked)
-  {
-    $mydiv =  $('#'+id).parents("td");
-    if(ischecked == true){
-      // 设置满分
-      $mydiv =  $mydiv.next("td");
-      $mydiv =  $mydiv.next("td");
-      $mydiv.children('input').val('100');
-      // 设置优秀
-      $mydiv =  $mydiv.next();
-      $mydiv.children('input').val('90');
-      // 设置及格
-      $mydiv =  $mydiv.next();
-      $mydiv.children('input').val('60');
-    }else{
-      // 设置满分
-      $mydiv =  $mydiv.next("td");
-      $mydiv =  $mydiv.next("td");
-      $mydiv.children('input').val('');
-      // 设置优秀
-      $mydiv =  $mydiv.next();
-      $mydiv.children('input').val('');
-      // 设置及格
-      $mydiv =  $mydiv.next();
-      $mydiv.children('input').val('');
+  form.on('checkbox()', function(data) {
+    var tr = $(data.elem).parents('tr');
+    check = data.elem.checked;
+    text = tr.find("input[type='text']");
+    if (check == true) {
+      val = 100;
+      text.eq(0).val(val);
+      text.eq(1).val((val * 0.9).toFixed(1));
+      text.eq(2).val((val * 0.75).toFixed(1));
+      text.eq(3).val((val * 0.6).toFixed(1));
+      text.eq(4).val(10);
+      text.eq(5).val(25);
+      text.eq(6).val(60);
+    } else {
+      text.val('');
     }
-  }
+  });
 
+  // 监听满分文本框
+  $("[title^='manfen']").on("input", function(obj) {
+    tr = $(obj.delegateTarget).parents("tr");
+    val = $(obj.delegateTarget).val();
+    checkbox = tr.find("input[type='checkbox']");
+    text = tr.find("input[type='text']");
+    if (isRealNum(val)) {
+      // 选中复选框
+      checkbox.eq(0).prop('checked', true);
+      // 设置优秀率和及格率
+      text.eq(1).val((val * 0.9).toFixed(1));
+      text.eq(2).val((val * 0.75).toFixed(1));
+      text.eq(3).val((val * 0.6).toFixed(1));
+      text.eq(4).val(Math.round(10));
+      text.eq(5).val(Math.round(25));
+      text.eq(6).val(Math.round(60));
+    } else {
+      // 选中复选框
+      checkbox.eq(0).prop('checked', false);
+      text.val('');
+    }
+    // 重载表格
+    form.render();
+  });
 
   // 判断输入是否为数字
-  function isRealNum(val){
+  function isRealNum(val) {
     // isNaN()函数 把空串 空格 以及NUll 按照0来处理 所以先去除
-    if(val === "" || val ==null){
-        return false;
+    if (val === "" || val == null) {
+      return false;
     }
-    if(!isNaN(val)){
-        return true;
-    }else{
-        return false;
+    if (!isNaN(val)) {
+      return true;
+    } else {
+      return false;
     }
+  }
+
+});
+
+
+function nextSet() {
+  $(location).attr('href', '/kaoshi/index/setp3/' + "{$list['set']['kaoshi_id']}");
+  return false;
+}
+
+function preSet() {
+  $(location).attr('href', '/kaoshi/index/editsetp1/' + "{$list['set']['kaoshi_id']}");
+  return false;
 }
 
 
 
 </script>
 {/block}
-

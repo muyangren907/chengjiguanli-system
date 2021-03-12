@@ -3,26 +3,23 @@
 {block name="form"}
 <form class="layui-form layui-form-pane" lay-filter="myform">
   <div class="layui-form-item">
-    <label for="school_id" class="layui-form-label"><span class="x-red">*</span>参考学校</label>
-    <div class="layui-input-block">
-      {php}$schoolList = danweiJibie('校级', '校级');{/php}
-      <select name="school_id" id="school_id" lay-filter="school_id" lay-verify="required">
-        <option value="">请选择学校</option>
-        {foreach $schoolList as $key=>$vo }
-        <option value="{$vo.id}">
-        {$vo.title}
-      </option>
-      {/foreach}
+  <label for="school_id" class="layui-form-label">学校</label>
+  <div class="layui-input-block">
+    <select name="school_id" id="school_id">
     </select>
   </div>
 </div>
 <div class="layui-form-item">
-  {foreach $list.data.nianji as $key=>$vo }
-  <label for="title" class="layui-form-label" title="nianji">{$vo.nianjiname}</label>
-  <div class="layui-input-block" id="{$vo.ruxuenian}">
-   <input type="checkbox" title="全选" lay-skin="primary"  checkall="p">
- </div>
- {/foreach}
+  <label for="ruxuenian" class="layui-form-label">年级</label>
+  <div class="layui-input-block">
+    <select name="ruxuenian" id="ruxuenian">
+    </select>
+  </div>
+</div>
+<div class="layui-form-item" style="margin-bottom: 0;">
+  <label for="banji_id" class="layui-form-label" style="height: 100%">班级</label>
+  <div class="layui-input-block" id="banji_id">
+  </div>
 </div>
 <input type="hidden" name="kaoshi_id" id="kaoshi_id" value="{$list.set.kaoshi_id}">
 <div class="layui-form-item" style="text-align: right;">
@@ -35,38 +32,25 @@
 
 {block name="myjs"}
 <script>
-  layui.use('form', function(){
-    var form = layui.form;
-    form.on('select(school_id)', function(data){
-    // 声明变量
-    var school_id = data.value;
-    var nianji = "<?php echo json_encode($list['data']['nianjiNum']);?>";
-      // 获取数据
-      $.post(
-        "/teach/banji/mybanjis",
-        {
-          "school_id":school_id
-          ,"ruxuenian":eval(nianji)
-        },
-        function(data,status){
-          $('input[title="全选"]').each(function(){
-            $(this).nextAll().remove();
-          });
-          $('input[title="全选"]').prop('checked',false);
-          if($.isEmptyObject(data))
-          {
-            return true;
-          }
-          for (var i in data) {
-                  // $('#'+data[i]['ruxuenian']).nextAll().remove();
-                  for(x in data[i]['njBanji']){
-                    $('#'+data[i]['ruxuenian']).append('<input type="checkbox" name="banji_id[]" value="'+data[i]['njBanji'][x]['id']+'" title="'+data[i]['njBanji'][x]['banTitle']+'" lay-skin="primary" checkall="c">');
-                  }
-                }
-                form.render('checkbox');
-              }
-              );
-    });
+  layui.use(['form', 'createInput', 'canyuKaoshi'], function(){
+    var form = layui.form,
+    cInput = layui.createInput,
+    canyu = layui.canyuKaoshi;
+
+    cInput.schoolSelect('school_id', '校级', '校级', "{$list.data.school_id|default=''}", true);
+    canyu.gradeSelect('ruxuenian', "{$list.set.kaoshi_id}");
+
+    form.on('select()', function(data) {
+    data = form.val("myform");
+    if (data.school_id > 0 && data.ruxuenian > 0) {
+      cInput.banjiCheckbox('banji_id', data);
+    }
+  });
+
+  form.on('checkbox(mycheackbox)', function(data) {
+    cInput.checkboxChecked(data);
+  });
+    
 });
 
 </script>

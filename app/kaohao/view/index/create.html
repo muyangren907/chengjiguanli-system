@@ -69,9 +69,9 @@
 
 {block name="myjs"}
 <script>
-  layui.use(['form','cjgl'], function(){
+  layui.use(['form','mytable'], function(){
     var form = layui.form
-        cjgl = layui.cjgl;
+        mytable = layui.mytable;
 
     addBanji();
     // 监听选择按钮
@@ -95,7 +95,7 @@
       {
         return true;
       }
-      cjgl.createSelectOption('banji_id', formval, '/teach/banji/mybanji', 'id', 'banTitle');
+      mytable.createSelectOption('banji_id', formval, '/teach/banji/mybanji', 'id', 'banTitle');
     }
 
 

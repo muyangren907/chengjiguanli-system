@@ -17,8 +17,12 @@ class KaoshiSetEdit extends Validate
         'id|ID'      =>  'require|integer',
         'kaoshi_id|考试ID'      =>  'require|integer',
         'manfen|满分'      =>  'require|number',
-        'youxiu|优秀'      =>  'require|number',
-        'jige|及格'      =>  'require|number',
+        'youxiu|优秀分数线'      =>  'require|number',
+        'lianghao|良好分数线'      =>  'require|number',
+        'jige|及格分数线'      =>  'require|number',
+        'youxiu|优秀人数比'      =>  'require|number',
+        'lianghao|良好人数比'      =>  'require|number',
+        'jige|及格人数比'      =>  'require|number',
         // 'lieming|列名'      =>  'require|array',
     ];
 
@@ -31,6 +35,6 @@ class KaoshiSetEdit extends Validate
     protected $message = [];
 
     protected $scene = [
-        'edit'  =>  ['id','kaoshi_id','manfen','youxiu','jige'],
+        'edit'  =>  ['id','kaoshi_id','manfen','youxiu','lianghao','jige','youxiubi','lianghaobi','jigebi'],
     ];
 }

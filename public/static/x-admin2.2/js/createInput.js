@@ -22,6 +22,7 @@ layui.extend({
           p_id: pid
         },
         success: function(result) {
+          $('#' + myid).children().remove();
           if (hasNull == true) {
             str = '<option value=""></option>';
           } else {
@@ -47,37 +48,43 @@ layui.extend({
 
     // 选中checkbox
     checkboxChecked: function(data) {
-      pid = $(data.elem).attr('pid');
+            pid = $(data.elem).attr('pid');
       cid = $(data.elem).attr('cid');
       check = data.elem.checked;
       editCid(cid, check);
       editPid(pid, check);
 
       function editCid(cid, check) {
-        $("input[pid='" + cid + "']").each(function(i, el) {
+        myInput = $(data.elem).siblings("input[pid='" + cid + "']");
+        myInput.each(function(i, el) {
           this.checked = check;
           cid = $(this).attr('cid');
           editCid(cid, check);
         });
+        return false;
       }
 
       function editPid(pid, check) {
+        myInput = $(data.elem).siblings("input[pid='" + pid + "']");
         if (check == true) {
-          $("input[cid='" + pid + "']").each(function(i, el) {
+          myInput.each(function(i, el) {
             this.checked = check;
             pid = $(this).attr('pid');
+            console.log(pid);
             editPid(pid, check);
           });
         } else {
-          cnt = $("input[pid='" + pid + "']:checked").length;
+          myCid = $(data.elem).siblings("input[pid='" + pid + "']");
+          cnt = myInput.length;
           if (cnt == 0) {
-            $("input[cid='" + pid + "']").each(function(i, el) {
+            myInput.each(function(i, el) {
               this.checked = check;
               pid = $(this).attr('pid');
               editPid(pid, check);
             });
           }
         }
+        return false;
       }
 
       form.render('checkbox');
@@ -95,6 +102,7 @@ layui.extend({
           kaoshi:kaoshi
         },
         success: function(result) {
+          $('#' + myid).children().remove();
           if (hasNull == true) {
             str = '<option value=""></option>';
           } else {
@@ -303,6 +311,7 @@ layui.extend({
           kaoshi: kaoshi
         },
         success: function(result) {
+          $('#' + myid).children().remove();
           if (hasNull == true) {
             str = '<option value=""></option>';
           } else {
@@ -343,9 +352,9 @@ layui.extend({
           temp = "";
           $(result.data).each(function(i, el) {
             if (value != '' && value == el.id) {
-              temp = '<input type="checkbox" name="' + myid + '_id[]' + '" title="' + el.banTitle + '" value="' + el.id + '" lay-skin="primary" pid="1" lay-filter="mycheackbox" checked>';
+              temp = '<input type="checkbox" name="' + myid + '[]' + '" title="' + el.banTitle + '" value="' + el.id + '" lay-skin="primary" pid="1" lay-filter="mycheackbox" checked>';
             } else {
-              temp = '<input type="checkbox" name="' + myid + '_id[]' + '" title="' + el.banTitle + '" value="' + el.id + '" lay-skin="primary" pid="1" lay-filter="mycheackbox">';
+              temp = '<input type="checkbox" name="' + myid + '[]' + '" title="' + el.banTitle + '" value="' + el.id + '" lay-skin="primary" pid="1" lay-filter="mycheackbox">';
             }
             str = str + temp;
           });
@@ -391,13 +400,14 @@ layui.extend({
     },
 
 
-    // 创建学期的Select
+    // 创建年级的Select
    nanjiSelect: function(myid, data, value, hasNull = true) {
         $.ajax({
         url: '/teach/banji/njlist',
         type: 'POST',
         data: data,
         success: function(result) {
+          $('#' + myid).children().remove();
           if (hasNull == true) {
             str = '<option value=""></option>';
           } else {
@@ -428,6 +438,7 @@ layui.extend({
         url: '/teach/xueqi/srcxueqi',
         type: 'POST',
         success: function(result) {
+          $('#' + myid).children().remove();
           if (hasNull == true) {
             str = '<option value=""></option>';
           } else {

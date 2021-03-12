@@ -19,8 +19,12 @@ class Kaoshiset extends Validate
         'nianjiname|年级名称'      =>  'require|chsAlphaNum',
         'subject_id|学科'      =>  'require|array',
         'manfen|满分'      =>  'require|array',
-        'youxiu|优秀'      =>  'require|array',
-        'jige|及格'      =>  'require|array',
+        'youxiu|优秀分数线'      =>  'require|array',
+        'lianghao|良好分数线'      =>  'require|array',
+        'jige|及格分数线'      =>  'require|array',
+        'youxiubi|优秀人数比'      =>  'require|array',
+        'lianghaobi|良好人数比'      =>  'require|array',
+        'jigebi|及格人数比'      =>  'require|array',
         // 'lieming|列名'      =>  'require|array',
     ];
 
@@ -33,6 +37,6 @@ class Kaoshiset extends Validate
     protected $message = [];
 
     protected $scene = [
-        'create'  =>  ['kaoshi_id', 'nianji','nianjiname', 'subject_id', 'manfen', 'youxiu', 'jige'],
+        'create'  =>  ['kaoshi_id', 'nianji','nianjiname', 'subject_id', 'manfen', 'youxiu', 'lianghao', 'jige', 'youxiubi', 'lianghaobi', 'jigebi'],
     ];
 }

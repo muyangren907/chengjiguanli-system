@@ -63,23 +63,22 @@
 		<div class="layui-form-item">
 			<label for="ruxuenian" class="layui-form-label">年级</label>
 			<div class="layui-input-block">
-				{php} $njlist = nianJiNameList();{/php}
-				<select name="ruxuenian" id="ruxuenian" autocomplete="off" class="layui-form-label" lay-filter="srcbanji">
-					<option value=""></option>
-					{foreach $njlist as $key=>$vo}
-					<option value="{$key}" {present name="$list.data.stuBanji" }{eq name="$list.data.stuBanji.ruxuenian" value="$key" }selected{/eq}{/present}> {$vo} </option> {/foreach} </select> </div> </div>
-			<div class="layui-form-item">
-				<label for="banji_id" class="layui-form-label"><span class="x-red">*</span>班级</label>
-				<div class="layui-input-block">
-					<select name="banji_id" id="banji_id" lay-verify="required">
-					</select>
-				</div>
+				<select id="ruxuenian" name="ruxuenian" lay-verify="required" lay-filter="srcbanji">
+				</select>
 			</div>
-			<div class="layui-form-item" style="text-align: right;">
-				<button class="layui-btn" lay-filter="mysubmit" lay-submit="">
-					{$list.set.butname}
-				</button>
+		</div>
+		<div class="layui-form-item">
+			<label for="banji_id" class="layui-form-label"><span class="x-red">*</span>班级</label>
+			<div class="layui-input-block">
+				<select name="banji_id" id="banji_id" lay-verify="required">
+				</select>
 			</div>
+		</div>
+		<div class="layui-form-item" style="text-align: right;">
+			<button class="layui-btn" lay-filter="mysubmit" lay-submit="">
+				{$list.set.butname}
+			</button>
+		</div>
 </form>
 {/block}
 {block name="myjs"}
@@ -92,7 +91,13 @@ layui.use(['laydate', 'form', 'mytable', 'createInput'], function() {
 
 	// 填充下拉菜单
 	cInput.schoolSelect('school_id', '校级', '校级', "{$list.data.stuBanji.school_id|default=''}");
-	cInput.banjiSelect('banji_id', form.val("myform"), "{$list.data.banji_id|default=''}");
+	cInput.nanjiSelect('ruxuenian', '', "{$list.data.stuBanji.ruxuenian|default=''}");
+	data = {
+		school_id:"{$list.data.stuBanji.school_id|default=''}",
+		ruxuenian:"{$list.data.stuBanji.ruxuenian|default=''}",
+	}
+	cInput.banjiSelect('banji_id', data, "{$list.data.banji_id|default=''}");
+
 
 	//执行一个laydate实例
 	laydate.render({
@@ -103,7 +108,7 @@ layui.use(['laydate', 'form', 'mytable', 'createInput'], function() {
 	form.on('select(srcbanji)', function(data) {
 		data = form.val("myform");
 		if (data.school_id > 0 && data.ruxuenian > 0) {
-			cInput.banjiSelect('banji_id', data);
+			cInput.banjiSelect('banji_id', form.val("myform"), "{$list.data.banji_id|default=''}");
 		}
 	});
 

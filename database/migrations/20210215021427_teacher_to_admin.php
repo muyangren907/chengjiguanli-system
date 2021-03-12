@@ -72,11 +72,16 @@ class TeacherToAdmin extends Migrator
 
         $table = $this->table('cj_migrations');
         $this->execute('DELETE FROM cj_migrations WHERE version="20210107070200" and migration_name="KaoshiAddUser"');
+
+        $table = $this->table('cj_kaoshi_set');
+        $table->addColumn('youxiubi','integer',['limit'=>3,'default'=>90,'null'=>false,'comment'=>'优秀人数比'])
+            ->addColumn('lianghaobi','integer',['limit'=>3,'default'=>90,'null'=>false,'comment'=>'良好人数比'])
+            ->addColumn('jigebi','integer',['limit'=>3,'default'=>00,'null'=>false,'comment'=>'及格人数比']);
     }
 
 
     //版本退回
-    public function down()
+    public function down1()
     {
         $table = $this->table('fields');
         $column = $table->hasColumn('user_group');
