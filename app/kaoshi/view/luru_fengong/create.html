@@ -32,7 +32,7 @@
     <label for="teacher_name" class="layui-form-label">
       <span class="x-red">*</span>教师姓名
     </label>
-    <div class="layui-input-block" id="teacher_id" school_id="{$list.data.school_id|default=''}">
+    <div class="layui-input-block" id="admin_id" school_id="{$list.data.school_id|default=''}">
     </div>
   </div>
           <div class="layui-form-item">
@@ -83,17 +83,10 @@ layui.use(['createInput','canyuKaoshi','form'], function(){
     form = layui.form;
 
     // 搜索教师
-  xmselect = cInput.searchTeacher('teacher_id', true);
+  xmselect = cInput.searchTeacher('admin_id');
   canyu.schoolSelect('school_id', "{$list.set.kaoshi_id}");
   canyu.gradeSelect('ruxuenian', "{$list.set.kaoshi_id}");
 
-    // // 加载学校列表
-    // addSchool();
-
-    // // 监听学校下拉菜单
-    // form.on('select(school_id)', function (data) {
-    //   addNianji();
-    // })
     // 监听学校下拉菜单
     form.on('select(src)', function (data) {
       data = form.val("myform");
@@ -106,48 +99,6 @@ layui.use(['createInput','canyuKaoshi','form'], function(){
     form.on('checkbox(mycheackbox)', function(data) {
       cInput.checkboxChecked(data);
     });
-
-    // // 添加学校
-    // function addSchool(){
-    //   // 获取参数
-    //   formval = form.val("myform");
-    //   cjgl.createSelectOption('school_id', formval, '/kaoshi/kscy/school', 'id', 'title');
-    // }
-
-    // // 添加年级
-    // function addNianji(){
-    //   // 获取参数
-    //   formval = form.val("myform");
-    //   cjgl.createSelectOption('ruxuenian', formval, '/kaoshi/kscy/grade', 'ruxuenian', 'nianjiname');
-    // }
-
-    // // 添加学科
-    // function addBanji(){
-    //   // 获取参数
-    //   formval = form.val("myform");
-    //   console.log(formval);
-    //   cjgl.createCheckbox('banji_id', formval, '/kaoshi/kscy/class', 'banji_id', 'banTitle');
-    // }
-
-
-    // // 添加学校
-    // function addSubject(){
-    //   // 获取参数
-    //   formval = form.val("myform");
-    //   cjgl.createCheckbox('subject_id', formval, '/kaoshi/kscy/subject', 'subject_id', 'title');
-    // }
-
-
-    // // 搜索教师
-    // $('#admin_id').bind({
-    //   keyup:function(){
-    //     var val = $.trim($(this).val());
-    //     if(val.length>0){
-    //       cjgl.searchTeacher(this, val, 'admin_id[]', 'addTeacher');
-    //     }
-    //   },
-    // })
-
 });
 
 

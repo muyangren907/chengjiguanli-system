@@ -88,11 +88,11 @@
   </div>
   <input id="kaoshi_id" name="kaoshi_id" value="{$list.set.kaoshi_id}" type="hidden">
   <div class="layui-form-item" style="text-align: right;">
-    <a href="javascript:;" onclick="preSet()" class="layui-btn layui-btn-danger" style="margin-left: 10px;">上一步</a>
+    <a href="javascript:;" id="preSet" class="layui-btn layui-btn-danger" style="margin-left: 10px;">上一步</a>
     <button class="layui-btn" lay-filter="kssubmit" lay-submit="">
       {$list.set.butname}
     </button>
-    <a href="javascript:;" onclick="nextSet()" class="layui-btn layui-btn-danger" style="margin-left: 10px;">下一步</a>
+    <a href="javascript:;" id="nextSet" class="layui-btn layui-btn-danger" style="margin-left: 10px;">下一步</a>
   </div>
 </form>
 {/block}
@@ -169,19 +169,44 @@ layui.use(['form', 'createInput'], function() {
     }
   }
 
+  $('#preSet').click(function(){
+    $(location).attr('href', '/kaoshi/index/editsetp1/' + "{$list['set']['kaoshi_id']}");
+    return false;
+  })
+
+  $('#nextSet').click(function(){
+    $(location).attr('href', '/kaoshi/index/setp3/' + "{$list['set']['kaoshi_id']}");
+    return false;
+  })
+
+      //监听提交
+    form.on('submit(kssubmit)', function(data){
+      $.ajax({
+        url:"{$list.set.url}",
+        type:"{$list.set.formpost}",
+        data:data.field,
+        dataType:'json',
+        success:function(result){
+          if(result.val == 1)
+          {
+            // $(location).attr('href', '/kaoshi/kaoshiset/create/' + "{$list['set']['kaoshi_id']}");
+            parent.layer.msg(result.msg);
+          }else{
+            layer.msg(result.msg);
+          }
+        },
+        error:function(xhr,status,error) {
+          layer.msg('数据处理错误',{
+              icon: 2,
+              time: 2000 //2秒关闭（如果不配置，默认是3秒）
+          });
+        }
+      });
+      return false;
+    });
+
+
 });
-
-
-function nextSet() {
-  $(location).attr('href', '/kaoshi/index/setp3/' + "{$list['set']['kaoshi_id']}");
-  return false;
-}
-
-function preSet() {
-  $(location).attr('href', '/kaoshi/index/editsetp1/' + "{$list['set']['kaoshi_id']}");
-  return false;
-}
-
 
 
 </script>

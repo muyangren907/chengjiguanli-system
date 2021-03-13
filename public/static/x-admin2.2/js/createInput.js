@@ -46,42 +46,87 @@ layui.extend({
       });
     },
 
+
     // 选中checkbox
-    checkboxChecked: function(data) {
-            pid = $(data.elem).attr('pid');
+    checkboxCheckedAuth: function(data) {
+      pid = $(data.elem).attr('pid');
       cid = $(data.elem).attr('cid');
       check = data.elem.checked;
       editCid(cid, check);
       editPid(pid, check);
 
       function editCid(cid, check) {
-        myInput = $(data.elem).siblings("input[pid='" + cid + "']");
-        myInput.each(function(i, el) {
+        $("input[pid='" + cid + "']").each(function(i, el) {
           this.checked = check;
           cid = $(this).attr('cid');
           editCid(cid, check);
         });
-        return false;
       }
 
       function editPid(pid, check) {
-        myInput = $(data.elem).siblings("input[pid='" + pid + "']");
         if (check == true) {
-          myInput.each(function(i, el) {
+          $("input[cid='" + pid + "']").each(function(i, el) {
             this.checked = check;
             pid = $(this).attr('pid');
-            console.log(pid);
             editPid(pid, check);
           });
         } else {
-          myCid = $(data.elem).siblings("input[pid='" + pid + "']");
-          cnt = myInput.length;
+          cnt = $("input[pid='" + pid + "']:checked").length;
           if (cnt == 0) {
-            myInput.each(function(i, el) {
+            $("input[cid='" + pid + "']").each(function(i, el) {
               this.checked = check;
               pid = $(this).attr('pid');
               editPid(pid, check);
             });
+          }
+        }
+      }
+
+      form.render('checkbox');
+
+    },
+
+
+    // 选中checkbox
+    checkboxChecked: function(data) {
+      check = data.elem.checked;
+      editCid(data.elem, check);
+      editPid(data.elem, check);
+
+      function editCid(elem, check) {
+        cid = $(elem).attr("cid");
+        if(typeof(cid)!="undefined") 
+        {
+          myCid = $(elem).siblings("input[pid='" + cid + "']");
+          layui.each(myCid, function(i, el){
+            this.checked = check;
+            // editCid(el);
+          })
+        }
+        return false;
+      }
+
+      function editPid(elem, check) {
+        pid = $(elem).attr("pid");
+        if(typeof(pid)!="undefined") 
+        {
+          cid = $(elem).attr("cid");
+          myPid = $(elem).siblings("input[cid='" + pid + "']");
+          if(check == true)
+          {
+            layui.each(myPid, function(i, el){
+              this.checked = check;
+              // editPid(el, check);
+            })
+          }else{
+            myTongji = $(elem).siblings("input[pid='" + pid + "']:checked");
+            if(myTongji.length == 0)
+            {
+              layui.each(myPid, function(i, el){
+                this.checked = check;
+                // editPid(el, check);
+              })
+            }
           }
         }
         return false;

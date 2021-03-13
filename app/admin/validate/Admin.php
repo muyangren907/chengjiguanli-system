@@ -21,7 +21,7 @@ class Admin extends Validate
         'group_id|角色'   =>  'require|array',
         'shengri|出生日期'   =>  'date',
         'sex|性别'   =>  'in:0,1,2',
-        'phone|手机'     =>  'mobile',
+        'phone|手机'     =>  'require|mobile',
         'beizhu|备注'    =>  'max:80',
         'zhiwu_id|职务'      =>      'number',
         'zhicheng_id|职称'     =>  'number',

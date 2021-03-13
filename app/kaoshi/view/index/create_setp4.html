@@ -62,174 +62,127 @@
 </div>
 <form class="layui-form layui-form-pane" lay-filter="myform"> 
   <input id="kaoshi_id" name="kaoshi_id" value="{$list.set.kaoshi_id}" type="hidden">
-  <div class="layui-form-item">
-      <label for="cyselect" class="layui-form-label">
-          <span class="x-red">*</span>教师
-      </label>
-      <div class="layui-inline">
-        <div class="layui-input-inline">
-          <input name="admin_id" id="admin_id" type="text" class="layui-input" autocomplete="off">
-        </div>
-        {present name="$list.data.kt_zcr"}
-          {volist name="$list.data.kt_zcr" id="vo"}
-          <div class="layui-input-inline" style="width:60px">
-            <div onclick="cjgl.delTeacher(this)" class="layui-btn layui-btn-normal">
-              {$vo.admin.xingming}
+          <div class="layui-form-item">
+    <label for="teacher_name" class="layui-form-label">
+      <span class="x-red">*</span>教师姓名
+    </label>
+    <div class="layui-input-block" id="admin_id" school_id="{$list.data.school_id|default=''}">
+    </div>
+  </div>
+          <div class="layui-form-item">
+            <label for="school_id" class="layui-form-label"><span class="x-red">*</span>学校</label>
+            <div class="layui-input-block">
+              <select name="school_id" id="school_id" lay-verify="required" lay-filter="src">
+                <option value="">请选择学校</option>
+              </select>
             </div>
-            <input type="hidden" name="hjteachers[]" value="{$vo.admin.id}"></div>
-          {/volist}
-        {/present}
-      </div>
-  </div>
-  <div class="layui-form-item">
-    <label for="school_id" class="layui-form-label"><span class="x-red">*</span>学校</label>
-    <div class="layui-input-block">
-      <select name="school_id" id="school_id" lay-verify="required" lay-filter="school_id">
-        <option value="">请选择学校</option>
-      </select>
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <label for="ruxuenian" class="layui-form-label">
-      <span class="x-red">*</span>年级
-    </label>
-    <div class="layui-input-block">
-      <select name="ruxuenian" id="ruxuenian" lay-verify="required" class="layui-form-label" lay-filter="ruxuenian">
-        <option value="">请选择年级</option>
-      </select>
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <label for="banji_id" class="layui-form-label">
-      <span class="x-red">*</span>班级
-    </label>
-    <div class="layui-input-block" id="banji_id">
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <label for="subject_id" class="layui-form-label">
-      <span class="x-red">*</span>学科
-    </label>
-    <div class="layui-input-block" id="subject_id">
-    </div>
-  </div>
+          </div>
+          <div class="layui-form-item">
+            <label for="ruxuenian" class="layui-form-label">
+              <span class="x-red">*</span>年级
+            </label>
+            <div class="layui-input-block">
+              <select name="ruxuenian" id="ruxuenian" lay-verify="required" class="layui-form-label" lay-filter="src">
+              </select>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label for="banji_id" class="layui-form-label">
+              <span class="x-red">*</span>班级
+            </label>
+            <div class="layui-input-block" id="banji_id">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label for="subject_id" class="layui-form-label">
+              <span class="x-red">*</span>学科
+            </label>
+            <div class="layui-input-block" id="subject_id">
+            </div>
+          </div>
   <div class="layui-form-item" style="text-align: right;">
-      <a href="javascript:;" onclick="preSet()" class="layui-btn layui-btn-danger" style="margin-left: 10px;">上一步</a>
+      <a href="javascript:;" id="preSet" class="layui-btn layui-btn-danger" style="margin-left: 10px;">上一步</a>
       <button  class="layui-btn" lay-filter="kssubmit" lay-submit=""> 
         {$list.set.butname}
       </button>
-      <a href="javascript:;" onclick="nextSet()" class="layui-btn layui-btn-danger" style="margin-left: 10px;">完成</a>
+      <a href="javascript:;" id="nextSet" class="layui-btn layui-btn-danger" style="margin-left: 10px;">完成</a>
   </div>
 </form>
 {/block}
 
 {block name="myjs"}
 <script>
-  layui.use(['form','cjgl'], function(){
-    var form = layui.form
-        ,cjgl = layui.cjgl;
-
-    //监听提交
-    form.on('submit(kssubmit)', function(data){
-      $.ajax({
-        url:"{$list.set.url}",
-        type:"{$list.set.formpost}",
-        data:data.field,
-        dataType:'json',
-        success:function(result){
-          if(result.val == 1)
-          {
-            // $(location).attr('href', '/kaoshi/kaoshiset/create/' + "{$list['set']['kaoshi_id']}");
-            parent.layer.msg(result.msg);
-          }else{
-            layer.msg(result.msg);
-          }
-        },
-        error:function(xhr,status,error) {
-          layer.msg('数据处理错误',{
-              icon: 2,
-              time: 2000 //2秒关闭（如果不配置，默认是3秒）
-          });
-        }
-      });
-      return false;
-    });
-
-    // 加载学校列表
-    addSchool();
-
-    // 监听学校下拉菜单
-    form.on('select(school_id)', function (data) {
-      addNianji();
-    })
-    // 监听学校下拉菜单
-    form.on('select(ruxuenian)', function (data) {
-      addBanji();
-      addSubject();
-    })
-
-    // 添加学校
-    function addSchool(){
-      // 获取参数
-      formval = form.val("myform");
-      cjgl.createSelectOption('school_id', formval, '/kaoshi/kscy/school', 'id', 'title');
-    }
-
-    // 添加年级
-    function addNianji(){
-      // 获取参数
-      formval = form.val("myform");
-      cjgl.createSelectOption('ruxuenian', formval, '/kaoshi/kscy/grade', 'ruxuenian', 'nianjiname');
-    }
-
-    // 添加学科
-    function addBanji(){
-      // 获取参数
-      formval = form.val("myform");
-      console.log(formval);
-      cjgl.createCheckbox('banji_id', formval, '/kaoshi/kscy/class', 'banji_id', 'banTitle');
-    }
-
-
-    // 添加学校
-    function addSubject(){
-      // 获取参数
-      formval = form.val("myform");
-      cjgl.createCheckbox('subject_id', formval, '/kaoshi/kscy/subject', 'subject_id', 'title');
-    }
-
+  layui.use(['createInput','canyuKaoshi','form'], function(){
+    var cInput = layui.createInput,
+    canyu = layui.canyuKaoshi,
+    form = layui.form;
 
     // 搜索教师
-    $('#admin_id').bind({
-      keyup:function(){
-        var val = $.trim($(this).val());
-        if(val.length>0){
-          cjgl.searchTeacher(this, val, 'admin_id[]', 'addTeacher');
+  xmselect = cInput.searchTeacher('admin_id');
+  canyu.schoolSelect('school_id', "{$list.set.kaoshi_id}");
+  canyu.gradeSelect('ruxuenian', "{$list.set.kaoshi_id}");
+
+    // 监听学校下拉菜单
+    form.on('select(src)', function (data) {
+      data = form.val("myform");
+      if(data.school_id>0 && data.ruxuenian>0){
+        canyu.banjiCheckbox('banji_id', data);
+      }
+      canyu.subjectCheckbox('subject_id', data);
+    });
+
+    form.on('checkbox(mycheackbox)', function(data) {
+      cInput.checkboxChecked(data);
+    });
+
+    //监听提交
+  form.on('submit(kssubmit)', function(data){
+    $.ajax({
+      url:"{$list.set.url}",
+      type:"{$list.set.formpost}",
+      data:data.field,
+      dataType:'json',
+      success:function(result){
+        if(result.val == 1)
+        {
+          // $(location).attr('href', '/kaoshi/kaoshiset/create/' + "{$list['set']['kaoshi_id']}");
+          window.location.reload();
+          parent.layer.msg(result.msg);
+        }else{
+          layer.msg(result.msg);
         }
       },
+      error:function(xhr,status,error) {
+        layer.msg('数据处理错误',{
+            icon: 2,
+            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+        });
+      }
+    });
+    return false;
+  });
+
+
+    $('#preSet').click(function(){
+      $(location).attr('href', '/kaoshi/index/setp3/' + "{$list['set']['kaoshi_id']}");
+    return false;
     })
+
+    $('#nextSet').click(function(){
+      //先得到当前iframe层的索引
+      var index = parent.layer.getFrameIndex(window.name);
+      //再执行关闭
+      if(parent.layui.table){
+        parent.layui.table.reload('mytable');
+      }
+      parent.layer.close(index);
+      parent.layer.msg('考试创建完成');
+      return false;
+    })
+
 
 });
 
-  function nextSet()
-  {
-    //先得到当前iframe层的索引
-    var index = parent.layer.getFrameIndex(window.name);
-    //再执行关闭
-    if(parent.layui.table){
-      parent.layui.table.reload('mytable');
-    }
-    parent.layer.close(index);
-    parent.layer.msg('考试创建完成');
-    return false;
-  }
-
-
-  function preSet()
-  {
-    $(location).attr('href', '/kaoshi/index/setp3/' + "{$list['set']['kaoshi_id']}");
-    return false;
-  }
 
 </script>
 {/block}

@@ -52,7 +52,7 @@
 			<span class="x-red">*</span>电话号码
 		</label>
 		<div class="layui-input-block">
-			<input type="input" id="phone" name="phone" lay-verify="" autocomplete="off" class="layui-input" value="{$list.data.phone|default=''}" placeholder="数字">
+			<input type="input" id="phone" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input" value="{$list.data.phone|default=''}" placeholder="数字">
 		</div>
 	</div>
 	<div class="layui-form-item">

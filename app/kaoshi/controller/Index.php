@@ -115,8 +115,8 @@ class Index extends AdminBase
                 // 获取考试时间
         $ks = new \app\kaoshi\model\Kaoshi;
         $enddate = $ks->kaoshiInfo($kaoshi_id);
-        $enddate = $enddate->getData('enddate');
-        $list['set']['nianji'] = nianJiNameList('str', $enddate);
+        $list['enddate'] = $enddate->getData('enddate');
+        // $list['set']['nianji'] = \app\facade\Tools::nianJiNameList('str', $enddate);
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -249,8 +249,7 @@ class Index extends AdminBase
         // 获取考试时间
         $ks = new \app\kaoshi\model\Kaoshi;
         $enddate = $ks->kaoshiInfo($kaoshi_id);
-        $enddate = $enddate->getData('enddate');
-        $list['set']['nianji'] = nianJiNameList('str', $enddate);
+        $list['enddate'] = $enddate->getData('enddate');
 
         // 模板赋值
         $this->view->assign('list', $list);

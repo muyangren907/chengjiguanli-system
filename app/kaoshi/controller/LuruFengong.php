@@ -126,6 +126,7 @@ class LuruFengong extends AdminBase
 
         // 整理参数
         $list = array();
+        $src['admin_id'] = explode(',', $src['admin_id']);
         foreach ($src['admin_id'] as $admin_k => $admin_v) {
             foreach ($src["banji_id"] as $banji_k => $banji_v) {
                 foreach ($src["subject_id"] as $sbj_k => $sbj_v) {

@@ -15,7 +15,7 @@ class LuruFengong extends Validate
      */
     protected $rule = [
         'kaoshi_id|考试'      =>  'require|length:1,25',
-        'admin_id|教师'      =>  'require|array',
+        'admin_id|教师'      =>  'require',
         'banji_id|班级'      =>  'require|array',
         'subject_id|学科'      =>  'require|array',
     ];

@@ -92,9 +92,10 @@
 {block name="myjs"}
 <script>
 // 日期控件
-layui.use(['laydate', 'createInput'], function() {
+layui.use(['laydate', 'createInput','form'], function() {
 	var laydate = layui.laydate,
-		cInput = layui.createInput;
+		cInput = layui.createInput,
+		form = layui.form;
 
 		cInput.xueqiSelect('xueqi_id', "{$list.data.xueqi_id|default=''}");
 	cInput.schoolSelect('zuzhi_id', '教研组', '区级', "{$list.data.zuzhi_id|default=''}", true);
@@ -107,9 +108,9 @@ layui.use(['laydate', 'createInput'], function() {
 		type: 'datetime',
 		trigger: 'click' //采用click弹出
 			,
-		min: 0 //今天
+		min: -15 //今天
 			,
-		max: 20 //20天后
+		max: 30 //20天后
 			,
 		format: 'yyyy-M-d' //可任意组合
 	});
@@ -119,9 +120,9 @@ layui.use(['laydate', 'createInput'], function() {
 		type: 'datetime',
 		trigger: 'click' //采用click弹出
 			,
-		min: 0 //今天
+		min: -15 //今天
 			,
-		max: 20 //20天后
+		max: 30 //20天后
 			,
 		format: 'yyyy-M-d' //可任意组合
 	});
