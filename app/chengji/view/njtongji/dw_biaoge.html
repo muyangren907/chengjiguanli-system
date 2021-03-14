@@ -3,18 +3,12 @@
 {block name="form"}
     <form action="{$list.set.url}" method="{$list.set.formpost}" class="layui-form layui-form-pane" lay-filter="myform">
           <div class="layui-form-item">
-            <label for="nianji" class="layui-form-label">
-              <span class="x-red">*</span>年级
-            </label>
-            <div class="layui-input-block">
-              <select name="ruxuenian" id="nianji" lay-verify="required" class="layui-form-label">
-                <option value="">请选择要下载的年级</option>
-              {foreach $list.set.nianji as $key=>$vo}
-                <option value="{$vo.ruxuenian}">{$vo.nianjiname}</option>
-              {/foreach}
-              </select>
-            </div>
-          </div>
+        <label for="ruxuenian" class="layui-form-label"><span class="x-red">*</span>年级</label>
+        <div class="layui-input-block">
+          <select name="ruxuenian" id="ruxuenian" lay-filter="src" lay-verify="required" >
+          </select>
+        </div>
+      </div>
           <input type="hidden" id="kaoshi_id" name="kaoshi_id" value="{$list.set.kaoshi_id}">
           <div class="layui-form-item" style="text-align: right;">
               <button  class="layui-btn" lay-filter="" lay-submit="">
@@ -26,8 +20,10 @@
 
 {block name="myjs"}
 <script>
-layui.use(['form'], function(){
-	var form = layui.form;
+// 提交搜索条件后重载表格
+  layui.use(['canyuKaoshi'],function(){
+    var canyu = layui.canyuKaoshi;
+    canyu.gradeSelect('ruxuenian', "{$list.set.kaoshi_id|default=''}");
 });
 </script>
 {/block}

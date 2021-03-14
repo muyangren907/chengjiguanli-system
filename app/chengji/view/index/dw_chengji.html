@@ -3,41 +3,33 @@
 {block name="form"}
     <form action="{$list.set.url}" method="{$list.set.formpost}" class="layui-form layui-form-pane" lay-filter="myform">
         <div class="layui-form-item">
-          <label for="school_id" class="layui-form-label"><span class="x-red">*</span>学校</label>
-          <div class="layui-input-block">
-            <select name="school_id" id="school" lay-verify="required">
-              {foreach $list.school_id as $key=>$vo}
-                <option value="{$vo.id}"> {$vo.title} </option>
-              {/foreach}
-            </select>
-          </div>
+        <label for="school_id" class="layui-form-label"><span class="x-red">*</span>学校</label>
+        <div class="layui-input-block">
+          <select name="school_id" id="school_id" lay-filter="src" lay-verify="required" >
+          </select>
         </div>
-        <div class="layui-form-item">
-          <label for="ruxuenian" class="layui-form-label">
-            <span class="x-red">*</span>年级
-          </label>
-          <div class="layui-input-block">
-            <select name="ruxuenian" id="ruxuenian" lay-verify="required" class="layui-form-label" lay-filter="nianji">
-              {foreach $list.nianji as $key=>$vo}
-                <option value="{$vo.ruxuenian}">
-                  {$vo.nianjiname}
-                </option>
-              {/foreach}
-            </select>
-          </div>
+      </div>
+      <div class="layui-form-item">
+        <label for="ruxuenian" class="layui-form-label"><span class="x-red">*</span>年级</label>
+        <div class="layui-input-block">
+          <select name="ruxuenian" id="ruxuenian" lay-filter="src" lay-verify="required" >
+          </select>
         </div>
-        <div class="layui-form-item">
-          <label for="banji_id" class="layui-form-label">
-            <span class="x-red">*</span>班级
-          </label>
-          <div class="layui-input-block" id="banji_id">
-          </div>
+      </div>
+      <div class="layui-form-item">
+        <label for="subject_id" class="layui-form-label">
+          <span class="x-red">*</span>学科
+        </label>
+        <div class="layui-input-block" id="subject_id">
         </div>
-        <div class="layui-form-item">
-          <label for="subject_id" class="layui-form-label"><span class="x-red">*</span>学科</label>
-          <div class="layui-input-block" id="subject_id">
-          </div>
+      </div>
+      <div class="layui-form-item">
+        <label for="banji_id" class="layui-form-label">
+          <span class="x-red">*</span>班级
+        </label>
+        <div class="layui-input-block" id="banji_id">
         </div>
+      </div>
         <input type="hidden" id="kaoshi_id" name="kaoshi_id" value="{$list.set.kaoshi_id}">
         <div class="layui-form-item" style="text-align: right;">
             <button  class="layui-btn" lay-filter="" lay-submit="">
@@ -49,35 +41,27 @@
 
 {block name="myjs"}
 <script>
-layui.use(['form','cjgl'], function(){
-  var form = layui.form
-      cjgl = layui.cjgl;
+layui.use(['form','canyuKaoshi','createInput'], function(){
+    var form = layui.form,
+    cInput = layui.createInput,
+    canyu = layui.canyuKaoshi;
 
-  // 加载参加考试班级
-  addBanji();
-  addSubject();
+    canyu.schoolSelect('school_id', "{$list.set.kaoshi_id|default=''}");
+    canyu.gradeSelect('ruxuenian', "{$list.set.kaoshi_id|default=''}");
 
-  // 监听选择按钮
-  form.on('select', function(data){
-    addBanji();
-    addSubject();
+    // 监听学校下拉菜单
+    form.on('select(src)',function(data){
+      data = form.val("myform");
+      if(data.school_id > 0 && data.ruxuenian > 0){
+        canyu.banjiCheckbox('banji_id', data);
+        canyu.subjectCheckbox('subject_id', data);
+      }
+    });
+
+    form.on('checkbox(mycheackbox)', function(data) {
+      cInput.checkboxChecked(data);
+    });
   });
-
-  // 添加班级
-  function addBanji(){
-    // 获取参数
-    formval = form.val("myform");
-    cjgl.createCheckbox('banji_id', formval, '/tools/kscy/class', 'banji_id', 'banTitle');
-  }
-
-  // 添加学科
-  function addSubject(){
-    // 获取参数
-    formval = form.val("myform");
-    cjgl.createCheckbox('subject_id', formval, '/tools/kscy/subject', 'subject_id', 'title');
-  }
-
-});
 </script>
 {/block}
 

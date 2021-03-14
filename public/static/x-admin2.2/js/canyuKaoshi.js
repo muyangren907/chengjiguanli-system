@@ -196,6 +196,33 @@ layui.define(['table', 'form', 'upload'], function(exports) {
     },
 
 
+    // 获取可以编辑的考试
+    kaoshiSelect: function(myid, hasNull = true){
+      $.ajax({
+        url: '/kaoshi/index/srceditkaoshi',
+        type: 'POST',
+        success: function(result) {
+          $('#' + myid).children().remove();
+          if (hasNull == true) {
+            str = '<option value=""></option>';
+          } else {
+            str = '';
+          }
+          temp = "";
+          $(result.data).each(function(i, el) {
+            temp = '<option value="' + el.id + '">' + el.title + '</option>';
+            str = str + temp;
+          });
+          $('#' + myid).append(str);
+          form.render('select');
+        },
+        error: function(result) {
+          layer.msg('数据扔半道啦。', function() {});
+        },
+      });
+    },
+
+
   };
   //输出test接口
   exports('canyuKaoshi', obj);

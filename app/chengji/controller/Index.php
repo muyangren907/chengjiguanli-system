@@ -263,7 +263,7 @@ class Index extends AdminBase
                 ->find();
 
         // 获取考试年级名称
-        $njlist = nianJiNameList('str', $ks->getData('bfdate'));
+        $njlist = \app\facade\Tools::nianJiNameList($ks->getData('bfdate'));
         $nianji = $njlist[$src['ruxuenian']];
         $tabletitle = $ks->title . ' ' . $schoolname . ' ' . $nianji . ' ' . '学生成绩详细列表';
         $colname = excelColumnName();
@@ -526,7 +526,7 @@ class Index extends AdminBase
                 ->find();
 
         // 获取考试年级名称
-        $njlist = nianJiNameList('str', $ks->getData('bfdate'));
+        $njlist = \app\facade\Tools::nianJiNameList($ks->getData('bfdate'));
         $nianji = $njlist[$src['ruxuenian']];
         $tabletitle = $ks->title . ' ' . $schoolname . ' ' . $nianji . ' ' . '学生成绩条';
 

@@ -131,7 +131,7 @@ class Njtongji extends AdminBase
                     ->find();
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $xk = $ksset->srcSubject($src);
-        $njlist = nianJiNameList('str', $ksinfo->getData('bfdate')); # 获取考试年级名称
+        $njlist = \app\facade\Tools::nianJiNameList($ksinfo->getData('bfdate')); # 获取考试年级名称
         $nianji = $njlist[$src['ruxuenian']];
         $tabletitle = $ksinfo->title . ' ' . $nianji . '各学校成绩汇总'; # 获取要下载成绩的学校和年级信息
 

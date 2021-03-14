@@ -251,7 +251,6 @@ class Index extends AdminBase
         // 渲染
         return $this->view->fetch();
 
-
     }
 
 
@@ -296,7 +295,7 @@ class Index extends AdminBase
     {
         // 获取考试信息
         $list['data'] = KS::where('id', $id)
-            ->field('id, title, xueqi_id, category_id, bfdate, enddate, zuzhi_id, fanwei_id')
+            ->field('id, title, xueqi_id, category_id, bfdate, enddate, zuzhi_id')
             ->append(['nianjiids', 'manfenedit'])
             ->find();
 
@@ -408,21 +407,21 @@ class Index extends AdminBase
     }
 
 
-    // 考试更多操作页面
-    public function moreAction($kaoshi_id)
-    {
-        // 获取考试信息
-        $kaoshi = KS::where('id', $kaoshi_id)
-            ->field('id, title, bfdate, enddate')
-            ->find();
+    // // 考试更多操作页面
+    // public function moreAction($kaoshi_id)
+    // {
+    //     // 获取考试信息
+    //     $kaoshi = KS::where('id', $kaoshi_id)
+    //         ->field('id, title, bfdate, enddate')
+    //         ->find();
 
-        // 设置页面标题
-        $list['webtitle'] = $kaoshi->title  . '（' .  $kaoshi->bfdate . '~' . $kaoshi->enddate . '）';
-        $list['kaoshi_id'] = $kaoshi->id;
-        $this->view->assign('list', $list);
-        // 渲染
-        return $this->view->fetch();
-    }
+    //     // 设置页面标题
+    //     $list['webtitle'] = $kaoshi->title  . '（' .  $kaoshi->bfdate . '~' . $kaoshi->enddate . '）';
+    //     $list['kaoshi_id'] = $kaoshi->id;
+    //     $this->view->assign('list', $list);
+    //     // 渲染
+    //     return $this->view->fetch();
+    // }
 
 
     // 查询考试成绩
@@ -439,5 +438,21 @@ class Index extends AdminBase
         $this->view->assign('list', $list);
         // 渲染
         return $this->view->fetch();
+    }
+
+
+    // 获取允许录入成绩的考试
+    public function srcEditKaoshi()
+    {
+        $ks = new KS();
+        // 获取参考年级
+        $data = $ks->order(['id' => 'desc'])
+                ->field('id, title')
+                ->where('luru', 1)
+                ->where('status', 1)
+                ->select(); 
+        $src = array();
+        $data = reSetObject($data, $src);
+        return json($data);
     }
 }

@@ -1,8 +1,6 @@
 
 {extend name=".././view/list.html" /}
 {block name="jsset"}
-{load href="__STATIC__/echarts/echarts.js" /}
-{load href="__STATIC__/echarts/infographic.js" /}
 {/block}
 {block name="nav"}
 <span class="layui-breadcrumb">
@@ -24,29 +22,26 @@
   </div>
 </div>
 <div class="layui-form-item">
-	<label for="school" class="layui-form-label" style="height: 100%">学校</label>
-	<div class="layui-input-block">
-		<input type="radio" name="school_id" title="无" value="" checked="true" lay-skin="primary" >
-		{volist name="$list.school_id" id="vo"}
-		<input type="radio" name="school_id" title="{$vo.jiancheng}" value="{$vo.id}" lay-skin="primary" >
-		{/volist}
-	</div>
-</div>
-<div class="layui-form-item">
-	<label for="ruxuenian" class="layui-form-label" style="height: 100%">年级 </label>
-	<div class="layui-input-block" pane>
-		{volist name="$list.nianji" id="vo"}
-  		<input type="radio" name="ruxuenian" title="{$vo.nianjiname}" value="{$vo.ruxuenian}" lay-skin="primary" {eq name="i" value="1" }
-  		checked="true"
-  		{/eq}>
-		{/volist}
-	</div>
-</div>
-<div class="layui-form-item" style="margin-bottom: 0;">
-	<label for="banji_id" class="layui-form-label" style="height: 100%">班级</label>
-	<div class="layui-input-block" id="banji_id">
-	</div>
-</div>
+        <label for="school_id" class="layui-form-label"><span class="x-red">*</span>学校</label>
+        <div class="layui-input-block">
+          <select name="school_id" id="school_id" lay-filter="src" lay-verify="required" >
+          </select>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label for="ruxuenian" class="layui-form-label"><span class="x-red">*</span>年级</label>
+        <div class="layui-input-block">
+          <select name="ruxuenian" id="ruxuenian" lay-filter="src" lay-verify="required" >
+          </select>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label for="banji_id" class="layui-form-label">
+          <span class="x-red">*</span>班级
+        </label>
+        <div class="layui-input-block" id="banji_id">
+        </div>
+      </div>
 <input type="hidden" name="kaoshi_id" value="{$list.kaoshi_id}">
 {/block}
 {block name="table"}
@@ -78,196 +73,48 @@
 </script>
 <!-- 表格操作 -->
 <script>
-	// 获取学科
-	var xk = '<?php echo json_encode($list["subject_id"]);?>';
-	xk = eval(decodeURIComponent(xk));
+	
 
   // 提交搜索条件后重载表格
-  layui.use(['table','cjgl'],function(){
-  	var table = layui.table
-  	cjgl = layui.cjgl
-  	form = layui.form;
+  layui.use(['myEchart','form','canyuKaoshi','createInput'],function(){
+  	var echart = layui.myEchart,
+    form = layui.form,
+    canyu = layui.canyuKaoshi,
+    cInput = layui.createInput;
 
-    // 添加班级
-    addBanji();
-    loadTubiao();
 
-    // 监听表单提交
-    form.on('radio', function(data){
-      addBanji();
-      loadTubiao()
-      $("#srcsubmit").click();
-    });
+    canyu.schoolSelect('school_id', "{$list.kaoshi_id|default=''}");
+    canyu.gradeSelect('ruxuenian', "{$list.kaoshi_id|default=''}");
 
-    $('#searchval').on("keydown", function(e){
-      var e = e || window.event;
-      if(e.keyCode == 13){
-         loadTubiao();
-         return false;
+    // 监听学校下拉菜单
+    form.on('select(src)',function(data){
+      data = form.val("search");
+      if(data.school_id > 0 && data.ruxuenian > 0){
+        canyu.banjiCheckbox('banji_id', data);
       }
-      return true;
-    })
-
-  	// 监听表单提交
-  	form.on('checkbox', function(data){
-      checkall = $(data.elem).attr('checkall');
-          parentId = $(data.elem).parents("div").attr('id');
-          if(checkall == 'p'){
-            cjgl.checkboxAll(parentId, data.elem.checked);
-            loadTubiao();
-            $("#srcsubmit").click();
-            return true;
-          }else if(checkall == 'c'){
-            cjgl.checkboxParent(parentId);
-            loadTubiao();
-            $("#srcsubmit").click();
-            return true;
-          }
     });
+
+    form.on('checkbox(mycheackbox)', function(data) {
+      cInput.checkboxChecked(data);
+    });
+
+    // 获取学科
+    var xk = '<?php echo json_encode($list["subject_id"]);?>';
+    xk = eval(decodeURIComponent(xk));
+
+   //  // 添加班级
+    loadTubiao();
 
     // 加载图表
     function loadTubiao()
     {
-      $.each(xk, function(index,element){
-        getFenshuduan(element);
-      });
-    }
-
-  	// 添加班级列表
-    function addBanji(){
-        // 获取参数
-        var formval;
-        formval = formval = form.val("search");
-        if(formval.school_id == '')
-        {
-        	$('#banji_id').children().remove();
-        }else{
-        	cjgl.createCheckbox('banji_id', formval, '/tools/kscy/class', 'banji_id', 'banTitle');
-        }
-    }
-
-
-    // 折线统计图--分数段
-    function getFenshuduan(subjectObj){
-      var id = 'myFenshuduan' + subjectObj.lieming;
-      var url = '/chengji/bjtj/myfenshuduan';
       var val = form.val('search');
-      var title = subjectObj.title + '分数段统计';
-      val['subject_id'] = subjectObj.id;
-      createFenshuduan(id, url, val, title);
+      $.each(xk, function(index,element){
+      val['subject_id'] = element.id;
+      echart.fenshuduan('myFenshuduan' + element.lieming,  '/chengji/bjtj/myfenshuduan', val, element.title + '分数段统计');
+      });
     }
 
   });
-
-
-    /**
-    * 异步获取箱线图表中的数据
-    *
-    * @access public
-    * @param id 要添加数据的div
-    * @param url 异步地址
-    * @param val 异步时携带的参数
-    * @param title 图表标题
-    * @return array 返回类型
-    */
-    function createFenshuduan(id, url, val, title)
-    {
-      // var colors = ['#5793f3', '#d14a61', '#675bba'];
-      $.post(url,val).done(function (data) {
-
-        // 设置初始值
-        option = {
-          tooltip: {
-            show: true,
-            trigger: 'axis',
-          },
-          legend: {
-            top: '10%',
-            // data:data.legend
-          },
-          title: {
-            text: title,
-            left: 'center',
-          },
-          grid: {
-            left: '10%',
-            top: '20%',
-            right: '10%',
-            bottom: '15%'
-          },
-          toolbox: {
-            id:id,
-            show:true,
-            orient:'horizontal',
-            showTitle:true,
-            feature: {
-              restore: { //重置
-                show: true
-              },
-              saveAsImage: { //保存文件
-                show: true
-              },
-            },
-          },
-          xAxis: {
-            type: 'category',
-            boundaryGap: true,
-            nameGap: 30,
-            splitArea: {
-              show: true
-            },
-            splitLine: {
-              show: false
-            },
-            data: data.xAxis
-          },
-          yAxis: {
-            type: 'value',
-            name: '得分',
-            splitArea: {
-              show: false
-            }
-          },
-          dataZoom:[
-            {
-              type: 'inside',
-              start: 0,
-              end: 100
-            },
-            {
-              show: true,
-              height: 20,
-              type: 'slider',
-              top: '90%',
-              xAxisIndex: [0],
-              start: 0,
-              end: 100
-            }
-          ],
-          series: {
-            data: data.series,
-            type:'line',
-            // smooth: true
-          },
-        };
-
-        var myFenshuduan = echarts.init(document.getElementById(id), 'infographic');
-        myFenshuduan.setOption(option);
-      });
-    }
-
-
-    function formatter(param) {
-     return [
-     param.name,
-     '最低分: ' + param.data[1],
-     '25%: ' + param.data[2],
-     '50%: ' + param.data[3],
-     '75%: ' + param.data[4],
-     '最高: ' + param.data[5]
-     ].join('<br/>');
-   }
-
-
  </script>
  {/block}

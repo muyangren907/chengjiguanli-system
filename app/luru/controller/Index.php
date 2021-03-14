@@ -267,14 +267,6 @@ class Index extends AdminBase
     // 表格录入成绩上传页面
     public function biaolu()
     {
-        $ks = new \app\kaoshi\model\Kaoshi;
-        // 获取参考年级
-        $list['data'] = $ks::order(['id' => 'desc'])
-                ->field('id, title')
-                ->where('luru', 1)
-                ->where('status', 1)
-                ->select();
-
         // 设置页面标题
         $list['set'] = array(
             'webtitle' => '表格录入'

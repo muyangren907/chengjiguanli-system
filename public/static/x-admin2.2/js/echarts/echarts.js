@@ -1,8 +1,11 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(factory((global.echarts = {})));
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+        typeof define === 'function' && define.amd ? define(['exports'], factory) :
+            window.layui && layui.define ? layui.define(function(exports){
+                exports('echarts',factory(exports))}) :
+                (factory((global.echarts = {})));
 }(this, (function (exports) { 'use strict';
+
 
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
@@ -97407,6 +97410,8 @@ exports.List = List;
 exports.Model = Model;
 exports.Axis = Axis;
 exports.env = env$1;
+
+return exports;
 
 })));
 //# sourceMappingURL=echarts.js.map

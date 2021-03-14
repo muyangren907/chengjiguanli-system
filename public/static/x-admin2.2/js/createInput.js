@@ -402,6 +402,37 @@ layui.extend({
     },
 
 
+    // 上传文件
+    uploadFileMore: function(uploadId, category, serurl, backId) {
+      upload.render({
+        elem: '#' + uploadId, //绑定元素
+        url: '/tools/file/upload', //改成您自己的上传接口
+        async: false,
+        done: function(res) {
+          layer.msg('上传成功');
+          // layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', res.files.file);
+          if (res.val == 1) {
+            $('#' + backId).val(res.url);
+          }
+          layer.msg(res.msg);
+        },
+        data: {
+        category_id: category
+        ,serurl: 'chengji'
+
+        },
+        multiple: true,
+        acceptMime: '.xls,.xlsx',
+        exts: 'xls|xlsx',
+        auto: true,
+        error: function() {
+          //请求异常回调
+          layer.msg('上传错误');
+        },
+      })
+    },
+
+
     // 放大、缩小图片
     imgMax: function(obj) {
       var max;

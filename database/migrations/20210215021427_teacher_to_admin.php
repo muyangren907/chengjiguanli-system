@@ -47,36 +47,25 @@ class TeacherToAdmin extends Migrator
             ->update();
         }
 
-        $table = $this->table('system_base');
-        $column = $table->hasColumn('kaoshifanwei');
-        if (!$column) {
-            $table
-            ->addColumn('kaoshifanwei','boolean',['limit'=>1,'default'=>0,'null'=>false,'comment'=>'默认不限制']);
-        }
-
         $table = $this->table('kaoshi');
         $column = $table->hasColumn('user_id');
         if (!$column) {
             $table
-            ->addColumn('user_id','integer',['after' => 'category_id','limit'=>11,'default'=>0,'null'=>false,'comment'=>'用户ID']);
-        }
-        $table
-            ->addColumn('fanwei_id','integer',['after' => 'category_id','limit'=>11,'default'=>0,'null'=>false,'comment'=>'允许查看范围ID']);
-
-        $table = $this->table('system_base');
-        $column = $table->hasColumn('sys_title');
-        if (!$column) {
-            $table
-            ->addColumn('sys_title','string',['limit'=>60,'null'=>false,'default'=>'码蚁成绩管理系统','comment'=>'系统名称']);
+            ->addColumn('user_id','integer',['after' => 'category_id','limit'=>11,'default'=>0,'null'=>false,'comment'=>'用户ID'])
+            ->addColumn('fanwei_id','integer',['after' => 'category_id','limit'=>11,'default'=>0,'null'=>false,'comment'=>'允许查看范围ID'])
+            ->update();
         }
 
         $table = $this->table('cj_migrations');
         $this->execute('DELETE FROM cj_migrations WHERE version="20210107070200" and migration_name="KaoshiAddUser"');
 
-        $table = $this->table('cj_kaoshi_set');
-        $table->addColumn('youxiubi','integer',['limit'=>3,'default'=>90,'null'=>false,'comment'=>'优秀人数比'])
-            ->addColumn('lianghaobi','integer',['limit'=>3,'default'=>90,'null'=>false,'comment'=>'良好人数比'])
-            ->addColumn('jigebi','integer',['limit'=>3,'default'=>00,'null'=>false,'comment'=>'及格人数比']);
+        $table = $this->table('kaoshi_set');
+        $table
+            ->addColumn('lianghao','integer',['after'=>'youxiu','limit'=>3,'default'=>90,'null'=>false,'comment'=>'良好分数线'])
+            ->addColumn('youxiubi','integer',['after'=>'jige','limit'=>3,'default'=>90,'null'=>false,'comment'=>'优秀人数比'])
+            ->addColumn('lianghaobi','integer',['after'=>'youxiubi','limit'=>3,'default'=>90,'null'=>false,'comment'=>'良好人数比'])
+            ->addColumn('jigebi','integer',['after'=>'lianghaobi','limit'=>3,'default'=>00,'null'=>false,'comment'=>'及格人数比'])
+            ->update();
     }
 
 

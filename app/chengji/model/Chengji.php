@@ -110,7 +110,7 @@ class Chengji extends BaseModel
     // 列出已录成绩列表
     public function searchLuru($srcfrom)
     {
-        $nianji = nianJiNameList();
+        $nianji = \app\facade\Tools::nianJiNameList();
         $cjList = $this->searchBase($srcfrom);
 
         // 重新整理成绩

@@ -113,7 +113,7 @@ class Kaohao extends BaseModel
     // 获取参加考试班级数字名
     public function getNumBanjiTitleAttr()
     {
-        $njList = array_values(nianJiNameList('str', time()));
+        $njList = array_values(\app\facade\Tools::nianJiNameList('str', time()));
         $nianji = array_search($this->getAttr('nianji'), $njList);
         if ($nianji)
         {

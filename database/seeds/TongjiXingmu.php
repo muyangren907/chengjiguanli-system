@@ -899,7 +899,7 @@ class TongjiXingmu extends Seeder
             ,[
                 'title' => '班超过'
                 ,'biaoshi' => 'bweizhi'
-                ,'tongji' => 1
+                ,'tongji' => 0
                 ,'paixu' => 4
                 ,'category_id' => 12210
             ]

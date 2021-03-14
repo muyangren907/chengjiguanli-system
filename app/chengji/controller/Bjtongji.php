@@ -18,13 +18,9 @@ class Bjtongji extends AdminBase
             ->field('id, title')
             ->find();
         // 获取参与学校
-        $cy = new \app\kaohao\model\SearchCanYu;
         $src['kaoshi_id'] = $kaoshi_id;
-        $list['school_id'] = $cy->school($src);
-
         // 获取年级与学科
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['nianji'] = $ksset->srcGrade($kaoshi_id);
         $list['subject_id'] = $ksset->srcSubject($src);
         // 设置要给模板赋值的信息
         $list['webtitle'] = '各年级的班级成绩列表';
@@ -112,13 +108,6 @@ class Bjtongji extends AdminBase
             ,'url' => '/chengji/bjtj/dwxlsx'
             ,'kaoshi_id' => $kaoshi_id
         );
-        // 获取参与学校
-        $cy = new \app\kaohao\model\SearchCanYu;
-        $src['kaoshi_id'] = $kaoshi_id;
-        $list['set']['school_id'] = $cy->school($src);
-        // 获取年级与学科
-        $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['set']['nianji'] = $ksset->srcGrade($kaoshi_id);
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -148,7 +137,7 @@ class Bjtongji extends AdminBase
                     ->find();
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $xk = $ksset->srcSubject($src);
-        $njlist = nianJiNameList('str', $ksinfo->getData('bfdate'));   # 参考年级
+        $njlist = \app\facade\Tools::nianJiNameList($ksinfo->getData('bfdate'));   # 参考年级
         $nianji = $njlist[$src['ruxuenian']];
         $school = new \app\system\model\School; # 学校、年级信息
         $schoolname = $school->where('id', 'in', $src['school_id'])->value('jiancheng');

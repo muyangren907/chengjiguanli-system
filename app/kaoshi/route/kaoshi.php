@@ -31,6 +31,7 @@ Route::group('index', function () {
     Route::rule('chengji/<kaoshi_id>','Index/chengji','get');              # 添加信息
     Route::rule('editsetp1/<id>','Index/editSetp1','get');            # 更新信息
     Route::rule('updatesetp1/<id>','Index/updateSetp1','put');            # 更新信息
+    Route::rule('srceditkaoshi','Index/srcEditKaoshi','post');                # 获取数据
 });
 
 

@@ -1,7 +1,6 @@
 
 {extend name=".././view/list.html" /}
 {block name="jsset"}
-	{load href="__STATIC__/echarts/echarts.js" /}
 {/block}
 {block name="nav"}
 	<span class="layui-breadcrumb">
@@ -14,14 +13,12 @@
 {/block}
 {block name="search"}
 	<div class="layui-form-item">
-	    <label for="nianji" class="layui-form-label" style="height: 100%">年级 </label>
-	    <div class="layui-input-block" pane>
-			{foreach $list.nianji as $key=>$vo}
-	            <input type="radio" name="ruxuenian" value="{$vo.ruxuenian}" title="{$vo.nianjiname}"
-	            {eq name="$key" value="0"} checked {/eq} >
-			{/foreach}
-	    </div>
-	</div>
+        <label for="ruxuenian" class="layui-form-label"><span class="x-red">*</span>年级</label>
+        <div class="layui-input-block">
+          <select name="ruxuenian" id="ruxuenian" lay-filter="src" lay-verify="required" >
+          </select>
+        </div>
+      </div>
 	<input type="hidden" name="kaoshi_id" value="{$list.kaoshi_id}">
 {/block}
 {block name="table"}
@@ -55,7 +52,22 @@
 </script>
 <!-- 表格操作 -->
 <script>
-	// 设置列
+	
+
+
+  // 提交搜索条件后重载表格
+  layui.use(['table','form','canyuKaoshi','mytable','myEchart'],function(){
+  	var table = layui.table,
+  	mytable = layui.mytable,
+  	form = layui.form,
+    canyu = layui.canyuKaoshi,
+    echart = layui.myEchart;
+
+    canyu.gradeSelect('ruxuenian', "{$list.kaoshi_id|default=''}");
+
+
+
+      // 设置列
   	options.cols=[[ //表头
 			{type:'numbers',title:'序号',rowspan:2},
 			{field: 'school_jiancheng', title: '学校',minWidth:80,rowspan:2},
@@ -104,316 +116,51 @@
 
 	options.autoSort=true;
 
+	loadTubiao();
 
-  // 提交搜索条件后重载表格
-    layui.use(['table','cjgl'],function(){
-      var table = layui.table
-          cjgl = layui.cjgl;
-
-	    // 加载图表
-	    getAvg();
-	    getJige();
-	    getYouxiu();
-	    getBiaozhucha();
-	    getChayi();
-      //表头工具栏事件
-      table.on('toolbar(mytable)', function(obj){
-        switch(obj.event){
-          case 'dels':
-            var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/school','mytable');
-            break;
-          case 'add':
-            cjgl.add('添加单位','/school/create','650','500');
-            break;
-          case 'download':
-  			cjgl.add('下载成绩','/chengji/njtj/dwbiaoge/{$list.kaoshi_id}','650','300');
-  			break;
-        };
-      });
-
-      //监听行工具条
-      table.on('tool(mytable)', function(obj){
-        var data = obj.data; //获得当前行数据
-        var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
-        var tr = obj.tr; //获得当前行 tr 的DOM对象
-        switch(layEvent){
-          case 'detail':// 查看
-          	layer.msg('查看' + data.id);
-          	break;
-          case 'del':// 删除
-          	cjgl.del(obj,"/school");
-          	break;
-          case 'edit':// 编辑
-          	cjgl.add('编辑单位','/school/'+obj.data.id+'/edit','650','500');
-          	break;
-          case 'status':// 状态
-          	cjgl.status(obj,"{:url('setstatus')}");
-          	break;
-        };
-      });
-
-    // 条形统计图--平均分
-    function getAvg(){
-
-  		var id = 'myAvg';
-  		var url = '/chengji/njtj/myavg';
-  		var val = form.val('search');
-  		val.xiangmu = 'avg';
-	    var title = '平均分';
-	    createTiaoxing(id,url,val,title);
-    }
-
-    // 条形统计图--及格率
-    function getJige(){
-
-  		var id = 'myJige';
-  		var url = '/chengji/njtj/myavg';
-  		var val = form.val('search');
-  		val.xiangmu = 'jige';
-	    var title = '及格率';
-	    createTiaoxing(id,url,val,title);
-    }
-
-    // 条形统计图--优秀率
-    function getYouxiu(){
-
-  		var id = 'myYouxiu';
-  		var url = '/chengji/njtj/myavg';
-  		var val = form.val('search');
-  		val.xiangmu = 'youxiu';
-	    var title = '优秀率';
-	    createTiaoxing(id,url,val,title);
-    }
-
-    // 条形统计图--标准差
-    function getBiaozhucha(){
-
-  		var id = 'myBiaozhunca';
-  		var url = '/chengji/njtj/myavg';
-  		var val = form.val('search');
-  		val.xiangmu = 'biaozhuncha';
-	    var title = '标准差';
-	    createTiaoxing(id,url,val,title);
-    }
+	// 获取筛选条件并加载表格
+  options.where = form.val("search");
+  userTable = table.render(options); //获取数据并渲染
 
 
-    // 箱线图--差异
-    function getChayi(){
-  		var id = 'myXiangti';
-  		var url = '/chengji/njtj/myxiangti';
-  		var val = form.val('search');
-	    var title = '差异';
-	    createXiangti(id,url,val,title);
+  //表头工具栏事件
+    table.on('toolbar(mytable)', function(obj){
+      switch(obj.event){
+	        case 'download':
+	        xadmin.open('下载成绩','/chengji/njtj/dwbiaoge/' + "{$list.kaoshi_id}",'650','300');
+	        break;
+       };
+     });
+
+
+  // 加载图表
+    function loadTubiao()
+    {
+      var val = form.val('search');
+
+      // 条形统计图  平均分
+      val.xiangmu = 'avg';
+      echart.tiaoxing('myAvg', '/chengji/bjtj/myavg', val, '平均分');
+
+      // 条形统计图--及格率
+      val.xiangmu = 'jigelv';
+      echart.tiaoxing('myJige', '/chengji/bjtj/myavg', val, '及格率');
+
+      // 条形统计图--优秀率
+      val.xiangmu = 'youxiulv';
+      echart.tiaoxing('myYouxiu', '/chengji/bjtj/myavg', val, '优秀率');
+
+      // 条形统计图--标准差
+      val.xiangmu = 'biaozhuncha';
+      echart.tiaoxing('myBiaozhunca', '/chengji/bjtj/myavg', val, '标准差');
+
+      // 箱线图--差异
+      var val = form.val('search');
+      echart.xiangti('myXiangti', '/chengji/bjtj/myxiangti', val, '差异');
     }
 
 });
 
-  /**
-    * 异步获取图表中的数据
-    *
-    * @access public
-    * @param id 要添加数据的div
-    * @param url 异步地址
-    * @param val 异步时携带的参数
-    * @param val 图表标题
-    * @return array 返回类型
-    */
-    function createTiaoxing(id,url,val,title)
-  	{
-	    var myTiaoxing = echarts.init(document.getElementById(id));
-	    $.post(url,val).done(function (data) {
-            myTiaoxing.setOption({
-                title:{
-                    text:title,
-                    left: 'center',
-                },
-                legend: {
-			        top: '10%',
-			    },
-			    grid: {
-			        // left: '10%',
-			        top: '20%',
-			        // right: '10%',
-			        // bottom: '15%'
-			    },
-                tooltip: {
-                    feature:{
-                         saveAsImage:{
-                            show:true,
-                            type:'png',
-                            title:title
-                         },
-                    },
-                },
-                toolbox: {
-                 	id:id,
-                 	show:true,
-                 	orient:'horizontal',
-                 	showTitle:true,
-                 	feature: {
-	                    restore: { //重置
-	                        show: true
-	                    },
-	                    saveAsImage: { //保存文件
-	                        show: true
-	                    },
-	                },
-			    },
-                dataset: {
-                    source:data.data
-                },
-                xAxis: {type: 'category'},
-                yAxis: {},
-                dataZoom: [
-			        {
-			            type: 'inside',
-			            start: 0,
-			            end: 100
-			        },
-			        {
-			            show: true,
-			            height: 20,
-			            type: 'slider',
-			            top: '90%',
-			            xAxisIndex: [0],
-			            start: 0,
-			            end: 100
-			        }
-			    ],
-                // Declare several bar series, each will be mapped
-                // to a column of dataset.source by default.
-                series: data.series,
-            });
-        });
-  	}
-
-
-
-  	/**
-    * 异步获取箱线图表中的数据
-    *
-    * @access public
-    * @param id 要添加数据的div
-    * @param url 异步地址
-    * @param val 异步时携带的参数
-    * @param title 图表标题
-    * @return array 返回类型
-    */
-    function createXiangti(id,url,val,title)
-    {
-    	$.post(url,val).done(function (data) {
-			axisData = data.axisData;
-			category = data.category;
-			boxData = data.boxData;
-			myseries = Array();
-
-			for(var i in category)
-			{
-				myseries.push({
-					'name':category[i],
-					'type':'boxplot',
-					'data':boxData[i],
-					'tooltip':{formatter: formatter},
-				});
-			}
-
-			// 设置初始值
-	    	option = {
-			    title: {
-			        text: title,
-			        left: 'center',
-			    },
-			    legend: {
-			        top: '10%',
-			        // data:
-			    },
-			    tooltip: {
-			        trigger: 'item',
-			        axisPointer: {
-			            type: 'shadow'
-			        }
-			    },
-			    toolbox: {
-                 	id:id,
-                 	show:true,
-                 	orient:'horizontal',
-                 	showTitle:true,
-                 	feature: {
-	                    restore: { //重置
-	                        show: true
-	                    },
-	                    saveAsImage: { //保存文件
-	                        show: true
-	                    },
-	                },
-			    },
-			    grid: {
-			        left: '10%',
-			        top: '20%',
-			        right: '10%',
-			        bottom: '15%'
-			    },
-			    xAxis: {
-			        type: 'category',
-			        data: axisData,
-			        boundaryGap: true,
-			        nameGap: 30,
-			        splitArea: {
-			            show: true
-			        },
-			        axisLabel: {
-			            // formatter: 'expr {value}'
-			        },
-			        splitLine: {
-			            show: false
-			        }
-			    },
-			    yAxis: {
-			        type: 'value',
-			        name: '得分',
-			        // min: -400,
-			        // max: 600,
-			        splitArea: {
-			            show: false
-			        }
-			    },
-			    dataZoom: [
-			        {
-			            type: 'inside',
-			            start: 0,
-			            end: 100
-			        },
-			        {
-			            show: true,
-			            height: 20,
-			            type: 'slider',
-			            top: '90%',
-			            xAxisIndex: [0],
-			            start: 0,
-			            end: 100
-			        }
-			    ],
-			    series: myseries,
-			};
-
-			var myXiangti = echarts.init(document.getElementById(id));
-			myXiangti.setOption(option);
-		});
-    }
-
-
-
-
-	function formatter(param) {
-	    return [
-	        param.name,
-	        '最低分: ' + param.data[1],
-	        '25%: ' + param.data[2],
-	        '50%: ' + param.data[3],
-	        '75%: ' + param.data[4],
-	        '最高: ' + param.data[5]
-	    ].join('<br/>');
-	}
+  
 </script>
 {/block}

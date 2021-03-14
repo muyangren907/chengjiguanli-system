@@ -13,9 +13,9 @@ class Cjdownload extends Validate
      * @var array
      */
 	protected $rule = [
-        'banji_id|班级'      =>  'require|array',
+        'banji_id|班级'      =>  'require',
         'kaoshi_id|考试'      =>  'require|number',
-        'subject_id|学科'     =>  'require|array'
+        'subject_id|学科'     =>  'require'
     ];
 
     /**

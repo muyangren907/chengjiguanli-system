@@ -50,7 +50,7 @@ class Index extends AdminBase
         event('kslu', $list['kaoshi_id']);
         // 验证表单数据
         $validate = new \app\kaohao\validate\Kaohao;
-        $result = $validate->check($list);
+        $result = $validate->scene('createAll')->check($list);
         $msg = $validate->getError();
         if(!$result){
             return ['msg' => $msg, 'val' => 0];
@@ -178,6 +178,10 @@ class Index extends AdminBase
         ], 'POST');
 
         event('kslu', $list['kaoshi_id']);
+
+        // 验证表单数据
+        $validate = new \app\kaohao\validate\Kaohao;
+        $result = $validate->scene('create')->check($list);
 
         // 查询考号是否存在
         $ks = KH::withTrashed()
