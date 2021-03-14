@@ -102,6 +102,38 @@ layui.define(['table', 'form', 'upload'], function(exports) {
     },
 
 
+    // 参与本次考试班级
+    banjiSelect: function(myid, data, value= '', hasNull = true){
+      $.ajax({
+        url: '/kaoshi/kscy/class',
+        type: 'POST',
+        data: data,
+        success: function(result) {
+          $('#' + myid).children().remove();
+          if (hasNull == true) {
+            str = '<option value=""></option>';
+          } else {
+            str = '';
+          }
+          temp = "";
+          $(result.data).each(function(i, el) {
+            if (value != '' && value == el.id) {
+              temp = '<option value="' + el.id + '" selected>' + el.banTitle + '</option>';
+            } else {
+              temp = '<option value="' + el.id + '">' + el.banTitle + '</option>';
+            }
+            str = str + temp;
+          });
+          $('#' + myid).append(str);
+          form.render('select');
+        },
+        error: function(result) {
+          layer.msg('数据扔半道啦。', function() {});
+        },
+      });
+    },
+
+
     // 已经参与本次考试班级
     banjiCheckbox: function(myid, data,hasAll = true){
       $.ajax({

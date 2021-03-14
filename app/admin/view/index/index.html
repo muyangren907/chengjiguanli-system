@@ -58,9 +58,7 @@ layui.use(['table', 'mytable', 'form'], function() {
 	options.cols = [
 		[ //表头
 			{ type: 'checkbox', fixed: 'left' },
-			{ field: 'status', title: '状态', templet: '#status', sort: true },
-			{ field: 'id', title: '操作', toolbar: '#barDemo', minWidth: 140 },
-			{ field: 'xingming', title: '姓名', sort: true, minWidth: 80 },
+			{ field: 'xingming', title: '姓名', sort: true, minWidth: 80, fixed: 'left' },
 			{ field: 'sex', title: '性别', minWidth: 100, sort: true },
 			{ field: "shengri", title: '生日', minWidth: 100, sort: true },
 			{ field: 'username', title: '帐号', sort: true },
@@ -96,6 +94,8 @@ layui.use(['table', 'mytable', 'form'], function() {
 			{ field: 'denglucishu', title: '登录次数', minWidth: 100, sort: true },
 			{ field: 'thistime', title: '最后登录时间', minWidth: 180, sort: true },
 			{ field: 'ip', title: '最后登录地址', minWidth: 130, sort: true },
+			{ field: 'status', title: '状态', templet: '#status', sort: true },
+			{ field: 'id', title: '操作', toolbar: '#barDemo', minWidth: 140 },
 		]
 	];
 

@@ -56,10 +56,11 @@
   
 
   // 提交搜索条件后重载表格
-    layui.use(['table', 'mytable', 'createInput'], function(){
+    layui.use(['table', 'mytable', 'createInput', 'form'], function(){
       var table = layui.table
           ,mytable = layui.mytable
-          ,cInput = layui.createInput;
+          ,cInput = layui.createInput
+          ,form = layui.form;
 
     cInput.categorySelect('category_id', 122);;
 
@@ -93,7 +94,7 @@
             mytable.delAll(checkStatus, '/kaoshi/tjxm/delete', 'mytable');
             break;
           case 'add':
-            mytable.add('新建项目', '/kaoshi/tjxm/create', '600', '300', false);
+            xadmin.open('新建项目', '/kaoshi/tjxm/create', '600', '300', false);
             break;
         };
       });
@@ -108,7 +109,7 @@
 	          mytable.del(obj, "/kaoshi/tjxm/delete");
 	          break;
 	        case 'edit':// 编辑
-	          mytable.add('编辑项目', '/kaoshi/tjxm/edit/' + obj.data.id, '600', '300', false);
+	          xadmin.open('编辑项目', '/kaoshi/tjxm/edit/' + obj.data.id, '600', '300', false);
 	          break;
         };
       });

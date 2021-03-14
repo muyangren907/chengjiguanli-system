@@ -578,12 +578,15 @@ class Index extends AdminBase
     {
         // 声明结果数组
         $data = array();
-        $str = input("post.str");
+        $str = input("post.searchval");
         $banji_id = input("post.banji_id");
         $kaoshi = input("post.kaoshi");
 
+        $src = array();
+
         // 判断是否存在数据，如果没有数据则返回。
         if(strlen($str) <= 0){
+            $data = reSetObject($data, $src);
             return json($data);
         }
 
@@ -610,7 +613,17 @@ class Index extends AdminBase
                     )
                     ->append(['age'])
                     ->select();
-        return json($list);
+
+        foreach ($list as $key => $value) {
+            $data[] = [
+                'id' => $value->id
+                ,'xingming' => $value->xingming
+            ];
+        }
+
+        $data = reSetArray($data, $src);
+
+        return json($data);
     }
 
 

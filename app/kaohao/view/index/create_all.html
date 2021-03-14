@@ -5,14 +5,14 @@
   <div class="layui-form-item">
   <label for="school_id" class="layui-form-label">学校</label>
   <div class="layui-input-block">
-    <select name="school_id" id="school_id">
+    <select name="school_id" id="school_id" lay-filter="src">
     </select>
   </div>
 </div>
 <div class="layui-form-item">
   <label for="ruxuenian" class="layui-form-label">年级</label>
   <div class="layui-input-block">
-    <select name="ruxuenian" id="ruxuenian">
+    <select name="ruxuenian" id="ruxuenian" lay-filter="src">
     </select>
   </div>
 </div>
@@ -40,7 +40,7 @@
     cInput.schoolSelect('school_id', '校级', '校级', "{$list.data.school_id|default=''}", true);
     canyu.gradeSelect('ruxuenian', "{$list.set.kaoshi_id}");
 
-    form.on('select()', function(data) {
+    form.on('select(src)', function(data) {
     data = form.val("myform");
     if (data.school_id > 0 && data.ruxuenian > 0) {
       cInput.banjiCheckbox('banji_id', data);

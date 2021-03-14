@@ -515,11 +515,8 @@ class Bjtongji extends AdminBase
         $list['data'] = $btj->where('kaoshi_id', $info->kaoshi_id)
                 ->where('banji_id', $info->banji_id)
                 ->where('subject_id', '>', 0)
-                ->field('id, teacher_id, kaoshi_id, banji_id, subject_id')
+                ->field('id, kaoshi_id, banji_id, subject_id')
                 ->with([
-                    'bjTeacher' => function ($query) {
-                        $query->field('id, xingming');
-                    },
                     'bjSubject' => function ($query) {
                         $query ->field('id, title, jiancheng');
                     }
@@ -564,10 +561,13 @@ class Bjtongji extends AdminBase
         // 整理数据
         $list = array();
         foreach ($src['id'] as $key => $value) {
-            $list[$key] = [
-                'id' => $value
-                ,'teacher_id' => $src['teacher_id'][$key]
-            ];
+            if(strlen($src['teacher_id'][$key]) > 0)
+            {
+                $list[$key] = [
+                    'id' => $value
+                    ,'teacher_id' => $src['teacher_id'][$key]
+                ];
+            }
         }
 
         $btj = new BTJ;
@@ -586,7 +586,11 @@ class Bjtongji extends AdminBase
     {
         $list['data']['kaoshi_id'] = $kaoshi_id;
         $sbj = new \app\teach\model\Subject;
-        $list['data']['subject_id'] = $sbj->kaoshi();
+        $src = [
+            'kaoshi' => 1
+            ,'status' => 1
+        ];
+        // $list['data']['subject_id'] = $sbj->search($src);
         // halt($list);
         // 设置页面标题
         $list['set'] = array(
@@ -610,28 +614,36 @@ class Bjtongji extends AdminBase
         $src = $this->request
             ->only([
                 'teacher_id' => ''
-                ,'id' => array()
+                ,'banji_id' => array()
+                ,'subject_id'  => ''
+                ,'kaoshi_id' => ''
             ], 'POST');
+
 
         // 验证表单数据
         $validate = new \app\chengji\validate\RenKe;
-        $result = $validate->scene('edit')->check($src);
+        $result = $validate->scene('editteacher')->check($src);
         $msg = $validate->getError();
         if(!$result){
             return json(['msg'=>$msg,'val'=>0]);;
         }
 
         // 整理数据
-        $list = array();
-        foreach ($src['id'] as $key => $value) {
-            $list[$key] = [
-                'id' => $value
-                ,'teacher_id' => $src['teacher_id']
+        $btj = new BTJ;
+        foreach ($src['banji_id'] as $key => $value) {
+            $map = [
+                ['kaoshi_id', '=', $src['kaoshi_id']],
+                ['banji_id', '=', $value],
+                ['subject_id', '=', $src['subject_id']],
             ];
+            $btjInfo = $btj->where([ $map ])->find();
+            if($btjInfo)
+            {
+                $btjInfo->teacher_id = $src['teacher_id'];
+                $data = $btjInfo->save();
+            }
         }
 
-        $btj = new BTJ;
-        $data = $btj->saveAll($list);
         $data ? $data = ['msg' => '设置成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 

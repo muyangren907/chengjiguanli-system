@@ -88,12 +88,13 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 	options.cols = [
 		[ //表头
 			{ type: 'checkbox', fixed: 'left' },
-			{ field: 'xingming', title: '姓名', sort: true },
-			{ field: 'sex', title: '性别', sort: true },
+			{ field: 'xingming', title: '姓名', minWidth:100, sort: true, fixed: 'left' },
+			{ field: 'sex', title: '性别', sort: true, minWidth:100 },
 			{
 				field: "shengri",
 				title: '周岁',
 				sort: true,
+				minWidth:100,
 				templet: function(d) {
 					return d.age;
 				}
@@ -110,8 +111,8 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 					return str;
 				}
 			},
-			{ field: 'status', title: '是否参加考试', templet: '#kaoshi', sort: true },
-			{ field: 'status', title: '状态', templet: '#status', sort: true },
+			{ field: 'status', title: '是否参加考试', templet: '#kaoshi', minWidth:80, sort: true },
+			{ field: 'status', title: '状态', templet: '#status', minWidth:80, sort: true },
 			{ field: 'id', title: '操作', toolbar: '#barDemo', minWidth: 180 }
 		]
 	];

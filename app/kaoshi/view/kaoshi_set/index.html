@@ -65,7 +65,7 @@
   // 设置列
   options.cols=[[ //表头
     {type:'checkbox', fixed: 'left'},
-    {field: 'nianji', title: '年级',sort: true,templet:function(d){
+    {field: 'nianji', title: '年级',sort: true, fixed: 'left',templet:function(d){
       var str='';
       if(d.nianjiname)
       {
@@ -73,7 +73,7 @@
       }
       return str;
     }},
-    {field: "subject_id",title: '考试学科',sort: true,templet:function(d){
+    {field: "subject_id",title: '考试学科',sort: true, fixed: 'left',templet:function(d){
       var str='';
       if(d.subjectName)
       {

@@ -17,7 +17,7 @@ Route::group('index', function () {
     Route::rule('data','Index/ajaxData','post');			# 成绩获取
     Route::rule('readcjadd/<kaohao>','Index/readAdd','get');				# 成绩录入列表
     Route::rule('dataadd','Index/ajaxaddinfo','post');				# 成绩录入列表数据
-    Route::rule('delete/<id>','Index/delete','delete');				# 成绩删除
+    Route::rule('delete','Index/delete','delete');				# 成绩删除
     Route::rule('deletecjs/<kaoshi_id>','Index/deletecjs','get');				# 成绩删除
     Route::rule('deletecjmore','Index/deletecjmore','post');				# 成绩删除
 	Route::rule('dwchengji/<kaoshi_id>','Index/dwChengji','get');				# 成绩删除

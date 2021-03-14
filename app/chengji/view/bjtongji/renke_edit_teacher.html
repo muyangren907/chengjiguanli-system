@@ -3,20 +3,16 @@
 {block name="form"}
     <form class="layui-form layui-form-pane" lay-filter="myform">
           <div class="layui-form-item">
-            <label for="school_id" class="layui-form-label"><span class="x-red">*</span>学校</label>
+            <label for="school_id" class="layui-form-label">学校</label>
             <div class="layui-input-block">
-              <select name="school_id" id="school_id" lay-verify="required" lay-filter="school_id">
-                <option value="">请选择学校</option>
+              <select name="school_id" id="school_id" lay-filter="src">
               </select>
             </div>
           </div>
           <div class="layui-form-item">
-            <label for="ruxuenian" class="layui-form-label">
-              <span class="x-red">*</span>年级
-            </label>
+            <label for="ruxuenian" class="layui-form-label">年级</label>
             <div class="layui-input-block">
-              <select name="ruxuenian" id="ruxuenian" lay-verify="required" class="layui-form-label" lay-filter="ruxuenian">
-                <option value="">请选择年级</option>
+              <select name="ruxuenian" id="ruxuenian" lay-filter="src">
               </select>
             </div>
           </div>
@@ -25,29 +21,24 @@
               <span class="x-red">*</span>学科
             </label>
             <div class="layui-input-block">
-              <select name="subject_id" id="subject_id" lay-verify="required" class="layui-form-label" lay-filter="subject_id">
-                <option value="">请选择学科</option>
+              <select name="subject_id" id="subject_id" lay-verify="required">
               </select>
             </div>
           </div>
           <div class="layui-form-item">
-            <label for="id" class="layui-form-label">
-              <span class="x-red">*</span>班级
-            </label>
-            <div class="layui-input-block" id="id">
+            <label for="banji_id" class="layui-form-label"><span class="x-red">*</span>班级</label>
+            <div class="layui-input-block" id="banji_id">
             </div>
           </div>
+
           <div class="layui-form-item">
-              <label for="title" class="layui-form-label">
-                  <span class="x-red">*</span>教师姓名
-              </label>
-              <div class="layui-input-block">
-                  <input type="text" id="xingming" name="xingming" lay-verify="required"
-                  autocomplete="off" class="layui-input " value="" placeholder="输入姓名或姓名拼音搜索教师">
-                  <input type="hidden" id="teacher_id"  name="teacher_id" value="">
-                  <div id="src"></div>
-              </div>
+            <label for="teacher_name" class="layui-form-label">
+              <span class="x-red">*</span>教师姓名
+            </label>
+            <div class="layui-input-block" id="teacher_id" school_id="">
+            </div>
           </div>
+
           <input type="hidden" name="kaoshi_id" id="kaoshi_id" value="{$list.data.kaoshi_id}">
           <div class="layui-form-item" style="text-align: right;">
               <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
@@ -61,155 +52,31 @@
 
 <script>
 
-  var cjgl = parent.layui.cjgl;
-  var tempTeacherName = '';
-  var tempTeacherid = ''
+  layui.use(['createInput','canyuKaoshi','form'], function(){
+    var cInput = layui.createInput,
+    canyu = layui.canyuKaoshi,
+    form = layui.form;
 
-  $("[name^='xingming']").each(function(){
-
-    $(this).bind("focus", function(){
-      myFocus(this);
-    });
-
-    $(this).bind("blur", function(){
-      myBlur(this);
-    });
-
-    $(this).bind("keyup", function(){
-      srcTeacher(this);
-    });
-
-  });
-
-  function srcTeacher(obj)
-  {
-    id = myId(obj);
-    var val = $.trim($(obj).val());
-    var danwei_id = $('#school_id').val();
-    if(danwei_id <= 0)
-    {
-      layer.msg('请选选择学校');
-      return true;
-    }
-    if(val.length > 0){
-      // 获取数据
-      $.post(
-          "/teacher/index/srcteacher",
-          {
-              "str": val,
-              'danwei_id' : danwei_id
-          },
-          function(data,status){
-              data = data.data;
-              $('#src' + id).children().remove();
-              if($.isEmptyObject(data))
-              {
-                  return true;
-              }
-              for (var i = data.length - 1; i >= 0; i--) {
-                $('#src' + id).append('<span onclick="addTeacher(this)" class="layui-btn layui-btn-normal" teacher_id="'+data[i].id+'" rowid="'+id+'" xingming="'+data[i].xingming+'">'+data[i].xingming+' </span>');
-              }
-          }
-      );
-    } else {
-      $('#src' + id).children().remove();
-    }
-  }
-
-
-  function myFocus(obj)
-  {
-    id = myId(obj);
-    $(obj).val('');
-    $('#teacher_id' + id).val('');
-  }
-
-
-  function myBlur(obj)
-  {
-    val = $(obj).val();
-    id = myId(obj);
-
-    if($('#teacher_id' + id).val() == '')
-    {
-      $(obj).val('');
-    }
-  }
-
-
-  function myId(obj)
-  {
-    id = $(obj).attr('id');
-    id = id.replace(/[^0-9]/ig, "");
-    return id;
-  }
-
-
-  function addTeacher(obj)
-  {
-    teacher_id = $(obj).attr('teacher_id');
-    xingming = $(obj).attr('xingming');
-    rowid = $(obj).attr('rowid');
-    $('#teacher_id' + rowid).val(teacher_id);
-    $('#xingming' + rowid).val(xingming);
-    $('#src' + rowid).children().remove();
-  }
-
-
-  // 日期控件
-layui.use(['form','upload','cjgl'], function(){
-    var form = layui.form
-        ,cjgl = layui.cjgl;
-
-    // 加载学校列表
-    addSchool();
+    // 搜索教师
+  xmselect = cInput.searchTeacher('teacher_id', true);
+  canyu.schoolSelect('school_id', "{$list.data.kaoshi_id}");
+  canyu.gradeSelect('ruxuenian', "{$list.data.kaoshi_id}");
 
     // 监听学校下拉菜单
-    form.on('select(school_id)', function (data) {
-      addNianji();
-    })
-    // 监听学校下拉菜单
-    form.on('select(ruxuenian)', function (data) {
-      addSubject();
-    })
+    form.on('select(src)', function (data) {
+      data = form.val("myform");
+      if(data.school_id>0 && data.ruxuenian>0){
+        canyu.banjiCheckbox('banji_id', data);
+        // $('#teacher_id').attr('school_id', data.school_id);
+      }
+      canyu.subjectSelect('subject_id', data);
+      
+    });
 
-    // 监听学校下拉菜单
-    form.on('select(subject_id)', function (data) {
-      addBanji();
-    })
-
-    // 添加学校
-    function addSchool(){
-      // 获取参数
-      formval = form.val("myform");
-      cjgl.createSelectOption('school_id', formval, '/tools/kscy/school', 'id', 'title');
-    }
-
-    // 添加年级
-    function addNianji(){
-      // 获取参数
-      formval = form.val("myform");
-      cjgl.createSelectOption('ruxuenian', formval, '/tools/kscy/grade', 'ruxuenian', 'nianjiname');
-    }
-
-    // 添加学校
-    function addSubject(){
-      // 获取参数
-      formval = form.val("myform");
-      cjgl.createSelectOption('subject_id', formval, '/tools/kscy/subject', 'id', 'title');
-    }
-
-    // 添加班
-    function addBanji(){
-      // 获取参数
-      formval = form.val("myform");
-      cjgl.createCheckbox('id', formval, '/tools/kscy/tjclass', 'id', 'banTitle');
-    }
-
+    form.on('checkbox(mycheackbox)', function(data) {
+      cInput.checkboxChecked(data);
+    });
 });
-
-
-
 
 </script>
 

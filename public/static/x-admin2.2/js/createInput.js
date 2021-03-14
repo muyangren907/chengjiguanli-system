@@ -124,7 +124,6 @@ layui.extend({
             {
               layui.each(myPid, function(i, el){
                 this.checked = check;
-                // editPid(el, check);
               })
             }
           }
@@ -172,11 +171,15 @@ layui.extend({
     },
 
     // 查询老师
-    searchTeacher: function(id, radio = false) {
-      school_id = $('#' + id).attr('school_id');
+    searchTeacher: function(id, radio = false, name = '') {
+      if(name == '')
+      {
+        name = id;
+      }
+      var school_id = '';
       x = xmSelect.render({
         el: '#' + id,
-        name: id,
+        name: name,
         autoRow: true,
         toolbar: { show: true },
         filterable: true,
@@ -189,7 +192,7 @@ layui.extend({
           name: 'xingming',
           value: 'id',
         },
-        height: '25px',
+        // height: '25px',
         size: 'mini',
         radio: radio,
         showCount: 8,
@@ -223,6 +226,75 @@ layui.extend({
             },
             success: function(result) {
               cb(result.data)
+            },
+            error: function(result) {
+              layer.msg('数据扔半道啦。', function() {});
+            },
+          });
+        },
+      })
+      return x;
+    },
+
+
+    // 查询老师
+    searchStudent: function(id, radio = false, name = '') {
+      if(name == '')
+      {
+        name = id;
+      }
+      var banji_id = '';
+      x = xmSelect.render({
+        el: '#' + id,
+        name: name,
+        autoRow: true,
+        toolbar: { show: true },
+        filterable: true,
+        remoteSearch: true,
+        tips: '请选择教师',
+        theme: {
+          color: '#1cbbb4',
+        },
+        prop: {
+          name: 'xingming',
+          value: 'id',
+        },
+        // height: '25px',
+        size: 'mini',
+        radio: radio,
+        showCount: 8,
+        repeat: false,
+        model: {
+          label: {
+            type: 'text',
+            //使用字符串拼接的方式
+            text: {
+              //左边拼接的字符
+              left: '【',
+              //右边拼接的字符
+              right: '】',
+              //中间的分隔符
+              separator: '，',
+            },
+          }
+        },
+        remoteMethod: function(val, cb, show) {
+
+          //这里如果val为空, 则不触发搜索
+          if (!val) {
+            return cb([]);
+          }
+
+          $.ajax({
+            url: '/student/index/srcstudent',
+            type: 'POST',
+            data: {
+              searchval: val,
+              banji_id: 1,
+              kaoshi:1
+            },
+            success: function(result) {
+              cb(result.data);
             },
             error: function(result) {
               layer.msg('数据扔半道啦。', function() {});
@@ -382,7 +454,7 @@ layui.extend({
 
 
     // 创建班级checkbox
-    banjiCheckbox: function(myid, data, value, hasAll = true) {
+    banjiCheckbox: function(myid, data, value='', hasAll = true) {
       $.ajax({
         url: '/teach/banji/mybanji',
         type: 'POST',
@@ -414,7 +486,7 @@ layui.extend({
 
 
     // 创建班级checkbox
-    banjiSelect: function(myid, data, value, hasAll = true) {
+    banjiSelect: function(myid, data, value='', hasAll = true) {
       $.ajax({
         url: '/teach/banji/mybanji',
         type: 'POST',
@@ -446,7 +518,7 @@ layui.extend({
 
 
     // 创建年级的Select
-   nanjiSelect: function(myid, data, value, hasNull = true) {
+   nanjiSelect: function(myid, data, value='', hasNull = true) {
         $.ajax({
         url: '/teach/banji/njlist',
         type: 'POST',

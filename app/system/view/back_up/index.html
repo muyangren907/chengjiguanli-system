@@ -40,12 +40,12 @@ layui.use(['table', 'backUp', 'form'], function() {
 	options.cols = [
 		[ //表头
 			{ field: 'time', type: 'checkbox', fixed: 'left' },
-			{ field: 'ltime', title: '时间', sort: true, minWidth: 100 },
+			{ field: 'ltime', title: '时间', sort: true, minWidth: 100, fixed: 'left'},
 			{ field: 'juan', title: '卷数', sort: true, minWidth: 100 },
 			{ field: 'yasuo', title: '压缩', sort: true, minWidth: 100 },
 			{ field: 'lsize', title: '文件大小', minWidth: 100, sort: true },
 			{ field: 'status', title: '状态', minWidth: 100, sort: true },
-			{ field: 'id', title: '操作', toolbar: '#barDemo', minWidth: 90 }
+			{ field: 'id', title: '操作', toolbar: '#barDemo', minWidth: 90, fixed: 'right'}
 		]
 	];
 

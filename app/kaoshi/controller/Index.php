@@ -172,11 +172,6 @@ class Index extends AdminBase
                 ,'checked' => ' checked'
             ]
             ,[
-                'title' => '学生成绩在学校位置'
-                ,'url' => '/chengji/njtj/njorder'
-                ,'checked' => ' checked'
-            ]
-            ,[
                 'title' => '学生成绩在全区位置'
                 ,'url' => '/chengji/schtj/schorder'
                 ,'checked' => ' checked'
@@ -192,7 +187,7 @@ class Index extends AdminBase
                 ,'checked' => ' checked'
             ]
             ,[
-                'title' => '统计各年级成绩'
+                'title' => '统计区各年级成绩'
                 ,'url' => '/chengji/schtj/tongji'
                 ,'checked' => ' checked'
             ]

@@ -667,7 +667,7 @@ class TongjiBj extends BaseModel
             ->append(['banTitle'])
             ->find();
 
-        $njlist = nianJiNameList('str', $ksInfo->getData('enddate'));
+        $njlist = \app\facade\Tools::nianJiNameList($ksInfo->getData('enddate'), 'str');
         $njname = $njlist[$bjInfo->ruxuenian];
         $title = $njname . $bjInfo->banTitle;
 

@@ -5,35 +5,33 @@
       <div class="layui-form-item">
         <label for="school_id" class="layui-form-label"><span class="x-red">*</span>学校</label>
         <div class="layui-input-block">
-          <select name="school_id" id="school" lay-verify="required">
-            {foreach $list.school as $key=>$vo}
-              <option value="{$vo.id}"> {$vo.title} </option>
-            {/foreach}
+          <select name="school_id" id="school_id" lay-filter="src" lay-verify="required" >
           </select>
         </div>
       </div>
       <div class="layui-form-item">
-        <label for="ruxuenian" class="layui-form-label">
-          <span class="x-red">*</span>年级
+        <label for="ruxuenian" class="layui-form-label"><span class="x-red">*</span>年级</label>
+        <div class="layui-input-block">
+          <select name="ruxuenian" id="ruxuenian" lay-filter="src" lay-verify="required" >
+          </select>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label for="banji_id" class="layui-form-label">
+          <span class="x-red">*</span>班级
         </label>
         <div class="layui-input-block">
-          <select name="ruxuenian" id="ruxuenian" lay-verify="required" class="layui-form-label" lay-filter="nianji">
-            {foreach $list.nianji as $key=>$vo}
-            	<option value="{$vo.ruxuenian}">
-            		{$vo['nianjiname']}
-            	</option>
-            {/foreach}
+          <select name="banji_id" id="banji_id" lay-verify="required" class="layui-form-label">
           </select>
         </div>
       </div>
       <div class="layui-form-item">
-        <label for="banji" class="layui-form-label"> <span class="x-red">*</span>班级 </label>
-        <div class="layui-input-block" id="banji">
-        </div>
-      </div>
-      <div class="layui-form-item">
-        <label for="subject" class="layui-form-label"><span class="x-red">*</span>学科</label>
-        <div class="layui-input-block" id="subject">
+        <label for="subject_id" class="layui-form-label">
+          <span class="x-red">*</span>学科
+        </label>
+        <div class="layui-input-block">
+          <select name="subject_id" id="subject_id" lay-verify="required" class="layui-form-label">
+          </select>
         </div>
       </div>
       <input type="hidden" id="kaoshi_id" name="kaoshi_id" value="{$list.set.kaoshi_id}">
@@ -47,35 +45,23 @@
 
 {block name="myjs"}
 <script>
-layui.use(['form','cjgl'], function(){
-	var form = layui.form
-      cjgl = layui.cjgl;
+layui.use(['form','canyuKaoshi','createInput'], function(){
+    var form = layui.form,
+    cInput = layui.createInput,
+    canyu = layui.canyuKaoshi;
 
-  addBanji();
-  addSubject();
+    xmselect = cInput.searchStudent('student_id');
+    canyu.schoolSelect('school_id', "{$list.set.kaoshi_id|default=''}");
+    canyu.gradeSelect('ruxuenian', "{$list.set.kaoshi_id|default=''}");
 
-  // 监听选择按钮
-  form.on('select', function(data){
-    addBanji();
-    addSubject();
+    // 监听学校下拉菜单
+    form.on('select(src)',function(data){
+      data = form.val("myform");
+      if(data.school_id > 0 && data.ruxuenian > 0){
+        canyu.banjiSelect('banji_id', data,);
+      }
+    });
   });
-
-  // 添加班级
-  function addBanji(){
-    // 获取参数
-    formval = form.val("myform");
-    cjgl.createCheckbox('banji', formval, '/tools/kscy/class', 'banji_id', 'banTitle');
-  }
-
-
-  // 添加学科
-  function addSubject(){
-    // 获取参数
-    formval = form.val("myform");
-    cjgl.createCheckbox('subject', formval, '/tools/kscy/subject', 'subject_id', 'title');
-  }
-
-});
 </script>
 {/block}
 

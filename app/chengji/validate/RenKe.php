@@ -14,8 +14,11 @@ class RenKe extends Validate
      * @var array
      */
 	protected $rule = [
-        'id|ID'      =>  'require|array',
+        'id|班级成绩编号' => 'require|array',
+        'baji_id|班级编号'      =>  'require|array',
         'teacher_id|教师'      =>  'require',
+        'subject_id|学科' => 'require',
+        'kaoshi_id|考试编辑' => 'require',
     ];
 
     /**
@@ -30,6 +33,12 @@ class RenKe extends Validate
         'edit'  =>  [
             'id'
             ,'teacher_id'
+        ],
+        'editteacher'  =>  [
+            'banji_id'
+            ,'teacher_id'
+            ,'subject_id'
+            ,'kaoshi_id'
         ]
     ];
 }

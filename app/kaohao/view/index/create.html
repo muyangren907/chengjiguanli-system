@@ -3,38 +3,16 @@
 {block name="form"}
     <form class="layui-form layui-form-pane" lay-filter="myform">
           <div class="layui-form-item">
-              <label for="cyselect" class="layui-form-label">
-                  学生ID
-              </label>
-              <div class="layui-inline">
-                <div class="layui-input-inline">
-                  <input name="student_id" id="student_id" type="text" class="layui-input" autocomplete="off" readonly="true" lay-verify="required">
-                </div>
-              </div>
-          </div>
-          <div class="layui-form-item">
             <label for="school_id" class="layui-form-label"><span class="x-red">*</span>学校</label>
             <div class="layui-input-block">
-              {php}$schoolList = danweiJibie('校级', '校级'); {/php}
-              <select name="school_id" id="school_id" lay-verify="required">
-                <option value="">请选择学校</option>
-                {foreach $schoolList as $key=>$vo}
-                  <option value="{$vo.id}" >
-                    {$vo.title}
-                  </option>
-                {/foreach}
+              <select name="school_id" id="school_id" lay-filter="sch" lay-verify="required" >
               </select>
             </div>
           </div>
           <div class="layui-form-item">
-            <label for="ruxuenian" class="layui-form-label">
-              <span class="x-red">*</span>年级
-            </label>
+            <label for="ruxuenian" class="layui-form-label"><span class="x-red">*</span>年级</label>
             <div class="layui-input-block">
-              <select name="ruxuenian" id="ruxuenian" lay-verify="required" class="layui-form-label">
-                {foreach $list.data.nianji as $key=>$vo}
-                  <option value="{$vo.ruxuenian}">{$vo.nianjiname}</option>
-                {/foreach}
+              <select name="ruxuenian" id="ruxuenian" lay-filter="nj" lay-verify="required" >
               </select>
             </div>
           </div>
@@ -43,22 +21,20 @@
               <span class="x-red">*</span>班级
             </label>
             <div class="layui-input-block">
-              <select name="banji_id" id="banji_id" lay-verify="required" class="layui-form-label">
-                <option value=""></option>
+              <select name="banji_id" id="banji_id" lay-verify="required" class="layui-form-label" lay-filter="bj">
               </select>
             </div>
           </div>
-          <div class="layui-form-item" id="list">
-              <label for="cyselect" class="layui-form-label">
-                  <span class="x-red">*</span>搜索框
-              </label>
-              <div class="layui-inline">
-                <div class="layui-input-inline">
-                  <input name="search" id="search" type="text" class="layui-input" autocomplete="off">
-                </div>
-              </div>
+          <div class="layui-form-item">
+            <label for="student_id" class="layui-form-label">
+              <span class="x-red">*</span>学生姓名
+            </label>
+            <div class="layui-input-block" id="student_id" banji_id="">
+            </div>
           </div>
-          <input type="hidden" name="kaoshi_id" id="kaoshi_id" value="{$list.set.kaoshi_id}">
+          <input type="hidden" name="nianji" id="nianji" value="{$list.set.nianji|default=''}">
+          <input type="hidden" name="paixu" id="paixu" value="{$list.set.paixu|default=''}">
+          <input type="hidden" name="kaoshi_id" id="kaoshi_id" value="{$list.set.kaoshi_id|default=''}">
           <div class="layui-form-item" style="text-align: right;">
               <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
                   {$list.set.butname}
@@ -69,87 +45,39 @@
 
 {block name="myjs"}
 <script>
-  layui.use(['form','mytable'], function(){
-    var form = layui.form
-        mytable = layui.mytable;
+  layui.use(['form','canyuKaoshi','createInput'], function(){
+    var form = layui.form,
+    cInput = layui.createInput,
+    canyu = layui.canyuKaoshi;
 
-    addBanji();
-    // 监听选择按钮
-    form.on('select', function(data){
-      var myselectname = $(data.elem).attr('name');
-      if(myselectname == 'school_id' || myselectname == 'ruxuenian'){
-        addBanji();
-        form.val("myform", { //formTest 即 class="layui-form" 所在元素属性 lay-filter="" 对应的值
-          "search": "" // "name": "value"
-        });
-        form.render();
+    xmselect = cInput.searchStudent('student_id');
+    cInput.schoolSelect('school_id', '校级', '校级', "", true);
+    canyu.gradeSelect('ruxuenian', "{$list.set.kaoshi_id}");
+
+    // 监听学校下拉菜单
+    form.on('select(sch)',function(data){
+      data = form.val("myform");
+      if(data.school_id > 0 && data.ruxuenian > 0){
+        cInput.banjiSelect('banji_id', data);
       }
     });
 
-
-    function addBanji()
-    {
-      // 获取参数
-      formval = form.val("myform");
-      if(formval.school_id == '' || formval.ruxuenian == '')
-      {
-        return true;
+    // 监听学校下拉菜单
+    form.on('select(nj)',function(data){
+      data = form.val("myform");
+      if(data.school_id > 0 && data.ruxuenian > 0){
+        cInput.banjiSelect('banji_id', data);
       }
-      mytable.createSelectOption('banji_id', formval, '/teach/banji/mybanji', 'id', 'banTitle');
-    }
+      $('#nianji').val($('#ruxuenian option:selected').text());
+    });
 
+    // 监听学校下拉菜单
+    form.on('select(bj)',function(data){
+      data = form.val("myform");
+      $('#paixu').val(data.banji);
+    });
 
-    // 搜索教师
-    $('#search').bind({
-      keyup:function(e){
-        var e = e || window.event;
-        // console.log(e);
-        if(e.keyCode == 13){
-           // $("#srcsubmit").click();
-           return false;
-        }
-        $('#list').children("span[name='aa']").remove();
-        formval = form.val("myform");
-        formval.search = formval.search.trim();
-        if(formval.banji_id=='' || formval.search == '')
-        {
-          return true;
-        }
-        // 获取数据
-        $.post(
-            "/student/index/srcstudent",
-            {
-                "str":formval.search,
-                "banji_id":formval.banji_id,
-                "kaoshi":1
-            },
-            function(data,status){
-                $('#list').children("span[name='aa']").remove();
-                if($.isEmptyObject(data))
-                {
-                    return true;
-                }
-                for (var i = data.length - 1; i >= 0; i--) {
-                  $('#list').append('<span name="aa" onclick="addStudent(this)" name="srcjg" class="layui-btn layui-btn-normal" stu_id="'+data[i].id+'" stu_name="'+data[i].xingming+'">'+data[i].xingming+' </span>');
-                }
-            }
-        );
-      }
-    })
   });
-
-
-
-  // 添加学生
-  function addStudent(obj)
-  {
-    student_id = $(obj).attr('stu_id');
-    student_name = $(obj).attr('stu_name');
-    $('#student_id').val(student_name + ' ' +student_id);
-    $("span[name='aa']").remove();
-    $("#search").val('');
-  }
-
 
 </script>
 {/block}

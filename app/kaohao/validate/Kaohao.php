@@ -14,7 +14,12 @@ class Kaohao extends Validate
      */
 	protected $rule = [
         'kaoshi_id|考试号'      =>  'require|number',
-        'banji_id|参考班级'      =>  'require|array',
+        'school_id|学校'      =>  'require|number',
+        'ruxuenian|入学年'      =>  'require|number',
+        'nianji|年级名称'      =>  'require|number',
+        'banji_id|参考班级'      =>  'require',
+        'paixu|班级排序'      =>  'require|number',
+        'student_id|学生'      =>  'require',
     ];
 
     /**
@@ -27,6 +32,15 @@ class Kaohao extends Validate
 
     protected $scene = [
         'create'  =>  [
+            'kaoshi_id'
+            ,'school_id'
+            ,'ruxuenian'
+            ,'nianji'
+            ,'banji_id'
+            ,'paixu'
+            ,'student_id'
+        ],
+        'createAll'  =>  [
             'kaoshi_id'
             ,'banji_id'
         ]

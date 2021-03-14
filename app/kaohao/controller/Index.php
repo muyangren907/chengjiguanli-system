@@ -169,12 +169,13 @@ class Index extends AdminBase
         // 获取表单数据
         $list = request()->only([
             'kaoshi_id'
-            ,'banji_id'
-            ,'student_id'
             ,'school_id'
+            ,'ruxuenian'
+            ,'nianji'
+            ,'banji_id'
+            ,'paixu'
+            ,'student_id'
         ], 'POST');
-        $list['student_id'] = explode(' ', $list['student_id']);
-        $list['student_id'] = $list['student_id'][1];
 
         event('kslu', $list['kaoshi_id']);
 
@@ -184,27 +185,37 @@ class Index extends AdminBase
                 ->where('student_id', $list['student_id'])
                 ->find();
 
-        // 如果存在成绩则更新，不存在则添加
-        if($ks)
-        {
-            // 判断记录是否被删除
-            if($ks->delete_time > 0)
-            {
-                $ks->restore();
-            }
-            $data = ['msg' => '生成成功', 'val' => 1];
-        }else{
-            // 获取参加考试年级数组
-            $enddate = KS::where('id', $list['kaoshi_id'])->value('enddate');
-            $njlist = nianJiNameList('str', $enddate);
+        $list['student_id'] = explode(',', $list['student_id']);
+        $temp = array();
+        foreach ($list['student_id'] as $key => $value) {
+            $temp = [
+                'kaoshi_id' => $list['kaoshi_id']
+                ,'school_id' => $list['school_id']
+                ,'ruxuenian' => $list['ruxuenian']
+                ,'nianji' => $list['nianji']
+                ,'banji_id' => $list['banji_id']
+                ,'paixu' => $list['paixu']
+                ,'student_id' => $value
+            ];
 
-            // 获取班级信息
-            $bj = new \app\teach\model\Banji;
-            $bjinfo = $bj->where('id', $list['banji_id'])->find();
-            $list['ruxuenian'] = $bjinfo->ruxuenian;
-            $list['nianji'] = $njlist[$bjinfo->ruxuenian];
-            $list['paixu'] = $bjinfo->paixu;
-            $data = KH::create($list);
+            $ks = KH::withTrashed()
+                ->where('kaoshi_id', $temp['kaoshi_id'])
+                ->where('student_id', $temp['student_id'])
+                ->find();
+
+            // 如果存在成绩则更新，不存在则添加
+            if($ks)
+            {
+                // 判断记录是否被删除
+                if($ks->delete_time > 0)
+                {
+                    $ks->restore();
+                }
+                $data = ['msg' => '生成成功', 'val' => 1];
+            }else{
+                $data = KH::create($temp);
+            }
+
         }
 
         // 根据更新结果设置返回提示信息
@@ -238,7 +249,7 @@ class Index extends AdminBase
 
 
     // 删除考号
-    public function delete($id)
+    public function delete()
     {
         // 整理数据
         $id = request()->delete('id');

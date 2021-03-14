@@ -4,17 +4,14 @@
     <form class="layui-form layui-form-pane" lay-filter="myform">
           {volist name="list.data" id="vo"}
             <div class="layui-form-item">
-                <label for="title" class="layui-form-label">
-                    <span class="x-red">*</span>{$vo.bjSubject.title}
-                </label>
-                <div class="layui-input-block">
-                    <input type="text" id="xingming{$i}" name="xingming[]" lay-verify="required"
-                    autocomplete="off" class="layui-input " value="{$vo.bjTeacher.xingming|default=''}" placeholder="输入姓名或姓名拼音搜索教师">
-                    <input type="hidden" id="teacher_id{$i}"  name="teacher_id[]" value="{$vo.teacher_id|default=''}">
-                    <input type="hidden" id="id"  name="id[]" value="{$vo.id|default=''}">
-                    <div id="src{$i}"></div>
-                </div>
+              <label for="teacher_name" class="layui-form-label">
+                <span class="x-red">*</span>{$vo.bjSubject.title}
+              </label>
+              <div class="layui-input-block" id="teacher_id{$vo.id}" school_id="{$list.set.school_id|default='0'}">
+              </div>
+              <input type="hidden" id="id{$vo.id}"  name="id[]" value="{$vo.id|default=''}">
             </div>
+
           {/volist}
           <div class="layui-form-item" style="text-align: right;">
               <button  class="layui-btn" lay-filter="mysubmit" lay-submit="">
@@ -28,94 +25,122 @@
 
 <script>
 
-  var cjgl = parent.layui.cjgl;
-  var tempTeacherName = '';
-  var tempTeacherid = ''
+layui.use(['createInput','form'], function(){
+    var cInput = layui.createInput;
 
-  $("[name^='xingming']").each(function(){
+    // 搜索教师
+    // 获取学科
+  var xk = '<?php echo json_encode($list["data"]);?>';
+  xk = eval(decodeURIComponent(xk));
 
-    $(this).bind("focus", function(){
-      myFocus(this);
-    });
+  layui.each(xk, function(i, el){
+    xmselect = cInput.searchTeacher('teacher_id' + el.id, true, 'teacher_id[]');
+  })
 
-    $(this).bind("blur", function(){
-      myBlur(this);
-    });
+    // // 监听学校下拉菜单
+    // form.on('select(src)', function (data) {
+    //   data = form.val("myform");
+    //   if(data.school_id>0 && data.ruxuenian>0){
+    //     canyu.banjiCheckbox('banji_id', data);
+    //   }
+    //   canyu.subjectSelect('subject_id', data);
+    //   $('#teacher_id').attr('school_id', data.school_id);
+    // });
 
-    $(this).bind("keyup", function(){
-      srcTeacher(this);
-    });
-
-  });
-
-  function srcTeacher(obj)
-  {
-    id = myId(obj);
-
-    var val = $.trim($(obj).val());
-    if(val.length > 0){
-      // 获取数据
-      $.post(
-          "/admin/index/srcteacher",
-          {
-              "str": val,
-              'school_id': "{$list.set.school_id|default=''}"
-          },
-          function(data,status){
-              data = data.data;
-              $('#src' + id).children().remove();
-              if($.isEmptyObject(data))
-              {
-                  return true;
-              }
-              for (var i = data.length - 1; i >= 0; i--) {
-                $('#src' + id).append('<span onclick="addTeacher(this)" class="layui-btn layui-btn-normal" teacher_id="'+data[i].id+'" rowid="'+id+'" xingming="'+data[i].xingming+'">'+data[i].xingming+' </span>');
-              }
-          }
-      );
-    } else {
-      $('#src' + id).children().remove();
-    }
-  }
+    // form.on('checkbox(mycheackbox)', function(data) {
+    //   cInput.checkboxChecked(data);
+    // });
+});
 
 
-  function myFocus(obj)
-  {
-    id = myId(obj);
-    $(obj).val('');
-    $('#teacher_id' + id).val('');
-  }
+  // var cjgl = parent.layui.cjgl;
+  // var tempTeacherName = '';
+  // var tempTeacherid = ''
+
+  // $("[name^='xingming']").each(function(){
+
+  //   $(this).bind("focus", function(){
+  //     myFocus(this);
+  //   });
+
+  //   $(this).bind("blur", function(){
+  //     myBlur(this);
+  //   });
+
+  //   $(this).bind("keyup", function(){
+  //     srcTeacher(this);
+  //   });
+
+  // });
+
+  // function srcTeacher(obj)
+  // {
+  //   id = myId(obj);
+
+  //   var val = $.trim($(obj).val());
+  //   if(val.length > 0){
+  //     // 获取数据
+  //     $.post(
+  //         "/admin/index/srcteacher",
+  //         {
+  //             "str": val,
+  //             'school_id': "{$list.set.school_id|default=''}"
+  //         },
+  //         function(data,status){
+  //             data = data.data;
+  //             $('#src' + id).children().remove();
+  //             if($.isEmptyObject(data))
+  //             {
+  //                 return true;
+  //             }
+  //             for (var i = data.length - 1; i >= 0; i--) {
+  //               $('#src' + id).append('<span onclick="addTeacher(this)" class="layui-btn layui-btn-normal" teacher_id="'+data[i].id+'" rowid="'+id+'" xingming="'+data[i].xingming+'">'+data[i].xingming+' </span>');
+  //             }
+  //         }
+  //     );
+  //   } else {
+  //     $('#src' + id).children().remove();
+  //   }
+  // }
 
 
-  function myBlur(obj)
-  {
-    val = $(obj).val();
-    id = myId(obj);
-
-    if($('#teacher_id' + id).val() == '')
-    {
-      $(obj).val('');
-    }
-  }
+  // function myFocus(obj)
+  // {
+  //   id = myId(obj);
+  //   $(obj).val('');
+  //   $('#teacher_id' + id).val('');
+  // }
 
 
-  function myId(obj)
-  {
-    id = $(obj).attr('id');
-    id = id.replace(/[^0-9]/ig, "");
-    return id;
-  }
+  // function myBlur(obj)
+  // {
+  //   val = $(obj).val();
+  //   id = myId(obj);
+
+  //   if($('#teacher_id' + id).val() == '')
+  //   {
+  //     $(obj).val('');
+  //   }
+  // }
 
 
-  function addTeacher(obj)
-  {
-    teacher_id = $(obj).attr('teacher_id');
-    xingming = $(obj).attr('xingming');
-    rowid = $(obj).attr('rowid');
-    $('#teacher_id' + rowid).val(teacher_id);
-    $('#xingming' + rowid).val(xingming);
-    $('#src' + rowid).children().remove();
-  }
+  // function myId(obj)
+  // {
+  //   id = $(obj).attr('id');
+  //   id = id.replace(/[^0-9]/ig, "");
+  //   return id;
+  // }
+
+
+  // function addTeacher(obj)
+  // {
+  //   teacher_id = $(obj).attr('teacher_id');
+  //   xingming = $(obj).attr('xingming');
+  //   rowid = $(obj).attr('rowid');
+  //   $('#teacher_id' + rowid).val(teacher_id);
+  //   $('#xingming' + rowid).val(xingming);
+  //   $('#src' + rowid).children().remove();
+  // }
 
 
 </script>
