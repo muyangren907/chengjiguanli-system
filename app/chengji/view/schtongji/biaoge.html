@@ -102,13 +102,11 @@ layui.use(['table', 'mytable'], function() {
 			return str;
 		}
 	});
-
 	options.autoSort = true;
 
 	// 获取筛选条件并加载表格
 	options.where = form.val("search");
 	userTable = table.render(options); //获取数据并渲染
-
 
 	//表头工具栏事件
 	table.on('toolbar(mytable)', function(obj) {
