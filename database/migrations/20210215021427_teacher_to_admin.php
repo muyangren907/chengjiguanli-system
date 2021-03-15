@@ -52,6 +52,11 @@ class TeacherToAdmin extends Migrator
         if (!$column) {
             $table
             ->addColumn('user_id','integer',['after' => 'category_id','limit'=>11,'default'=>0,'null'=>false,'comment'=>'用户ID'])
+            ->update();
+        }
+        $column = $table->hasColumn('fanwei_id');
+        if (!$column) {
+            $table
             ->addColumn('fanwei_id','integer',['after' => 'category_id','limit'=>11,'default'=>0,'null'=>false,'comment'=>'允许查看范围ID'])
             ->update();
         }
@@ -60,12 +65,16 @@ class TeacherToAdmin extends Migrator
         $this->execute('DELETE FROM cj_migrations WHERE version="20210107070200" and migration_name="KaoshiAddUser"');
 
         $table = $this->table('kaoshi_set');
-        $table
-            ->addColumn('lianghao','integer',['after'=>'youxiu','limit'=>3,'default'=>90,'null'=>false,'comment'=>'良好分数线'])
-            ->addColumn('youxiubi','integer',['after'=>'jige','limit'=>3,'default'=>90,'null'=>false,'comment'=>'优秀人数比'])
-            ->addColumn('lianghaobi','integer',['after'=>'youxiubi','limit'=>3,'default'=>90,'null'=>false,'comment'=>'良好人数比'])
-            ->addColumn('jigebi','integer',['after'=>'lianghaobi','limit'=>3,'default'=>00,'null'=>false,'comment'=>'及格人数比'])
-            ->update();
+        $column = $table->hasColumn('lianghao');
+        if (!$column) {
+            $table
+                ->addColumn('lianghao','integer',['after'=>'youxiu','limit'=>3,'default'=>90,'null'=>false,'comment'=>'良好分数线'])
+                ->addColumn('youxiubi','integer',['after'=>'jige','limit'=>3,'default'=>90,'null'=>false,'comment'=>'优秀人数比'])
+                ->addColumn('lianghaobi','integer',['after'=>'youxiubi','limit'=>3,'default'=>90,'null'=>false,'comment'=>'良好人数比'])
+                ->addColumn('jigebi','integer',['after'=>'lianghaobi','limit'=>3,'default'=>00,'null'=>false,'comment'=>'及格人数比'])
+                ->update();
+        }
+        
     }
 
 

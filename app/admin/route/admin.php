@@ -27,6 +27,8 @@ Route::group('index', function () {
     Route::rule('saveall','Index/saveAll','post');                  # 批量保存
     Route::rule('srcteacher','Index/srcAdmin','post');        # 查询教师
     Route::rule('resetpassword/<id>', 'Index/resetPassword', 'post');       # 重置密码
+    Route::rule('srcusername','Index/srcUsername','post');        # 查询用户名是否已经存在
+    Route::rule('srcphone','Index/srcPhone','post');        # 查询电话是否已经存在
 });
 
 

@@ -129,7 +129,7 @@ class School extends AdminBase
     {
 
         // 获取单位信息
-        $list['data'] = sch::field('id, title, jiancheng, biaoshi, xingzhi_id, jibie_id, status, xueduan_id, paixu')
+        $list['data'] = sch::field('id, title, jiancheng, biaoshi, xingzhi_id, jibie_id, status, xueduan_id, paixu, kaoshi')
             ->find($id);
 
         // 设置页面标题
@@ -161,6 +161,7 @@ class School extends AdminBase
                 ,'xingzhi_id'
                 ,'jibie_id'
                 ,'xueduan_id'
+                ,'kaoshi'
                 ,'paixu' => 999
             ], 'put');
         $list['id'] = $id;

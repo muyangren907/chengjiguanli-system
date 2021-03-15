@@ -34,6 +34,25 @@ class School extends BaseModel
     }
 
 
+    // 考试获取器
+    public function getKaoshiAttr($value)
+    {
+        $sex = [
+            '0' => '不能'
+            ,'1' => '能'
+        ];
+
+        $str = '';
+        if(isset($sex[$value]))
+        {
+            $str = $sex[$value];
+        }else{
+            $str = '未知';
+        }
+        return $str;
+    }
+
+
     // 查询所有单位
     public function search($srcfrom)
     {

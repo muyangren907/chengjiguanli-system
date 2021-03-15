@@ -40,6 +40,12 @@
 			</select>
 		</div>
 	</div>
+	<div class="layui-form-item" pane>
+		<label for="kaoshi" class="layui-form-label"><span class="x-red">*</span>组织考试</label>
+		<div class="layui-input-block">
+			<input type="radio" name="kaoshi" value="1" title="能" {present name="$list.data.kaoshi" } {$list.data.kaoshi} {eq name="$list.data.kaoshi" value="能" } checked {/eq} {/present}> <input type="radio" name="kaoshi" value="0" title="不能" {present name="$list.data.kaoshi" } {eq name="list.data.kaoshi" value="不能" } checked {/eq} {/present} {notpresent name="$list.data.kaoshi" } checked {/notpresent}>
+		</div>
+	</div>
 	<div class="layui-form-item">
 		<label for="paixu" class="layui-form-label">排序</label>
 		<div class="layui-input-block">

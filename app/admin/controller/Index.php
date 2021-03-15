@@ -380,4 +380,77 @@ class Index extends AdminBase
 
         return json($data);
     }
+
+
+    // 查询用户名是否重复
+    public function srcUsername()
+    {
+        // 获取参数
+        $srcfrom = $this->request
+            ->only([
+                'searchval' => ''
+                ,'id' => ''
+            ], 'POST');
+        $src = [
+                'searchval' => ''
+                ,'id' => ''
+            ];
+        $src = array_cover($srcfrom, $src);
+
+        $ad = new AD();
+        $list = $ad->where('username', $src['searchval'])
+            ->find();
+        $data = ['msg' => '用户名已经存在！', 'val' => 0];
+
+        if($list)
+        {
+            if($src['id'] > 0)
+            {
+                
+                if($src['id'] == $list->id){
+                    $data = ['msg' => '', 'val' => 1];
+                }
+            }
+        }else{
+           $data = ['msg' => '', 'val' => 1]; 
+        }
+        return json($data);
+    }
+
+
+    // 查询用户名是否重复
+    public function srcPhone()
+    {
+        // 获取参数
+        $srcfrom = $this->request
+            ->only([
+                'searchval' => ''
+                ,'id'
+            ], 'POST');
+        $src = [
+                'searchval' => ''
+                ,'id' => ''
+            ];
+        $src = array_cover($srcfrom, $src);
+
+        $ad = new AD();
+        $list = $ad->where('phone', $src['searchval'])
+            ->find();
+        
+        // 根据更新结果设置返回提示信息
+        $data = ['msg' => '电话号码已经存在！', 'val' => 0];
+        if($list)
+        {
+            if($src['id'] > 0)
+            {
+                
+                if($src['id'] == $list->id){
+                    $data = ['msg' => '', 'val' => 1];
+                }
+            }
+        }else{
+           $data = ['msg' => '', 'val' => 1]; 
+        }
+        return json($data);
+    }
 }

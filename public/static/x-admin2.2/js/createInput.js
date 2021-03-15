@@ -603,7 +603,6 @@ layui.extend({
 				},
 			});
 		},
-
 	};
 	//输出test接口
 	exports('createInput', obj);
