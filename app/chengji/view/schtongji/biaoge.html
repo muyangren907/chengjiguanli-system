@@ -1,34 +1,33 @@
-
 {extend name=".././view/list.html" /}
 {block name="jsset"}
-
 {/block}
 {block name="nav"}
-	<span class="layui-breadcrumb">
-		<a href="">考试管理</a>
-		<a href="">更多操作</a>
-		<a href="">成绩查看</a>
-		<a href="">学校成绩统计表</a>
-		<a><cite>{$list['kaoshititle']}</cite></a>
-	</span>
+<span class="layui-breadcrumb">
+	<a href="">考试管理</a>
+	<a href="">更多操作</a>
+	<a href="">成绩查看</a>
+	<a href="">学校成绩统计表</a>
+	<a><cite>{$list['kaoshititle']}</cite></a>
+</span>
 {/block}
 {block name="search"}
-	<div class="layui-form-item">
-	    <label for="nianji" class="layui-form-label" style="height: 100%">年级 </label>
-	    <div class="layui-input-block" pane>
-			{foreach $list.nianji as $key=>$vo}
-	            <input type="radio" name="ruxuenian" value="{$vo.ruxuenian}" title="{$vo.nianjiname}"
-	            {eq name="$key" value="0"} checked {/eq} >
-			{/foreach}
-	    </div>
+<div class="layui-form-item">
+	<label for="school_id" class="layui-form-label"><span class="x-red">*</span>学校</label>
+	<div class="layui-input-block">
+		<select name="school_id" id="school_id" lay-filter="src">
+		</select>
 	</div>
-	<input type="hidden" name="kaoshi_id" value="{$list.kaoshi_id}">
+</div>
+<input type="hidden" name="kaoshi_id" value="{$list.kaoshi_id}">
+<div class="layui-form-item" style="text-align: right;">
+	<button class="layui-btn" lay-filter="searchSubmit" lay-submit="">搜索</button>
+</div>
 {/block}
 {block name="table"}
-	<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
+<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
 {/block}
 {block name="myjs"}
-	<!-- 表格上面按钮模板 -->
+<!-- 表格上面按钮模板 -->
 <script type="text/html" id="toolbarDemo">
 	<div class="layui-btn-container">
 		<button class="layui-btn layui-btn-danger" lay-event="dels">
@@ -46,100 +45,81 @@
 </script>
 <!-- 表格操作 -->
 <script>
+// 提交搜索条件后重载表格
+layui.use(['table', 'mytable'], function() {
+	var table = layui.table
+	mytable = layui.mytable;
+
+	canyu.schoolSelect('school_id', "{$list.kaoshi_id|default=''}");
+
 	// 设置列
-  	options.cols=[[ //表头
-			{type:'numbers',title:'序号',rowspan:2},
-			{field: 'school', title: '学校',minWidth:80,rowspan:2},
-		]
-		,[]
-		];
+	options.cols = [
+		[ //表头
+			{ type: 'numbers', title: '序号', rowspan: 2 },
+			{ field: 'school', title: '学校', minWidth: 80, rowspan: 2 },
+		],
+		[]
+	];
 	// 获取学科
 	var xk = '<?php echo json_encode($list["subject"]);?>';
 	xk = eval(decodeURIComponent(xk));
-	var xiangmu = {cj_cnt:'参考人数',avg:'平均分',jigelv:'及格率%',youxiulv:'优秀率%'};		// 要显示哪些统计结果
+	var xiangmu = { cj_cnt: '参考人数', avg: '平均分', jigelv: '及格率%', youxiulv: '优秀率%' }; // 要显示哪些统计结果
 
-    $.each(xk,function(index,value){
-    	options.cols[0].push({title: xk[index].subjectName.title+'('+xk[index].manfen+')',colspan:4,align:'center'});
-	    $.each(xiangmu,function(i,val){
-		    var colname = xk[index].subjectName.lieming;
-    		// console.log(colname + ' ' + i);
-    		var colinfo = {
-	    		title:val
-	    		,minWidth:100
-	    		,templet:function(d){
-	    			var str = d.chengji[colname][i];
-	    			if(str == null)
-	    			{
-	    				str = '';
-	    			}
+	$.each(xk, function(index, value) {
+		options.cols[0].push({ title: xk[index].subjectName.title + '(' + xk[index].manfen + ')', colspan: 4, align: 'center' });
+		$.each(xiangmu, function(i, val) {
+			var colname = xk[index].subjectName.lieming;
+			// console.log(colname + ' ' + i);
+			var colinfo = {
+				title: val,
+				minWidth: 100,
+				templet: function(d) {
+					var str = d.chengji[colname][i];
+					if (str == null) {
+						str = '';
+					}
 					return str;
 				}
-	    	};
-
-	    	options.cols[1].push(colinfo);
+			};
+			options.cols[1].push(colinfo);
 		});
 	});
-	options.cols[0].push({title: '全科及格率%',minWidth:120,rowspan:2,templet:function(d){
-	    			var str = d.quanke.jigelv;
-					return str;
-				}});
-	options.cols[0].push({ title: '总平均分',minWidth:100,rowspan:2,templet:function(d){
-	    			var str = d.quanke.avg;
-					return str;
-				}});
+	options.cols[0].push({
+		title: '全科及格率%',
+		minWidth: 120,
+		rowspan: 2,
+		templet: function(d) {
+			var str = d.quanke.jigelv;
+			return str;
+		}
+	});
+	options.cols[0].push({
+		title: '总平均分',
+		minWidth: 100,
+		rowspan: 2,
+		templet: function(d) {
+			var str = d.quanke.avg;
+			return str;
+		}
+	});
+
+	options.autoSort = true;
+
+	// 获取筛选条件并加载表格
+	options.where = form.val("search");
+	userTable = table.render(options); //获取数据并渲染
 
 
+	//表头工具栏事件
+	table.on('toolbar(mytable)', function(obj) {
+		switch (obj.event) {
+			case 'download':
+				xadmin.open('下载成绩', '/chengji/njtj/dwbiaoge/{$list.kaoshi}', '650', '300');
+				break;
+		};
+	});
 
-	// 设置查询条件
-	options.where = {
-		kaoshi:"{$list.kaoshi}"
-		,ruxuenian:$("input[name='ruxuenian']:checked").val()
-	}
+});
 
-
-	options.autoSort=true;
-
-
-  // 提交搜索条件后重载表格
-    layui.use(['table','cjgl'],function(){
-      var table = layui.table
-          cjgl = layui.cjgl;
-      //表头工具栏事件
-      table.on('toolbar(mytable)', function(obj){
-        switch(obj.event){
-          case 'dels':
-            var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-            cjgl.delAll(checkStatus,'/school','mytable');
-            break;
-          case 'add':
-            cjgl.add('添加单位','/school/create','650','500');
-            break;
-          case 'download':
-  			cjgl.add('下载成绩','/chengji/njtj/dwbiaoge/{$list.kaoshi}','650','300');
-  			break;
-        };
-      });
-
-      //监听行工具条
-      table.on('tool(mytable)', function(obj){
-        var data = obj.data; //获得当前行数据
-        var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
-        var tr = obj.tr; //获得当前行 tr 的DOM对象
-        switch(layEvent){
-          case 'detail':// 查看
-          	layer.msg('查看' + data.id);
-          	break;
-          case 'del':// 删除
-          	cjgl.del(obj,"/school");
-          	break;
-          case 'edit':// 编辑
-          	cjgl.add('编辑单位','/school/'+obj.data.id+'/edit','650','500');
-          	break;
-          case 'status':// 状态
-          	cjgl.status(obj,"{:url('setstatus')}");
-          	break;
-        };
-      });
-    });
 </script>
 {/block}

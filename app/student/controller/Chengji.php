@@ -34,7 +34,8 @@ class Chengji extends AdminBase
 
         // 获取参加考试学科
         $sbj = new \app\teach\model\Subject;
-        $ksSbj = $sbj->kaoshi()->toArray();
+        $src = ['kaoshi'=>1];
+        $ksSbj = $sbj->search($src)->toArray(); 
 
         $myInfo['sbj'] = $ksSbj;
         // 设置页面标题

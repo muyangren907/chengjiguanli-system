@@ -1,6 +1,5 @@
 {extend name=".././view/list.html" /}
 {block name="jsset"}
-{load href="__STATIC__/echarts/echarts.js" /}
 {/block}
 {block name="nav"}
 <span class="layui-breadcrumb">
@@ -19,22 +18,17 @@
 	</div>
 </div>
 <div class="layui-form-item">
-	<label for="xueqi_id" class="layui-form-label" style="height: 100%">学期</label>
+	<label for="xueqi_id" class="layui-form-label" class="layui-input">学期</label>
 	<div class="layui-input-block">
-		<input type="radio" name="xueqi_id" title="无" value="" lay-skin="primary">
-		{php} $category = categoryChildren(108);{/php}
-		{volist name="category" id="vo"}
-		<input type="radio" name="xueqi_id" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
-		{/volist}
+		<select name="xueqi_id" id="xueqi_id">
+		</select>
 	</div>
 </div>
 <div class="layui-form-item">
-	<label for="category_id" class="layui-form-label" style="height: 100%">考试类型</label>
+	<label for="category_id" class="layui-form-label">考试类型</label>
 	<div class="layui-input-block">
-		{php} $category = categoryChildren(109);{/php}
-		{volist name="category" id="vo"}
-		<input type="checkbox" name="category_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary">
-		{/volist}
+		<select name="category_id" id="category_id">
+		</select>
 	</div>
 </div>
 <div class="layui-form-item">
@@ -51,6 +45,9 @@
 	</div>
 </div>
 <input type="hidden" name="banji_id" value="{$list.banji_id}">
+<div class="layui-form-item" style="text-align: right;">
+	<button class="layui-btn" lay-filter="srcSubmit" lay-submit="">搜索</button>
+</div>
 {/block}
 {block name="table"}
 <table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
@@ -76,126 +73,121 @@
 </script>
 <!-- 表格操作 -->
 <script>
-// 设置列
-options.cols = [
-	[ //表头
-		{ type: 'numbers', title: '序号', rowspan: 2 },
-		{ field: 'ks_title', title: '考试名称', sort: false, minWidth: 80, rowspan: 2 },
-	],
-	[]
-];
-// 获取学科
-var xk = '<?php echo json_encode($list["subject_id"]);?>';
-xk = eval(decodeURIComponent(xk));
-var xiangmu = '<?php echo json_encode($list["tjxm"]);?>'; // 要显示哪些统计结果
-xiangmu = eval(decodeURIComponent(xiangmu));
-xiangmuCnt = xiangmu.length;
-
-$.each(xk, function(index, value) {
-	options.cols[0].push({ title: xk[index].title, colspan: xiangmuCnt, align: 'center' });
-	$.each(xiangmu, function(i, val) {
-		var colname = xk[index].lieming;
-		var colinfo = {
-			title: val.title,
-			minWidth: 100,
-			templet: function(d) {
-				var str = "";
-				if (d.chengji) {
-					if (d.chengji[colname]) {
-						str = d.chengji[colname][val.biaoshi];
-					}
-				}
-				return str;
-			}
-		};
-		options.cols[1].push(colinfo);
-	});
-});
-options.cols[0].push({
-	title: '全科及格率%',
-	minWidth: 100,
-	rowspan: 2,
-	templet: function(d) {
-		var str = d.quanke.jigelv;
-		return str;
-	}
-});
-options.cols[0].push({
-	title: '总平均分',
-	minWidth: 100,
-	rowspan: 2,
-	templet: function(d) {
-		var str = d.quanke.avg;
-		return str;
-	}
-});
-
 // 提交搜索条件后重载表格
-layui.use(['table', 'cjgl', 'laydate'], function() {
-	var table = layui.table
-	cjgl = layui.cjgl
-	form = layui.form
-	laydate = layui.laydate;
+layui.use(['table', 'mytable', 'laydate', 'myEchart', 'createInput'], function() {
+	var table = layui.table,
+		mytable = layui.mytable,
+		form = layui.form,
+		laydate = layui.laydate,
+		echart = layui.myEchart,
+		cInput = layui.createInput;
+
+	cInput.categorySelect('xueqi_id', 108);
+	cInput.categorySelect('category_id', 109);
+
+	// 设置列
+	options.cols = [
+		[ //表头
+			{ type: 'numbers', title: '序号', rowspan: 2 },
+			{ field: 'ks_title', title: '考试名称', sort: false, minWidth: 80, rowspan: 2 },
+		],
+		[]
+	];
+	// 获取学科
+	var xk = '<?php echo json_encode($list["subject_id"]);?>';
+	xk = eval(decodeURIComponent(xk));
+	var xiangmu = '<?php echo json_encode($list["tjxm"]);?>'; // 要显示哪些统计结果
+	xiangmu = eval(decodeURIComponent(xiangmu));
+	xiangmuCnt = xiangmu.length;
+
+	$.each(xk, function(index, value) {
+		options.cols[0].push({ title: xk[index].title, colspan: xiangmuCnt, align: 'center' });
+		$.each(xiangmu, function(i, val) {
+			var colname = xk[index].lieming;
+			var colinfo = {
+				title: val.title,
+				minWidth: 100,
+				templet: function(d) {
+					var str = "";
+					if (d.chengji) {
+						if (d.chengji[colname]) {
+							str = d.chengji[colname][val.biaoshi];
+						}
+					}
+					return str;
+				}
+			};
+			options.cols[1].push(colinfo);
+		});
+	});
+	options.cols[0].push({
+		title: '全科及格率%',
+		minWidth: 100,
+		rowspan: 2,
+		templet: function(d) {
+			var str = d.quanke.jigelv;
+			return str;
+		}
+	});
+	options.cols[0].push({
+		title: '总平均分',
+		minWidth: 100,
+		rowspan: 2,
+		templet: function(d) {
+			var str = d.quanke.avg;
+			return str;
+		}
+	});
 
 	//开始时间
 	laydate.render({
 		elem: '#bfdate',
 		type: 'datetime',
-		trigger: 'click' //采用click弹出
-			,
-		format: 'yyyy-M-d' //可任意组合
-			,
-		done: function(value, date, endDate) {
-			form.val("search", {
-				"bfdate": value,
-			});
-			$("#srcsubmit").click();
-			// 添加图表中内容
-			for (x in xk) {
-				getDefenlv(xk[x].id, xk[x].lieming, xk[x].title);
-			}
-		}
+		trigger: 'click', //采用click弹出
+		format: 'yyyy-M-d', //可任意组合
 	});
 	//结束时间
 	laydate.render({
 		elem: '#enddate',
 		type: 'datetime',
-		trigger: 'click' //采用click弹出
-			,
-		format: 'yyyy-M-d' //可任意组合
-			,
-		done: function(value, date, endDate) {
-			form.val("search", {
-				"enddate": value,
-			});
-			$("#srcsubmit").click();
-			// 添加图表中内容
-			for (x in xk) {
-				getDefenlv(xk[x].id, xk[x].lieming, xk[x].title);
-			}
-		}
+		trigger: 'click', //采用click弹出
+		format: 'yyyy-M-d', //可任意组合
 	});
 
-	// 添加图表中内容
-	for (x in xk) {
-		getDefenlv(xk[x].id, xk[x].lieming, xk[x].title);
+	getDefenlv();
+
+	// 条形统计图--平均分
+	function getDefenlv() {
+		val = form.val('search');
+		// 添加图表中内容
+		for (x in xk) {
+			echart.zhexian(xk[x].lieming, '/teach/banjicj/datatx', val, xk[x].title);
+		}
 	}
 
+	// 监听筛选
+  form.on('submit(srcSubmit)', function(data) {
+    options.where = form.val("search");
+    $('#srcmianban').removeClass("layui-show");
+    table.render(options); //获取数据并渲染
+    getDefenlv();
+    return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+  });
 
 	//表头工具栏事件
 	table.on('toolbar(mytable)', function(obj) {
 		switch (obj.event) {
 			case 'dels':
 				var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-				cjgl.delAll(checkStatus, '/school', 'mytable');
+				mytable.delAll(checkStatus, '/school', 'mytable');
 				break;
 			case 'add':
-				cjgl.add('添加单位', '/school/create', '650', '500');
+				xadmin.open('添加单位', '/school/create', '650', '500');
 				break;
 			case 'download':
 				layer.msg('正在开发……');
 				break;
-				cjgl.add('下载成绩', '', '650', '300');
+				xadmin.open('下载成绩', '', '650', '300');
 				break;
 		};
 	});
@@ -207,92 +199,14 @@ layui.use(['table', 'cjgl', 'laydate'], function() {
 		var tr = obj.tr; //获得当前行 tr 的DOM对象
 		switch (layEvent) {
 			case 'del': // 删除
-				cjgl.del(obj, "/school");
+				mytable.del(obj, "/school");
 				break;
 			case 'edit': // 编辑
-				cjgl.add('编辑单位', '', '650', '500');
+				xadmin.open('编辑单位', '', '650', '500');
 				break;
 		};
 	});
-
-	// 监听表单提交
-	form.on('radio', function(data) {
-		$("#srcsubmit").click();
-		// 添加图表中内容
-		for (x in xk) {
-			getDefenlv(xk[x].id, xk[x].lieming, xk[x].title);
-		}
-	});
-
-
-	// 监听表单提交
-	form.on('checkbox', function(data) {
-		$("#srcsubmit").click();
-		// 添加图表中内容
-		for (x in xk) {
-			getDefenlv(xk[x].id, xk[x].lieming, xk[x].title);
-		}
-	});
-
-
-	// 条形统计图--平均分
-	function getDefenlv(sbjid, sbjlieming, sbjtitle) {
-		var id = sbjlieming;
-		var url = '/teach/banjicj/datatx';
-		var val = form.val('search');
-		val.subject_id = sbjid;
-		var title = sbjtitle;
-		createZhexian(id, url, val, title);
-	}
-
 });
-
-/**
- * 异步获取图表中的数据
- *
- * @access public
- * @param id 要添加数据的div
- * @param url 异步地址
- * @param val 异步时携带的参数
- * @param val 图表标题
- * @return array 返回类型
- */
-function createZhexian(id, url, val, title) {
-	var myZhexian = echarts.init(document.getElementById(id));
-	$.post(url, val).done(function(data) {
-		myZhexian.setOption({
-			title: {
-				text: title
-			},
-			tooltip: {
-				trigger: 'axis'
-			},
-			legend: {
-				data: data.legend
-			},
-			grid: {
-				left: '3%',
-				right: '4%',
-				bottom: '3%',
-				containLabel: true
-			},
-			toolbox: {
-				feature: {
-					saveAsImage: {}
-				}
-			},
-			xAxis: {
-				type: 'category',
-				boundaryGap: false,
-				data: data.xAxis,
-			},
-			yAxis: {
-				type: 'value'
-			},
-			series: data.series,
-		});
-	});
-}
 
 </script>
 {/block}

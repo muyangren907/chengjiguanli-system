@@ -715,7 +715,6 @@ class Index extends AdminBase
         $list['set']['subjectList'] = $sbjList;
         $list['backurl'] = '/luru/index/online';
 
-
         // 模板赋值
         $this->view->assign('list', $list);
         return $this->view->fetch();

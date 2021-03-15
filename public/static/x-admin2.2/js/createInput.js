@@ -3,614 +3,608 @@
   **/
 
 layui.extend({
-  // 根路径下的具体路径（xmSelect/xmSelect.js）
-  xmSelect: "xm-select"
+	// 根路径下的具体路径（xmSelect/xmSelect.js）
+	xmSelect: "xm-select"
 }).define(['table', 'form', 'xmSelect', 'upload'], function(exports) {
-  //提示：模块也可以依赖其它模块，如：layui.define('layer', callback);
-  var table = layui.table,
-    form = layui.form,
-    upload = layui.upload,
-    xmSelect = layui.xmSelect;
+	//提示：模块也可以依赖其它模块，如：layui.define('layer', callback);
+	var table = layui.table,
+		form = layui.form,
+		upload = layui.upload,
+		xmSelect = layui.xmSelect;
 
-  var obj = {
-    // 创建类别的Select
-    categorySelect: function(myid, pid, value = '', hasNull = true) {
-      $.ajax({
-        url: '/system/category/children',
-        type: 'POST',
-        data: {
-          p_id: pid
-        },
-        success: function(result) {
-          $('#' + myid).children().remove();
-          if (hasNull == true) {
-            str = '<option value=""></option>';
-          } else {
-            str = '';
-          }
-          temp = "";
-          $(result.data).each(function(i, el) {
-            if (value != '' && value == el.id) {
-              temp = '<option value="' + el.id + '" selected>' + el.title + '</option>';
-            } else {
-              temp = '<option value="' + el.id + '">' + el.title + '</option>';
-            }
-            str = str + temp;
-          });
-          $('#' + myid).append(str);
-          form.render('select');
-        },
-        error: function(result) {
-          layer.msg('数据扔半道啦。', function() {});
-        },
-      });
-    },
-
-
-    // 选中checkbox
-    checkboxCheckedAuth: function(data) {
-      pid = $(data.elem).attr('pid');
-      cid = $(data.elem).attr('cid');
-      check = data.elem.checked;
-      editCid(cid, check);
-      editPid(pid, check);
-
-      function editCid(cid, check) {
-        $("input[pid='" + cid + "']").each(function(i, el) {
-          this.checked = check;
-          cid = $(this).attr('cid');
-          editCid(cid, check);
-        });
-      }
-
-      function editPid(pid, check) {
-        if (check == true) {
-          $("input[cid='" + pid + "']").each(function(i, el) {
-            this.checked = check;
-            pid = $(this).attr('pid');
-            editPid(pid, check);
-          });
-        } else {
-          cnt = $("input[pid='" + pid + "']:checked").length;
-          if (cnt == 0) {
-            $("input[cid='" + pid + "']").each(function(i, el) {
-              this.checked = check;
-              pid = $(this).attr('pid');
-              editPid(pid, check);
-            });
-          }
-        }
-      }
-
-      form.render('checkbox');
-
-    },
+	var obj = {
+		// 创建类别的Select
+		categorySelect: function(myid, pid, value = '', hasNull = true) {
+			$.ajax({
+				url: '/system/category/children',
+				type: 'POST',
+				data: {
+					p_id: pid
+				},
+				success: function(result) {
+					$('#' + myid).children().remove();
+					if (hasNull == true) {
+						str = '<option value=""></option>';
+					} else {
+						str = '';
+					}
+					temp = "";
+					$(result.data).each(function(i, el) {
+						if (value != '' && value == el.id) {
+							temp = '<option value="' + el.id + '" selected>' + el.title + '</option>';
+						} else {
+							temp = '<option value="' + el.id + '">' + el.title + '</option>';
+						}
+						str = str + temp;
+					});
+					$('#' + myid).append(str);
+					form.render('select');
+				},
+				error: function(result) {
+					layer.msg('数据扔半道啦。', function() {});
+				},
+			});
+		},
 
 
-    // 选中checkbox
-    checkboxChecked: function(data) {
-      check = data.elem.checked;
-      editCid(data.elem, check);
-      editPid(data.elem, check);
+		// 选中checkbox
+		checkboxCheckedAuth: function(data) {
+			pid = $(data.elem).attr('pid');
+			cid = $(data.elem).attr('cid');
+			check = data.elem.checked;
+			editCid(cid, check);
+			editPid(pid, check);
 
-      function editCid(elem, check) {
-        cid = $(elem).attr("cid");
-        if(typeof(cid)!="undefined") 
-        {
-          myCid = $(elem).siblings("input[pid='" + cid + "']");
-          layui.each(myCid, function(i, el){
-            this.checked = check;
-            // editCid(el);
-          })
-        }
-        return false;
-      }
+			function editCid(cid, check) {
+				$("input[pid='" + cid + "']").each(function(i, el) {
+					this.checked = check;
+					cid = $(this).attr('cid');
+					editCid(cid, check);
+				});
+			}
 
-      function editPid(elem, check) {
-        pid = $(elem).attr("pid");
-        if(typeof(pid)!="undefined") 
-        {
-          cid = $(elem).attr("cid");
-          myPid = $(elem).siblings("input[cid='" + pid + "']");
-          if(check == true)
-          {
-            layui.each(myPid, function(i, el){
-              this.checked = check;
-              // editPid(el, check);
-            })
-          }else{
-            myTongji = $(elem).siblings("input[pid='" + pid + "']:checked");
-            if(myTongji.length == 0)
-            {
-              layui.each(myPid, function(i, el){
-                this.checked = check;
-              })
-            }
-          }
-        }
-        return false;
-      }
+			function editPid(pid, check) {
+				if (check == true) {
+					$("input[cid='" + pid + "']").each(function(i, el) {
+						this.checked = check;
+						pid = $(this).attr('pid');
+						editPid(pid, check);
+					});
+				} else {
+					cnt = $("input[pid='" + pid + "']:checked").length;
+					if (cnt == 0) {
+						$("input[cid='" + pid + "']").each(function(i, el) {
+							this.checked = check;
+							pid = $(this).attr('pid');
+							editPid(pid, check);
+						});
+					}
+				}
+			}
 
-      form.render('checkbox');
-    },
+			form.render('checkbox');
+
+		},
 
 
-    // 创建单位的Select
-    schoolSelect: function(myid, low = '班级', high = '其它级', value, kaoshi='', hasNull = true) {
-      $.ajax({
-        url: '/system/school/srcschool',
-        type: 'POST',
-        data: {
-          low: low,
-          high: high,
-          kaoshi:kaoshi
-        },
-        success: function(result) {
-          $('#' + myid).children().remove();
-          if (hasNull == true) {
-            str = '<option value=""></option>';
-          } else {
-            str = '';
-          }
-          temp = "";
-          $(result.data).each(function(i, el) {
-            if (value != '' && value == el.id) {
-              temp = '<option value="' + el.id + '" selected>' + el.title + '</option>';
-            } else {
-              temp = '<option value="' + el.id + '">' + el.title + '</option>';
-            }
-            str = str + temp;
-          });
-          $('#' + myid).append(str);
-          form.render('select');
-        },
-        error: function(result) {
-          layer.msg('数据扔半道啦。', function() {});
-        },
-      });
-    },
+		// 选中checkbox
+		checkboxChecked: function(data) {
+			check = data.elem.checked;
+			editCid(data.elem, check);
+			editPid(data.elem, check);
 
-    // 查询老师
-    searchTeacher: function(id, radio = false, name = '') {
-      if(name == '')
-      {
-        name = id;
-      }
-      var school_id = '';
-      x = xmSelect.render({
-        el: '#' + id,
-        name: name,
-        autoRow: true,
-        toolbar: { show: true },
-        filterable: true,
-        remoteSearch: true,
-        tips: '请选择教师',
-        theme: {
-          color: '#1cbbb4',
-        },
-        prop: {
-          name: 'xingming',
-          value: 'id',
-        },
-        // height: '25px',
-        size: 'mini',
-        radio: radio,
-        showCount: 8,
-        repeat: false,
-        model: {
-          label: {
-            type: 'text',
-            //使用字符串拼接的方式
-            text: {
-              //左边拼接的字符
-              left: '【',
-              //右边拼接的字符
-              right: '】',
-              //中间的分隔符
-              separator: '，',
-            },
-          }
-        },
-        remoteMethod: function(val, cb, show) {
-          //这里如果val为空, 则不触发搜索
-          if (!val) {
-            return cb([]);
-          }
+			function editCid(elem, check) {
+				cid = $(elem).attr("cid");
+				if (typeof(cid) != "undefined") {
+					myCid = $(elem).siblings("input[pid='" + cid + "']");
+					layui.each(myCid, function(i, el) {
+						this.checked = check;
+						// editCid(el);
+					})
+				}
+				return false;
+			}
 
-          $.ajax({
-            url: '/admin/index/srcteacher',
-            type: 'POST',
-            data: {
-              searchval: val,
-              school_id: school_id
-            },
-            success: function(result) {
-              cb(result.data)
-            },
-            error: function(result) {
-              layer.msg('数据扔半道啦。', function() {});
-            },
-          });
-        },
-      })
-      return x;
-    },
+			function editPid(elem, check) {
+				pid = $(elem).attr("pid");
+				if (typeof(pid) != "undefined") {
+					cid = $(elem).attr("cid");
+					myPid = $(elem).siblings("input[cid='" + pid + "']");
+					if (check == true) {
+						layui.each(myPid, function(i, el) {
+							this.checked = check;
+							// editPid(el, check);
+						})
+					} else {
+						myTongji = $(elem).siblings("input[pid='" + pid + "']:checked");
+						if (myTongji.length == 0) {
+							layui.each(myPid, function(i, el) {
+								this.checked = check;
+							})
+						}
+					}
+				}
+				return false;
+			}
+
+			form.render('checkbox');
+		},
 
 
-    // 查询老师
-    searchStudent: function(id, radio = false, name = '') {
-      if(name == '')
-      {
-        name = id;
-      }
-      var banji_id = '';
-      x = xmSelect.render({
-        el: '#' + id,
-        name: name,
-        autoRow: true,
-        toolbar: { show: true },
-        filterable: true,
-        remoteSearch: true,
-        tips: '请选择教师',
-        theme: {
-          color: '#1cbbb4',
-        },
-        prop: {
-          name: 'xingming',
-          value: 'id',
-        },
-        // height: '25px',
-        size: 'mini',
-        radio: radio,
-        showCount: 8,
-        repeat: false,
-        model: {
-          label: {
-            type: 'text',
-            //使用字符串拼接的方式
-            text: {
-              //左边拼接的字符
-              left: '【',
-              //右边拼接的字符
-              right: '】',
-              //中间的分隔符
-              separator: '，',
-            },
-          }
-        },
-        remoteMethod: function(val, cb, show) {
+		// 创建单位的Select
+		schoolSelect: function(myid, low = '班级', high = '其它级', value, kaoshi = '', hasNull = true) {
+			$.ajax({
+				url: '/system/school/srcschool',
+				type: 'POST',
+				data: {
+					low: low,
+					high: high,
+					kaoshi: kaoshi
+				},
+				success: function(result) {
+					$('#' + myid).children().remove();
+					if (hasNull == true) {
+						str = '<option value=""></option>';
+					} else {
+						str = '';
+					}
+					temp = "";
+					$(result.data).each(function(i, el) {
+						if (value != '' && value == el.id) {
+							temp = '<option value="' + el.id + '" selected>' + el.title + '</option>';
+						} else {
+							temp = '<option value="' + el.id + '">' + el.title + '</option>';
+						}
+						str = str + temp;
+					});
+					$('#' + myid).append(str);
+					form.render('select');
+				},
+				error: function(result) {
+					layer.msg('数据扔半道啦。', function() {});
+				},
+			});
+		},
 
-          //这里如果val为空, 则不触发搜索
-          if (!val) {
-            return cb([]);
-          }
+		// 查询老师
+		searchTeacher: function(id, radio = false, name = '') {
+			if (name == '') {
+				name = id;
+			}
+			var school_id = '';
+			x = xmSelect.render({
+				el: '#' + id,
+				name: name,
+				autoRow: true,
+				toolbar: { show: true },
+				filterable: true,
+				remoteSearch: true,
+				tips: '请选择教师',
+				theme: {
+					color: '#1cbbb4',
+				},
+				prop: {
+					name: 'xingming',
+					value: 'id',
+				},
+				// height: '25px',
+				size: 'mini',
+				radio: radio,
+				showCount: 8,
+				repeat: false,
+				model: {
+					label: {
+						type: 'text',
+						//使用字符串拼接的方式
+						text: {
+							//左边拼接的字符
+							left: '【',
+							//右边拼接的字符
+							right: '】',
+							//中间的分隔符
+							separator: '，',
+						},
+					}
+				},
+				remoteMethod: function(val, cb, show) {
+					//这里如果val为空, 则不触发搜索
+					if (!val) {
+						return cb([]);
+					}
 
-          $.ajax({
-            url: '/student/index/srcstudent',
-            type: 'POST',
-            data: {
-              searchval: val,
-              banji_id: 1,
-              kaoshi:1
-            },
-            success: function(result) {
-              cb(result.data);
-            },
-            error: function(result) {
-              layer.msg('数据扔半道啦。', function() {});
-            },
-          });
-        },
-      })
-      return x;
-    },
-
-
-    // 载入搜索框中已经保存的教师
-    loadTeacher: function(obj, url, data) {
-      $.ajax({
-        url: url,
-        type: 'POST',
-        data: data,
-        success: function(result) {
-          obj.update({
-            data: result.data
-          })
-        },
-        error: function(result) {
-          layer.msg('数据扔半道啦。', function() {});
-        },
-      });
-    },
-
-
-    // 上传图片
-    uploadPic: function(uploadId, url, category, serurl, backId) {
-      upload.render({
-        elem: '#' + uploadId, //绑定元素
-        url: url, //上传接口
-        done: function(res) {
-          if (res.val == 1) {
-            $('#' + backId).val(res.url);
-            document.getElementById("img").src = "/uploads/" + res.url;
-          }
-          layer.msg(res.msg);
-        },
-        data: {
-          text: category,
-          serurl: serurl
-        },
-        acceptMime: '.jpg,.jpeg,.png',
-        exts: 'jpg|jpeg|png',
-        auto: true,
-        error: function() {
-          //请求异常回调
-        }
-      });
-    },
+					$.ajax({
+						url: '/admin/index/srcteacher',
+						type: 'POST',
+						data: {
+							searchval: val,
+							school_id: school_id
+						},
+						success: function(result) {
+							cb(result.data)
+						},
+						error: function(result) {
+							layer.msg('数据扔半道啦。', function() {});
+						},
+					});
+				},
+			})
+			return x;
+		},
 
 
-    // 上传图片
-    uploadPicMore: function(uploadId, url, category, serurl) {
-      upload.render({
-        elem: '#' + uploadId, //绑定元素
-        url: url, //改成您自己的上传接口
-        async: false,
-        done: function(res) {
-          layer.msg('上传成功');
-          layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', res.files.file);
-        },
-        data: {
-          text: category,
-          serurl: serurl
-        },
-        multiple: true,
-        number: 100,
-        acceptMime: '.jpg,.jpeg,.png',
-        exts: 'jpg|jpeg|png',
-        auto: true,
-        error: function() {
-          //请求异常回调
-          layer.msg('上传错误');
-        },
-      })
-    },
+		// 查询老师
+		searchStudent: function(id, radio = false, name = '') {
+			if (name == '') {
+				name = id;
+			}
+			var banji_id = '';
+			x = xmSelect.render({
+				el: '#' + id,
+				name: name,
+				autoRow: true,
+				toolbar: { show: true },
+				filterable: true,
+				remoteSearch: true,
+				tips: '请选择教师',
+				theme: {
+					color: '#1cbbb4',
+				},
+				prop: {
+					name: 'xingming',
+					value: 'id',
+				},
+				// height: '25px',
+				size: 'mini',
+				radio: radio,
+				showCount: 8,
+				repeat: false,
+				model: {
+					label: {
+						type: 'text',
+						//使用字符串拼接的方式
+						text: {
+							//左边拼接的字符
+							left: '【',
+							//右边拼接的字符
+							right: '】',
+							//中间的分隔符
+							separator: '，',
+						},
+					}
+				},
+				remoteMethod: function(val, cb, show) {
+
+					//这里如果val为空, 则不触发搜索
+					if (!val) {
+						return cb([]);
+					}
+
+					$.ajax({
+						url: '/student/index/srcstudent',
+						type: 'POST',
+						data: {
+							searchval: val,
+							banji_id: 1,
+							kaoshi: 1
+						},
+						success: function(result) {
+							cb(result.data);
+						},
+						error: function(result) {
+							layer.msg('数据扔半道啦。', function() {});
+						},
+					});
+				},
+			})
+			return x;
+		},
 
 
-    // 上传电子表格
-    uploadXls: function(uploadId, category, serurl, backId) {
-      upload.render({
-        elem: '#' + uploadId, //绑定元素
-        url: '/tools/file/upload', //上传接口
-        done: function(res) {
-          if (res.val == 1) {
-            $('#' + backId).val(res.url);
-          }
-          layer.msg(res.msg);
-        },
-        data: {
-          category_id: category,
-          serurl: serurl
-        },
-        acceptMime: '.xls,.xlsx',
-        exts: 'xls|xlsx',
-        auto: true,
-        error: function() {
-          //请求异常回调
-        }
-      });
-    },
+		// 载入搜索框中已经保存的教师
+		loadTeacher: function(obj, url, data) {
+			$.ajax({
+				url: url,
+				type: 'POST',
+				data: data,
+				success: function(result) {
+					obj.update({
+						data: result.data
+					})
+				},
+				error: function(result) {
+					layer.msg('数据扔半道啦。', function() {});
+				},
+			});
+		},
 
 
-    // 上传文件
-    uploadFileMore: function(uploadId, category, serurl, backId) {
-      upload.render({
-        elem: '#' + uploadId, //绑定元素
-        url: '/tools/file/upload', //改成您自己的上传接口
-        async: false,
-        done: function(res) {
-          layer.msg('上传成功');
-          // layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', res.files.file);
-          if (res.val == 1) {
-            $('#' + backId).val(res.url);
-          }
-          layer.msg(res.msg);
-        },
-        data: {
-        category_id: category
-        ,serurl: 'chengji'
-
-        },
-        multiple: true,
-        acceptMime: '.xls,.xlsx',
-        exts: 'xls|xlsx',
-        auto: true,
-        error: function() {
-          //请求异常回调
-          layer.msg('上传错误');
-        },
-      })
-    },
+		// 上传图片
+		uploadPic: function(uploadId, url, category, serurl, backId) {
+			upload.render({
+				elem: '#' + uploadId, //绑定元素
+				url: url, //上传接口
+				done: function(res) {
+					if (res.val == 1) {
+						$('#' + backId).val(res.url);
+						document.getElementById("img").src = "/uploads/" + res.url;
+					}
+					layer.msg(res.msg);
+				},
+				data: {
+					text: category,
+					serurl: serurl
+				},
+				acceptMime: '.jpg,.jpeg,.png',
+				exts: 'jpg|jpeg|png',
+				auto: true,
+				error: function() {
+					//请求异常回调
+				}
+			});
+		},
 
 
-    // 放大、缩小图片
-    imgMax: function(obj) {
-      var max;
-      max = $(obj).attr('max');
-      if (max == 0) {
-        $(obj).css("max-width", "800px");
-        $(obj).css("max-height", "1000px");
-        $(obj).attr('max', 1);
-      } else {
-        $(obj).css("max-width", "500px");
-        $(obj).css("max-height", "300px");
-        $(obj).attr('max', 0);
-      }
-    },
+		// 上传图片
+		uploadPicMore: function(uploadId, url, category, serurl) {
+			upload.render({
+				elem: '#' + uploadId, //绑定元素
+				url: url, //改成您自己的上传接口
+				async: false,
+				done: function(res) {
+					layer.msg('上传成功');
+					layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', res.files.file);
+				},
+				data: {
+					text: category,
+					serurl: serurl
+				},
+				multiple: true,
+				number: 100,
+				acceptMime: '.jpg,.jpeg,.png',
+				exts: 'jpg|jpeg|png',
+				auto: true,
+				error: function() {
+					//请求异常回调
+					layer.msg('上传错误');
+				},
+			})
+		},
 
 
-    // 创建类别的Select
-    subjectSelect: function(myid, value = '', kaoshi = '', hasNull = true) {
-      $.ajax({
-        url: '/teach/subject/data',
-        type: 'POST',
-        data: {
-          status: 1,
-          kaoshi: kaoshi
-        },
-        success: function(result) {
-          $('#' + myid).children().remove();
-          if (hasNull == true) {
-            str = '<option value=""></option>';
-          } else {
-            str = '';
-          }
-          temp = "";
-          $(result.data).each(function(i, el) {
-            if (value != '' && value == el.id) {
-              temp = '<option value="' + el.id + '" selected>' + el.title + '</option>';
-            } else {
-              temp = '<option value="' + el.id + '">' + el.title + '</option>';
-            }
-            str = str + temp;
-          });
-          $('#' + myid).append(str);
-          form.render('select');
-        },
-        error: function(result) {
-          layer.msg('数据扔半道啦。', function() {});
-        },
-      });
-    },
+		// 上传电子表格
+		uploadXls: function(uploadId, category, serurl, backId) {
+			upload.render({
+				elem: '#' + uploadId, //绑定元素
+				url: '/tools/file/upload', //上传接口
+				done: function(res) {
+					if (res.val == 1) {
+						$('#' + backId).val(res.url);
+					}
+					layer.msg(res.msg);
+				},
+				data: {
+					category_id: category,
+					serurl: serurl
+				},
+				acceptMime: '.xls,.xlsx',
+				exts: 'xls|xlsx',
+				auto: true,
+				error: function() {
+					//请求异常回调
+				}
+			});
+		},
 
 
-    // 创建班级checkbox
-    banjiCheckbox: function(myid, data, value='', hasAll = true) {
-      $.ajax({
-        url: '/teach/banji/mybanji',
-        type: 'POST',
-        data: data,
-        success: function(result) {
-          $('#' + myid).children().remove();
-          if (hasAll == true) {
-            str = '<input type="checkbox" title="全选" lay-skin="primary" value="" cid="1" lay-filter="mycheackbox">';
-          } else {
-            str = '';
-          }
-          temp = "";
-          $(result.data).each(function(i, el) {
-            if (value != '' && value == el.id) {
-              temp = '<input type="checkbox" name="' + myid + '[]' + '" title="' + el.banTitle + '" value="' + el.id + '" lay-skin="primary" pid="1" lay-filter="mycheackbox" checked>';
-            } else {
-              temp = '<input type="checkbox" name="' + myid + '[]' + '" title="' + el.banTitle + '" value="' + el.id + '" lay-skin="primary" pid="1" lay-filter="mycheackbox">';
-            }
-            str = str + temp;
-          });
-          $('#' + myid).append(str);
-          form.render('checkbox');
-        },
-        error: function(result) {
-          layer.msg('数据扔半道啦。', function() {});
-        },
-      });
-    },
+		// 上传文件
+		uploadFileMore: function(uploadId, category, serurl, backId) {
+			upload.render({
+				elem: '#' + uploadId, //绑定元素
+				url: '/tools/file/upload', //改成您自己的上传接口
+				async: false,
+				done: function(res) {
+					layer.msg('上传成功');
+					// layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', res.files.file);
+					if (res.val == 1) {
+						$('#' + backId).val(res.url);
+					}
+					layer.msg(res.msg);
+				},
+				data: {
+					category_id: category,
+					serurl: 'chengji'
+
+				},
+				multiple: true,
+				acceptMime: '.xls,.xlsx',
+				exts: 'xls|xlsx',
+				auto: true,
+				error: function() {
+					//请求异常回调
+					layer.msg('上传错误');
+				},
+			})
+		},
 
 
-    // 创建班级checkbox
-    banjiSelect: function(myid, data, value='', hasAll = true) {
-      $.ajax({
-        url: '/teach/banji/mybanji',
-        type: 'POST',
-        data: data,
-        success: function(result) {
-          $('#' + myid).children().remove();
-          if (hasAll == true) {
-            str = '<option></option>';
-          } else {
-            str = '';
-          }
-          temp = "";
-          $(result.data).each(function(i, el) {
-            if (value != '' && value == el.id) {
-              temp = '<option value="' + el.id + '" selected>' + el.banTitle + '</option>';
-            } else {
-              temp = '<option value="' + el.id + '">' + el.banTitle + '</option>';
-            }
-            str = str + temp;
-          });
-          $('#' + myid).append(str);
-          form.render('select');
-        },
-        error: function(result) {
-          layer.msg('数据扔半道啦。', function() {});
-        },
-      });
-    },
+		// 放大、缩小图片
+		imgMax: function(obj) {
+			var max;
+			max = $(obj).attr('max');
+			if (max == 0) {
+				$(obj).css("max-width", "800px");
+				$(obj).css("max-height", "1000px");
+				$(obj).attr('max', 1);
+			} else {
+				$(obj).css("max-width", "500px");
+				$(obj).css("max-height", "300px");
+				$(obj).attr('max', 0);
+			}
+		},
 
 
-    // 创建年级的Select
-   nanjiSelect: function(myid, data, value='', hasNull = true) {
-        $.ajax({
-        url: '/teach/banji/njlist',
-        type: 'POST',
-        data: data,
-        success: function(result) {
-          $('#' + myid).children().remove();
-          if (hasNull == true) {
-            str = '<option value=""></option>';
-          } else {
-            str = '';
-          }
-          temp = "";
-          layui.each(result.data, function(x, val){
-            if (value != '' && value == x) {
-              temp = '<option value="' + x + '" selected>' + val + '</option>';
-            } else {
-              temp = '<option value="' + x + '">' + val + '</option>';
-            }
-            str = str + temp;
-          })
-          $('#' + myid).append(str);
-          form.render('select');
-        },
-        error: function(result) {
-          layer.msg('数据扔半道啦。', function() {});
-        },
-      });
-    },
+		// 创建类别的Select
+		subjectSelect: function(myid, value = '', kaoshi = '', hasNull = true) {
+			$.ajax({
+				url: '/teach/subject/data',
+				type: 'POST',
+				data: {
+					status: 1,
+					kaoshi: kaoshi
+				},
+				success: function(result) {
+					$('#' + myid).children().remove();
+					if (hasNull == true) {
+						str = '<option value=""></option>';
+					} else {
+						str = '';
+					}
+					temp = "";
+					$(result.data).each(function(i, el) {
+						if (value != '' && value == el.id) {
+							temp = '<option value="' + el.id + '" selected>' + el.title + '</option>';
+						} else {
+							temp = '<option value="' + el.id + '">' + el.title + '</option>';
+						}
+						str = str + temp;
+					});
+					$('#' + myid).append(str);
+					form.render('select');
+				},
+				error: function(result) {
+					layer.msg('数据扔半道啦。', function() {});
+				},
+			});
+		},
 
 
-    // 创建学期的Select
-    xueqiSelect: function(myid, value = '', hasNull = true) {
-      $.ajax({
-        url: '/teach/xueqi/srcxueqi',
-        type: 'POST',
-        success: function(result) {
-          $('#' + myid).children().remove();
-          if (hasNull == true) {
-            str = '<option value=""></option>';
-          } else {
-            str = '';
-          }
-          temp = "";
-          $(result.data).each(function(i, el) {
-            if (value != '' && value == el.id) {
-              temp = '<option value="' + el.id + '" selected>' + el.title + '</option>';
-            } else {
-              temp = '<option value="' + el.id + '">' + el.title + '</option>';
-            }
-            str = str + temp;
-          });
-          $('#' + myid).append(str);
-          form.render('select');
-        },
-        error: function(result) {
-          layer.msg('数据扔半道啦。', function() {});
-        },
-      });
-    },
+		// 创建班级checkbox
+		banjiCheckbox: function(myid, data, value = '', hasAll = true) {
+			$.ajax({
+				url: '/teach/banji/mybanji',
+				type: 'POST',
+				data: data,
+				success: function(result) {
+					$('#' + myid).children().remove();
+					if (hasAll == true) {
+						str = '<input type="checkbox" title="全选" lay-skin="primary" value="" cid="1" lay-filter="mycheackbox">';
+					} else {
+						str = '';
+					}
+					temp = "";
+					$(result.data).each(function(i, el) {
+						if (value != '' && value == el.id) {
+							temp = '<input type="checkbox" name="' + myid + '[]' + '" title="' + el.banTitle + '" value="' + el.id + '" lay-skin="primary" pid="1" lay-filter="mycheackbox" checked>';
+						} else {
+							temp = '<input type="checkbox" name="' + myid + '[]' + '" title="' + el.banTitle + '" value="' + el.id + '" lay-skin="primary" pid="1" lay-filter="mycheackbox">';
+						}
+						str = str + temp;
+					});
+					$('#' + myid).append(str);
+					form.render('checkbox');
+				},
+				error: function(result) {
+					layer.msg('数据扔半道啦。', function() {});
+				},
+			});
+		},
 
-  };
-  //输出test接口
-  exports('createInput', obj);
+
+		// 创建班级checkbox
+		banjiSelect: function(myid, data, value = '', hasAll = true) {
+			$.ajax({
+				url: '/teach/banji/mybanji',
+				type: 'POST',
+				data: data,
+				success: function(result) {
+					$('#' + myid).children().remove();
+					if (hasAll == true) {
+						str = '<option></option>';
+					} else {
+						str = '';
+					}
+					temp = "";
+					$(result.data).each(function(i, el) {
+						if (value != '' && value == el.id) {
+							temp = '<option value="' + el.id + '" selected>' + el.banTitle + '</option>';
+						} else {
+							temp = '<option value="' + el.id + '">' + el.banTitle + '</option>';
+						}
+						str = str + temp;
+					});
+					$('#' + myid).append(str);
+					form.render('select');
+				},
+				error: function(result) {
+					layer.msg('数据扔半道啦。', function() {});
+				},
+			});
+		},
+
+
+		// 创建年级的Select
+		nanjiSelect: function(myid, data, value = '', hasNull = true) {
+			$.ajax({
+				url: '/teach/banji/njlist',
+				type: 'POST',
+				data: data,
+				success: function(result) {
+					$('#' + myid).children().remove();
+					if (hasNull == true) {
+						str = '<option value=""></option>';
+					} else {
+						str = '';
+					}
+					temp = "";
+					layui.each(result.data, function(x, val) {
+						if (value != '' && value == x) {
+							temp = '<option value="' + x + '" selected>' + val + '</option>';
+						} else {
+							temp = '<option value="' + x + '">' + val + '</option>';
+						}
+						str = str + temp;
+					})
+					$('#' + myid).append(str);
+					form.render('select');
+				},
+				error: function(result) {
+					layer.msg('数据扔半道啦。', function() {});
+				},
+			});
+		},
+
+
+		// 创建学期的Select
+		xueqiSelect: function(myid, value = '', hasNull = true) {
+			$.ajax({
+				url: '/teach/xueqi/srcxueqi',
+				type: 'POST',
+				success: function(result) {
+					$('#' + myid).children().remove();
+					if (hasNull == true) {
+						str = '<option value=""></option>';
+					} else {
+						str = '';
+					}
+					temp = "";
+					$(result.data).each(function(i, el) {
+						if (value != '' && value == el.id) {
+							temp = '<option value="' + el.id + '" selected>' + el.title + '</option>';
+						} else {
+							temp = '<option value="' + el.id + '">' + el.title + '</option>';
+						}
+						str = str + temp;
+					});
+					$('#' + myid).append(str);
+					form.render('select');
+				},
+				error: function(result) {
+					layer.msg('数据扔半道啦。', function() {});
+				},
+			});
+		},
+
+	};
+	//输出test接口
+	exports('createInput', obj);
 });

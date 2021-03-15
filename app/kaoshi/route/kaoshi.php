@@ -21,7 +21,6 @@ Route::group('index', function () {
     Route::rule('update/<id>','Index/update','put');			# 更新信息
     Route::rule('delete','Index/delete','delete');		# 删除信息
     Route::rule('status','Index/setStatus','post');		# 删除信息
-    Route::rule('more/<kaoshi_id>','Index/moreAction','get');				# 修改信息
     Route::rule('luru','Index/luru','post');     # 考试编辑状态
     Route::rule('setp1','Index/createSetp1','get');              # 添加信息
     Route::rule('setp2/<kaoshi_id>','Index/createSetp2','get');              # 添加信息

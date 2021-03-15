@@ -45,7 +45,7 @@ layui.use(['table', 'backUp', 'form'], function() {
 			{ field: 'yasuo', title: '压缩', sort: true, minWidth: 100 },
 			{ field: 'lsize', title: '文件大小', minWidth: 100, sort: true },
 			{ field: 'status', title: '状态', minWidth: 100, sort: true },
-			{ field: 'id', title: '操作', toolbar: '#barDemo', minWidth: 90, fixed: 'right'}
+			{ field: 'id', title: '操作', toolbar: '#barDemo', minWidth: 90}
 		]
 	];
 
@@ -79,116 +79,6 @@ layui.use(['table', 'backUp', 'form'], function() {
 				break;
 		};
 	});
-
-
-	// // 删除备份
-	// function mydel(url)
-	// {
-	//   $.post(
-	//     url,
-	//     '',
-	//     function(data){
-	//       layer.msg(data.msg);
-	//       if(data.val === 1)
-	//       {
-	//         userTable = table.render(options);  //获取数据并渲染
-	//       }
-	//     }, "json");
-	// }
-
-	// // 创建备份
-	// function mypost()
-	// {
-	// 	layer.msg("正在发送备份请求...");
-
-	//   $.post(
-	//     '/system/backup/export',
-	//     '',
-	//     function(data){
-	//       if(data.code==1){
-	//         layer.alert( "开始备份，请不要关闭本页面！");
-	//         backup(data.data.tab);
-	//       }else{
-	//         layer.msg(data.msg);
-	//       }
-
-	//     }, "json");
-	//   return false;
-	// }
-
-	//   //递归备份表
-	//   function backup(tab,status){
-	//     $.ajax({
-	//       url:"/system/backup/export",
-	//       data:tab,
-	//       async:false,
-	//       type:"GET",
-	//       dataType:"json",
-	//       timeout:0,
-	//       success:function(data){
-	//         if(data.code==1){
-	//             if(!$.isPlainObject(data.data.tab)){
-	//               layer.msg("备份完成");
-	//               // window.onbeforeunload = function(){ return null }
-	//               return;
-	//             }
-
-	//             backup(data.data.tab, tab.id != data.data.tab.id);
-	//           } else {
-	//             userTable = table.render(options);  //获取数据并渲染
-	//             layer.msg("备份完成");
-	//           }
-	//       }
-	//     });
-	//   }
-
-
-	// 创建备份
-	function myhuifu(url, a, time) {
-		myStatus = $(a).parent().parent().prev().children('div');
-		$(myStatus).text('等待还原');
-		$.ajax({
-			url: url,
-			type: 'POST',
-			async: true,
-			data: {
-				time: time,
-			},
-			success,
-			error: function(result) {
-				layer.msg('数据扔半道，回不来啦。', function() {});
-			}
-		});
-
-		layer.alert('正在还原数据库，请不要关闭！');
-		return false;
-
-		function success(data) {
-			if (data.code == 1) {
-				$(myStatus).text(data.msg);
-				if (data.data.part) {
-					$.ajax({
-						url: url,
-						type: 'POST',
-						async: true,
-						data: {
-							time: time,
-							part: data.data.part,
-							start: data.data.start,
-						},
-						success,
-						error: function(result) {
-							layer.msg('数据扔半道，回不来啦。', function() {});
-						}
-					});
-				} else {
-					layer.msg(data.msg);
-				}
-			} else {
-				layer.msg(data.msg);
-			}
-		}
-	}
 });
 
 </script>

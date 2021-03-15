@@ -1,359 +1,369 @@
 <!DOCTYPE html>
 <html class="x-admin-sm">
+
 <head>
-  <meta charset="UTF-8">
-  <title>{$list.webtitle}</title>
-  <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
-  {load href="__XADMIN__/css/font.css" /}
-  {load href="__XADMIN__/css/xadmin.css" /}
-  {load href="__XADMIN__/js/jquery.min.js" /}
-  {load href="__STATIC__/mayi/css/studentSearch.css" /}
-  {load href="__XADMIN__/lib/layui/layui.js" /}
-  {load href="__XADMIN__/js/xadmin.js" /}
-  {load href="__XADMIN__/js/cookie.js" /}
-  {load href="__XADMIN__/js/md5.min.js" /}
-  {load href="__STATIC__/echarts/echarts.js" /}
-  <title>{$list.webtitle}</title>
+	<meta charset="UTF-8">
+	<title>{$list.webtitle}</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+	{load href="__XADMIN__/css/font.css" /}
+	{load href="__XADMIN__/css/xadmin.css" /}
+	{load href="__XADMIN__/js/jquery.min.js" /}
+	{load href="__STATIC__/mayi/css/studentSearch.css" /}
+	{load href="__XADMIN__/lib/layui/layui.js" /}
+	{load href="__XADMIN__/js/xadmin.js" /}
+	{load href="__XADMIN__/js/cookie.js" /}
+	{load href="__XADMIN__/js/md5.min.js" /}
+	<title>{$list.webtitle}</title>
 </head>
+
 <body>
-  <div class="myrow">
-      <div class="layui-row layui-col-md12">
-          <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 mydivtop">
-              <div class="mydivneirong">
-                  <div class="mydivtitle">
-                      各学科总分
-                  </div>
-                  <div class="mydivtubiao">
-                      <div id="yibiao" style="width:100%; height:100%;"></div>
-                  </div>
-              </div>
-          </div>
-          <div class="layui-col-xs12 layui-col-sm12 layui-col-md8 mydivtop">
-              <div class="mydivneirong">
-                  <div class="mydivtitle">
-                      各学科得分
-                  </div>
-                  <div class="mydivtubiao" style="width:300; height:300;">
-                    <table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
-                  </div>
-              </div>
-          </div>
-          <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 mydivtop">
-              <div class="mydivneirong">
-                  <div class="mydivtitle">
-                      各学科得分率
-                  </div>
-                  <div class="mydivtubiao">
-                      <div id="myDefenlv" style="width:100%; height:100%;"></div>
-                  </div>
-              </div>
-          </div>
-          <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 mydivtop">
-              <div class="mydivneirong">
-                  <div class="mydivtitle">
-                      各学科成绩与平均分对比
-                  </div>
-                  <div class="mydivtubiao">
-                      <div id="leida" style="width:100%; height:100%;"></div>
-                  </div>
-              </div>
-          </div>
-          <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 mydivtop">
-              <div class="mydivneirong">
-                  <div class="mydivtitle">
-                      各学科成绩位置
-                  </div>
-                  <div class="mydivtubiao">
-                      <div id="myQweizhi" style="width:100%; height:100%;"></div>
-                  </div>
-              </div>
-          </div>
-          <div class="layui-col-xs12 layui-col-sm12 layui-col-md12 mydivtop">
-              <div class="mydivneirong">
-                  <div class="mydivtitle">
-                      成绩报告
-                  </div>
-                  <div class="baogao" id="baogao"></div>
-              </div>
-          </div>
-      </div>
-  </div>
+	<div class="myrow">
+		<div class="layui-row layui-col-md12">
+			<div class="layui-col-xs12 layui-col-sm6 layui-col-md4 mydivtop">
+				<div class="mydivneirong">
+					<div class="mydivtitle">
+						各学科总分
+					</div>
+					<div class="mydivtubiao">
+						<div id="yibiao" style="width:100%; height:100%;"></div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md8 mydivtop">
+				<div class="mydivneirong">
+					<div class="mydivtitle">
+						各学科得分
+					</div>
+					<div class="mydivtubiao" style="width:300; height:300;">
+						<table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-xs12 layui-col-sm6 layui-col-md4 mydivtop">
+				<div class="mydivneirong">
+					<div class="mydivtitle">
+						各学科得分率
+					</div>
+					<div class="mydivtubiao">
+						<div id="myDefenlv" style="width:100%; height:100%;"></div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-xs12 layui-col-sm6 layui-col-md4 mydivtop">
+				<div class="mydivneirong">
+					<div class="mydivtitle">
+						各学科成绩与平均分对比
+					</div>
+					<div class="mydivtubiao">
+						<div id="leida" style="width:100%; height:100%;"></div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-xs12 layui-col-sm6 layui-col-md4 mydivtop">
+				<div class="mydivneirong">
+					<div class="mydivtitle">
+						各学科成绩位置
+					</div>
+					<div class="mydivtubiao">
+						<div id="myQweizhi" style="width:100%; height:100%;"></div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-col-xs12 layui-col-sm12 layui-col-md12 mydivtop">
+				<div class="mydivneirong">
+					<div class="mydivtitle">
+						成绩报告
+					</div>
+					<div class="baogao" id="baogao"></div>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 <script type="text/javascript">
-  //config的设置是全局的
-  layui.config({
-      base: "__XADMIN__/js/" //假设这是你存放拓展模块的根目录
-    });
+//config的设置是全局的
+layui.config({
+	base: "__XADMIN__/js/" //假设这是你存放拓展模块的根目录
+});
 
-  layui.use(['element','table'], function(){
-    var element = layui.element
-        table = layui.table
+layui.use(['element','table','myEchart','form'], function() {
+	var element = layui.element,
+		table = layui.table,
+		echart = layui.myEchart,
+		form = layui.form;
 
-    // 设置表格初始变量
-    defenOptions = {
-      elem: '#tabledemo',
-      toolbar: '#toolbarDemo',
-      url:"/tools/onestudentchengji/xkcj",
-      method:"POST",   //数据接口
-      page: false, //开启分页
-      loading:true,
-      autoSort:true,
-      id:'mytable',
-      defaultToolbar:[],
-      limits:[10,25,50,75,100],
-      limit:10,
-      toolbar:false,
-    };
+	// 设置表格初始变量
+	defenOptions = {
+		elem: '#tabledemo',
+		toolbar: '#toolbarDemo',
+		url: "/tools/onestudentchengji/xkcj",
+		method: "POST", //数据接口
+		page: false, //开启分页
+		loading: true,
+		autoSort: true,
+		id: 'mytable',
+		defaultToolbar: [],
+		limits: [10, 25, 50, 75, 100],
+		limit: 10,
+		toolbar: false,
+	};
 
-    defenOptions.where = {
-      kaohao_id:"{$list.id}"
-    };
+	// 设置列
+	defenOptions.cols = [
+		[ //表头
+			{ field: 'subject_name', title: '学科', sort: true },
+			{ field: 'defen', title: '得分', sort: true },
+			{ field: 'max', title: '最高分', sort: true },
+			{ field: 'min', title: '最低分', sort: true },
+		]
+	];
 
-    // 设置列
-    defenOptions.cols=[[ //表头
-      {field: 'subject_name', title: '学科',sort: true},
-      {field: 'defen', title: '得分',sort: true},
-      {field: 'max', title: '最高分',sort: true},
-      {field: 'min', title: '最低分',sort: true},
-    ]];
+	// 获取筛选条件并加载表格
+	defenOptions.where = {
+		kaohao_id: "{$list.id}"
+	};
 
-    defenTable = table.render(defenOptions);  //获取数据并渲染
-  });
+	userTable = table.render(defenOptions); //获取数据并渲染
 
-  loadTubiao();
+	loadTubiao();
 
-  function loadTubiao()
-  {
-    getYiBiao("{$list.id}");
-    getDefenlv("{$list.id}");
-    getLeiDa("{$list.id}");
-    getQweizhi("{$list.id}");
-    getBaogao("{$list.id}");
-  }
+	function loadTubiao() {
+		var val = {
+			kaohao_id: "{$list.id}"
+		};
 
-  // 雷达图
-  function getLeiDa(kaohao_id){
-    var url = '/tools/onestudentchengji/leida';
-    var title = '学科成绩雷达图';
-    var val = {
-      kaohao_id: kaohao_id
-    };
-    createLeiDa(url,val,title);
-  }
+		echart.yibiao('/tools/onestudentchengji/yibiao', val, '总成绩仪表图');
+		echart.leida('/tools/onestudentchengji/leida', val, '学科成绩雷达图');
+		echart.tiaoxing('myDefenlv', '/tools/onestudentchengji/xkdfl', val, '得分率');
+		echart.tiaoxing('myQweizhi', '/tools/onestudentchengji/xkwz', val, '成绩位置');
+		echart.baogao(val.kaohao_id);
+	}
 
-  // 仪表图
-  function getYiBiao(kaohao_id){
-    var url = '/tools/onestudentchengji/yibiao';
-    var title = '总成绩仪表图';
-    var val = {
-      kaohao_id: kaohao_id
-    };
-    createYiBiao(url,val,title);
-  }
-
-
-  // 条形统计图--优秀率
-  function getDefenlv(kaohao_id){
-    var id = 'myDefenlv';
-    var url = '/tools/onestudentchengji/xkdfl';
-    var val = {
-      kaohao_id: kaohao_id
-    };
-    var title = '';
-    createTiaoxing(id, url, val, title);
-  }
-
-
-  // 条形统计图--优秀率
-  function getQweizhi(kaohao_id){
-    var id = 'myQweizhi';
-    var url = '/tools/onestudentchengji/xkwz';
-    var val = {
-      kaohao_id: kaohao_id
-    };
-    var title = '';
-    createTiaoxing(id, url, val, title);
-  }
-
-
-  // 获取学生成绩报告
-  function getBaogao(kaohao_id)
-  {
-    $.ajax({
-      url:'/tools/onestudentchengji/baogao',
-      type:'POST',
-      data:{
-        'kaohao_id':kaohao_id
-      },
-      success:function(result){
-        if(result.val == 1){
-          $('#baogao').text(result.baogao);
-        }else{
-          layer.msg(result.msg);
-        }
-      },
-      error:function(result){
-        layer.msg('数据扔半道啦。',function(){});
-      },
-    });
-  }
+});
 
 
 
-  /**
-  * 异步获取图表中的数据
-  *
-  * @access public
-  * @param id 要添加数据的div
-  * @param url 异步地址
-  * @param val 异步时携带的参数
-  * @param val 图表标题
-  * @return array 返回类型
-  */
-  function createLeiDa(url, val, title)
-  {
-    var myLeiDa = echarts.init(document.getElementById('leida'));
-    $.post(url, val).done(function (data) {
-      myLeiDa.setOption({
-        title: {
-          text:'',
-        },
-        tooltip: {},
-        legend: {
-          data: data.legend,
-          top:40,
-          left:0,
-          orient:'vertical',
-        },
-        grid: {
-          left: '10%',
-          right:'10%',
-          top:'30%',
-          bottom:'10%',
-          height: 'auto',
-        },
-        toolbox: {
-          id:'leida',
-          show:true,
-          orient:'horizontal',
-          showTitle:true,
-          feature: {
-            saveAsImage: { //保存文件
-              show: true
-            },
-          },
-        },
-        radar: {
-          // shape: 'circle',
-          name: {
-            textStyle: {
-              color: '#fff',
-              backgroundColor: '#999',
-              borderRadius: 3,
-              padding: [3, 5]
-            }
-          },
-          indicator: data.indicator
-        },
-        series: data.series
-      })
-    });
-  }
+// // 雷达图
+// function getLeiDa(kaohao_id) {
+// 	var url = '/tools/onestudentchengji/leida';
+// 	var title = '学科成绩雷达图';
+// 	var val = {
+// 		kaohao_id: kaohao_id
+// 	};
+// 	createLeiDa(url, val, title);
+// }
+
+// // 仪表图
+// function getYiBiao(kaohao_id) {
+// 	var url = '/tools/onestudentchengji/yibiao';
+// 	var title = '总成绩仪表图';
+// 	var val = {
+// 		kaohao_id: kaohao_id
+// 	};
+// 	createYiBiao(url, val, title);
+// }
 
 
-  /**
-  * 异步获取图表中的数据
-  * @access public
-  * @param id 要添加数据的div
-  * @param url 异步地址
-  * @param val 异步时携带的参数
-  * @param val 图表标题
-  * @return array 返回类型
-  */
-  function createYiBiao(url, val, title)
-  {
-    var myYiBiao = echarts.init(document.getElementById('yibiao'));
-    $.post(url, val).done(function (data) {
-      myYiBiao.setOption({
-        title: {
-          text:data.title,
-        },
-        tooltip: {},
-        toolbox: {
-          id:'yibiao',
-          show:true,
-          orient:'horizontal',
-          showTitle:true,
-          feature: {
-            saveAsImage: { //保存文件
-              show: true
-            },
-          },
-        },
-        series: {
-          name:data.series.name
-          ,type:data.series.type
-          ,data:data.series.data
-          ,detail:{formatter: data.series.data[0].value + '%'}
-        }
-      })
-    });
-  }
+// // 条形统计图--优秀率
+// function getDefenlv(kaohao_id) {
+// 	var id = 'myDefenlv';
+// 	var url = '/tools/onestudentchengji/xkdfl';
+// 	var val = {
+// 		kaohao_id: kaohao_id
+// 	};
+// 	var title = '';
+// 	createTiaoxing(id, url, val, title);
+// }
 
-  /**
-  * 异步获取图表中的数据
-  * @access public
-  * @param id 要添加数据的div
-  * @param url 异步地址
-  * @param val 异步时携带的参数
-  * @param val 图表标题
-  * @return array 返回类型
-  */
-  function createTiaoxing(id, url, val, title)
-  {
-    var myTiaoxing = echarts.init(document.getElementById(id), 'infographic');
-    $.post(url,val).done(function (data) {
-      myTiaoxing.setOption({
-        title:{
-          text:title,
-          left: 'center',
-        },
-        legend: {
-          top: '10%',
-        },
-        grid: {
-          left: '10%',
-          top: '20%',
-          right: '10%',
-          bottom: '15%'
-        },
-        tooltip: {
-          show: true,
-          axisPointer: {
-            type: 'shadow'
-          }
-        },
-        toolbox: {
-          id:id,
-          show:true,
-          orient:'horizontal',
-          showTitle:true,
-          feature: {
-            saveAsImage: { //保存文件
-              show: true
-            },
-          },
-        },
-        dataset: {
-          source:data.data
-        },
-        xAxis: data.xAxis,
-        yAxis: data.yAxis,
-        series: data.series,
-      });
-  });
- }
+
+// // 条形统计图--优秀率
+// function getQweizhi(kaohao_id) {
+// 	var id = 'myQweizhi';
+// 	var url = '/tools/onestudentchengji/xkwz';
+// 	var val = {
+// 		kaohao_id: kaohao_id
+// 	};
+// 	var title = '';
+// 	createTiaoxing(id, url, val, title);
+// }
+
+
+// // 获取学生成绩报告
+// function getBaogao(kaohao_id) {
+// 	$.ajax({
+// 		url: '/tools/onestudentchengji/baogao',
+// 		type: 'POST',
+// 		data: {
+// 			'kaohao_id': kaohao_id
+// 		},
+// 		success: function(result) {
+// 			if (result.val == 1) {
+// 				$('#baogao').text(result.baogao);
+// 			} else {
+// 				layer.msg(result.msg);
+// 			}
+// 		},
+// 		error: function(result) {
+// 			layer.msg('数据扔半道啦。', function() {});
+// 		},
+// 	});
+// }
+
+
+
+// /**
+//  * 异步获取图表中的数据
+//  *
+//  * @access public
+//  * @param id 要添加数据的div
+//  * @param url 异步地址
+//  * @param val 异步时携带的参数
+//  * @param val 图表标题
+//  * @return array 返回类型
+//  */
+// function createLeiDa(url, val, title) {
+// 	var myLeiDa = echarts.init(document.getElementById('leida'));
+// 	$.post(url, val).done(function(data) {
+// 		myLeiDa.setOption({
+// 			title: {
+// 				text: '',
+// 			},
+// 			tooltip: {},
+// 			legend: {
+// 				data: data.legend,
+// 				top: 40,
+// 				left: 0,
+// 				orient: 'vertical',
+// 			},
+// 			grid: {
+// 				left: '10%',
+// 				right: '10%',
+// 				top: '30%',
+// 				bottom: '10%',
+// 				height: 'auto',
+// 			},
+// 			toolbox: {
+// 				id: 'leida',
+// 				show: true,
+// 				orient: 'horizontal',
+// 				showTitle: true,
+// 				feature: {
+// 					saveAsImage: { //保存文件
+// 						show: true
+// 					},
+// 				},
+// 			},
+// 			radar: {
+// 				// shape: 'circle',
+// 				name: {
+// 					textStyle: {
+// 						color: '#fff',
+// 						backgroundColor: '#999',
+// 						borderRadius: 3,
+// 						padding: [3, 5]
+// 					}
+// 				},
+// 				indicator: data.indicator
+// 			},
+// 			series: data.series
+// 		})
+// 	});
+// }
+
+
+// /**
+//  * 异步获取图表中的数据
+//  * @access public
+//  * @param id 要添加数据的div
+//  * @param url 异步地址
+//  * @param val 异步时携带的参数
+//  * @param val 图表标题
+//  * @return array 返回类型
+//  */
+// function createYiBiao(url, val, title) {
+// 	var myYiBiao = echarts.init(document.getElementById('yibiao'));
+// 	$.post(url, val).done(function(data) {
+// 		myYiBiao.setOption({
+// 			title: {
+// 				text: data.title,
+// 			},
+// 			tooltip: {},
+// 			toolbox: {
+// 				id: 'yibiao',
+// 				show: true,
+// 				orient: 'horizontal',
+// 				showTitle: true,
+// 				feature: {
+// 					saveAsImage: { //保存文件
+// 						show: true
+// 					},
+// 				},
+// 			},
+// 			series: {
+// 				name: data.series.name,
+// 				type: data.series.type,
+// 				data: data.series.data,
+// 				detail: { formatter: data.series.data[0].value + '%' }
+// 			}
+// 		})
+// 	});
+// }
+
+// /**
+//  * 异步获取图表中的数据
+//  * @access public
+//  * @param id 要添加数据的div
+//  * @param url 异步地址
+//  * @param val 异步时携带的参数
+//  * @param val 图表标题
+//  * @return array 返回类型
+//  */
+// function createTiaoxing(id, url, val, title) {
+// 	var myTiaoxing = echarts.init(document.getElementById(id), 'infographic');
+// 	$.post(url, val).done(function(data) {
+// 		myTiaoxing.setOption({
+// 			title: {
+// 				text: title,
+// 				left: 'center',
+// 			},
+// 			legend: {
+// 				top: '10%',
+// 			},
+// 			grid: {
+// 				left: '10%',
+// 				top: '20%',
+// 				right: '10%',
+// 				bottom: '15%'
+// 			},
+// 			tooltip: {
+// 				show: true,
+// 				axisPointer: {
+// 					type: 'shadow'
+// 				}
+// 			},
+// 			toolbox: {
+// 				id: id,
+// 				show: true,
+// 				orient: 'horizontal',
+// 				showTitle: true,
+// 				feature: {
+// 					saveAsImage: { //保存文件
+// 						show: true
+// 					},
+// 				},
+// 			},
+// 			dataset: {
+// 				source: data.data
+// 			},
+// 			xAxis: data.xAxis,
+// 			yAxis: data.yAxis,
+// 			series: data.series,
+// 		});
+// 	});
+// }
+
 </script>
+
 </html>
