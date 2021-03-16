@@ -1,8 +1,9 @@
 {extend name=".././view/create.html" /}
 {block name="form"}
-<div style="font-size: 20px; margin: 10px;">
-	将教师信息同步到管理员表说明：1、教师信息与管理员信息已经有关联cj_admin表中teacher_id字段：使用教师信息替换管理员信息(不包括密码)；2、教师与管理员信息未关联：在管理员表中创建教师信息。帐号为手机号，密码为原密码。原来cj_admin表中数据不变。
+<div style="font-size: 18px; margin: 10px; line-height:24px;">
+  同步前先看说明。
 </div>
+<br>
 <form class="layui-form layui-form-pane" lay-filter="myform">
 	<div class="layui-form-item" style="text-align: left;">
 		<button type="button" class="layui-btn" onclick="checkAll()">
@@ -40,6 +41,31 @@
 			{/volist}
 		</tbody>
 	</table>
+  <div style="font-size: 14px; margin: 10px; line-height:24px;">
+    说明：<br>
+    从v1.3.7.1版本（472657f--2021-01-04 14:20提交）升级到v1.3.8版本指导。<p>
+    本次升级两种情况：
+    <br>
+    一、是从1.3.7直接升级到1.3.8。
+    <p>
+      需要用到两条命令:
+      <br>
+      php think migrate:run     升级表结构,会增加字段。<br>
+      php think seed:run     重新导入基础数据。
+      <br>
+      在重新导入基础数据的时候，会重新写入部分表数据，但不包括cj_category表，cj_category需要提前手动删除原来的数据，再运行第二条命令。
+      <br>
+    二、已经提前升级auth分支或者与1.3.7更以前的版本
+    <br>
+      新建数据库，用上面两条命令在新数据库中建表结构与数据，然后用新数据库同步旧数据库。
+      <br>
+      <br>
+    <p>
+    因为1.3.8版本将管理员与教师合并了，所以在表结构与基础数据升级后需要将教师信息同步到管理员，必须先同步教师信息，其它信息不分先后。同步教师信息遵循下面原则。
+    1、教师信息与管理员信息已经有关联cj_admin表中teacher_id字段：使用教师信息替换管理员信息(不包括密码)；2、教师与管理员信息未关联，在管理员表中创建教师信息。帐号为手机号，密码为原密码。原来cj_admin表中数据不变。
+    <br>
+    下次升级将删除本页、cj_teacher表和部分不用的字段。
+  </div>
 </form>
 {/block}
 {block name="myjs"}

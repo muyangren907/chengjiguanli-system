@@ -645,4 +645,42 @@ class Index extends AdminBase
     }
 
 
+
+    // 查询用户名是否重复
+    public function srcSfzh()
+    {
+        // 获取参数
+        $srcfrom = $this->request
+            ->only([
+                'searchval' => ''
+                ,'id'
+            ], 'POST');
+        $src = [
+                'searchval' => ''
+                ,'id' => ''
+            ];
+        $src = array_cover($srcfrom, $src);
+
+        $stu = new STU();
+        $list = $stu->where('shenfenzhenghao', $src['searchval'])
+            ->find();
+
+        // 根据更新结果设置返回提示信息
+        $data = ['msg' => '身份证号已经存在！', 'val' => 0];
+        if($list)
+        {
+            if($src['id'] > 0)
+            {
+
+                if($src['id'] == $list->id){
+                    $data = ['msg' => '', 'val' => 1];
+                }
+            }
+        }else{
+           $data = ['msg' => '', 'val' => 1];
+        }
+        return json($data);
+    }
+
+
 }

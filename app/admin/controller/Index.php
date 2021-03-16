@@ -406,13 +406,13 @@ class Index extends AdminBase
         {
             if($src['id'] > 0)
             {
-                
+
                 if($src['id'] == $list->id){
                     $data = ['msg' => '', 'val' => 1];
                 }
             }
         }else{
-           $data = ['msg' => '', 'val' => 1]; 
+           $data = ['msg' => '', 'val' => 1];
         }
         return json($data);
     }
@@ -436,20 +436,20 @@ class Index extends AdminBase
         $ad = new AD();
         $list = $ad->where('phone', $src['searchval'])
             ->find();
-        
+
         // 根据更新结果设置返回提示信息
         $data = ['msg' => '电话号码已经存在！', 'val' => 0];
         if($list)
         {
             if($src['id'] > 0)
             {
-                
+
                 if($src['id'] == $list->id){
                     $data = ['msg' => '', 'val' => 1];
                 }
             }
         }else{
-           $data = ['msg' => '', 'val' => 1]; 
+           $data = ['msg' => '', 'val' => 1];
         }
         return json($data);
     }

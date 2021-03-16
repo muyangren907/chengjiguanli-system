@@ -88,10 +88,10 @@ options = {
 <script type="text/javascript">
 // 提交搜索条件后重载表格
 layui.use(['table', 'form', 'mytable'], function() {
-  var table = layui.table
-    ,form = layui.form
-    ,mytable = layui.mytable
-    ,elm = layui.element;
+  var table = layui.table,
+    form = layui.form,
+    mytable = layui.mytable,
+    elm = layui.element;
 
   //监听状态开关
   form.on('switch', function(data) {
@@ -105,91 +105,25 @@ layui.use(['table', 'form', 'mytable'], function() {
     table.render(options); //获取数据并渲染
     return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
   });
-  
+
+  // 监听筛选
+  form.on('submit(resetSubmit)', function(data) {
+    form.render();
+    return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+  });
+
   //监听排序
-  table.on('sort(mytable)', function(obj){
+  table.on('sort(mytable)', function(obj) {
     val = form.val();
     val.field = obj.field;
     val.order = obj.type;
     userTable.reload({
       initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
-      ,where: val
+        ,
+      where: val
     })
   });
 });
-//    // 实例化表格
-//    layui.use('table',function(){
-//      var lTable = layui.table
-//      lForm = layui.form;
-
-//      // 监听排序
-//      lTable.on('sort(mytable)', function(obj){
-//          val = lForm.val();
-//          val.field = obj.field;
-//          val.order = obj.type;
-//          userTable.reload({
-//              initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
-//              ,where: val
-//          })
-//      });
-
-//      //监听状态开关
-//      lForm.on('switch', function(data){
-//        cjgl.onoff(data);
-//    });
-
-//      // 监听下拉菜单
-//      lForm.on('select', function(data){
-//        $("#srcsubmit").click();
-//    });
-
-//      // 监听复选框
-//      lForm.on('checkbox', function(data){
-//        checkall = $(data.elem).attr('checkall');
-//        parentId = $(data.elem).parents("div").attr('id');
-//        if(checkall == 'p'){
-//          cjgl.checkboxAll(parentId, data.elem.checked);
-//          $("#srcsubmit").click();
-//          return true;
-//      }else if(checkall == 'c'){
-//          cjgl.checkboxParentList(parentId);
-//          $("#srcsubmit").click();
-//          return true;
-//      }else{
-//          // $("#srcsubmit").click();
-//          return false;
-//      }
-//  });
-
-//      // 监听单选
-//      lForm.on('radio', function(data){
-//        $("#srcsubmit").click();
-//    });
-
-//      // 监听表单提交
-//      lForm.on('submit(srcsubmit)', function(data){
-//        tablereload();
-//        return false;
-//    });
-
-//      // 禁止使用回车提交表单
-//      $('#searchval').on("keydown", function(e){
-//        var e = e || window.event;
-//        if(e.keyCode == 13){
-//         $("#srcsubmit").click();
-//         return false;
-//     }
-//     return true;
-// })
-
-//      // 表格重载
-//      function tablereload()
-//      {
-//        options.where = lForm.val("search");
-//        userTable = lTable.render(options);  //获取数据并渲染
-//    }
-
-// });
 
 </script>
 

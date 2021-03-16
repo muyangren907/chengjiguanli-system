@@ -30,7 +30,7 @@
 			<span class="x-red">*</span>身份证号
 		</label>
 		<div class="layui-input-block">
-			<input type="text" id="shenfenzhenghao" name="shenfenzhenghao" lay-verify="required" autocomplete="off" class="layui-input " value="{$list.data.shenfenzhenghao|default=''}" placeholder="18位身份证号">
+			<input type="text" id="shenfenzhenghao" name="shenfenzhenghao" lay-verify="required|identity|shenfenzhenghao" autocomplete="off" class="layui-input " value="{$list.data.shenfenzhenghao|default=''}" placeholder="18位身份证号">
 		</div>
 	</div>
 	<div class="layui-form-item" pane>
@@ -135,18 +135,53 @@ layui.use(['laydate', 'form', 'mytable', 'createInput'], function() {
 		}
 	})
 
+  form.verify({
+    //将用户名是否可用作为验证条件 表单提交时触发
+    shenfenzhenghao: function(value) {
+      var datas = {
+        searchval: value,
+        id: "{$list.data.shenfenzhenghao|default=''}"
+      };
+      var message = '';
+      $.ajax({
+        type: "POST",
+        url: '/student/index/srcsfzh',
+        async: false, //改为同步请求
+        contentType: 'application/json;charset=UTF-8',
+        data: JSON.stringify(datas),
+        dataType: 'json',
+        success: function(data) {
+          if (data) {
+            if(data.val == 0){
+              message = data.msg
+            }
+          } else {
+            message = data.msg
+          }
+        }
+      });
+      //需要注意 需要将返回信息写在ajax方法外
+      if (message !== '')
+        return message;
+    },
+  })
+
+
+    $('#xingming').blur(function() {
+      var xingming = $('#xingming').val();
+      //获取全写拼音（调用js中方法）
+      var quanpin = pinyin.getFullChars(xingming);
+      //获取简写拼音（调用js中方法）
+      var shoupin = pinyin.getCamelChars(xingming);
+      //给两个文本框赋值
+      $('#quanpin').val(quanpin);
+      $('#shoupin').val(shoupin);
+    })
+
+
 });
 
-$('#xingming').blur(function() {
-	var xingming = $('#xingming').val();
-	//获取全写拼音（调用js中方法）
-	var quanpin = pinyin.getFullChars(xingming);
-	//获取简写拼音（调用js中方法）
-	var shoupin = pinyin.getCamelChars(xingming);
-	//给两个文本框赋值
-	$('#quanpin').val(quanpin);
-	$('#shoupin').val(shoupin);
-})
+
 
 </script>
 {/block}

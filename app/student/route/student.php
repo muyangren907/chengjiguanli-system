@@ -34,6 +34,7 @@ Route::group('index', function () {
     Route::rule('dellist','Index/delList','get');                     # 信息列表
     Route::rule('datadel','Index/ajaxdataDel','post');                # 获取数据
     Route::rule('resetpassword/<id>','Index/resetpassword','post');       # 重置教师密码
+    Route::rule('srcsfzh','Index/srcSfzh','post');        # 获取学生成绩
 });
 
 
