@@ -60,13 +60,8 @@ layui.extend({
 					dataset: {
 						source: data.data
 					},
-					xAxis: {
-						type: 'category',
-						axisLabel: {
-							rotate: 30
-						}
-					},
-					yAxis: {},
+          xAxis: data.xAxis,
+          yAxis: data.yAxis,
 					dataZoom: [{
 							type: 'inside',
 							start: 0,

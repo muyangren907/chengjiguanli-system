@@ -371,7 +371,6 @@ class Index extends AdminBase
                         $cjone->defen = $defen;
                         $cjone->defenlv = $defen / $manfen * 100;
                         $cjone->user_id = $user_id;
-                        $cjone->user_group = $user_group;
                         $cjone->save();
                     }
                 } else {
@@ -380,7 +379,6 @@ class Index extends AdminBase
                         'kaohao_id' => $temp_id
                         ,'subject_id' => $value['id']
                         ,'user_id' => $user_id
-                        ,'user_group' => $user_group
                         ,'defen' => $defen
                         ,'defenlv' => $defen / $manfen * 100
                     ];
@@ -473,9 +471,9 @@ class Index extends AdminBase
             $sheet->setCellValue($lieming[$key + 4] . '2', $value['id']);
         }
         // 隐藏第二行和第二列
-        $sheet->getRowDimension('2')->setRowHeight('0');
-        $sheet->getColumnDimension('B')->setWidth('0');
-        $sheet->getColumnDimension('C')->setWidth('13');
+        $sheet->getRowDimension('2')->setRowHeight(0);
+        $sheet->getColumnDimension('B')->setWidth(0);
+        $sheet->getColumnDimension('C')->setWidth(13);
 
         $md5 = new \app\facade\Tools;
 

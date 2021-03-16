@@ -122,72 +122,27 @@ layui.use(['table', 'mytable', 'laydate', 'element', 'form', 'myEchart', 'create
   laydate.render({
     elem: '#bfdate',
     type: 'datetime',
-    trigger: 'click' //采用click弹出
-      ,
-    format: 'yyyy-M-d' //可任意组合
-      ,
-    done: function(value, date, endDate) {
-      form.val("search", {
-        "bfdate": value,
-      });
-      $("#srcsubmit").click();
-      // 添加图表中内容
-      for (x in xk) {
-        getDefenlv(xk[x].id, xk[x].lieming, xk[x].title);
-      }
-    }
+    trigger: 'click', //采用click弹出
+    format: 'yyyy-M-d', //可任意组合
   });
   //结束时间
   laydate.render({
     elem: '#enddate',
     type: 'datetime',
-    trigger: 'click' //采用click弹出
-      ,
-    format: 'yyyy-M-d' //可任意组合
-      ,
-    done: function(value, date, endDate) {
-      form.val("search", {
-        "enddate": value,
-      });
-      $("#srcsubmit").click();
-      // 添加图表中内容
-      for (x in xk) {
-        getDefenlv(xk[x].id, xk[x].lieming, xk[x].title);
-      }
-    }
+    trigger: 'click', //采用click弹出
+    format: 'yyyy-M-d', //可任意组合
   });
 
   // 监听表单提交
   form.on('submit(srcsubmit)', function(data) {
     options.where = lForm.val("search");
     table.render(options); //获取数据并渲染
-    for (x in xk) {
-      getDefenlv(xk[x].id, xk[x].lieming, xk[x].title);
-    }
+    getDefenlv();
     return false;
   });
 
 
-  // 添加图表中内容
-  for (x in xk) {
-    getDefenlv(xk[x].id, xk[x].lieming, xk[x].title);
-  }
-
-  //表头工具栏事件
-  table.on('toolbar(mytable)', function(obj) {
-    switch (obj.event) {
-      case 'dels':
-        var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-        mytable.delAll(checkStatus, '/school', 'mytable');
-        break;
-      case 'add':
-        xadmin.open('添加单位', '/school/create', '650', '500');
-        break;
-      case 'download':
-        xadmin.open('下载成绩', '/chengji/bjtj/dwbiaoge/{$list.kaoshi_id}', '650', '300');
-        break;
-    };
-  });
+  getDefenlv();
 
 
   //监听行工具条
@@ -203,13 +158,12 @@ layui.use(['table', 'mytable', 'laydate', 'element', 'form', 'myEchart', 'create
   });
 
   // 条形统计图--平均分
-  function getDefenlv(sbjid, sbjlieming, sbjtitle) {
-    var id = sbjlieming;
-    var url = '/tools/onestudentchengji/xkold';
-    var val = form.val('search');
-    val.subject_id = sbjid;
-    var title = sbjtitle;
-    echart.zhexian(id, url, val, title);
+  function getDefenlv() {
+    val = form.val('search');
+    for (x in xk) {
+      val.subject_id = xk[x].id;
+      echart.zhexian(xk[x].lieming, '/tools/onestudentchengji/xkold', val, xk[x].title);
+    }
   }
 
 });

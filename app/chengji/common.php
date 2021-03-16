@@ -11,6 +11,7 @@
     {
         $chengji = array();
         $series = array();
+        $category = array();
         foreach ($jg as $key => $value) {
             if($key ==0)
             {
@@ -27,12 +28,21 @@
             }else{
                 $temp = $value['school_jiancheng'];
             }
+            $category[] = $temp;
             $chengji[$key+1][] = $temp;
             foreach ($value['chengji'] as $k => $val) {
                 $chengji[$key+1][] = $val[$xm];
             }
         }
         $data = [
+            'xAxis' => [
+                'type' => 'category'
+                ,'data' => $category
+            ]
+            ,'yAxis' => [
+                'type' => 'value'
+                ,'data' => ''
+            ],
             'data'=>$chengji,
             'series'=>$series,
         ];

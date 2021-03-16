@@ -35,35 +35,35 @@
     	{block name="form"}{/block}
     </div>
     <script>
-      //config的设置是全局的
+      // config的设置是全局的
         layui.config({
             base: "__XADMIN__/js/" //假设这是你存放拓展模块的根目录
         });
 
-      layui.use(['form','cjgl'], function(){
-        var form = layui.form
-            cjgl = layui.cjgl;
-        // 监听复选框
-        form.on('checkbox', function(data){
-          checkall = $(data.elem).attr('checkall');
-          parentId = $(data.elem).parents("div").attr('id');
-          if(checkall=='p'){
-            cjgl.checkboxAll(parentId,data.elem.checked);
-          }else if(checkall=='c'){
-            cjgl.checkboxParentList(parentId);
-          }
-        });
+      // layui.use(['form','mytable'], function(){
+      //   var form = layui.form
+      //       mytable = layui.mytable;
+      //   // 监听复选框
+      //   form.on('checkbox', function(data){
+      //     checkall = $(data.elem).attr('checkall');
+      //     parentId = $(data.elem).parents("div").attr('id');
+      //     if(checkall=='p'){
+      //       mytable.checkboxAll(parentId,data.elem.checked);
+      //     }else if(checkall=='c'){
+      //       mytable.checkboxParentList(parentId);
+      //     }
+      //   });
 
-        //监听提交
-        form.on('submit(mysubmit)', function(data){
-          var downloadData={
-            url:"{$list.set.url}",  //下载地址
-            data:data.field, //要发送的数据
-            method:"{$list.set.formpost}"
-          }
-          DownLoadFile(downloadData);
-          return false;
-        });
+      //   //监听提交
+      //   form.on('submit(mysubmit)', function(data){
+      //     var downloadData={
+      //       url:"{$list.set.url}",  //下载地址
+      //       data:data.field, //要发送的数据
+      //       method:"{$list.set.formpost}"
+      //     }
+      //     DownLoadFile(downloadData);
+      //     return false;
+      //   });
 
 
         /*===================下载文件
@@ -73,20 +73,20 @@
            * method:'post'
            * }
            */
-        function DownLoadFile(options) {
-            var config = $.extend(true, { method: 'post' }, options);
-            var $iframe = $('<iframe id="down-file-iframe" />');
-            var $form = $('<form target="down-file-iframe" method="' + config.method + '" />');
-            $form.attr('action', config.url);
-            for (var key in config.data) {
-                $form.append('<input type="hidden" name="' + key + '" value="' + config.data[key] + '" />');
-            }
-            $iframe.append($form);
-            $(document.body).append($iframe);
-            $form[0].submit();
-            $iframe.remove();
-        }
-      });
+      //   function DownLoadFile(options) {
+      //       var config = $.extend(true, { method: 'post' }, options);
+      //       var $iframe = $('<iframe id="down-file-iframe" />');
+      //       var $form = $('<form target="down-file-iframe" method="' + config.method + '" />');
+      //       $form.attr('action', config.url);
+      //       for (var key in config.data) {
+      //           $form.append('<input type="hidden" name="' + key + '" value="' + config.data[key] + '" />');
+      //       }
+      //       $iframe.append($form);
+      //       $(document.body).append($iframe);
+      //       $form[0].submit();
+      //       $iframe.remove();
+      //   }
+      // });
   </script>
   {block name="myjs"}{/block}
   </body>
