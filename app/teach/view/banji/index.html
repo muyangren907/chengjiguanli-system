@@ -47,9 +47,12 @@
 	<a class="layui-btn-xs" lay-event="detail" title="成绩">
 		<i class="layui-icon layui-icon-chart-screen"></i>
 	</a>
-	<a class="layui-btn-xs" lay-event="banzhuren" title="设置班主任">
+	<a class="layui-btn-xs" lay-event="banzhuren" title="班主任">
 		<i class="layui-icon layui-icon-username"></i>
 	</a>
+  <a class="layui-btn-xs" lay-event="student" title="学生名单">
+    <i class="layui-icon layui-icon-group"></i>
+  </a>
 	<a class="layui-btn-xs" lay-event="befo" title="前移">
 		<i class="layui-icon">&#xe603;</i></a>
 	<a class="layui-btn-xs" lay-event="end" title="后移">
@@ -75,12 +78,8 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 	options.cols = [
 		[ //表头
 			{ type: 'checkbox', fixed: 'left' },
-			{ field: 'id', title: 'ID', minWidth: 100, sort: true },
-			{
-				field: 'banjiTitle',
-				title: '班级名称',
-				minWidth: 100,
-			},
+			{ field: 'id', title: 'ID', minWidth: 100, sort: true, fixed:'left' },
+			{field: 'banjiTitle',title: '班级名称',minWidth: 100, fixed:'left'},
 			{ field: 'alias', title: '别名', minWidth: 60, edit: 'text' },
 			{
 				field: 'banzhuren',
@@ -112,7 +111,7 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 			{ field: 'paixu', title: '排序', sort: true },
 			{ field: "gl_student_count", title: '学生数', sort: true },
 			{ field: 'status', title: '状态', templet: '#status', sort: true },
-			{ field: 'id', title: '操作', toolbar: '#barDemo', minWidth: 180 }
+			{ field: 'id', title: '操作', toolbar: '#barDemo', minWidth: 200}
 		]
 	];
 
@@ -161,6 +160,9 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 			case 'banzhuren': //编辑
 				parent.xadmin.add_tab('班主任', '/teach/banzhuren/index/' + obj.data.id, '', '', true);
 				break;
+      case 'student': //编辑
+        parent.xadmin.add_tab('学生名单', '/teach/banji/student/' + obj.data.id, '', '', true);
+        break;
 		};
 	});
 

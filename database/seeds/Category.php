@@ -309,6 +309,7 @@ class Category extends Seeder
                 ['id' => 12302,'title' => '学期评语','p_id' => 123,'paixu' => 2,'isupdate' => 0],
                 ['id' => 12303,'title' => '月评语','p_id' => 123,'paixu' => 3,'isupdate' => 0],
                 ['id' => 12304,'title' => '周评语','p_id' => 123,'paixu' => 4,'isupdate' => 0],
+                ['id' => 12305,'title' => '日常评语','p_id' => 123,'paixu' => 5,'isupdate' => 0],
             // 考试查看范围
             ['id' => 124
                 ,'title' => '查看考试范围'

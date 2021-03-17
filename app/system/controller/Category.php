@@ -218,7 +218,8 @@ class Category extends AdminBase
     {
         // 获取表单数据
         $src = request()->only([
-            'p_id'
+            'limit' => '100'
+            ,'p_id'
         ], 'post');
         // 查询类别
         $category = new \app\system\model\Category;

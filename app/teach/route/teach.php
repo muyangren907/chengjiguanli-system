@@ -27,6 +27,7 @@ Route::group('xueqi', function () {
 // 班级管理
 Route::group('banji', function () {
 	    Route::rule('','banji/index','get');						# 信息列表
+        Route::rule('student/<banji_id>','banji/student','get');                        # 信息列表
 	    Route::rule('data','banji/ajaxdata','post');				# 获取数据
 	    Route::rule('create','banji/create','get');				# 添加信息
 	    Route::rule('save','banji/save','post');					# 保存信息

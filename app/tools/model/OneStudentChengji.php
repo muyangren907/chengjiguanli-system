@@ -523,7 +523,7 @@ class OneStudentChengji extends BaseModel
             'xAxis' => [
                 'type' => 'value'
                 ,'data' => ''
-                ,'scale' => true
+                // ,'scale' => true
             ]
             ,'yAxis' => [
                 'type' => 'category'

@@ -27,7 +27,7 @@
 <div class="layui-form-item">
 	<label for="ruxuenian" class="layui-form-label">年级</label>
 	<div class="layui-input-block">
-		<select id="ruxuenian" name="ruxuenian" lay-verify="required">
+		<select id="ruxuenian" name="ruxuenian">
 		</select>
 	</div>
 </div>
@@ -39,6 +39,9 @@
 <div class="layui-form-item" style="text-align: right;">
 	<button class="layui-btn" lay-filter="searchSubmit" lay-submit="">搜索</button>
 </div>
+{present name="list.banji_id"}
+<input type="hidden" name="banji_id[]" value="{$list.banji_id}">
+{/present}
 {/block}
 {block name="table"}
 <table id="tabledemo" lay-filter="mytable" lay-size="sm"></table>

@@ -67,6 +67,24 @@ class Banji extends AdminBase
     }
 
 
+    // 显示学生列表
+    public function student($banji_id)
+    {
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = '学生列表';
+        $list['dataurl'] = '/student/index/data';
+        $list['status'] = '/student/index/status';
+        $list['kaoshi'] = '/student/index/kaoshi';
+        $list['banji_id'] = $banji_id;
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+
+        // 渲染模板
+        return $this->view->fetch('student@index/index');
+    }
+
+
     /**
      * 创建班级
      *
