@@ -22,8 +22,8 @@ class LuruFengong extends BaseModel
         ];
         $src = array_cover($srcfrom, $src) ;
         $src['kaoshi_id'] = strToarray($src['kaoshi_id']);
-        $src['banji_id'] = strToarray($src['banji_id']); 
-        $src['subject_id'] = strToarray($src['subject_id']); 
+        $src['banji_id'] = strToarray($src['banji_id']);
+        $src['subject_id'] = strToarray($src['subject_id']);
 
         $logList = self::where('kaoshi_id', 'in', $src['kaoshi_id'])
         			->when(count($src['banji_id']) > 0, function($query) use($src){
@@ -77,13 +77,34 @@ class LuruFengong extends BaseModel
     {
         $src = [
             'kaoshi_id' => ''
+            ,'banji_id' => array()
         ];
         $src = array_cover($srcfrom, $src) ;
+
+        $all = $this->where('kaoshi_id', $src['kaoshi_id'])
+            ->select();
+        $data['count'] = $all->count();
+
         $admin_id = session('user_id');
-        $data = $this->where('user_id', $admin_id)
+        $list = $this->where('admin_id', $admin_id)
                 ->where('kaoshi_id', $src['kaoshi_id'])
-                ->group('banji_id')
-                ->column(['banji_id']);
+                ->where(count($src['banji_id']) > 0, function($query) use($src) {
+                    $query->where('banji_id', 'in', $src['banji_id']);
+                })
+                ->with([
+                    'fgBanji' => function ($query) {
+                        $query->field('id, ruxuenian, paixu, school_id')
+                            ->with([
+                                'glSchool' => function($q){
+                                    $q->field('id, title, jiancheng');
+                                },
+                            ])
+                            ->append(['banjiTitle']);
+                    }
+                ])
+                ->field('banji_id, subject_id')
+                ->select();
+        $data['list'] = $list;
         return $data;
     }
 

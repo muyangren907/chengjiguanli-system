@@ -272,28 +272,6 @@ class Index extends AdminBase
     }
 
 
-    // // 查询管理员
-    // public function adminList()
-    // {
-    //     $src = request()->only([
-    //         'searchval'
-    //     ],'POST');
-
-    //     $ad = new AD;
-    //     $list = $ad->search($src);
-    //     $cnt = $list->count();
-    //     $data = array();
-    //     foreach ($list as $key => $value) {
-    //         $data[] = [
-    //             'xingming' => $value->adSchool->jiancheng . ' -- ' .$value->xingming
-    //             ,'id' => $value->id
-    //         ];
-    //     }
-
-    //     return json($data);
-    // }
-
-
     // 批量添加
     public function createAll()
     {

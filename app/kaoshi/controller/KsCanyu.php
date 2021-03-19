@@ -56,10 +56,10 @@ class KsCanYu extends AdminBase
                 ,'limit' => 100
             ], 'POST');
         $khSrc = new \app\kaohao\model\SearchCanYu;
-        $myself = config('shangma.lurufanwei');
+        // $myself = config('shangma.lurufanwei');
         $category = session('onlineCategory');
-        if($category == 'teacher' && $myself == true)
-        {
+
+
             $teacher_id = session('user_id');
             $s = \think\facade\Session::all();
 
@@ -76,12 +76,13 @@ class KsCanYu extends AdminBase
                     array_push($src['banji_id'], $value->glBanji->id);
                 }
             }
-        }
+
         $bj = $khSrc->class($src);
         $bj = reSetArray($bj, $src);
 
         return json($bj);
     }
+
 
 
     // 根据考试ID和年级获取参加考试班级
@@ -124,6 +125,29 @@ class KsCanYu extends AdminBase
 
         $sbj = reSetArray($sbj, $src);
         return json($sbj);
+    }
+
+
+
+    // // 根据教师ID获取可以录入成绩的班级
+    // public function lrclass()
+    // {
+    //     $lrfg = new \app\kaoshi\model\LuruFengong;
+
+    //     // 获取参数
+    //     $src = $this->request
+    //         ->only([
+    //             'kaoshi_id' => ''
+    //         ], 'POST');
+
+    //     $lrfgCnt = $lrfg->srcMyLuruBanji($src);
+    // }
+
+
+    // 根据教师ID获取可以录入成绩的班级
+    public function lrsubject()
+    {
+
     }
 
 }

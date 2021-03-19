@@ -15,14 +15,14 @@ layui.extend({
 	var obj = {
 		// 创建类别的Select
 		categorySelect: function(myid, pid, value = '', hasNull = true) {
-			$.ajax({
+			$('#' + myid).children().remove();
+      $.ajax({
 				url: '/system/category/children',
 				type: 'POST',
 				data: {
 					p_id: pid
 				},
 				success: function(result) {
-					$('#' + myid).children().remove();
 					if (hasNull == true) {
 						str = '<option value=""></option>';
 					} else {
@@ -133,7 +133,8 @@ layui.extend({
 
 		// 创建单位的Select
 		schoolSelect: function(myid, low = '班级', high = '其它级', value, kaoshi = '', hasNull = true) {
-			$.ajax({
+       $('#' + myid).children().remove();
+       $.ajax({
 				url: '/system/school/srcschool',
 				type: 'POST',
 				data: {
@@ -142,7 +143,7 @@ layui.extend({
 					kaoshi: kaoshi
 				},
 				success: function(result) {
-					$('#' + myid).children().remove();
+
 					if (hasNull == true) {
 						str = '<option value=""></option>';
 					} else {
@@ -445,7 +446,8 @@ layui.extend({
 
 		// 创建类别的Select
 		subjectSelect: function(myid, value = '', kaoshi = '', hasNull = true) {
-			$.ajax({
+			$('#' + myid).children().remove();
+      $.ajax({
 				url: '/teach/subject/data',
 				type: 'POST',
 				data: {
@@ -453,7 +455,6 @@ layui.extend({
 					kaoshi: kaoshi
 				},
 				success: function(result) {
-					$('#' + myid).children().remove();
 					if (hasNull == true) {
 						str = '<option value=""></option>';
 					} else {
@@ -480,12 +481,12 @@ layui.extend({
 
 		// 创建班级checkbox
 		banjiCheckbox: function(myid, data, value = '', hasAll = true) {
-			$.ajax({
+			$('#' + myid).children().remove();
+      $.ajax({
 				url: '/teach/banji/mybanji',
 				type: 'POST',
 				data: data,
 				success: function(result) {
-					$('#' + myid).children().remove();
 					if (hasAll == true) {
 						str = '<input type="checkbox" title="全选" lay-skin="primary" value="" cid="1" lay-filter="mycheackbox">';
 					} else {
@@ -512,12 +513,12 @@ layui.extend({
 
 		// 创建班级checkbox
 		banjiSelect: function(myid, data, value = '', hasAll = true) {
-			$.ajax({
+			$('#' + myid).children().remove();
+      $.ajax({
 				url: '/teach/banji/mybanji',
 				type: 'POST',
 				data: data,
 				success: function(result) {
-					$('#' + myid).children().remove();
 					if (hasAll == true) {
 						str = '<option></option>';
 					} else {
@@ -544,12 +545,12 @@ layui.extend({
 
 		// 创建年级的Select
 		nanjiSelect: function(myid, data, value = '', hasNull = true) {
-			$.ajax({
+			$('#' + myid).children().remove();
+      $.ajax({
 				url: '/teach/banji/njlist',
 				type: 'POST',
 				data: data,
 				success: function(result) {
-					$('#' + myid).children().remove();
 					if (hasNull == true) {
 						str = '<option value=""></option>';
 					} else {
@@ -576,11 +577,11 @@ layui.extend({
 
 		// 创建学期的Select
 		xueqiSelect: function(myid, value = '', hasNull = true) {
-			$.ajax({
+			$('#' + myid).children().remove();
+      $.ajax({
 				url: '/teach/xueqi/srcxueqi',
 				type: 'POST',
 				success: function(result) {
-					$('#' + myid).children().remove();
 					if (hasNull == true) {
 						str = '<option value=""></option>';
 					} else {

@@ -317,11 +317,13 @@ class Category extends Seeder
                 ,'paixu' => 24
                 ,'isupdate' => 0
             ],
-                //  考试查看范围
-                ['id' => 12401,'title' => '区级','p_id' => 124,'paixu' => 1,'isupdate' => 0],
-                ['id' => 12402,'title' => '学校','p_id' => 124,'paixu' => 2,'isupdate' => 0],
-                ['id' => 12403,'title' => '年级组','p_id' => 124,'paixu' => 3,'isupdate' => 0],
-                ['id' => 12404,'title' => '班级','p_id' => 124,'paixu' => 4,'isupdate' => 0],
+                //  考试查询权限
+                ['id' => 12401,'title' => '全区','p_id' => 124,'paixu' => 1,'isupdate' => 0],
+                ['id' => 12402,'title' => '全校','p_id' => 124,'paixu' => 2,'isupdate' => 0],
+                ['id' => 12403,'title' => '年级全学科','p_id' => 124,'paixu' => 3,'isupdate' => 0],
+                ['id' => 12404,'title' => '年级学科','p_id' => 124,'paixu' => 4,'isupdate' => 0],
+                ['id' => 12405,'title' => '班级全学科','p_id' => 124,'paixu' => 5,'isupdate' => 0],
+                ['id' => 12406,'title' => '班级学科','p_id' => 124,'paixu' => 6,'isupdate' => 0],
         ];
 
         $serRows = $this->fetchAll('select * from cj_category');
