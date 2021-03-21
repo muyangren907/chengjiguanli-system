@@ -15,7 +15,7 @@ class Biaoqian extends Validate
 	protected $rule = [
         'banji_id|班级'      =>  'require|array',
         'kaoshi_id|考试'      =>  'require|number',
-        'subject_id|学科'      =>  'require|array',
+        'subject_id|学科'      =>  'require',
     ];
 
     /**

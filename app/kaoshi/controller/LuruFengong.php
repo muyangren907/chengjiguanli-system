@@ -180,4 +180,40 @@ class LuruFengong extends AdminBase
         // 返回信息
         return json($data);
     }
+
+
+    // 获取录入分工班级
+    public function class()
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'school_id' => ''
+                ,'ruxuenian' => ''
+                ,'kaoshi_id' => ''
+                ,'limit' => 100
+            ], 'POST');
+        $lrfg = new \app\kaoshi\model\LuruFengong;
+        $bj = $lrfg->srcMyLuruBanji($src);
+        $bj = reSetArray($bj, $src);
+        return json($bj);
+    }
+
+
+    // 获取录入分工班级
+    public function subject()
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'school_id' => ''
+                ,'ruxuenian' => ''
+                ,'kaoshi_id' => ''
+                ,'limit' => 100
+            ], 'POST');
+        $lrfg = new \app\kaoshi\model\LuruFengong;
+        $bj = $lrfg->srcMyLuruSubject($src);
+        $bj = reSetArray($bj, $src);
+        return json($bj);
+    }
 }

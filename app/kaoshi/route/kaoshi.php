@@ -75,6 +75,8 @@ Route::group('lrfg', function () {
     Route::rule('create/<kaoshi_id>','LuruFengong/create','get');     # 添加信息
     Route::rule('save','LuruFengong/save','post');                    # 保存信息
     Route::rule('delete','LuruFengong/delete','delete');     # 删除信息
+    Route::rule('class','LuruFengong/class','post');    # 参与学科
+    Route::rule('subject','LuruFengong/subject','post');    # 参与学科
 });
 
 

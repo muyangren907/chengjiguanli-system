@@ -73,39 +73,94 @@ class LuruFengong extends BaseModel
 
 
     // 根据教师ID查询可以录入成绩的班级
+    public function srcMyLuruBase($srcfrom)
+    {
+        $src = [
+            'kaoshi_id' => ''
+            ,'school_id' => ''
+            ,'ruxuenian' => ''
+        ];
+        $src = array_cover($srcfrom, $src) ;
+
+        // 查询是否有录入分工，如果有就按分工来出示列表，否则全部出示
+        $admin_id = session('user_id');
+        $admin_id = 3;
+        $all = $this->where('kaoshi_id', $src['kaoshi_id'])->select();
+        $count = $all->count();
+        $data = [['banji_id' => 0, 'subject_id' => 0]];
+
+        $list = $this->when($admin_id > 2, function ($query) use($admin_id){
+                    $query->where('admin_id', $admin_id);
+                })
+                ->where('kaoshi_id', $src['kaoshi_id'])
+                ->when(strlen($src['school_id']) > 0 || strlen($src['ruxuenian']) > 0, function ($query) use ($src) {
+                    $query->where('banji_id', 'in', function ($q) use($src){
+                        $q->name('banji')
+                            ->when(strlen($src['school_id']) > 0, function($x) use ($src){
+                                $x->where('school_id', $src['school_id']);
+                            })
+                            ->when(strlen($src['ruxuenian']) > 0, function($x) use ($src){
+                                $x->where('ruxuenian', $src['ruxuenian']);
+                            })
+                            ->field('id');
+                    });
+                })
+                ->field('banji_id, subject_id')
+                ->select();
+
+        if($admin_id == 1 || $admin_id == 2)
+        {
+            $data = array();
+        }else{
+            if($count == 0)
+            {
+                $data = array();
+            }else{
+                if(!$list->isEmpty())
+                {
+                    $data = $list->toArray();
+                }
+            }
+        }
+
+        return $data;
+    }
+
+
+    // 查询可以录入成绩的班级
     public function srcMyLuruBanji($srcfrom)
     {
         $src = [
             'kaoshi_id' => ''
-            ,'banji_id' => array()
+            ,'school_id' => ''
+            ,'ruxuenian' => ''
+        ];
+        $src = array_cover($srcfrom, $src);
+        $list = $this->srcMyLuruBase($src,'banji_id');
+        $src['banji_id'] = array_unique(array_column($list, 'banji_id'));
+        
+        // 获取录入班级后，到参加考试班级中搜索一下
+        $khSrc = new \app\kaohao\model\SearchCanYu;
+        $bj = $khSrc->class($src);
+        return $bj;
+    }
+
+
+    // 查询可以录入成绩的班级
+    public function srcMyLuruSubject($srcfrom)
+    {
+        $src = [
+            'kaoshi_id' => ''
+            ,'school_id' => ''
+            ,'ruxuenian' => ''
         ];
         $src = array_cover($srcfrom, $src) ;
-
-        $all = $this->where('kaoshi_id', $src['kaoshi_id'])
-            ->select();
-        $data['count'] = $all->count();
-
-        $admin_id = session('user_id');
-        $list = $this->where('admin_id', $admin_id)
-                ->where('kaoshi_id', $src['kaoshi_id'])
-                ->where(count($src['banji_id']) > 0, function($query) use($src) {
-                    $query->where('banji_id', 'in', $src['banji_id']);
-                })
-                ->with([
-                    'fgBanji' => function ($query) {
-                        $query->field('id, ruxuenian, paixu, school_id')
-                            ->with([
-                                'glSchool' => function($q){
-                                    $q->field('id, title, jiancheng');
-                                },
-                            ])
-                            ->append(['banjiTitle']);
-                    }
-                ])
-                ->field('banji_id, subject_id')
-                ->select();
-        $data['list'] = $list;
-        return $data;
+        $list = $this->srcMyLuruBase($src, 'subject_id');
+        $src['subject_id'] = array_unique(array_column($list, 'subject_id'));
+        // 获取录入班级后，到参加考试班级中搜索一下
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $sbj = $ksset->srcSubject($src);
+        return $sbj;
     }
 
 

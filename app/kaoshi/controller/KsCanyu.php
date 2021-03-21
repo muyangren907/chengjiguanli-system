@@ -56,33 +56,12 @@ class KsCanYu extends AdminBase
                 ,'limit' => 100
             ], 'POST');
         $khSrc = new \app\kaohao\model\SearchCanYu;
-        // $myself = config('shangma.lurufanwei');
-        $category = session('onlineCategory');
-
-
-            $teacher_id = session('user_id');
-            $s = \think\facade\Session::all();
-
-            $btj = new \app\chengji\model\TongjiBj;
-            $src['banji_id'] = $btj->where('teacher_id', $teacher_id)
-                        ->where('kaoshi_id', $src['kaoshi_id'])
-                        ->column('banji_id');
-            $bzr = new \app\teach\model\BanZhuRen;
-            $src['teacher_id'] = $teacher_id;
-            $bjInfo = $bzr->srcTeacher($src);
-            foreach ($bjInfo as $key => $value) {
-                if($value->glBanji->biye === false)
-                {
-                    array_push($src['banji_id'], $value->glBanji->id);
-                }
-            }
 
         $bj = $khSrc->class($src);
         $bj = reSetArray($bj, $src);
 
         return json($bj);
     }
-
 
 
     // 根据考试ID和年级获取参加考试班级
@@ -114,6 +93,7 @@ class KsCanYu extends AdminBase
             ->only([
                 'kaoshi_id' => ''
                 ,'ruxuenian' => ''
+                ,'subject_id' => ''
                 ,'field' => 'paixu'
                 ,'order' => 'asc'
                 ,'page' => 1
@@ -126,28 +106,4 @@ class KsCanYu extends AdminBase
         $sbj = reSetArray($sbj, $src);
         return json($sbj);
     }
-
-
-
-    // // 根据教师ID获取可以录入成绩的班级
-    // public function lrclass()
-    // {
-    //     $lrfg = new \app\kaoshi\model\LuruFengong;
-
-    //     // 获取参数
-    //     $src = $this->request
-    //         ->only([
-    //             'kaoshi_id' => ''
-    //         ], 'POST');
-
-    //     $lrfgCnt = $lrfg->srcMyLuruBanji($src);
-    // }
-
-
-    // 根据教师ID获取可以录入成绩的班级
-    public function lrsubject()
-    {
-
-    }
-
 }

@@ -70,11 +70,13 @@ class Auth
             'teach/banji/banjilist',  # 获取班级数据
             'teach/banjichengji/ajaxdatatiaoxing',  # 获取班级成绩-条形统计表
             // Kaoshi应用
-            'kaoshi/index/cyschool',    # 获取参加考试学校
-            'kaoshi/index/cynianji',    # 获取参加考试年级
-            'kaoshi/index/cybanji',    # 获取参加考试班级
-            'kaoshi/index/cysubject',    # 获取参加考试学科
-            'kaoshi/index/cysubject',    # 获取参加考试学科
+            'kaoshi/index/srceditkaoshi',    # 获取可以编辑的考试列表
+            'kaoshi/kscanyu/school',    # 获取参加考试学校
+            'kaoshi/kscanyu/grade',    # 获取参加考试年级
+            'kaoshi/kscanyu/class',    # 获取参加考试班级
+            'kaoshi/kscanyu/subject',    # 获取参加考试学科
+            'kaoshi/lurufengong/class',    # 获取录入成绩分工
+            'kaoshi/lurufengong/subject',    # 获取录入成绩分工
             // Kaohao应用
             'kaohao/excel/biaoqianxls',    # 下载试卷标签
             'luru/index/dwcaiji',    # 下载成绩采集表

@@ -327,6 +327,30 @@ class Rule extends Seeder
                             ,'paixu' => 3
                             ,'pid' => 3020104
                         ],
+                    ['id' => 3020105
+                        ,'title' => '录入成绩分工列表'
+                        ,'name' => 'kaoshi/lurufengong/index'
+                        ,'paixu' => 5
+                        ,'pid' => 30201
+                    ],
+                        ['id' => 302010501
+                            ,'title' => '添加'
+                            ,'name' => 'kaoshi/lurufengong/create'
+                            ,'paixu' => 1
+                            ,'pid' => 3020105
+                        ],
+                        ['id' => 302010502
+                            ,'title' => '保存'
+                            ,'name' => 'kaoshi/lurufengong/save'
+                            ,'paixu' => 2
+                            ,'pid' => 3020105
+                        ],
+                        ['id' => 302010503
+                            ,'title' => '删除'
+                            ,'name' => 'kaoshi/lurufengong/delete'
+                            ,'paixu' => 3
+                            ,'pid' => 3020105
+                        ],
                     
                 ['id' => 30203
                     ,'title' => '成绩统计'

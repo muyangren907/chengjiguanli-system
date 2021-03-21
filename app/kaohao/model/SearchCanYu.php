@@ -46,10 +46,10 @@ class SearchCanyu extends BaseModel
             ];
         }
 
-        // if(count($data) > 0)
-        // {
-        //     $data = \app\facade\Tools::sortArrByManyField($data, 'paixu', SORT_ASC);
-        // }
+        if(count($data) > 0)
+        {
+            $data = \app\facade\Tools::sortArrByManyField($data, 'paixu', SORT_ASC);
+        }
 
         return $data;
     }
@@ -75,17 +75,6 @@ class SearchCanyu extends BaseModel
         $src['school_id'] = strToarray($src['school_id']);
         $src['banji_id'] = strToarray($src['banji_id']);
         $src['ruxuenian'] = strToarray($src['ruxuenian']);
-
-        $lrfg = new \app\kaoshi\model\LuruFengong;
-        $lrList = $lrfg->srcMyLuruBanji($src);
-
-        if($lrList['count'] > 0)
-        {
-            $src['banji_id'] = array_unique($lrList['list']->column('banji_id'));
-
-            count($src['banji_id']) == 0 ? [0] : $src['banji_id'];
-        }
-
 
         // 通过给定参数，从考号表中获取参加考试的班级
         $kh = new kh;
