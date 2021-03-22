@@ -54,6 +54,7 @@ Route::group('bjtj', function () {
     Route::rule('renkeupdate/<id>','Bjtongji/renkeUpdate','put');          # 班级表格
     Route::rule('renkeeditteacher/<kaoshi_id>','Bjtongji/renkeEditTeacher','get');          # 设置任课教师
     Route::rule('renkeupdateteaher','Bjtongji/renkeUpdateTeacher','put');          # 更新任课教师
+    Route::rule('subject','Bjtongji/srcSubject','post');            # 成绩获取
 });
 
 

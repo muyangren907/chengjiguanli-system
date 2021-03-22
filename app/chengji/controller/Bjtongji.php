@@ -641,4 +641,23 @@ class Bjtongji extends AdminBase
     }
 
 
+    // 查询已经有统计结果的学科
+    public function srcSubject()
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'kaoshi_id' => ''
+                ,'school_id' => ''
+                ,'ruxuenian' => ''
+                ,'limit' => 100
+            ], 'POST');
+        $btj = new BTJ();
+        // 获取参考年级
+        $data = $btj->srcSubject($src); 
+        $data = reSetArray($data, $src);
+        return json($data);
+    }
+
+
 }

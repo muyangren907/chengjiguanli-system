@@ -173,6 +173,11 @@ layui.extend({
 				name = id;
 			}
 			var school_id = '';
+			var mydiv = $('#' + id);
+
+			school_id = mydiv.eq(0);
+			console.log(school_id);
+
 			x = xmSelect.render({
 				el: '#' + id,
 				name: name,

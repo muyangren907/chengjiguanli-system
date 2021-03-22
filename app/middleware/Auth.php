@@ -69,6 +69,8 @@ class Auth
             'teach/banji/mybanji',  # 获取班级数据
             'teach/banji/banjilist',  # 获取班级数据
             'teach/banjichengji/ajaxdatatiaoxing',  # 获取班级成绩-条形统计表
+            'teach/xueqi/srcxueqi',  # 获取班级成绩-条形统计表
+            'teach/banji/njlist',  # 获取班级数据
             // Kaoshi应用
             'kaoshi/index/srceditkaoshi',    # 获取可以编辑的考试列表
             'kaoshi/kscanyu/school',    # 获取参加考试学校
@@ -87,7 +89,7 @@ class Auth
             'student/studentchengji/ajaxonestudentchengjitubiao',    # 获取学生成绩拆线图数据
             'student/studentchengji/ajaxonestudentchengjileida',    # 获取学生成绩雷达图数据
             'student/studentchengji/ajaxonestudentchengjiyibiao',    # 获取学生成绩雷达图数据
-            'teacher/index/ajaxdatadel',   # 获取删除教师列表
+            // 'teacher/index/ajaxdatadel',   # 获取删除教师列表
             // Chengji应用
             'chengji/index/ajaxaddinfo',    # 获取录入该学生成绩人员的信息
             'chengji/index/dwchengjixlsx',    # 下载学生成绩
@@ -97,6 +99,7 @@ class Auth
             'chengji/bjtongji/myxiangti',    # 获取成绩箱体图数据
             'chengji/bjtongji/myfenshuduan',    # 获取成绩各分数段折线统计图数据
             'chengji/bjtongji/ajaxdatarenke',    # 获取成绩各分数段折线统计图数据
+            'chengji/bjtongji/srcsubject',    # 获取成绩各分数段折线统计图数据
             'chengji/njtongji/dwnianjixlsx',    # 下载年级成绩统计表
             'chengji/njtongji/myavg',    # 获取单项成绩数据
             'chengji/njtongji/myxiangti',    # 获取成绩箱体图数据
@@ -104,6 +107,9 @@ class Auth
             'luru/index/ajaxdatayltj',   # 获取已录成绩统计结果
             'luru/index/biaoqianxls',   # 获取试卷标签数据
             'luru/index/ajaxdataonline',   # 获取试卷标签数据
+            // 系统设置
+            'system/school/srcschool',      # 获学校 
+            'system/category/srcchildren',      # 获学校 
         );
 
 

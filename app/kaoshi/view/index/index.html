@@ -153,9 +153,6 @@ layui.use(['table', 'mytable','createInput','form'], function() {
 			case 'edit': // 编辑
 				xadmin.open('编辑考试', '/kaoshi/index/edit/' + obj.data.id, '600', '400', false);
 				break;
-			case 'more': // 状态
-				parent.xadmin.add_tab(obj.data.title + ' 操作', '/kaoshi/index/more/' + obj.data.id, true);
-				break;
 			case 'tongji': // 状态
 				xadmin.open(obj.data.title + ' 成绩统计', '/kaoshi/index/tongji/' + obj.data.id, '650', '400', false);
 				break;

@@ -742,4 +742,51 @@ class TongjiBj extends BaseModel
 
         return $chalv;
     }
+
+
+    // 查询学科
+    function srcSubject($srcfrom)
+    {
+        // 初始化参数
+        $src = array(
+            'kaoshi_id' => ''
+            ,'school_id' => ''
+            ,'ruxuenian' => ''
+        );
+        $src = array_cover($srcfrom, $src);
+
+        $list = $this->where('kaoshi_id', $src['kaoshi_id'])
+            ->where('banji_id', 'in', function($query) use($src) {
+                $query
+                    ->name('banji')
+                    ->when(strlen($src['school_id']) > 0, function($q) use ($src) {
+                        $q->where('school_id', $src['school_id']);
+                    })
+                    ->when(strlen($src['ruxuenian']) > 0, function($q) use ($src) {
+                        $q->where('ruxuenian', $src['ruxuenian']);
+                    })
+                    ->field('id');
+            })
+            ->where('subject_id', '<>', 0)
+            ->with([
+                'bjSubject' => function ($query) {
+                    $query->field('id, title, jiancheng');
+                }
+            ])
+            ->field('subject_id')
+            ->distinct(true)
+            ->select();
+
+        $data = array();
+
+        foreach ($list as $key => $value) {
+            $data[] = [
+                'id' => $value->subject_id
+                ,'title' => $value->bjSubject->title
+                ,'jiancheng' => $value->bjSubject->jiancheng
+            ];
+        }
+
+        return $data;
+    }
 }

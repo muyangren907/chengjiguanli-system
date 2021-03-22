@@ -284,6 +284,37 @@ layui.define(['table', 'form', 'upload'], function(exports) {
 		},
 
 
+		// 班级统计结果学科
+		btjSubjectSelect: function(myid, data, value = '', hasNull = true) {
+			$('#' + myid).children().remove();
+      $.ajax({
+				url: '/chengji/bjtj/subject',
+				type: 'POST',
+				data: data,
+				success: function(result) {
+					if (hasNull == true) {
+						str = '<option value=""></option>';
+					} else {
+						str = '';
+					}
+					temp = "";
+					$(result.data).each(function(i, el) {
+						if (value != '' && value == el.id) {
+							temp = '<option value="' + el.id + '" selected>' + el.title + '</option>';
+						} else {
+							temp = '<option value="' + el.id + '">' + el.title + '</option>';
+						}
+						str = str + temp;
+					});
+					$('#' + myid).append(str);
+					form.render('select');
+				},
+				error: function(result) {
+					layer.msg('数据扔半道啦。', function() {});
+				},
+			});
+		},
+
 	};
 	//输出test接口
 	exports('canyuKaoshi', obj);

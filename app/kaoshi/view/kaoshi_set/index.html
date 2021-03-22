@@ -107,7 +107,7 @@
                 mytable.delAll(checkStatus,'/kaoshi/kaoshiset/delete','mytable');
                 break;
               case 'add':
-                parent.xadmin.add_tab('添加参考学科','/kaoshi/kaoshiset/create/'+"{$list.kaoshi_id}",'650','400', false);
+                xadmin.open('添加参考学科','/kaoshi/kaoshiset/create/'+"{$list.kaoshi_id}",'650','400', true);
                 break;
           };
       });
