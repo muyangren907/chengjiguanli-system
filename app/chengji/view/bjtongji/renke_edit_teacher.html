@@ -52,6 +52,7 @@ layui.use(['createInput', 'canyuKaoshi', 'form'], function() {
 		form = layui.form;
 
 	// 搜索教师
+	
 	xmselect = cInput.searchTeacher('teacher_id',form.val('myform').school_id, true);
 	canyu.schoolSelect('school_id', "{$list.data.kaoshi_id}");
 	canyu.gradeSelect('ruxuenian', "{$list.data.kaoshi_id}");

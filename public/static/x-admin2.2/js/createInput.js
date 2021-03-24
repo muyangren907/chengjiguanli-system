@@ -168,7 +168,7 @@ layui.extend({
 		},
 
 		// 查询老师
-		searchTeacher: function(id, radio = false, name = '') {
+		searchTeacher: function(id, data, radio = false, name = '') {
 			if (name == '') {
 				name = id;
 			}
@@ -221,10 +221,7 @@ layui.extend({
 					$.ajax({
 						url: '/admin/index/srcteacher',
 						type: 'POST',
-						data: {
-							searchval: val,
-							school_id: school_id
-						},
+						data: data,
 						success: function(result) {
 							cb(result.data)
 						},
