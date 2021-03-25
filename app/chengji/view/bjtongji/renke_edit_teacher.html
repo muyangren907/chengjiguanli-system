@@ -33,7 +33,7 @@
 		<label for="teacher_name" class="layui-form-label">
 			<span class="x-red">*</span>教师姓名
 		</label>
-		<div class="layui-input-block" id="teacher_id" school_id="">
+		<div class="layui-input-block" id="teacher_id" school_id="0">
 		</div>
 	</div>
 	<input type="hidden" name="kaoshi_id" id="kaoshi_id" value="{$list.data.kaoshi_id}">
@@ -52,8 +52,8 @@ layui.use(['createInput', 'canyuKaoshi', 'form'], function() {
 		form = layui.form;
 
 	// 搜索教师
-	
-	xmselect = cInput.searchTeacher('teacher_id',form.val('myform').school_id, true);
+
+	xmselect = cInput.searchTeacher('teacher_id', true);
 	canyu.schoolSelect('school_id', "{$list.data.kaoshi_id}");
 	canyu.gradeSelect('ruxuenian', "{$list.data.kaoshi_id}");
 
@@ -64,7 +64,7 @@ layui.use(['createInput', 'canyuKaoshi', 'form'], function() {
 			canyu.banjiCheckbox('banji_id', data);
 		}
 		canyu.btjSubjectSelect('subject_id', data);
-
+    $('#teacher_id').attr('school_id', data.school_id)
 	});
 
 	form.on('checkbox(mycheackbox)', function(data) {

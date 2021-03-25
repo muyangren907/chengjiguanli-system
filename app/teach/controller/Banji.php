@@ -318,6 +318,7 @@ class Banji extends AdminBase
                 'id'
                 ,'banTitle'
                 ,'banjiTitle'
+                ,'paixu'
                 ,'glSchool' => [
                     'title'
                     ,'jiancheng'

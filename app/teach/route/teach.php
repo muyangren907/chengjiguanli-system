@@ -35,7 +35,7 @@ Route::group('banji', function () {
 	    Route::rule('status','banji/setStatus','post');		# 删除信息
 	    Route::rule('yidong/<id>','banji/yidong','post');		# 删除信息
 	    Route::rule('mybanji','banji/mybanji','post');		# 删除信息
-	    Route::rule('mybanjis','banji/banjiList','post');		# 删除信息
+	    // Route::rule('mybanjis','banji/banjiList','post');		# 删除信息
       Route::rule('alias','banji/setAlias','put');       # 删除信息
       Route::rule('njlist','banji/njList','post');                # 获取年级列表
 

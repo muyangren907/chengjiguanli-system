@@ -21,32 +21,6 @@
     .weicaozuo {
       border-bottom: 3px solid #FFB800;
     }
-    
-    .srcSelectStyly{
-      /*margin-top:20px;*/
-      border-width: 1px;
-      border-color:#e2e2e2;
-      border-style:solid;
-      background-color:#ffffff;
-      position:absolute;
-      left:0;
-      right:0;
-      z-index:100;
-    }
-
-    .srcSelectStyly dl{
-      padding-top: 3px;
-      padding-left: 6px;
-      background-color:#ffffff;
-    }
-
-    .srcSelectStyly dd{
-      /*margin-bottom: 3px;*/
-      /*background-color:#f2f2f2;*/
-      height: 30px;
-      padding-top: 10px;
-    }
-
   </style>
 {/block}
 {block name="form"}
@@ -64,7 +38,7 @@
 		<label for="teacher_name" class="layui-form-label">
 			<span class="x-red">*</span>教师姓名
 		</label>
-		<div class="layui-input-block" id="admin_id" school_id="{$list.data.school_id|default=''}">
+		<div class="layui-input-block" id="admin_id" school_id="">
 		</div>
 	</div>
 	<div class="layui-form-item">

@@ -32,13 +32,13 @@
 <form class="layui-form layui-form-pane" lay-filter="myform">
 	<input id="kaoshi_id" name="kaoshi_id" value="{$list.set.kaoshi_id}" type="hidden">
 	<div class="layui-form-item">
-		<label for="teacher_name" class="layui-form-label">
-			<span class="x-red">*</span>教师姓名
-		</label>
-		<div class="layui-input-block" id="admin_id" school_id="">
-		</div>
-	</div>
-	<div class="layui-form-item">
+    <label for="teacher_name" class="layui-form-label">
+      <span class="x-red">*</span>教师姓名
+    </label>
+    <div class="layui-input-block" id="admin_id" school_id="">
+    </div>
+  </div>
+  <div class="layui-form-item">
 		<label for="school_id" class="layui-form-label"><span class="x-red">*</span>学校</label>
 		<div class="layui-input-block">
 			<select name="school_id" id="school_id" lay-verify="required" lay-filter="src">
@@ -83,7 +83,7 @@ layui.use(['createInput', 'canyuKaoshi', 'form'], function() {
 		form = layui.form;
 
 	// 搜索教师
-	xmselect = cInput.searchTeacher('admin_id');
+	new cInput.searchTeacher('admin_id');
 	canyu.schoolSelect('school_id', "{$list.set.kaoshi_id}");
 	canyu.gradeSelect('ruxuenian', "{$list.set.kaoshi_id}");
 

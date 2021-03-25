@@ -108,7 +108,7 @@ class Rule extends Seeder
                     ,'name' => 'luru/index/yilucnttable'
                     ,'paixu' => 1
                     ,'pid' => 105
-                ],    
+                ],
             ['id' => 106
                 ,'title' => '下载标签'
                 ,'name' => 'luru/index/biaoqian'
@@ -123,7 +123,7 @@ class Rule extends Seeder
                     ,'name' => 'biaoqian1'
                     ,'paixu' => 1
                     ,'pid' => 106
-                ], 
+                ],
             ['id' => 107
                 ,'title' => '在线录入'
                 ,'name' => 'luru/index/online'
@@ -138,7 +138,7 @@ class Rule extends Seeder
                     ,'name' => 'luru/index/onlineedit'
                     ,'paixu' => 1
                     ,'pid' => 107
-                ], 
+                ],
 
             /*======================================================================
              * 考试管理
@@ -316,12 +316,18 @@ class Rule extends Seeder
                             ,'pid' => 3020104
                         ],
                         ['id' => 302010402
+                            ,'title' => '创建考试向导 Setp1 修改'
+                            ,'name' => 'kaoshi/index/editSetp1'
+                            ,'paixu' => 1
+                            ,'pid' => 3020104
+                        ],
+                        ['id' => 302010403
                             ,'title' => '创建考试向导 Setp2'
                             ,'name' => 'kaoshi/index/createSetp2'
                             ,'paixu' => 2
                             ,'pid' => 3020104
                         ],
-                        ['id' => 302010403
+                        ['id' => 302010404
                             ,'title' => '创建考试向导 Setp3'
                             ,'name' => 'kaoshi/index/createSetp3'
                             ,'paixu' => 3
@@ -351,7 +357,7 @@ class Rule extends Seeder
                             ,'paixu' => 3
                             ,'pid' => 3020105
                         ],
-                    
+
                 ['id' => 30203
                     ,'title' => '成绩统计'
                     ,'name' => 'santongji'

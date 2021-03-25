@@ -168,16 +168,10 @@ layui.extend({
 		},
 
 		// 查询老师
-		searchTeacher: function(id, data, radio = false, name = '') {
+		searchTeacher: function(id, radio = false, name = '') {
 			if (name == '') {
 				name = id;
 			}
-			var school_id = '';
-			var mydiv = $('#' + id);
-
-			school_id = mydiv.eq(0);
-			console.log(school_id);
-
 			x = xmSelect.render({
 				el: '#' + id,
 				name: name,
@@ -185,7 +179,7 @@ layui.extend({
 				toolbar: { show: true },
 				filterable: true,
 				remoteSearch: true,
-				tips: '请选择教师',
+				// tips: '请选择教师',
 				theme: {
 					color: '#1cbbb4',
 				},
@@ -221,7 +215,10 @@ layui.extend({
 					$.ajax({
 						url: '/admin/index/srcteacher',
 						type: 'POST',
-						data: data,
+						data: {
+              school_id:$($('#' + id)[0]).attr('school_id'),
+              searchval: val,
+            },
 						success: function(result) {
 							cb(result.data)
 						},
@@ -248,7 +245,7 @@ layui.extend({
 				toolbar: { show: true },
 				filterable: true,
 				remoteSearch: true,
-				tips: '请选择教师',
+				// tips: '请选择教师',
 				theme: {
 					color: '#1cbbb4',
 				},
@@ -287,8 +284,7 @@ layui.extend({
 						type: 'POST',
 						data: {
 							searchval: val,
-							banji_id: 1,
-							kaoshi: 1
+							banji_id: $($('#' + id)[0]).attr('banji_id'),
 						},
 						success: function(result) {
 							cb(result.data);
@@ -529,9 +525,9 @@ layui.extend({
 					temp = "";
 					$(result.data).each(function(i, el) {
 						if (value != '' && value == el.id) {
-							temp = '<option value="' + el.id + '" selected>' + el.banTitle + '</option>';
+							temp = '<option value="' + el.id + '" paixu="'+ el.paixu +'" selected>' + el.banTitle + '</option>';
 						} else {
-							temp = '<option value="' + el.id + '">' + el.banTitle + '</option>';
+							temp = '<option value="' + el.id + '" paixu="'+ el.paixu +'">' + el.banTitle + '</option>';
 						}
 						str = str + temp;
 					});

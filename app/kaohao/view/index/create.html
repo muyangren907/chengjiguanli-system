@@ -28,7 +28,7 @@
 		<label for="student_id" class="layui-form-label">
 			<span class="x-red">*</span>学生姓名
 		</label>
-		<div class="layui-input-block" id="student_id" banji_id="">
+		<div class="layui-input-block" id="student_id" banji_id="0">
 		</div>
 	</div>
 	<input type="hidden" name="nianji" id="nianji" value="{$list.set.nianji|default=''}">
@@ -72,7 +72,8 @@ layui.use(['form', 'canyuKaoshi', 'createInput'], function() {
 	// 监听学校下拉菜单
 	form.on('select(bj)', function(data) {
 		data = form.val("myform");
-		$('#paixu').val(data.banji);
+		$('#paixu').val($('#banji_id option:selected').attr('paixu'));
+    $('#student_id').attr('banji_id', data.banji_id);
 	});
 
 });
