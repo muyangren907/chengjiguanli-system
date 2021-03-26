@@ -261,6 +261,7 @@ class Bjtongji extends AdminBase
         $sheet->getPageSetup()->setHorizontalCentered(true);  # 打印居中
         $sheet->getPageSetup()->setVerticalCentered(false);
 
+
         // 保存文件
         $filename = $tabletitle.date('ymdHis').'.xlsx';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');

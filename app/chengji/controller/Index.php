@@ -303,7 +303,7 @@ class Index extends AdminBase
             }
         }
 
-        $sheet->setCellValue($colname[$i] . '3', '平均分');
+        $sheet->setCellValue($colname [$i]. '3', '平均分');
         $i ++;
         $sheet->setCellValue($colname[$i] . '3', '总分');
         $sheet->mergeCells('A1:' . $colname[$i] . '1');   # 合并标题行
@@ -342,12 +342,12 @@ class Index extends AdminBase
                 if(isset($value[$val['lieming'] . 'defen']))
                 {
                     $sheet->setCellValue($colname[$i] . $row_temp, $value[$val['lieming'] . 'defen']);
-                    $i++;
                     foreach ($tjxm_left as $tjxml_k => $tjxml_v) {
                         $sheet->setCellValue($colname[$i] . $row_temp, $value[$val['lieming'] . $tjxml_v['biaoshi']]);
                         $i++;
                     }
                 }
+                $i++;
             }
             $sheet->setCellValue($colname[$i] . $row_temp, $value['avg']);
             $i++;
@@ -592,7 +592,7 @@ class Index extends AdminBase
             $sheet->mergeCells('C' . ($row + 1) . ':' . 'C' . ($row + $rows)); # 输入学科名
             $sheet->setCellValue('C' . ($row + 1), $this->hideName($value['student_xingming']));
             $sheet->setCellValue('D' . $row, '学科');
-            $sheet->setCellValue('E' . $row, '得分');
+            $sheet->setCellValue('E' . $row, '成绩');
             $col = 5;
             foreach ($tjxm_stu as $tjxmstu_k => $tjxmstu_v) {
                 $sheet->setCellValue($colname[$col] . $row, $tjxmstu_v['title']);
