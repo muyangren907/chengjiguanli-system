@@ -22,7 +22,7 @@ class Banji extends BaseModel
         $src['ruxuenian'] = strToarray($src['ruxuenian']);
         if(count($src['ruxuenian']) == 0)
         {
-            $njname = $this->gradeName('num', time());     # 年级名对应表
+            $njname = $this->gradeName(time(),'num');     # 年级名对应表
             $src['ruxuenian'] = array_values($njname);
         }
 
@@ -120,7 +120,7 @@ class Banji extends BaseModel
     public function getNumTitleAttr()
     {
     	// 获取基础信息
-        $njname = $this->gradeName('str', time());     # 年级名对应表
+        $njname = $this->gradeName(time(), 'str');     # 年级名对应表
     	$nj = $this->getAttr('ruxuenian');
     	$bj = $this->getAttr('paixu');
         $numnj = array_flip(array_keys($njname));
@@ -244,7 +244,7 @@ class Banji extends BaseModel
     public function srcBanJiID($str, $school_id)
     {
         // 获取年级、班级列表
-        $njlist = $this->gradeName('str', time());
+        $njlist = $this->gradeName(time(),'str');
         $bjlist = $this->className();
 
         $len = strlen($str);
@@ -297,7 +297,7 @@ class Banji extends BaseModel
     public function fClassTitle($grade = 1950, $jiedian = 0, $paixu = 1, $category = true)
     {
         //获取班级、年级列表
-        $njlist = $this->gradeName('str', $jiedian);
+        $njlist = $this->gradeName($jiedian,'str');
         $title = '';
         if( isset($njlist[$grade]) )
         {
