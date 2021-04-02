@@ -337,31 +337,34 @@ class OneStudentChengji extends BaseModel
         $src['banji_id'] = $khInfo->banji_id;
         $data = $cj->search($src);
         $data = sortArrByManyField($data, 'sum', SORT_DESC);
-        $data = array_column($data, 'id');
-        $rank = array_search($src['kaohao_id'], $data);
-        $paixu['ban']['paixu'] = $rank;
-        $paixu['ban']['weizhi'] = round(($rank + 1) / count($data) * 100, 0);
+        $data = array_column($data, 'sum', 'id');
+        $rank = \app\facade\Tools::paiwei($data, $src['kaohao_id']);
+        $paixu['ban']['paixu'] = $rank['rank'];
+        $paixu['ban']['weizhi'] = $rank['weizhi'];
         // 获取区位置
         $cy = new \app\kaohao\model\SearchCanYu;
         $src['banji_id'] = array_column($cy->class($src), 'id');
         $data = $cj->search($src);
         $data = sortArrByManyField($data, 'sum', SORT_DESC);
-        $data = array_column($data, 'id');
-        $rank = array_search($src['kaohao_id'], $data);
-        $paixu['qu']['paixu'] = $rank;
-        $paixu['qu']['weizhi'] = round(($rank + 1) / count($data) * 100, 0);
+        $data = array_column($data, 'sum', 'id');
+        $rank = \app\facade\Tools::paiwei($data, $src['kaohao_id']);
+        $paixu['qu']['paixu'] = $rank['rank'];
+        $paixu['qu']['weizhi'] = $rank['weizhi'];
         // 获取年级位置
         $src['school_id'] = $khInfo->school_id;
         $src['banji_id'] = array_column($cy->class($src), 'id');
         $data = $cj->search($src);
         $data = sortArrByManyField($data, 'sum', SORT_DESC);
-        $data = array_column($data, 'id');
-        $rank = array_search($src['kaohao_id'], $data);
-        $paixu['xiao']['paixu'] = $rank;
-        $paixu['xiao']['weizhi'] = round(($rank + 1) / count($data) * 100, 0);
+        $data = array_column($data, 'sum', 'id');
+        $rank = \app\facade\Tools::paiwei($data, $src['kaohao_id']);
+        $paixu['xiao']['paixu'] = $rank['rank'];
+        $paixu['xiao']['weizhi'] = $rank['weizhi'];
 
         return $paixu;
     }
+
+
+
 
 
     // 该学生本次考试各学科成绩仪表图
@@ -580,7 +583,7 @@ class OneStudentChengji extends BaseModel
 
 
         $str = $xingming . '同学，你在《'.$ksTitle.'》'.$kslx.'中参加了' . $subjectCnt . '个学科的成绩测试，';
-        $str = $str . '从总分上看你的成绩' .$zpx. '。' . $xkdb . $xbbanjidb;
+        $str = $str . $zpx . $xkdb . $xbbanjidb;
         $str = $str . $lastdb;
         return $str;
     }
@@ -619,13 +622,18 @@ class OneStudentChengji extends BaseModel
             case $zfPaixu >= 25:
                 $zpx = '离合格还差一些';
                 break;
+            case $zfPaixu > 10:
+                $zpx = '有无限潜力';
+                break;
             case $zfPaixu >= 0:
-                $zpx = '还有很大提升空间';
+                $zpx = '需要奋起直追';
                 break;
             default:
                 $zpx = '还不错';
                 break;
         }
+
+        $zpx = '从总分上看你的成绩' .$zpx. '。' ;
 
         return $zpx;
     }
@@ -752,7 +760,6 @@ class OneStudentChengji extends BaseModel
                 $zhengfu['zheng'] ++;
             }
         }
-        $bjdbpy = '与班级平均分对比，'; #与班级平均分对比结果
         $cjCnt = count($src['cj']);
         $zheng = '';
         $ling = '';
@@ -874,7 +881,12 @@ class OneStudentChengji extends BaseModel
             $py = $py . $fu . '。';
         }
 
-        return $bjdbpy . $py;
+        if(strlen($py) > 0)
+        {
+            $py = '与班级平均分对比，'. $py;
+        }
+
+        return $py;
     }
 
 

@@ -164,4 +164,5 @@ class OneStudentChengji extends BaseController
 
         return json($data);
     }
+
 }

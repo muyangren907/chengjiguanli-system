@@ -207,23 +207,29 @@ class Chengji extends BaseModel
         }
 
         arsort($cj);
-        $khids = array_keys($cj);   # 获取考号即键值
         $data = array();    # 新数据容器
-        $mc = 1;
-
-        foreach ($khids as $key => $value) {
+        $last = '-a';
+        $rank = 0;
+        $i = 0;
+        foreach ($cj as $key => $value) {
+            $i ++;  # 记录现在记录个数
+            if($last != $value)  # 如果当前值与上一个值不相等，名次等于当前记录号,否则与上一条记录相同
+            {
+                $rank = $i;
+            }
+            $last = $value;
             if($cnt == 1)
             {
                 $data[$key]['id'] = $value;
                 $data[$key][$col[0]] = 1;
                 $data[$key][$col[1]] = 100;
             }else{
-                $data[$key]['id'] = $value;
-                $data[$key][$col[0]] = $mc;
-                $data[$key][$col[1]] = round(($cnt - $mc) / ($cnt - 1) * 100, 2);
+                $data[$key]['id'] = $key;
+                $data[$key][$col[0]] = $rank;
+                $data[$key][$col[1]] = round(($cnt - $rank) / ($cnt - 1) * 100, 2);
             }
-            $mc++;
         }
+
         $temp = $this->saveAll($data);
 
         return true;

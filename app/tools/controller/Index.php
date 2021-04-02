@@ -297,4 +297,46 @@ class Index extends BaseController
         return $njList;
     }
 
+
+    // 根据成绩算排序和位置,在统计学生各学科成绩总分排序中使用
+    public function paiwei($cj, $cjkey)
+    {
+        $rank = 0;
+        $last = '-a';
+        $i = 0;
+        $cnt = count($cj);
+        $cjkey = $cjkey * 1;
+        if($cnt <= 0)
+        {
+            $data = [
+                'rank' => 0
+                ,'weizhi' => 0
+            ];
+        } else if($cnt == 1) {
+            $data = [
+                'rank' => 1
+                ,'weizhi' => 100
+            ];
+        }else{
+            arsort($cj);
+            foreach ($cj as $k => $value) {
+                $i ++;
+                if($last != $value)
+                {
+                    $rank = $i;
+                }
+                if($k == $cjkey)
+                {
+                    break;
+                }
+                $last = $value;
+            }
+            $data = [
+                'rank' => $rank
+                ,'weizhi' => round(($cnt - $rank) / ($cnt - 1) * 100, 0)
+            ];
+        }
+        return $data;
+    }
+
 }

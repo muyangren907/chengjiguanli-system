@@ -594,6 +594,7 @@ class TongjiBj extends BaseModel
                     'kaoshi_id' => $kaoshi_id,
                     'banji_id' => $val['id'],
                 ];
+
                 $temp = $more->srcChengjiSubject($srcfrom);
 
                 // 循环计算成绩排序
