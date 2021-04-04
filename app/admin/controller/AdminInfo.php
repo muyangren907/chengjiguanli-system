@@ -6,6 +6,8 @@ use app\base\controller\AdminBase;
 
 // 引用用户数据模型
 use app\admin\model\Admin as AD;
+// 引用加密类
+use WhiteHat101\Crypt\APR1_MD5;
 
 class AdminInfo extends AdminBase
 {
@@ -50,7 +52,7 @@ class AdminInfo extends AdminBase
             'webtitle' => '修改密码'
             ,'butname' => '修改'
             ,'formpost' => 'PUT'
-            ,'url' => '/admin/index/updatepassword/' . session('user_id')
+            ,'url' => '/admin/info/updatepassword/' . session('user_id')
         );
 
         // 模板赋值

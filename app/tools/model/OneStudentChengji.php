@@ -582,7 +582,7 @@ class OneStudentChengji extends BaseModel
         $lastdb = $this->lastDb($src['kaohao_id']);
 
 
-        $str = $xingming . '同学，你在《'.$ksTitle.'》'.$kslx.'中参加了' . $subjectCnt . '个学科的成绩测试，';
+        $str = $xingming . '同学，你在《'.$ksTitle.'》'.$kslx.'中参加了' . $subjectCnt . '个学科的成绩测试。';
         $str = $str . $zpx . $xkdb . $xbbanjidb;
         $str = $str . $lastdb;
         return $str;
@@ -601,39 +601,43 @@ class OneStudentChengji extends BaseModel
 
         // 获取本次总分位置
         $zfPaixu = $this->zfPaixu($src);
-        $zfPaixu = $zfPaixu['ban']['weizhi'];
         $zpx = '';
-        switch ($zfPaixu) {
-            case $zfPaixu >= 90:
-                $zpx = '特别优秀';
-                break;
-            case $zfPaixu >= 80:
-                $zpx = '很优秀';
-                break;
-            case $zfPaixu >= 70:
-                $zpx = '良好';
-                break;
-            case $zfPaixu >= 60:
-                $zpx = '合格';
-                break;
-            case $zfPaixu >= 45:
-                $zpx = '差一点就合格啦';
-                break;
-            case $zfPaixu >= 25:
-                $zpx = '离合格还差一些';
-                break;
-            case $zfPaixu > 10:
-                $zpx = '有无限潜力';
-                break;
-            case $zfPaixu >= 0:
-                $zpx = '需要奋起直追';
-                break;
-            default:
-                $zpx = '还不错';
-                break;
-        }
+        if($zfPaixu['sum'] > 0)
+        {
+            $zfPaixu = $zfPaixu['ban']['weizhi'];
+            switch ($zfPaixu) {
+                case $zfPaixu >= 90:
+                    $zpx = '特别优秀';
+                    break;
+                case $zfPaixu >= 80:
+                    $zpx = '很优秀';
+                    break;
+                case $zfPaixu >= 70:
+                    $zpx = '良好';
+                    break;
+                case $zfPaixu >= 60:
+                    $zpx = '合格';
+                    break;
+                case $zfPaixu >= 45:
+                    $zpx = '差一点就合格啦';
+                    break;
+                case $zfPaixu >= 25:
+                    $zpx = '离合格还差一些';
+                    break;
+                case $zfPaixu > 10:
+                    $zpx = '有无限潜力';
+                    break;
+                case $zfPaixu >= 0:
+                    $zpx = '需要奋起直追';
+                    break;
+                default:
+                    $zpx = '还不错';
+                    break;
+            }
 
-        $zpx = '从总分上看你的成绩' .$zpx. '。' ;
+            $zpx = '从总分上看你的成绩' .$zpx. '。' ;
+        }
+        
 
         return $zpx;
     }
