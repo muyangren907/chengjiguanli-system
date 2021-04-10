@@ -28,25 +28,10 @@
 		</div>
 	</div>
 	<div class="layui-form-item">
-		<label for="bianhao" class="layui-form-label">
-			课题编号
-		</label>
-		<div class="layui-input-block">
-			<input class="layui-input" type="text" value="{$list.data.bianhao|default=''}" placeholder="课题编号" disabled>
-		</div>
-	</div>
-	<div class="layui-form-item">
 		<label for="teacher_name" class="layui-form-label">
-			主持人
-		</label>
-		<div class="layui-input-block" id="teacher_id" school_id="">
-		</div>
-	</div>
-	<div class="layui-form-item">
-		<label for="canyu_name" class="layui-form-label">
 			参与人
 		</label>
-		<div class="layui-input-block" id="canyu_id" school_id="">
+		<div class="layui-input-block" id="teacher_id" school_id="{$list.data.school_id|default=''}">
 		</div>
 	</div>
 	<div class="layui-form-item">
@@ -101,19 +86,16 @@ layui.use(['laydate', 'mytable', 'createInput'], function() {
 	cInput.uploadPic('upload', "/rongyu/danwei/upload", '课题', 'keti\\jieti', 'jtpic');
 
 	// 搜索教师
-	xmselectzc = cInput.searchTeacher('teacher_id');
-	xmselectcy = cInput.searchTeacher('canyu_id');
+	xmselect = cInput.searchTeacher('teacher_id');
 
 	// 添加已有表单值
 	formpost = "{$list.set.formpost|default=''}".toLocaleUpperCase();
 	if (formpost == 'PUT') {
 		data = {
 			ketiinfo_id: "{$list.data.id}",
-			category_id: 11901
+			category_id: 11902
 		}
-		cInput.loadTeacher(xmselectzc, '/keti/info/srccy', data);
-		data.category_id = 11902;
-		cInput.loadTeacher(xmselectcy, '/keti/info/srccy', data);
+		cInput.loadTeacher(xmselect, '/keti/info/srccy', data);
 	}
 
 });

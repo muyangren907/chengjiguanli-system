@@ -1602,52 +1602,52 @@ class Rule extends Seeder
             ],
             /*====================================*/
             ['id' => 901
-                ,'title' => '课题册'
-                ,'name' => 'keti/ketice/index'
+                ,'title' => '立项列表'
+                ,'name' => 'keti/lixiang/index'
                 ,'paixu' => 1
                 ,'ismenu'  => 1
                 ,'pid'  => 9
-                ,'url' => '/keti/ketice'
+                ,'url' => '/keti/lixiang'
             ],
                 ['id' => 90101
                     ,'title' => '添加'
-                    ,'name' => 'keti/ketice/create'
+                    ,'name' => 'keti/lixiang/create'
                     ,'paixu'  => 1
                     ,'pid' => 901
                 ],
                 ['id' => 90102
                     ,'title' => '保存'
-                    ,'name' => 'keti/ketice/save'
+                    ,'name' => 'keti/lixiang/save'
                     ,'paixu'  => 2
                     ,'pid' => 901
                 ],
                 ['id' => 90103
                     ,'title' => '删除'
-                    ,'name' => 'keti/ketice/delete'
+                    ,'name' => 'keti/lixiang/delete'
                     ,'paixu' => 3
                     ,'pid' => 901
                 ],
                 ['id' => 90104
                     ,'title' => '编辑'
-                    ,'name' => 'keti/ketice/edit'
+                    ,'name' => 'keti/lixiang/edit'
                     ,'paixu' => 4
                     ,'pid' => 901
                 ],
                 ['id' => 90105
                     ,'title' => '更新'
-                    ,'name' => 'keti/ketice/update'
+                    ,'name' => 'keti/lixiang/update'
                     ,'paixu'  => 5
                     ,'pid' => 901
                 ],
                 ['id' => 90106
                     ,'title' => '查看'
-                    ,'name' => 'keti/ketice/read'
+                    ,'name' => 'keti/lixiang/read'
                     ,'paixu' => 6
                     ,'pid' => 901
                 ],
                 ['id' => 90107
                     ,'title' => '状态'
-                    ,'name' => 'keti/ketice/setstatus'
+                    ,'name' => 'keti/lixiang/setstatus'
                     ,'paixu' => 7
                     ,'pid' => 901
                 ],
@@ -1660,7 +1660,7 @@ class Rule extends Seeder
             ['id' => 902
                 ,'title' => '课题列表'
                 ,'name' => 'keti/ketiinfo/index'
-                ,'paixu' => 2
+                ,'paixu' => 3
                 ,'ismenu'  => 1
                 ,'pid'  => 9
                 ,'url' => '/keti/ketiinfo'
@@ -1733,9 +1733,15 @@ class Rule extends Seeder
                     ,'pid' => 902
                 ],
                 ['id' => 90212
+                    ,'title' => '结题删除'
+                    ,'name' => 'keti/ketiinfo/deletejieti'
+                    ,'paixu' => 12
+                    ,'pid' => 902
+                ],
+                ['id' => 90213
                     ,'title' => '下载'
                     ,'name' => 'keti/ketiinfo/outxlsx'
-                    ,'paixu' => 12
+                    ,'paixu' => 13
                     ,'pid' => 902
                 ],
                 ['id' => 200000000
@@ -1745,14 +1751,28 @@ class Rule extends Seeder
                     ,'pid' => 902
                     ,'status' => 0
                 ],
-            // ['id' => 903
-            //     ,'title' => '课题统计'
-            //     ,'name' => 'keti/ketiinfo/tongji'
-            //     ,'paixu' => 3
-            //     ,'ismenu'  => 1
-            //     ,'pid'  => 9
-            //     ,'url' => '/keti/ketiinfo/tongji'
-            // ],
+            ['id' => 903
+                ,'title' => '结题列表'
+                ,'name' => 'keti/jieti/index'
+                ,'paixu' => 2
+                ,'ismenu'  => 1
+                ,'pid'  => 9
+                ,'url' => '/keti/jieti'
+            ],
+                ['id' => 90301
+                    ,'title' => '添加'
+                    ,'name' => 'keti/jieti/create'
+                    ,'paixu'  => 1
+                    ,'pid' => 901
+                ],
+            ['id' => 904
+                ,'title' => '课题统计'
+                ,'name' => 'keti/ketiinfo/tongji'
+                ,'paixu' => 4
+                ,'ismenu'  => 1
+                ,'pid'  => 9
+                ,'url' => '/keti/ketiinfo/tongji'
+            ],
         ];
 
         $this->execute('DELETE FROM cj_auth_rule where id>0');

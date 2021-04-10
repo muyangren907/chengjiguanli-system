@@ -6,9 +6,9 @@ namespace app\keti\controller;
 use app\base\controller\AdminBase;
 
 // 引用课题数据模型
-use app\keti\model\Keti as keti;
+use app\keti\model\Lixiang as lx;
 
-class Ketice extends AdminBase
+class Lixiang extends AdminBase
 {
     /**
      * 显示资源列表
@@ -19,8 +19,8 @@ class Ketice extends AdminBase
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = '课题册列表';
-        $list['dataurl'] = '/keti/ketice/data';
-        $list['status'] = '/keti/ketice/data';
+        $list['dataurl'] = '/keti/lixiang/data';
+        $list['status'] = '/keti/lixiang/data';
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -50,11 +50,35 @@ class Ketice extends AdminBase
             ], 'POST');
 
         // 根据条件查询数据
-        $keti = new keti;
+        $keti = new lx;
         $data = $keti->search($src);
         $data = reSetObject($data, $src);
 
         return json($data);
+    }
+
+
+    /**
+     * 显示指定的资源
+     *
+     * @param  int  $id
+     * @return \think\Response
+     */
+    public function list($lixiang_id)
+    {
+
+        $kt = new lx;
+        // 设置要给模板赋值的信息
+        $list['webtitle'] = $kt->where('id', $lixiang_id)->value('title') . ' 列表';
+        $list['lixiang_id'] = $lixiang_id;
+        $list['dataurl'] = '/keti/info/data';
+        $list['status'] = '/keti/info/status';
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+
+        // 渲染模板
+        return $this->view->fetch();
     }
 
 
@@ -105,7 +129,7 @@ class Ketice extends AdminBase
         }
 
         // 保存数据
-        $data = keti::create($list);
+        $data = lx::create($list);
         $data ? $data = ['msg' => '添加成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
@@ -123,7 +147,7 @@ class Ketice extends AdminBase
     public function edit($id)
     {
         // 获取荣誉册信息
-        $list['data'] = keti::where('id', $id)
+        $list['data'] = lx::where('id', $id)
                 ->field('id, title, category_id, lxshijian, lxdanwei_id')
                 ->find();
 
@@ -132,7 +156,7 @@ class Ketice extends AdminBase
             'webtitle' => '编辑课题册'
             ,'butname' => '修改'
             ,'formpost' => 'PUT'
-            ,'url' => '/keti/ketice/update/' . $id
+            ,'url' => '/keti/lixiang/update/' . $id
         );
 
         // 模板赋值
@@ -169,7 +193,7 @@ class Ketice extends AdminBase
         }
 
         // 更新数据
-        $data = keti::update($list);
+        $data = lx::update($list);
         $data ? $data = ['msg' => '更新成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
@@ -190,7 +214,7 @@ class Ketice extends AdminBase
         $id = request()->delete('id');
         $id = explode(',', $id);
 
-        $data = keti::destroy($id);
+        $data = lx::destroy($id);
         $data ? $data = ['msg' => '删除成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
@@ -207,7 +231,7 @@ class Ketice extends AdminBase
         $value = request()->post('value');
 
         // 获取学生信息
-        $data = keti::where('id', $id)->update(['status' => $value]);
+        $data = lx::where('id', $id)->update(['status' => $value]);
 
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '状态设置成功', 'val' => 1]

@@ -45,7 +45,7 @@
 		</select>
 	</div>
 </div>
-<input type="hidden" name="ketice_id" value="{$list.ketice_id}">
+<input type="hidden" name="lixiang_id" value="{$list.lixiang_id}">
 <div class="layui-form-item" style="text-align: right;">
 	<button class="layui-btn" lay-filter="searchSubmit" lay-submit="">搜索</button>
 </div>
@@ -186,13 +186,13 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 		switch (obj.event) {
 			case 'dels':
 				var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-				mytable.delAll(checkStatus, '/keti/ketiinfo/delete', 'mytable');
+				mytable.delAll(checkStatus, '/keti/info/delete', 'mytable');
 				break;
 			case 'add':
-				xadmin.open('添加课题', '/keti/ketiinfo/create/' + "{$list.ketice_id}", '', '', true);
+				xadmin.open('添加课题', '/keti/info/create/' + "{$list.lixiang_id}", '', '', true);
 				break;
 			case 'download':
-				xadmin.open('下载课题信息', '/keti/ketiinfo/download/' + "{$list.ketice_id}", '600', '400', false);
+				xadmin.open('下载课题信息', '/keti/info/download/' + "{$list.lixiang_id}", '600', '400', false);
 				break;
 		};
 	});
@@ -204,13 +204,13 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 		var tr = obj.tr; //获得当前行 tr 的DOM对象
 		switch (layEvent) {
 			case 'del': // 删除
-				mytable.del(obj, "/keti/ketiinfo/delete");
+				mytable.del(obj, "/keti/info/delete");
 				break;
 			case 'edit': // 编辑
-				xadmin.open('编辑课题', '/keti/ketiinfo/edit/' + obj.data.id, '', '', true);
+				xadmin.open('编辑课题', '/keti/info/edit/' + obj.data.id, '', '', true);
 				break;
 			case 'jieti': // 结题
-				xadmin.open('结题', '/keti/ketiinfo/jieti/' + obj.data.id, '', '', true);
+				xadmin.open('结题', '/keti/info/jieti/' + obj.data.id, '', '', true);
 				break;
 		};
 	});

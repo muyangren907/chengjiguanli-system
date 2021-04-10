@@ -49,7 +49,7 @@ layui.use(['laydate', 'createInput'], function() {
 
 	// 加载菜单
 	cInput.categorySelect('category_id', 115, "{$list.data.category_id|default=''}");
-	cInput.schoolSelect('lxdanwei_id', '校级', '区级', "{$list.data.lxdanwei_id|default=''}");
+	cInput.schoolSelect('lxdanwei_id', '区级', '其它级', "{$list.data.lxdanwei_id|default=''}");
 
 	//执行一个laydate实例
 	laydate.render({

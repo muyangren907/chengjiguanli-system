@@ -25,8 +25,8 @@ class KetiInfo extends AdminBase
     {
         // 设置要给模板赋值的信息
         $list['webtitle'] = '课题列表';
-        $list['dataurl'] = '/keti/ketiinfo/data';
-        $list['status'] = '/keti/ketiinfo/status';
+        $list['dataurl'] = '/keti/info/data';
+        $list['status'] = '/keti/info/status';
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -34,31 +34,6 @@ class KetiInfo extends AdminBase
         // 渲染模板
         return $this->view->fetch();
     }
-
-
-    /**
-     * 显示指定的资源
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function ketiList($ketice_id)
-    {
-
-        $kt = new \app\keti\model\Keti;
-        // 设置要给模板赋值的信息
-        $list['webtitle'] = $kt->where('id', $ketice_id)->value('title') . ' 列表';
-        $list['ketice_id'] = $ketice_id;
-        $list['dataurl'] = '/keti/ketiinfo/data';
-        $list['status'] = '/keti/ketiinfo/status';
-
-        // 模板赋值
-        $this->view->assign('list', $list);
-
-        // 渲染模板
-        return $this->view->fetch();
-    }
-
 
     /**
      * 显示课题信息列表
@@ -70,18 +45,19 @@ class KetiInfo extends AdminBase
         // 获取参数
         $src = $this->request
                 ->only([
-                    'page'=>'1'
-                    ,'limit'=>'10'
-                    ,'field'=>'update_time'
-                    ,'order'=>'desc'
-                    ,'lxdanwei_id'=>array()
-                    ,'lxcategory_id'=>array()
-                    ,'fzdanwei_id'=>array()
-                    ,'subject_id'=>array()
-                    ,'category_id'=>array()
-                    ,'jddengji_id'=>array()
-                    ,'ketice_id'=>''
-                    ,'searchval'=>''
+                    'page' => '1'
+                    ,'limit' => '10'
+                    ,'field' => 'update_time'
+                    ,'order' => 'desc'
+                    ,'lxdanwei_id' => array()
+                    ,'lxcategory_id' => array()
+                    ,'fzdanwei_id' => array()
+                    ,'subject_id' => array()
+                    ,'category_id' => array()
+                    ,'jddengji_id' => array()
+                    ,'lixiang_id' => ''
+                    ,'jieti_id' => ''
+                    ,'searchval' => ''
                 ],'POST');
 
         // 实例化
@@ -98,15 +74,15 @@ class KetiInfo extends AdminBase
      *
      * @return \think\Response
      */
-    public function create($ketice_id=0)
+    public function create($lixiang_id=0)
     {
         // 设置页面标题
         $list['set'] = array(
             'webtitle'=>'添加课题册',
             'butname'=>'添加',
             'formpost'=>'POST',
-            'url'=>'/keti/ketiinfo/save',
-            'ketice_id'=>$ketice_id
+            'url'=>'/keti/info/save',
+            'lixiang_id'=>$lixiang_id
         );
 
         // 模板赋值
@@ -126,7 +102,7 @@ class KetiInfo extends AdminBase
     {
         // 获取表单数据
         $list = request()->only([
-            'ketice_id'
+            'lixiang_id'
             ,'title'
             ,'bianhao'
             ,'fzdanwei_id'
@@ -176,14 +152,14 @@ class KetiInfo extends AdminBase
 
 
     // 批量上传立项通知书
-    public function createAll($ketice_id)
+    public function createAll($lixiang_id)
     {
         // 设置页面标题
         $list['set'] = array(
             'webtitle'=>'批量添加课题信息,'
             ,'butname'=>'批传'
             ,'formpost'=>'POST'
-            ,'url'=>'/keti/ketiinfo/saveall/' . $ketice_id
+            ,'url'=>'/keti/info/saveall/' . $lixiang_id
         );
 
         // 模板赋值
@@ -194,7 +170,7 @@ class KetiInfo extends AdminBase
 
 
     // 批量保存图片
-    public function saveAll($ketice_id)
+    public function saveAll($lixiang_id)
     {
         // 获取表单数据
         $list = request()->only([
@@ -215,7 +191,7 @@ class KetiInfo extends AdminBase
         $data = ktinfo::create([
             'lxpic' => $data['url']
             ,'title' => '批传立项'
-            ,'ketice_id' => $ketice_id
+            ,'lixiang_id' => $lixiang_id
         ]);
 
         $data ? $data = ['msg' => '批传成功', 'val' => 1]
@@ -253,7 +229,7 @@ class KetiInfo extends AdminBase
             'webtitle'=>'编辑课题',
             'butname'=>'修改',
             'formpost'=>'PUT',
-            'url'=>'/keti/ketiinfo/update/' . $id,
+            'url'=>'/keti/info/update/' . $id,
         );
 
         // 模板赋值
@@ -280,7 +256,7 @@ class KetiInfo extends AdminBase
             ,'subject_id'
             ,'category_id'
             ,'jhjtshijian'
-            ,'hjteachers'
+            ,'teacher_id'
             ,'lxpic'
         ], 'PUT');
         $list['id'] = $id;
@@ -299,7 +275,8 @@ class KetiInfo extends AdminBase
         // 声明教师数组
             $teacherlist = [];
             // 循环组成获奖教师信息
-            foreach ($list['hjteachers'] as $key => $value) {
+            $list['teacher_id'] = explode(',', $list['teacher_id']);
+            foreach ($list['teacher_id'] as $key => $value) {
                 $canyulist[] = [
                     'teacher_id' => $value
                     ,'category_id' => 11901
@@ -362,7 +339,7 @@ class KetiInfo extends AdminBase
     {
         // 获取课题信息
         $list['data'] = ktinfo::where('id', $id)
-                ->field('id, title, jddengji_id, jtshijian, jtpic,beizhu')
+                ->field('id, bianhao, title, jddengji_id, jtshijian, jtpic,beizhu')
                 ->find();
 
         // 设置页面标题
@@ -370,7 +347,7 @@ class KetiInfo extends AdminBase
             'webtitle'=>'编辑结题'
             ,'butname'=>'修改'
             ,'formpost'=>'PUT'
-            ,'url'=>'/keti/ketiinfo/jietiupdate/' . $id
+            ,'url'=>'/keti/info/jietiupdate/' . $id
         );
 
         // 模板赋值
@@ -389,6 +366,7 @@ class KetiInfo extends AdminBase
             ,'jddengji_id'
             ,'jtshijian'
             ,'teacher_id'=>array()
+            ,'canyu_id'=>array()
             ,'beizhu'
         ], 'PUT');
         $list['id'] = $id;
@@ -408,12 +386,20 @@ class KetiInfo extends AdminBase
 
         // 删除原来的获奖人与参与人信息
         $data->ktCy->delete(true);
+        $data->ktZcr->delete(true);
         // 声明教师数组
             $teacherlist = [];
             $canyulist = [];
             // 循环组成获奖教师信息
             $list['teacher_id'] = explode(',', $list['teacher_id']);
             foreach ($list['teacher_id'] as $key => $value) {
+                $canyulist[] = [
+                    'teacher_id' => $value
+                    ,'category_id' => 11901
+                ];
+            }
+            $list['canyu_id'] = explode(',', $list['canyu_id']);
+            foreach ($list['canyu_id'] as $key => $value) {
                 $canyulist[] = [
                     'teacher_id' => $value
                     ,'category_id' => 11902
@@ -437,11 +423,50 @@ class KetiInfo extends AdminBase
     }
 
 
+    /**
+     * 删除指定资源
+     *
+     * @param  int  $id
+     * @return \think\Response
+     */
+    public function deleteJieti()
+    {
+
+        // 整理数据
+        $id = request()->delete('id');
+        $id = explode(',', $id);
+
+        $temp = [];
+        foreach ($id as $key => $value) {
+            $temp[] = [
+                'id' => $value
+                ,'jtshijian' => null
+                ,'jddengji_id' => 11801
+                ,'jtpic' => null
+                ,'jieti_id' => 0
+            ];
+        }
+
+        $ktinfo = new ktinfo;
+        $data = $ktinfo->saveAll($temp);
+        foreach ($data as $key => $value) {
+            $value->ktCy->delete(true);
+            $value->ktZcr->delete(true);
+        }
+
+        $data ? $data = ['msg' => '删除成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
     // 下载课题信息表
-    public function outXlsx($ketice_id)
+    public function outXlsx($lixiang_id)
     {
         $ketiinfo = new ktinfo();
-        $list = $ketiinfo->srcKeti($ketice_id);
+        $list = $ketiinfo->srcKeti($lixiang_id);
 
         if($list->isEmpty())
         {

@@ -6,7 +6,7 @@ namespace app\keti\model;
 use app\BaseModel;
 
 
-class Keti extends BaseModel
+class Lixiang extends BaseModel
 {
     //搜索课题册
     public function search($srcfrom)
@@ -67,7 +67,7 @@ class Keti extends BaseModel
     // 课题信息关联
     public function ktInfo()
     {
-    	return $this->hasMany('KetiInfo', 'ketice_id', 'id');
+    	return $this->hasMany('KetiInfo', 'lixiang_id', 'id');
     }
 
 

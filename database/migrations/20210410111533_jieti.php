@@ -3,7 +3,7 @@
 use think\migration\Migrator;
 use think\migration\db\Column;
 
-class Keti extends Migrator
+class Jieti extends Migrator
 {
     /**
      * Change Method.
@@ -29,14 +29,13 @@ class Keti extends Migrator
     public function change()
     {
         // 定义数据表名称
-        $table = $this->table('keti');
+        $table = $this->table('jieti');
 
         // 添加当前表字段
         $table
-            ->addColumn('title','string',['limit'=>100,'default'=>'a','null'=>false,'default'=>0,'comment'=>'课题册名称'])
-            ->addColumn('lxshijian','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'立项时间'])
-            ->addColumn('lxdanwei_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'立项单位id'])
-            ->addColumn('category_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'课题类型'])
+            ->addColumn('title','string',['limit'=>100,'default'=>'a','null'=>false,'default'=>0,'comment'=>'结题册名称'])
+            ->addColumn('shijian','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'结题时间'])
+            ->addColumn('danwei_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'结题单位id'])
             ->addColumn('create_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'更新时间'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])

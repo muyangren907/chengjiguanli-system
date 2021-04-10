@@ -17,7 +17,8 @@ class KetiInfo extends BaseModel
             ,'subject_id' => array()
             ,'category_id' => array()
             ,'jddengji_id' => array()
-            ,'ketice_id' => ''
+            ,'lixiang_id' => ''
+            ,'jieti_id' => ''
             ,'searchval' => ''
         ];
         // 用新值替换初始值
@@ -31,13 +32,13 @@ class KetiInfo extends BaseModel
 
     	$data = $this
     		->when(count($src['lxdanwei_id']) > 0, function($query) use($src){
-                	$query->where('ketice_id', 'in', function ($q) use($src){
-                        $q->name('keti')->where('lxdanwei_id', 'in', $src['lxdanwei_id'])->field('id');
+                	$query->where('lixiang_id', 'in', function ($q) use($src){
+                        $q->name('lixiang')->where('lxdanwei_id', 'in', $src['lxdanwei_id'])->field('id');
                     });
                 })
     		->when(count($src['lxcategory_id']) > 0, function($query) use($src){
-                	$query->where('ketice_id', 'in', function($q) use($src){
-                        $q->name('keti')->where('category_id', 'in', $src['lxcategory_id'])->field('id');
+                	$query->where('lixiang_id', 'in', function($q) use($src){
+                        $q->name('lixiang')->where('category_id', 'in', $src['lxcategory_id'])->field('id');
                     });
                 })
     		->when(count($src['fzdanwei_id']) > 0, function($query) use($src){
@@ -52,8 +53,11 @@ class KetiInfo extends BaseModel
             ->when(count($src['jddengji_id']) > 0, function($query) use($src){
                     $query->where('jddengji_id', 'in', $src['jddengji_id']);
                 })
-            ->when(strlen($src['ketice_id']) > 0, function($query) use($src){
-                    $query->where('ketice_id', $src['ketice_id']);
+            ->when(strlen($src['lixiang_id']) > 0, function($query) use($src){
+                    $query->where('lixiang_id', $src['lixiang_id']);
+                })
+            ->when(strlen($src['jieti_id']) > 0, function($query) use($src){
+                    $query->where('jieti_id', $src['jieti_id']);
                 })
     		->when(strlen($src['searchval']) > 0, function($query) use($src){
                 	$query->where('title|bianhao', 'like', '%' . $src['searchval'] . '%');
@@ -63,7 +67,7 @@ class KetiInfo extends BaseModel
                     'fzSchool' => function($query){
                         $query->field('id, jiancheng');
                     },
-                    'KtCe' => function($query){
+                    'glLixiang' => function($query){
                         $query->field('id, lxdanwei_id, category_id, lxshijian')
                             ->with([
                                 'ktCategory' => function($q){
@@ -138,7 +142,7 @@ class KetiInfo extends BaseModel
                 'ktJdDengji' => function($query){
                     $query->field('id, title');
                 },
-                'KtCe' => function($query){
+                'glLixiang' => function($query){
                     $query->field('id, lxdanwei_id, category_id, lxshijian')
                         ->with([
                             'ktCategory' => function($q){
@@ -153,7 +157,7 @@ class KetiInfo extends BaseModel
                         ]);
                 },
             ])
-            ->field('id, title, fzdanwei_id, category_id, jddengji_id, bianhao, ketice_id')
+            ->field('id, title, fzdanwei_id, category_id, jddengji_id, bianhao, lixiang_id')
             ->order('id')
             ->select();
 
@@ -162,16 +166,16 @@ class KetiInfo extends BaseModel
 
 
     //搜索课题册
-    public function srcKeti($ketice_id)
+    public function srcKeti($lixiang_id)
     {
         $data = $this
-            ->where('ketice_id', $ketice_id)
+            ->where('lixiang_id', $lixiang_id)
             ->with(
                 [
                     'fzSchool' => function($query){
                         $query->field('id, jiancheng');
                     },
-                    'KtCe' => function($query){
+                    'glLixiang' => function($query){
                         $query->field('id, title, lxdanwei_id, category_id, lxshijian')
                             ->with([
                                 'ktCategory' => function($q){
@@ -260,9 +264,9 @@ class KetiInfo extends BaseModel
 
 
     // 课题册关联
-    public function ktCe()
+    public function glLixiang()
     {
-         return $this->belongsTo('\app\keti\model\Keti', 'ketice_id', 'id');
+         return $this->belongsTo('\app\keti\model\Lixiang', 'lixiang_id', 'id');
     }
 
 

@@ -7,9 +7,9 @@ use app\BaseModel;
 class KetiCanyu extends BaseModel
 {
     // 课题册关联
-    public function keti()
+    public function glLixiang()
     {
-    	return $this->belongsTo('\app\keti\model\Keti', 'ketiinfo_id', 'id');
+    	return $this->belongsTo('\app\keti\model\Lixiang', 'ketiinfo_id', 'id');
     }
 
 
@@ -56,7 +56,7 @@ class KetiCanyu extends BaseModel
                                 }
                             ]);
                     },
-                    'keti' => function($query){
+                    'glLixiang' => function($query){
                         $query->field('id, title');
                     },
                 ]
@@ -89,7 +89,7 @@ class KetiCanyu extends BaseModel
                                 }
                             ]);
                     },
-                    'keti' => function($query){
+                    'glLixiang' => function($query){
                         $query->field('id, title');
                     },
                 ]

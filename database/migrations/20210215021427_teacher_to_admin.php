@@ -60,9 +60,7 @@ class TeacherToAdmin extends Migrator
             ->addColumn('fanwei_id','integer',['after' => 'category_id','limit'=>11,'default'=>0,'null'=>false,'comment'=>'允许查看范围ID'])
             ->update();
         }
-
-        $table = $this->table('cj_migrations');
-        $this->execute('DELETE FROM cj_migrations WHERE version="20210107070200" and migration_name="KaoshiAddUser"');
+        
 
         $table = $this->table('kaoshi_set');
         $column = $table->hasColumn('lianghao');
@@ -74,7 +72,25 @@ class TeacherToAdmin extends Migrator
                 ->addColumn('jigebi','integer',['after'=>'lianghaobi','limit'=>3,'default'=>00,'null'=>false,'comment'=>'及格人数比'])
                 ->update();
         }
-        
+
+        $exists = $this->hasTable('keti');
+        if ($exists) {
+            $table = $this->table('keti');
+            $table->rename('lixiang');
+        }
+
+        $table = $this->table('keti_info');
+        $column = $table->hasColumn('ketice_id');
+        if ($column) {
+            $table->renameColumn('ketice_id', 'lixiang_id');
+            $table
+                ->addColumn('jieti_id','integer',['after'=>'lixiang_id','limit'=>11,'null'=>false,'default'=>0,'comment'=>'结题册id'])
+                ->update();
+        }
+
+        $table = $this->table('cj_migrations');
+        $this->execute('DELETE FROM cj_migrations WHERE version="20210107070200" and migration_name="KaoshiAddUser"');
+        $this->execute('UPDATE cj_migrations set migration_name="Lixiang" WHERE version="20190218055858" and migration_name="Keti"');
     }
 
 
