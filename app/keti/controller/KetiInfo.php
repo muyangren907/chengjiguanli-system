@@ -350,6 +350,8 @@ class KetiInfo extends AdminBase
             ,'url'=>'/keti/info/jietiupdate/' . $id
         );
 
+        halt($list['data']->toArray());
+
         // 模板赋值
         $this->view->assign('list', $list);
         // 渲染

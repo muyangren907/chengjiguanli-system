@@ -4,7 +4,7 @@
 {block name="nav"}
 <span class="layui-breadcrumb">
 	<a href="">课题管理</a>
-	<a><cite>立项列表</cite></a>
+	<a><cite>结题列表</cite></a>
 </span>
 {/block}
 {block name="search"}
@@ -17,9 +17,9 @@
 	</div>
 </div>
 <div class="layui-form-item">
-	<label for="lxdanwei_id" class="layui-form-label">立项单位</label>
+	<label for="danwei_id" class="layui-form-label">结题单位</label>
 	<div class="layui-input-block">
-		<select name="lxdanwei_id" id="lxdanwei_id">
+		<select name="danwei_id" id="danwei_id">
 		</select>
 	</div>
 </div>
@@ -45,7 +45,6 @@
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
 	<a class="layui-btn-xs" lay-event="detail" title="课题列表"><i class="layui-icon">&#xe62d;</i></a>
-	<a class="layui-btn-xs" lay-event="more" title="批传"><i class="layui-icon">&#xe67c;</i></a>
 	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
 	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
 </script>
@@ -59,7 +58,7 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 		cInput = layui.createInput;
 
 	// 填充下拉菜单
-	cInput.schoolSelect('lxdanwei_id', '区级', '其它级');
+	cInput.schoolSelect('danwei_id', '区级', '其它级');
 
 	// 设置列
 	options.cols = [
@@ -112,13 +111,10 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 				parent.xadmin.add_tab(obj.data.title + ' 列表', '/keti/jieti/list/' + obj.data.id, true);
 				break;
 			case 'del': // 删除
-				mytable.del(obj, "keti/jieti/delete");
+				mytable.del(obj, "/keti/jieti/delete");
 				break;
 			case 'edit': // 编辑
 				xadmin.open('编辑课题册', '/keti/jieti/edit/' + obj.data.id, '600', '400');
-				break;
-			case 'more': // 状态
-				xadmin.open('批传', '/keti/info/createall/' + obj.data.id, '420', '280');
 				break;
 		};
 	});

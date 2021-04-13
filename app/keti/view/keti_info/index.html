@@ -132,7 +132,7 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 		switch (obj.event) {
 			case 'dels':
 				var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-				mytable.delAll(checkStatus, '/keti/ketiinfo/delete', 'mytable');
+				mytable.delAll(checkStatus, '/keti/info/delete', 'mytable');
 				break;
 		};
 	});
@@ -144,13 +144,13 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 		var tr = obj.tr; //获得当前行 tr 的DOM对象
 		switch (layEvent) {
 			case 'del': // 删除
-				mytable.del(obj, '/keti/ketiinfo/delete');
+				mytable.del(obj, '/keti/info/delete');
 				break;
 			case 'edit': // 编辑
-				xadmin.open('编辑课题', '/keti/ketiinfo/edit/' + obj.data.id, '', '', true);
+				xadmin.open('编辑课题', '/keti/info/edit/' + obj.data.id, '', '', true);
 				break;
 			case 'jieti': // 结题
-				xadmin.open('结题', '/keti/ketiinfo/jieti/' + obj.data.id, '', '', true);
+				xadmin.open('结题', '/keti/info/jieti/' + obj.data.id, '', '', true);
 				break;
 		};
 	});

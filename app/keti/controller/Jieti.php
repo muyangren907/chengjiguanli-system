@@ -147,7 +147,7 @@ class Jieti extends AdminBase
     {
         // 获取荣誉册信息
         $list['data'] = jt::where('id', $id)
-                ->field('id, title, category_id, shijian, danwei_id')
+                ->field('id, title, shijian, danwei_id')
                 ->find();
 
         // 设置页面标题
@@ -155,7 +155,7 @@ class Jieti extends AdminBase
             'webtitle' => '编辑课题册'
             ,'butname' => '修改'
             ,'formpost' => 'PUT'
-            ,'url' => '/keti/lixiang/update/' . $id
+            ,'url' => '/keti/jieti/update/' . $id
         );
 
         // 模板赋值
