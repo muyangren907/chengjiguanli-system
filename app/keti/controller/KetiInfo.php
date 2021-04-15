@@ -335,7 +335,7 @@ class KetiInfo extends AdminBase
 
 
     // 结题页面
-    public function jieTi($id)
+    public function jieTi($id, $jieti_id="")
     {
         // 获取课题信息
         $list['data'] = ktinfo::where('id', $id)
@@ -348,7 +348,10 @@ class KetiInfo extends AdminBase
             ,'butname'=>'修改'
             ,'formpost'=>'PUT'
             ,'url'=>'/keti/info/jietiupdate/' . $id
+            ,'jieti_id' => $jieti_id
         );
+
+        dump($list['set']);
 
         halt($list['data']->toArray());
 
@@ -593,6 +596,32 @@ class KetiInfo extends AdminBase
         }
         $data = reSetArray($data, $src);
 
+        return json($data);
+    }
+
+
+    // 查询课题信息
+    public function srcInfo()
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                 'page' => '1'
+                ,'limit' => '10'
+                ,'field' => 'id'
+                ,'order' => 'desc'
+                ,'searchval' => ''
+            ], 'POST');
+
+        $info = new ktinfo;
+
+        $data = $info->search($src)
+                ->visible([
+                'id'
+                ,'bianhao'
+                ,'title'
+            ]);
+        $data = reSetObject($data, $src);
         return json($data);
     }
 }

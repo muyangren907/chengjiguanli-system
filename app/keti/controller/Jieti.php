@@ -8,6 +8,7 @@ use app\base\controller\AdminBase;
 
 // 引用课题数据模型
 use app\keti\model\Jieti as jt;
+use app\keti\model\KetiInfo as ktinfo;
 
 class Jieti extends AdminBase
 {
@@ -234,6 +235,102 @@ class Jieti extends AdminBase
 
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '状态设置成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
+    // 结题页面
+    public function jieTi($jieti_id, $info_id="")
+    {
+        // 获取结题册信息
+        $list['data']['jieti'] = jt::where('id', $jieti_id)
+                ->field('id, title')
+                ->find();
+
+        // 获取结题信息
+        $list['data']['info'] = ktinfo::where('id', $info_id)
+                ->field('id, bianhao, title, jddengji_id, jtshijian, jtpic, beizhu')
+                ->find();
+
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle'=>'编辑结题'
+            ,'butname'=>'修改'
+            ,'formpost'=>'PUT'
+            ,'url'=>'/keti/info/jietiupdate'
+            ,'jieti_id' => $jieti_id
+        );
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+        // 渲染
+        return $this->view->fetch();
+    }
+
+
+    // 更新结题信息
+    public function jtUpdate($id)
+    {
+        // 获取表单数据
+        $list = request()->only([
+            'jtpic'
+            ,'jieti_id'
+            ,'jddengji_id'
+            ,'jtshijian'
+            ,'teacher_id'=>array()
+            ,'canyu_id'=>array()
+            ,'beizhu'
+        ], 'PUT');
+        $list['id'] = $id;
+
+        // 实例化验证类
+        $validate = new \app\keti\validate\Jieti;
+        $result = $validate->scene('addjieti')->check($list);
+        $msg = $validate->getError();
+        if (!$result) {
+            return json(['msg' => $msg, 'val' => 0]);
+        }
+        if ($list['jddengji_id'] == 11804 && $list['beizhu']=='') {
+            return json(['msg' => '流失的课题必须在备注中写明原因', 'val' => 0]);
+        }
+        // 更新数据
+        $data = ktinfo::update($list);
+
+        // 删除原来的获奖人与参与人信息
+        $data->ktCy->delete(true);
+        $data->ktZcr->delete(true);
+        // 声明教师数组
+            $teacherlist = [];
+            $canyulist = [];
+            // 循环组成获奖教师信息
+            $list['teacher_id'] = explode(',', $list['teacher_id']);
+            foreach ($list['teacher_id'] as $key => $value) {
+                $canyulist[] = [
+                    'teacher_id' => $value
+                    ,'category_id' => 11901
+                ];
+            }
+            $list['canyu_id'] = explode(',', $list['canyu_id']);
+            foreach ($list['canyu_id'] as $key => $value) {
+                $canyulist[] = [
+                    'teacher_id' => $value
+                    ,'category_id' => 11902
+                ];
+            }
+
+        // 添加新的获奖人与参与人信息
+        if (count($canyulist)>0) {
+            $data = $data->ktCy()->saveAll($canyulist);
+        }else{
+            $data = true;
+        }
+
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data = ['msg' => '更新成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息

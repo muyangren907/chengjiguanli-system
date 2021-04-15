@@ -137,7 +137,7 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 				mytable.delAll(checkStatus, '/keti/info/delete', 'mytable');
 				break;
 			case 'add':
-				xadmin.open('结题录入', '/keti/info/jieti/' + "{$list.jieti_id}", '', '', true);
+				xadmin.open('结题录入', '/keti/jieti/add/' + "{$list.jieti_id}", '', '', true);
 				break;
 			case 'download':
 				xadmin.open('下载课题信息', '/keti/info/download/' + "{$list.jieti_id}", '600', '400', false);

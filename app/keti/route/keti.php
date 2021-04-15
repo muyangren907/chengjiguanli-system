@@ -53,6 +53,8 @@ Route::group('jieti', function () {
 	    Route::rule('delete','Jieti/delete','delete');		# 删除信息
 	    Route::rule('status','Jieti/setStatus','post');		# 删除信息
 	    Route::rule('list/<jieti_id>','Jieti/list','get');		# 课题列表
+	    Route::rule('add/<jieti_id>/<info_id?>','Jieti/jieTi','get');					# 批量保存
+	    Route::rule('addsave/<id>','Jieti/jtUpdate','put');					# 批量保存
 	});
 
 

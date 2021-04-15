@@ -14,7 +14,8 @@ class KetiInfo extends Validate
      */
 	protected $rule = [
         'id|请先上传立项通知书图片'      =>    'require',
-        'ketice_id|课题册ID丢失'      =>    'require',
+        'lixiang_id|课题册ID'      =>    'require',
+        'jieti_id|课题册ID'      =>    'require',
         'title|课题名称'     =>  'require|length:1,100',
         'bianhao|课题编号'     =>  'require|length:1,50',
         'teacher_id|课题主持人'     =>  'require',
@@ -40,6 +41,7 @@ class KetiInfo extends Validate
     protected $scene = [
         'create'  =>  ['ketice_id','title','bianhao','fzdanwei_id','subject_id','category','jhjtshijian','teacher_id'],
         'edit'  =>  ['id','title','teacher_id','hjschool_id','subject_id','hjshijian','jiangxiang'],
-        'jieti'  =>  ['id','teacher_id','jtpic','jddengji_id','jtshijian'],
+        'addjieti'  =>  ['id','jieti_id','teacher_id','jtpic','jddengji_id','jtshijian'], # 在结题册中创建结题信息
+        'editjieti'  =>  ['id','teacher_id','jtpic','jddengji_id','jtshijian'],  # 在课题列表中编辑结题信息，不需要更改结题册
     ];
 }
