@@ -519,11 +519,13 @@ class Index extends BaseController
         $i = 4;
         foreach ($kaohao as $key=>$bj)
         {
-            foreach ($bj->banjiKaohao as $k => $kh) {
+            $bjkh = $bj->banjiKaohao->toArray();
+            $bjkh = sortArrByManyField($bjkh, 'shoupin', SORT_ASC);
+            foreach ($bjkh as $k => $kh) {
                 $sheet->setCellValue('A' . $i, $i - 3);
-                $sheet->setCellValue('B' . $i, $md5::encrypt((string)$kh->id, 'dlbz'));
-                $sheet->setCellValue('C' . $i, $bj->banjiTitle);
-                $sheet->setCellValue('D' . $i, $kh->cjStudent->xingming);
+                $sheet->setCellValue('B' . $i, $md5::encrypt((string)$kh['id'], 'dlbz'));
+                $sheet->setCellValue('C' . $i, $bj['banjiTitle']);
+                $sheet->setCellValue('D' . $i, $kh['cjStudent']['xingming']);
                 $i ++;
             }
         }
