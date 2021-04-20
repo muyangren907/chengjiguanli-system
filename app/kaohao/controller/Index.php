@@ -85,7 +85,7 @@ class Index extends AdminBase
                 ->where('kaoshi_id', $list['kaoshi_id'])
                 ->where('student_id', $value->id)
                 ->find();
-            if($check)
+            if($check)  # 恢复后学生还是原来的班级,删除后重新添加可能会出错
             {
                 if($check->delete_time > 0)
                 {

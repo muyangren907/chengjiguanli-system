@@ -200,7 +200,7 @@ class SearchMore extends BaseModel
                         ->find();
                     $data[$key]->banjiKaohao[$key]->cjStudent = array('id' => $stuinof->id, 'shoupin' => $stuinof->shoupin);
                 }
-                $data[$key]['banjiKaohao'][$k]['shoupin'] = $val->cjStudent->shoupin;
+                $data[$key]['banjiKaohao'][$k]['shoupin'] = $val['cjStudent']['shoupin'];
             }
         }
         return $data;
