@@ -560,6 +560,7 @@ class KetiInfo extends AdminBase
         //禁止缓存
         header('Cache-Control: max-age=0');
         $writer = new Xlsx($spreadsheet);
+        ini_set("error_reporting","E_ALL & ~E_NOTICE");
         $writer->save('php://output');
         ob_flush();
         flush();

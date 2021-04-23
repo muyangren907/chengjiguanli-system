@@ -263,12 +263,13 @@ class Bjtongji extends AdminBase
 
 
         // 保存文件
-        $filename = $tabletitle.date('ymdHis').'.xlsx';
+        $filename = $tabletitle . date('ymdHis', time()) . '.xlsx';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save('php://output');
+        ini_set("error_reporting","E_ALL & ~E_NOTICE");
+        $writer->save('php://output');halt($filename);
         ob_flush();
         flush();
         exit();

@@ -533,6 +533,7 @@ class Index extends AdminBase
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        ini_set("error_reporting","E_ALL & ~E_NOTICE");
         $writer->save('php://output');
         ob_flush();
         flush();
@@ -656,8 +657,8 @@ class Index extends AdminBase
         header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xls');
+        ini_set("error_reporting","E_ALL & ~E_NOTICE");
         $writer->save('php://output');
-
         ob_flush();
         flush();
         exit();

@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '4faf07fa370d59845ed3e02424bc37c18364a1aa',
+    'reference' => 'a88c8eaf776fef8d0b1fb0a9cc7c2b0af47400a1',
     'name' => 'topthink/think',
   ),
   'versions' => 
@@ -103,12 +103,12 @@
     ),
     'overtrue/pinyin' => 
     array (
-      'pretty_version' => '4.0.6',
-      'version' => '4.0.6.0',
+      'pretty_version' => '4.0.7',
+      'version' => '4.0.7.0',
       'aliases' => 
       array (
       ),
-      'reference' => '9836dae1783bcf5934508a2abe32eca9ea5ee15d',
+      'reference' => '083de406907d42df2e0feaaeb83f1a3c2e0095eb',
     ),
     'phpoffice/phpspreadsheet' => 
     array (
@@ -211,12 +211,12 @@
     ),
     'symfony/var-dumper' => 
     array (
-      'pretty_version' => 'v4.4.20',
-      'version' => '4.4.20.0',
+      'pretty_version' => 'v4.4.21',
+      'version' => '4.4.21.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'a1eab2f69906dc83c5ddba4632180260d0ab4f7f',
+      'reference' => '0da0e174f728996f5d5072d6a9f0a42259dbc806',
     ),
     'topthink/framework' => 
     array (
@@ -234,7 +234,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '4faf07fa370d59845ed3e02424bc37c18364a1aa',
+      'reference' => 'a88c8eaf776fef8d0b1fb0a9cc7c2b0af47400a1',
     ),
     'topthink/think-captcha' => 
     array (
