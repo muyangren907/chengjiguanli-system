@@ -22,6 +22,7 @@ class Student extends Seeder
                 ,'shengri' => 1349020800
                 ,'shenfenzhenghao' => '210202201210018223'
                 ,'banji_id' => 1
+                ,'shoupin' => 'yn'
             ]
             ,[
                 'xingming' => '李倍亮'
@@ -29,6 +30,7 @@ class Student extends Seeder
                 ,'shengri' => 1349020800
                 ,'shenfenzhenghao' => '210202201210018214'
                 ,'banji_id' => 1
+                ,'shoupin' => 'lbl'
             ]
             ,[
                 'xingming' => '张又张'
@@ -36,6 +38,7 @@ class Student extends Seeder
                 ,'shengri' => 1349020800
                 ,'shenfenzhenghao' => '210202201210018255'
                 ,'banji_id' => 1
+                ,'shoupin' => 'zyz'
             ]
             ,[
                 'xingming' => '王小天'
@@ -43,6 +46,7 @@ class Student extends Seeder
                 ,'shengri' => 1349020800
                 ,'shenfenzhenghao' => '210202201210018236'
                 ,'banji_id' => 1
+                ,'shoupin' => 'wxt'
             ]
             ,[
                 'xingming' => '张一凡'
@@ -50,6 +54,7 @@ class Student extends Seeder
                 ,'shengri' => 1349020800
                 ,'shenfenzhenghao' => '210202201210018227'
                 ,'banji_id' => 1
+                ,'shoupin' => 'zyf'
             ]
             ,[
                 'xingming' => '成乐园'
@@ -57,6 +62,7 @@ class Student extends Seeder
                 ,'shengri' => 1349020800
                 ,'shenfenzhenghao' => '210202201210018218'
                 ,'banji_id' => 1
+                ,'shoupin' => 'cly'
             ]
         ];
 

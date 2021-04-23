@@ -243,7 +243,7 @@ class SearchMore extends BaseModel
                         ->order(['banji_id', 'id'])
                         ->with([
                             'cjStudent' => function($q){
-                                $q->field('id, xingming, sex');
+                                $q->field('id, xingming, sex, shoupin');
                             }
                     ]);
                 }
@@ -261,8 +261,9 @@ class SearchMore extends BaseModel
                         ->where('id', $val->student_id)
                         ->field('id, xingming')
                         ->find();
-                    $data[$key]->banjiKaohao[$key]->cjStudent = array('id' => $stuinof->id, 'xingming' => $stuinof->xingming);
+                    $data[$key]->banjiKaohao[$key]->cjStudent = array('id' => $stuinof->id, 'shoupin' => $stuinof->shoupin);
                 }
+                $data[$key]['banjiKaohao'][$k]['shoupin'] = $val['cjStudent']['shoupin'];
             }
         }
         return $data;
