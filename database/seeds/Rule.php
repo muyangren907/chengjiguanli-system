@@ -1663,7 +1663,7 @@ class Rule extends Seeder
                 ,'paixu' => 3
                 ,'ismenu'  => 1
                 ,'pid'  => 9
-                ,'url' => '/keti/ketiinfo'
+                ,'url' => '/keti/info'
             ],
                 // 课题信息
                 ['id' => 90201

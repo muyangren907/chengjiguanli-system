@@ -322,7 +322,6 @@ layui.extend({
 			if (name == '') {
 				name = id;
 			}
-			console.log('asdf');
 			x = xmSelect.render({
 				el: '#' + id,
 				name: name,
@@ -335,12 +334,12 @@ layui.extend({
 					color: '#1cbbb4',
 				},
 				prop: {
-					name: 'xingming',
+					name: 'srctitle',
 					value: 'id',
 				},
 				// height: '25px',
 				size: 'mini',
-				radio: false,
+				radio: true,
 				showCount: 8,
 				repeat: false,
 				model: {
@@ -364,7 +363,7 @@ layui.extend({
 					}
 
 					$.ajax({
-						url: '/keti/info/srcKeti',
+						url: '/keti/info/srckt',
 						type: 'POST',
 						data: {
 			              searchval: val,
@@ -376,6 +375,21 @@ layui.extend({
 							layer.msg('数据扔半道啦。', function() {});
 						},
 					});
+				},
+				on: function(data){
+					//arr:  当前多选已选中的数据
+					var arr = data.arr;
+
+					if(arr.length == 1)
+					{
+						$('#title').val(arr[0].title);
+						$('#id').val(arr[0].id);
+					}
+
+					console.log(arr);
+					
+					//可以return一个数组, 代表想选中的数据
+					//return []
 				},
 			})
 			return x;

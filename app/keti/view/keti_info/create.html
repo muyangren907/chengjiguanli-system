@@ -84,7 +84,7 @@
 			<input type="text" id="jhjtshijian" name="jhjtshijian" lay-verify="required" autocomplete="off" class="layui-input " value="{$list.data.jhjtshijian|default=''}" placeholder="计划结题时间">
 		</div>
 	</div>
-	<input type="hidden" name="ketice_id" id="ketice_id" value="{$list.set.ketice_id|default=''}">
+	<input type="hidden" name="lixiang_id" id="lixiang_id" value="{$list.set.lixiang_id|default=''}">
 	<div class="layui-form-item" style="text-align: right;">
 		<button class="layui-btn" lay-filter="mysubmit" lay-submit="">
 			{$list.set.butname}
@@ -109,9 +109,9 @@ layui.use(['laydate','createInput'], function() {
 
 	// 添加已有表单值
 	formpost = "{$list.set.formpost|default=''}".toLocaleUpperCase();
-	if (formpost == 'PUT') {
+	if (formpost === 'PUT') {
 		data = {
-			ketiinfo_id: "{$list.data.id}",
+			ketiinfo_id: "{$list.data.id|default=''}",
 			category_id: 11901
 		}
 		cInput.loadTeacher(xmselect, '/keti/info/srccy', data);

@@ -92,7 +92,7 @@ class Jieti extends AdminBase
     {
         // 设置页面标题
         $list['set'] = array(
-            'webtitle' => '添加课题册'
+            'webtitle' => '添加结题册'
             ,'butname' => '添加'
             ,'formpost' => 'POST'
             ,'url' => 'save'
@@ -153,7 +153,7 @@ class Jieti extends AdminBase
 
         // 设置页面标题
         $list['set'] = array(
-            'webtitle' => '编辑课题册'
+            'webtitle' => '编辑结题册'
             ,'butname' => '修改'
             ,'formpost' => 'PUT'
             ,'url' => '/keti/jieti/update/' . $id
@@ -247,7 +247,7 @@ class Jieti extends AdminBase
     {
         // 获取结题册信息
         $list['data']['jieti'] = jt::where('id', $jieti_id)
-                ->field('id, title')
+                ->field('id, title, danwei_id')
                 ->find();
 
         // 获取结题信息
@@ -260,7 +260,7 @@ class Jieti extends AdminBase
             'webtitle'=>'编辑结题'
             ,'butname'=>'修改'
             ,'formpost'=>'PUT'
-            ,'url'=>'/keti/info/jietiupdate'
+            ,'url'=>'/keti/jieti/addsave'
             ,'jieti_id' => $jieti_id
         );
 
@@ -283,11 +283,11 @@ class Jieti extends AdminBase
             ,'teacher_id'=>array()
             ,'canyu_id'=>array()
             ,'beizhu'
+            ,'id'
         ], 'PUT');
-        $list['id'] = $id;
 
         // 实例化验证类
-        $validate = new \app\keti\validate\Jieti;
+        $validate = new \app\keti\validate\KetiInfo;
         $result = $validate->scene('addjieti')->check($list);
         $msg = $validate->getError();
         if (!$result) {

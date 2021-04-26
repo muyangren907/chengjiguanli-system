@@ -40,6 +40,7 @@ Route::group('info', function () {
 	    Route::rule('deljt','KetiInfo/deleteJieti','delete');		# 删除结题信息
 	    Route::rule('download/<lixiang_id>','KetiInfo/outXlsx','get');					# 批量保存
 	    Route::rule('srccy','KetiInfo/srcCy','post');				# 获取数据
+	    Route::rule('srckt','KetiInfo/srcInfo','post');				# 获取数据
 	});
 
 // 结题管理
@@ -54,7 +55,7 @@ Route::group('jieti', function () {
 	    Route::rule('status','Jieti/setStatus','post');		# 删除信息
 	    Route::rule('list/<jieti_id>','Jieti/list','get');		# 课题列表
 	    Route::rule('add/<jieti_id>/<info_id?>','Jieti/jieTi','get');					# 批量保存
-	    Route::rule('addsave/<id>','Jieti/jtUpdate','put');					# 批量保存
+	    Route::rule('addsave','Jieti/jtUpdate','put');					# 批量保存
 	});
 
 

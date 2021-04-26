@@ -351,10 +351,6 @@ class KetiInfo extends AdminBase
             ,'jieti_id' => $jieti_id
         );
 
-        dump($list['set']);
-
-        halt($list['data']->toArray());
-
         // 模板赋值
         $this->view->assign('list', $list);
         // 渲染
@@ -378,7 +374,7 @@ class KetiInfo extends AdminBase
 
         // 实例化验证类
         $validate = new \app\keti\validate\KetiInfo;
-        $result = $validate->scene('jieti')->check($list);
+        $result = $validate->scene('editjieti')->check($list);
         $msg = $validate->getError();
         if (!$result) {
             return json(['msg' => $msg, 'val' => 0]);
@@ -611,18 +607,27 @@ class KetiInfo extends AdminBase
                 ,'limit' => '10'
                 ,'field' => 'id'
                 ,'order' => 'desc'
+                ,'fzdanwei_id' => ''
                 ,'searchval' => ''
+                ,'jddengji_id' => 11801
             ], 'POST');
 
         $info = new ktinfo;
-
-        $data = $info->search($src)
+        $list = $info->search($src)
                 ->visible([
                 'id'
                 ,'bianhao'
                 ,'title'
             ]);
-        $data = reSetObject($data, $src);
+        $data = array();
+        foreach ($list as $key => $value) {
+            $data[] = [
+                'id' => $value->id
+                ,'srctitle' => '标题：'.$value->title . ' ‖ 编号：' . $value->bianhao  . ' ‖ 鉴定结果：' .  $value->ktJdDengji->title
+                ,'title' => '标题：'.$value->title . ' ‖ 编号：' . $value->bianhao
+            ];
+        }
+        $data = reSetArray($data, $src);
         return json($data);
     }
 }
