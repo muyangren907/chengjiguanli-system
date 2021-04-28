@@ -110,7 +110,7 @@ class Index extends StudentSearchBase
 
         // 获取用户名
         $stu = new \app\student\model\Student;
-        $serpassword = $stu::where('id', $id)->value('password');
+        $serpassword = $stu::where('id', $student_id)->value('password');
 
         // 实例化加密类
         $md5 = new APR1_MD5();
@@ -125,7 +125,7 @@ class Index extends StudentSearchBase
 
         // 更新密码
         $password = $md5->hash($list['newpassword']);
-        $data = $stu::update(['id' => $id, 'password' => $password]);
+        $data = $stu::update(['id' => $student_id, 'password' => $password]);
 
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '修改成功', 'val' => 1]
