@@ -44,6 +44,7 @@
 </script>
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
+	<a class="layui-btn-xs" lay-event="add" title="添加"><i class="layui-icon">&#xe624;</i></a>
 	<a class="layui-btn-xs" lay-event="detail" title="课题列表"><i class="layui-icon">&#xe62d;</i></a>
 	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
 	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
@@ -115,6 +116,9 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 				break;
 			case 'edit': // 编辑
 				xadmin.open('编辑课题册', '/keti/jieti/edit/' + obj.data.id, '600', '400');
+				break;
+			case 'add': // 删除
+				xadmin.open('结题录入', '/keti/jieti/add/' + obj.data.id, '', '', true);
 				break;
 		};
 	});

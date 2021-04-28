@@ -140,7 +140,7 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 				xadmin.open('结题录入', '/keti/jieti/add/' + "{$list.jieti_id}", '', '', true);
 				break;
 			case 'download':
-				xadmin.open('下载课题信息', '/keti/info/download/' + "{$list.jieti_id}", '600', '400', false);
+				window.open('/keti/jieti/download/' + "{$list.jieti_id}");
 				break;
 		};
 	});

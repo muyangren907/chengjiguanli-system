@@ -70,7 +70,7 @@
 </script>
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
-	<a class="layui-btn-xs" lay-event="jieti" title="结题"><i class="layui-icon">&#xe705;</i></a>
+	<!-- <a class="layui-btn-xs" lay-event="jieti" title="结题"><i class="layui-icon">&#xe705;</i></a> -->
 	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
 	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
 </script>
@@ -192,7 +192,7 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 				xadmin.open('添加课题', '/keti/info/create/' + "{$list.lixiang_id}", '', '', true);
 				break;
 			case 'download':
-				xadmin.open('下载课题信息', '/keti/info/download/' + "{$list.lixiang_id}", '600', '400', false);
+				window.open('/keti/lixiang/download/' + "{$list.lixiang_id}");
 				break;
 		};
 	});

@@ -166,7 +166,7 @@ class KetiInfo extends BaseModel
 
 
     //搜索课题册
-    public function srcKeti($lixiang_id)
+    public function srcLixiangCe($lixiang_id)
     {
         $data = $this
             ->where('lixiang_id', $lixiang_id)
@@ -182,10 +182,7 @@ class KetiInfo extends BaseModel
                                     $q->field('id, title');
                                 },
                                 'ktLxdanwei' => function($q){
-                                    $q->field('id, jiancheng, title, jibie_id')
-                                        ->with([
-
-                                        ]);
+                                    $q->field('id, jiancheng, title, jibie_id');
                                 }
                             ]);
                     },
@@ -194,6 +191,40 @@ class KetiInfo extends BaseModel
                     },
                     'ktSubject'=>function($query){
                         $query->field('id, title');
+                    },
+                    'ktZcr'=>function($query){
+                        $query->field('ketiinfo_id, teacher_id')
+                            ->with([
+                                'teacher'=>function($q){
+                                    $q->field('id, xingming');
+                                }
+                            ]);
+                    }
+                ]
+            )
+            ->select();
+
+        return $data;
+    }
+
+
+    //搜索课题册
+    public function srcJietiCe($jieti_id)
+    {
+        $data = $this
+            ->where('jieti_id', $jieti_id)
+            ->with(
+                [
+                    'fzSchool' => function($query){
+                        $query->field('id, jiancheng');
+                    },
+                    'glJieti' => function($query){
+                        $query->field('id, title, shijian, danwei_id')
+                            ->with([
+                                'glDanwei' => function($query){
+                                    $query->field('id, title');
+                                },
+                            ]);
                     },
                     'ktZcr'=>function($query){
                         $query->field('ketiinfo_id, teacher_id')
@@ -267,6 +298,13 @@ class KetiInfo extends BaseModel
     public function glLixiang()
     {
          return $this->belongsTo('\app\keti\model\Lixiang', 'lixiang_id', 'id');
+    }
+
+
+    // 课题册关联
+    public function glJieti()
+    {
+         return $this->belongsTo('\app\keti\model\Jieti', 'jieti_id', 'id');
     }
 
 

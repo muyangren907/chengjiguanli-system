@@ -7,6 +7,9 @@ use app\base\controller\AdminBase;
 
 // 引用课题数据模型
 use app\keti\model\Lixiang as lx;
+// 引用PhpSpreadsheet类
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Lixiang extends AdminBase
 {
@@ -239,5 +242,106 @@ class Lixiang extends AdminBase
 
         // 返回信息
         return json($data);
+    }
+
+
+    // 下载课题信息表
+    public function outXlsx($lixiang_id)
+    {
+        $ketiinfo = new \app\keti\model\KetiInfo;
+        $list = $ketiinfo->srcLixiangCe($lixiang_id);
+
+        if($list->isEmpty())
+        {
+            $this->error('兄弟，没有要下载的信息呀~', '/login/err');
+        }else{
+           $keticename = $list[0]['glLixiang']['title'];
+           $lxdanwei = $list[0]['glLixiang']['ktLxdanwei']['title'];
+           $lxshijian = strtotime($list[0]['lxshijian']);
+           $lxshijian = date('Ym', $lxshijian);
+        }
+
+        //通过工厂模式创建内容
+        ob_start();
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('uploads/keti/lixiang.xlsx');
+        $worksheet = $spreadsheet->getActiveSheet();
+
+        $worksheet->getCell('A1')->setValue($keticename . '立项汇总');
+        $worksheet->getCell('A2')->setValue('发证单位:' . $lxdanwei);
+        $worksheet->getCell('G2')->setValue('发证时间:' . $list[0]['glLixiang']['lxshijian']);
+        // 循环为excel每行赋值
+        foreach ($list as $key => $value) {
+            $myrowid = $key + 4;
+            $worksheet->getCell('A' . $myrowid)->setValue($key + 1);
+            $worksheet->getCell('B' . $myrowid)->setValue($value->title);
+            $worksheet->getCell('C' . $myrowid)->setValue($value->bianhao);
+            // 课题主持人
+            if($value->ktZcr){
+                $str = '';
+                foreach ($value->ktZcr as $k => $val) {
+                    if($k==0)
+                    {
+                        $str = $val->teacher->xingming;
+                    }else{
+                        $str = $str . '、' . $val->teacher->xingming;
+                    }
+                }
+                $worksheet->getCell('D' . $myrowid)->setValue($str);
+            }
+            // 课题负责单位
+            if($value->fzSchool){
+                $worksheet->getCell('E' . $myrowid)->setValue($value->fzSchool->jiancheng);
+            }
+            // 课题参与人
+            if($value->ktCy){
+                $str = '';
+                foreach ($value->ktCy as $k => $val) {
+                    if($k==0)
+                    {
+                        $str = $val->teacher->xingming;
+                    }else{
+                        $str = $str . '、' . $val->teacher->xingming;
+                    }
+                }
+                $worksheet->getCell('F' . $myrowid)->setValue($str);
+            }
+            $worksheet->getCell('G' . $myrowid)->setValue($value->jddengji);
+        }
+
+        // 给单元格加边框
+        $styleArray = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => '00000000'],
+                ],
+            ],
+        ];
+
+        if($key + 4 > 9)
+        {
+
+            $worksheet->getStyle('A10:H' . ($key + 4))->applyFromArray($styleArray);
+            // 设置行高
+            for($i = 10;  $i <= ($key + 4); $i ++){
+                $worksheet->getRowDimension($i)->setRowHeight(30);
+            }
+
+        }
+
+        $worksheet->getStyle('A4')->applyFromArray($styleArray);
+        $xlsxTitle = $keticename . $lxshijian . '立项汇总.xlsx';
+        //告诉浏览器输出07Excel文件
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        //告诉浏览器输出浏览器名称
+        header('Content-Disposition: attachment;filename="' . $xlsxTitle . '"');
+        //禁止缓存
+        header('Cache-Control: max-age=0');
+        $writer = new Xlsx($spreadsheet);
+        ini_set("error_reporting","E_ALL & ~E_NOTICE");
+        $writer->save('php://output');
+        ob_flush();
+        flush();
+        exit();
     }
 }

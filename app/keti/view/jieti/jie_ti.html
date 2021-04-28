@@ -131,17 +131,9 @@ layui.use(['laydate', 'mytable', 'createInput'], function() {
 
 
 // 图片放大
-function imgMax(obj, max = false) {
-	if (max == true) {
-		$(obj).css("max-width", "800px");
-		$(obj).css("max-height", "1000px");
-		$(obj).attr('onclick', "imgMax(this)");
-	} else {
-		$(obj).css("max-width", "500px");
-		$(obj).css("max-height", "300px");
-		$(obj).attr('onclick', "imgMax(this,true)");
-	}
-}
+$('#img').click(function(){
+	cInput.imgMax(this);
+})
 
 </script>
 {/block}
