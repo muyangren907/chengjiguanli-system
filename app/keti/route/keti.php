@@ -22,7 +22,6 @@ Route::group('lixiang', function () {
 	    Route::rule('status','Lixiang/setStatus','post');		# 删除信息
 	    Route::rule('list/<lixiang_id>','Lixiang/list','get');		# 课题列表
 	    Route::rule('download/<lixiang_id>','Lixiang/outXlsx','get');					# 批量保存
-	    Route::rule('srccy','KetiInfo/srcCy','post');				# 获取数据
 	});
 
 // 课题信息管理
@@ -41,6 +40,7 @@ Route::group('info', function () {
 	    Route::rule('jietiupdate/<id>','KetiInfo/jtUpdate','put');					# 批量保存
 	    Route::rule('deljt','KetiInfo/deleteJieti','delete');		# 删除结题信息
 	    Route::rule('srckt','KetiInfo/srcInfo','post');				# 获取数据
+	    Route::rule('srccy','KetiInfo/srcCy','post');				# 获取数据
 	});
 
 // 结题管理
@@ -56,6 +56,7 @@ Route::group('jieti', function () {
 	    Route::rule('list/<jieti_id>','Jieti/list','get');		# 课题列表
 	    Route::rule('add/<jieti_id>/<info_id?>','Jieti/jieTi','get');					# 批量保存
 	    Route::rule('addsave','Jieti/jtUpdate','put');					# 批量保存
+	    Route::rule('deleteinfo','Jieti/infoDelete','delete');					# 批量保存
 	    Route::rule('download/<jieti_id>','Jieti/outXlsx','get');					# 批量保存
 	});
 

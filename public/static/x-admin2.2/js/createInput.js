@@ -385,11 +385,6 @@ layui.extend({
 						$('#title').val(arr[0].title);
 						$('#id').val(arr[0].id);
 					}
-
-					console.log(arr);
-					
-					//可以return一个数组, 代表想选中的数据
-					//return []
 				},
 			})
 			return x;

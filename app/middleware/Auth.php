@@ -82,6 +82,8 @@ class Auth
             // Kaohao应用
             'kaohao/excel/biaoqianxls',    # 下载试卷标签
             'luru/index/dwcaiji',    # 下载成绩采集表
+            // Keti应用
+            'keti/ketiinfo/srccy',    # 下载试卷标签
             // Renshi应用
             'student/index/ajaxdataby',    # 获取毕业学生列表
             'student/index/ajaxdatadel',    # 获取删除学生列表

@@ -1657,6 +1657,12 @@ class Rule extends Seeder
                     ,'paixu' => 8
                     ,'pid' => 901
                 ],
+                ['id' => 90109
+                    ,'title' => '下载'
+                    ,'name' => 'keti/lixiang/outxlsx'
+                    ,'paixu' => 9
+                    ,'pid' => 901
+                ],
             ['id' => 902
                 ,'title' => '课题列表'
                 ,'name' => 'keti/ketiinfo/index'
@@ -1738,12 +1744,6 @@ class Rule extends Seeder
                     ,'paixu' => 12
                     ,'pid' => 902
                 ],
-                ['id' => 90213
-                    ,'title' => '下载'
-                    ,'name' => 'keti/ketiinfo/outxlsx'
-                    ,'paixu' => 13
-                    ,'pid' => 902
-                ],
                 ['id' => 200000000
                     ,'title' => '新建权限起始位置'
                     ,'name' => 'zhanwei_200000000'
@@ -1754,7 +1754,7 @@ class Rule extends Seeder
             ['id' => 903
                 ,'title' => '结题列表'
                 ,'name' => 'keti/jieti/index'
-                ,'paixu' => 2
+                ,'paixu' => 3
                 ,'ismenu'  => 1
                 ,'pid'  => 9
                 ,'url' => '/keti/jieti'
@@ -1763,7 +1763,43 @@ class Rule extends Seeder
                     ,'title' => '添加'
                     ,'name' => 'keti/jieti/create'
                     ,'paixu'  => 1
-                    ,'pid' => 901
+                    ,'pid' => 903
+                ],
+                ['id' => 90302
+                    ,'title' => '保存'
+                    ,'name' => 'keti/jieti/save'
+                    ,'paixu'  => 2
+                    ,'pid' => 903
+                ],
+                ['id' => 90303
+                    ,'title' => '编辑'
+                    ,'name' => 'keti/jieti/edit'
+                    ,'paixu'  => 3
+                    ,'pid' => 903
+                ],
+                ['id' => 90304
+                    ,'title' => '更新'
+                    ,'name' => 'keti/jieti/update'
+                    ,'paixu'  => 4
+                    ,'pid' => 903
+                ],
+                ['id' => 90305
+                    ,'title' => '删除'
+                    ,'name' => 'keti/jieti/delete'
+                    ,'paixu'  => 5
+                    ,'pid' => 903
+                ],
+                ['id' => 90306
+                    ,'title' => '录入结题'
+                    ,'name' => 'keti/jieti/jieti'
+                    ,'paixu'  => 6
+                    ,'pid' => 903
+                ],
+                ['id' => 90307
+                    ,'title' => '课题列表'
+                    ,'name' => 'keti/jieti/list'
+                    ,'paixu'  => 7
+                    ,'pid' => 903
                 ],
             ['id' => 904
                 ,'title' => '课题统计'

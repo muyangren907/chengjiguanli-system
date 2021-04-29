@@ -116,13 +116,12 @@ layui.use(['laydate', 'mytable', 'createInput'], function() {
 		cInput.loadTeacher(xmselectcy, '/keti/info/srccy', data);
 	}
 
+	// 图片放大
+	$('#img').click(function(){
+	  cInput.imgMax(this);
+	})
+
 });
-
-
-// 图片放大
-$('#img').click(function(){
-  cInput.imgMax(this);
-})
 
 </script>
 {/block}
