@@ -61,3 +61,13 @@ Route::group('jieti', function () {
 	});
 
 
+// 结题管理
+Route::group('tongji', function () {
+	    Route::rule('','Tongji/index','get');						# 信息列表
+	    Route::rule('qgjlx','Tongji/quGejiLixiang','post');				# 获取数据
+	    Route::rule('qgdwlx','Tongji/quGeDanweiLixiang','post');				# 获取数据
+	    Route::rule('qgjjt','Tongji/quGejiJieti','post');				# 获取数据
+	    Route::rule('qgdwjt','Tongji/quGeDanweiJieti','post');				# 获取数据
+	});
+
+

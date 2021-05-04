@@ -186,19 +186,6 @@ class Banji extends BaseModel
     }
 
 
-    // // 班名获取器
-    // public function getBanAttr()
-    // {
-    //     $bj = $this->getAttr('paixu');
-    //     $title = self::numToWord($bj) . '班';
-
-    //     $del = $this->getAttr('delete_time');
-    //     $del == null ?  $title : $title = $title & '(删)' ;
-
-    //     return $title;
-    // }
-
-
     // 班主任获取器
     public function getBzrAttr()
     {

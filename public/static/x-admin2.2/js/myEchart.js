@@ -30,6 +30,7 @@ layui.extend({
 					},
 					legend: {
 						top: '10%',
+						data:data.legend,
 					},
 					grid: {
 						left: '10%',
@@ -60,8 +61,8 @@ layui.extend({
 					dataset: {
 						source: data.data
 					},
-          xAxis: data.xAxis,
-          yAxis: data.yAxis,
+		           xAxis: data.xAxis,
+		           yAxis: data.yAxis,
 					dataZoom: [{
 							type: 'inside',
 							start: 0,
@@ -351,7 +352,7 @@ layui.extend({
 			$.post(url, val).done(function(data) {
 				myLeiDa.setOption({
 					title: {
-						text: '',
+						text: title,
 					},
 					tooltip: {},
 					legend: {
@@ -410,7 +411,7 @@ layui.extend({
 			$.post(url, val).done(function(data) {
 				myYiBiao.setOption({
 					title: {
-						text: data.title,
+						text: title,
 					},
 					tooltip: {},
 					toolbox: {
@@ -430,6 +431,81 @@ layui.extend({
 						data: data.series.data,
 						detail: { formatter: data.series.data[0].value + '%' }
 					}
+				})
+			});
+		},
+
+
+		/**
+		 * 异步获取图表中的数据
+		 * @access public
+		 * @param id 要添加数据的div
+		 * @param url 异步地址
+		 * @param val 异步时携带的参数
+		 * @param val 图表标题
+		 * @return array 返回类型
+		 */
+		pubu: function(id, url, val, title) {
+			var myPubu = echarts.init(document.getElementById(id));
+			$.post(url, val).done(function(data) {
+				myPubu.setOption({
+					title: {
+						text: title,
+						subtext: '',
+					},
+					tooltip: {
+						trigger: 'axis',
+				        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+				            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+				        },
+				        formatter: function (params) {
+				            var tar = params[1];
+				            return tar.name + '<br/>' + tar.seriesName + ' : ' + tar.value;
+				        }
+					},
+					grid: {
+				        left: '3%',
+				        right: '4%',
+				        bottom: '3%',
+				        containLabel: true
+				    },
+				    xAxis: {
+				        type: 'category',
+				        splitLine: {show: false},
+				        // data: ['总费用', '房租', '水电费', '交通费', '伙食费', '日用品数']
+				        data:data.xAxis
+				    },
+				    yAxis: {
+				        type: 'value'
+				    },
+					series: [
+				        {
+				            name: '辅助',
+				            type: 'bar',
+				            stack: '总量',
+				            itemStyle: {
+				                barBorderColor: 'rgba(0,0,0,0)',
+				                color: 'rgba(0,0,0,0)'
+				            },
+				            emphasis: {
+				                itemStyle: {
+				                    barBorderColor: 'rgba(0,0,0,0)',
+				                    color: 'rgba(0,0,0,0)'
+				                }
+				            },
+				            data: data.fuzhu
+				        },
+				        {
+				            name: data.dataname,
+				            type: 'bar',
+				            stack: '总量',
+				            label: {
+				                show: true,
+				                position: 'inside'
+				            },
+				            data: data.data
+				        }
+				    ]
 				})
 			});
 		},

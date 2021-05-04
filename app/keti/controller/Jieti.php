@@ -262,7 +262,7 @@ class Jieti extends AdminBase
         $list['set'] = array(
             'webtitle'=>'编辑结题'
             ,'butname'=>'修改'
-            ,'formpost'=>'POST'
+            ,'formpost'=>'PUT'
             ,'url'=>'/keti/jieti/addsave'
             ,'jieti_id' => $jieti_id
         );

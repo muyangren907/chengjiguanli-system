@@ -295,7 +295,7 @@ class Index extends AdminBase
     {
         // 获取考试信息
         $list['data'] = KS::where('id', $id)
-            ->field('id, title, xueqi_id, category_id, bfdate, enddate, zuzhi_id')
+            ->field('id, title, xueqi_id, category_id, bfdate, enddate, zuzhi_id, fanwei_id')
             ->append(['nianjiids', 'manfenedit'])
             ->find();
 

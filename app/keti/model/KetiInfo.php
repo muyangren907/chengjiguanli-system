@@ -110,6 +110,97 @@ class KetiInfo extends BaseModel
     }
 
 
+    // 根据时间搜索立项课题
+    public function searchLxSj($srcfrom)
+    {
+        $src = [
+            'searchval' => ''
+            ,'betweentime' => date('Y').'-01-01～' . date('Y-m-d')
+        ];
+
+        $src = array_cover($srcfrom, $src);
+        $src['time'] = explode('～', $src['betweentime']);
+
+        $data = $this
+            ->where('lixiang_id', 'in', function($query) use($src){
+                $query->name('lixiang')
+                    ->whereBetweenTime('lxshijian', $src['time'][0], $src['time'][1])
+                    ->where('status', 1)
+                    ->field('id');
+            })
+            ->field('id, title, lixiang_id, bianhao, subject_id, fzdanwei_id, category_id')
+            ->with([
+                'fzSchool' => function($query){
+                    $query->field('id, jiancheng');
+                },
+                'glLixiang' => function($query){
+                    $query->field('id, lxdanwei_id, category_id, lxshijian')
+                        ->with([
+                            'ktCategory' => function($q){
+                                $q->field('id, title');
+                            },
+                            'ktLxdanwei' => function($q){
+                                $q->field('id, jiancheng, jibie_id');
+                            }
+                        ]);
+                },
+                'ktCategory' => function($query){
+                    $query->field('id, title');
+                },
+                'ktSubject' => function($query){
+                    $query->field('id, title');
+                },
+            ])
+            ->where('status', 1)
+            ->select();
+        return $data;
+    }
+
+
+    // 根据时间搜索结题课题
+    public function searchJtSj($srcfrom)
+    {
+        $src = [
+            'searchval' => ''
+            ,'betweentime' => date('Y').'-01-01～' . date('Y-m-d')
+        ];
+
+        $src = array_cover($srcfrom, $src);
+        $src['time'] = explode('～', $src['betweentime']);
+
+        $data = $this
+            ->where('jieti_id', 'in', function($query) use($src){
+                $query->name('jieti')
+                    ->whereBetweenTime('shijian', $src['time'][0], $src['time'][1])
+                    ->where('status', 1)
+                    ->field('id');
+            })
+            ->field('id, title, jieti_id, bianhao, subject_id, fzdanwei_id, category_id')
+            ->with([
+                'fzSchool' => function($query){
+                    $query->field('id, jiancheng');
+                },
+                'glJieti' => function($query){
+                    $query->field('id, danwei_id, shijian')
+                        ->with([
+                            'glDanwei' => function($query){
+                                $query->field('id, title, jibie_id');
+                            },
+                        ]);
+                },
+                'ktCategory' => function($query){
+                    $query->field('id, title');
+                },
+                'ktSubject' => function($query){
+                    $query->field('id, title');
+                },
+            ])
+            ->where('status', 1)
+            ->select();
+        return $data;
+    }
+
+
     // 搜索教师参与的课题
     public function srcTeacherKeti($teacher_id)
     {

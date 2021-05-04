@@ -68,4 +68,16 @@ class Category extends BaseModel
             ->select();
         return $child;
     }
+
+
+    // 根据ID范围查类别
+    public function srcBetweenID($low=0, $high=0)
+    {
+        $data = $this
+            ->whereBetween('id', $low . ',' . $high)
+            ->where('status', 1)
+            ->field('id, title')
+            ->select();
+        return $data;
+    }
 }

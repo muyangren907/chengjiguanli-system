@@ -83,7 +83,11 @@ class Auth
             'kaohao/excel/biaoqianxls',    # 下载试卷标签
             'luru/index/dwcaiji',    # 下载成绩采集表
             // Keti应用
-            'keti/ketiinfo/srccy',    # 下载试卷标签
+            'keti/ketiinfo/srccy',    # 课题参与人
+            'keti/tongji/qugejilixiang',    # 全区各级立项课题统计表
+            'keti/tongji/qugedanweilixiang',    # 全区各单位立项课题统计表
+            'keti/tongji/qugejijieti',    # 全区各级结题课题统计表
+            'keti/tongji/qugedanweijieti',    # 全区各单位结题课题统计表
             // Renshi应用
             'student/index/ajaxdataby',    # 获取毕业学生列表
             'student/index/ajaxdatadel',    # 获取删除学生列表

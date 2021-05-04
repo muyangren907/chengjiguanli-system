@@ -71,27 +71,14 @@ class BanZhuRen extends BaseModel
         $src = [
             'banji_id' => ''
             ,'teacher_id' => ''
-            ,'bfdate' => ''
-            ,'enddate' => ''
+            ,'bfdate' => date("Y-m-d", strtotime("-6 year"))
+            ,'enddate' => date("Y-m-d", strtotime('1 day'))
             ,'searchval' => ''
         ];
 
         $src = array_cover($srcfrom, $src) ;
         $src['banji_id'] = strToarray($src['banji_id']);
         $src['teacher_id'] = strToarray($src['teacher_id']);
-
-        if(isset($srcfrom['bfdate']) && strlen($srcfrom['bfdate']) > 0)
-        {
-            $src['bfdate'] = $srcfrom['bfdate'];
-        }else{
-            $src['bfdate'] = date("Y-m-d", strtotime("-6 year"));
-        }
-        if(isset($srcfrom['enddate']) && strlen($srcfrom['enddate']) > 0)
-        {
-            $src['enddate'] = $srcfrom['enddate'];
-        }else{
-            $src['enddate'] = date("Y-m-d", strtotime('1 day'));
-        }
 
         // 查询数据
         $data = $this

@@ -44,8 +44,8 @@ class BanZhuRen extends AdminBase
                 ,'field' => 'bfdate'
                 ,'order' => 'desc'
                 ,'banji_id' => ''
-                ,'bfdate' => ''
-                ,'enddate' => ''
+                ,'bfdate'
+                ,'enddate'
                 ,'searchval' => ''
             ], 'POST');
 

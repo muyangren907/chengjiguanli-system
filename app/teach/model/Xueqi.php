@@ -45,22 +45,10 @@ class Xueqi extends BaseModel
             'category' => ''
             ,'searchval' => ''
             ,'status' => ''
-            ,'bfdate' => ''
-            ,'enddate' => ''
+            ,'bfdate' => date("Y-m-d", strtotime("-6 year"))
+            ,'enddate' => date("Y-m-d", strtotime('4 year'))
         ];
         $src = array_cover($srcfrom, $src) ;
-        if(isset($srcfrom['bfdate']) && strlen($srcfrom['bfdate']) > 0)
-        {
-            $src['bfdate'] = $srcfrom['bfdate'];
-        }else{
-            $src['bfdate'] = date("Y-m-d", strtotime("-6 year"));
-        }
-        if(isset($srcfrom['enddate']) && strlen($srcfrom['enddate']) > 0)
-        {
-            $src['enddate'] = $srcfrom['enddate'];
-        }else{
-            $src['enddate'] = date("Y-m-d", strtotime('4 year'));
-        }
 
         // 查询数据
         $data = $this

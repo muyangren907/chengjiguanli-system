@@ -25,7 +25,6 @@ class KetiInfo extends Validate
         'jhjtshijian|计划结题时间'     =>  'require|date',
         'cyteachers|参与人'    =>  'array',
         'jtpic|结题鉴定图片'    =>  'length:1,100',
-        'jtshijian|结题时间'    =>  'require|date',
         'jddengji_id|鉴定等级'    =>  'require|number',
     ];
 
@@ -41,7 +40,7 @@ class KetiInfo extends Validate
     protected $scene = [
         'create'  =>  ['ketice_id','title','bianhao','fzdanwei_id','subject_id','category','jhjtshijian','teacher_id'],
         'edit'  =>  ['id','title','teacher_id','hjschool_id','subject_id','hjshijian','jiangxiang'],
-        'addjieti'  =>  ['id','jieti_id','teacher_id','jtpic','jddengji_id','jtshijian'], # 在结题册中创建结题信息
-        'editjieti'  =>  ['id','teacher_id','jtpic','jddengji_id','jtshijian'],  # 在课题列表中编辑结题信息，不需要更改结题册
+        'addjieti'  =>  ['id','jieti_id','teacher_id','jtpic','jddengji_id'], # 在结题册中创建结题信息
+        'editjieti'  =>  ['id','teacher_id','jtpic','jddengji_id'],  # 在课题列表中编辑结题信息，不需要更改结题册
     ];
 }

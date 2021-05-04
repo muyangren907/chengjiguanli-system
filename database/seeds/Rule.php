@@ -1754,7 +1754,7 @@ class Rule extends Seeder
             ['id' => 903
                 ,'title' => '结题列表'
                 ,'name' => 'keti/jieti/index'
-                ,'paixu' => 3
+                ,'paixu' => 2
                 ,'ismenu'  => 1
                 ,'pid'  => 9
                 ,'url' => '/keti/jieti'
@@ -1803,11 +1803,11 @@ class Rule extends Seeder
                 ],
             ['id' => 904
                 ,'title' => '课题统计'
-                ,'name' => 'keti/ketiinfo/tongji'
+                ,'name' => 'keti/tongji/index'
                 ,'paixu' => 4
                 ,'ismenu'  => 1
                 ,'pid'  => 9
-                ,'url' => '/keti/ketiinfo/tongji'
+                ,'url' => '/keti/tongji'
             ],
         ];
 

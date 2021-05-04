@@ -36,8 +36,8 @@ class Xueqi extends AdminBase
                 ,'field' => 'id'
                 ,'order' => 'desc'
                 ,'searchval' => ''
-                ,'bfdate' => ''
-                ,'enddate' => ''
+                ,'bfdate'
+                ,'enddate'
             ], 'POST');
 
         // 根据条件查询数据
