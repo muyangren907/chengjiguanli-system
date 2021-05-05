@@ -53,6 +53,7 @@ class Index extends AdminBase
                 ,'glGroup' => ['title']
                 ,'phone'
                 ,'thistime'
+                ,'lasttime'
                 ,'ip'
                 ,'denglucishu'
                 ,'status'
