@@ -88,6 +88,9 @@ class Auth
             'keti/tongji/qugedanweilixiang',    # 全区各单位立项课题统计表
             'keti/tongji/qugejijieti',    # 全区各级结题课题统计表
             'keti/tongji/qugedanweijieti',    # 全区各单位结题课题统计表
+            // Rongyu荣誉
+            'rongyu/tongji/qugeji',    # 全区各级教师荣誉统计表
+            'rongyu/tongji/qugedanwei',    # 全区各单位教师荣誉统计表
             // Renshi应用
             'student/index/ajaxdataby',    # 获取毕业学生列表
             'student/index/ajaxdatadel',    # 获取删除学生列表

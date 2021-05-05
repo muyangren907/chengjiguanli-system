@@ -1586,7 +1586,14 @@ class Rule extends Seeder
                     ,'paixu' => 9
                     ,'pid' => 803
                 ],
-
+            ['id' => 804
+                ,'title' => '荣誉统计'
+                ,'name' => 'rongyu/tongji/index'
+                ,'paixu' => 4
+                ,'ismenu'  => 1
+                ,'pid'  => 8
+                ,'url' => '/rongyu/tongji'
+            ],
 
 
             /*======================================================================

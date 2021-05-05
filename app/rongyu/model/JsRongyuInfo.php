@@ -208,6 +208,48 @@ class JsRongyuInfo extends BaseModel
     }
 
 
+    // 根据获取荣誉时间查询荣誉
+    public function searchRySj($srcfrom) {
+        $src = [
+            'searchval' => ''
+            ,'betweentime' => date('Y').'-01-01～' . date('Y-m-d')
+            ,'category_ryc' => array()
+        ];
+
+        $src = array_cover($srcfrom, $src);
+        $src['time'] = explode('～', $src['betweentime']);
+
+        $data = $this
+            ->whereBetweenTime('hjshijian', $src['time'][0], $src['time'][1])
+            ->when(count($src['category_ryc']) > 0, function ($query) use($src) {
+                $query
+                    ->where('rongyuce_id', 'in', function ($q) use($src) {
+                        $q->name('JsRongyu')
+                            ->where('category_id', 'in', $src['category_ryc'])
+                            ->where('status', 1)
+                            ->field('id');
+                    });
+            })
+            ->field('id, hjschool_id, rongyuce_id, hjshijian')
+            ->with([
+                'hjSchool' => function($query){
+                    $query->field('id, jiancheng');
+                },
+                'ryTuce' => function($query){
+                    $query->field('id, title, fzschool_id')
+                        ->with([
+                            'fzSchool' => function($q){
+                                $q->field('id, title, jibie_id');
+                            }
+                        ]);
+                },
+            ])
+            ->where('status', 1)
+            ->select();
+        return $data;
+    }
+
+
     // 荣誉图册关联
     public function ryTuce()
     {

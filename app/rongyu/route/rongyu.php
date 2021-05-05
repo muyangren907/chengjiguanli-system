@@ -57,3 +57,10 @@ Route::group('jsryinfo', function () {
 	    Route::rule('outxlsx/<rongyuce_id>','JsRongyuInfo/outXlsx','get');					# 批量保存
 	    Route::rule('srccy','JsRongyuInfo/srcCy','post');				# 获取数据
 	});
+
+// 荣誉统计
+Route::group('tongji', function () {
+	    Route::rule('','Tongji/index','get');						# 信息列表
+	    Route::rule('qgj','Tongji/quGeji','post');				# 获取数据
+	    Route::rule('qgdw','Tongji/quGeDanwei','post');				# 获取数据
+	});
