@@ -333,6 +333,12 @@ class Rule extends Seeder
                             ,'paixu' => 3
                             ,'pid' => 3020104
                         ],
+                        ['id' => 302010405
+                            ,'title' => '创建考试向导 Setp4'
+                            ,'name' => 'kaoshi/index/createSetp4'
+                            ,'paixu' => 4
+                            ,'pid' => 3020104
+                        ],
                     ['id' => 3020105
                         ,'title' => '录入成绩分工列表'
                         ,'name' => 'kaoshi/lurufengong/index'

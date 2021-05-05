@@ -84,7 +84,6 @@ class LuruFengong extends BaseModel
 
         // 查询是否有录入分工，如果有就按分工来出示列表，否则全部出示
         $admin_id = session('user_id');
-        $admin_id = 3;
         $all = $this->where('kaoshi_id', $src['kaoshi_id'])->select();
         $count = $all->count();
         $data = [['banji_id' => 0, 'subject_id' => 0]];
