@@ -94,6 +94,9 @@ class Student extends BaseModel
         $src = array_cover($srcfrom, $src);
         $src['banji_id'] = strToArray($src['banji_id']);
 
+        $qxBanjiIds = event('mybanji');
+        $src['banji_id'] = array_intersect($src['banji_id'], $qxBanjiIds[0]);
+
         $data = $this
                 ->where('banji_id', 'in', $src['banji_id'])
                 ->when(strlen($src['searchval']) > 0, function($query) use($src){

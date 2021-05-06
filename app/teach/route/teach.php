@@ -79,4 +79,29 @@ Route::group('banzhuren', function () {
     });
 
 
+// 教研组管理
+Route::group('jiaoyanzu', function () {
+	    Route::rule('','Jiaoyanzu/index','get');						# 信息列表
+	    Route::rule('data','Jiaoyanzu/ajaxdata','post');				# 获取数据
+	    Route::rule('create','Jiaoyanzu/create','get');				# 添加信息
+	    Route::rule('save','Jiaoyanzu/save','post');					# 保存信息
+	    Route::rule('edit/<id>','Jiaoyanzu/edit','get');				# 修改信息
+	    Route::rule('update/<id>','Jiaoyanzu/update','put');			# 更新信息
+	    Route::rule('delete','Jiaoyanzu/delete','delete');		# 删除信息
+	    Route::rule('status','Jiaoyanzu/setStatus','post');		# 删除信息
+	    Route::rule('srcJiaoyanzu','Jiaoyanzu/srcXueqi','post');				# 获取数据
+	});
 
+
+// 年级组长管理
+Route::group('zuzhang', function () {
+	    Route::rule('','xueqi/index','get');						# 信息列表
+	    Route::rule('data','xueqi/ajaxdata','post');				# 获取数据
+	    Route::rule('create','xueqi/create','get');				# 添加信息
+	    Route::rule('save','xueqi/save','post');					# 保存信息
+	    Route::rule('edit/<id>','xueqi/edit','get');				# 修改信息
+	    Route::rule('update/<id>','xueqi/update','put');			# 更新信息
+	    Route::rule('delete','xueqi/delete','delete');		# 删除信息
+	    Route::rule('status','xueqi/setStatus','post');		# 删除信息
+	    Route::rule('srcxueqi','Xueqi/srcXueqi','post');				# 获取数据
+	});

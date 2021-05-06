@@ -19,8 +19,7 @@ class MyBanjiIds
     public function handle($event)
     {
         $event = new MyEvent;
-        $banji_ids = $event->userInfo();
-
-        return $banji_ids;
+        $banji = $event->userInfo();
+        return $banji;
     }
 }

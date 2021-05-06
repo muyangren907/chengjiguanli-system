@@ -1,0 +1,77 @@
+{extend name=".././view/create.html" /}
+{block name="form"}
+<form class="layui-form layui-form-pane" lay-filter="myform">
+	<div class="layui-form-item">
+		<label for="category_id" class="layui-form-label"><span class="x-red">*</span>类别</label>
+		<div class="layui-input-block" id="category_id">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label for="title" class="layui-form-label">
+			<span class="x-red">*</span>名称
+		</label>
+		<div class="layui-input-block">
+			<input type="text" id="title" name="title" lay-verify="required" autocomplete="off" class="layui-input " value="{$list.data.title|default=''}" placeholder="中文2-25个字符">
+		</div>
+	</div>
+	<div class="layui-form-item ruxuenian">
+		<label for="ruxuenian" class="layui-form-label">
+			<span class="x-red">*</span>入学年
+		</label>
+		<div class="layui-input-block">
+			<select name="ruxuenian" id="ruxuenian" lay-verify="required">
+			</select>
+		</div>
+	</div>
+	<div class="layui-form-item subject_id">
+		<label for="subject_id" class="layui-form-label">
+			<span class="x-red">*</span>学科
+		</label>
+		<div class="layui-input-block" id="subject_id">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label for="beizhu" class="layui-form-label">
+			备注
+		</label>
+		<div class="layui-input-block">
+			<input type="text" id="beizhu" name="beizhu" class="layui-input " value="{$list.data.beizhu|default=''}" placeholder="0-80个字符">
+		</div>
+	</div>
+	<div class="layui-form-item" style="text-align: right;">
+		<button class="layui-btn" lay-filter="mysubmit" lay-submit="">
+			{$list.set.butname}
+		</button>
+	</div>
+</form>
+{/block}
+{block name="myjs"}
+<script>
+layui.use(['laydate', 'createInput', 'form'], function() {
+	var laydate = layui.laydate,
+		cInput = layui.createInput
+		form = layui.form;
+	cInput.categoryRadio('category_id', 125, "{$list.data.category_id|default=''}");
+	cInput.subjectCheckbox('subject_id', '', '');
+	cInput.nanjiSelect('ruxuenian','','');
+	
+	form.on('checkbox(mycheackbox)', function(data) {
+		cInput.checkboxChecked(data);
+	});
+
+	form.on('radio(category_id)', function(data) {
+		if(data.value == 12501){
+			$(".ruxuenian").show();
+			$(".subject_id").hide();
+		}else if(data.value == 12502){
+			$(".ruxuenian").hide();
+			$(".subject_id").show();
+		}else{
+			$(".ruxuenian").hide();
+			$(".subject_id").hide();
+		}
+	})
+});
+
+</script>
+{/block}

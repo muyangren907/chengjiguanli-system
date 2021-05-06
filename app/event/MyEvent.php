@@ -53,7 +53,7 @@ class MyEvent
     }
 
 
-    // 获取考试状态
+    // 获取用户班级权限
     public function userInfo()
     {
         $ad = new \app\admin\model\Admin;

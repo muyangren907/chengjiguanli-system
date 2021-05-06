@@ -47,6 +47,41 @@ layui.extend({
 		},
 
 
+		// 创建类别的Select
+		categoryRadio: function(myid, pid, value = '', hasNull = true) {
+			$('#' + myid).children().remove();
+      $.ajax({
+				url: '/system/category/children',
+				type: 'POST',
+				data: {
+					p_id: pid
+				},
+				success: function(result) {
+					if (hasNull == true) {
+						str = '<input lay-filter="' + myid + '" type="radio" name="' + myid + '" value="" title="无">';
+					} else {
+						str = '';
+					}
+					temp = "";
+					$(result.data).each(function(i, el) {
+						if (value != '' && value == el.id) {
+							temp = '<input lay-filter="' + myid + '" type="radio" name="' + myid + '" value="' + el.id + '" title="' + el.title + ' checked">';
+
+						} else {
+							temp = '<input lay-filter="' + myid + '" type="radio" name="' + myid + '" value="' + el.id + '" title="' + el.title + '">';
+						}
+						str = str + temp;
+					});
+					$('#' + myid).append(str);
+					form.render('radio');
+				},
+				error: function(result) {
+					layer.msg('数据扔半道啦。', function() {});
+				},
+			});
+		},
+
+
 		// 选中checkbox
 		checkboxCheckedAuth: function(data) {
 			pid = $(data.elem).attr('pid');
@@ -519,7 +554,7 @@ layui.extend({
 		// 创建类别的Select
 		subjectSelect: function(myid, value = '', kaoshi = '', hasNull = true) {
 			$('#' + myid).children().remove();
-      $.ajax({
+      		$.ajax({
 				url: '/teach/subject/data',
 				type: 'POST',
 				data: {
@@ -543,6 +578,41 @@ layui.extend({
 					});
 					$('#' + myid).append(str);
 					form.render('select');
+				},
+				error: function(result) {
+					layer.msg('数据扔半道啦。', function() {});
+				},
+			});
+		},
+
+
+		// 创建学科的CheckBox
+		subjectCheckbox: function(myid, value = '', kaoshi = '', hasAll = true) {
+			$('#' + myid).children().remove();
+      		$.ajax({
+				url: '/teach/subject/data',
+				type: 'POST',
+				data: {
+					status: 1,
+					kaoshi: kaoshi
+				},
+				success: function(result) {
+					if (hasAll == true) {
+						str = '<input type="checkbox" title="全选" lay-skin="primary" value="" cid="1" lay-filter="mycheackbox">';
+					} else {
+						str = '';
+					}
+					temp = "";
+					$(result.data).each(function(i, el) {
+						if (value != '' && value == el.id) {
+							temp = '<input type="checkbox" name="' + myid + '[]' + '" title="' + el.title + '" value="' + el.id + '" lay-skin="primary" pid="1" lay-filter="mycheackbox" checked>';
+						} else {
+							temp = '<input type="checkbox" name="' + myid + '[]' + '" title="' + el.title + '" value="' + el.id + '" lay-skin="primary" pid="1" lay-filter="mycheackbox">';
+						}
+						str = str + temp;
+					});
+					$('#' + myid).append(str);
+					form.render('checkbox');
 				},
 				error: function(result) {
 					layer.msg('数据扔半道啦。', function() {});

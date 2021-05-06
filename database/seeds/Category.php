@@ -107,15 +107,17 @@ class Category extends Seeder
                 ,'isupdate' => 0
             ],
                 // 职务
-                ['id' => 10701,'title' => '校长','p_id' => 107,'paixu' => 1,'isupdate' => 0],
-                ['id' => 10702,'title' => '书记','p_id' => 107,'paixu' => 2,'isupdate' => 0],
-                ['id' => 10703,'title' => '副书记','p_id' => 107,'paixu' => 3,'isupdate' => 0],
-                ['id' => 10704,'title' => '副校长','p_id' => 107,'paixu' => 4,'isupdate' => 0],
-                ['id' => 10705,'title' => '主任','p_id' => 107,'paixu' => 5,'isupdate' => 0],
-                ['id' => 10706,'title' => '教研组长','p_id' => 107,'paixu' => 6,'isupdate' => 0],
-                ['id' => 10707,'title' => '班主任','p_id' => 107,'paixu' => 7,'isupdate' => 0],
-                ['id' => 10708,'title' => '课任','p_id' => 107,'paixu' => 8,'isupdate' => 0],
-                ['id' => 10709,'title' => '其他','p_id' => 107,'paixu' => 9,'isupdate' => 0],
+                ['id' => 10701,'title' => '校长、书记','p_id' => 107,'paixu' => 1,'isupdate' => 0],
+                ['id' => 10702,'title' => '副书记','p_id' => 107,'paixu' => 2,'isupdate' => 0],
+                ['id' => 10703,'title' => '教学副校长','p_id' => 107,'paixu' => 3,'isupdate' => 0],
+                ['id' => 10704,'title' => '德育副校长','p_id' => 107,'paixu' => 4,'isupdate' => 0],
+                ['id' => 10705,'title' => '教学主任','p_id' => 107,'paixu' => 5,'isupdate' => 0],
+                ['id' => 10706,'title' => '德育主任','p_id' => 107,'paixu' => 6,'isupdate' => 0],
+                ['id' => 10707,'title' => '教研组长','p_id' => 107,'paixu' => 7,'isupdate' => 0],
+                ['id' => 10708,'title' => '班主任','p_id' => 107,'paixu' => 8,'isupdate' => 0],
+                ['id' => 10709,'title' => '课任','p_id' => 107,'paixu' => 9,'isupdate' => 0],
+                ['id' => 107010,'title' => '其他','p_id' => 107,'paixu' => 10,'isupdate' => 0],
+
             ['id' => 108
                 ,'title' => '学期'
                 ,'p_id' => 0
@@ -324,6 +326,16 @@ class Category extends Seeder
                 ['id' => 12404,'title' => '年级学科','p_id' => 124,'paixu' => 4,'isupdate' => 0],
                 ['id' => 12405,'title' => '班级全学科','p_id' => 124,'paixu' => 5,'isupdate' => 0],
                 ['id' => 12406,'title' => '班级学科','p_id' => 124,'paixu' => 6,'isupdate' => 0],
+            // 考试查看范围
+            ['id' => 125
+                ,'title' => '教研组类别'
+                ,'p_id' => 0
+                ,'paixu' => 25
+                ,'isupdate' => 0
+            ],
+                //  考试查询权限
+                ['id' => 12501,'title' => '年级组','p_id' => 125,'paixu' => 1,'isupdate' => 0],
+                ['id' => 12502,'title' => '学科组','p_id' => 125,'paixu' => 2,'isupdate' => 0],
         ];
 
         $serRows = $this->fetchAll('select * from cj_category');

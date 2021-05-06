@@ -25,6 +25,13 @@ class BanZhuRen extends BaseModel
     }
 
 
+    // 班级对应教师
+    public function banjiTeachers()
+    {
+        return $this->hasMany('\app\teach\model\BanZhuRen', 'banji_id', 'banji_id');
+    }
+
+
     // 生日获取器
     public function getBfdateAttr($value)
     {
@@ -136,26 +143,27 @@ class BanZhuRen extends BaseModel
     public function srcTeacherNow($admin_id)
     {
         $teacher = $this->where('teacher_id', $admin_id)
-                ->order(['bfdate'=>'desc'])
-                ->find();
-        if(!isset($teacher->banji_id))
-        {
-           $tempid = -1;
-        } else {
-            $tempid = $teacher->banji_id;
-        }
-        $banji = $this->where('banji_id', $tempid)
-                ->order(['bfdate'=>'desc'])
-                // ->field('id, before')
-                ->find();
-        if(isset($banji->teacher_id) && $banji->teacher_id == $admin_id)
-        {
-           $banji_id = $banji->id;
-        }else{
-            $banji_id = 0;
-        } 
+            ->order(['bfdate'=>'desc'])
+            ->field('banji_id
+                ,any_value(teacher_id) as teacher_id
+                ,any_value(bfdate) as bfdate')
+            ->group('banji_id')
+            ->with([
+                'banjiTeachers' => function ($query) {
+                    $query->field('id, teacher_id, bfdate, banji_id');
+                }
+            ])
+            ->select();
 
-        return $banji_id;
+        // 循环写入班级ID
+        $banji_ids = array();
+        foreach ($teacher as $key => $value) {
+            if ($value->banjiTeachers[0]->teacher_id == $admin_id) {
+                $banji_ids[] = $value->banji_id;
+            }
+        }
+
+        return $banji_ids;
     }
 
 }

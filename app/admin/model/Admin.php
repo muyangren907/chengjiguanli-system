@@ -19,7 +19,7 @@ class Admin extends BaseModel
         // 查询数据
         $data = $this
             ->where('id', '>', 2)
-            ->where('id', '<>', session('userid'))
+            ->where('id', '<>', session('user_id'))
             ->when(strlen($src['searchval']) > 0, function($query) use($src){
                     $query->where('xingming|username|quanpin|shoupin', 'like', '%' . $src['searchval'] . '%');
                 })
@@ -382,13 +382,29 @@ class Admin extends BaseModel
     public function myQuanxian()
     {
         $id = session('user_id');
-        $adInfo = $this->where('id', session('user_id'))
-                ->field('zhiwu_id')
+        if ($id == 1 || $id == 2) {
+            $banji_id = "";
+        } else {
+            $adInfo = $this->where('id', session('user_id'))
+                ->field('zhiwu_id, school_id')
+                ->with([
+                    'adSchool' => function($query){
+                        $query->field('id, jiancheng, jibie_id');
+                    },
+                ])
                 ->find();
+            // 获取职务权限
+            // if
+            // 获取班主任班级权限
+            $bzr = new \app\teach\model\BanZhuRen;
+            $banji_id = $bzr->srcTeacherNow($id);
 
-        $bzr = new \app\teach\model\BanZhuRen;
-        $banji_id = $bzr->srcTeacherNow($id);
 
+
+
+
+
+        }
         return $banji_id;
     }
 
