@@ -65,7 +65,7 @@ layui.extend({
 					temp = "";
 					$(result.data).each(function(i, el) {
 						if (value != '' && value == el.id) {
-							temp = '<input lay-filter="' + myid + '" type="radio" name="' + myid + '" value="' + el.id + '" title="' + el.title + ' checked">';
+							temp = '<input lay-filter="' + myid + '" type="radio" name="' + myid + '" value="' + el.id + '" title="' + el.title + '" checked>';
 
 						} else {
 							temp = '<input lay-filter="' + myid + '" type="radio" name="' + myid + '" value="' + el.id + '" title="' + el.title + '">';
@@ -604,7 +604,7 @@ layui.extend({
 					}
 					temp = "";
 					$(result.data).each(function(i, el) {
-						if (value != '' && value == el.id) {
+						if (Array.isArray(value) && $.inArray(el.id.toString(), value)>=0) {
 							temp = '<input type="checkbox" name="' + myid + '[]' + '" title="' + el.title + '" value="' + el.id + '" lay-skin="primary" pid="1" lay-filter="mycheackbox" checked>';
 						} else {
 							temp = '<input type="checkbox" name="' + myid + '[]' + '" title="' + el.title + '" value="' + el.id + '" lay-skin="primary" pid="1" lay-filter="mycheackbox">';
@@ -746,6 +746,24 @@ layui.extend({
 				},
 			});
 		},
+
+		/**
+		 * 使用indexOf判断元素是否存在于数组中
+		 * @param {Object} arr 数组
+		 * @param {Object} value 元素值
+		 */
+		 // 判断一个数是否在数组中
+		isInArray: function (arr,value){
+		    if(arr.indexOf&&typeof(arr.indexOf)=='function'){
+		        var index = arr.indexOf(value);
+		        if(index >= 0){
+		            return true;
+		        }
+		    }
+		    return false;
+		},
+
+
 	};
 	//输出test接口
 	exports('createInput', obj);

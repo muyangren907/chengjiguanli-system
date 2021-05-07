@@ -68,6 +68,7 @@ class Jiaoyanzu extends AdminBase
             ,'formpost'=>'POST'
             ,'url'=>'save'
         );
+        $list['data']['subject'] = array();
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -88,6 +89,12 @@ class Jiaoyanzu extends AdminBase
             ,'subject_id'
             ,'beizhu'
         ], 'post');
+
+        if ($list['category_id'] == 12501) {
+            unset($list['title'], $list['subject_id']);
+        } else{
+            unset($list['ruxuenian']);
+        }
 
         // 验证表单数据
         $validate = new \app\teach\validate\Jiaoyanzu;
@@ -111,8 +118,10 @@ class Jiaoyanzu extends AdminBase
     public function edit($id)
     {
         // 获取学期信息
-        $list['data'] = XQ::field('id, title, ruxuenian, category_id, subject_id, beizhu')
+        $list['data'] = jyzmod::field('id, title, ruxuenian, category_id, subject_id, beizhu')
             ->find($id);
+        $subject = $list['data']->getData('subject_id');
+        $list['data']['subject'] = explode('|', $subject);
 
        // 设置页面标题
         $list['set'] = array(
@@ -142,6 +151,12 @@ class Jiaoyanzu extends AdminBase
         ], 'put');
         $list['id'] = $id;
 
+        if ($list['category_id'] == 12501) {
+            unset($list['title'], $list['subject_id']);
+        } else{
+            unset($list['ruxuenian']);
+        }
+
         // 验证表单数据
         $validate = new \app\teach\validate\Jiaoyanzu;
         $result = $validate->scene('edit')->check($list);
@@ -152,10 +167,13 @@ class Jiaoyanzu extends AdminBase
 
         // 更新数据
         $jiaoyanzhulist = jyzmod::find($id);
-        $jiaoyanzhulist->title = $list['title'];
-        $jiaoyanzhulist->ruxuenian = $list['ruxuenian'];
+        if ($list['category_id'] == 12501) {
+            $jiaoyanzhulist->ruxuenian = $list['ruxuenian'];
+        } else{
+            $jiaoyanzhulist->title = $list['title'];
+            $jiaoyanzhulist->subject_id = $list['subject_id'];
+        }
         $jiaoyanzhulist->category_id = $list['category_id'];
-        $jiaoyanzhulist->subject_id = $list['subject_id'];
         $jiaoyanzhulist->beizhu = $list['beizhu'];
         $data = $jiaoyanzhulist->save();
 

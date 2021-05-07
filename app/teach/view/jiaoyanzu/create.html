@@ -6,20 +6,20 @@
 		<div class="layui-input-block" id="category_id">
 		</div>
 	</div>
-	<div class="layui-form-item">
+	<div class="layui-form-item title">
 		<label for="title" class="layui-form-label">
 			<span class="x-red">*</span>名称
 		</label>
 		<div class="layui-input-block">
-			<input type="text" id="title" name="title" lay-verify="required" autocomplete="off" class="layui-input " value="{$list.data.title|default=''}" placeholder="中文2-25个字符">
+			<input type="text" id="title" name="title" autocomplete="off" class="layui-input " value="{$list.data.title|default=''}" placeholder="中文2-25个字符">
 		</div>
 	</div>
 	<div class="layui-form-item ruxuenian">
 		<label for="ruxuenian" class="layui-form-label">
-			<span class="x-red">*</span>入学年
+			<span class="x-red">*</span>年级
 		</label>
 		<div class="layui-input-block">
-			<select name="ruxuenian" id="ruxuenian" lay-verify="required">
+			<select name="ruxuenian" id="ruxuenian">
 			</select>
 		</div>
 	</div>
@@ -51,9 +51,11 @@ layui.use(['laydate', 'createInput', 'form'], function() {
 	var laydate = layui.laydate,
 		cInput = layui.createInput
 		form = layui.form;
-	cInput.categoryRadio('category_id', 125, "{$list.data.category_id|default=''}");
-	cInput.subjectCheckbox('subject_id', '', '');
-	cInput.nanjiSelect('ruxuenian','','');
+	cInput.categoryRadio('category_id', 125, "{$list.data.category_id|default=''}", false);
+	var xk = '<?php echo json_encode($list["data"]["subject"]);?>';
+	xk = eval(decodeURIComponent(xk));
+	cInput.subjectCheckbox('subject_id', xk, '');
+	cInput.nanjiSelect('ruxuenian','',"{$list.data.ruxuenian|default=''}");
 	
 	form.on('checkbox(mycheackbox)', function(data) {
 		cInput.checkboxChecked(data);
@@ -62,15 +64,31 @@ layui.use(['laydate', 'createInput', 'form'], function() {
 	form.on('radio(category_id)', function(data) {
 		if(data.value == 12501){
 			$(".ruxuenian").show();
+			$(".title").hide();
 			$(".subject_id").hide();
 		}else if(data.value == 12502){
 			$(".ruxuenian").hide();
+			$(".title").show();
 			$(".subject_id").show();
 		}else{
 			$(".ruxuenian").hide();
 			$(".subject_id").hide();
+			$(".title").hide();
 		}
 	})
+
+	$(document).ready(function(){
+		var category = "{$list.data.category_id|default=''}";
+		if(category == 12501) {
+			$(".ruxuenian").show();
+			$(".title").hide();
+			$(".subject_id").hide();
+		}else if(category == 12502) {
+			$(".ruxuenian").hide();
+			$(".title").show();
+			$(".subject_id").show();
+		}
+	}); 
 });
 
 </script>

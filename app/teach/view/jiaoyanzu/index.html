@@ -108,14 +108,11 @@ layui.use(['table', 'mytable', 'form', 'createInput'], function() {
 		var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
 		var tr = obj.tr; //获得当前行 tr 的DOM对象
 		switch (layEvent) {
-			case 'detail': // 查看
-				layer.msg('查看' + data.id);
-				break;
 			case 'del': // 删除
 				mytable.del(obj, "/teach/jiaoyanzu/delete");
 				break;
 			case 'edit': // 编辑
-				xadmin.open('编辑学期', '/teach/jiaoyanzu/edit/' + obj.data.id, '650', '450', false);
+				xadmin.open('编辑教研组', '/teach/jiaoyanzu/edit/' + obj.data.id, '650', '450', false);
 				break;
 		};
 	});

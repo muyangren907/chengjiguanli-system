@@ -421,9 +421,6 @@ class Banji extends AdminBase
         $njList = reSetArray($njList, $src);
 
         return json($njList);
-
     }
-
-
 
 }

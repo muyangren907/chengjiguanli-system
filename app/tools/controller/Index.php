@@ -299,7 +299,7 @@ class Index extends BaseController
     {
         // 实例化年级控制器
         $bj = new \app\teach\model\Banji;
-        $njList= $bj->gradeName($value, $riqi);
+        $njList= $bj->gradeName($riqi, $value);
         return $njList;
     }
 

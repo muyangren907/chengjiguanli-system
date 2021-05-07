@@ -28,8 +28,12 @@ class Jiaoyanzu extends BaseModel
         ];
         $src = array_cover($srcfrom, $src) ;
 
+        $njlist = \app\facade\Tools::nianJiNameList(time(), 'str');
+        $njlist[] = 0;
+
         // 查询数据
         $data = $this
+            ->where('ruxuenian', 'in', $njlist)
             ->when(strlen($src['searchval']) > 0, function($query) use($src){
                     $query->where('title|xuenian', 'like', '%' . $src['searchval'] . '%');
                 })
@@ -49,5 +53,42 @@ class Jiaoyanzu extends BaseModel
             ->select();
 
         return $data;
+    }
+
+    // 学科修改器
+    public function setsubjectIdAttr($value)
+    {
+        $value = implode('|', $value);
+        return $value;
+    }
+
+
+    // 学科获取器
+    public function getsubjectIdAttr($value)
+    {
+        $value = explode('|', $value);
+        $subject = new \app\teach\model\Subject;
+        $list = $subject
+            ->where('id', 'in', $value)
+            ->field('id, title, jiancheng')
+            ->select();
+        $str = '';
+        foreach ($list as $key => $value) {
+            $key == 0 ? $str = $value->title : $str = $str . '、'. $value->title;
+        }
+        return $str;
+    }
+
+
+    // 获取教研组名
+    public function getTitleAttr($value)
+    {
+        $title = $value;
+        if($this->category_id == 12501)
+        {
+            $njlist = \app\facade\Tools::nianJiNameList('str');
+            $title = $njlist[$this->ruxuenian] . '组';
+        }
+        return $title;
     }
 }
