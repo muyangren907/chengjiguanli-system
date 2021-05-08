@@ -6,6 +6,13 @@
 		<div class="layui-input-block" id="category_id">
 		</div>
 	</div>
+	<div class="layui-form-item">
+		<label for="school_id" class="layui-form-label"><span class="x-red">*</span>单位</label>
+		<div class="layui-input-block">
+			<select name="school_id" id="school_id" lay-verify="required">
+			</select>
+		</div>
+	</div>
 	<div class="layui-form-item title">
 		<label for="title" class="layui-form-label">
 			<span class="x-red">*</span>名称
@@ -52,9 +59,10 @@ layui.use(['laydate', 'createInput', 'form'], function() {
 		cInput = layui.createInput
 		form = layui.form;
 	cInput.categoryRadio('category_id', 125, "{$list.data.category_id|default=''}", false);
+	cInput.schoolSelect('school_id', '校级', '区级', "{$list.data.school_id|default=''}");
 	var xk = '<?php echo json_encode($list["data"]["subject"]);?>';
 	xk = eval(decodeURIComponent(xk));
-	cInput.subjectCheckbox('subject_id', xk, '');
+	cInput.subjectCheckbox('subject_id', xk, 1);
 	cInput.nanjiSelect('ruxuenian','',"{$list.data.ruxuenian|default=''}");
 	
 	form.on('checkbox(mycheackbox)', function(data) {

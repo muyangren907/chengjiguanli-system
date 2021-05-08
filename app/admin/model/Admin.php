@@ -385,7 +385,7 @@ class Admin extends BaseModel
         if ($id == 1 || $id == 2) {
             $banji_id = "";
         } else {
-            $adInfo = $this->where('id', session('user_id'))
+            $adInfo = $this->where('id', $id)
                 ->field('zhiwu_id, school_id')
                 ->with([
                     'adSchool' => function($query){
@@ -394,7 +394,13 @@ class Admin extends BaseModel
                 ])
                 ->find();
             // 获取职务权限
-            // if
+            if ($adInfo->zhiwu_id == 10703 ) {
+
+            }
+            // 教研组长
+            $zh = new \app\teach\model\JiaoyanZuzhang;
+            $zhList = $zh->srcTeacherNow($id);
+            halt($zhList);
             // 获取班主任班级权限
             $bzr = new \app\teach\model\BanZhuRen;
             $banji_id = $bzr->srcTeacherNow($id);

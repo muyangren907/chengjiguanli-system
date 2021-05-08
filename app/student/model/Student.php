@@ -93,9 +93,62 @@ class Student extends BaseModel
 
         $src = array_cover($srcfrom, $src);
         $src['banji_id'] = strToArray($src['banji_id']);
-
         $qxBanjiIds = event('mybanji');
-        $src['banji_id'] = array_intersect($src['banji_id'], $qxBanjiIds[0]);
+        if (is_array($qxBanjiIds[0])) {
+            $src['banji_id'] = array_intersect($src['banji_id'], $qxBanjiIds[0]);
+        }
+
+        $data = $this
+                ->where('banji_id', 'in', $src['banji_id'])
+                ->when(strlen($src['searchval']) > 0, function($query) use($src){
+                        $query
+                            ->where('xingming', 'like', '%' . $src['searchval'] . '%')
+                            ->with([
+                                'glSchool' => function($q){
+                                    $q->field('id, title, jiancheng');
+                                }
+                            ])
+                            ->field('id');
+                })
+                ->when(strlen($src['status']) > 0, function($query) use($src){
+                        $query
+                            ->where('status', $src['status'])
+                            ->field('id');
+                })
+                ->when(strlen($src['kaoshi']) > 0, function($query) use($src){
+                        $query
+                            ->where('kaoshi', $src['kaoshi'])
+                            ->field('id');
+                })
+                ->with([
+                    'stuBanji'=>function($query){
+                        $query->field('id, ruxuenian, paixu, alias')->append(['banjiTitle']);
+                    }
+                ])
+                ->field('id, xingming, sex, shengri, banji_id, kaoshi, status, update_time')
+                ->append(['age'])
+                ->select();
+
+        return $data;
+    }
+
+
+    // 数据筛选
+    public function searchBy($srcfrom)
+    {
+        $src = [
+            'banji_id' => array()
+            ,'searchval' => ''
+            ,'status' => ''
+            ,'kaoshi' => ''
+        ];
+
+        $src = array_cover($srcfrom, $src);
+        $src['banji_id'] = strToArray($src['banji_id']);
+        $qxBanjiIds = event('mybanji');
+        if (is_array($qxBanjiIds[0])) {
+            $src['banji_id'] = array_intersect($src['banji_id'], $qxBanjiIds[0]);
+        }
 
         $data = $this
                 ->where('banji_id', 'in', $src['banji_id'])

@@ -32,14 +32,14 @@ class BanZhuRen extends BaseModel
     }
 
 
-    // 生日获取器
+    // 接任时间获取器
     public function getBfdateAttr($value)
     {
         return date('Y-m-d',$value);
     }
 
 
-    // 生日修改器
+    // 接任时间修改器
     public function setBfdateAttr($value)
     {
         return strtotime($value);

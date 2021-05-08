@@ -72,10 +72,7 @@ class Index extends AdminBase
         // 设置要给模板赋值的信息
         $list['webtitle'] = '毕业学生';
         $list['dataurl'] = '/student/index/databy';
-
-        $njlist = \app\facade\Tools::nianJiNameList();
-        $njlistCnt = count($njlist);
-        $list['thistime'] = strtotime("-" . $njlistCnt ." year");
+        $list['riqi'] = date("Y-m-d H:i:s", strtotime("-6 year"));
 
         // 模板赋值
         $this->view->assign('list', $list);

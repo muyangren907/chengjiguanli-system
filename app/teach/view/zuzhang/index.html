@@ -5,7 +5,8 @@
 <span class="layui-breadcrumb">
 	<a href="">系统管理</a>
 	<a href="">教务管理</a>
-	<a><cite>教研组列表</cite></a>
+	<a href="">教研组</a>
+	<a><cite>教研组长列表</cite></a>
 </span>
 {/block}
 {block name="search"}
@@ -15,13 +16,6 @@
 	</label>
 	<div class="layui-input-block">
 		<input type="text" id="searchval" name="searchval" autocomplete="off" class="layui-input" placeholder="输入关键字并回车">
-	</div>
-</div>
-<div class="layui-form-item">
-	<label for="category_id" class="layui-form-label">类别</label>
-	<div class="layui-input-block">
-		<select name="category_id" id="category_id">
-		</select>
 	</div>
 </div>
 <div class="layui-form-item" style="text-align: right;">
@@ -45,40 +39,25 @@
 </script>
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
-	<a class="layui-btn-xs" lay-event="zuzhang" title="教研组长"><i class="layui-icon layui-icon-username"></i></a>
 	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
 	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
 </script>
 <!-- 表格操作 -->
 <script>
 // 提交搜索条件后重载表格
-layui.use(['table', 'mytable', 'form', 'createInput'], function() {
+layui.use(['table', 'mytable', 'laydate', 'form'], function() {
 	var table = layui.table,
 		mytable = layui.mytable,
 		form = layui.form,
-		cInput = layui.createInput;
-
-	// 加载菜单
-	cInput.categorySelect('category_id', 125);
+		laydate = layui.laydate;
 
 	// 设置列
 	options.cols = [
 		[ //表头
 			{ type: 'checkbox', fixed: 'left' },
-			{
-				field: "school_id",
-				title: '单位',
-				sort: true,
-				minWidth: 240, 
-				templet: function(d) {
-					var str = '';
-					if (d.glSchool) {
-						str = d.glSchool.title;
-					}
-					return str;
-				}
-			},
-			{ field: 'title', title: '标题', sort: true, minWidth: 100 },
+			{ field: 'id', title: 'ID', sort: true },
+			{ field: 'title', title: '标题', sort: true, minWidth: 240 },
+			{ field: 'xuenian', title: '学年', sort: true },
 			{
 				field: "category_id",
 				title: '分类',
@@ -87,17 +66,6 @@ layui.use(['table', 'mytable', 'form', 'createInput'], function() {
 					var str = '';
 					if (d.glCategory) {
 						str = d.glCategory.title;
-					}
-					return str;
-				}
-			},
-			{
-				field: "",
-				title: '组长',
-				templet: function(d) {
-					var str = '';
-					if (d.zuzhang) {
-						str = d.zuzhang.xingming;
 					}
 					return str;
 				}
@@ -116,10 +84,10 @@ layui.use(['table', 'mytable', 'form', 'createInput'], function() {
 		switch (obj.event) {
 			case 'dels':
 				var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-				mytable.delAll(checkStatus, '/teach/jiaoyanzu/delete', 'mytable');
+				mytable.delAll(checkStatus, '/teach/zuzhang/delete', 'mytable');
 				break;
 			case 'add':
-				xadmin.open('添加教研组', '/teach/jiaoyanzu/create', '650', '450', false);
+				xadmin.open('添加教研组长', '/teach/zuzhang/create', '650', '450', false);
 				break;
 		};
 	});
@@ -130,14 +98,14 @@ layui.use(['table', 'mytable', 'form', 'createInput'], function() {
 		var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
 		var tr = obj.tr; //获得当前行 tr 的DOM对象
 		switch (layEvent) {
+			case 'detail': // 查看
+				layer.msg('查看' + data.id);
+				break;
 			case 'del': // 删除
-				mytable.del(obj, "/teach/jiaoyanzu/delete");
+				mytable.del(obj, "/teach/zuzhang/delete");
 				break;
 			case 'edit': // 编辑
-				xadmin.open('编辑教研组', '/teach/jiaoyanzu/edit/' + obj.data.id, '650', '450', false);
-				break;
-			case 'zuzhang': //编辑
-				parent.xadmin.add_tab(obj.data.title + ' 组长', '/teach/zuzhang/index/' + obj.data.id, '', '', true);
+				xadmin.open('编辑教研组长', '/teach/zuzhang/edit/' + obj.data.id, '650', '450', false);
 				break;
 		};
 	});

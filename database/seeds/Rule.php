@@ -991,52 +991,52 @@ class Rule extends Seeder
                 ],
             ['id' => 505
                 ,'title' => '教研组长'
-                ,'name' => 'teach/zuzhang/index'
+                ,'name' => 'teach/jiaoyanzuzhang/index'
                 ,'paixu' => 3
-                ,'ismenu'  => 1
+                ,'ismenu'  => 0
                 ,'pid'  => 5
-                ,'url' => '/teach/zuzhang'
+                ,'url' => '/teach/jiaoyanzuzhang'
             ],
                 // 学科列表权限
                 ['id' => 50501
                     ,'title' => '添加'
-                    ,'name' => 'teach/zuzhang/create'
+                    ,'name' => 'teach/jiaoyanzuzhang/create'
                     ,'paixu'  => 1
                     ,'pid' => 505
                 ],
                 ['id' => 50502
                     ,'title' => '保存'
-                    ,'name' => 'teach/zuzhang/save'
+                    ,'name' => 'teach/jiaoyanzuzhang/save'
                     ,'paixu'  => 2
                     ,'pid' => 505
                 ],
                 ['id' => 50503
                     ,'title' => '删除'
-                    ,'name' => 'teach/zuzhang/delete'
+                    ,'name' => 'teach/jiaoyanzuzhang/delete'
                     ,'paixu' => 3
                     ,'pid' => 505
                 ],
                 ['id' => 50504
                     ,'title' => '编辑'
-                    ,'name' => 'teach/zuzhang/edit'
+                    ,'name' => 'teach/jiaoyanzuzhang/edit'
                     ,'paixu' => 4
                     ,'pid' => 505
                 ],
                 ['id' => 50505
                     ,'title' => '更新'
-                    ,'name' => 'teach/zuzhang/update'
+                    ,'name' => 'teach/jiaoyanzuzhang/update'
                     ,'paixu'  => 5
                     ,'pid' => 505
                 ],
                 ['id' => 50506
                     ,'title' => '查看'
-                    ,'name' => 'teach/zuzhang/read'
+                    ,'name' => 'teach/jiaoyanzuzhang/read'
                     ,'paixu' => 6
                     ,'pid' => 505
                 ],
                 ['id' => 50507
                     ,'title' => '状态'
-                    ,'name' => 'teach/zuzhang/setstatus'
+                    ,'name' => 'teach/jiaoyanzuzhang/setstatus'
                     ,'paixu' => 7
                     ,'pid' => 505
                 ],

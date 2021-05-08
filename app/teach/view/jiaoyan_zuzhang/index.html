@@ -5,7 +5,9 @@
 <span class="layui-breadcrumb">
 	<a href="">系统管理</a>
 	<a href="">教务管理</a>
-	<a><cite>学期列表</cite></a>
+	<a href="">班级列表</a>
+	<a href="">{$list.title}</a>
+	<a><cite>组长列表</cite></a>
 </span>
 {/block}
 {block name="search"}
@@ -17,19 +19,7 @@
 		<input type="text" id="searchval" name="searchval" autocomplete="off" class="layui-input" placeholder="输入关键字并回车">
 	</div>
 </div>
-<div class="layui-form-item">
-	<div class="layui-inline">
-		<label for="title" class="layui-form-label">
-			时间
-		</label>
-		<div class="layui-input-inline">
-			<input type="text" class="layui-input layui-input-date" id="bfdate" name="bfdate" placeholder="" value="" autocomplete="off" lay-filter="riqi">
-		</div>
-		<div class="layui-input-inline">
-			<input type="text" class="layui-input layui-input-date" id="enddate" name="enddate" placeholder="" value="" autocomplete="off" lay-filter="riqi">
-		</div>
-	</div>
-</div>
+<input name="jiaoyanzu_id" id="jiaoyanzu_id" value="{$list.jiaoyanzu_id|default='0'}" type="hidden">
 <div class="layui-form-item" style="text-align: right;">
 	<button class="layui-btn" lay-filter="searchSubmit" lay-submit="">搜索</button>
 </div>
@@ -68,23 +58,19 @@ layui.use(['table', 'mytable', 'laydate', 'form'], function() {
 		[ //表头
 			{ type: 'checkbox', fixed: 'left' },
 			{ field: 'id', title: 'ID', sort: true },
-			{ field: 'title', title: '标题', sort: true, minWidth: 240 },
-			{ field: 'xuenian', title: '学年', sort: true },
+			{ field: 'bfdate', title: '接任时间', sort: true, minWidth: 240 },
 			{
-				field: "category_id",
-				title: '分类',
+				field: 'teacher_id',
+				title: '组长',
 				sort: true,
 				templet: function(d) {
 					var str = '';
-					if (d.glCategory) {
-						str = d.glCategory.title;
+					if (d.glTeacher) {
+						str = d.glTeacher.xingming;
 					}
 					return str;
 				}
 			},
-			{ field: 'bfdate', title: '开始时间', sort: true },
-			{ field: 'enddate', title: '结束时间', sort: true },
-			{ field: 'status', title: '状态', templet: '#status', sort: true },
 			{ field: 'id', title: '操作', toolbar: '#barDemo', minWidth: 140 }
 		]
 	];
@@ -98,10 +84,10 @@ layui.use(['table', 'mytable', 'laydate', 'form'], function() {
 		switch (obj.event) {
 			case 'dels':
 				var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-				mytable.delAll(checkStatus, 'xueqi/delete', 'mytable');
+				mytable.delAll(checkStatus, '/teach/zuzhang/delete', 'mytable');
 				break;
 			case 'add':
-				xadmin.open('添加学期', 'xueqi/create', '650', '450', false);
+				xadmin.open('添加', '/teach/zuzhang/create/' + "{$list.jiaoyanzu_id}", '600', '400', false);
 				break;
 		};
 	});
@@ -116,10 +102,10 @@ layui.use(['table', 'mytable', 'laydate', 'form'], function() {
 				layer.msg('查看' + data.id);
 				break;
 			case 'del': // 删除
-				mytable.del(obj, "xueqi/delete");
+				mytable.del(obj, "/teach/zuzhang/delete");
 				break;
 			case 'edit': // 编辑
-				xadmin.open('编辑学期', 'xueqi/edit/' + obj.data.id, '650', '450', false);
+				xadmin.open('编辑', '/teach/zuzhang/edit/' + obj.data.id, '600', '400', false);
 				break;
 		};
 	});

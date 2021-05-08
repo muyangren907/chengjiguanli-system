@@ -36,6 +36,7 @@ class Jiaoyanzu extends AdminBase
                 ,'field' => 'id'
                 ,'order' => 'desc'
                 ,'category_id' => ''
+                ,'school_id' => ''
                 ,'searchval' => ''
             ], 'POST');
 
@@ -47,6 +48,7 @@ class Jiaoyanzu extends AdminBase
                 ,'title'
                 ,'ruxuenian'
                 ,'glCategory' => ['title']
+                ,'glSchool' => ['title']
                 ,'subject_id'
                 ,'status'
                 ,'update_time'
@@ -86,6 +88,7 @@ class Jiaoyanzu extends AdminBase
             'title'
             ,'ruxuenian'
             ,'category_id'
+            ,'school_id'
             ,'subject_id'
             ,'beizhu'
         ], 'post');
@@ -118,7 +121,7 @@ class Jiaoyanzu extends AdminBase
     public function edit($id)
     {
         // 获取学期信息
-        $list['data'] = jyzmod::field('id, title, ruxuenian, category_id, subject_id, beizhu')
+        $list['data'] = jyzmod::field('id, title, ruxuenian, category_id, school_id, subject_id, beizhu')
             ->find($id);
         $subject = $list['data']->getData('subject_id');
         $list['data']['subject'] = explode('|', $subject);
@@ -147,6 +150,7 @@ class Jiaoyanzu extends AdminBase
             ,'ruxuenian'
             ,'category_id'
             ,'subject_id'
+            ,'school_id'
             ,'beizhu'
         ], 'put');
         $list['id'] = $id;
@@ -174,6 +178,7 @@ class Jiaoyanzu extends AdminBase
             $jiaoyanzhulist->subject_id = $list['subject_id'];
         }
         $jiaoyanzhulist->category_id = $list['category_id'];
+        $jiaoyanzhulist->school_id = $list['school_id'];
         $jiaoyanzhulist->beizhu = $list['beizhu'];
         $data = $jiaoyanzhulist->save();
 
@@ -222,23 +227,4 @@ class Jiaoyanzu extends AdminBase
         return json($data);
     }
 
-
-    // 获取最近6个学期
-    // 查询单位列表
-    public function srcXueqi()
-    {
-        // 获取参数
-        $src = $this->request
-            ->only([
-                'page' => '1'
-                ,'limit' => '10'
-            ], 'POST');
-
-            // 实例化单位模型
-        $xq = new XQ;
-        $data = $xq->lastXueqi();
-        $data = reSetObject($data, $src);
-
-        return json($data);
-    }
 }

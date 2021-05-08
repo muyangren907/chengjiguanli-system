@@ -3,7 +3,7 @@
 use think\migration\Migrator;
 use think\migration\db\Column;
 
-class NianjiZuzhang extends Migrator
+class JiaoyanZuzhang extends Migrator
 {
     /**
      * Change Method.
@@ -29,7 +29,7 @@ class NianjiZuzhang extends Migrator
     public function change()
     {
         // 定义数据表名称
-        $table = $this->table('nianji_zuzhang');
+        $table = $this->table('jiaoyan_zuzhang');
 
         // 添加当前表字段
         $table

@@ -17,6 +17,13 @@ class Jiaoyanzu extends BaseModel
     }
 
 
+    // 教研组关联
+    public function glSchool()
+    {
+        return $this->belongsTo('\app\system\model\School', 'school_id', 'id');
+    }
+
+
     // 根据条件查询教研组
     public function search($srcfrom)
     {
@@ -24,21 +31,29 @@ class Jiaoyanzu extends BaseModel
         $src = [
             'category_id' => ''
             ,'searchval' => ''
+            ,'school_id' => ''
             ,'status' => ''
         ];
         $src = array_cover($srcfrom, $src) ;
+        $src['school_id'] = strToarray($src['school_id']);
 
         $njlist = \app\facade\Tools::nianJiNameList(time(), 'str');
-        $njlist[] = 0;
 
         // 查询数据
         $data = $this
-            ->where('ruxuenian', 'in', $njlist)
+            ->where(function ($query) use($njlist) {
+                $query
+                    ->whereOr('ruxuenian', 'in', $njlist)
+                    ->whereOr('ruxuenian', null);
+            })
             ->when(strlen($src['searchval']) > 0, function($query) use($src){
                     $query->where('title|xuenian', 'like', '%' . $src['searchval'] . '%');
                 })
             ->when(strlen($src['category_id']) > 0, function($query) use($src){
                     $query->where('category_id', $src['category_id']);
+                })
+            ->when(count($src['school_id']) > 0, function($query) use($src){
+                    $query->where('school_id', $src['school_id']);
                 })
             ->when(strlen($src['status']) > 0, function($query) use($src){
                     $query->where('status', $src['status']);
@@ -48,8 +63,12 @@ class Jiaoyanzu extends BaseModel
                     'glCategory'=>function($query){
                         $query->field('id, title');
                     },
+                    'glSchool'=>function($query){
+                        $query->field('id, title');
+                    },
                 ]
             )
+            ->append(['zuzhang'])
             ->select();
 
         return $data;
@@ -90,5 +109,30 @@ class Jiaoyanzu extends BaseModel
             $title = $njlist[$this->ruxuenian] . '组';
         }
         return $title;
+    }
+
+
+    // 获取组长
+    public function getZuzhangAttr($value)
+    {
+        $zh = new \app\teach\model\JiaoyanZuzhang;
+        $zhInfo = $zh->where('jiaoyanzu_id', $this->id)
+            ->order(['bfdate' => 'desc'])
+            ->with([
+                'glTeacher' => function ($query) {
+                    $query->field('id, xingming');
+                }
+            ])
+            ->find(); 
+            
+        $str = ['id', 'xingming'];
+        if ($zhInfo) {
+            $str = [
+                'id' => $zhInfo->teacher_id
+                ,'xingming' => $zhInfo->glTeacher->xingming
+            ];
+        }
+
+        return $str;
     }
 }

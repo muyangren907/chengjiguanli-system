@@ -18,7 +18,7 @@
 			<input type="text" id="bfdate" lay-verify="required" name="bfdate" autocomplete="off" class="layui-input " value="{$list.data.bfdate|default=''}" placeholder="接到这个任务的开始时间">
 		</div>
 	</div>
-	<input name="banji_id" id="banji_id" value="{$list.data.banji_id}" type="hidden">
+	<input name="jiaoyanzu_id" id="jiaoyanzu_id" value="{$list.data.jiaoyanzu_id}" type="hidden">
 	<div class="layui-form-item" style="text-align: right;">
 		<button class="layui-btn" lay-filter="mysubmit" lay-submit="">
 			{$list.set.butname}
@@ -54,8 +54,6 @@ layui.use(['form', 'laydate', 'createInput'], function() {
 			}, ]
 		})
 	}
-
-
 });
 
 </script>

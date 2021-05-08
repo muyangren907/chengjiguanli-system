@@ -158,7 +158,7 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 				xadmin.open('编辑班级', '/teach/banji/edit/' + obj.data.id, '600', '300');
 				break;
 			case 'banzhuren': //编辑
-				parent.xadmin.add_tab('班主任', '/teach/banzhuren/index/' + obj.data.id, '', '', true);
+				parent.xadmin.add_tab(obj.data.banjiTitle + ' 班主任', '/teach/banzhuren/index/' + obj.data.id, '', '', true);
 				break;
       case 'student': //编辑
         parent.xadmin.add_tab('学生名单', '/teach/banji/student/' + obj.data.id, '', '', true);
