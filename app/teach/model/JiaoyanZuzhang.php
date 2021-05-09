@@ -69,7 +69,7 @@ class JiaoyanZuzhang extends Model
     }
 
 
-    // 查询教师担任班主任情况
+    // 查询教师担任组长情况
     public function srcTeacherNow($admin_id)
     {
         $teacher = $this->where('teacher_id', $admin_id)
@@ -81,6 +81,7 @@ class JiaoyanZuzhang extends Model
             ->with([
                 'glJiaoyanzu' => function ($query) {
                     $query->field('id, title')
+                        ->where('status', 1)
                         ->append(['zuzhang']);
                 }
             ])
@@ -89,7 +90,7 @@ class JiaoyanZuzhang extends Model
         // 循环写入班级ID
         $jyz_ids = array();
         foreach ($teacher as $key => $value) {
-            if ($value->glJiaoyanzu->zuzhang['id'] == $admin_id) {
+            if (isset($value->glJiaoyanzu) && $value->glJiaoyanzu->zuzhang['id'] == $admin_id) {
                 $jyz_ids[] = $value->jiaoyanzu_id;
             }
         }

@@ -154,7 +154,7 @@ layui.define(['table', 'form'], function(exports) {
 		redel: function(obj, url) {
 			layer.confirm('确认要恢复删除吗？', function(index) {
 				$.ajax({
-					url: url + '/' + obj.data.id,
+					url: url,
 					type: 'DELETE',
 					data: {
 						id: obj.data.id

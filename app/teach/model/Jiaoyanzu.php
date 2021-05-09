@@ -74,6 +74,18 @@ class Jiaoyanzu extends BaseModel
         return $data;
     }
 
+
+    // 查询教研组信息
+    public function oneInfo($id) {
+        $data = $this
+            ->where('id', $id)
+            ->field('id, school_id, ruxuenian, category_id, subject_id')
+            ->append(['banjiId'])
+            ->find();
+        return $data;
+    }
+
+
     // 学科修改器
     public function setsubjectIdAttr($value)
     {
@@ -83,8 +95,9 @@ class Jiaoyanzu extends BaseModel
 
 
     // 学科获取器
-    public function getsubjectIdAttr($value)
+    public function getsubjectTitleAttr($value)
     {
+        $value = $this->subject_id;
         $value = explode('|', $value);
         $subject = new \app\teach\model\Subject;
         $list = $subject
@@ -134,5 +147,33 @@ class Jiaoyanzu extends BaseModel
         }
 
         return $str;
+    }
+
+
+    // 班级获取器
+    public function getBanjiIdAttr($value)
+    {
+        $bjList = array();
+        if ($this->category_id == 12501) {
+            $bj = new \app\teach\model\Banji;
+            $src = [
+                'school_id' => $this->school_id
+                ,'ruxuenian' => $this->ruxuenian
+            ];
+            $bjList = $bj->search($src)
+                ->column('id');
+        }
+        return $bjList;
+    }
+
+
+    // 班级获取器
+    public function getSubjectIdAttr($value)
+    {
+        $list = array();
+        if ($this->category_id == 12502 and is_null($value) == false) {
+            $list = explode('|', $value);
+        }
+        return $list;
     }
 }

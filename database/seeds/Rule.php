@@ -909,33 +909,39 @@ class Rule extends Seeder
                     ,'pid' => 503
                 ],
                 ['id' => 50304
-                    ,'title' => '编辑'
-                    ,'name' => 'teach/subject/edit'
+                    ,'title' => '恢复删除'
+                    ,'name' => 'teach/subject/restoredel'
                     ,'paixu' => 4
                     ,'pid' => 503
                 ],
                 ['id' => 50305
-                    ,'title' => '更新'
-                    ,'name' => 'teach/subject/update'
-                    ,'paixu'  => 5
+                    ,'title' => '编辑'
+                    ,'name' => 'teach/subject/edit'
+                    ,'paixu' => 5
                     ,'pid' => 503
                 ],
                 ['id' => 50306
-                    ,'title' => '查看'
-                    ,'name' => 'teach/subject/read'
-                    ,'paixu' => 6
+                    ,'title' => '更新'
+                    ,'name' => 'teach/subject/update'
+                    ,'paixu'  => 6
                     ,'pid' => 503
                 ],
                 ['id' => 50307
-                    ,'title' => '状态'
-                    ,'name' => 'teach/subject/setstatus'
+                    ,'title' => '查看'
+                    ,'name' => 'teach/subject/read'
                     ,'paixu' => 7
                     ,'pid' => 503
                 ],
                 ['id' => 50308
+                    ,'title' => '状态'
+                    ,'name' => 'teach/subject/setstatus'
+                    ,'paixu' => 8
+                    ,'pid' => 503
+                ],
+                ['id' => 50309
                     ,'title' => '参加考试'
                     ,'name' => 'teach/subject/kaoshi'
-                    ,'paixu' => 8
+                    ,'paixu' => 9
                     ,'pid' => 503
                 ],
             ['id' => 504

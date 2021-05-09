@@ -22,7 +22,7 @@
 			<span class="x-red">*</span>列标识
 		</label>
 		<div class="layui-input-block">
-			<input type="text" id="lieming" name="lieming" lay-verify="required" autocomplete="off" class="layui-input" value="{$list.data.lieming|default=''}" placeholder="中文1-6个字符">
+			<input type="text" id="lieming" name="lieming" lay-verify="required|lieming" autocomplete="off" class="layui-input" value="{$list.data.lieming|default=''}" placeholder="中文1-6个字符" >
 		</div>
 	</div>
 	<div class="layui-form-item">
@@ -52,10 +52,45 @@
 {/block}
 {block name="myjs"}
 <script>
-layui.use(['createInput'], function() {
-	var cInput = layui.createInput;
+layui.use(['createInput', 'form'], function() {
+	var cInput = layui.createInput
+		,form = layui.form;
 	cInput.categorySelect('category_id', 110, "{$list.data.category_id|default=''}");
+
+	form.verify({
+		//将用户名是否可用作为验证条件 表单提交时触发
+		lieming: function(value) {
+			console.log(value);
+			var datas = {
+				searchval: value,
+				id: "{$list.data.id|default=''}"
+			};
+			var message = '';
+			$.ajax({
+				type: "POST",
+				url: '/teach/subject/srclieming',
+				async: false, //改为同步请求
+				contentType: 'application/json;charset=UTF-8',
+				data: JSON.stringify(datas),
+				dataType: 'json',
+				success: function(data) {
+					if (data) {
+						if(data.val == 0){
+							message = data.msg
+						}
+					} else {
+						message = data.msg
+					}
+				}
+			});
+			//需要注意 需要将返回信息写在ajax方法外
+			if (message !== '')
+				return message;
+		},
+	});
 });
+
+	
 
 </script>
 {/block}

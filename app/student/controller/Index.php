@@ -376,9 +376,10 @@ class Index extends AdminBase
 
 
     // 恢复删除
-     public function reDel($id)
+     public function reDel()
     {
-
+        //  获取id变量
+        $id = request()->post('id');
         $user = STU::onlyTrashed()->find($id);
         $data = $user->restore();
 

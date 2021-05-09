@@ -295,7 +295,7 @@ class Index extends BaseController
 
 
     // 根据时间获取年级列表,$value='str'时，键为2020，值为一年级,否则反过来
-    public function nianJiNameList($value = 'str', $riqi = 0)
+    public function nianJiNameList($riqi = 0, $value = 'str')
     {
         // 实例化年级控制器
         $bj = new \app\teach\model\Banji;

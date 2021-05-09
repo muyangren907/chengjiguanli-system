@@ -17,6 +17,15 @@
 		<input type="text" id="searchval" name="searchval" autocomplete="off" class="layui-input" placeholder="输入关键字并回车">
 	</div>
 </div>
+<div class="layui-form-item" style="margin-bottom: 0;">
+	<label for="delete_time" class="layui-form-label">
+		删除数据
+	</label>
+	<div class="layui-input-block">
+		<input type="radio" name="delete_time" value="1" title="是" class="layui-input">
+		<input type="radio" name="delete_time" value="" title="否" class="layui-input" checked="checked">
+	</div>
+</div>
 <div class="layui-form-item" style="text-align: right;">
 	<button class="layui-btn" lay-filter="searchSubmit" lay-submit="">搜索</button>
 </div>
@@ -40,6 +49,7 @@
 <script type="text/html" id="barDemo">
 	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
 	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
+	<a class="layui-btn-xs" lay-event="huifu" title="恢复删除"><i class="layui-icon layui-icon-refresh-1"></i></a>
 </script>
 <!-- 状态按钮 -->
 <script type="text/html" id="kaoshi">
@@ -102,14 +112,14 @@ layui.use(['table', 'mytable', 'form'], function() {
 		var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
 		var tr = obj.tr; //获得当前行 tr 的DOM对象
 		switch (layEvent) {
-			case 'detail': // 查看
-				layer.msg('查看' + data.id);
-				break;
 			case 'del': // 删除
 				mytable.del(obj, '/teach/subject/delete');
 				break;
 			case 'edit': // 编辑
 				xadmin.open('编辑学科', '/teach/subject/edit/' + obj.data.id, '650', '450');
+				break;
+			case 'huifu': // 编辑
+				mytable.redel(obj, '/teach/subject/redel');
 				break;
 		};
 	});

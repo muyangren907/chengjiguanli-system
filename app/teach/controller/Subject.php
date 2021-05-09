@@ -42,6 +42,7 @@ class Subject extends AdminBase
                 ,'order' => 'asc'
                 ,'kaoshi' => ''
                 ,'status' => ''
+                ,'delete_time' => ''
                 ,'xingzhi' => array()
                 ,'searchval' => ''
             ],'POST');
@@ -212,6 +213,29 @@ class Subject extends AdminBase
     }
 
 
+    // 恢复删除
+    public function restoreDel()
+    {
+        //  获取id变量
+        $id = request()->post('id');
+
+        // 获取学科信息
+        $info = SJ::onlyTrashed()->where('id', $id)->find();
+        if ($info)
+        {
+            $data = $info->restore();
+            // 根据更新结果设置返回提示信息
+            $data ? $data = ['msg' => '恢复记录成功' , 'val' => 1]
+                : $data = ['msg' => '数据处理错误' , 'val' => 0];
+        } else {
+            $data = ['msg' => '未删除的记录不能恢复' , 'val' => 0];
+        }
+
+        // 返回信息
+        return json($data);
+    }
+
+
 
     // 设置学科是否参加考试
     public function kaoshi()
@@ -229,6 +253,43 @@ class Subject extends AdminBase
             : $dat = ['msg' => '数据处理错误', 'val' =>0 ];
 
         // 返回信息
+        return json($data);
+    }
+
+
+    // 查询用户名是否重复
+    public function srcLieming()
+    {
+        // 获取参数
+        $srcfrom = $this->request
+            ->only([
+                'searchval' => ''
+                ,'id'
+            ], 'POST');
+        $src = [
+                'searchval' => ''
+                ,'id' => ''
+            ];
+        $src = array_cover($srcfrom, $src);
+
+        $sj = new SJ();
+        $list = $sj->where('lieming', $src['searchval'])
+            ->find();
+
+        // 根据更新结果设置返回提示信息
+        $data = ['msg' => '列标识已经存在！', 'val' => 0];
+        if($list)
+        {
+            if($src['id'] > 0)
+            {
+
+                if($src['id'] == $list->id){
+                    $data = ['msg' => '', 'val' => 1];
+                }
+            }
+        }else{
+           $data = ['msg' => '', 'val' => 1];
+        }
         return json($data);
     }
 }

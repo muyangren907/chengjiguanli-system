@@ -96,7 +96,7 @@ layui.use(['table', 'mytable', 'form', 'createInput'], function() {
 				title: '组长',
 				templet: function(d) {
 					var str = '';
-					if (d.zuzhang) {
+					if (!d.zuzhang.xingming == '') {
 						str = d.zuzhang.xingming;
 					}
 					return str;

@@ -60,6 +60,8 @@ class Auth
             'admin/index/updatepassword',   # 更新密码
             'admin/index/adminlist',   # 更新密码
             'admin/index/srcadmin',    # 搜索教师
+            'admin/index/srcusername',    # 验证用户名是否存在
+            'admin/index/srcphone',    # 验证用户名是否存在
             'admin/admininfo/srcry',    # 获取当前教师荣誉列表
             'admin/admininfo/srckt',    # 获取当前教师课题列表
             'admin/admininfo/srcbzr',    # 获取当前教师担任班主任情况列表
@@ -71,6 +73,7 @@ class Auth
             'teach/banjichengji/ajaxdatatiaoxing',  # 获取班级成绩-条形统计表
             'teach/xueqi/srcxueqi',  # 获取班级成绩-条形统计表
             'teach/banji/njlist',  # 获取班级数据
+            'teach/subject/srclieming',  # 获取班级数据
             // Kaoshi应用
             'kaoshi/index/srceditkaoshi',    # 获取可以编辑的考试列表
             'kaoshi/kscanyu/school',    # 获取参加考试学校

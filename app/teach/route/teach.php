@@ -56,13 +56,14 @@ Route::group('subject', function () {
 	    Route::rule('data','subject/ajaxdata','post');				# 获取数据
 	    Route::rule('create','subject/create','get');				# 添加信息
 	    Route::rule('save','subject/save','post');					# 保存信息
-	    // Route::rule('read/<id>','subject/read','get');				# 读取信息
 	    Route::rule('edit/<id>','subject/edit','get');				# 修改信息
 	    Route::rule('update/<id>','subject/update','put');			# 更新信息
 	    Route::rule('delete','subject/delete','delete');		# 删除信息
 	    Route::rule('status','subject/setStatus','post');		# 删除信息
 	    Route::rule('kaoshi','subject/kaoshi','post');		# 删除信息
 	    Route::rule('srccy','subject/srcsbj','post');				# 获取数据
+	    Route::rule('redel','subject/restoreDel','delete');		# 恢复删除信息
+	    Route::rule('srclieming','subject/srcLieming','post');				# 获取数据
 	});
 
 

@@ -77,7 +77,7 @@ class Index extends AdminBase
 
         // 获取参加考试年级数组
         $enddate = KS::where('id', $list['kaoshi_id'])->value('enddate');
-        $njlist =  \app\facade\Tools::nianJiNameList($enddate, 'str');
+        $njlist =  \app\facade\Tools::nianJiNameList($enddate);
         // 重新组合学生信息
         $kaohao = array();
         foreach ($stulist as $key => $value) {

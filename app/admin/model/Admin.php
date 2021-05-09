@@ -382,35 +382,43 @@ class Admin extends BaseModel
     public function myQuanxian()
     {
         $id = session('user_id');
-        if ($id == 1 || $id == 2) {
-            $banji_id = "";
-        } else {
-            $adInfo = $this->where('id', $id)
-                ->field('zhiwu_id, school_id')
-                ->with([
-                    'adSchool' => function($query){
-                        $query->field('id, jiancheng, jibie_id');
-                    },
-                ])
-                ->find();
-            // 获取职务权限
-            if ($adInfo->zhiwu_id == 10703 ) {
-
-            }
-            // 教研组长
-            $zh = new \app\teach\model\JiaoyanZuzhang;
-            $zhList = $zh->srcTeacherNow($id);
-            halt($zhList);
-            // 获取班主任班级权限
-            $bzr = new \app\teach\model\BanZhuRen;
-            $banji_id = $bzr->srcTeacherNow($id);
-
-
-
-
-
-
+        $banji_id = array();
+            
+        $adInfo = $this->where('id', $id)
+            ->field('zhiwu_id, school_id')
+            ->with([
+                'adSchool' => function($query){
+                    $query->field('id, jiancheng, jibie_id');
+                },
+            ])
+            ->find();
+        // 获取职务权限
+        $zhiwu_array = array(10703, 10705);
+        if (in_array($adInfo->zhiwu_id, $zhiwu_array)) {
+            $bj = new \app\teach\model\Banji;
+            $src = [
+                'school_id' => $adInfo->school_id
+            ];
+            $bjList = $bj->search($src)
+                ->column('id');
+            $banji_id = array_merge($banji_id, $bjList);    
         }
+        // 教研组长
+        $zh = new \app\teach\model\JiaoyanZuzhang;
+        $zhList = $zh->srcTeacherNow($id);
+        $zz = new \app\teach\model\Jiaoyanzu;
+        foreach ($zhList as $key => $value) {
+            $zzInfo = $zz->oneInfo($value);
+            $banji_id = array_merge($banji_id, $zzInfo->banjiId);
+        }
+
+        // 获取班主任班级权限
+        $bzr = new \app\teach\model\BanZhuRen;
+        $bzr_banji_id = $bzr->srcTeacherNow($id);
+
+        $banji_id = array_merge($banji_id, $bzr_banji_id);
+        $banji_id = array_unique($banji_id);
+
         return $banji_id;
     }
 

@@ -27,7 +27,7 @@ Route::group('index', function () {
 	Route::rule('deleteall','Index/deleteXlsx','post');				# 批量保存
 	Route::rule('download','Index/download','get');				# 批量保存
 	Route::rule('srcstudent','Index/srcStudent','post');		# 获取学生成绩
-	Route::rule('redel/<id>','Index/reDel','delete');		# 恢复删除的学生
+	Route::rule('redel','Index/reDel','delete');		# 恢复删除的学生
 	Route::rule('kaoshi','Index/setKaoshi','post');		# 删除信息
 	Route::rule('bylist','Index/byList','get');                       # 信息列表
     Route::rule('databy','Index/ajaxdataBy','post');              # 获取数据
