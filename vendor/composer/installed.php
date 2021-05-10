@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'a88c8eaf776fef8d0b1fb0a9cc7c2b0af47400a1',
+    'reference' => 'b0cc71eaedb030831468effc868c449ed24f7aff',
     'name' => 'topthink/think',
   ),
   'versions' => 
@@ -166,12 +166,12 @@
     ),
     'psr/log' => 
     array (
-      'pretty_version' => '1.1.3',
-      'version' => '1.1.3.0',
+      'pretty_version' => '1.1.4',
+      'version' => '1.1.4.0',
       'aliases' => 
       array (
       ),
-      'reference' => '0f73288fd15629204f9d42b7055f72dacbe811fc',
+      'reference' => 'd49695b909c3b7628b6289db5479a1c204601f11',
     ),
     'psr/simple-cache' => 
     array (
@@ -211,21 +211,21 @@
     ),
     'symfony/var-dumper' => 
     array (
-      'pretty_version' => 'v4.4.21',
-      'version' => '4.4.21.0',
+      'pretty_version' => 'v4.4.22',
+      'version' => '4.4.22.0',
       'aliases' => 
       array (
       ),
-      'reference' => '0da0e174f728996f5d5072d6a9f0a42259dbc806',
+      'reference' => 'c194bcedde6295f3ec3e9eba1f5d484ea97c41a7',
     ),
     'topthink/framework' => 
     array (
-      'pretty_version' => 'v6.0.7',
-      'version' => '6.0.7.0',
+      'pretty_version' => 'v6.0.8',
+      'version' => '6.0.8.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'db8fe22520a9660dd5e4c87e304034ac49e39270',
+      'reference' => '4789343672aef06d571d556da369c0e156609bce',
     ),
     'topthink/think' => 
     array (
@@ -234,7 +234,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'a88c8eaf776fef8d0b1fb0a9cc7c2b0af47400a1',
+      'reference' => 'b0cc71eaedb030831468effc868c449ed24f7aff',
     ),
     'topthink/think-captcha' => 
     array (
@@ -274,12 +274,12 @@
     ),
     'topthink/think-orm' => 
     array (
-      'pretty_version' => 'v2.0.39',
-      'version' => '2.0.39.0',
+      'pretty_version' => 'v2.0.40',
+      'version' => '2.0.40.0',
       'aliases' => 
       array (
       ),
-      'reference' => '39a9d0a0e52d9b8bad9d98484d8484cdf5b683a7',
+      'reference' => '1119d979b850849f3725856460cf108eec1c3eb8',
     ),
     'topthink/think-template' => 
     array (
