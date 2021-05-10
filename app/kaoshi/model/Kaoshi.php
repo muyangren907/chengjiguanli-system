@@ -48,6 +48,7 @@ class Kaoshi extends BaseModel
             ->when(session('user_id') != 1 && session('user_id') != 2, function ($query) use($src) {
                 $query->where('id', 'in', $src['id']);
             })
+            ->whereOr('user_id', session('user_id'))
             ->with(
                 [
                     'ksCategory' => function ($query) {
@@ -82,7 +83,7 @@ class Kaoshi extends BaseModel
         }
         $kh = new \app\kaohao\model\Kaohao;
         $data = $kh
-            ->where('banji_id', 'in', $banji_id)
+            ->whereOr('banji_id', 'in', $banji_id)
             ->distinct(true)
             ->field('kaoshi_id')
             ->select();

@@ -55,6 +55,13 @@ class Index extends AdminBase
             $src['banji_id'] = $banji->search($bjsrc)->column('id');
         }
 
+        if (session('user_id') !=1 && session('user_id') !=2) {
+            $qxBanjiIds = event('mybanji');
+            if (is_array($qxBanjiIds[0])) {
+                $src['banji_id'] = array_intersect($src['banji_id'], $qxBanjiIds[0]);
+            }
+        }
+
         // 根据条件查询数据
         $stu = new STU;
         $data = $stu->search($src);
@@ -109,6 +116,13 @@ class Index extends AdminBase
                 ,'status' => 1
             ];
             $src['banji_id'] = $banji->search($bjsrc)->column('id');
+        }
+
+        if (session('user_id') !=1 && session('user_id') !=2) {
+            $qxBanjiIds = event('mybanji');
+            if (is_array($qxBanjiIds[0])) {
+                $src['banji_id'] = array_intersect($src['banji_id'], $qxBanjiIds[0]);
+            }
         }
 
         // 根据条件查询数据
