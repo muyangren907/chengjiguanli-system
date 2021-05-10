@@ -33,7 +33,7 @@
 </div>
 <div class="layui-form-item" style="margin-bottom: 0;">
 	<label for="banji_id" class="layui-form-label" style="height: 100%">班级</label>
-	<div class="layui-input-block" id="banji">
+	<div class="layui-input-block" id="banji_id">
 	</div>
 </div>
 <div class="layui-form-item" style="text-align: right;">
@@ -179,7 +179,7 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 	form.on('select()', function(data) {
 		data = form.val("search");
 		if (data.school_id > 0 && data.ruxuenian > 0) {
-			cInput.banjiCheckbox('banji', data);
+			cInput.banjiCheckbox('banji_id', data);
 		}
 	});
 

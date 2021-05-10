@@ -24,6 +24,7 @@ class Kaoshi extends BaseModel
         $src['zuzhi_id'] = strToarray($src['zuzhi_id']);
         $src['xueqi_id'] = strToarray($src['xueqi_id']);
         $src['category_id'] = strToarray($src['category_id']);
+        $src['id'] = $this->srcAuth();
 
         // 查询数据
         $data = $this
@@ -44,6 +45,9 @@ class Kaoshi extends BaseModel
             ->when(count($src['category_id']) > 0, function($query) use($src){
                     $query->where('category_id', 'in', $src['category_id']);
                 })
+            ->when(session('user_id') != 1 && session('user_id') != 2, function ($query) use($src) {
+                $query->where('id', 'in', $src['id']);
+            })
             ->with(
                 [
                     'ksCategory' => function ($query) {
@@ -64,6 +68,27 @@ class Kaoshi extends BaseModel
             ->select();
 
         return $data;
+    }
+
+
+    // 查询教师可以查看的考试
+    public function srcAuth()
+    {
+        
+        $banji_id = array();
+        $qxBanjiIds = event('mybanji');
+        if (is_array($qxBanjiIds[0])) {
+            $banji_id = $qxBanjiIds[0];
+        }
+        $kh = new \app\kaohao\model\Kaohao;
+        $data = $kh
+            ->where('banji_id', 'in', $banji_id)
+            ->distinct(true)
+            ->field('kaoshi_id')
+            ->select();
+        $kaoshi_ids = $data->column('kaoshi_id');
+
+        return $kaoshi_ids;
     }
 
 

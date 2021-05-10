@@ -55,8 +55,6 @@ class Index extends AdminBase
             $src['banji_id'] = $banji->search($bjsrc)->column('id');
         }
 
-        $mybanji = event('mybanji');
-
         // 根据条件查询数据
         $stu = new STU;
         $data = $stu->search($src);
@@ -72,7 +70,11 @@ class Index extends AdminBase
         // 设置要给模板赋值的信息
         $list['webtitle'] = '毕业学生';
         $list['dataurl'] = '/student/index/databy';
-        $list['riqi'] = date("Y-m-d H:i:s", strtotime("-6 year"));
+        $njlist = \app\facade\Tools::nianJiNameList(strtotime("-6 year"), 'num');
+        $cnt = count($njlist);
+        foreach ($njlist as $key => $value) {
+            $list['njlist'][$value] = $value + $cnt;
+        }
 
         // 模板赋值
         $this->view->assign('list', $list);

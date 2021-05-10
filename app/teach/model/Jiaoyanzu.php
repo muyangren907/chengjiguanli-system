@@ -37,7 +37,7 @@ class Jiaoyanzu extends BaseModel
         $src = array_cover($srcfrom, $src) ;
         $src['school_id'] = strToarray($src['school_id']);
 
-        $njlist = \app\facade\Tools::nianJiNameList(time(), 'str');
+        $njlist = \app\facade\Tools::nianJiNameList(time(), 'num');
 
         // 查询数据
         $data = $this

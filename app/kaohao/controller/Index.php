@@ -8,7 +8,7 @@ use app\base\controller\AdminBase;
 use app\kaoshi\model\Kaoshi as KS;
 use app\kaoshi\model\KaoshiSet as ksset;
 use app\kaohao\model\Kaohao as KH;
-use think\Validate;
+use app\student\model\Student as stu;
 
 
 class Index extends AdminBase 
@@ -96,6 +96,25 @@ class Index extends AdminBase
                     $check->status = 1;
                     $check->save();
                 }
+                
+                $stuInfo = stu::where('id', $value->id)
+                    ->field('id, banji_id')
+                    ->with([
+                        'stuBanji'=>function($query){
+                            $query
+                                ->field('id, ruxuenian, paixu, school_id')
+                                ->append(['banjiTitle', 'grade']);
+                        }
+                    ])
+                    ->find();
+                $check->school_id = $stuInfo->stuBanji->school_id;
+                $check->ruxuenian =  $stuInfo->stuBanji->ruxuenian;
+                $check->nianji =  $stuInfo->stuBanji->grade;
+                $check->banji_id =  $stuInfo->banji_id;
+                $check->paixu =  $stuInfo->stuBanji->paixu;
+                $check->status =  1;
+                $check->save();
+
                 continue;
             }
             $kaohao[$key]['student_id'] = $value->id;
@@ -215,6 +234,23 @@ class Index extends AdminBase
                 {
                     $ks->restore();
                 }
+                $stuInfo = stu::where('id', $temp['student_id'])
+                    ->field('id, banji_id')
+                    ->with([
+                        'stuBanji'=>function($query){
+                            $query
+                                ->field('id, ruxuenian, paixu, school_id')
+                                ->append(['banjiTitle', 'grade']);
+                        }
+                    ])
+                    ->find();
+                $ks->school_id = $stuInfo->stuBanji->school_id;
+                $ks->ruxuenian =  $stuInfo->stuBanji->ruxuenian;
+                $ks->nianji =  $stuInfo->stuBanji->grade;
+                $ks->banji_id =  $stuInfo->banji_id;
+                $ks->paixu =  $stuInfo->stuBanji->paixu;
+                $ks->status =  1;
+                $ks->save();
                 $data = ['msg' => '生成成功', 'val' => 1];
             }else{
                 $data = KH::create($temp);

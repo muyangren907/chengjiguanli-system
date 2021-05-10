@@ -58,6 +58,13 @@ class Index extends AdminBase
         if (count($src['banji_id']) == 0) {
             $cy = new \app\kaohao\model\SearchCanYu;
             $src['banji_id']= array_column($cy->class($src), 'id');
+        } 
+
+        if (session('user_id') !=1 || session('user_id') !=2) {
+            $qxBanjiIds = event('mybanji');
+            if (is_array($qxBanjiIds[0])) {
+                $src['banji_id'] = array_intersect($src['banji_id'], $qxBanjiIds[0]);
+            }
         }
 
         // 实例化并查询成绩

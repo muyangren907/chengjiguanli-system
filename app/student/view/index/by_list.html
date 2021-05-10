@@ -25,9 +25,12 @@
 	</div>
 </div>
 <div class="layui-form-item">
-	<label for="ruxuenian" class="layui-form-label">年级</label>
+	<label for="ruxuenian" class="layui-form-label">毕业年</label>
 	<div class="layui-input-block">
 		<select id="ruxuenian" name="ruxuenian" lay-verify="required">
+			{volist name="$list.njlist" id="vo" key="key"}
+				<option value="{$key}">{$vo}</option>
+			{/volist}
 		</select>
 	</div>
 </div>
@@ -67,7 +70,6 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 		mytable = layui.mytable;
 
 	cInput.schoolSelect('school_id', '校级', '校级');
-	cInput.nanjiSelect('ruxuenian', { riqi: "{$list['riqi']}" });
 
 	// 设置列
 	options.cols = [

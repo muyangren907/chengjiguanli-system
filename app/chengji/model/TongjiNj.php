@@ -214,6 +214,11 @@ class TongjiNj extends BaseModel
         $nianji = $ksset->srcGrade($kaoshi_id);
         $col = ['xpaixu', 'xweizhi'];
 
+        $src = array(
+            'kaoshi_id' => $kaoshi_id
+            ,'ruxuenian' => 0
+        );
+
         // 循环年级
         $data = array();
         foreach ($nianji as $njkey => $value) {
@@ -221,7 +226,7 @@ class TongjiNj extends BaseModel
             $src['ruxuenian'] = $value['ruxuenian'];
 
             $school = $cy->school($src);
-            $subject = $ksset->srcSubject($kaoshi_id, '', $value['ruxuenian']);
+            $subject = $ksset->srcSubject($src);
 
             // 循环班级，获取并统计成绩
             foreach ($school as $schkey => $val) {

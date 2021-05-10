@@ -881,6 +881,12 @@ class Rule extends Seeder
                         ,'paixu' => 6
                         ,'pid' => 50208
                     ],
+                ['id' => 50209
+                        ,'title' => '学生列表'
+                        ,'name' => 'teach/banji/student'
+                        ,'paixu' => 9
+                        ,'pid' => 502
+                    ],
             ['id' => 503
                 ,'title' => '学科列表'
                 ,'name' => 'teach/subject/index'

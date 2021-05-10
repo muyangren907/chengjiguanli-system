@@ -93,9 +93,11 @@ class Student extends BaseModel
 
         $src = array_cover($srcfrom, $src);
         $src['banji_id'] = strToArray($src['banji_id']);
-        $qxBanjiIds = event('mybanji');
-        if (is_array($qxBanjiIds[0])) {
-            $src['banji_id'] = array_intersect($src['banji_id'], $qxBanjiIds[0]);
+        if (session('user_id') !=1 || session('user_id') !=2) {
+            $qxBanjiIds = event('mybanji');
+            if (is_array($qxBanjiIds[0])) {
+                $src['banji_id'] = array_intersect($src['banji_id'], $qxBanjiIds[0]);
+            }
         }
 
         $data = $this
@@ -145,9 +147,11 @@ class Student extends BaseModel
 
         $src = array_cover($srcfrom, $src);
         $src['banji_id'] = strToArray($src['banji_id']);
-        $qxBanjiIds = event('mybanji');
-        if (is_array($qxBanjiIds[0])) {
-            $src['banji_id'] = array_intersect($src['banji_id'], $qxBanjiIds[0]);
+        if (session('user_id') !=1 || session('user_id') !=2) {
+            $qxBanjiIds = event('mybanji');
+            if (is_array($qxBanjiIds[0])) {
+                $src['banji_id'] = array_intersect($src['banji_id'], $qxBanjiIds[0]);
+            }
         }
 
         $data = $this
@@ -194,6 +198,12 @@ class Student extends BaseModel
         ];
         $src = array_cover($srcfrom, $src);
         $src['banji_id'] = strToArray($src['banji_id']);
+        if (session('user_id') !=1 || session('user_id') !=2) {
+            $qxBanjiIds = event('mybanji');
+            if (is_array($qxBanjiIds[0])) {
+                $src['banji_id'] = array_intersect($src['banji_id'], $qxBanjiIds[0]);
+            }
+        }
 
         $data = $this::onlyTrashed()
                 ->order('update_time')

@@ -579,13 +579,18 @@ class TongjiBj extends BaseModel
         $nianji = $ksset->srcGrade($kaoshi_id);
         $col = ['bpaixu', 'bweizhi'];
 
+        $src = array(
+            'kaoshi_id' => $kaoshi_id
+            ,'ruxuenian' => 0
+        );
+
         // 初始化统计结果
         $data = array();
         foreach ($nianji as $njkey => $value) {
             // 获取参加考试班级
             $src['ruxuenian'] = $value['ruxuenian'];
             $banji = $cy->class($src);
-            $subject = $ksset->srcSubject($kaoshi_id, '', $value['ruxuenian']);
+            $subject = $ksset->srcSubject($src);
 
             // 循环班级，获取并统计成绩
             foreach ($banji as $bjkey => $val) {

@@ -123,9 +123,5 @@ class SearchCanyu extends BaseModel
 
         return $data;
     }
+
 }
-
-
-
-
-
