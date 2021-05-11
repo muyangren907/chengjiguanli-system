@@ -175,6 +175,7 @@ class KetiInfo extends BaseModel
                     ->where('status', 1)
                     ->field('id');
             })
+            ->where('jddengji_id', 'in', '11802, 11803')
             ->field('id, title, jieti_id, bianhao, subject_id, fzdanwei_id, category_id')
             ->with([
                 'fzSchool' => function($query){

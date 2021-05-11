@@ -1767,8 +1767,8 @@ class Rule extends Seeder
                     ,'pid' => 901
                 ],
                 ['id' => 90106
-                    ,'title' => '查看'
-                    ,'name' => 'keti/lixiang/read'
+                    ,'title' => '课题列表'
+                    ,'name' => 'keti/lixiang/list'
                     ,'paixu' => 6
                     ,'pid' => 901
                 ],
@@ -1923,9 +1923,15 @@ class Rule extends Seeder
                     ,'pid' => 903
                 ],
                 ['id' => 90307
+                    ,'title' => '录入结题'
+                    ,'name' => 'keti/jieti/jtupdate'
+                    ,'paixu'  => 7
+                    ,'pid' => 903
+                ],
+                ['id' => 90308
                     ,'title' => '课题列表'
                     ,'name' => 'keti/jieti/list'
-                    ,'paixu'  => 7
+                    ,'paixu'  => 8
                     ,'pid' => 903
                 ],
             ['id' => 904

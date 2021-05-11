@@ -43,7 +43,7 @@
 		</div>
 	</div>
 	<div class="layui-form-item">
-		<label for="teacher_name" class="layui-form-label">
+		<label for="teacher_id" class="layui-form-label">
 			参与人
 		</label>
 		<div class="layui-input-block" id="teacher_id" school_id="{$list.data.school_id|default=''}">
@@ -123,6 +123,7 @@ layui.use(['laydate','createInput'], function() {
 
 	// 搜索教师
 	xmselect = cInput.searchTeacher('teacher_id');
+	// cy = cInput.searchTeacher('cyteachers');
 
 	// 添加已有表单值
 	formpost = "{$list.set.formpost|default=''}".toLocaleUpperCase();
@@ -133,7 +134,6 @@ layui.use(['laydate','createInput'], function() {
 		}
 		cInput.loadTeacher(xmselect, '/rongyu/danwei/srccy', data);
 	}
-
 
 	// 图片放大与缩小
 	$('#img').click(function(){

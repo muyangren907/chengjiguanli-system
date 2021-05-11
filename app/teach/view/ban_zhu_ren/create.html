@@ -41,7 +41,7 @@ layui.use(['form', 'laydate', 'createInput'], function() {
 	});
 
 	// 搜索教师
-	xmselect = cInput.searchTeacher('teacher_id');
+	xmselect = cInput.searchTeacher('teacher_id', true);
 
 	// 添加数据库值
 	formpost = "{$list.set.formpost|default=''}".toLocaleUpperCase();

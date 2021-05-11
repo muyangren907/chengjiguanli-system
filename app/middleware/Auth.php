@@ -87,11 +87,14 @@ class Auth
             'luru/index/dwcaiji',    # 下载成绩采集表
             // Keti应用
             'keti/ketiinfo/srccy',    # 课题参与人
+            'keti/ketiinfo/srcinfo',    # 全区各级立项课题统计表
             'keti/tongji/qugejilixiang',    # 全区各级立项课题统计表
             'keti/tongji/qugedanweilixiang',    # 全区各单位立项课题统计表
             'keti/tongji/qugejijieti',    # 全区各级结题课题统计表
             'keti/tongji/qugedanweijieti',    # 全区各单位结题课题统计表
             // Rongyu荣誉
+            'rongyu/danwei/srccy',    # 全区各级教师荣誉统计表
+            'rongyu/jsrongyuinfo/srccy',    # 全区各级教师荣誉统计表
             'rongyu/tongji/qugeji',    # 全区各级教师荣誉统计表
             'rongyu/tongji/qugedanwei',    # 全区各单位教师荣誉统计表
             // Renshi应用
