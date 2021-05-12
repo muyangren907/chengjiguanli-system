@@ -14,6 +14,7 @@ class Kaoshi extends BaseModel
         $src = [
             'field' => 'id'
             ,'order' => 'desc'
+            ,'id' => array()
             ,'zuzhi_id' => array()
             ,'xueqi_id' => ''
             ,'category_id' => array()
@@ -24,7 +25,7 @@ class Kaoshi extends BaseModel
         $src['zuzhi_id'] = strToarray($src['zuzhi_id']);
         $src['xueqi_id'] = strToarray($src['xueqi_id']);
         $src['category_id'] = strToarray($src['category_id']);
-        $src['id'] = $this->srcAuth();
+        $src['id'] = strToarray($src['id']);
 
         // 查询数据
         $data = $this
@@ -45,10 +46,9 @@ class Kaoshi extends BaseModel
             ->when(count($src['category_id']) > 0, function($query) use($src){
                     $query->where('category_id', 'in', $src['category_id']);
                 })
-            ->when(session('user_id') != 1 && session('user_id') != 2, function ($query) use($src) {
-                $query->where('id', 'in', $src['id']);
-            })
-            ->whereOr('user_id', session('user_id'))
+            ->when(session('user_id') !=1 && session('user_id') !=2, function($query) use($src){
+                    $query->where('id', 'in', $src['id']);
+                })
             ->with(
                 [
                     'ksCategory' => function ($query) {
@@ -88,6 +88,9 @@ class Kaoshi extends BaseModel
             ->field('kaoshi_id')
             ->select();
         $kaoshi_ids = $data->column('kaoshi_id');
+
+        $ids = $this->where('user_id', session('user_id'))->column(['id']);
+        $kaoshi_ids = array_merge($kaoshi_ids, $ids);
 
         return $kaoshi_ids;
     }

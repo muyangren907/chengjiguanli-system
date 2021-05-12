@@ -42,8 +42,12 @@ class Index extends AdminBase
                 ,'order' => 'desc'
                 ,'searchval' => ''
             ], 'POST');
-        // 根据条件查询数据
         $ks = new KS;
+        if(session('user_id') != 1 && session('user_id') !=2) {
+
+            $src['id'] = $ks->srcAuth(); 
+        }
+        // 根据条件查询数据
         $data = $ks->search($src)
             ->visible([
                 'id'
