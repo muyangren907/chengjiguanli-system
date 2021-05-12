@@ -268,7 +268,7 @@ class Njtongji extends AdminBase
 
         if (true == $data) {
             $data = [
-                'msg'=>'各学校年级成绩统计完成'
+                'msg'=>'完成'
                 ,'val'=>1
             ];
             $src = [
@@ -301,7 +301,7 @@ class Njtongji extends AdminBase
 
         if (true == $data) {
             $data = [
-                'msg' => '学生成绩在学校年级位置统计完成。'
+                'msg' => '完成'
                 ,'val' => 1
             ];
             $src = [

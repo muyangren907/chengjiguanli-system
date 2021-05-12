@@ -39,7 +39,7 @@ class Tongji extends AdminBase
             }
         }
         
-        $data ? $data = ['msg' => '重新计算完成', 'val' => 1]
+        $data ? $data = ['msg' => '完成', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息

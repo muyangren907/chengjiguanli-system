@@ -88,9 +88,8 @@ class Kaoshi extends BaseModel
             ->field('kaoshi_id')
             ->select();
         $kaoshi_ids = $data->column('kaoshi_id');
-
         $ids = $this->where('user_id', session('user_id'))->column(['id']);
-        $kaoshi_ids = array_merge($kaoshi_ids, $ids);
+        $kaoshi_ids =array_unique(array_merge($kaoshi_ids, $ids));
 
         return $kaoshi_ids;
     }

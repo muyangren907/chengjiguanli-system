@@ -296,7 +296,7 @@ class Bjtongji extends AdminBase
         $data = $btj->tjBanji($kaoshi_id);
 
         if (true == $data) {
-            $data = ['msg' => '各班级成绩统计完成', 'val' => 1];
+            $data = ['msg' => '完成', 'val' => 1];
             $src = [
                 'kaoshi_id' => $kaoshi_id,
                 'category_id' => 12001,
@@ -323,7 +323,7 @@ class Bjtongji extends AdminBase
         $data = $btj->bjOrder($kaoshi_id);
 
         if (true == $data) {
-            $data = ['msg' => '学生成绩在班级位置统计完成。', 'val' => 1];
+            $data = ['msg' => '完成', 'val' => 1];
             $src = [
                 'kaoshi_id' => $kaoshi_id
                 ,'category_id' => 12002

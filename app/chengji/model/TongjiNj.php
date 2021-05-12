@@ -116,16 +116,15 @@ class TongjiNj extends BaseModel
         $src = array_cover($srcfrom, $src);
         $ruxuenian = $src['ruxuenian'];
         $school = strToarray($src['school_id']);
-        $kaoshi = $src['kaoshi_id'];
 
         // 查询要统计成绩的学校
         $cy = new \app\kaohao\model\SearchCanYu;
         $schoolList = $cy->school($src);
-
-        if(count($schoolList) == 0){
+        $src['school_id'] = array_column($schoolList, 'id');
+        if(count($src['school_id']) == 0){
             return array();
         }
-
+        halt($src);
         $tongjiJg = $this
             ->where('kaoshi_id', $src['kaoshi_id'])
             ->where('ruxuenian', $src['ruxuenian'])

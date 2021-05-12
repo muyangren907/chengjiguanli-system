@@ -21,7 +21,7 @@ class Schtongji extends AdminBase
 
         if(true == $data)
         {
-            $data=['msg'=>'全区年级统计完成','val'=>1];
+            $data=['msg'=>'完成','val'=>1];
             $src = [
                 'kaoshi_id' => $kaoshi_id,
                 'category_id' => 12005,
@@ -49,7 +49,7 @@ class Schtongji extends AdminBase
 
         if(true == $data)
         {
-            $data=['msg'=>'学生成绩在全区位置统计完成','val'=>1];
+            $data=['msg'=>'完成','val'=>1];
             $src = [
                 'kaoshi_id' => $kaoshi_id,
                 'category_id' => 12006,
