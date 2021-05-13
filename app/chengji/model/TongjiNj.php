@@ -114,8 +114,6 @@ class TongjiNj extends BaseModel
 
         // 用新值替换初始值
         $src = array_cover($srcfrom, $src);
-        $ruxuenian = $src['ruxuenian'];
-        $school = strToarray($src['school_id']);
 
         // 查询要统计成绩的学校
         $cy = new \app\kaohao\model\SearchCanYu;
@@ -124,10 +122,9 @@ class TongjiNj extends BaseModel
         if(count($src['school_id']) == 0){
             return array();
         }
-        halt($src);
+
         $tongjiJg = $this
             ->where('kaoshi_id', $src['kaoshi_id'])
-            ->where('ruxuenian', $src['ruxuenian'])
             ->when(count($src['school_id']) > 0, function ($query) use ($src) {
                 $query->where('school_id', 'in', $src['school_id']);
             })
