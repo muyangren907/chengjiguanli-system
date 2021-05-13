@@ -242,6 +242,18 @@ class Index extends AdminBase
                 ,'subject_id'
             ], 'POST');
 
+        // 用户职务判断
+        if (session('user_id') !=1 && session('user_id') !=2) {
+            $qxBanjiIds = event('mybanji');
+            if (is_array($qxBanjiIds[0])) {
+                $src['banji_id'] = array_intersect($src['banji_id'], $qxBanjiIds[0]);
+            }
+        }
+        if(count($src['banji_id']) == 0) {
+            $this->error('哎呀~没有足够权限！', '/login/err');
+        }
+
+
         // 获取要下载成绩的学校和年级信息
         $school = new \app\system\model\School;
         $schoolname = $school->where('id', $src['school_id'])->value('jiancheng');
@@ -494,6 +506,17 @@ class Index extends AdminBase
                 ,'ruxuenian'
                 ,'subject_id'
             ], 'POST');
+        // 用户职务判断
+        if (session('user_id') !=1 && session('user_id') !=2) {
+            $qxBanjiIds = event('mybanji');
+            if (is_array($qxBanjiIds[0])) {
+                $src['banji_id'] = array_intersect($src['banji_id'], $qxBanjiIds[0]);
+            }
+        }
+        if(count($src['banji_id']) == 0) {
+            $this->error('哎呀~没有足够权限！', '/login/err');
+        }
+
         // 获取要下载成绩的学校和年级信息
         $school = new \app\system\model\School;
         $schoolname = $school->where('id', $src['school_id'])->value('jiancheng');

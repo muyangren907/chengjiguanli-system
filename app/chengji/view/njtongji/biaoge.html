@@ -143,23 +143,23 @@ layui.use(['table', 'form', 'canyuKaoshi', 'mytable', 'myEchart'], function() {
 
 		// 条形统计图  平均分
 		val.xiangmu = 'avg';
-		echart.tiaoxing('myAvg', '/chengji/bjtj/myavg', val, '平均分');
+		echart.tiaoxing('myAvg', '/chengji/njtj/myavg', val, '平均分');
 
 		// 条形统计图--及格率
 		val.xiangmu = 'jigelv';
-		echart.tiaoxing('myJige', '/chengji/bjtj/myavg', val, '及格率');
+		echart.tiaoxing('myJige', '/chengji/njtj/myavg', val, '及格率');
 
 		// 条形统计图--优秀率
 		val.xiangmu = 'youxiulv';
-		echart.tiaoxing('myYouxiu', '/chengji/bjtj/myavg', val, '优秀率');
+		echart.tiaoxing('myYouxiu', '/chengji/njtj/myavg', val, '优秀率');
 
 		// 条形统计图--标准差
 		val.xiangmu = 'biaozhuncha';
-		echart.tiaoxing('myBiaozhunca', '/chengji/bjtj/myavg', val, '标准差');
+		echart.tiaoxing('myBiaozhunca', '/chengji/njtj/myavg', val, '标准差');
 
 		// 箱线图--差异
 		var val = form.val('search');
-		echart.xiangti('myXiangti', '/chengji/bjtj/myxiangti', val, '差异');
+		echart.xiangti('myXiangti', '/chengji/njtj/myxiangti', val, '差异');
 	}
 
 });
