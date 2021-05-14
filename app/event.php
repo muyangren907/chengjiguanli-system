@@ -14,6 +14,9 @@ return [
         'kslu' => [
             '\app\listener\KaoshiLuru'
         ],
+        'ksedit' => [
+            '\app\listener\KaoshiEdit'
+        ],
         'tjlog' => [
             '\app\listener\TongjiLog'
         ],

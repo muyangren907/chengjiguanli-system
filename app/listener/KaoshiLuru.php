@@ -32,9 +32,7 @@ class KaoshiLuru
         }else{
             return $this->error('没有找到考试。','/login/err');
         }
-        
 
         return $ksInfo;
-
     }
 }

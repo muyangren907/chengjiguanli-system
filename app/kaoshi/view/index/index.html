@@ -115,6 +115,19 @@ layui.use(['table', 'mytable','createInput','form'], function() {
 					return endate;
 				}
 			},
+			{
+				field: 'user_id',
+				title: '创建人',
+				sort: true,
+				minWidth: 100,
+				templet: function(d) {
+					var str;
+					if (d.ksTeahcer) {
+						str = d.ksTeahcer.xingming;
+					}
+					return str;
+				}
+			},
 			{ field: 'luru', title: '成绩编辑', minWidth: 100, templet: '#luru', sort: true },
 			{ field: 'status', title: '状态', minWidth: 80, templet: '#jieshu', sort: true },
 			{ field: 'id', title: '操作', toolbar: '#barDemo', minWidth: 250 },

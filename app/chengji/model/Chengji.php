@@ -110,8 +110,43 @@ class Chengji extends BaseModel
     // 列出已录成绩列表
     public function searchLuru($srcfrom)
     {
-        $nianji = \app\facade\Tools::nianJiNameList();
-        $cjList = $this->searchBase($srcfrom);
+        $cjList = $this
+            ->where('user_id', $srcfrom['user_id'])
+            ->when(strlen($srcfrom['subject_id']) > 0, function ($query) {
+                $query->where('subject_id', $srcfrom);
+            })
+            ->where('kaohao_id', 'in', function ($query) {
+                $query
+                    ->name('kaohao')
+                    ->where('kaoshi_id', 'in', function ($q) {
+                        $q->name('kaoshi')
+                            ->where('status&luru', 1)
+                            ->field('id');
+                    })
+                    ->field('id');
+            })
+            ->with([
+                'subjectName' => function($query){
+                    $query->field('id, title, lieming');
+                }
+                ,'cjKaohao' => function($query){
+                    $query->field('id, kaoshi_id, school_id, ruxuenian, nianji, banji_id, paixu, student_id')
+                        ->append(['banjiTitle'])
+                        ->with([
+                            'cjSchool' => function($query){
+                                $query->field('id, jiancheng, paixu');
+                            }
+                            ,'cjStudent' => function($query){
+                                $query->field('id, xingming, sex');
+                            }
+                            ,'cjKaoshi' => function($query){
+                                $query->field('id, title');
+                            }
+                        ]);
+                }
+            ])
+            ->select();
+
 
         // 重新整理成绩
         $data = array();
@@ -149,7 +184,6 @@ class Chengji extends BaseModel
     // 列出已录成绩列表
     public function searchTeacher($srcfrom)
     {
-        $nianji = nianJiNameList();
         $cjList = $this->searchBase($srcfrom);
 
         // 重新整理成绩

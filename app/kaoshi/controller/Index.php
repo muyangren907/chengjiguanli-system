@@ -321,6 +321,7 @@ class Index extends AdminBase
     // 更新考试信息
     public function update($id)
     {
+        event('ksedit', $id);
         event('kslu', $id);
         // 获取表单数据
         $list = request()->only([

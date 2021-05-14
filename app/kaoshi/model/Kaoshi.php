@@ -63,6 +63,9 @@ class Kaoshi extends BaseModel
                     ,'ksFanwei' => function ($query) {
                         $query->field('id, title');
                     }
+                    ,'ksTeahcer' => function ($query) {
+                        $query->field('id, xingming');
+                    }
                 ]
             )
             ->append(['ckSubject', 'ckNianji'])
@@ -100,7 +103,7 @@ class Kaoshi extends BaseModel
     {
         // 获取参考年级
         $kaoshiList = $this->where('id', $id)
-                ->field('id, title, status, luru, bfdate, enddate')
+                ->field('id, title, user_id, status, luru, bfdate, enddate')
                 ->find();
         return $kaoshiList;
     }
@@ -233,5 +236,10 @@ class Kaoshi extends BaseModel
     }
 
 
+    // 学期
+    public function ksTeahcer()
+    {
+        return $this->belongsTo('\app\admin\model\Admin', 'user_id', 'id');
+    }
 
 }
