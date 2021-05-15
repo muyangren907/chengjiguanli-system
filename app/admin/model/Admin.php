@@ -381,8 +381,17 @@ class Admin extends BaseModel
 
     public function myQuanxian()
     {
-        $id = session('user_id');
-        $banji_id = array();
+        $data = [
+            'auth' => true
+            ,'banji_id' => array()
+        ];
+        $id = session('user_id');   # 获取当前用户ID
+
+        if($id == 1 || $id == 2)
+        {
+            $data['auth'] = false;
+            return $data;
+        }
             
         $adInfo = $this->where('id', $id)
             ->field('zhiwu_id, school_id')
@@ -400,24 +409,25 @@ class Admin extends BaseModel
             $bjList = $bj->where('school_id', $adInfo->school_id)
                 ->where('status', 1)
                 ->column('id');
-            $banji_id = array_merge($banji_id, $bjList);    
+            $banji_id = array_merge($data['banji_id'], $bjList);    
         }
+
         // 教研组长
         $zh = new \app\teach\model\JiaoyanZuzhang;
         $zhList = $zh->srcTeacherNow($id);
         $zz = new \app\teach\model\Jiaoyanzu;
         foreach ($zhList as $key => $value) {
             $zzInfo = $zz->oneInfo($value);
-            $banji_id = array_merge($banji_id, $zzInfo->banjiId);
+            $data['banji_id'] = array_merge($data['banji_id'], $zzInfo->banjiId);
         }
 
         // 获取班主任班级权限
         $bzr = new \app\teach\model\BanZhuRen;
         $bzr_banji_id = $bzr->srcTeacherNow($id);
-        $banji_id = array_merge($banji_id, $bzr_banji_id);
-        $banji_id = array_unique($banji_id);
+        $data['banji_id'] = array_merge($data['banji_id'], $bzr_banji_id);
+        $data['banji_id'] = array_unique($data['banji_id']);
 
-        return $banji_id;
+        return $data;
     }
 
 

@@ -46,8 +46,6 @@ class Student extends Validate
             ,'xingming'
             ,'sex'
             ,'shenfenzhenghao'
-            ,'ruxuenian'
-            ,'banji_id'
             ,'kaoshi'
         ],
     ];

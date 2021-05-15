@@ -17,6 +17,7 @@ class Banji extends BaseModel
             ,'ruxuenian' => ''
             ,'status' => ''
             ,'id' => ''
+            ,'auth' => true
         ];
         $src = array_cover($srcfrom, $src);
         $src['school_id'] = strToarray($src['school_id']);
@@ -39,7 +40,7 @@ class Banji extends BaseModel
             ->when(strlen($src['status']) > 0, function($query) use($src){
                     $query->where('status', $src['status']);
                 })
-            ->when(session('user_id') != 1 && session('user_id') != 2, function($query) use($src){
+            ->when($src['auth'] == true, function($query) use($src){
                     $query->where('id', 'in', $src['id']);
                 })
             ->with(

@@ -51,6 +51,7 @@ class Banji extends AdminBase
             $src['id'] = event('mybanji');
             $src['id'] = $src['id'][0];
         }
+        $src['id'] = event('mybanji');
 
         // 查询数据
         $bj = new bjmod;
@@ -309,12 +310,20 @@ class Banji extends AdminBase
                 ,'ruxuenian' => ''
                 ,'status' => 1
                 ,'limit' =>100
+                ,'auth' => false
             ], 'POST');
 
         if($src['school_id'] == '' && $src['ruxuenian'] == '')
         {
             return '';
         }
+
+        // if ($src['auth'] == true) {
+        //     $src['id'] = event('mybanji');
+        //     $src['id'] = $src['id'][0];
+        // }
+
+        halt($src);
 
         // 查询班级
         $bj = new bjmod;

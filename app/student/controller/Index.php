@@ -219,6 +219,11 @@ class Index extends AdminBase
             ,'shoupin'
         ], 'POST');
 
+        if(session('user_id') != 1 && session('user_id') != 2) {
+            $data = ['msg' => '请使用超级管理员帐号添加', 'val' => 0];
+            return json($data);
+        }
+
         // 验证表单数据
         $validate = new \app\student\validate\Student;
         $result = $validate->scene('create')->check($list);
@@ -303,6 +308,8 @@ class Index extends AdminBase
             ,'shoupin'
         ], 'PUT');
         $list['id'] = $id;
+
+
 
         // 验证表单数据
         $validate = new \app\student\validate\Student;
@@ -467,6 +474,11 @@ class Index extends AdminBase
             'school_id'
             ,'url'
         ], 'POST');
+
+        if(session('user_id') != 1 && session('user_id') != 2) {
+            $data = ['msg' => '请使用超级管理员帐号添加', 'val' => 0];
+            return json($data);
+        }
 
         $fengefu = DIRECTORY_SEPARATOR;
         // 读取表格数据
@@ -695,6 +707,5 @@ class Index extends AdminBase
         }
         return json($data);
     }
-
 
 }
