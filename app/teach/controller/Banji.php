@@ -47,6 +47,11 @@ class Banji extends AdminBase
                 ,'ruxuenian' => ''
             ], 'POST');
 
+        if (session('user_id') !=1 && session('user_id') !=2) {
+            $src['id'] = event('mybanji');
+            $src['id'] = $src['id'][0];
+        }
+
         // 查询数据
         $bj = new bjmod;
         $data = $bj->search($src)
@@ -54,6 +59,7 @@ class Banji extends AdminBase
                 'id'
                 ,'glSchool' => ['title']
                 ,'ruxuenian'
+                ,'school_id'
                 ,'paixu'
                 ,'gl_student_count'
                 ,'status'

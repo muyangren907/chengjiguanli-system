@@ -394,12 +394,11 @@ class Admin extends BaseModel
             ->find();
         // 获取职务权限
         $zhiwu_array = array(10703, 10705);
+
         if (in_array($adInfo->zhiwu_id, $zhiwu_array)) {
             $bj = new \app\teach\model\Banji;
-            $src = [
-                'school_id' => $adInfo->school_id
-            ];
-            $bjList = $bj->search($src)
+            $bjList = $bj->where('school_id', $adInfo->school_id)
+                ->where('status', 1)
                 ->column('id');
             $banji_id = array_merge($banji_id, $bjList);    
         }
@@ -415,7 +414,6 @@ class Admin extends BaseModel
         // 获取班主任班级权限
         $bzr = new \app\teach\model\BanZhuRen;
         $bzr_banji_id = $bzr->srcTeacherNow($id);
-
         $banji_id = array_merge($banji_id, $bzr_banji_id);
         $banji_id = array_unique($banji_id);
 

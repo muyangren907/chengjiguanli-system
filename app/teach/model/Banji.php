@@ -16,10 +16,12 @@ class Banji extends BaseModel
             'school_id' => ''
             ,'ruxuenian' => ''
             ,'status' => ''
+            ,'id' => ''
         ];
         $src = array_cover($srcfrom, $src);
         $src['school_id'] = strToarray($src['school_id']);
         $src['ruxuenian'] = strToarray($src['ruxuenian']);
+        $src['id'] = strToarray($src['id']);
         if(count($src['ruxuenian']) == 0)
         {
             $njname = $this->gradeName(time(),'num');     # 年级名对应表
@@ -36,6 +38,9 @@ class Banji extends BaseModel
                 })
             ->when(strlen($src['status']) > 0, function($query) use($src){
                     $query->where('status', $src['status']);
+                })
+            ->when(session('user_id') != 1 && session('user_id') != 2, function($query) use($src){
+                    $query->where('id', 'in', $src['id']);
                 })
             ->with(
                 [
