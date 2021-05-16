@@ -40,6 +40,11 @@ class Jiaoyanzu extends AdminBase
                 ,'searchval' => ''
             ], 'POST');
 
+        if (session('user_id') != 1 && session('user_id') != 2) {
+            $adInfo = \app\facade\OnLine::myInfo();
+            $src['school_id'] = $adInfo->school_id;
+        }
+
         // 根据条件查询数据
         $xq = new jyzmod;
         $data = $xq->search($src)

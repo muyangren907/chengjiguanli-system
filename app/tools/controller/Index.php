@@ -47,7 +47,7 @@ class Index extends BaseController
     public function array_cover($cover = array(), $covered = array())
     {
         foreach ($cover as $key => $value) {
-            if($value == "")
+            if($value === "" || $value === null)
             {
                 unset($cover[$key]);
             }

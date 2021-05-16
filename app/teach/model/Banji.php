@@ -219,8 +219,10 @@ class Banji extends BaseModel
     // 判断当前班级是否已经毕业
     public function getBiyeAttr()
     {
+        $sys = \app\facade\System::sysClass();
+        $cnt = count(explode('|', $sys->gradelist));
         $ruxuenian = $this->ruxuenian;
-        $date_r = strtotime($ruxuenian + 6 . '-8-1');
+        $date_r = strtotime($ruxuenian + $cnt . '-8-1');
         $str = '';
         if(time() > $date_r)
         {

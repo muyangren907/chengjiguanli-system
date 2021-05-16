@@ -135,6 +135,7 @@ class BanZhuRen extends BaseModel
             ])
             ->append(['jieShu'])
             ->select();
+
         return $data;
     }
 
@@ -152,13 +153,16 @@ class BanZhuRen extends BaseModel
                 'banjiTeachers' => function ($query) {
                     $query->field('id, teacher_id, bfdate, banji_id');
                 }
+                ,'glBanji' => function ($query) {
+                    $query->field('id, ruxuenian, paixu')->append(['banJiTitle', 'biye']);
+                }
             ])
             ->select();
 
         // 循环写入班级ID
         $banji_ids = array();
         foreach ($teacher as $key => $value) {
-            if ($value->banjiTeachers[0]->teacher_id == $admin_id) {
+            if ($value->glBanji->biye === false && $value->banjiTeachers[0]->teacher_id == $admin_id) {
                 $banji_ids[] = $value->banji_id;
             }
         }

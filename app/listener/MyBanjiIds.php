@@ -16,10 +16,10 @@ class MyBanjiIds
      *
      * @return mixed
      */
-    public function handle($event)
+    public function handle($srcfrom)
     {
         $event = new MyEvent;
-        $banji = $event->userInfo();
+        $banji = $event->userInfo($srcfrom);
         return $banji;
     }
 }

@@ -392,40 +392,67 @@ class Admin extends BaseModel
             $bjList = $bj->where('school_id', $adInfo->school_id)
                 ->where('status', 1)
                 ->column('id');
-            $banji_id = array_merge($data['banji_id'], $bjList);
+            $banji_id = array_merge($banji_id, $bjList);
         }
 
         return $banji_id;
     }
 
 
-    public function myQuanxian()
+    public function myQuanxian($srcfrom)
     {
+        // 获取合并变量
+        $src = [
+            'guanliyuan' => true
+            ,'zhiwu' => true
+            ,'zuzhang' => true
+            ,'banzhuren' => true
+        ];
+        $src = array_cover($srcfrom, $src);
+
+        // 初始化变量
         $data = [
             'check' => true
             ,'banji_id' => array()
         ];
         $id = session('user_id');   # 获取当前用户ID
 
-        if($id == 1 || $id == 2)
+        if(array_sum($src) == 0)
         {
             $data['check'] = false;
             return $data;
         }
 
+        // 超级管理员验证
+        if ($src['guanliyuan'] == true) {
+            if($id == 1 || $id == 2)
+            {
+                $data['check'] = false;
+                return $data;
+            }
+        }
+
         // 职务权限
-        $banji_id = $this->zwAuth();
-        $data['banji_id'] = array_merge($data['banji_id'], $banji_id);
+        if($src['zhiwu'] == true) {
+            $banji_id = $this->zwAuth();
+            $data['banji_id'] = array_merge($data['banji_id'], $banji_id);
+        }
+        
 
         // 教研组长
-        $auth = new \app\teach\model\JiaoyanZuzhang;
-        $banji_id = $auth->zzAuth();
-        $data['banji_id'] = array_merge($data['banji_id'], $banji_id);
+        if ($src['zuzhang'] == true) {
+            $auth = new \app\teach\model\JiaoyanZuzhang;
+            $banji_id = $auth->zzAuth();
+            $data['banji_id'] = array_merge($data['banji_id'], $banji_id);
+        }
+        
 
         // 获取班主任班级权限
-        $auth = new \app\teach\model\BanZhuRen;
-        $banji_id = $auth->bzrAuth();
-        $data['banji_id'] = array_merge($data['banji_id'], $banji_id);
+        if ($src['banzhuren'] == true) {
+            $auth = new \app\teach\model\BanZhuRen;
+            $banji_id = $auth->bzrAuth();
+            $data['banji_id'] = array_merge($data['banji_id'], $banji_id);
+        }
 
         // 去重
         $data['banji_id'] = array_unique($data['banji_id']);

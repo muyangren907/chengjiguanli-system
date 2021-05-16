@@ -54,10 +54,10 @@ class MyEvent
 
 
     // 获取用户班级权限
-    public function userInfo()
+    public function userInfo($srcfrom)
     {
         $ad = new \app\admin\model\Admin;
-        $adinfo = $ad->myQuanxian();
+        $adinfo = $ad->myQuanxian($srcfrom);
         return $adinfo;
     }
 

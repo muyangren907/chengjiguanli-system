@@ -53,7 +53,7 @@ class Jiaoyanzu extends BaseModel
                     $query->where('category_id', $src['category_id']);
                 })
             ->when(count($src['school_id']) > 0, function($query) use($src){
-                    $query->where('school_id', $src['school_id']);
+                    $query->where('school_id', 'in', $src['school_id']);
                 })
             ->when(strlen($src['status']) > 0, function($query) use($src){
                     $query->where('status', $src['status']);

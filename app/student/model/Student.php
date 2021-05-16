@@ -85,17 +85,21 @@ class Student extends BaseModel
     public function search($srcfrom)
     {
         $src = [
-            'banji_id' => array()
-            ,'searchval' => ''
+            'searchval' => ''
             ,'status' => ''
             ,'kaoshi' => ''
+            ,'auth' => [
+                'check' => true
+                ,'banji_id' => array()
+            ]
         ];
 
         $src = array_cover($srcfrom, $src);
-        $src['banji_id'] = strToArray($src['banji_id']);
 
         $data = $this
-                ->where('banji_id', 'in', $src['banji_id'])
+                ->when($src['auth']['check'] == true, function ($query) use($src) {
+                    $query->where('banji_id', 'in', $src['auth']['banji_id']);
+                })
                 ->when(strlen($src['searchval']) > 0, function($query) use($src){
                         $query
                             ->where('xingming', 'like', '%' . $src['searchval'] . '%')
@@ -133,17 +137,22 @@ class Student extends BaseModel
     public function searchBy($srcfrom)
     {
         $src = [
-            'banji_id' => array()
-            ,'searchval' => ''
+            'searchval' => ''
             ,'status' => ''
             ,'kaoshi' => ''
+            ,'auth' => [
+                'check' => true
+                ,'banji_id' => array()
+            ]
         ];
 
         $src = array_cover($srcfrom, $src);
         $src['banji_id'] = strToArray($src['banji_id']);
 
         $data = $this
-                ->where('banji_id', 'in', $src['banji_id'])
+                ->when($src['auth']['check'] == true, function ($query) use($src) {
+                    $query->where('banji_id', 'in', $src['auth']['banji_id']);
+                })
                 ->when(strlen($src['searchval']) > 0, function($query) use($src){
                         $query
                             ->where('xingming', 'like', '%' . $src['searchval'] . '%')
@@ -181,15 +190,19 @@ class Student extends BaseModel
     public function searchDel($srcfrom)
     {
         $src = [
-            'banji_id' => array()
-            ,'searchval' => ''
+            'searchval' => ''
+            ,'auth' => [
+                'check' => true
+                ,'banji_id' => array()
+            ]
         ];
         $src = array_cover($srcfrom, $src);
-        $src['banji_id'] = strToArray($src['banji_id']);
 
         $data = $this::onlyTrashed()
                 ->order('update_time')
-                ->where('banji_id', 'in', $src['banji_id'])
+                ->when($src['auth']['check'] == true, function ($query) use($src) {
+                    $query->where('banji_id', 'in', $src['auth']['banji_id']);
+                })
                 ->when(strlen($src['searchval']) > 0, function($query) use($src){
                         $query
                             ->where('xingming', 'like', '%' . $src['searchval'] . '%')
