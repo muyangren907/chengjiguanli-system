@@ -99,6 +99,21 @@ class JiaoyanZuzhang extends Model
     }
 
 
+    // 查询组长权限
+    public function zzAuth()
+    {
+        $id = session('user_id');
+        $banji_id = array();
+        $zhList = $this->srcTeacherNow($id);
+        $zz = new \app\teach\model\Jiaoyanzu;
+        foreach ($zhList as $key => $value) {
+            $zzInfo = $zz->oneInfo($value);
+            $data['banji_id'] = array_merge($data['banji_id'], $zzInfo->banjiId);
+        }
+        return $banji_id;
+    }
+
+
     // 接任时间获取器
     public function getBfdateAttr($value)
     {

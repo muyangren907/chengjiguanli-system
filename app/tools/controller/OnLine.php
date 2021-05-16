@@ -20,30 +20,20 @@ class OnLine
     }
 
 
-    // // 获取用户信息
-    // public function getLoginInfo($yu)
-    // {
-    //     $username = '';
-    //     $password = '';
-    //     // 尝试从session中获取用户名和密码
-    //     $username = session('?'.$yu.'.username')
-    //         ? $username = session($yu.'.username') : $username = '';
-    //     $password = session('?'.$yu.'.password')
-    //         ? $password = session($yu.'.password') : $password = '';
-    //     // 尝试从cookie中获取用户名和密码
-    //     if (strlen($username) < 1 )
-    //     {
-    //         $username = cookie('?username')
-    //             ? $username = cookie('username') : $username = '';
-    //         $password = cookie('?password')
-    //             ? $password = cookie('password') : $password = '';
-    //     }
+    // 获取用户信息
+    public function myInfo()
+    {
+        $id = session('user_id');
+        $ad = new \app\admin\model\Admin;
+        $adInfo = $ad->where('id', $id)
+            ->field('zhiwu_id, school_id')
+            ->with([
+                'adSchool' => function($query){
+                    $query->field('id, jiancheng, jibie_id');
+                },
+            ])
+            ->find();
 
-    //     $userInfo = [
-    //         'username' => $username
-    //         ,'password' => $password
-    //     ];
-
-    //     return $userInfo;
-    // }
+        return $adInfo;
+    }
 }

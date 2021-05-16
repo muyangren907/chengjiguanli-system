@@ -379,28 +379,11 @@ class Admin extends BaseModel
     }
 
 
-    public function myQuanxian()
+    // 职务权限
+    public function zwAuth()
     {
-        $data = [
-            'auth' => true
-            ,'banji_id' => array()
-        ];
-        $id = session('user_id');   # 获取当前用户ID
-
-        if($id == 1 || $id == 2)
-        {
-            $data['auth'] = false;
-            return $data;
-        }
-            
-        $adInfo = $this->where('id', $id)
-            ->field('zhiwu_id, school_id')
-            ->with([
-                'adSchool' => function($query){
-                    $query->field('id, jiancheng, jibie_id');
-                },
-            ])
-            ->find();
+        $adInfo = \app\facade\OnLine::myInfo();
+        $banji_id = array();
         // 获取职务权限
         $zhiwu_array = array(10703, 10705);
 
@@ -409,22 +392,42 @@ class Admin extends BaseModel
             $bjList = $bj->where('school_id', $adInfo->school_id)
                 ->where('status', 1)
                 ->column('id');
-            $banji_id = array_merge($data['banji_id'], $bjList);    
+            $banji_id = array_merge($data['banji_id'], $bjList);
         }
+
+        return $banji_id;
+    }
+
+
+    public function myQuanxian()
+    {
+        $data = [
+            'check' => true
+            ,'banji_id' => array()
+        ];
+        $id = session('user_id');   # 获取当前用户ID
+
+        if($id == 1 || $id == 2)
+        {
+            $data['check'] = false;
+            return $data;
+        }
+
+        // 职务权限
+        $banji_id = $this->zwAuth();
+        $data['banji_id'] = array_merge($data['banji_id'], $banji_id);
 
         // 教研组长
-        $zh = new \app\teach\model\JiaoyanZuzhang;
-        $zhList = $zh->srcTeacherNow($id);
-        $zz = new \app\teach\model\Jiaoyanzu;
-        foreach ($zhList as $key => $value) {
-            $zzInfo = $zz->oneInfo($value);
-            $data['banji_id'] = array_merge($data['banji_id'], $zzInfo->banjiId);
-        }
+        $auth = new \app\teach\model\JiaoyanZuzhang;
+        $banji_id = $auth->zzAuth();
+        $data['banji_id'] = array_merge($data['banji_id'], $banji_id);
 
         // 获取班主任班级权限
-        $bzr = new \app\teach\model\BanZhuRen;
-        $bzr_banji_id = $bzr->srcTeacherNow($id);
-        $data['banji_id'] = array_merge($data['banji_id'], $bzr_banji_id);
+        $auth = new \app\teach\model\BanZhuRen;
+        $banji_id = $auth->bzrAuth();
+        $data['banji_id'] = array_merge($data['banji_id'], $banji_id);
+
+        // 去重
         $data['banji_id'] = array_unique($data['banji_id']);
 
         return $data;

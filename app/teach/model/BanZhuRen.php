@@ -166,4 +166,17 @@ class BanZhuRen extends BaseModel
         return $banji_ids;
     }
 
+
+    // 班主任权限
+    public function bzrAuth()
+    {
+        $id = session('user_id');
+        $banji_id = array();
+        // 获取班主任班级权限
+        $bzr_banji_id = $this->srcTeacherNow($id);
+        $banji_id = array_merge($banji_id, $bzr_banji_id);
+        $banji_id = array_unique($banji_id);
+        return $banji_id;
+    }
+
 }

@@ -47,11 +47,8 @@ class Banji extends AdminBase
                 ,'ruxuenian' => ''
             ], 'POST');
 
-        if (session('user_id') !=1 && session('user_id') !=2) {
-            $src['id'] = event('mybanji');
-            $src['id'] = $src['id'][0];
-        }
-        $src['id'] = event('mybanji');
+        $src['auth'] = event('mybanji');
+        $src['auth'] = $src['auth'][0];
 
         // 查询数据
         $bj = new bjmod;
