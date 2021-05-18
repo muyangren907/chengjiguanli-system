@@ -114,6 +114,14 @@ class Index extends AdminBase
             $src['auth']['banji_id'] = array_intersect($src['auth']['banji_id'], $src['banji_id']);
         }
 
+        $njlist = \app\facade\Tools::nianJiNameList(time(), 'num');
+        $biyenian = min($njlist); # 最近毕业年
+        $banji = new \app\teach\model\Banji;
+        $src['auth']['banji_id'] = $banji
+            ->where('id', 'in', $src['auth']['banji_id'])
+            ->where('ruxuenian', '<', $biyenian)
+            ->column('id');
+
         // 根据条件查询数据
         $stu = new STU;
         $data = $stu->search($src);

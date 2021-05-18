@@ -12,7 +12,7 @@ return array(
     'think\\migration\\' => array($vendorDir . '/topthink/think-migration/src'),
     'think\\captcha\\' => array($vendorDir . '/topthink/think-captcha/src'),
     'think\\app\\' => array($vendorDir . '/topthink/think-multi-app/src'),
-    'think\\' => array($vendorDir . '/topthink/think-helper/src', $vendorDir . '/topthink/think-template/src', $vendorDir . '/topthink/think-orm/src', $vendorDir . '/topthink/framework/src/think'),
+    'think\\' => array($vendorDir . '/topthink/framework/src/think', $vendorDir . '/topthink/think-helper/src', $vendorDir . '/topthink/think-orm/src', $vendorDir . '/topthink/think-template/src'),
     'liliuwei\\think\\' => array($vendorDir . '/liliuwei/thinkphp-auth/src', $vendorDir . '/liliuwei/thinkphp-jump/src'),
     'app\\' => array($baseDir . '/app'),
     'ZipStream\\' => array($vendorDir . '/maennchen/zipstream-php/src'),
