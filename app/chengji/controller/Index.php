@@ -60,11 +60,11 @@ class Index extends AdminBase
             $src['banji_id']= array_column($cy->class($src), 'id');
         } 
 
-        if (session('user_id') !=1 || session('user_id') !=2) {
-            $qxBanjiIds = event('mybanji');
-            if (is_array($qxBanjiIds[0])) {
-                $src['banji_id'] = array_intersect($src['banji_id'], $qxBanjiIds[0]);
-            }
+        $src['auth'] = event('mybanji', array());
+        $src['auth'] = $src['auth'][0];
+        if(count($src['banji_id']) > 0)        # 如果没有获取到班级id,则查询班级id
+        {
+            $src['auth']['banji_id'] = array_intersect($src['auth']['banji_id'], $src['banji_id']);
         }
 
         // 实例化并查询成绩
@@ -242,17 +242,14 @@ class Index extends AdminBase
                 ,'subject_id'
             ], 'POST');
 
-        // 用户职务判断
-        if (session('user_id') !=1 && session('user_id') !=2) {
-            $qxBanjiIds = event('mybanji');
-            if (is_array($qxBanjiIds[0])) {
-                $src['banji_id'] = array_intersect($src['banji_id'], $qxBanjiIds[0]);
-            }
-        }
-        if(count($src['banji_id']) == 0) {
+        $src['auth'] = event('mybanji', array());
+        $src['auth'] = $src['auth'][0];
+        if(count($src['banji_id']) > 0)        # 如果没有获取到班级id,则查询班级id
+        {
+            $src['auth']['banji_id'] = array_intersect($src['auth']['banji_id'], $src['banji_id']);
+        }else{
             $this->error('哎呀~没有足够权限！', '/login/err');
         }
-
 
         // 获取要下载成绩的学校和年级信息
         $school = new \app\system\model\School;
@@ -507,13 +504,12 @@ class Index extends AdminBase
                 ,'subject_id'
             ], 'POST');
         // 用户职务判断
-        if (session('user_id') !=1 && session('user_id') !=2) {
-            $qxBanjiIds = event('mybanji');
-            if (is_array($qxBanjiIds[0])) {
-                $src['banji_id'] = array_intersect($src['banji_id'], $qxBanjiIds[0]);
-            }
-        }
-        if(count($src['banji_id']) == 0) {
+        $src['auth'] = event('mybanji', array());
+        $src['auth'] = $src['auth'][0];
+        if(count($src['banji_id']) > 0)        # 如果没有获取到班级id,则查询班级id
+        {
+            $src['auth']['banji_id'] = array_intersect($src['auth']['banji_id'], $src['banji_id']);
+        }else{
             $this->error('哎呀~没有足够权限！', '/login/err');
         }
 

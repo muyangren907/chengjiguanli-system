@@ -83,6 +83,7 @@ layui.use(['table', 'form', 'canyuKaoshi', 'createInput', 'mytable', 'myEchart']
 	// 监听学校下拉菜单
 	form.on('select(src)', function(data) {
 		data = form.val("search");
+		data.auth = {};
 		if (data.school_id > 0 && data.ruxuenian > 0) {
 			canyu.banjiCheckbox('banji_id', data);
 		}

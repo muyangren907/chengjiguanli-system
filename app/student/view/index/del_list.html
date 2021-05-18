@@ -137,6 +137,10 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 
 	form.on('select()', function(data) {
 		data = form.val("search");
+		data.auth = {
+			'zuzhang' : false
+			,'banzhuren' : false
+		}
 		if (data.school_id > 0 && data.ruxuenian > 0) {
 			cInput.banjiCheckbox('banji', data);
 		}

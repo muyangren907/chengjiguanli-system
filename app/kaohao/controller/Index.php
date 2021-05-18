@@ -63,6 +63,11 @@ class Index extends AdminBase
             ,'kaoshi' => 1
             ,'status' => 1
         ];
+
+        $src['auth'] = event('mybanji', array());
+        $src['auth'] = $src['auth'][0];
+        $src['auth']['banji_id'] = array_intersect($src['auth']['banji_id'], $src['banji_id']);
+
         $stulist = $stu->search($src)
             ->visible([
                 'id'

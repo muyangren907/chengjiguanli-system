@@ -16,7 +16,6 @@ class Banji extends BaseModel
             'school_id' => ''
             ,'ruxuenian' => ''
             ,'status' => ''
-            ,'id' => ''
             ,'auth' => [
                 'check' => true
                 ,'banji_id' => array()
@@ -25,7 +24,6 @@ class Banji extends BaseModel
         $src = array_cover($srcfrom, $src);
         $src['school_id'] = strToarray($src['school_id']);
         $src['ruxuenian'] = strToarray($src['ruxuenian']);
-        $src['id'] = strToarray($src['id']);
         if(count($src['ruxuenian']) == 0)
         {
             $njname = $this->gradeName(time(),'num');     # 年级名对应表

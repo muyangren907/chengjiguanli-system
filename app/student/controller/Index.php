@@ -44,6 +44,17 @@ class Index extends AdminBase
                 ,'searchval' => ''
             ], 'POST');
 
+        if(count($src['banji_id']) == 0)        # 如果没有获取到班级id,则查询班级id
+        {
+            $banji = new \app\teach\model\Banji;
+            $bjsrc = [
+                'school_id' => $src['school_id']
+                ,'ruxuenian' => $src['ruxuenian']
+                ,'status' => 1
+            ];
+            $src['banji_id'] = $banji->search($bjsrc)->column('id');
+        }
+
         $src['auth'] = event('mybanji', array());
         $src['auth'] = $src['auth'][0];
         if(count($src['banji_id']) > 0)        # 如果没有获取到班级id,则查询班级id
@@ -96,26 +107,12 @@ class Index extends AdminBase
                 ,'searchval' => ''
             ], 'POST');
 
-        if(count($src['banji_id']) == 0)        # 如果没有获取到班级id,则查询班级id
-        {
-            $banji = new \app\teach\model\Banji;
-            $bjsrc = [
-                'school_id' => $src['school_id']
-                ,'ruxuenian' => $src['ruxuenian']
-                ,'auth' => ['check' => false]
-                ,'status' => 1
-            ];
-            $src['banji_id'] = $banji->search($bjsrc)->column('id');
-        }
-
         $src['auth'] = event('mybanji', ['zuzhang'=>false, 'banzhuren' => false]);
         $src['auth'] = $src['auth'][0];
         if(count($src['banji_id']) > 0)        # 如果没有获取到班级id,则查询班级id
         {
             $src['auth']['banji_id'] = array_intersect($src['auth']['banji_id'], $src['banji_id']);
         }
-
-        halt($src);
 
         // 根据条件查询数据
         $stu = new STU;
@@ -157,17 +154,7 @@ class Index extends AdminBase
                     ,'searchval' => ''
                 ], 'POST');
 
-        if(count($src['banji_id']) == 0)        # 如果没有获取到班级id,则查询班级id
-        {
-            $banji = new \app\teach\model\Banji;
-            $bjsrc = [
-                'school_id' => $src['school_id']
-                ,'ruxuenian' => $src['ruxuenian']
-                ,'status' => 1
-            ];
-            $src['banji_id'] = $banji->search($bjsrc)->column('id');
-        }
-        $src['auth'] = event('mybanji');
+        $src['auth'] = event('mybanji', array('banzhuren' => false, 'zuzhang' => false));
         $src['auth'] = $src['auth'][0];
         $src['auth']['banji_id'] = array_intersect($src['auth']['banji_id'], $src['auth']['banji_id']);
 

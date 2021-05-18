@@ -156,11 +156,9 @@ class Jiaoyanzu extends BaseModel
         $bjList = array();
         if ($this->category_id == 12501) {
             $bj = new \app\teach\model\Banji;
-            $src = [
-                'school_id' => $this->school_id
-                ,'ruxuenian' => $this->ruxuenian
-            ];
-            $bjList = $bj->search($src)
+            $bjList = $bj
+                ->where('school_id', $this->school_id)
+                ->where('ruxuenian', $this->ruxuenian)
                 ->column('id');
         }
         return $bjList;

@@ -424,7 +424,7 @@ class Admin extends BaseModel
         }
 
         // 超级管理员验证
-        if ($src['guanliyuan'] == true) {
+        if ($src['guanliyuan'] === true) {
             if($id == 1 || $id == 2)
             {
                 $data['check'] = false;
@@ -433,22 +433,20 @@ class Admin extends BaseModel
         }
 
         // 职务权限
-        if($src['zhiwu'] == true) {
+        if($src['zhiwu'] === true) {
             $banji_id = $this->zwAuth();
             $data['banji_id'] = array_merge($data['banji_id'], $banji_id);
         }
-        
 
         // 教研组长
-        if ($src['zuzhang'] == true) {
+        if ($src['zuzhang'] === true) {
             $auth = new \app\teach\model\JiaoyanZuzhang;
             $banji_id = $auth->zzAuth();
             $data['banji_id'] = array_merge($data['banji_id'], $banji_id);
         }
-        
 
         // 获取班主任班级权限
-        if ($src['banzhuren'] == true) {
+        if ($src['banzhuren'] === true) {
             $auth = new \app\teach\model\BanZhuRen;
             $banji_id = $auth->bzrAuth();
             $data['banji_id'] = array_merge($data['banji_id'], $banji_id);

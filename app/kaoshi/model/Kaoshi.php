@@ -78,11 +78,10 @@ class Kaoshi extends BaseModel
     // 查询教师可以查看的考试
     public function srcAuth()
     {
-        
         $banji_id = array();
-        $qxBanjiIds = event('mybanji');
+        $qxBanjiIds = event('mybanji', array());
         if (is_array($qxBanjiIds[0])) {
-            $banji_id = $qxBanjiIds[0];
+            $banji_id = $qxBanjiIds[0]['banji_id'];
         }
         $kh = new \app\kaohao\model\Kaohao;
         $data = $kh

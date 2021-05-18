@@ -108,7 +108,7 @@ class JiaoyanZuzhang extends Model
         $zz = new \app\teach\model\Jiaoyanzu;
         foreach ($zhList as $key => $value) {
             $zzInfo = $zz->oneInfo($value);
-            $data['banji_id'] = array_merge($data['banji_id'], $zzInfo->banjiId);
+            $banji_id = array_merge($banji_id, $zzInfo->banjiId);
         }
         return $banji_id;
     }

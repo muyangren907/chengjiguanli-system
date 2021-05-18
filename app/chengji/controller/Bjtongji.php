@@ -49,6 +49,7 @@ class Bjtongji extends AdminBase
                 ,'ruxuenian' => ''
                 ,'school_id' => array()
                 ,'banji_id' => array()
+                ,'auth' => []
             ], 'POST');
 
         if (count($src['banji_id'])==0) {
@@ -57,17 +58,11 @@ class Bjtongji extends AdminBase
             $src['banji_id']= array_column($cy->class($src),'id');
         }
 
-        // if (session('user_id') !=1 && session('user_id') !=2) {
-        //     $qxBanjiIds = event('mybanji');
-        //     if (is_array($qxBanjiIds[0])) {
-        //         $src['banji_id'] = array_intersect($src['banji_id'], $qxBanjiIds[0]);
-        //     }
-        // } 
-        if (session('user_id') !=1 && session('user_id') !=2) {
-            $qxBanjiIds = event('mybanji');
-            if (is_array($qxBanjiIds[0])) {
-                $src['banji_id'] = array_intersect($src['banji_id'], $qxBanjiIds[0]);
-            }
+        $src['auth'] = event('mybanji', $src['auth']);
+        $src['auth'] = $src['auth'][0];
+        if(count($src['banji_id']) > 0)        # 如果没有获取到班级id,则查询班级id
+        {
+            $src['auth']['banji_id'] = array_intersect($src['auth']['banji_id'], $src['banji_id']);
         }
 
         // 统计成绩

@@ -191,6 +191,8 @@ layui.use(['table', 'mytable', 'form', 'canyuKaoshi', 'createInput'], function()
 	form.on('select(src)', function(data) {
 		data = form.val("search");
 		if (data.school_id > 0 && data.ruxuenian > 0) {
+			data.auth = {};
+			console.log(data);
 			canyu.banjiCheckbox('banji_id', data);
 		}
 	});
