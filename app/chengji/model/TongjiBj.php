@@ -743,10 +743,10 @@ class TongjiBj extends BaseModel
         $stu_cnt = $this->stu_cnt;
         $canshilv = null;
         if ($stu_cnt > 0) {
-            $chalv = round($cjCnt / $stu_cnt * 100, 2);
+            $canshilv = round($cjCnt / $stu_cnt * 100, 2);
         }
 
-        return $chalv;
+        return $canshilv;
     }
 
 
