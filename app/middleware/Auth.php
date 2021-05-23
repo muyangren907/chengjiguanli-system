@@ -137,8 +137,6 @@ class Auth
             $except = false;
         }
 
-        // halt($mod, $con, $act);
-
         $auth = new AuthHandle;
 
         // 验证方法

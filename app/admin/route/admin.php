@@ -81,6 +81,7 @@ Route::group('tongbu', function () {
     Route::rule('kaoshi','Tongbu/kaoshi','post');
     Route::rule('ktcy','Tongbu/ktcy','post');
     Route::rule('tjbj','Tongbu/tjbj','post');
+    Route::rule('bcks','Tongbu/kaoshiMoren','post');
 });
 
 

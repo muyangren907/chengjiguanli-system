@@ -62,8 +62,13 @@ class Tongbu extends AdminBase
                 ,'checked' => ''
             ]
             ,[
-                'title' => '统计班级'
+                'title' => '班级'
                 ,'url' => '/admin/tongbu/tjbj'
+                ,'checked' => ''
+            ]
+            ,[
+                'title' => '补充考试信息'
+                ,'url' => '/admin/tongbu/bcks'
                 ,'checked' => ''
             ]
         ];
@@ -350,6 +355,28 @@ class Tongbu extends AdminBase
         }
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '统计班级同步完成', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
+        return json($data);
+    }
+
+
+    // 添加默认考试信息
+    public function kaoshiMoren()
+    {
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $ids = $ks::withTrashed()
+            ->column(['id']);
+        $list = array();
+        foreach ($ids as $key => $value) {
+            $list[] = [
+                'id' => $value
+                ,'fanwei_id' => 12401
+                ,'user_id' => 1
+            ];
+        }
+        $data = $ks->saveAll($list);
+        // 根据更新结果设置返回提示信息
+        $data ? $data = ['msg' => '考试信息补充完成', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
         return json($data);
     }
