@@ -41,6 +41,9 @@ class TongjiBj extends BaseModel
                 $srcfrom = [
                     'kaoshi_id' => $kaoshi_id
                     ,'banji_id' => $val['id']
+                    ,'auth' => [
+                        'check' => false
+                    ]
                 ];
                 $temp = $more->srcChengjiList($srcfrom);
                 $temp = $tj->tongjiSubject($temp, $subject);
@@ -136,6 +139,7 @@ class TongjiBj extends BaseModel
         $srcfrom['kaoshi_id'] = $src['kaoshi_id'];
         foreach ($banji as $key => $value) {
             $srcfrom['banji_id'] = $value['id'];
+            $srcfrom['auth']['check'] = false;
             $temp = $more->srcChengjiList($srcfrom);
             $temp = $tj->tongjiCnt($temp, $subject);
             $data[] = [
@@ -172,6 +176,9 @@ class TongjiBj extends BaseModel
             ,'ruxuenian' => ''
             ,'subject_id' => ''
             ,'cishu' => 20
+            ,'auth' => [
+                'check' => false
+            ]
         );
 
         $src = array_cover($srcfrom, $src);

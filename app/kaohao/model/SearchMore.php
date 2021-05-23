@@ -343,6 +343,9 @@ class SearchMore extends BaseModel
             'kaoshi_id' => '0'
             ,'banji_id' => array()
             ,'searchval' => ''
+            ,'auth' => [
+                'check' => false
+            ]
         );
         $src = array_cover($srcfrom, $src);
         // 查询成绩

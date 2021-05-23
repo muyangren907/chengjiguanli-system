@@ -27,6 +27,9 @@ class TongjiSch extends BaseModel
                 $src = [
                     'kaoshi_id' => $kaoshi_id
                     ,'ruxuenian' => $nianji['ruxuenian']
+                    ,'auth' => [
+                        'check' => false
+                    ]
                 ];
                 $src['banji_id'] = array_column($cy->class($src), 'id');
                 $subject = $ksset->srcSubject($src);
