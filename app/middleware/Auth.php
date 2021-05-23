@@ -126,7 +126,6 @@ class Auth
             'luru/index/ajaxdataonline',   # 获取试卷标签数据
             // 系统设置
             'system/school/srcschool',      # 获学校 
-            'system/category/srcchildren',      # 获学校 
         );
 
 

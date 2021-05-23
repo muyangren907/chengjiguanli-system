@@ -17,7 +17,7 @@ layui.extend({
 		categorySelect: function(myid, pid, value = '', hasNull = true) {
 			$('#' + myid).children().remove();
       $.ajax({
-				url: '/system/category/children',
+				url: '/tools/teach/children',
 				type: 'POST',
 				data: {
 					p_id: pid

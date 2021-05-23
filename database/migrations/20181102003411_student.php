@@ -37,7 +37,7 @@ class Student extends Migrator
             ->addColumn('sex','boolean',['limit'=>1,'default'=>1,'null'=>false,'comment'=>'性别'])
             ->addColumn('shengri','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'生日'])
             ->addColumn('shenfenzhenghao','string',['limit'=>18,'default'=>'N1539158918','null'=>false,'comment'=>'身份证号'])
-            ->addColumn('password','string',['limit'=>137,'null'=>false,'default'=>'$apr1$RSUodBwI$zOhVq9RQWfQDOW2sbeCDS1','comment'=>'登录密码'])
+            ->addColumn('password','string',['limit'=>137,'null'=>false,'default'=>'$apr1$oz6tgaAl$ix4GBv0VxcnVJPIiodXUY/','comment'=>'登录密码'])
             ->addColumn('denglucishu','integer',['limit'=>5,'default'=>0,'null'=>false,'comment'=>'登录次数'])
             ->addColumn('lastip','string',['limit'=>55,'default'=>'127.0.0.1','null'=>false,'comment'=>'最后一次登录IP'])
             ->addColumn('ip','string',['limit'=>55,'default'=>'127.0.0.1','null'=>false,'comment'=>'登录IP'])

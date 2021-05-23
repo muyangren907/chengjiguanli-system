@@ -44,3 +44,9 @@ Route::group('teacherinfo', function () {
     Route::rule('srckt','TeacherInfo/srcKt','post');    # 获取课题数据
     Route::rule('srcbzr','TeacherInfo/srcBzr','post');    # 获取课题数据
 });
+
+
+// 查询老师荣誉和课题
+Route::group('teach', function () {
+    Route::rule('children','Teach/srcChildren','post');    # 获取荣誉数据
+});

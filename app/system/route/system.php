@@ -50,7 +50,6 @@ Route::group('category', function () {
 	    Route::rule('update/<id>', 'Category/update', 'put');			# 更新信息
 	    Route::rule('delete', 'Category/delete', 'delete');		# 删除信息
 	    Route::rule('status', 'Category/setStatus', 'post');		# 删除信息
-        Route::rule('children', 'Category/srcChildren', 'post');               # 获取数据
 	});
 
 

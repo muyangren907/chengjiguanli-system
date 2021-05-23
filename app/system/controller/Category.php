@@ -211,25 +211,5 @@ class Category extends AdminBase
         // 返回信息
         return json($data);
     }
-
-
-    // 获取类别
-    public function srcChildren()
-    {
-        // 获取表单数据
-        $src = request()->only([
-            'limit' => '100'
-            ,'p_id'
-        ], 'post');
-        // 查询类别
-        $category = new \app\system\model\Category;
-        $data = $category->srcChild($src)
-            ->visible([
-                'id'
-                ,'title'
-            ]);
-        $data = reSetObject($data, $src);
-
-        return json($data);
-    }
+    
 }
