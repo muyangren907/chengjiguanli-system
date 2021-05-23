@@ -135,7 +135,7 @@ class LuruFengong extends BaseModel
             ,'ruxuenian' => ''
         ];
         $src = array_cover($srcfrom, $src);
-        $list = $this->srcMyLuruBase($src,'banji_id');
+        $list = $this->srcMyLuruBase($src);
         $src['banji_id'] = array_unique(array_column($list, 'banji_id'));
         
         // 获取录入班级后，到参加考试班级中搜索一下
@@ -154,12 +154,47 @@ class LuruFengong extends BaseModel
             ,'ruxuenian' => ''
         ];
         $src = array_cover($srcfrom, $src) ;
-        $list = $this->srcMyLuruBase($src, 'subject_id');
+        $list = $this->srcMyLuruBase($src);
         $src['subject_id'] = array_unique(array_column($list, 'subject_id'));
         // 获取录入班级后，到参加考试班级中搜索一下
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $sbj = $ksset->srcSubject($src);
         return $sbj;
+    }
+
+
+    // 获取当前用户录入成绩的权限
+    public function auth($srcfrom)
+    {
+        if(session('user_id') == 1 || session('user_id') == 2) {
+            return true;
+        }
+
+        $src = [
+            'kaoshi_id' => -1
+            ,'subject_id' => -1
+            ,'banji_id' => -1
+        ];
+        $src = array_cover($srcfrom, $src) ;
+        $cnt = $this
+            ->where('kaoshi_id', $src['kaoshi_id'])
+            ->count();
+        $data = false;
+        if ($cnt > 0) {
+            $list = $this
+            ->where('kaoshi_id', $src['kaoshi_id'])
+            ->where('subject_id', $src['subject_id'])
+            ->where('banji_id', $src['banji_id'])
+            ->where('admin_id', session('user_id'))
+            ->find();
+            if($list && $cnt>0){
+                $data = true;
+            }
+        }else{
+            $data = true;
+        }
+
+        return $data;
     }
 
 

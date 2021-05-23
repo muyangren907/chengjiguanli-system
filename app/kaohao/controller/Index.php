@@ -63,7 +63,7 @@ class Index extends AdminBase
             ,'kaoshi' => 1
             ,'status' => 1
         ];
-
+ 
         $src['auth'] = event('mybanji', array());
         $src['auth'] = $src['auth'][0];
         $src['auth']['banji_id'] = array_intersect($src['auth']['banji_id'], $src['banji_id']);
@@ -83,6 +83,7 @@ class Index extends AdminBase
         // 获取参加考试年级数组
         $enddate = KS::where('id', $list['kaoshi_id'])->value('enddate');
         $njlist =  \app\facade\Tools::nianJiNameList($enddate);
+
         // 重新组合学生信息
         $kaohao = array();
         foreach ($stulist as $key => $value) {

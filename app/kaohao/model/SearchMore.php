@@ -21,6 +21,67 @@ class SearchMore extends BaseModel
             'kaoshi_id' => '0'
             ,'banji_id' => array()
             ,'searchval' => ''
+            ,'auth' => [
+                'check' => true
+                ,'banji_id' => array()
+            ]
+        );
+
+        // 用新值替换初始值
+        $src = array_cover($srcfrom, $src);
+        $src['banji_id'] = strToArray($src['banji_id']);
+
+        // 查询成绩
+        $kh = new kh();
+        $data = $kh->where('kaoshi_id', $src['kaoshi_id'])
+            ->field('id, school_id, student_id, ruxuenian, paixu, kaoshi_id, nianji, banji_id')
+            ->where('banji_id', 'in', $src['banji_id'])
+            ->when($src['auth']['check'] == true, function ($query) use($src) {
+                    $query->where('banji_id', 'in', $src['auth']['banji_id']);
+                })
+            ->when(strlen($src['searchval']) > 0, function($query) use($src){
+                $query->where(function($w) use ($src){
+                    $w
+                    ->whereOr('student_id', 'in', function($q)use($src){
+                        $q->name('student')
+                            ->where('xingming', 'like', '%' . $src['searchval'] . '%')
+                            ->field('id');
+                    });
+                });
+            })
+            ->with([
+                'ksChengji' => function($query){
+                    $query->field('id, kaohao_id, subject_id, defen, defenlv, bpaixu, xpaixu, qpaixu, bweizhi, xweizhi, qweizhi')
+                        ->with([
+                            'subjectName' => function ($q) {
+                                $q->field('id, title, jiancheng, lieming');
+                            }
+                        ]);
+                }
+                ,'cjSchool' => function($query){
+                    $query->field('id, jiancheng');
+                }
+                ,'cjStudent' => function($query){
+                    $query->field('id, xingming, sex, shengri');
+                }
+            ])
+            ->append(['banjiTitle', 'banTitle'])
+            ->select();
+        return $data;
+    }
+
+
+    /*
+    * 以班级为单位，列出本次考试成绩原始数据；
+    * 其它数据以此方法为基础进行数据整理
+    */
+    public function searchLuruBase($srcfrom)
+    {
+        // 初始化参数
+        $src = array(
+            'kaoshi_id' => '0'
+            ,'banji_id' => array()
+            ,'searchval' => ''
         );
 
         // 用新值替换初始值
@@ -71,6 +132,10 @@ class SearchMore extends BaseModel
         $src = array(
             'kaoshi_id' => '0'
             ,'banji_id' => array()
+            ,'auth' => [
+                'check' => true
+                ,'banji_id' => array()
+            ]
             ,'searchval' => ''
         );
         // 用新值替换初始值
@@ -171,7 +236,7 @@ class SearchMore extends BaseModel
         );
         // 用新值替换初始值
         $src = array_cover($srcfrom, $src);
-        $khlist = $this->search($src);
+        $khlist = $this->searchLuruBase($src);
         if($khlist->isEmpty())
         {
             return $data = array();

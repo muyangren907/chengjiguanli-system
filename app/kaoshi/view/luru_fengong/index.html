@@ -88,6 +88,20 @@ layui.use(['table', 'mytable', 'canyuKaoshi'], function() {
 			},
 			{
 				field: "banji_id",
+				title: '学校',
+				sort: false,
+				templet: function(d) {
+					var str = '';
+					if (d.fgBanji) {
+						if(d.fgBanji.glSchool){
+							str = d.fgBanji.glSchool.jiancheng;
+						}
+					}
+					return str;
+				}
+			},
+			{
+				field: "banji_id",
 				title: '班级',
 				sort: true,
 				templet: function(d) {

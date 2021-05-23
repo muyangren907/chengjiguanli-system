@@ -221,6 +221,10 @@ class Chengji extends BaseModel
             'kaoshi_id' => ''
             ,'banji_id' => array()
             ,'searchval' => ''
+            ,'auth' => [
+                'check' => true
+                ,'banji_id' => array()
+            ]
         );
         $src = array_cover($srcfrom, $src);
 

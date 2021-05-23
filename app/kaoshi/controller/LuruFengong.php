@@ -124,6 +124,17 @@ class LuruFengong extends AdminBase
             return json(['msg' => $msg,'val' => 0]);;
         }
 
+        // 用户修改分工权限验证
+        if(session('user_id') != 1 && session('user_id') != 2) {
+            $ks = new \app\kaoshi\model\Kaoshi;
+            $user_id = $ks->where('id', $src['kaoshi_id'])->value('user_id');
+            if (session('user_id') != $user_id) {
+                $data = ['msg' => '考试创建者和超级管理员有权限设置。', 'val' => 0];
+                return json($data);
+            }
+        }
+        
+
         // 整理参数
         $list = array();
         $src['admin_id'] = explode(',', $src['admin_id']);
@@ -167,6 +178,18 @@ class LuruFengong extends AdminBase
         // 整理数据
         $id = request()->delete('id');
         $id = explode(',', $id);
+
+        $fg_id = $id[0];
+
+        // 用户修改分工权限验证
+        if(session('user_id') != 1 && session('user_id') != 2) {
+            $ks = new \app\kaoshi\model\Kaoshi;
+            $user_id = $ks->where('id', $fg_id)->value('user_id');
+            if (session('user_id') != $user_id) {
+                $data = ['msg' => '考试创建者和超级管理员有权限设置。', 'val' => 0];
+                return json($data);
+            }
+        }
 
         // 判断考试结束时间是否已过
         $lrfg = new lrfg;

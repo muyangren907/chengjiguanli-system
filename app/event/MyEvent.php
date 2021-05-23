@@ -61,4 +61,13 @@ class MyEvent
         return $adinfo;
     }
 
+
+    // 获取本次考试录入分工
+    public function luruFengong($srcfrom)
+    {
+        $fg = new \app\kaoshi\model\LuruFengong;
+        $fginfo = $fg->auth($srcfrom);
+        return $fginfo;
+    }
+
 }

@@ -96,8 +96,22 @@ class Index extends AdminBase
 
         // 判断考试状态
         $kh = new \app\kaohao\model\Kaohao;
-        $kaoshi_id = $kh::where('id', $list['kaohao_id'])->value('kaoshi_id');
-        event('kslu', $kaoshi_id);
+        $khInfo = $kh->where('id', $list['kaohao_id'])->find();
+        event('kslu', $khInfo->kaoshi_id);
+
+        $src = [
+            'kaoshi_id' => $khInfo->kaoshi_id
+            ,'banji_id' => $khInfo->banji_id
+            ,'subject_id' => $subject_id
+        ];
+        $auth = event('lrfg', $src);
+        $auth = $auth[0];
+
+        if($auth === false)
+        {
+            $data = ['msg' => '权限不足。', 'val' => 0];
+            return json($data);
+        }
 
         // 获取本学科满分
         $list['ruxuenian'] = $list['nianji'];
@@ -169,12 +183,29 @@ class Index extends AdminBase
 
         // 判断考试结束时间是否已过
         $kh = new \app\kaohao\model\Kaohao;
-        $kaoshi_id = $kh::where('id', $list['kaohao_id'])->value('kaoshi_id');
-        event('kslu', $kaoshi_id);
+        $khInfo = $kh
+            ->where('id', $list['kaohao_id'])
+            ->find();
+        event('kslu', $khInfo->kaoshi_id);
 
         // 获取学科id
         $subject = new \app\teach\model\Subject;
         $subject_id = $subject->where('lieming', $list['colname'])->value('id');
+
+        $src = [
+            'kaoshi_id' => $khInfo->kaoshi_id
+            ,'banji_id' => $khInfo->banji_id
+            ,'subject_id' => $subject_id
+        ];
+        $auth = event('lrfg', $src);
+        $auth = $auth[0];
+
+        if($auth === false)
+        {
+            $data = ['msg' => '权限不足。', 'val' => 0];
+            return json($data);
+        }
+
         // 根据考号获取学生年在年级及考试ID
         $khinfo = $kh->where('id', $id)->find();
         // 获取本学科满分
@@ -334,11 +365,44 @@ class Index extends AdminBase
         $user_id = session('user_id');   # 获取用户id
         $data = array();
         $md5 = new \app\facade\Tools;
+        $temp_banji = "";
+        $temp_subject = "";
+        $kh = new \app\kaohao\model\Kaohao;
+        $yzjg = false;
+        $cnt = 0;
 
         // 重新组合数组
         foreach ($subject as $key => $value) {
             # code...
             foreach ($cjinfo as $k => $val) {
+                // 解密考号ID
+                $temp_id = $md5::decrypt($val[1], 'dlbz');
+                // 判断权限
+                if ($temp_banji != $val[2] || $temp_subject != $value['id']) {
+                    $src = [
+                        'kaoshi_id' 
+                        ,'banji_id'
+                        ,'subject_id'
+                    ];
+                    $khInfo = $kh->where('id', $temp_id)->find();
+                    if ($khInfo) {
+                        $src = [
+                            'kaoshi_id' => $khInfo->kaoshi_id
+                            ,'banji_id' => $khInfo->banji_id
+                            ,'subject_id' => $value['id']
+                        ];
+                    }
+                    $auth = event('lrfg', $src);
+                    $auth = $auth[0];
+                }
+                $temp_banji = $val[2];
+                $temp_subject = $value['id'];
+
+                if($auth === false)
+                {
+                    continue;
+                }
+
                 $defen = $val[$key + 4];    # 当前学生当前学科成绩
                 // 如果不存在值，跳过这次循环
                 if ($defen === null) {
@@ -355,8 +419,6 @@ class Index extends AdminBase
                 if ($mfyz['val'] == 0) {
                     continue;
                 }
-
-                $temp_id = $md5::decrypt($val[1], 'dlbz');
 
                 // 添加或更新数据
                 $cjone = Chengji::withTrashed()
@@ -384,11 +446,12 @@ class Index extends AdminBase
                     ];
                     Chengji::create($data);
                 }
+                $cnt ++;
             }
         }
 
         // 判断成绩更新结果
-        $data = ['msg' => '成绩导入成功', 'val' => 1];
+        $data = ['msg' => '成绩导入成功' . $cnt . '个成绩', 'val' => 1];
         ob_flush();
         flush();
         // 返回成绩结果

@@ -62,10 +62,6 @@ class Index extends AdminBase
 
         $src['auth'] = event('mybanji', array());
         $src['auth'] = $src['auth'][0];
-        if(count($src['banji_id']) > 0)        # 如果没有获取到班级id,则查询班级id
-        {
-            $src['auth']['banji_id'] = array_intersect($src['auth']['banji_id'], $src['banji_id']);
-        }
 
         // 实例化并查询成绩
         $cj = new Chengji;

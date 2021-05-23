@@ -88,6 +88,7 @@ class Student extends BaseModel
             'searchval' => ''
             ,'status' => ''
             ,'kaoshi' => ''
+            ,'banji_id' => array()
             ,'auth' => [
                 'check' => true
                 ,'banji_id' => array()
@@ -95,11 +96,23 @@ class Student extends BaseModel
         ];
 
         $src = array_cover($srcfrom, $src);
+        $src['banji_id'] = strToArray($src['banji_id']);
+
+        $njlist = \app\facade\Tools::nianJiNameList(time(), 'num');
+        $zxnian = min($njlist); # 最近毕业年
+        $banji = new \app\teach\model\Banji;
+        $zx = $banji
+            ->where('ruxuenian', '>=', $zxnian)
+            ->column('id');
 
         $data = $this
                 ->when($src['auth']['check'] == true, function ($query) use($src) {
                     $query->where('banji_id', 'in', $src['auth']['banji_id']);
                 })
+                ->when(count($src['banji_id']) > 0, function ($query) use($src) {
+                    $query->where('banji_id', 'in', $src['banji_id']);
+                })
+                ->where('banji_id', 'in', $zx)
                 ->when(strlen($src['searchval']) > 0, function($query) use($src){
                         $query
                             ->where('xingming', 'like', '%' . $src['searchval'] . '%')
@@ -140,6 +153,7 @@ class Student extends BaseModel
             'searchval' => ''
             ,'status' => ''
             ,'kaoshi' => ''
+            ,'banji_id' => array()
             ,'auth' => [
                 'check' => true
                 ,'banji_id' => array()
@@ -149,10 +163,21 @@ class Student extends BaseModel
         $src = array_cover($srcfrom, $src);
         $src['banji_id'] = strToArray($src['banji_id']);
 
+        $njlist = \app\facade\Tools::nianJiNameList(time(), 'num');
+        $biyenian = min($njlist); # 最近毕业年
+        $banji = new \app\teach\model\Banji;
+        $by = $banji
+            ->where('ruxuenian', '<', $biyenian)
+            ->column('id');
+
         $data = $this
                 ->when($src['auth']['check'] == true, function ($query) use($src) {
                     $query->where('banji_id', 'in', $src['auth']['banji_id']);
                 })
+                ->when(count($src['banji_id']) > 0, function ($query) use($src) {
+                    $query->where('banji_id', 'in', $src['banji_id']);
+                })
+                ->where('banji_id', 'in', $by)
                 ->when(strlen($src['searchval']) > 0, function($query) use($src){
                         $query
                             ->where('xingming', 'like', '%' . $src['searchval'] . '%')

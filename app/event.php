@@ -26,6 +26,9 @@ return [
         'mybanji' => [
             '\app\listener\MyBanjiIds'
         ],
+        'lrfg' => [
+            '\app\listener\LuruFengong'
+        ],
     ],
     'subscribe' => [
     ],

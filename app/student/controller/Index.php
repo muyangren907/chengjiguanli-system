@@ -44,23 +44,8 @@ class Index extends AdminBase
                 ,'searchval' => ''
             ], 'POST');
 
-        if(count($src['banji_id']) == 0)        # 如果没有获取到班级id,则查询班级id
-        {
-            $banji = new \app\teach\model\Banji;
-            $bjsrc = [
-                'school_id' => $src['school_id']
-                ,'ruxuenian' => $src['ruxuenian']
-                ,'status' => 1
-            ];
-            $src['banji_id'] = $banji->search($bjsrc)->column('id');
-        }
-
         $src['auth'] = event('mybanji', array());
         $src['auth'] = $src['auth'][0];
-        if(count($src['banji_id']) > 0)        # 如果没有获取到班级id,则查询班级id
-        {
-            $src['auth']['banji_id'] = array_intersect($src['auth']['banji_id'], $src['banji_id']);
-        }
 
         // 根据条件查询数据
         $stu = new STU;
@@ -109,22 +94,10 @@ class Index extends AdminBase
 
         $src['auth'] = event('mybanji', ['zuzhang'=>false, 'banzhuren' => false]);
         $src['auth'] = $src['auth'][0];
-        if(count($src['banji_id']) > 0)        # 如果没有获取到班级id,则查询班级id
-        {
-            $src['auth']['banji_id'] = array_intersect($src['auth']['banji_id'], $src['banji_id']);
-        }
-
-        $njlist = \app\facade\Tools::nianJiNameList(time(), 'num');
-        $biyenian = min($njlist); # 最近毕业年
-        $banji = new \app\teach\model\Banji;
-        $src['auth']['banji_id'] = $banji
-            ->where('id', 'in', $src['auth']['banji_id'])
-            ->where('ruxuenian', '<', $biyenian)
-            ->column('id');
 
         // 根据条件查询数据
         $stu = new STU;
-        $data = $stu->search($src);
+        $data = $stu->searchBy($src);
         $data = reSetObject($data, $src);
 
         return json($data);
