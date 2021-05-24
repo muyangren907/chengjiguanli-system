@@ -364,12 +364,8 @@ class Bjtongji extends AdminBase
             $src['banji_id'] = array_column($cy->class($src), 'id');
         }
 
-        // if (session('user_id') !=1 && session('user_id') !=2) {
-        //     $qxBanjiIds = event('mybanji');
-        //     if (is_array($qxBanjiIds[0])) {
-        //         $src['banji_id'] = array_intersect($src['banji_id'], $qxBanjiIds[0]);
-        //     }
-        // }
+        $src['auth'] = event('mybanji', array());
+        $src['auth'] = $src['auth'][0];
 
         // 统计成绩
         $btj = new BTJ;

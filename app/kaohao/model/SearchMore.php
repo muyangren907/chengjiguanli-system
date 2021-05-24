@@ -138,6 +138,7 @@ class SearchMore extends BaseModel
             ]
             ,'searchval' => ''
         );
+
         // 用新值替换初始值
         $src = array_cover($srcfrom, $src);
         $khlist = $this->search($src);
