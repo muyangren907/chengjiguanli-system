@@ -688,7 +688,13 @@ class Rule extends Seeder
                     ,'paixu' => 15
                     ,'pid' => 401
                 ],
-                        // 师生名单
+                ['id' => 40116
+                    ,'title' => '修改学生考号'
+                    ,'name' => 'student/index/updateonekaohao'
+                    ,'paixu' => 16
+                    ,'pid' => 401
+                ],
+            // 毕业名单
             ['id' => 402
                 ,'title' => '毕业学生'
                 ,'name' => 'student/index/bylist'
@@ -704,7 +710,7 @@ class Rule extends Seeder
                     ,'paixu'  => 1
                     ,'pid' => 402
                 ],
-            // 师生名单
+            // 删除名单
             ['id' => 403
                 ,'title' => '删除学生'
                 ,'name' => 'student/index/dellist'
