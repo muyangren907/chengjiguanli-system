@@ -47,6 +47,7 @@ class Student extends Migrator
             ->addColumn('kaoshi','boolean',['limit'=>1,'default'=>1,'null'=>false,'comment'=>'是否参加考试'])
             ->addColumn('quanpin','string',['limit'=>30,'default'=>'a','null'=>false,'comment'=>'全拼'])
             ->addColumn('shoupin','string',['limit'=>5,'default'=>'a','null'=>false,'comment'=>'简拼'])
+            ->addColumn('kaohao','string',['limit'=>25,'null'=>true,'comment'=>'自定义考号'])
             ->addColumn('create_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'更新时间'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
