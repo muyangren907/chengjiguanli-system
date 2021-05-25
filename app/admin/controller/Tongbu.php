@@ -69,7 +69,7 @@ class Tongbu extends AdminBase
             ,[
                 'title' => '补充考试信息'
                 ,'url' => '/admin/tongbu/bcks'
-                ,'checked' => ''
+                ,'checked' => 'true'
             ]
         ];
 
