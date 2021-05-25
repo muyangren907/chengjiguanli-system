@@ -36,7 +36,7 @@
 					<input type="checkbox" name="tj" lay-skin="switch" lay-text="开启|关闭" {$vo.checked}>
 				</td>
 				<td id="showtd{$i}">等待统计</i></td>
-				<td><a href="javascript:;" title="统计" onclick="tongji(this)" url="{$vo.url}" val="{$i}"><i class="layui-icon layui-icon-form"></i></a></td>
+				<td><a href="javascript:;" title="同步" onclick="tongji(this)" url="{$vo.url}" val="{$i}"><i class="layui-icon layui-icon-form"></i></a></td>
 			</tr>
 			{/volist}
 		</tbody>
@@ -92,7 +92,7 @@ function tongji(obj) {
 		async: true,
 		data: data,
 		beforeSend: function() {
-			$('#showtd' + val).text('正在统计');
+			$('#showtd' + val).text('正在同步');
 			$('#showtd' + val).append("<i class='layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop'>");
 		},
 		complete: function() {
