@@ -562,6 +562,36 @@ class Index extends AdminBase
     }
 
 
+    // 更新一个学生的考号
+    public function updateOneKaohao($id)
+    {
+        // 获取表单数据
+        $list = request()->only([
+            'kaohao'
+        ], 'PUT');
+        $list['id'] = $id;
+
+        // 验证表单数据
+        $validate = new \app\student\validate\Student;
+        $result = $validate->scene('onekaohao')->check($list);
+        $msg = $validate->getError();
+        if(!$result){
+            return json(['msg'=>$msg,'val'=>0]);;
+        }
+
+        // 更新数据
+        $stu = new STU();
+        $data = $stu::update($list, ['id' => $id]);
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data = ['msg' => '考号更新成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
     // 根据学生姓名、首拼、全拼搜索教师信息
     public function srcStudent()
     {

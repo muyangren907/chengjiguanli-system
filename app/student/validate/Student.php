@@ -21,7 +21,8 @@ class Student extends Validate
         'ruxuenian|年级'         =>      'require|number',
         'banji_id|班级'     =>      'require|number',
         'kaoshi|是否参加考试'            =>      'require|number',
-        'quanpin|姓名全拼'      =>      'require'
+        'quanpin|姓名全拼'      =>      'require',
+        'kaohao|考号'      =>      'require|max:25'
     ];
 
     /**
@@ -47,6 +48,10 @@ class Student extends Validate
             ,'sex'
             ,'shenfenzhenghao'
             ,'kaoshi'
+        ],
+        'onekaohao'  =>  [
+            'id'
+            ,'kaohao'
         ],
     ];
 }

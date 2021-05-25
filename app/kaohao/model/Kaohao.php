@@ -124,6 +124,17 @@ class Kaohao extends BaseModel
 
         return $title;
     }
+
+
+    // 获取学生考号
+    public function getKaohaoAttr()
+    {
+        $kaohao = "";
+        if (isset($this->cjStudent->kaohao)) {
+            $kaohao = $this->cjStudent->kaohao;
+        }
+        return $kaohao;
+    }
 }
 
 

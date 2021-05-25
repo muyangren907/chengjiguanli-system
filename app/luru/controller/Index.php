@@ -333,7 +333,8 @@ class Index extends AdminBase
             || $cjinfo[2][0] != '序号'
             || $cjinfo[2][1] != '编号'
             || $cjinfo[2][2] != '班级'
-            || $cjinfo[2][3] != '姓名') {
+            || $cjinfo[2][3] != '考号'
+            || $cjinfo[2][4] != '姓名') {
             $data = ['msg' => '请使用模板上传', 'val' => 0];
             return json($data);
         }
@@ -517,21 +518,21 @@ class Index extends AdminBase
 
         // 设置表格标题与表头信息
         $sheet->setCellValue('A1',$kslist->title . ' 成绩采集表');
-
         $sheet->setCellValue('A2', $kaoshi_id);
         $sheet->setCellValue('B2', $list['ruxuenian']);
-        $sheet->setCellValue('A3', '序号');
+        $sheet->setCellValue('A3', '序号'); # 表头
         $sheet->setCellValue('B3', '编号');
         $sheet->setCellValue('C3', '班级');
-        $sheet->setCellValue('D3', '姓名');
+        $sheet->setCellValue('D3', '考号');
+        $sheet->setCellValue('E3', '姓名');
         // 获取列数并合并和一行
-        $col = $lieming[count($ksSubject) + 3];
+        $col = $lieming[count($ksSubject) + 4];
         $sheet->mergeCells('A1:' . $col . '1');
 
          // 写入列名
         foreach ($ksSubject as $key => $value) {
-            $sheet->setCellValue($lieming[$key + 4] . '3', $value['title']);
-            $sheet->setCellValue($lieming[$key + 4] . '2', $value['id']);
+            $sheet->setCellValue($lieming[$key + 5] . '3', $value['title']);
+            $sheet->setCellValue($lieming[$key + 5] . '2', $value['id']);
         }
         // 隐藏第二行和第二列
         $sheet->getRowDimension('2')->setRowHeight(0);
@@ -550,12 +551,13 @@ class Index extends AdminBase
                 $sheet->setCellValue('A' . $i, $i - 3);
                 if(isset($kh['cjStudent']['xingming']))
                 {
-                    $sheet->setCellValue('D' . $i, $kh['cjStudent']['xingming']);
+                    $sheet->setCellValue('E' . $i, $kh['cjStudent']['xingming']);
                 }else{
-                    $sheet->setCellValue('D' . $i, 'Null');
+                    $sheet->setCellValue('E' . $i, 'Null');
                 }
                 $sheet->setCellValue('B' . $i, $md5::encrypt((string)$kh['id'], 'dlbz'));
                 $sheet->setCellValue('C' . $i, $bj['banjiTitle']);
+                $sheet->setCellValue('D' . $i, $kh['cjStudent']['kaohao']);
                 $i ++;
             }
         }

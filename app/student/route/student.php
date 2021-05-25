@@ -35,6 +35,7 @@ Route::group('index', function () {
     Route::rule('datadel','Index/ajaxdataDel','post');                # 获取数据
     Route::rule('resetpassword/<id>','Index/resetpassword','post');       # 重置教师密码
     Route::rule('srcsfzh','Index/srcSfzh','post');        # 获取学生成绩
+    Route::rule('onekaohao/<id>','Index/updateOneKaohao','put');        # 获取学生成绩
 });
 
 

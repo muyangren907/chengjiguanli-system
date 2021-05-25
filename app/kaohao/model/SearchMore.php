@@ -116,10 +116,10 @@ class SearchMore extends BaseModel
                     $query->field('id, jiancheng');
                 }
                 ,'cjStudent' => function($query){
-                    $query->field('id, xingming, sex, shengri');
+                    $query->field('id, xingming, sex, shengri, kaohao');
                 }
             ])
-            ->append(['banjiTitle', 'banTitle'])
+            ->append(['banjiTitle', 'banTitle', 'kaohao'])
             ->select();
         return $data;
     }
@@ -254,6 +254,7 @@ class SearchMore extends BaseModel
             $data[$key]['student_xingming'] = $value->cjStudent->xingming;
             $data[$key]['sex'] = $value->cjStudent->sex;
             $data[$key]['shengri'] = $value->cjStudent->shengri;
+            $data[$key]['kaohao'] = $value->kaohao;
 
             foreach ($sbjList as $sbj_k => $sbj_v) {
                 $data[$key][$sbj_v->lieming] = '';
@@ -309,7 +310,7 @@ class SearchMore extends BaseModel
                         ->order(['banji_id', 'id'])
                         ->with([
                             'cjStudent' => function($q){
-                                $q->field('id, xingming, sex, shoupin');
+                                $q->field('id, xingming, sex, shoupin, kaohao');
                             }
                     ]);
                 }
@@ -325,7 +326,7 @@ class SearchMore extends BaseModel
                 {
                     $stuinof = $stu::onlyTrashed()
                         ->where('id', $val->student_id)
-                        ->field('id, xingming')
+                        ->field('id, xingming, kaohao')
                         ->find();
                     $data[$key]->banjiKaohao[$key]->cjStudent = array('id' => $stuinof->id, 'shoupin' => $stuinof->shoupin);
                 }
