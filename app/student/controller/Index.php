@@ -183,9 +183,13 @@ class Index extends AdminBase
             ,'kaohao'
         ], 'POST');
 
-        if(session('user_id') != 1 && session('user_id') != 2) {
-            $data = ['msg' => '请使用超级管理员帐号添加', 'val' => 0];
-            return json($data);
+        // 权限判断
+        $bjqx = event('mybanji', array());
+        $bjqx = $bjqx[0];
+        if ($bjqx['check'] == true) {
+            if (!in_array($key, $bjqx['banji_id'])) {
+                return json(['msg' => '权限不足', 'val' => 0]);
+            }
         }
 
         // 验证表单数据
@@ -193,7 +197,7 @@ class Index extends AdminBase
         $result = $validate->scene('create')->check($list);
         $msg = $validate->getError();
         if(!$result){
-            return json(['msg' => $msg, 'val' => 0]);;
+            return json(['msg' => $msg, 'val' => 0]);
         }
 
         $list['shenfenzhenghao'] = strtoupper($list['shenfenzhenghao']);
