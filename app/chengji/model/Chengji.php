@@ -70,11 +70,9 @@ class Chengji extends BaseModel
             ->when(count($src['kaoshi_id']) == 0 && count($src['banji_id']) ==0, function($query) {
                 $query->whereMonth('update_time');
             })
-            ->when(strlen($src['user_id']) > 0 && strlen($src['user_group']) > 0, function ($query) use($src){
-                $query->where('user_id', $src['user_id'])
-                    ->where('user_group', $src['user_group']);
+            ->when(strlen($src['user_id']) > 0, function ($query) use($src){
+                $query->where('user_id', $src['user_id']);
             })
-
             ->when(count($src['subject_id']) > 0, function ($query) use ($src) {
                 $query->where('subject_id', 'in', $src['subject_id']);
             })
@@ -110,10 +108,19 @@ class Chengji extends BaseModel
     // 列出已录成绩列表
     public function searchLuru($srcfrom)
     {
+        // 初始化参数
+        $src = array(
+            'kaoshi_id' => ''
+            ,'banji_id' => array()
+            ,'subject_id' => ''
+            ,'searchval' => ''
+            ,'user_id' => ''
+        );
+        $src = array_cover($srcfrom, $src);
         $cjList = $this
-            ->where('user_id', $srcfrom['user_id'])
-            ->when(strlen($srcfrom['subject_id']) > 0, function ($query) {
-                $query->where('subject_id', $srcfrom);
+            ->where('user_id', $src['user_id'])
+            ->when(strlen($src['subject_id']) > 0, function ($query) use($src){
+                $query->where('subject_id', $src['subject_id']);
             })
             ->where('kaohao_id', 'in', function ($query) {
                 $query

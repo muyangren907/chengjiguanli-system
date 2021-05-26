@@ -106,7 +106,7 @@ class Student extends BaseModel
             ->column('id');
 
         $data = $this
-                ->when($src['auth']['check'] == true, function ($query) use($src) {
+                ->when($src['auth']['check'] === true, function ($query) use($src) {
                     $query->where('banji_id', 'in', $src['auth']['banji_id']);
                 })
                 ->when(count($src['banji_id']) > 0, function ($query) use($src) {
