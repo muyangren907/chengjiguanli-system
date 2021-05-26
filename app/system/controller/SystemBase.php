@@ -113,6 +113,12 @@ class SystemBase extends AdminBase
             // 删除班级
             \think\facade\Db::query("Delete From cj_banji where id>0");
 
+            // 删除教研组
+            \think\facade\Db::query("Delete From cj_jiaoyanzu where id>0");
+
+            // 删除教研组长
+            \think\facade\Db::query("Delete From cj_jiaoyan_zuzhang where id>0");
+
             // 删除成绩
             \think\facade\Db::query("Delete From cj_chengji where id>0");
 
@@ -168,7 +174,10 @@ class SystemBase extends AdminBase
   
             //
             // 删除课题删
-            \think\facade\Db::query("Delete From cj_keti where id>0");
+            \think\facade\Db::query("Delete From cj_lixiang where id>0");
+
+            // 删除课题删
+            \think\facade\Db::query("Delete From cj_jieti where id>0");
 
             // 删除课题参与
             \think\facade\Db::query("Delete From cj_keti_canyu where id>0");
