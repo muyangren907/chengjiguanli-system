@@ -17,7 +17,7 @@ class Admin extends Validate
         'xingming|用户姓名'  =>  'require|chs|length:2,6',
         'quanpin|姓名全拼'     =>  'require|alpha|length:1,30',
         'shoupin|姓名首拼'     =>  'require|alpha|length:1,5',
-        'username|帐号'  =>  ['require', 'uset'=>'/^[a-z][a-z0-9-_]*$/'],
+        'username|帐号'  =>  'require|alphaDash|length:6,12',
         'group_id|角色'   =>  'require|array',
         'shengri|出生日期'   =>  'date',
         'sex|性别'   =>  'in:0,1,2',
