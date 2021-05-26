@@ -74,6 +74,14 @@
 				</select>
 			</div>
 		</div>
+		<div class="layui-form-item">
+			<label for="kaohao" class="layui-form-label">
+				<span class="x-red">*</span>学号
+			</label>
+			<div class="layui-input-block">
+				<input type="text" id="kaohao" name="kaohao" lay-verify="required" autocomplete="off" class="layui-input " value="{$list.data.kaohao|default=''}" placeholder="字母和数字，最多25个字符">
+			</div>
+		</div>
 		<div class="layui-form-item" style="text-align: right;">
 			<button class="layui-btn" lay-filter="mysubmit" lay-submit="">
 				{$list.set.butname}
@@ -140,7 +148,7 @@ layui.use(['laydate', 'form', 'mytable', 'createInput'], function() {
     shenfenzhenghao: function(value) {
       var datas = {
         searchval: value,
-        id: "{$list.data.shenfenzhenghao|default=''}"
+        id: "{$list.data.id|default=''}"
       };
       var message = '';
       $.ajax({

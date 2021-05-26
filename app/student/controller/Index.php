@@ -180,6 +180,7 @@ class Index extends AdminBase
             ,'kaoshi'
             ,'quanpin'
             ,'shoupin'
+            ,'kaohao'
         ], 'POST');
 
         if(session('user_id') != 1 && session('user_id') != 2) {
@@ -231,7 +232,7 @@ class Index extends AdminBase
     public function edit($id)
     {
         // 获取学生信息
-        $list['data'] = STU::field('id, xingming, sex, shenfenzhenghao, shengri, banji_id, kaoshi, status, quanpin, shoupin')
+        $list['data'] = STU::field('id, xingming, sex, shenfenzhenghao, shengri, banji_id, kaoshi, status, quanpin, shoupin, kaohao')
             ->with([
                     'stuBanji'=>function($query){
                         $query->field('id, ruxuenian, paixu, school_id')
@@ -269,6 +270,7 @@ class Index extends AdminBase
             ,'kaoshi'
             ,'quanpin'
             ,'shoupin'
+            ,'kaohao'
         ], 'PUT');
         $list['id'] = $id;
 
@@ -437,11 +439,6 @@ class Index extends AdminBase
             'school_id'
             ,'url'
         ], 'POST');
-
-        if(session('user_id') != 1 && session('user_id') != 2) {
-            $data = ['msg' => '请使用超级管理员帐号添加', 'val' => 0];
-            return json($data);
-        }
 
         $fengefu = DIRECTORY_SEPARATOR;
         // 读取表格数据

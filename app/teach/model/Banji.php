@@ -248,7 +248,7 @@ class Banji extends BaseModel
         $bj = '';
         // 获取年级
         foreach ($njlist as $key => $value) {
-            $nj = stripos($str, $value, 0);
+            $nj = stripos($str, $value, 0);  # 查找年级第一次出现。
             if($nj === 0)
             {
                 $nj = $key;
@@ -258,6 +258,7 @@ class Banji extends BaseModel
          // 去掉年级，获取班级
         $str = str_replace($njlist[$nj], '', $str);
         // 获取班级
+        $bj = -1;
         foreach ($bjlist as $key => $value) {
             if ($value === $str) {
                 $bj = $key;
@@ -265,19 +266,23 @@ class Banji extends BaseModel
             }
         }
 
-        if($nj > 0 && $bj > 0)
+        if(($nj > 0 && $bj > 0) ||($nj > 0 && $bj == -1))
         {
             // 查询班级id
             $banji = new \app\teach\model\Banji;
             $id = $banji->where('ruxuenian', $nj)
-                    ->where('paixu', $bj)
+                    ->when($bj == -1, function ($query) use($str) {
+                        $query
+                            ->where('alias', substr_replace($str, '', strlen($str) - 3));
+                    }, function ($query) use($bj) {
+                        $query->where('paixu', $bj);
+                    })
+                    ->where('ruxuenian', $nj)
                     ->where('school_id', $school_id)
                     ->value('id');
         }else {
             $id = '';
         }
-
-
 
         return $id;
     }

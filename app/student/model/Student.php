@@ -282,6 +282,17 @@ class Student extends BaseModel
             }
         }
 
+        // 权限判断
+        $bjqx = event('mybanji', array());
+        $bjqx = $bjqx[0];
+        if ($bjqx['check'] == true) {
+            foreach ($bjStrName as $key => $value) {
+                if (!in_array($key, $bjqx['banji_id'])) {
+                    unset($bjStrName[$key]);
+                }
+            }
+        }
+
         // 根据班级切割数组
         $arr = array();
         foreach ($bjStrName as $sbj_k => $sbj_val) {
@@ -314,8 +325,6 @@ class Student extends BaseModel
             $jiaoji = array_intersect($xlsStuList, $sfzh);  #返回交集
             $add = array_diff($xlsStuList, $sfzh);
             $del = array_diff($sfzh, $xlsStuList);
-
-            
 
             // 从新增的数据中查找是否有已经存在，但是班级不正确的信息。
             $add_temp = self::withTrashed()
