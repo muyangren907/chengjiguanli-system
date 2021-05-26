@@ -32,7 +32,7 @@ class AddStudentKaohao extends Migrator
         $column = $table->hasColumn('kaohao');
         if (!$column) {
             $table
-                ->addColumn('kaohao','string',['limit'=>25,'null'=>true,'comment'=>'自定义考号'])
+                ->addColumn('xuehao','string',['limit'=>25,'null'=>true,'comment'=>'自定义学号'])
                 ->update();
         }
     }
@@ -42,10 +42,10 @@ class AddStudentKaohao extends Migrator
     public function down()
     {
         $table = $this->table('student');
-        $column = $table->hasColumn('kaohao');
+        $column = $table->hasColumn('xuehao');
         if ($column) {
             $table
-            ->removeColumn('kaohao');
+            ->removeColumn('xuehao');
         }
     }
 }

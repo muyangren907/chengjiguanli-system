@@ -138,7 +138,7 @@ class Student extends BaseModel
                         $query->field('id, ruxuenian, paixu, alias')->append(['banjiTitle']);
                     }
                 ])
-                ->field('id, xingming, sex, shengri, banji_id, kaoshi, kaohao, status, update_time')
+                ->field('id, xingming, sex, shengri, banji_id, kaoshi, xuehao, status, update_time')
                 ->append(['age'])
                 ->select();
 

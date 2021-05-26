@@ -116,10 +116,10 @@ class SearchMore extends BaseModel
                     $query->field('id, jiancheng');
                 }
                 ,'cjStudent' => function($query){
-                    $query->field('id, xingming, sex, shengri, kaohao');
+                    $query->field('id, xingming, sex, shengri, xuehao');
                 }
             ])
-            ->append(['banjiTitle', 'banTitle', 'kaohao'])
+            ->append(['banjiTitle', 'banTitle', 'xuehao'])
             ->select();
         return $data;
     }
@@ -234,6 +234,10 @@ class SearchMore extends BaseModel
             'kaoshi_id' => '0'
             ,'banji_id' => array()
             ,'subject_id' => array()
+            ,'field' => 'student_xingming'
+            ,'order' => 'desc'
+            ,'page'
+            ,'limit'
         );
         // 用新值替换初始值
         $src = array_cover($srcfrom, $src);
@@ -254,7 +258,7 @@ class SearchMore extends BaseModel
             $data[$key]['student_xingming'] = $value->cjStudent->xingming;
             $data[$key]['sex'] = $value->cjStudent->sex;
             $data[$key]['shengri'] = $value->cjStudent->shengri;
-            $data[$key]['kaohao'] = $value->kaohao;
+            $data[$key]['xuehao'] = $value->xuehao;
 
             foreach ($sbjList as $sbj_k => $sbj_v) {
                 $data[$key][$sbj_v->lieming] = '';
@@ -310,7 +314,7 @@ class SearchMore extends BaseModel
                         ->order(['banji_id', 'id'])
                         ->with([
                             'cjStudent' => function($q){
-                                $q->field('id, xingming, sex, shoupin, kaohao');
+                                $q->field('id, xingming, sex, shoupin, xuehao');
                             }
                     ]);
                 }

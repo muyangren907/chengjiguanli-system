@@ -127,13 +127,13 @@ class Kaohao extends BaseModel
 
 
     // 获取学生考号
-    public function getKaohaoAttr()
+    public function getXuehaoAttr()
     {
-        $kaohao = "";
-        if (isset($this->cjStudent->kaohao)) {
-            $kaohao = $this->cjStudent->kaohao;
+        $xuehao = "";
+        if (isset($this->cjStudent->xuehao)) {
+            $xuehao = $this->cjStudent->xuehao;
         }
-        return $kaohao;
+        return $xuehao;
     }
 }
 

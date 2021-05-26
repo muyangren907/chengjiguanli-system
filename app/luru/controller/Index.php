@@ -523,7 +523,7 @@ class Index extends AdminBase
         $sheet->setCellValue('A3', '序号'); # 表头
         $sheet->setCellValue('B3', '编号');
         $sheet->setCellValue('C3', '班级');
-        $sheet->setCellValue('D3', '考号');
+        $sheet->setCellValue('D3', '学号');
         $sheet->setCellValue('E3', '姓名');
         // 获取列数并合并和一行
         $col = $lieming[count($ksSubject) + 4];
@@ -557,7 +557,7 @@ class Index extends AdminBase
                 }
                 $sheet->setCellValue('B' . $i, $md5::encrypt((string)$kh['id'], 'dlbz'));
                 $sheet->setCellValue('C' . $i, $bj['banjiTitle']);
-                $sheet->setCellValue('D' . $i, $kh['cjStudent']['kaohao']);
+                $sheet->setCellValue('D' . $i, $kh['cjStudent']['xuehao']);
                 $i ++;
             }
         }
@@ -792,7 +792,7 @@ class Index extends AdminBase
             ->only([
                 'page'
                 ,'limit'
-                ,'field' => 'id'
+                ,'field' => 'student_xingming'
                 ,'order' => 'asc'
                 ,'kaoshi_id'
                 ,'banji_id' => array()
@@ -802,6 +802,7 @@ class Index extends AdminBase
         // 实例化并查询成绩
         $cj = new \app\kaohao\model\SearchMore;
         $data = $cj->srcOnlineEdit($src);
+        // halt($data);
         $data = reSetArray($data, $src);
 
         return json($data);

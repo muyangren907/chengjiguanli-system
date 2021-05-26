@@ -180,7 +180,7 @@ class Index extends AdminBase
             ,'kaoshi'
             ,'quanpin'
             ,'shoupin'
-            ,'kaohao'
+            ,'xuehao'
         ], 'POST');
 
         // 权限判断
@@ -274,7 +274,7 @@ class Index extends AdminBase
             ,'kaoshi'
             ,'quanpin'
             ,'shoupin'
-            ,'kaohao'
+            ,'xuehao'
         ], 'PUT');
         $list['id'] = $id;
 
