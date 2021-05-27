@@ -236,7 +236,7 @@ class Index extends AdminBase
     public function edit($id)
     {
         // 获取学生信息
-        $list['data'] = STU::field('id, xingming, sex, shenfenzhenghao, shengri, banji_id, kaoshi, status, quanpin, shoupin, kaohao')
+        $list['data'] = STU::field('id, xingming, sex, shenfenzhenghao, shengri, banji_id, kaoshi, status, quanpin, shoupin, xuehao')
             ->with([
                     'stuBanji'=>function($query){
                         $query->field('id, ruxuenian, paixu, school_id')
