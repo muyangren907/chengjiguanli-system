@@ -188,9 +188,16 @@
     增加课题和荣誉统计
     增加删除学科查看与恢复
     增加删除学科"列标识"重复验证 
-    增加定定义考号
+    增加学号
 
     更多更新日志（http://www.www.dl-sm.cn.cn/login/log）
+
+## 可能会出现的错误
+学生名单提示error解决方法:
+1、更新代码到最到最新:git pull https://gitee.com/dlbz/shangma.git master -f
+2、升级表结构：php think migrate:run
+3、重新导入基础数据:php think seed:run
+4、修改cj_student字段kaohao为xuehao(做前3步只为这一下，本应写一个phinx的up文件，但是太懒……) 
     
 ## 升级方法
 http://www.dl-sm.cn/admin/tongbu/index
