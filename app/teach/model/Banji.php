@@ -239,6 +239,7 @@ class Banji extends BaseModel
     */
     public function srcBanJiID($str, $school_id)
     {
+        $str = trim($str);
         // 获取年级、班级列表
         $njlist = $this->gradeName(time(),'str');
         $bjlist = $this->className();
@@ -255,6 +256,7 @@ class Banji extends BaseModel
                 break;
             }
         }
+
          // 去掉年级，获取班级
         $str = str_replace($njlist[$nj], '', $str);
         // 获取班级
