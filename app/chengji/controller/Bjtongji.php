@@ -423,6 +423,9 @@ class Bjtongji extends AdminBase
             $src['banji_id']= array_column($cy->class($src), 'id');
         }
 
+        $src['auth'] = event('mybanji', array());
+        $src['auth'] = $src['auth'][0];
+
         // 统计成绩
         $btj = new BTJ;
         $fsd = $btj->tjBanjiFenshuduan($src);
