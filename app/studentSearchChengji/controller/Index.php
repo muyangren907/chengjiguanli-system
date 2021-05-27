@@ -88,7 +88,7 @@ class Index extends StudentSearchBase
         $this->view->assign('list', $list);
 
         // 渲染模板
-        return $this->view->fetch('admin@index/edit_password');
+        return $this->view->fetch('admin@admin_info/edit_password');
     }
 
 

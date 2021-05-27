@@ -197,7 +197,7 @@
 1、更新代码到最到最新:git pull https://gitee.com/dlbz/shangma.git master -f
 2、升级表结构：php think migrate:run
 3、重新导入基础数据:php think seed:run
-4、修改cj_student字段kaohao为xuehao(做前3步只为这一下，本应写一个phinx的up文件，但是太懒……) 
+4、修改cj_student字段kaohao为xuehao(做前3步只为这一下，本应写一个phinx的up方法，但是感觉因为一个字段增加一个文件有点不合理……) 
     
 ## 升级方法
 http://www.dl-sm.cn/admin/tongbu/index
@@ -214,6 +214,8 @@ https://www.kancloud.cn/llblax/abcd/789222
 
 ## 下一步工作
 * [ ] 项目的问题修复和功能完善
+* [ ] 重新整理手册
+
 
 ## 感谢
 这个项目一直在更新和完善中，在这个磕磕绊绊的成长过程中得到了许多朋友、同仁的支持和肯定，特别是给项目技术支持和打赏的朋友们，同时也感谢留下Watch、Star、Fork的朋友和ThinkPHP、xadmin等框架，不断增加的Star也是让我们坚持下去的动力源泉。
