@@ -156,7 +156,7 @@ class Banji extends BaseModel
     {
 
         $alias = \app\facade\System::sysClass();
-        if($alias->classalias)
+        if($alias->classalias === 1)
         {
             $title = $this->alias;
             if($title == '')
@@ -268,12 +268,14 @@ class Banji extends BaseModel
             }
         }
 
+        $alias = \app\facade\System::sysClass();
+
         if(($nj > 0 && $bj > 0) ||($nj > 0 && $bj == -1))
         {
             // 查询班级id
             $banji = new \app\teach\model\Banji;
             $id = $banji->where('ruxuenian', $nj)
-                    ->when($bj == -1, function ($query) use($str) {
+                    ->when($alias->classalias === 1, function ($query) use($str) {
                         $query
                             ->where('alias', substr_replace($str, '', strlen($str) - 3));
                     }, function ($query) use($bj) {
