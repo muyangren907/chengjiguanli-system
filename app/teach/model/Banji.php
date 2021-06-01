@@ -270,7 +270,7 @@ class Banji extends BaseModel
 
         $alias = \app\facade\System::sysClass();
 
-        if(($nj > 0 && $bj > 0) ||($nj > 0 && $bj == -1))
+        if($nj > 0 && ($bj > 0 || $bj == -1))
         {
             // 查询班级id
             $banji = new \app\teach\model\Banji;
