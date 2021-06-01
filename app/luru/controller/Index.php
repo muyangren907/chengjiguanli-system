@@ -333,7 +333,7 @@ class Index extends AdminBase
             || $cjinfo[2][0] != '序号'
             || $cjinfo[2][1] != '编号'
             || $cjinfo[2][2] != '班级'
-            || $cjinfo[2][3] != '考号'
+            || $cjinfo[2][3] != '学号'
             || $cjinfo[2][4] != '姓名') {
             $data = ['msg' => '请使用模板上传', 'val' => 0];
             return json($data);
