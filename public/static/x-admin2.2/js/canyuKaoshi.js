@@ -284,6 +284,34 @@ layui.define(['table', 'form', 'upload'], function(exports) {
 		},
 
 
+		// 参与本次考试学科
+		lrSubjectCheckbox: function(myid, data, hasAll = true) {
+			$('#' + myid).children().remove();
+      $.ajax({
+				url: '/kaoshi/lrfg/subject',
+				type: 'POST',
+				data: data,
+				success: function(result) {
+					if (hasAll == true) {
+						str = '<input type="checkbox" title="全选" lay-skin="primary" value="" cid="1" lay-filter="mycheackbox">';
+					} else {
+						str = '';
+					}
+					temp = "";
+					$(result.data).each(function(i, el) {
+						temp = '<input type="checkbox" name="' + myid + '[]' + '" title="' + el.title + '" value="' + el.id + '" lay-skin="primary" pid="1" lay-filter="mycheackbox">';
+						str = str + temp;
+					});
+					$('#' + myid).append(str);
+					form.render('checkbox');
+				},
+				error: function(result) {
+					layer.msg('数据扔半道啦。', function() {});
+				},
+			});
+		},
+
+
 		// 班级统计结果学科
 		btjSubjectSelect: function(myid, data, value = '', hasNull = true) {
 			$('#' + myid).children().remove();

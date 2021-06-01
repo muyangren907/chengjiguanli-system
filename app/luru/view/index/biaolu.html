@@ -45,9 +45,7 @@
               <label for="subject_id" class="layui-form-label">
                 <span class="x-red">*</span>学科
               </label>
-              <div class="layui-input-block">
-                <select name="subject_id"  id="subject_id" lay-filter="srcsubject" lay-verify="required">
-                </select>
+              <div class="layui-input-block" id="subject_id">
               </div>
             </div>
             <div class="layui-form-item">
@@ -125,7 +123,7 @@ layui.use(['form', 'upload', 'canyuKaoshi', 'createInput'], function() {
     data = form.val("dwform");
     delete data.subject_id;
     if (data.kaoshi_id > 0 && data.school_id > 0 && data.ruxuenian > 0) {
-      canyu.lrSubjectSelect('subject_id', data);
+      canyu.lrSubjectCheckbox('subject_id', data);
       canyu.lrBanjiCheckbox('banji_id', data);
     }
   });
