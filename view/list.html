@@ -115,7 +115,6 @@ layui.use(['table', 'form', 'mytable'], function() {
   //监听排序
   table.on('sort(mytable)', function(obj) {
     val = form.val("search");
-    console.log(val);
     val.field = obj.field;
     val.order = obj.type;
     userTable.reload({

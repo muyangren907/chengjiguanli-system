@@ -187,7 +187,7 @@ class LuruFengong extends BaseModel
             ->where('banji_id', $src['banji_id'])
             ->where('admin_id', session('user_id'))
             ->find();
-            if($list && $cnt>0){
+            if($list && $cnt > 0){
                 $data = true;
             }
         }else{
