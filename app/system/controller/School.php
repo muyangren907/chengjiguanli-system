@@ -247,6 +247,7 @@ class School extends AdminBase
             'low' => '班级'
             ,'high' => '其它级'
             ,'order' => 'asc'
+            ,'limit' => 100
         ], 'post');
 
         // 实例化单位模型
