@@ -355,7 +355,7 @@ class Jieti extends AdminBase
         }else{
            $keticename = $list[0]['glJieti']['title'];
            $danwei = $list[0]['glJieti']['gldanwei']['title'];
-           $jtshijian = strtotime($list[0]['jtshijian']);
+           $jtshijian = strtotime($list[0]['glJieti']['shijian']);
            $jtshijian = date('Ym', $jtshijian);
         }
 
