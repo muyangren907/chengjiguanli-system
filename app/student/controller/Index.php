@@ -457,8 +457,6 @@ class Index extends AdminBase
         $stu = new STU;
         $delStuList = $stu->tongBu($stuinfo, $list['school_id']);
 
-        halt('同步完成');
-
         // 获取学校名称
         $sch = new \app\system\model\School;
         $sch = $sch->where('id', $list['school_id'])->value('jiancheng');

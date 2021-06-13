@@ -412,8 +412,13 @@ class Student extends BaseModel
                     ,'quanpin' => trim(strtolower(str_replace(' ', '', $quanpin)))
                     ,'shoupin' => trim(strtolower(str_replace(' ', '', $shoupin)))
                 ];
+
                 $result = $validate->scene('create')->check($list[$add_k]);
                 if(!$result){
+                    unset($list[$add_k]);
+                }
+
+                if (date('Y-m-d', strtotime($shengri)) != $shengri) {
                     unset($list[$add_k]);
                 }
             }
