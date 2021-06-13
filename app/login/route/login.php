@@ -17,6 +17,6 @@ Route::group('', function () {
 		Route::rule('', 'Index/admin', 'post');
 		Route::rule('student', 'Index/student', 'post');
 		Route::rule('log', 'Index/shangmaLog', 'get');		# 配置更新
-		Route::rule('err/<msg>', 'Index/myerror', 'get');			//错误页
+		Route::rule('err', 'Index/myerror', 'get');			//错误页
 		Route::rule('weihu', 'Index/weihu', 'get');			//错误页
 });

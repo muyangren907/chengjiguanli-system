@@ -20,7 +20,6 @@ class OnLine
         {
             $this->error($msg, $url);
         }else{
-            $url = $ser . $url . '/' . $msg;
             echo "<script language='javascript' type='text/javascript'>top.location.href='".$url."'</script>";
         }
         return true;

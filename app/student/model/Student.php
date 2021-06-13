@@ -442,7 +442,6 @@ class Student extends BaseModel
                     $i ++;
                 }
                 $data = $data . '重复。';
-                \app\facade\OnLine::jump('/login/err', "");
                 halt($data);
             }
 

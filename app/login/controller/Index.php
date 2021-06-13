@@ -128,13 +128,11 @@ class Index extends BaseController
 
 
     // 错误页面
-    public function myerror($msg = "")
+    public function myerror()
     {
         // 获取系统名称和版本号
         $list['webtitle'] = config('shangma.webtitle');
         $list['version'] = config('shangma.version');
-
-        $list['msg'] = $msg;
 
         $this->view->assign('list',$list);
 
