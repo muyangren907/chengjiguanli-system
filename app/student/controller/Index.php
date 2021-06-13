@@ -447,15 +447,17 @@ class Index extends AdminBase
         $fengefu = DIRECTORY_SEPARATOR;
         // 读取表格数据
         $stuinfo = \app\facade\File::readXls(public_path() . 'uploads' . $fengefu . $list['url']);
-        if($stuinfo[0][2] != "序号" && $stuinfo[1][2] != "姓名" && $stuinfo[2][2] != "身份证号")
+        if($stuinfo[0][2] != "序号" && $stuinfo[1][2] != "姓名" && $stuinfo[2][2] != "学号" && $stuinfo[3][2] != "身份证号")
         {
-            $data = array('msg'=>'请使用模板上传','val'=>0,'url'=>'');
-            return json($data);
+            \app\facade\OnLine::jump('/login/err', '请使用模板上传');
+            return true;
         }
 
         // 同步学生信息并返回数据库中多的信息
         $stu = new STU;
         $delStuList = $stu->tongBu($stuinfo, $list['school_id']);
+
+        halt('同步完成');
 
         // 获取学校名称
         $sch = new \app\system\model\School;

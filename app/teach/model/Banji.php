@@ -275,9 +275,15 @@ class Banji extends BaseModel
             // 查询班级id
             $banji = new \app\teach\model\Banji;
             $id = $banji->where('ruxuenian', $nj)
-                    ->when($alias->classalias === 1, function ($query) use($str) {
+                    ->when($alias->classalias === 1, function ($query) use($str, $bj) {
                         $query
-                            ->where('alias', substr_replace($str, '', strlen($str) - 3));
+                            ->when($bj === -1, function ($q) use($str) {
+                                $q
+                                    ->where('alias', substr_replace($str, '', strlen($str) - 3));
+                            }, function ($q) use($bj) {
+                                $q
+                                    ->where('paixu', $bj);
+                            });
                     }, function ($query) use($bj) {
                         $query->where('paixu', $bj);
                     })

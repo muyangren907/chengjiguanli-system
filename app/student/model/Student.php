@@ -263,14 +263,16 @@ class Student extends BaseModel
     // 同步表格数据
     public function tongBu($stuinfo, $school_id)
     {
+        // 实例验证
+        $validate = new \app\student\validate\Student;
         // 整理数据
         array_splice($stuinfo, 0, 4);       # 删除标题行
         $stuinfo = array_filter($stuinfo, function($q){ ## 过滤姓名、身份证号或班级为空的数据
-            return $q[1] != null && strlen($q[2]) >=6 && $q[3] != null;
+            return $q[1] != null && strlen($q[3]) >=6 && $q[4] != null;
         });
 
         // 获取班级信息
-        $bj = array_column($stuinfo, 3);
+        $bj = array_column($stuinfo, 4);
         $arr = array_unique($bj);
         $bjStrName = array();     # 找不同班级
         $bjmod = new \app\teach\model\Banji;
@@ -297,7 +299,7 @@ class Student extends BaseModel
         $arr = array();
         foreach ($bjStrName as $sbj_k => $sbj_val) {
             foreach ($stuinfo as $stu_k => $stu_val) {
-                if($stu_val[3] == $sbj_val)
+                if($stu_val[4] == $sbj_val)
                 {
                     $arr[$sbj_k][] = $stu_val;
                     unset($stuinfo[$stu_k]);
@@ -309,8 +311,9 @@ class Student extends BaseModel
         $pinyin = new \Overtrue\Pinyin\Pinyin;
         // 循环班级数组，查询数据，进行对比，并返回结果。
         foreach ($arr as $key => $value) {
+            $ruxuenian = $bjmod->where('id', $key)->value('ruxuenian');
             // 获取电子表格中身份证号
-            $xlsStuList = array_column($value, 2);
+            $xlsStuList = array_column($value, 3);
             $xlsStuList = array_map('strtoupper', $xlsStuList);  # 将小写字母转换成大写字母
             $xlsStuList = array_map('trim', $xlsStuList);  # 过滤空格
 
@@ -344,7 +347,7 @@ class Student extends BaseModel
             foreach ($jiaoji as $jj_k => $jj_val) {
                 $oneStu = self::withTrashed()
                     ->where('shenfenzhenghao', $jj_val)
-                    ->field('id, xingming, banji_id, quanpin, shoupin, delete_time')
+                    ->field('id, xingming, sex, xuehao, banji_id, quanpin, shoupin, shenfenzhenghao, kaoshi, delete_time')
                     ->find();
                 if($oneStu->delete_time > 0)
                 {
@@ -354,41 +357,90 @@ class Student extends BaseModel
                 $quanpin = $pinyin->sentence($value[$jj_k][1]);
                 $shoupin = $pinyin->abbr($value[$jj_k][1]);
 
-                $oneStu->xingming = $value[$jj_k][1];
-                $oneStu->banji_id = $key;
-                $oneStu->quanpin = trim(strtolower(str_replace(' ', '', $quanpin)));
-                $oneStu->shoupin = trim(strtolower(str_replace(' ', '', $shoupin)));
-                $oneStu->save();
+                $upTemp = array();
+                $upTemp = [
+                    'id' => $oneStu->id
+                    ,'xingming' => $value[$jj_k][1]
+                    ,'sex' => $oneStu->getdata('sex')
+                    ,'banji_id' => $key
+                    ,'shenfenzhenghao' => $oneStu->shenfenzhenghao
+                    ,'kaoshi' =>  $oneStu->getdata('kaoshi')
+                    ,'xuehao' => $value[$jj_k][2]
+                    ,'quanpin' => trim(strtolower(str_replace(' ', '', $quanpin)))
+                    ,'shoupin' => trim(strtolower(str_replace(' ', '', $shoupin)))
+                    ,'delete_time' => null
+                ];
+
+                $result = $validate->scene('edit')->check($upTemp);
+                $msg = $validate->getError();
+                if($result){
+                    self::update($upTemp);
+                }
             }
 
             // 新增数据
             $pinyin = new \Overtrue\Pinyin\Pinyin;
             $list = array();
             foreach ($add as $add_k => $add_val) {
-                $sfzhval = strtoupper(trim($value[$add_k][2]));
+                $sfzhval = strtoupper(trim($value[$add_k][3]));
 
                 $quanpin = $pinyin->sentence($value[$add_k][1]);
                 $shoupin = $pinyin->abbr($value[$add_k][1]);
 
+                if(strlen($sfzhval) == 18)
+                {
+                    $shengri = substr($sfzhval, 6, 4) . '-' . substr($sfzhval, 10, 2) . '-' . substr($sfzhval, 12, 2);
+                    if(is_numeric(substr($sfzhval,16,1))){
+                        $sex = substr($sfzhval,16,1) % 2;
+                    } else {
+                        $sex = 2;
+                    }
+                }else{
+                    $shengri = '1970-1-1';
+                    $sex = 2;
+                }
+
                 $list[$add_k] = [
                     'xingming' => $value[$add_k][1]
+                    ,'sex' => $sex
+                    ,'shengri' => $shengri
                     ,'shenfenzhenghao' => $sfzhval
+                    ,'ruxuenian' => $ruxuenian
                     ,'banji_id' => $key
+                    ,'kaoshi' => 1
+                    ,'xuehao' => $value[$add_k][2]
                     ,'quanpin' => trim(strtolower(str_replace(' ', '', $quanpin)))
                     ,'shoupin' => trim(strtolower(str_replace(' ', '', $shoupin)))
                 ];
-
-
-                if(strlen($sfzhval) == 18)
-                {
-                    $list[$add_k]['shengri'] = substr($sfzhval, 6, 4) . '-' . substr($sfzhval, 10, 2) . '-' . substr($sfzhval, 12, 2);
-                    intval(substr($sfzhval,16,1) )% 2 ? $sex = 1 :$sex = 0 ;
-                    $list[$add_k]['sex'] = $sex;
-                }else{
-                    $list[$add_k]['shengri'] = '1970-1-1';
-                    $list[$add_k]['sex'] = 2;
+                $result = $validate->scene('create')->check($list[$add_k]);
+                if(!$result){
+                    unset($list[$add_k]);
                 }
             }
+
+            // 获取去掉重复数据的数组  
+            $sfzh =  array_column($list,'shenfenzhenghao');
+            $unique_arr = array_unique($sfzh);   
+            // 获取重复数据的数组   
+            $repeat_arr = array_diff_assoc($sfzh, $unique_arr);
+            if(count($repeat_arr) > 0)
+            {
+                $data = "电子表中身份证号：";
+                $i = 0;
+                foreach ($repeat_arr as $repeat_k => $repeat_v) {
+                    if($i == 0)
+                    {
+                        $data = $data . $repeat_v;
+                    } else {
+                        $data = $data . '、' . $repeat_v;
+                    }
+                    $i ++;
+                }
+                $data = $data . '重复。';
+                \app\facade\OnLine::jump('/login/err', "");
+                halt($data);
+            }
+
             self::saveAll($list);
 
             // 删除数据
@@ -401,6 +453,7 @@ class Student extends BaseModel
                 ];
             }
         }
+
         return $delarr;
     }
 

@@ -34,7 +34,7 @@ class Student extends Migrator
         // 添加当前表字段
         $table
             ->addColumn('xingming','string',['limit'=>5,'default'=>'a','null'=>false,'comment'=>'姓名'])
-            ->addColumn('sex','boolean',['limit'=>1,'default'=>1,'null'=>false,'comment'=>'性别'])
+            ->addColumn('sex','boolean',['limit'=>1,'default'=>1,'null'=>false,'comment'=>'性别 0=女，1=男，2=未知'])
             ->addColumn('shengri','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'生日'])
             ->addColumn('shenfenzhenghao','string',['limit'=>18,'default'=>'N1539158918','null'=>false,'comment'=>'身份证号'])
             ->addColumn('password','string',['limit'=>137,'null'=>false,'default'=>'$apr1$oz6tgaAl$ix4GBv0VxcnVJPIiodXUY/','comment'=>'登录密码'])
