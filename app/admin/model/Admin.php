@@ -121,6 +121,7 @@ class Admin extends BaseModel
         // 组合需要保存的数据
         $i = 0;
         $teacherlist = array();
+        $validate = new \app\admin\validate\Admin;
         foreach ($arr as $key => $value) {
             $phone = str_replace(' ', '', $value[5]);
             $temp = $this->wherePhone($phone)->find();
@@ -134,7 +135,7 @@ class Admin extends BaseModel
                 continue;
             }
             $teacherlist[$i]['xingming'] = $value[1];
-            $teacherlist[$i]['username'] = $value[2];
+            $teacherlist[$i]['username'] = trim(strtolower($value[2]));
             $teacherlist[$i]['sex'] = $this->cutStr($value[3]);
             $teacherlist[$i]['shengri'] = $value[4];
             $teacherlist[$i]['phone'] = $phone;
@@ -149,6 +150,13 @@ class Admin extends BaseModel
             $jianpin = $pinyin->abbr($value[1]);
             $teacherlist[$i]['quanpin'] = trim(strtolower(str_replace(' ', '', $quanpin)));
             $teacherlist[$i]['shoupin'] = trim(strtolower($jianpin));
+            $teacherlist[$i]['beizhu'] = $value[12];
+
+            $result = $validate->scene('admincreateall')->check($teacherlist[$i]);
+            $msg = $validate->getError();
+            if(!$result){
+                unset($teacherlist[$i]);
+            }
             $i++;
         }
 

@@ -17,11 +17,11 @@ class Admin extends Validate
         'xingming|用户姓名'  =>  'require|chs|length:2,6',
         'quanpin|姓名全拼'     =>  'require|alpha|length:1,30',
         'shoupin|姓名首拼'     =>  'require|alpha|length:1,5',
-        'username|帐号'  =>  'require|alphaDash|length:6,12',
+        'username|帐号'  =>  'require|alphaDash|length:6,12|unique:admin',
         'group_id|角色'   =>  'require|array',
         'shengri|出生日期'   =>  'date',
         'sex|性别'   =>  'in:0,1,2',
-        'phone|手机'     =>  'require|mobile',
+        'phone|手机'     =>  'require|mobile|unique:admin',
         'beizhu|备注'    =>  'max:80',
         'zhiwu_id|职务'      =>      'number',
         'zhicheng_id|职称'     =>  'number',
@@ -93,6 +93,22 @@ class Admin extends Validate
              ,'biye'
              ,'zhuanye'
              ,'worktime'
+        ],
+        'admincreateall'  =>  [
+             'xingming'
+             ,'username'
+             ,'sex'
+             ,'shengri'
+             ,'phone'
+             ,'shoupin'
+             ,'quanpin'
+             ,'worktime'
+             ,'zhiwu_id'
+             ,'zhicheng_id'
+             ,'school_id'
+             ,'biye'
+             ,'zhuanye'
+             ,'xueli_id'
         ],
     ];
 }
