@@ -29,7 +29,7 @@ class AddStudentKaohao extends Migrator
     public function up()
     {
         $table = $this->table('student');
-        $column = $table->hasColumn('kaohao');
+        $column = $table->hasColumn('xuehao');
         if (!$column) {
             $table
                 ->addColumn('xuehao','string',['limit'=>25,'null'=>true,'comment'=>'自定义学号'])

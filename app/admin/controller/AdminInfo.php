@@ -274,6 +274,8 @@ class AdminInfo extends AdminBase
             return json(['msg' => $msg, 'val' => 0]);;
         }
 
+        $list['username'] = strtoupper($list['username']);
+
         // 更新我的信息
         $admindata = AD::update($list);
 

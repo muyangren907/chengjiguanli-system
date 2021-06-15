@@ -110,6 +110,7 @@ class Index extends AdminBase
         // 设置密码，默认为123456
         $md5 = new APR1_MD5();
         $list['password'] = $md5->hash('123456');
+        $list['username'] = strtolower($list['username']);
 
         // 验证表单数据
         $validate = new \app\admin\validate\Admin;

@@ -113,9 +113,9 @@ class Category extends Seeder
                 ['id' => 10704,'title' => '德育副校长','p_id' => 107,'paixu' => 4,'isupdate' => 0],
                 ['id' => 10705,'title' => '教学主任','p_id' => 107,'paixu' => 5,'isupdate' => 0],
                 ['id' => 10706,'title' => '德育主任','p_id' => 107,'paixu' => 6,'isupdate' => 0],
-                ['id' => 10707,'title' => '教研组长','p_id' => 107,'paixu' => 7,'isupdate' => 0],
-                ['id' => 10708,'title' => '班主任','p_id' => 107,'paixu' => 8,'isupdate' => 0],
-                ['id' => 10709,'title' => '课任','p_id' => 107,'paixu' => 9,'isupdate' => 0],
+                ['id' => 10707,'title' => '教研组长','p_id' => 107,'paixu' => 7,'isupdate' => 0, 'status' => 0],
+                ['id' => 10708,'title' => '班主任','p_id' => 107,'paixu' => 8,'isupdate' => 0, 'status' => 0],
+                ['id' => 10709,'title' => '课任','p_id' => 107,'paixu' => 9,'isupdate' => 0, 'status' => 0],
                 ['id' => 107010,'title' => '其他','p_id' => 107,'paixu' => 10,'isupdate' => 0],
 
             ['id' => 108
