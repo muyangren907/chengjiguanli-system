@@ -61,6 +61,7 @@ class Subject extends AdminBase
                 ,'paixu'
                 ,'update_time'
             ]);
+
         $data = reSetObject($data, $src);
 
         return json($data);

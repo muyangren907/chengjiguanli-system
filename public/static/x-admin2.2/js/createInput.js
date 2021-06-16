@@ -559,7 +559,8 @@ layui.extend({
 				type: 'POST',
 				data: {
 					status: 1,
-					kaoshi: kaoshi
+					kaoshi: kaoshi,
+					limit:100
 				},
 				success: function(result) {
 					if (hasNull == true) {
