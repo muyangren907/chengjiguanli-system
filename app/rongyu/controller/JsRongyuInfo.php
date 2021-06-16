@@ -173,10 +173,12 @@ class JsRongyuInfo extends AdminBase
         // 循环组成参与教师信息
         $list['cyteachers'] = explode(',', $list['cyteachers']);
         foreach ($list['cyteachers'] as $key => $value) {
-            $canyulist[] = [
-                'teacher_id' => $value
-                ,'category_id' => 11902
-            ];
+            if($value !="") {
+                $canyulist[] = [
+                    'teacher_id' => $value
+                    ,'category_id' => 11902
+                ];
+            }
         }
 
         // 添加新的获奖人与参与人信息
@@ -361,12 +363,14 @@ class JsRongyuInfo extends AdminBase
             }
                 // 循环组成参与教师信息
             $list['cyteachers'] = explode(',', $list['cyteachers']);
-                foreach ($list['cyteachers'] as $key => $value) {
+            foreach ($list['cyteachers'] as $key => $value) {
+                if ($vlaue!="") {
                     $canyulist[] = [
                         'teacher_id' => $value
                         ,'category_id' => 11902
                     ];
                 }
+            }
 
         // 添加新的获奖人与参与人信息
         $data->allJsry()->saveAll($canyulist);
@@ -456,11 +460,13 @@ class JsRongyuInfo extends AdminBase
             $worksheet->getCell('B' . $myrowid)->setValue($value->title);
             $names = '';
             foreach ($value->hjJsry as $k => $val) {
-                if($k == 0)
-                {
-                    $names = $val->teacher->xingming;
-                }else{
-                    $names = $names . '、' .$val->teacher->xingming;
+                if (isset($val->teacher)) {
+                    if($k == 0)
+                    {
+                        $names = $val->teacher->xingming;
+                    }else{
+                        $names = $names . '、' .$val->teacher->xingming;
+                    }
                 }
             }
             $worksheet->getCell('C' . $myrowid)->setValue($names);

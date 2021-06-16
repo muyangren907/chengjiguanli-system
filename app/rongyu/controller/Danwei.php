@@ -118,7 +118,9 @@ class Danwei extends AdminBase
         // 重组教师id
         $list['teacher_id'] = explode(',', $list['teacher_id']);
         foreach ($list['teacher_id'] as $key => $value) {
-           $teachers[]['teacher_id'] = $value;
+            if ($value!="") {
+                $teachers[]['teacher_id'] = $value;
+            }
         }
 
         $data->cyDwry()->saveAll($teachers);
@@ -302,9 +304,11 @@ class Danwei extends AdminBase
         $list['teacher_id'] = explode(',', $list['teacher_id']);
         // 循环组成参与教师
         foreach ($list['teacher_id'] as $key => $value) {
-            $canyulist[] = [
-                'teacher_id' => $value,
-            ];
+            if ($value!="") {
+                $canyulist[] = [
+                    'teacher_id' => $value,
+                ];
+            }
         }
         //  更新参考教师
         $data->cyDwry()->saveAll($canyulist);

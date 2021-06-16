@@ -126,10 +126,12 @@ class KetiInfo extends AdminBase
             $list['teacher_id'] = explode(',', $list['teacher_id']);
             // 循环组成获奖教师信息
             foreach ($list['teacher_id'] as $key => $value) {
-                $canyulist[] = [
-                    'teacher_id' => $value
-                    ,'category_id' => 11901
-                ];
+                if ($value != "") {
+                    $canyulist[] = [
+                        'teacher_id' => $value
+                        ,'category_id' => 11901
+                    ];
+                }
             }
 
         // 添加新的获奖人与参与人信息
@@ -274,10 +276,13 @@ class KetiInfo extends AdminBase
             // 循环组成获奖教师信息
             $list['teacher_id'] = explode(',', $list['teacher_id']);
             foreach ($list['teacher_id'] as $key => $value) {
-                $canyulist[] = [
-                    'teacher_id' => $value
-                    ,'category_id' => 11901
-                ];
+                if ($value != "") {
+                    $canyulist[] = [
+                        'teacher_id' => $value
+                        ,'category_id' => 11901
+                    ];
+                }
+                    
             }
         $data = $data->ktZcr()->saveAll($canyulist); # 添加新课题主持人
 
@@ -391,17 +396,21 @@ class KetiInfo extends AdminBase
             // 循环组成获奖教师信息
             $list['teacher_id'] = explode(',', $list['teacher_id']);
             foreach ($list['teacher_id'] as $key => $value) {
-                $canyulist[] = [
-                    'teacher_id' => $value
-                    ,'category_id' => 11901
-                ];
+                if ($value != "") {
+                    $canyulist[] = [
+                        'teacher_id' => $value
+                        ,'category_id' => 11901
+                    ];
+                }
             }
             $list['canyu_id'] = explode(',', $list['canyu_id']);
             foreach ($list['canyu_id'] as $key => $value) {
-                $canyulist[] = [
-                    'teacher_id' => $value
-                    ,'category_id' => 11902
-                ];
+                if ($value != "") {
+                    $canyulist[] = [
+                        'teacher_id' => $value
+                        ,'category_id' => 11902
+                    ];
+                }
             }
 
         // 添加新的获奖人与参与人信息
