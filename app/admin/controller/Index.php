@@ -348,11 +348,12 @@ class Index extends AdminBase
                 'id'
                 ,'xingming'
                 ,'adSchool' => ['jiancheng']
+                ,'shengri'
             ]);
         $data = array();
         foreach ($list as $key => $value) {
             $data[] = [
-                'xingming' => $value->adSchool->jiancheng . ' -- ' .$value->xingming
+                'xingming' => $value->adSchool->jiancheng . ' -- ' .$value->xingming . ' -- ' . date('Y/m',$value->getData('shengri'))
                 ,'id' => $value->id
             ];
         }

@@ -637,7 +637,8 @@ class Index extends AdminBase
         foreach ($list as $key => $value) {
             $data[] = [
                 'id' => $value->id
-                ,'xingming' => $value->xingming
+                ,'xingming' => $value->xingming . '  ' . date('Y/m' , $value->getData('shengri'))
+                ,'shengri'
             ];
         }
 
