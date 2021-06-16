@@ -398,11 +398,13 @@ class Jieti extends AdminBase
             if($value->ktCy){
                 $str = '';
                 foreach ($value->ktCy as $k => $val) {
-                    if($k==0)
-                    {
-                        $str = $val->teacher->xingming;
-                    }else{
-                        $str = $str . '、' . $val->teacher->xingming;
+                    if(isset($val->teacher->xingming)) {
+                       if($k==0)
+                        {
+                            $str = $val->teacher->xingming;
+                        }else{
+                            $str = $str . '、' . $val->teacher->xingming;
+                        } 
                     }
                 }
                 $worksheet->getCell('F' . $myrowid)->setValue($str);
