@@ -560,7 +560,8 @@ layui.extend({
 				data: {
 					status: 1,
 					kaoshi: kaoshi,
-					limit:100
+					limit:100,
+					field:'paixu'
 				},
 				success: function(result) {
 					if (hasNull == true) {
