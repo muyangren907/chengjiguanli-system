@@ -364,7 +364,7 @@ class JsRongyuInfo extends AdminBase
                 // 循环组成参与教师信息
             $list['cyteachers'] = explode(',', $list['cyteachers']);
             foreach ($list['cyteachers'] as $key => $value) {
-                if ($vlaue!="") {
+                if ($value!="") {
                     $canyulist[] = [
                         'teacher_id' => $value
                         ,'category_id' => 11902
