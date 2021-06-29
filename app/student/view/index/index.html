@@ -95,6 +95,23 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 		[ //表头
 			{ type: 'checkbox', fixed: 'left' },
 			{
+				title: '学校',
+				fixed: 'left', 
+				width:70,
+				templet: function(d) {
+					var str = '';
+					if (d.stuBanji) {
+						if (d.stuBanji.glSchool) {
+							if (d.stuBanji.glSchool.jiancheng) {
+								d.stuBanji.glSchool.jiancheng;
+							}
+						}
+						str = d.stuBanji.glSchool.jiancheng;
+					}
+					return str;
+				}
+			},
+			{
 				field: 'banji',
 				title: '班级',
 				sort: true,

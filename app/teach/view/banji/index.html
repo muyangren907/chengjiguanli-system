@@ -78,14 +78,14 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 	options.cols = [
 		[ //表头
 			{ type: 'checkbox', fixed: 'left' },
-			{ field: 'id', title: 'ID', minWidth: 100, sort: true, fixed:'left' },
+			{ field: 'id', title: 'ID', minWidth: 50, sort: true, fixed:'left' },
 			{field: 'banjiTitle',title: '班级名称',minWidth: 100, fixed:'left'},
 			{ field: 'alias', title: '别名', minWidth: 60, edit: 'text' },
 			{
 				field: 'banzhuren',
-				title: '现任班主任',
+				title: '班主任',
 				sort: true,
-				minWidth: 60,
+				minWidth: 90,
 				templet: function(d) {
 					var str = '';
 					if (d.bzr) {
@@ -107,9 +107,9 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 					return str;
 				}
 			},
-			{ field: "ruxuenian", title: '入学年', sort: true },
+			{ field: "ruxuenian", title: '入学年', sort: true, minWidth:90 },
 			{ field: 'paixu', title: '排序', sort: true },
-			{ field: "gl_student_count", title: '学生数', sort: true },
+			{ field: "gl_student_count", title: '学生数', sort: true, minWidth:90 },
 			{ field: 'status', title: '状态', templet: '#status', sort: true },
 			{ field: 'id', title: '操作', toolbar: '#barDemo', minWidth: 200}
 		]

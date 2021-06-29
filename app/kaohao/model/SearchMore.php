@@ -250,14 +250,25 @@ class SearchMore extends BaseModel
         $sbjList = $sbj->where('id', 'in', $src['subject_id'])
             ->field('id, title, jiancheng, lieming')
             ->select();
+        $stu = new \app\student\model\Student;
         $data = array();
         foreach ($khlist as $key => $value) {
             $data[$key]['id'] = $value['id'];
             $data[$key]['school_jiancheng'] = $value->cjSchool->jiancheng;
             $data[$key]['ban_title'] = $value->banTitle;
-            $data[$key]['student_xingming'] = $value->cjStudent->xingming;
-            $data[$key]['sex'] = $value->cjStudent->sex;
-            $data[$key]['shengri'] = $value->cjStudent->shengri;
+            if (!$value->cjStudent) {
+                $stuInfo = $stu::withTrashed()
+                    ->where('id', $value->student_id)
+                    ->field('id, xingming, sex, shengri')
+                    ->find();
+                $data[$key]['student_xingming'] = $stuInfo->xingming;
+                $data[$key]['sex'] = $stuInfo->sex;
+                $data[$key]['shengri'] = $stuInfo->shengri;
+            } else {
+                $data[$key]['student_xingming'] = $value->cjStudent->xingming;
+                $data[$key]['sex'] = $value->cjStudent->sex;
+                $data[$key]['shengri'] = $value->cjStudent->shengri;
+            }
             $data[$key]['xuehao'] = $value->xuehao;
 
             foreach ($sbjList as $sbj_k => $sbj_v) {

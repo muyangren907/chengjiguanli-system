@@ -74,14 +74,21 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 	options.cols = [
 		[ //表头
 			{ type: 'checkbox', fixed: 'left' },
-			{ field: 'xingming', title: '姓名', sort: true },
-			{ field: 'sex', title: '性别', sort: true },
 			{
-				field: "shengri",
-				title: '周岁',
-				sort: true,
+				title: '学校',
+				fixed: 'left', 
+				width:70,
 				templet: function(d) {
-					return d.age;
+					var str = '';
+					if (d.stuBanji) {
+						if (d.stuBanji.glSchool) {
+							if (d.stuBanji.glSchool.jiancheng) {
+								d.stuBanji.glSchool.jiancheng;
+							}
+						}
+						str = d.stuBanji.glSchool.jiancheng;
+					}
+					return str;
 				}
 			},
 			{
@@ -94,6 +101,16 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 						str = d.stuBanji.banjiTitle;
 					}
 					return str;
+				}
+			},
+			{ field: 'xingming', title: '姓名', sort: true },
+			{ field: 'sex', title: '性别', sort: true },
+			{
+				field: "shengri",
+				title: '周岁',
+				sort: true,
+				templet: function(d) {
+					return d.age;
 				}
 			},
 			{ field: 'status', title: '状态', templet: '#status', sort: true },

@@ -135,7 +135,14 @@ class Student extends BaseModel
                 })
                 ->with([
                     'stuBanji'=>function($query){
-                        $query->field('id, ruxuenian, paixu, alias')->append(['banjiTitle']);
+                        $query
+                            ->field('id, ruxuenian, paixu, alias, school_id')
+                            ->with([
+                                'glSchool' => function($query){
+                                    $query->field('id, title, jiancheng');
+                                },
+                            ])
+                            ->append(['banjiTitle']);
                     }
                 ])
                 ->field('id, xingming, sex, shengri, banji_id, kaoshi, xuehao, status, update_time')
@@ -200,7 +207,14 @@ class Student extends BaseModel
                 })
                 ->with([
                     'stuBanji'=>function($query){
-                        $query->field('id, ruxuenian, paixu, alias')->append(['banjiTitle']);
+                        $query
+                            ->field('id, ruxuenian, paixu, alias, school_id')
+                            ->with([
+                                'glSchool' => function($query){
+                                    $query->field('id, title, jiancheng');
+                                },
+                            ])
+                            ->append(['banjiTitle']);
                     }
                 ])
                 ->field('id, xingming, sex, shengri, banji_id, kaoshi, status, update_time')
