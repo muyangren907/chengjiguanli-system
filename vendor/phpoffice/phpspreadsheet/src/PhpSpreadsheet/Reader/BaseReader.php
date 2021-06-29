@@ -2,7 +2,6 @@
 
 namespace PhpOffice\PhpSpreadsheet\Reader;
 
-use PhpOffice\PhpSpreadsheet\Reader\Exception as ReaderException;
 use PhpOffice\PhpSpreadsheet\Reader\Security\XmlScanner;
 use PhpOffice\PhpSpreadsheet\Shared\File;
 
@@ -38,7 +37,7 @@ abstract class BaseReader implements IReader
      * Restrict which sheets should be loaded?
      * This property holds an array of worksheet names to be loaded. If null, then all worksheets will be loaded.
      *
-     * @var null|string[]
+     * @var array of string
      */
     protected $loadSheetsOnly;
 
@@ -134,28 +133,28 @@ abstract class BaseReader implements IReader
 
     public function getSecurityScanner()
     {
-        return $this->securityScanner;
+        if (property_exists($this, 'securityScanner')) {
+            return $this->securityScanner;
+        }
+
+        return null;
     }
 
     /**
      * Open file for reading.
      *
      * @param string $pFilename
+     *
+     * @throws Exception
      */
-    protected function openFile($pFilename): void
+    protected function openFile($pFilename)
     {
-        if ($pFilename) {
-            File::assertFile($pFilename);
+        File::assertFile($pFilename);
 
-            // Open file
-            $fileHandle = fopen($pFilename, 'rb');
-        } else {
-            $fileHandle = false;
-        }
-        if ($fileHandle !== false) {
-            $this->fileHandle = $fileHandle;
-        } else {
-            throw new ReaderException('Could not open file ' . $pFilename . ' for reading.');
+        // Open file
+        $this->fileHandle = fopen($pFilename, 'r');
+        if ($this->fileHandle === false) {
+            throw new Exception('Could not open file ' . $pFilename . ' for reading.');
         }
     }
 }

@@ -5,7 +5,6 @@ namespace PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Document\Properties as DocumentProperties;
 use PhpOffice\PhpSpreadsheet\Reader\Security\XmlScanner;
 use PhpOffice\PhpSpreadsheet\Settings;
-use SimpleXMLElement;
 
 class Properties
 {
@@ -28,7 +27,7 @@ class Properties
         );
     }
 
-    public function readCoreProperties($propertyData): void
+    public function readCoreProperties($propertyData)
     {
         $xmlCore = $this->extractPropertyData($propertyData);
 
@@ -39,10 +38,8 @@ class Properties
 
             $this->docProps->setCreator((string) self::getArrayItem($xmlCore->xpath('dc:creator')));
             $this->docProps->setLastModifiedBy((string) self::getArrayItem($xmlCore->xpath('cp:lastModifiedBy')));
-            $created = (string) self::getArrayItem($xmlCore->xpath('dcterms:created')); //! respect xsi:type
-            $this->docProps->setCreated($created);
-            $modified = (string) self::getArrayItem($xmlCore->xpath('dcterms:modified')); //! respect xsi:type
-            $this->docProps->setModified($modified); //! respect xsi:type
+            $this->docProps->setCreated(strtotime(self::getArrayItem($xmlCore->xpath('dcterms:created')))); //! respect xsi:type
+            $this->docProps->setModified(strtotime(self::getArrayItem($xmlCore->xpath('dcterms:modified')))); //! respect xsi:type
             $this->docProps->setTitle((string) self::getArrayItem($xmlCore->xpath('dc:title')));
             $this->docProps->setDescription((string) self::getArrayItem($xmlCore->xpath('dc:description')));
             $this->docProps->setSubject((string) self::getArrayItem($xmlCore->xpath('dc:subject')));
@@ -51,7 +48,7 @@ class Properties
         }
     }
 
-    public function readExtendedProperties($propertyData): void
+    public function readExtendedProperties($propertyData)
     {
         $xmlCore = $this->extractPropertyData($propertyData);
 
@@ -65,13 +62,13 @@ class Properties
         }
     }
 
-    public function readCustomProperties($propertyData): void
+    public function readCustomProperties($propertyData)
     {
         $xmlCore = $this->extractPropertyData($propertyData);
 
         if (is_object($xmlCore)) {
             foreach ($xmlCore as $xmlProperty) {
-                /** @var SimpleXMLElement $xmlProperty */
+                /** @var \SimpleXMLElement $xmlProperty */
                 $cellDataOfficeAttributes = $xmlProperty->attributes();
                 if (isset($cellDataOfficeAttributes['name'])) {
                     $propertyName = (string) $cellDataOfficeAttributes['name'];

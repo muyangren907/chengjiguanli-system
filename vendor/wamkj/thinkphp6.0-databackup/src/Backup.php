@@ -9,7 +9,7 @@ class Backup
      * @var resource
      */
     private $fp;
-
+    
     /**
      * 备份文件信息 part - 卷号，name - 文件名
      * @var array
@@ -57,12 +57,12 @@ class Backup
     /**
      * 设置数据库连接必备参数
      * @param array  $dbconfig   数据库连接配置信息
-     * @return object
+     * @return object 
      */
     public function setDbConn($dbconfig=[])
     {
         if (empty($dbconfig)) {
-            $this->dbconfig = Config::get('database.connections.mysql');
+            $this->dbconfig = Config::get('database'); 
         }else{
             $this->dbconfig=$dbconfig;
         }
@@ -71,7 +71,7 @@ class Backup
     /**
      * 设置备份文件名
      * @param String  $file  文件名字
-     * @return object
+     * @return object 
      */
     public function setFile($file=null)
     {
@@ -83,7 +83,7 @@ class Backup
             }else{
                 $this->file=$file;
             }
-
+           
         }
         return $this;
     }
@@ -158,14 +158,14 @@ class Backup
                 } else {
                     throw new \Exception("File {$files['0']} may be damaged, please check again");
                 }
-
+               
                 break;
             case 'pathname':
                 return "{$this->config['path']}{$this->file['name']}-{$this->file['part']}.sql";
-                break;
+                break; 
             case 'filename':
                 return "{$this->file['name']}-{$this->file['part']}.sql";
-                break;
+                break; 
             case 'filepath':
                 return $this->config['path'];
                 break;
@@ -212,7 +212,7 @@ class Backup
             $this->config['compress'] ? gzseek($gz, $start) : fseek($gz, $start);
         }
         for($i = 0; $i < 1000; $i++){
-            $sql .= $this->config['compress'] ? gzgets($gz) : fgets($gz);
+            $sql .= $this->config['compress'] ? gzgets($gz) : fgets($gz); 
             if(preg_match('/.*;$/', trim($sql))){
                 if(false !== $db->execute($sql)){
                     $start += strlen($sql);
@@ -233,7 +233,7 @@ class Backup
     public function dataList($table=null)
     {
         $db = self::connect();
-
+        
         if(is_null($table)){
             $list = $db->query("SHOW TABLE STATUS");
         }else{
@@ -287,9 +287,9 @@ class Backup
 
         //数据总数
         $result = $db->query("SELECT COUNT(*) AS count FROM `{$table}`");
-
+       
         $count  = $result['0']['count'];
-
+            
         //备份表数据
         if($count){
             //写入数据注释
@@ -305,8 +305,6 @@ class Backup
             foreach ($result as $row) {
                 $row = array_map('addslashes', $row);
                 $sql = "INSERT INTO `{$table}` VALUES ('" . str_replace(array("\r","\n"),array('\r','\n'),implode("', '", $row)) . "');\n";
-                // halt($sql);
-                $sql = str_replace(" ''", " null", $sql);
                 if(false === $this->write($sql)){
                     return false;
                 }
@@ -314,8 +312,7 @@ class Backup
 
             //还有更多数据
             if($count > $start + 1000){
-                // return array($start + 1000, $count);
-                return $this->backup($table, $start + 1000);
+                return array($start + 1000, $count);
             }
         }
         //备份下一表
@@ -324,7 +321,7 @@ class Backup
     /**
      * 优化表
      * @param  String $tables 表名
-     * @return String $tables
+     * @return String $tables  
      */
     public function optimize($tables = null){
         if($tables) {
@@ -347,7 +344,7 @@ class Backup
     /**
      * 修复表
      * @param  String $tables 表名
-     * @return String $tables
+     * @return String $tables  
      */
     public function repair($tables = null){
         if($tables) {
@@ -378,7 +375,7 @@ class Backup
         //由于压缩原因，无法计算出压缩后的长度，这里假设压缩率为50%，
         //一般情况压缩率都会高于50%；
         $size = $this->config['compress'] ? $size / 2 : $size;
-        $this->open($size);
+        $this->open($size); 
         return $this->config['compress'] ? @gzwrite($this->fp, $sql) : @fwrite($this->fp, $sql);
     }
     /**

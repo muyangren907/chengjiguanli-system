@@ -4,13 +4,14 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175
+class ComposerStaticInita6bdef6fc96aec96efa8702bfef1a23d
 {
     public static $files = array (
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
         '35fab96057f1bf5e7aba31a8a6d5fdde' => __DIR__ . '/..' . '/topthink/think-orm/stubs/load_stubs.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
+        '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         'abede361264e2ae69ec1eee813a101af' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/abs.php',
         '21a5860fbef5be28db5ddfbc3cca67c4' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/acos.php',
         '1546e3f9d127f2a9bb2d1b6c31c26ef1' => __DIR__ . '/..' . '/markbaker/complex/classes/src/functions/acosh.php',
@@ -69,8 +70,6 @@ class ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175
         '8d37dad4703fab45bfec9dd0bbf3278e' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/Operations/multiply.php',
         '4888a6f58c08148ebe17682f9ce9b2a8' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/Operations/divideby.php',
         'eef6fa3879d3efa347cd24d5eb348f85' => __DIR__ . '/..' . '/markbaker/matrix/classes/src/Operations/divideinto.php',
-        '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
-        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         'dc1275c308c5b416beb314b6317daca2' => __DIR__ . '/..' . '/overtrue/pinyin/src/const.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '1cfd2761b63b0a29ed23657ea394cb2d' => __DIR__ . '/..' . '/topthink/think-captcha/src/helper.php',
@@ -98,10 +97,6 @@ class ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175
         array (
             'app\\' => 4,
         ),
-        'Z' => 
-        array (
-            'ZipStream\\' => 10,
-        ),
         'W' => 
         array (
             'WhiteHat101\\Crypt\\' => 18,
@@ -117,8 +112,6 @@ class ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175
         array (
             'Psr\\SimpleCache\\' => 16,
             'Psr\\Log\\' => 8,
-            'Psr\\Http\\Message\\' => 17,
-            'Psr\\Http\\Client\\' => 16,
             'Psr\\Container\\' => 14,
             'Psr\\Cache\\' => 10,
             'PhpOffice\\PhpSpreadsheet\\' => 25,
@@ -130,12 +123,10 @@ class ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175
         ),
         'M' => 
         array (
-            'MyCLabs\\Enum\\' => 13,
             'Matrix\\' => 7,
         ),
         'L' => 
         array (
-            'League\\MimeTypeDetection\\' => 25,
             'League\\Flysystem\\Cached\\' => 24,
             'League\\Flysystem\\' => 17,
         ),
@@ -186,10 +177,6 @@ class ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175
         array (
             0 => __DIR__ . '/../..' . '/app',
         ),
-        'ZipStream\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
-        ),
         'WhiteHat101\\Crypt\\' => 
         array (
             0 => __DIR__ . '/..' . '/whitehat101/apr1-md5/src',
@@ -218,15 +205,6 @@ class ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
-        'Psr\\Http\\Message\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/http-factory/src',
-            1 => __DIR__ . '/..' . '/psr/http-message/src',
-        ),
-        'Psr\\Http\\Client\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/http-client/src',
-        ),
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
@@ -247,17 +225,9 @@ class ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175
         array (
             0 => __DIR__ . '/..' . '/overtrue/pinyin/src',
         ),
-        'MyCLabs\\Enum\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/myclabs/php-enum/src',
-        ),
         'Matrix\\' => 
         array (
             0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
-        ),
-        'League\\MimeTypeDetection\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/league/mime-type-detection/src',
         ),
         'League\\Flysystem\\Cached\\' => 
         array (
@@ -270,16 +240,6 @@ class ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175
         'Complex\\' => 
         array (
             0 => __DIR__ . '/..' . '/markbaker/complex/classes/src',
-        ),
-    );
-
-    public static $prefixesPsr0 = array (
-        'H' => 
-        array (
-            'HTMLPurifier' => 
-            array (
-                0 => __DIR__ . '/..' . '/ezyang/htmlpurifier/library',
-            ),
         ),
     );
 
@@ -298,11 +258,10 @@ class ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175::$prefixesPsr0;
-            $loader->fallbackDirsPsr0 = ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175::$fallbackDirsPsr0;
-            $loader->classMap = ComposerStaticInitb9e4f0134ed78dbdc8a5ce7a1ab58175::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInita6bdef6fc96aec96efa8702bfef1a23d::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInita6bdef6fc96aec96efa8702bfef1a23d::$prefixDirsPsr4;
+            $loader->fallbackDirsPsr0 = ComposerStaticInita6bdef6fc96aec96efa8702bfef1a23d::$fallbackDirsPsr0;
+            $loader->classMap = ComposerStaticInita6bdef6fc96aec96efa8702bfef1a23d::$classMap;
 
         }, null, ClassLoader::class);
     }

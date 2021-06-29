@@ -13,8 +13,6 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
  */
 abstract class Coordinate
 {
-    public const A1_COORDINATE_REGEX = '/^(?<absolute_col>\$?)(?<col_ref>[A-Z]{1,3})(?<absolute_row>\$?)(?<row_ref>\d{1,7})$/i';
-
     /**
      * Default range variable constant.
      *
@@ -27,12 +25,14 @@ abstract class Coordinate
      *
      * @param string $pCoordinateString eg: 'A1'
      *
-     * @return array{0: string, 1: string} Array containing column and row (indexes 0 and 1)
+     * @throws Exception
+     *
+     * @return string[] Array containing column and row (indexes 0 and 1)
      */
     public static function coordinateFromString($pCoordinateString)
     {
-        if (preg_match(self::A1_COORDINATE_REGEX, $pCoordinateString, $matches)) {
-            return [$matches['absolute_col'] . $matches['col_ref'], $matches['absolute_row'] . $matches['row_ref']];
+        if (preg_match('/^([$]?[A-Z]{1,3})([$]?\\d{1,7})$/', $pCoordinateString, $matches)) {
+            return [$matches[1], $matches[2]];
         } elseif (self::coordinateIsRange($pCoordinateString)) {
             throw new Exception('Cell coordinate string can not be a range of cells');
         } elseif ($pCoordinateString == '') {
@@ -40,23 +40,6 @@ abstract class Coordinate
         }
 
         throw new Exception('Invalid cell coordinate ' . $pCoordinateString);
-    }
-
-    /**
-     * Get indexes from a string coordinates.
-     *
-     * @param string $coordinates eg: 'A1', '$B$12'
-     *
-     * @return array{0: int, 1: int} Array containing column index and row index (indexes 0 and 1)
-     */
-    public static function indexesFromString(string $coordinates): array
-    {
-        [$col, $row] = self::coordinateFromString($coordinates);
-
-        return [
-            self::columnIndexFromString(ltrim($col, '$')),
-            (int) ltrim($row, '$'),
-        ];
     }
 
     /**
@@ -76,6 +59,8 @@ abstract class Coordinate
      *
      * @param string $pCoordinateString e.g. 'A' or '1' or 'A1'
      *                    Note that this value can be a row or column reference as well as a cell reference
+     *
+     * @throws Exception
      *
      * @return string Absolute coordinate        e.g. '$A' or '$1' or '$A$1'
      */
@@ -105,6 +90,8 @@ abstract class Coordinate
      * Make string coordinate absolute.
      *
      * @param string $pCoordinateString e.g. 'A1'
+     *
+     * @throws Exception
      *
      * @return string Absolute coordinate        e.g. '$A$1'
      */
@@ -157,6 +144,8 @@ abstract class Coordinate
      * Build range from coordinate strings.
      *
      * @param array $pRange Array containg one or more arrays containing one or two coordinate strings
+     *
+     * @throws Exception
      *
      * @return string String representation of $pRange
      */
@@ -331,61 +320,32 @@ abstract class Coordinate
     /**
      * Extract all cell references in range, which may be comprised of multiple cell ranges.
      *
-     * @param string $cellRange Range: e.g. 'A1' or 'A1:C10' or 'A1:E10,A20:E25' or 'A1:E5 C3:G7' or 'A1:C1,A3:C3 B1:C3'
+     * @param string $pRange Range (e.g. A1 or A1:C10 or A1:E10 A20:E25)
      *
      * @return array Array containing single cell references
      */
-    public static function extractAllCellReferencesInRange($cellRange): array
+    public static function extractAllCellReferencesInRange($pRange)
     {
-        [$ranges, $operators] = self::getCellBlocksFromRangeString($cellRange);
+        $returnValue = [];
 
-        $cells = [];
-        foreach ($ranges as $range) {
-            $cells[] = self::getReferencesForCellBlock($range);
+        // Explode spaces
+        $cellBlocks = self::getCellBlocksFromRangeString($pRange);
+        foreach ($cellBlocks as $cellBlock) {
+            $returnValue = array_merge($returnValue, self::getReferencesForCellBlock($cellBlock));
         }
 
-        $cells = self::processRangeSetOperators($operators, $cells);
-
-        if (empty($cells)) {
-            return [];
-        }
-
-        $cellList = array_merge(...$cells);
-        $cellList = self::sortCellReferenceArray($cellList);
-
-        return $cellList;
-    }
-
-    private static function processRangeSetOperators(array $operators, array $cells): array
-    {
-        $operatorCount = count($operators);
-        for ($offset = 0; $offset < $operatorCount; ++$offset) {
-            $operator = $operators[$offset];
-            if ($operator !== ' ') {
-                continue;
-            }
-
-            $cells[$offset] = array_intersect($cells[$offset], $cells[$offset + 1]);
-            unset($operators[$offset], $cells[$offset + 1]);
-            $operators = array_values($operators);
-            $cells = array_values($cells);
-            --$offset;
-            --$operatorCount;
-        }
-
-        return $cells;
-    }
-
-    private static function sortCellReferenceArray(array $cellList): array
-    {
         //    Sort the result by column and row
         $sortKeys = [];
-        foreach ($cellList as $coord) {
-            [$column, $row] = sscanf($coord, '%[A-Z]%d');
+        foreach (array_unique($returnValue) as $coord) {
+            $column = '';
+            $row = 0;
+
+            sscanf($coord, '%[A-Z]%d', $column, $row);
             $sortKeys[sprintf('%3s%09d', $column, $row)] = $coord;
         }
         ksort($sortKeys);
 
+        // Return value
         return array_values($sortKeys);
     }
 
@@ -530,25 +490,15 @@ abstract class Coordinate
     }
 
     /**
-     * Get the individual cell blocks from a range string, removing any $ characters.
-     *      then splitting by operators and returning an array with ranges and operators.
+     * Get the individual cell blocks from a range string, splitting by space and removing any $ characters.
      *
-     * @param string $rangeString
+     * @param string $pRange
      *
-     * @return array[]
+     * @return string[]
      */
-    private static function getCellBlocksFromRangeString($rangeString)
+    private static function getCellBlocksFromRangeString($pRange)
     {
-        $rangeString = str_replace('$', '', strtoupper($rangeString));
-
-        // split range sets on intersection (space) or union (,) operators
-        $tokens = preg_split('/([ ,])/', $rangeString, -1, PREG_SPLIT_DELIM_CAPTURE);
-        // separate the range sets and the operators into arrays
-        $split = array_chunk($tokens, 2);
-        $ranges = array_column($split, 0);
-        $operators = array_column($split, 1);
-
-        return [$ranges, $operators];
+        return explode(' ', str_replace('$', '', strtoupper($pRange)));
     }
 
     /**
@@ -561,7 +511,7 @@ abstract class Coordinate
      * @param int $currentRow
      * @param int $endRow
      */
-    private static function validateRange($cellBlock, $startColumnIndex, $endColumnIndex, $currentRow, $endRow): void
+    private static function validateRange($cellBlock, $startColumnIndex, $endColumnIndex, $currentRow, $endRow)
     {
         if ($startColumnIndex >= $endColumnIndex || $currentRow > $endRow) {
             throw new Exception('Invalid range: "' . $cellBlock . '"');

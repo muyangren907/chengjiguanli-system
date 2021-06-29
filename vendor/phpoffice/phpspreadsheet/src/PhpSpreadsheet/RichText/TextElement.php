@@ -35,7 +35,7 @@ class TextElement implements ITextElement
     /**
      * Set text.
      *
-     * @param string $text Text
+     * @param $text string Text
      *
      * @return $this
      */

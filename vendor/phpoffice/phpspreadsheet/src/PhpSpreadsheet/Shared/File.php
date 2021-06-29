@@ -3,7 +3,6 @@
 namespace PhpOffice\PhpSpreadsheet\Shared;
 
 use InvalidArgumentException;
-use PhpOffice\PhpSpreadsheet\Exception;
 use ZipArchive;
 
 class File
@@ -20,7 +19,7 @@ class File
      *
      * @param bool $useUploadTempDir Use File Upload Temporary directory (true or false)
      */
-    public static function setUseUploadTempDirectory($useUploadTempDir): void
+    public static function setUseUploadTempDirectory($useUploadTempDir)
     {
         self::$useUploadTempDirectory = (bool) $useUploadTempDir;
     }
@@ -125,22 +124,14 @@ class File
         return realpath(sys_get_temp_dir());
     }
 
-    public static function temporaryFilename(): string
-    {
-        $filename = tempnam(self::sysGetTempDir(), 'phpspreadsheet');
-        if ($filename === false) {
-            throw new Exception('Could not create temporary file');
-        }
-
-        return $filename;
-    }
-
     /**
      * Assert that given path is an existing file and is readable, otherwise throw exception.
      *
      * @param string $filename
+     *
+     * @throws InvalidArgumentException
      */
-    public static function assertFile($filename): void
+    public static function assertFile($filename)
     {
         if (!is_file($filename)) {
             throw new InvalidArgumentException('File "' . $filename . '" does not exist.');
