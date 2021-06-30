@@ -41,6 +41,7 @@ Route::group('info', function () {
 	    Route::rule('deljt','KetiInfo/deleteJieti','delete');		# 删除结题信息
 	    Route::rule('srckt','KetiInfo/srcInfo','post');				# 获取数据
 	    Route::rule('srccy','KetiInfo/srcCy','post');				# 获取数据
+	    Route::rule('read/<id>','KetiInfo/read','get');              # 读取信息
 	});
 
 // 结题管理

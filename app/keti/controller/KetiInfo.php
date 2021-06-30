@@ -295,6 +295,20 @@ class KetiInfo extends AdminBase
     }
 
 
+    // 获取立项课题信息
+    public function read($id) {
+        $info = ktinfo::where('id', $id)->field('lxpic, jtpic')->find();
+        $list['webtitle'] = '帐号信息';
+        $list['lxpic'] = $info->lxpic;
+        $list['jtpic'] = $info->jtpic;
+        // 模板赋值
+        $this->view->assign('list', $list);
+
+        // 渲染模板
+        return $this->view->fetch('read');
+    }
+
+
     /**
      * 删除指定资源
      *

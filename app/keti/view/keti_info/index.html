@@ -63,7 +63,7 @@
 </script>
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
-	<!-- <a class="layui-btn-xs" lay-event="jieti" title="结题"><i class="layui-icon">&#xe705;</i></a> -->
+	<a class="layui-btn-xs" lay-event="detail" title="查看"><i class="layui-icon layui-icon-search"></i></a>
 	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
 	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
 </script>
@@ -151,6 +151,9 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 				break;
 			case 'jieti': // 结题
 				xadmin.open('结题', '/keti/info/jieti/' + obj.data.id, '', '', true);
+				break;
+			case 'detail': // 查看
+				parent.xadmin.add_tab(obj.data.title + '－信息', '/keti/info/read/' + obj.data.id, true);
 				break;
 		};
 	});
