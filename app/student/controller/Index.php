@@ -183,21 +183,20 @@ class Index extends AdminBase
             ,'xuehao'
         ], 'POST');
 
-        // 权限判断
-        $bjqx = event('mybanji', array());
-        $bjqx = $bjqx[0];
-        if ($bjqx['check'] == true) {
-            if (!in_array($key, $bjqx['banji_id'])) {
-                return json(['msg' => '权限不足', 'val' => 0]);
-            }
-        }
-
         // 验证表单数据
         $validate = new \app\student\validate\Student;
         $result = $validate->scene('create')->check($list);
         $msg = $validate->getError();
         if(!$result){
             return json(['msg' => $msg, 'val' => 0]);
+        }
+        // 权限判断
+        $bjqx = event('mybanji', array());
+        $bjqx = $bjqx[0];
+        if ($bjqx['check'] == true) {
+            if (!in_array($list['banji_id'], $bjqx['banji_id'])) {
+                return json(['msg' => '权限不足', 'val' => 0]);
+            }
         }
 
         $list['shenfenzhenghao'] = strtoupper($list['shenfenzhenghao']);
