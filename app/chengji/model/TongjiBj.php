@@ -305,7 +305,8 @@ class TongjiBj extends BaseModel
             ->where('kaoshi_id', $src['kaoshi_id'])
             ->where('banji_id', 'in', $src['banji_id'])
             ->when($src['auth']['check'] == true, function ($query) use($src) {
-                    $query->where('banji_id', 'in', $src['auth']['banji_id']);
+                    $query->where('banji_id', 'in', $src['auth']['banji_id'])
+                        ->whereOr('teacher_id', session('user_id'));
                 })
             ->field('banji_id, kaoshi_id')
             ->with([

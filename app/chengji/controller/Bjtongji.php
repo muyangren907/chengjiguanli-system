@@ -64,7 +64,6 @@ class Bjtongji extends AdminBase
         {
             $src['auth']['banji_id'] = array_intersect($src['auth']['banji_id'], $src['banji_id']);
         }
-
         // 统计成绩
         $btj = new BTJ;
         $data = $btj->search($src);

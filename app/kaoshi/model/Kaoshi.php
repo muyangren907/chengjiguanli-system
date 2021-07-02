@@ -90,8 +90,16 @@ class Kaoshi extends BaseModel
             ->field('kaoshi_id')
             ->select();
         $kaoshi_ids = $data->column('kaoshi_id');
+
+        // 查一下任课情况
+        $btj = new \app\chengji\model\TongjiBj;
+        $krids = $btj
+            ->where('teacher_id', session('id'))
+            ->distinct(true)
+            ->field('kaoshi_id')
+            ->column(['kaoshi_id']);
         $ids = $this->where('user_id', session('user_id'))->column(['id']);
-        $kaoshi_ids =array_unique(array_merge($kaoshi_ids, $ids));
+        $kaoshi_ids =array_unique(array_merge($kaoshi_ids, $ids, $krids));
 
         return $kaoshi_ids;
     }
