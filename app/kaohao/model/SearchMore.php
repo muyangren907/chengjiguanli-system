@@ -164,8 +164,14 @@ class SearchMore extends BaseModel
                         ->where('id', $value->student_id)
                         ->field('id, xingming, sex')
                         ->find();
-                $data[$key]['student_xingming'] = $stuinfo->xingming;
-                $data[$key]['sex'] = $stuinfo->sex;
+                if($stuinfo){
+                    $data[$key]['student_xingming'] = $stuinfo->xingming;
+                    $data[$key]['sex'] = $stuinfo->sex;
+                }else{
+                    $data[$key]['student_xingming'] = '被真删除';
+                    $data[$key]['sex'] = '未知';
+                }
+                
             }
 
             $data[$key]['ban_title'] = $value->banjiTitle;
