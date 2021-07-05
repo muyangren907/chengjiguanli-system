@@ -428,6 +428,7 @@ class Student extends BaseModel
                 ];
 
                 $result = $validate->scene('create')->check($list[$add_k]);
+                // dump($result);
                 if(!$result){
                     unset($list[$add_k]);
                 }

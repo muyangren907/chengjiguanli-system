@@ -22,7 +22,7 @@ class Student extends Validate
         'banji_id|班级'     =>      'require|number',
         'kaoshi|是否参加考试'            =>      'require|number',
         'quanpin|姓名全拼'      =>      'require',
-        'xuehao|学号'      =>      'alphaNum|max:25'
+        'xuehao|学号'      =>      'chsAlphaNum|max:25'
     ];
 
     /**
