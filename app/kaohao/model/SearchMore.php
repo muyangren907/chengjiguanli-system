@@ -343,7 +343,15 @@ class SearchMore extends BaseModel
                         ->where('id', $val->student_id)
                         ->field('id, xingming, xuehao')
                         ->find();
-                    $data[$key]->banjiKaohao[$key]->cjStudent = array('id' => $stuinof->id, 'shoupin' => $stuinof->shoupin);
+                    if ($stuinof) {
+                        $data[$key]->banjiKaohao[$key]->cjStudent = [
+                            'id' => $stuinof->id
+                            ,'xingming' => $stuinof->xingming
+                            ,'sex' => $stuinof->sex
+                            ,'shoupin' => $stuinof->shoupin
+                            ,'xuehao' => $stuinof->xuehao
+                        ];
+                    }
                 }
                 $data[$key]['banjiKaohao'][$k]['shoupin'] = $val['cjStudent']['shoupin'];
             }
