@@ -341,7 +341,7 @@ class SearchMore extends BaseModel
                 {
                     $stuinof = $stu::onlyTrashed()
                         ->where('id', $val->student_id)
-                        ->field('id, xingming')
+                        ->field('id, xingming, xuehao')
                         ->find();
                     $data[$key]->banjiKaohao[$key]->cjStudent = array('id' => $stuinof->id, 'shoupin' => $stuinof->shoupin);
                 }
