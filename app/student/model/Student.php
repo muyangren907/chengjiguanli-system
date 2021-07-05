@@ -452,7 +452,6 @@ class Student extends BaseModel
                     $i ++;
                 }
                 $data = $data . '重复。';
-                halt($data);
             }
 
             self::saveAll($list);
