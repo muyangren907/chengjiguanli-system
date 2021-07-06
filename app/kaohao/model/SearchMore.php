@@ -164,8 +164,14 @@ class SearchMore extends BaseModel
                         ->where('id', $value->student_id)
                         ->field('id, xingming, sex')
                         ->find();
-                $data[$key]['student_xingming'] = $stuinfo->xingming;
-                $data[$key]['sex'] = $stuinfo->sex;
+                if($stuinfo){
+                    $data[$key]['student_xingming'] = $stuinfo->xingming;
+                    $data[$key]['sex'] = $stuinfo->sex;
+                }else{
+                    $data[$key]['student_xingming'] = '被真删除';
+                    $data[$key]['sex'] = '未知';
+                }
+                
             }
 
             $data[$key]['ban_title'] = $value->banjiTitle;
@@ -343,7 +349,15 @@ class SearchMore extends BaseModel
                         ->where('id', $val->student_id)
                         ->field('id, xingming, xuehao')
                         ->find();
-                    $data[$key]->banjiKaohao[$key]->cjStudent = array('id' => $stuinof->id, 'shoupin' => $stuinof->shoupin);
+                    if ($stuinof) {
+                        $data[$key]->banjiKaohao[$key]->cjStudent = [
+                            'id' => $stuinof->id
+                            ,'xingming' => $stuinof->xingming
+                            ,'sex' => $stuinof->sex
+                            ,'shoupin' => $stuinof->shoupin
+                            ,'xuehao' => $stuinof->xuehao
+                        ];
+                    }
                 }
                 $data[$key]['banjiKaohao'][$k]['shoupin'] = $val['cjStudent']['shoupin'];
             }
