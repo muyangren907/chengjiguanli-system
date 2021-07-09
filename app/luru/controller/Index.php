@@ -291,9 +291,13 @@ class Index extends AdminBase
 
         $khSrc = new \app\kaohao\model\SearchOne;
         $cjlist = $khSrc->srcOneSubjectChengji($id, $subject_id);
-
+        $data = [
+            "msg" => "获取成功"
+            ,"val" => 1
+            ,"data" => $cjlist
+        ];
         // 获取列名
-        return json($cjlist);
+        return json($data);
     }
 
 
