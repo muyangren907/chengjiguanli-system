@@ -354,12 +354,12 @@ class Index extends AdminBase
                 if(isset($value[$val['lieming'] . 'defen']))
                 {
                     $sheet->setCellValue($colname[$i] . $row_temp, $value[$val['lieming'] . 'defen']);
+                    $i++;
                     foreach ($tjxm_left as $tjxml_k => $tjxml_v) {
                         $sheet->setCellValue($colname[$i] . $row_temp, $value[$val['lieming'] . $tjxml_v['biaoshi']]);
                         $i++;
                     }
                 }
-                $i++;
             }
             $sheet->setCellValue($colname[$i] . $row_temp, $value['avg']);
             $i++;

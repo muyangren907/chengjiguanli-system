@@ -335,6 +335,7 @@ class OneStudentChengji extends BaseModel
         $src['kaoshi_id'] = $khInfo->kaoshi_id;
         $src['ruxuenian'] = $khInfo->ruxuenian;
         $src['banji_id'] = $khInfo->banji_id;
+        $src['auth']['check'] = false;
         $data = $cj->search($src);
         $data = sortArrByManyField($data, 'sum', SORT_DESC);
         $data = array_column($data, 'sum', 'id');
