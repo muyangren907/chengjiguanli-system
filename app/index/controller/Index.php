@@ -81,6 +81,10 @@ class Index extends AdminBase
         // 学生数
         $con = new \app\teach\model\Banji;
         $tempsrc['ruxuenian'] = array_keys(\app\facade\Tools::nianJiNameList());
+        $tempsrc['auth'] = [
+                'check' => false
+                ,'banji_id' => array()
+            ];
         $bjids = $con->search($tempsrc)->column('id');
         $con = new \app\student\model\Student;
         $list['student'] =  $con->where('banji_id', 'in', $bjids)

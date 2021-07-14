@@ -50,6 +50,7 @@ class TongjiBj extends BaseModel
 
                 // 循环更新或写入成绩
                 foreach ($temp['cj'] as $cjkey => $cj) {
+                    // dump($cjkey, $cj);
                     $tongjiJg = $this->where('kaoshi_id', $src['kaoshi_id'])
                         ->where('banji_id', $val['id'])
                         ->where('subject_id', $cj['id'])
@@ -265,6 +266,7 @@ class TongjiBj extends BaseModel
                         ,'canshilv' => $val->canshilv
                     ];
                 }else{
+                    // halt($val->toArray());
                     $data[$value->banji_id]['quanke'] = [
                         'avg' => $val->avg
                         ,'jigelv' => $val->jigelv
