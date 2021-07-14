@@ -266,7 +266,6 @@ class TongjiBj extends BaseModel
                         ,'canshilv' => $val->canshilv
                     ];
                 }else{
-                    // halt($val->toArray());
                     $data[$value->banji_id]['quanke'] = [
                         'avg' => $val->avg
                         ,'jigelv' => $val->jigelv
@@ -437,7 +436,6 @@ class TongjiBj extends BaseModel
             $bjIds[] = $value->banji_id;
         }
         $src['bjIds'] = $bjIds;
-        // halt($src);
 
         $data = $this
                 ->where(function ($query) use($src) {
