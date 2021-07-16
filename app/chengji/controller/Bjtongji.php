@@ -390,8 +390,11 @@ class Bjtongji extends AdminBase
         if (count($src['banji_id']) == 0) {
             // 获取参与考试的班级
             $cy = new \app\kaohao\model\SearchCanYu;
-            $src['banji_id']= array_column($cy->class($src), 'id');
+            $src['banji_id'] = array_column($cy->class($src), 'id');
         }
+
+        $src['auth'] = event('mybanji', array());
+        $src['auth'] = $src['auth'][0];
 
         // 统计成绩
         $btj = new BTJ;
