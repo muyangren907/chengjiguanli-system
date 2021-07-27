@@ -150,6 +150,42 @@ layui.define(['table', 'form'], function(exports) {
 			});
 		},
 
+
+		// 提交批量上传数据
+		saveFormMore: function(url, type, formData) {
+			$.ajax({
+				title: '导入结果',
+				url: url,
+				type: type,
+				data: formData,
+				dataType: 'json',
+				success: function(result) {
+					if (result.val == 1) {
+						data = result.data;
+						var err = '';
+						for (var i = 0; i < data.err.length; i++) {
+							err = err + data.err[i] + '<br>'
+						}
+						parent.layer.open({
+						  type: 1, 
+						  offset: 'auto',
+						  area: ['500px', '300px'],
+						  content: data.success + '<br>' + err //这里content是一个普通的String
+						});
+					} else {
+						layer.msg(result.msg);
+					}
+				},
+				error: function(xhr, status, error) {
+					layer.msg('数据处理错误', {
+						icon: 2,
+						time: 2000 //2秒关闭（如果不配置，默认是3秒）
+					});
+				}
+			});
+		},
+
+
 		// 恢复单条记录
 		redel: function(obj, url) {
 			layer.confirm('确认要恢复删除吗？', function(index) {

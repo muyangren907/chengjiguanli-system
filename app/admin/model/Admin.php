@@ -7,7 +7,42 @@ use app\BaseModel;
 
 class Admin extends BaseModel
 {
-    // 查询所有角色
+    
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int',
+        'xingming' => 'varchar',
+        'sex' => 'tinyint',
+        'shengri' => 'int',
+        'username' => 'varchar',
+        'password' => 'varchar',
+        'teacher_id' => 'varchar',
+        'school_id' => 'varchar',
+        'phone' => 'varchar',
+        'worktime' => 'int',
+        'zhiwu_id' => 'int',
+        'zhicheng_id' => 'int',
+        'biye' => 'varchar',
+        'zhuanye' => 'varchar',
+        'xueli_id' => 'int',
+        'subject_id' => 'int',
+        'quanpin' => 'varchar',
+        'shoupin' => 'varchar',
+        'tuixiu' => 'tinyint',
+        'denglucishu' => 'int',
+        'lastip' => 'varchar',
+        'ip' => 'varchar',
+        'lasttime' => 'int',
+        'thistime' => 'int',
+        'status' => 'tinyint',
+        'create_time' => 'int',
+        'update_time' => 'int',
+        'delete_time' => 'int',
+        'beizhu' => 'varchar',
+    ];
+
+
+    // 查询所有用户
     public function search($srcfrom)
     {
         // 整理变量
@@ -81,7 +116,10 @@ class Admin extends BaseModel
             ,'school_id' => ''
         ];
         $src = array_cover($srcfrom, $src);
-        trim($src['searchval']);
+        $src['searchval'] = trim($src['searchval']);
+        if ($src['searchval'] == "" && $src['school_id'] == "") {
+            return array();
+        }
         // 如果有数据则查询教师信息
         $list = self::field('id, xingming, school_id, shengri, sex')
             ->when(strlen($src['school_id']) > 0, function ($query) use($src) {
@@ -108,66 +146,64 @@ class Admin extends BaseModel
 
 
     // 表格导入教师信息
-    public function createAll($arr, $School_id)
+    public function createAll($arr, $school_id)
     {
         $pinyin = new \Overtrue\Pinyin\Pinyin;
 
         // 整理表格数据
         array_splice($arr, 0, 4); # 删除标题行
-        $arr = array_filter($arr,function($item){ #过滤空值
-                return $item[1] !== null && $item[2] !== null && $item[3] !== null ;
-            });
 
         // 组合需要保存的数据
         $i = 0;
         $teacherlist = array();
         $validate = new \app\admin\validate\Admin;
+        $err = ['导入失败原因如下：'];
+        $cnt = 0;
+        $i = 0;
         foreach ($arr as $key => $value) {
-            $phone = str_replace(' ', '', $value[5]);
-            $temp = $this->wherePhone($phone)->find();
-            if($temp)
-            {
+            array_map("trim", $value);      # 去除表格中的空格
+            $temp = array_filter($value,function($q){       # 判断是否是行，如果是空行则删除
+                return $q != "";
+            });
+            if (count($temp) == 1 && $temp[0] != "") {
                 continue;
             }
-            $temp = $this->whereUsername(trim($value[2]))->find();
-            if($temp)
-            {
-                continue;
-            }
-            $teacherlist[$i]['xingming'] = $value[1];
-            $teacherlist[$i]['username'] = trim(strtolower($value[2]));
-            $teacherlist[$i]['sex'] = $this->cutStr($value[3]);
-            $teacherlist[$i]['shengri'] = $value[4];
-            $teacherlist[$i]['phone'] = $phone;
-            $teacherlist[$i]['worktime'] = $value[6];
-            $teacherlist[$i]['zhiwu_id'] = $this->cutStr($value[7]);
-            $teacherlist[$i]['zhicheng_id'] = $this->cutStr($value[8]);
-            $teacherlist[$i]['school_id'] = $School_id;
-            $teacherlist[$i]['biye'] = $value[9];
-            $teacherlist[$i]['zhuanye'] = $value[10];
-            $teacherlist[$i]['xueli_id'] = $this->cutStr($value[11]);
+            $cnt++;
+            $teacherInfo[$i]['xingming'] = trim($value[1]);
+            $teacherInfo[$i]['username'] = trim(strtolower($value[2]));
+            $teacherInfo[$i]['sex'] = $this->cutStr($value[3]);
+            $teacherInfo[$i]['shengri'] = $value[4];
+            $teacherInfo[$i]['phone'] = str_replace(' ', '', $value[5]);
+            $teacherInfo[$i]['worktime'] = $value[6];
+            $teacherInfo[$i]['zhiwu_id'] = $this->cutStr($value[7]);
+            $teacherInfo[$i]['zhicheng_id'] = $this->cutStr($value[8]);
+            $teacherInfo[$i]['school_id'] = $school_id;
+            $teacherInfo[$i]['biye'] = trim($value[9]);
+            $teacherInfo[$i]['zhuanye'] = trim($value[10]);
+            $teacherInfo[$i]['xueli_id'] = $this->cutStr($value[11]);
             $quanpin = $pinyin->sentence($value[1]);
             $jianpin = $pinyin->abbr($value[1]);
-            $teacherlist[$i]['quanpin'] = trim(strtolower(str_replace(' ', '', $quanpin)));
-            $teacherlist[$i]['shoupin'] = trim(strtolower($jianpin));
-            $teacherlist[$i]['beizhu'] = $value[12];
-
-            $result = $validate->scene('admincreateall')->check($teacherlist[$i]);
+            $teacherInfo[$i]['quanpin'] = trim(strtolower(str_replace(' ', '', $quanpin)));
+            $teacherInfo[$i]['shoupin'] = trim(strtolower($jianpin));
+            $teacherInfo[$i]['beizhu'] = $value[12];
+            // 验证数据
+            $result = $validate->scene('admincreateall')->check($teacherInfo[$i]);
             $msg = $validate->getError();
-            if(!$result){
-                unset($teacherlist[$i]);
+            if (!$result) {
+                $err[] = '第' . $value[0] . '行,' . $msg;
+                unset($teacherInfo[$i]);
             }
-            $i++;
+            $i ++;
         }
 
-        $teacherlist = array_filter($teacherlist, function($q){ ## 过滤姓名、身份证号或班级为空的数据
-            return $q['xingming'] != null && $q['username'] != null && $q['sex'] != null && $q['zhiwu_id'] != null && $q['zhicheng_id'] != null && $q['xueli_id'] != null;
-        });
+        $data = $this->saveAll($teacherInfo);
+        $success = $data->count();
 
-        // 保存或更新信息
-        $data = $this->saveAll($teacherlist);
-
-        $data ? $data = true : $data = false;
+        // 整理返回信息
+        $data = [
+            'success' => '共有'. $cnt .'条记录，成功导入' . $success . '条记录。'
+            ,'err' => $err
+        ];
 
         return $data;
     }

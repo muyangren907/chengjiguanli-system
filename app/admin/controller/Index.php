@@ -312,9 +312,8 @@ class Index extends AdminBase
         }
 
         $admin = new AD;
-        $data = $admin->createAll($teacherinfo, $list['school_id']);
-        $data ? $data = ['msg' => '数据上传成功', 'val' => 1]
-            : ['msg' => '数据上传失败', 'val' => 0];
+        $temp = $admin->createAll($teacherinfo, $list['school_id']);
+        $data = ['msg' => '数据上传成功', 'val' => 1, 'data' => $temp];
 
         return json($data);
     }
