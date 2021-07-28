@@ -103,18 +103,9 @@ class Index extends BaseController
     * @param str或array $str 表单中获取的参数
     * @return array 返回类型
     */
-    public function reSetObject($obj, $srcfrom)
+    public function reSetData($data, $cnt)
     {
-        // 整理变量
-        $src = [
-            'field' => ''
-            ,'order' => 'asc'
-            ,'page' => 1
-            ,'limit' => 10
-        ];
-        $src = array_cover($srcfrom, $src) ;
-
-        $data = [
+        $arr = [
             'code' => 0  // ajax请求次数，作为标识符
             ,'msg' => ""  // 获取到的结果数(每页显示数量)
             ,'count' => 0 // 符合条件的总数据量
@@ -122,24 +113,16 @@ class Index extends BaseController
         ];
 
         // 整理数据
-        $cnt = $obj->count();
         if($cnt > 0)
         {
-            if($src['field'] != '') # 排序
-            {
-                $obj = $obj->order($src['field'], $src['order']);
-            }
-            $limit_start = $src['page'] * $src['limit'] - $src['limit'];
-            $limit_length = $src['limit'] * 1;
-            $obj = $obj->slice($limit_start, $limit_length);
-            $data = [
+            $arr = [
                 'code' => 0  // ajax请求次数，作为标识符
                 ,'msg' => ""  // 获取到的结果数(每页显示数量)
                 ,'count' => $cnt // 符合条件的总数据量
-                ,'data' => $obj //获取到的数据结果
+                ,'data' => $data //获取到的数据结果
             ];
         }
-        return $data;
+        return $arr;
     }
 
 

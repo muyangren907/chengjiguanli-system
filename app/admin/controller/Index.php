@@ -32,13 +32,13 @@ class Index extends AdminBase
     {
         // 获取参数
         $src = $this->request
-                ->only([
-                    'page' => '1'
-                    ,'limit' => '10'
-                    ,'field' => 'id'
-                    ,'order' => 'desc'
-                    ,'searchval' => ''
-                ],'POST');
+            ->only([
+                'page' => '1'
+                ,'limit' => '10'
+                ,'field' => 'id'
+                ,'order' => 'desc'
+                ,'searchval' => ''
+            ],'POST');
 
         // 实例化
         $ad = new AD;
@@ -59,7 +59,8 @@ class Index extends AdminBase
                 ,'status'
                 ,'update_time'
             ]);
-        $data = reSetObject($data, $src);
+        $cnt = $ad->cnt();
+        $data = reSetData($data, $cnt);
 
         return json($data);
     }

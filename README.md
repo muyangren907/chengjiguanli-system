@@ -3,7 +3,8 @@
 
 　　坦率地讲，在不久的将来，这也许会是辽东半岛上第二好用的成绩统计系统。
 
-![表情包](https://gitee.com/dlbz/shangma/raw/master/public/examples/timg.jpg =250x400)
+![表情包](https://gitee.com/dlbz/shangma/raw/master/public/examples/timg.jpg)
+
 
 　　言归正传
 

@@ -42,12 +42,17 @@ class Admin extends BaseModel
     ];
 
 
-    // 查询所有用户
+    // 查询按条件查用户
     public function search($srcfrom)
     {
         // 整理变量
         $src = [
             'searchval' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'srccnt' => false
         ];
         $src = array_cover($srcfrom, $src);
 
@@ -64,6 +69,11 @@ class Admin extends BaseModel
                 }
                 ,'glGroup'
             ])
+            ->when($src['cnt'] == false, function ($query) use $src {
+                $query
+                ->page($src['page'], $src['limit'])
+                ->order([$src['field']=>$src['order']]);
+            })
             ->hidden([
                 'password'
                 ,'create_time'
@@ -72,6 +82,14 @@ class Admin extends BaseModel
             ])
             ->select();
         return $data;
+    }
+
+
+    // 查询所有用户
+    public function cnt()
+    {
+        $cnt = self::count('id');
+        return $cnt;
     }
 
 
