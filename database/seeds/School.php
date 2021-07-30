@@ -26,6 +26,8 @@ class School extends Seeder
                 ,'paixu' => 10
                 ,'kaoshi' => 1
                 ,'xingzhi_id' => 10107
+                ,'create_time' => time()
+                ,'update_time' => time()
             ],
             [
                 'id' => 2
@@ -37,6 +39,8 @@ class School extends Seeder
                 ,'paixu' => 1
                 ,'kaoshi' => 1
                 ,'xingzhi_id' => 10102
+                ,'create_time' => time()
+                ,'update_time' => time()
             ],
         ];
         $serRows = $this->fetchAll('select * from cj_school');

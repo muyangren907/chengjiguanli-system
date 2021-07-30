@@ -64,6 +64,11 @@ class School extends BaseModel
             ,'kaoshi' => ''
             ,'status' => 1
             ,'searchval' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'cnt' => false
         ];
         $src = array_cover($srcfrom, $src);
         $src['jibie_id'] = strToArray($src['jibie_id']);
@@ -110,6 +115,11 @@ class School extends BaseModel
                     }
                 ]
             )
+            ->when($src['cnt'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit'])
+                    ->order([$src['field'] => $src['order']]);
+            })
             ->select();
         return $data;
     }

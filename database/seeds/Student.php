@@ -23,6 +23,8 @@ class Student extends Seeder
                 ,'shenfenzhenghao' => '210202201210018223'
                 ,'banji_id' => 1
                 ,'shoupin' => 'yn'
+                ,'create_time' => time()
+                ,'update_time' => time()
             ]
             ,[
                 'xingming' => '李倍亮'
@@ -31,6 +33,8 @@ class Student extends Seeder
                 ,'shenfenzhenghao' => '210202201210018214'
                 ,'banji_id' => 1
                 ,'shoupin' => 'lbl'
+                ,'create_time' => time()
+                ,'update_time' => time()
             ]
             ,[
                 'xingming' => '张又张'
@@ -39,6 +43,8 @@ class Student extends Seeder
                 ,'shenfenzhenghao' => '210202201210018255'
                 ,'banji_id' => 1
                 ,'shoupin' => 'zyz'
+                ,'create_time' => time()
+                ,'update_time' => time()
             ]
             ,[
                 'xingming' => '王小天'
@@ -47,6 +53,8 @@ class Student extends Seeder
                 ,'shenfenzhenghao' => '210202201210018236'
                 ,'banji_id' => 1
                 ,'shoupin' => 'wxt'
+                ,'create_time' => time()
+                ,'update_time' => time()
             ]
             ,[
                 'xingming' => '张一凡'
@@ -55,6 +63,8 @@ class Student extends Seeder
                 ,'shenfenzhenghao' => '210202201210018227'
                 ,'banji_id' => 1
                 ,'shoupin' => 'zyf'
+                ,'create_time' => time()
+                ,'update_time' => time()
             ]
             ,[
                 'xingming' => '成乐园'
@@ -63,6 +73,8 @@ class Student extends Seeder
                 ,'shenfenzhenghao' => '210202201210018218'
                 ,'banji_id' => 1
                 ,'shoupin' => 'cly'
+                ,'create_time' => time()
+                ,'update_time' => time()
             ]
         ];
 

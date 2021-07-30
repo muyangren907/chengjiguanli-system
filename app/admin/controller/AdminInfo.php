@@ -109,28 +109,10 @@ class AdminInfo extends AdminBase
     // 读取用户信息
     public function myInfo()
     {
-        $id = session('user_id');
         // 获取管理员信息
         $ad = new AD;
-        $list = AD::where('id', $id)
-                ->field('id, xingming, sex, shengri, username, teacher_id, school_id, phone, denglucishu, lastip, ip, lasttime, quanpin, shoupin, zhiwu_id, zhicheng_id, biye, zhuanye, xueli_id, worktime, create_time, update_time')
-                ->with([
-                    'adSchool' => function($query){
-                        $query->field('id, title');
-                    },
-                    'adZhiwu' => function($query){
-                        $query->field('id, title');
-                    },
-                    'adZhicheng' => function($query){
-                        $query->field('id, title');
-                    },
-                    'adXueli' => function($query){
-                        $query->field('id, title');
-                    },
-                ])
-                ->find();
+        $list = $ad->searchOne(session('user_id'));
         $list['webtitle'] = '我的信息';
-        $list->groupnames = $ad->getGroupnames($id);
 
         // 模板赋值
         $this->view->assign('list', $list);

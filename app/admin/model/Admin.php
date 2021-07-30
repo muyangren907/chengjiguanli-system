@@ -10,35 +10,35 @@ class Admin extends BaseModel
     
     // 设置字段信息
     protected $schema = [
-        'id' => 'int',
-        'xingming' => 'varchar',
-        'sex' => 'tinyint',
-        'shengri' => 'int',
-        'username' => 'varchar',
-        'password' => 'varchar',
-        'teacher_id' => 'varchar',
-        'school_id' => 'varchar',
-        'phone' => 'varchar',
-        'worktime' => 'int',
-        'zhiwu_id' => 'int',
-        'zhicheng_id' => 'int',
-        'biye' => 'varchar',
-        'zhuanye' => 'varchar',
-        'xueli_id' => 'int',
-        'subject_id' => 'int',
-        'quanpin' => 'varchar',
-        'shoupin' => 'varchar',
-        'tuixiu' => 'tinyint',
-        'denglucishu' => 'int',
-        'lastip' => 'varchar',
-        'ip' => 'varchar',
-        'lasttime' => 'int',
-        'thistime' => 'int',
-        'status' => 'tinyint',
-        'create_time' => 'int',
-        'update_time' => 'int',
-        'delete_time' => 'int',
-        'beizhu' => 'varchar',
+        'xingming' => 'varchar'
+        ,'sex' => 'tinyint'
+        ,'shengri' => 'int'
+        ,'username' => 'varchar'
+        ,'password' => 'varchar'
+        ,'teacher_id' => 'int'
+        ,'school_id' => 'int'
+        ,'phone' => 'varchar'
+        ,'id' => 'int'
+        ,'worktime' => 'int'
+        ,'zhiwu_id' => 'int'
+        ,'zhicheng_id' => 'int'
+        ,'biye' => 'varchar'
+        ,'zhuanye' => 'varchar'
+        ,'xueli_id' => 'int'
+        ,'subject_id' => 'int'
+        ,'quanpin' => 'varchar'
+        ,'shoupin' => 'varchar'
+        ,'tuixiu' => 'tinyint'
+        ,'denglucishu' => 'int'
+        ,'lastip' => 'varchar'
+        ,'ip' => 'varchar'
+        ,'lasttime' => 'int'
+        ,'thistime' => 'int'
+        ,'status' => 'tinyint'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'beizhu' => 'varchar'
     ];
 
 
@@ -52,7 +52,7 @@ class Admin extends BaseModel
             ,'limit' => 10
             ,'field' => 'id'
             ,'order' => 'desc'
-            ,'srccnt' => false
+            ,'cnt' => false
         ];
         $src = array_cover($srcfrom, $src);
 
@@ -64,15 +64,15 @@ class Admin extends BaseModel
                     $query->where('xingming|username|quanpin|shoupin', 'like', '%' . $src['searchval'] . '%');
                 })
             ->with([
-                'adSchool' => function($query){
-                    $query->field('id, jiancheng');
+                'adSchool' => function ($q) {
+                    $q->field('id, jiancheng');
                 }
                 ,'glGroup'
             ])
-            ->when($src['cnt'] == false, function ($query) use $src {
+            ->when($src['cnt'] == false, function ($query) use($src) {
                 $query
-                ->page($src['page'], $src['limit'])
-                ->order([$src['field']=>$src['order']]);
+                    ->page($src['page'], $src['limit'])
+                    ->order([$src['field'] => $src['order']]);
             })
             ->hidden([
                 'password'
@@ -80,16 +80,10 @@ class Admin extends BaseModel
                 ,'update_time'
                 ,'delete_time'
             ])
+            ->append(['groupnames'])
             ->select();
+
         return $data;
-    }
-
-
-    // 查询所有用户
-    public function cnt()
-    {
-        $cnt = self::count('id');
-        return $cnt;
     }
 
 
@@ -98,30 +92,38 @@ class Admin extends BaseModel
     {
         // 查询权限
         $data = self::where('id', $user_id)
-            ->field('id')
-            ->with([
-                'glGroup'
-            ])
             ->find();
-
         // 整理权限
-        $arr = array();
-        foreach ($data->glGroup as $key => $value) {
-            $temp = explode(",", $value->rules);
-            $arr = array_merge($arr, $temp);
-        }
-        $arr = array_unique($arr);
+        $group = $data->glGroup->where('status', 1)->column(['rules']);
+        $rules = array_unique(explode(',', implode(',', $rules)));
 
-        return $arr;
+        return $rules;
     }
 
 
     // 查询管理员资料
     public function searchOne($id)
     {
-        $adminInfo = $this->where('id', $id)
-            ->field('id, username, xingming, teacher_id')
-            ->find();
+        $adminInfo = $this
+                ->where('id', $id)
+                ->with([
+                    'adSchool' => function($query){
+                        $query->field('id, title');
+                    },
+                    'adZhiwu' => function($query){
+                        $query->field('id, title');
+                    },
+                    'adZhicheng' => function($query){
+                        $query->field('id, title');
+                    },
+                    'adXueli' => function($query){
+                        $query->field('id, title');
+                    },
+                    'glGroup'
+                ])
+                ->append(['groupnames'])
+                ->hidden(['password', 'delete_time', 'beizhu'])
+                ->find();
         return $adminInfo;
     }
 
@@ -154,7 +156,7 @@ class Admin extends BaseModel
                 [
                     'adSchool' => function($query){
                         $query->field('id, jiancheng');
-                    },
+                    }
                 ]
             )
             ->append(['age'])
@@ -204,6 +206,8 @@ class Admin extends BaseModel
             $teacherInfo[$i]['quanpin'] = trim(strtolower(str_replace(' ', '', $quanpin)));
             $teacherInfo[$i]['shoupin'] = trim(strtolower($jianpin));
             $teacherInfo[$i]['beizhu'] = $value[12];
+            $teacherInfo[$i]['lasttime'] = time();
+            $teacherInfo[$i]['thistime'] = time();
             // 验证数据
             $result = $validate->scene('admincreateall')->check($teacherInfo[$i]);
             $msg = $validate->getError();
@@ -214,43 +218,84 @@ class Admin extends BaseModel
             $i ++;
         }
 
-        $data = $this->saveAll($teacherInfo);
-        $success = $data->count();
+
+        // 启动事务
+        \think\facade\Db::startTrans();
+        try {
+            @$data = $this->saveAll($teacherInfo) or halt("Database Connect Error");
+            $success = $data->count();
+        } catch (\Exception $e) {
+            // 回滚事务
+            \think\facade\Db::rollback();
+            $success = 0;
+            $err[] = $e->getMessage();
+        }
+
 
         // 整理返回信息
-        $data = [
-            'success' => '共有'. $cnt .'条记录，成功导入' . $success . '条记录。'
-            ,'err' => $err
-        ];
+        $data['success'] = '共有'. $cnt .'条记录，成功导入' . $success . '条记录。';
+        if($cnt == $success) {
+            $data['err'] = array();
+        } else {
+            $data['err'] = $err;
+        }
 
         return $data;
-    }
-
-
-    // 关联用户组
-    public function glGroup()
-    {
-        return $this->belongsToMany('AuthGroup', 'AuthGroupAccess', 'group_id', 'uid');
-    }
-
-
-    // 单位关联模型
-    public function adSchool()
-    {
-        return $this->belongsTo('\app\system\model\School', 'school_id', 'id');
     }
 
 
     // 获取密码
     public function password($username)
     {
-    	// 查询数据
-    	$pasW = $this
-    		->where('username', $username)
-    		->value('password');
+        // 查询数据
+        $pasW = $this
+            ->where('username', $username)
+            ->value('password');
 
-    	// 返回数据
-    	return $pasW;
+        // 返回数据
+        return $pasW;
+    }
+
+
+    // 关联用户组
+    public function glGroup()
+    {
+        return $this->belongsToMany(AuthGroup::class, 'AuthGroupAccess', 'group_id', 'uid');
+    }
+
+
+    // 单位关联模型
+    public function adSchool()
+    {
+        return $this->hasOne(\app\system\model\School::class, 'id', 'school_id');
+    }
+
+
+    // 职务关联模型
+    public function adZhiwu()
+    {
+        return $this->belongsTo('\app\system\model\Category', 'zhiwu_id', 'id');
+    }
+
+
+    // 职称关联模型
+    public function adZhicheng()
+    {
+        return $this->belongsTo('\app\system\model\Category', 'zhicheng_id', 'id');
+    }
+
+
+    // 学历关联模型
+    public function adXueli()
+    {
+        return $this->belongsTo('\app\system\model\Category', 'xueli_id', 'id');
+    }
+
+
+    // 学科关联模型
+    public function adSubject()
+    {
+        return $this->belongsTo('\app\teach\model\Subject', 'subject_id', 'id');
     }
 
 
@@ -264,13 +309,6 @@ class Admin extends BaseModel
 
     // 生日获取器
     public function getShengriAttr($value)
-    {
-        return date('Y-m-d', $value);
-    }
-
-
-    // 创建时间获取器
-    public function getCreateTimeAttr($value)
     {
         return date('Y-m-d', $value);
     }
@@ -296,13 +334,6 @@ class Admin extends BaseModel
     }
 
 
-    // 最后登录时间取器
-    public function getLasttimeAttr($value)
-    {
-        return date('Y年m月d日 H:i:s', $value);
-    }
-
-
     // 本次登录时间取器
     public function getThistimeAttr($value)
     {
@@ -310,47 +341,40 @@ class Admin extends BaseModel
     }
 
 
-    // 参加工作时间获取器
+    // 最后一次登录时间取器
+    public function getLasttimeAttr($value)
+    {
+        return date('Y年m月d日 H:i:s', $value);
+    }
+
+
+    // 参加工作时间修改器
     public function getWorktimeAttr($value)
     {
         return date('Y-m-d', $value);
     }
 
 
-    // 参加工作时间修改器
+    // 生日修改器
     public function setWorktimeAttr($value)
     {
-        return strtotime($value);
+        strlen($value) >0 ? $value = strtotime($value) : $value = '';
+        return $value;
     }
 
 
     // 获取角色名称
-    public function getGroupnames($userid)
+    public function getGroupnamesAttr($value)
     {
         // 如果用户ID为1或2，则为超级管理员
-        if($userid == 1 || $userid == 2)
+        if($this->getAttr('id') == 1 || $this->getAttr('id') == 2)
         {
             return '超级管理员';
         }
 
         // 查询用户拥有的权限
-        $admininfo = $this->where('id', $userid)
-            ->field('id')
-            ->with([
-                'glGroup'=>function($query){
-                    $query->where('status', 1);
-                }
-            ])
-            ->find();
-
-        $groupname = '';
-        foreach ($admininfo->gl_group as $key => $value) {
-            if($key == 0){
-                $groupname = $value->title;
-            }else{
-                $groupname = $groupname . '、' . $value->title;
-            }
-        }
+        $group = $this->glGroup()->where('status', 1)->column(['title']);
+        $groupname = implode('、', $group);
 
         // 返回角色名
         return $groupname;
@@ -383,41 +407,6 @@ class Admin extends BaseModel
     public function getGonglingAttr()
     {
         return \app\facade\Tools::fBirth($this->getdata('worktime'), 2);
-    }
-
-
-    // 职务关联模型
-    public function adZhiwu()
-    {
-        return $this->belongsTo('\app\system\model\Category', 'zhiwu_id', 'id');
-    }
-
-
-    // 职称关联模型
-    public function adZhicheng()
-    {
-        return $this->belongsTo('\app\system\model\Category', 'zhicheng_id', 'id');
-    }
-
-
-    // 学历关联模型
-    public function adXueli()
-    {
-        return $this->belongsTo('\app\system\model\Category', 'xueli_id', 'id');
-    }
-
-
-    // 单位关联模型
-    public function adDanwei()
-    {
-        return $this->belongsTo('\app\system\model\School', 'danwei_id', 'id');
-    }
-
-
-    // 学科关联模型
-    public function adSubject()
-    {
-        return $this->belongsTo('\app\teach\model\Subject', 'subject_id', 'id');
     }
 
 

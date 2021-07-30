@@ -258,8 +258,10 @@ class School extends AdminBase
                 ,'title'
                 ,'jiancheng'
             ]);
+        $src['cnt'] = true;
+        $cnt = $sch->srcJibie($src)->count();
 
-        $data = reSetObject($data, $src);
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }

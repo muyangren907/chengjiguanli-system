@@ -100,17 +100,17 @@
     }
 
 
-    /**
-    * 把重新整理从数据模型中返回的对象
-    * @access public
-    * @param str或array $str 表单中获取的参数
-    * @return array 返回类型
-    */
-    function reset_array($arr, $srcfrom)
-    {
-        $data = \app\facade\Tools::reSetArray($arr, $srcfrom);
-        return $data;
-    }
+    // /**
+    // * 把重新整理从数据模型中返回的对象
+    // * @access public
+    // * @param str或array $str 表单中获取的参数
+    // * @return array 返回类型
+    // */
+    // function reset_array($arr, $srcfrom)
+    // {
+    //     $data = \app\facade\Tools::reSetArray($arr, $srcfrom);
+    //     return $data;
+    // }
 
 
     // 定义EXCEL列名
@@ -144,11 +144,5 @@
         $units = array('B', 'KB', 'MB', 'GB', 'TB', 'PB');
         for ($i = 0; $size >= 1024 && $i < 5; $i++) $size /= 1024;
         return round($size, 2) . $delimiter . $units[$i];
-    }
-
-
-    // 整理变量
-    function reset_src($form) {
-
     }
 

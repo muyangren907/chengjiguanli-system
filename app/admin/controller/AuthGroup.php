@@ -42,7 +42,9 @@ class AuthGroup extends AdminBase
         // 根据数据查询信息
         $ag = new AG;
         $data = $ag->search($src);
-        $data = reSetObject($data, $src);
+        $src['cnt'] = true;
+        $cnt = $ag->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }

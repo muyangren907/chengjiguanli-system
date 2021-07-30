@@ -59,8 +59,9 @@ class Index extends AdminBase
                 ,'status'
                 ,'update_time'
             ]);
-        $cnt = $ad->cnt();
-        $data = reSetData($data, $cnt);
+        $src['cnt'] = true;
+        $cnt = $ad->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }
@@ -306,7 +307,7 @@ class Index extends AdminBase
         $teacherinfo = \app\facade\File::readXls(public_path() . 'uploads/' . $list['url']);
 
         // 判断表格是否正确
-        if("教师基本情况表" != $teacherinfo[0][0] || '姓名*' != $teacherinfo[2][1] || '帐号*' != $teacherinfo[2][2])
+        if("教师信息批量录入表" != $teacherinfo[0][0] || '姓名*' != $teacherinfo[2][1] || '帐号*' != $teacherinfo[2][2])
         {
             $this->error('请使用模板上传', '/login/err');
             return json($data);

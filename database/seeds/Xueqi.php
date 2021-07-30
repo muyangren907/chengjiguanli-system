@@ -41,6 +41,8 @@ class Xueqi extends Seeder
                 ,'category_id' => $c
                 ,'bfdate' => strtotime($b)
                 ,'enddate' => strtotime($e)
+                ,'create_time' => time()
+                ,'update_time' => time()
             ]
         ];
 
