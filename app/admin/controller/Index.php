@@ -228,7 +228,21 @@ class Index extends AdminBase
         $id = request()->delete('id');
         $id = explode(',', $id);
 
-        $data = AD::destroy($id);
+        
+        // 启动事务
+        \think\facade\Db::startTrans();
+        try {
+            AD::destroy($id);
+            $aga = new \app\admin\model\AuthGroupAccess;
+            $id = $aga->where('uid', 'in', $id)->column('id');
+            $aga::destroy($id);
+            \think\facade\Db::commit();
+            $data = true;
+        } catch (\Exception $e) {
+            // 回滚事务
+            \think\facade\Db::rollback();
+            $data = false;
+        }
 
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '删除成功', 'val' => 1]
@@ -338,9 +352,12 @@ class Index extends AdminBase
             ->only([
                 'searchval' => ''
                 ,'school_id' => ''
+                ,'teacher_id' => ''
+                ,'page' => 1
+                ,'limit' => 10
                 ,'field' => 'id'
                 ,'order' => 'desc'
-                ,'teacher_id' => ''
+                ,'cnt' => false
             ], 'POST');
 
         $ad = new AD();
@@ -358,7 +375,9 @@ class Index extends AdminBase
                 ,'id' => $value->id
             ];
         }
-        $data = reSetArray($data, $src);
+        $src['cnt'] = true;
+        $cnt = $ad->strSrcTeachers($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }
@@ -373,29 +392,10 @@ class Index extends AdminBase
                 'searchval' => ''
                 ,'id' => ''
             ], 'POST');
-        $src = [
-                'searchval' => ''
-                ,'id' => ''
-            ];
-        $src = array_cover($srcfrom, $src);
 
         $ad = new AD();
-        $list = $ad->where('username', $src['searchval'])
-            ->find();
-        $data = ['msg' => '用户名已经存在！', 'val' => 0];
+        $data = $ad->onlyUsername($srcfrom);
 
-        if($list)
-        {
-            if($src['id'] > 0)
-            {
-
-                if($src['id'] == $list->id){
-                    $data = ['msg' => '', 'val' => 1];
-                }
-            }
-        }else{
-           $data = ['msg' => '', 'val' => 1];
-        }
         return json($data);
     }
 
@@ -409,30 +409,10 @@ class Index extends AdminBase
                 'searchval' => ''
                 ,'id'
             ], 'POST');
-        $src = [
-                'searchval' => ''
-                ,'id' => ''
-            ];
-        $src = array_cover($srcfrom, $src);
 
         $ad = new AD();
-        $list = $ad->where('phone', $src['searchval'])
-            ->find();
+        $data = $ad->onlePhone($srcfrom);
 
-        // 根据更新结果设置返回提示信息
-        $data = ['msg' => '电话号码已经存在！', 'val' => 0];
-        if($list)
-        {
-            if($src['id'] > 0)
-            {
-
-                if($src['id'] == $list->id){
-                    $data = ['msg' => '', 'val' => 1];
-                }
-            }
-        }else{
-           $data = ['msg' => '', 'val' => 1];
-        }
         return json($data);
     }
 }

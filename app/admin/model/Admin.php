@@ -91,10 +91,11 @@ class Admin extends BaseModel
     public function srcAuth($user_id)
     {
         // 查询权限
-        $data = self::where('id', $user_id)
-            ->find();
+        $group = self::where('id', $user_id)
+            ->glGroup()
+            ->where('status', 1)
+            ->column(['rules']);
         // 整理权限
-        $group = $data->glGroup->where('status', 1)->column(['rules']);
         $rules = array_unique(explode(',', implode(',', $rules)));
 
         return $rules;
@@ -105,25 +106,26 @@ class Admin extends BaseModel
     public function searchOne($id)
     {
         $adminInfo = $this
-                ->where('id', $id)
-                ->with([
-                    'adSchool' => function($query){
-                        $query->field('id, title');
-                    },
-                    'adZhiwu' => function($query){
-                        $query->field('id, title');
-                    },
-                    'adZhicheng' => function($query){
-                        $query->field('id, title');
-                    },
-                    'adXueli' => function($query){
-                        $query->field('id, title');
-                    },
-                    'glGroup'
-                ])
-                ->append(['groupnames'])
-                ->hidden(['password', 'delete_time', 'beizhu'])
-                ->find();
+            ->where('id', $id)
+            ->with([
+                'adSchool' => function($query){
+                    $query->field('id, title');
+                },
+                'adZhiwu' => function($query){
+                    $query->field('id, title');
+                },
+                'adZhicheng' => function($query){
+                    $query->field('id, title');
+                },
+                'adXueli' => function($query){
+                    $query->field('id, title');
+                },
+                'glGroup'
+            ])
+            ->append(['groupnames'])
+            ->hidden(['password', 'delete_time', 'beizhu'])
+            ->find();
+
         return $adminInfo;
     }
 
@@ -134,6 +136,11 @@ class Admin extends BaseModel
         $src = [
             'searchval' => ''
             ,'school_id' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'cnt' => false
         ];
         $src = array_cover($srcfrom, $src);
         $src['searchval'] = trim($src['searchval']);
@@ -159,6 +166,11 @@ class Admin extends BaseModel
                     }
                 ]
             )
+            ->when($src['cnt'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit'])
+                    ->order([$src['field'] => $src['order']]);
+            })
             ->append(['age'])
             ->select();
         return $list;
@@ -218,19 +230,18 @@ class Admin extends BaseModel
             $i ++;
         }
 
-
         // 启动事务
         \think\facade\Db::startTrans();
         try {
-            @$data = $this->saveAll($teacherInfo) or halt("Database Connect Error");
+            $data = $this->saveAll($teacherInfo);
             $success = $data->count();
+            \think\facade\Db::commit();
         } catch (\Exception $e) {
             // 回滚事务
             \think\facade\Db::rollback();
             $success = 0;
             $err[] = $e->getMessage();
         }
-
 
         // 整理返回信息
         $data['success'] = '共有'. $cnt .'条记录，成功导入' . $success . '条记录。';
@@ -257,6 +268,57 @@ class Admin extends BaseModel
     }
 
 
+    // 查询用户名是否唯一
+    public function onlyUsername($srcfrom)
+    {
+        // 初始值
+        $src = [
+            'searchval' => ''
+            ,'id' => ''
+        ];
+        $src = array_cover($srcfrom, $src);
+
+        $list = $this::withTrashed()
+            ->where('username', $src['searchval'])
+            ->find();
+        $data = ['msg' => '用户名已经存在！', 'val' => 0];
+
+        if($list)
+        {
+            if($src['id'] == $list->id){
+                $data = ['msg' => '', 'val' => 1];
+            }
+        }else{
+           $data = ['msg' => '', 'val' => 1];
+        }
+    }
+
+    // 查询用户名是否唯一
+    public function onlyPhone($srcfrom)
+    {
+        // 初始值
+        $src = [
+            'searchval' => ''
+            ,'id' => ''
+        ];
+        $src = array_cover($srcfrom, $src);
+
+        $list = $this::withTrashed()
+            ->where('phone', $src['searchval'])
+            ->find();
+        $data = ['msg' => '手机号已经存在！', 'val' => 0];
+
+        if($list)
+        {
+            if($src['id'] == $list->id){
+                $data = ['msg' => '', 'val' => 1];
+            }
+        }else{
+           $data = ['msg' => '', 'val' => 1];
+        }
+    }
+
+
     // 关联用户组
     public function glGroup()
     {
@@ -267,7 +329,7 @@ class Admin extends BaseModel
     // 单位关联模型
     public function adSchool()
     {
-        return $this->hasOne(\app\system\model\School::class, 'id', 'school_id');
+        return $this->belongsTo(\app\system\model\School::class, 'school_id', 'id');
     }
 
 
@@ -330,6 +392,7 @@ class Admin extends BaseModel
         }else{
             $str = '未知';
         }
+
         return $str;
     }
 
@@ -433,7 +496,7 @@ class Admin extends BaseModel
     // 职务权限
     public function zwAuth()
     {
-        $adInfo = \app\facade\OnLine::myInfo();
+        $adInfo = $this->searchOne(session('user_id'));
         $banji_id = array();
         // 获取职务权限
         $zhiwu_array = array(10703, 10705);
@@ -443,7 +506,7 @@ class Admin extends BaseModel
             $bjList = $bj->where('school_id', $adInfo->school_id)
                 ->where('status', 1)
                 ->column('id');
-            $banji_id = array_merge($banji_id, $bjList);
+            $banji_id = array_merge($banji_id, $bjList);  # 这个地方为什么要合并？
         }
 
         return $banji_id;

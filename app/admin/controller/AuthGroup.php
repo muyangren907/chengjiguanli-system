@@ -67,7 +67,6 @@ class AuthGroup extends AdminBase
         $ruleSelect = array();
         $auth = $rule->digui($ruleList, $ruleSelect); # 递归获取所有权限
         $list['auth'] = $auth;
-        // halt($auth);
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -125,9 +124,7 @@ class AuthGroup extends AdminBase
         $aglist = AG::where('id', $id)
             ->field('id, title, miaoshu, rules')
             ->find();
-
         $ruleSelect = explode(",", $aglist->rules);
-        $a = array_search(1, $ruleSelect);
 
         $auth = $rule->digui($ruleList, $ruleSelect, 0);
         $list['auth'] = $auth;

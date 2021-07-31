@@ -28,16 +28,8 @@ class OnLine
     // 获取用户信息
     public function myInfo()
     {
-        $id = session('user_id');
         $ad = new \app\admin\model\Admin;
-        $adInfo = $ad->where('id', $id)
-            ->field('zhiwu_id, school_id')
-            ->with([
-                'adSchool' => function($query){
-                    $query->field('id, jiancheng, jibie_id');
-                },
-            ])
-            ->find();
+        $adInfo = $ad->searchOne(session('user_id'));
 
         return $adInfo;
     }

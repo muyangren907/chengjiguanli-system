@@ -49,17 +49,16 @@ class AuthRule extends BaseModel
             ->when(strlen($src['status']) > 0, function($query) use($src){
                     $query->where('status', $src['status']);
                 })
-            ->when($src['cnt'] == false, function ($query) {
+            ->with([
+                'authPid' => function($query){
+                    $query->field('id, title');
+                }
+            ])
+            ->field('id, name, title, condition, paixu, ismenu, url, pid, type, status')
+            ->when($src['cnt'] == false, function ($query) use($src) {
                 $query
-                    ->with([
-                        'authPid' => function($query){
-                            $query->field('id, title');
-                        }
-                    ])
-                    ->field('id, name, title, condition, paixu, ismenu, url, pid, type, status');
-            }, function ($query) {
-                $query
-                    ->field('id');
+                    ->page($src['page'], $src['limit'])
+                    ->order([$src['field'] => $src['order']]);
             })
             ->select();
 
@@ -136,7 +135,7 @@ class AuthRule extends BaseModel
     // 父级菜单数据模型关联
     public function authPid()
     {
-        return $this->belongsTo('AuthRule', 'pid', 'id');
+        return $this->belongsTo(AuthRule::class, 'pid', 'id');
     }
 
 

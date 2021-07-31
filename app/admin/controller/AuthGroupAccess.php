@@ -10,7 +10,8 @@ use app\admin\model\AuthGroupAccess as AGA;
 
 class AuthGroupAccess extends AdminBase
 {
-	// 用户列表
+	
+    // 用户列表
     public function index($group_id)
     {
         // 设置要给模板赋值的信息
@@ -44,7 +45,9 @@ class AuthGroupAccess extends AdminBase
         // 根据数据查询信息
         $aga = new AGA;
         $data = $aga->search($src);
-        $data = reSetObject($data, $src);
+        $src['cnt'] = true;
+        $cnt = $aga->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }
