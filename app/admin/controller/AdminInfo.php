@@ -16,7 +16,7 @@ class AdminInfo extends AdminBase
     {
         // 获取管理员信息
         $ad = new AD;
-        $list = AD::searchOne($id);
+        $list = $ad->searchOne($id);
         $list['webtitle'] = '帐号信息';
 
         // 模板赋值

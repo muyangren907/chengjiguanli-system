@@ -62,7 +62,10 @@ class AuthGroup extends AdminBase
         );
 
         $rule = new \app\admin\model\AuthRule;
-        $src['status'] = 1;
+        $src = [
+            'status' => 1
+            ,'cnt' => true
+        ];
         $ruleList = $rule->search($src);
         $ruleSelect = array();
         $auth = $rule->digui($ruleList, $ruleSelect); # 递归获取所有权限
@@ -119,7 +122,10 @@ class AuthGroup extends AdminBase
         );
 
         $rule = new \app\admin\model\AuthRule;
-        $src['status'] = 1;
+        $src = [
+            'status' => 1
+            ,'cnt' => true
+        ];
         $ruleList = $rule->search($src);
         $aglist = AG::where('id', $id)
             ->field('id, title, miaoshu, rules')

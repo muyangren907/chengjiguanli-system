@@ -67,8 +67,9 @@ class AuthRule extends BaseModel
 
 
     // 查询菜单
-    public function menu($user_id)
+    public static function menu()
     {
+        $user_id = session('user_id');
         if($user_id == 1 || $user_id ==2)
         {
             $auth = array();

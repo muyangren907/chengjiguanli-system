@@ -92,9 +92,15 @@ class Admin extends BaseModel
     {
         // 查询权限
         $group = self::where('id', $user_id)
-            ->glGroup()
+            ->with(['glGroup'])
             ->where('status', 1)
-            ->column(['rules']);
+            ->find();
+
+        $rules = array();
+        foreach ($group->glGroup as $key => $value) {
+            // code...
+            $rules[] = $value->rules;
+        }
         // 整理权限
         $rules = array_unique(explode(',', implode(',', $rules)));
 
