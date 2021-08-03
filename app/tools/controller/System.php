@@ -9,13 +9,11 @@ use app\BaseController;
 class System extends BaseController
 {
     // 是否启用别名
-    public function sysClass()
+    public function sysInfo()
     {
         // 实例化系统设置对象
         $sys = new \app\system\model\SystemBase;
-        $alias = $sys->order(['id'=>'desc'])
-            ->field('gradelist, classmax, classalias, xuenian, teacherrongyu, teacherketi')
-            ->find();
+        $alias = $sys->sysInfo();
         return $alias;
     }
 

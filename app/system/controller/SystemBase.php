@@ -16,9 +16,7 @@ class SystemBase extends AdminBase
         // 获取用户信息
         $sys = new sysbasemod;
         $list['data'] = $sys
-            ->field('id, keywords, description, thinks, danwei, gradelist, classmax, classalias, xuenian,  studefen, sys_title')
-            ->order(['id' => 'desc'])
-            ->find();
+            ->sysInfo();
 
         $list['set'] = array(
             'webtitle' => '设置系统信息'
@@ -84,7 +82,7 @@ class SystemBase extends AdminBase
         $data = $sysList->save();
 
         // 根据更新结果设置返回提示信息
-        $data >= 0 ? $data = ['msg' => '设置成功','val'=>1]
+        $data ? $data = ['msg' => '设置成功','val'=>1]
             : $data = ['msg' => '数据处理错误','val' => 0];
 
         // 返回信息

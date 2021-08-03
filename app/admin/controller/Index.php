@@ -138,18 +138,10 @@ class Index extends AdminBase
     // 修改信息
     public function edit($id)
     {
+        $ad = new AD;
         // 获取用户信息
-       $list['data'] = AD::where('id',$id)
-            ->field('id, xingming, quanpin, shoupin, username, shengri, sex, phone, school_id, zhiwu_id, zhicheng_id, xueli_id, biye, zhuanye, worktime, tuixiu, beizhu')
-            ->with([
-                'adSchool'=>function($query){
-                    $query->field('id, jiancheng');
-                }
-                ,'glGroup'=>function($query){
-                    $query->where('status', 1)->field('title, rules, miaoshu');
-                }
-            ])
-            ->find();
+        $list['data'] = $ad
+            ->searchOne($id);
 
         // 设置页面标题
         $list['set'] = array(

@@ -52,7 +52,8 @@ class BackUp extends AdminBase
            $data[$key]['yasuo'] = $value['compress'];
            $data[$key]['status'] = '正常';
         }
-        $data = reSetArray($data, $src);
+        $cnt = count($data);
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }

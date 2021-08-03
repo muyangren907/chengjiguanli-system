@@ -129,7 +129,7 @@ class Admin extends BaseModel
                 'glGroup'
             ])
             ->append(['groupnames'])
-            ->hidden(['password', 'delete_time', 'beizhu'])
+            ->hidden(['password', 'delete_time'])
             ->find();
 
         return $adminInfo;

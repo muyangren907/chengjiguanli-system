@@ -80,7 +80,7 @@ class AuthGroupAccess extends AdminBase
             'uid'
             ,'group_id'
         ], 'POST');
-        $list['uid'] = strToArray($list['uid']);
+        $list['uid'] = str_to_array($list['uid']);
         $data = array();
 
         // 验证表单数据
@@ -129,7 +129,7 @@ class AuthGroupAccess extends AdminBase
         $id = request()->delete('id');
         $id = explode(',', $id);
 
-        $data = AGA::destroy($id,true);
+        $data = AGA::destroy($id);
 
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '删除成功', 'val' => 1]

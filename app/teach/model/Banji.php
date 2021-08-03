@@ -155,7 +155,7 @@ class Banji extends BaseModel
     public function getBanTitleAttr()
     {
 
-        $alias = \app\facade\System::sysClass();
+        $alias = \app\facade\System::sysInfo();
         if($alias->classalias === 1)
         {
             $title = $this->alias;
@@ -217,7 +217,7 @@ class Banji extends BaseModel
     // 判断当前班级是否已经毕业
     public function getBiyeAttr()
     {
-        $sys = \app\facade\System::sysClass();
+        $sys = \app\facade\System::sysInfo();
         $cnt = count(explode('|', $sys->gradelist));
         $ruxuenian = $this->ruxuenian;
         $date_r = strtotime($ruxuenian + $cnt . '-8-1');
@@ -268,7 +268,7 @@ class Banji extends BaseModel
             }
         }
 
-        $alias = \app\facade\System::sysClass();
+        $alias = \app\facade\System::sysInfo();
 
         if($nj > 0 && ($bj > 0 || $bj == -1))
         {
@@ -342,7 +342,7 @@ class Banji extends BaseModel
     {
         // 定义学年时间节点日期为每年的8月1日
         // $yd = '8-1';
-        $sysClass = \app\facade\System::sysClass();
+        $sysClass = \app\facade\System::sysInfo();
         $jd = date('-m-d', $sysClass->getData('xuenian'));
 
         if($riqi == 0 || $riqi == '')
@@ -384,7 +384,7 @@ class Banji extends BaseModel
     public function className()
     {
 
-        $sys = \app\facade\System::sysClass();
+        $sys = \app\facade\System::sysInfo();
         $classmax = $sys->classmax;
 
         $bjarr = array();

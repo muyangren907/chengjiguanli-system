@@ -16,7 +16,9 @@ class AdminInfo extends AdminBase
     {
         // 获取管理员信息
         $ad = new AD;
-        $list = $ad->searchOne($id);
+        $list = $ad
+            ->searchOne($id)
+            ->hidden(['beizhu']);
         $list['webtitle'] = '帐号信息';
 
         // 模板赋值
@@ -94,7 +96,9 @@ class AdminInfo extends AdminBase
     {
         // 获取管理员信息
         $ad = new AD;
-        $list = $ad->searchOne(session('user_id'));
+        $list = $ad
+            ->searchOne(session('user_id'))
+            ->hidden(['beizhu']);
         $list['webtitle'] = '我的信息';
 
         // 模板赋值
