@@ -68,7 +68,7 @@ class School extends BaseModel
             ,'limit' => 10
             ,'field' => 'id'
             ,'order' => 'desc'
-            ,'cnt' => false
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src);
         $src['jibie_id'] = str_to_array($src['jibie_id']);
@@ -76,13 +76,40 @@ class School extends BaseModel
         $src['xueduan_id'] = str_to_array($src['xueduan_id']);
 
         // 实例化类别数据模型
-        $cat = new \app\system\model\Category;
-        $paixuList = $cat->where('p_id', 102)
-            ->where('status', 1)
-            ->order(['paixu'=>'asc'])
-            ->field('id, title, paixu')
-            ->column(['id']);
-        $paixuList = implode('\', \'', $paixuList);
+        $arr = array('xingzhi_id', 'jibie_id', 'xueduan_id');
+        if (in_array($src['field'], $arr)) {
+            $cat = new \app\system\model\Category;
+            $catArr['order'] = $src['order'];
+            switch ($src['field']) {
+                case 'xingzhi_id':
+                    // code...
+                    $catArr['p_id'] = 101;
+                    $paixuList = $cat->srcChild($catArr)
+                        ->column('id');
+                    break;
+                case 'jibie_id':
+                    // code...
+                    $catArr['p_id'] = 102;
+                    $paixuList = $cat->srcChild($catArr)
+                        ->column('id');
+                    break;
+                case 'xueduan_id':
+                    // code...
+                    $catArr['p_id'] = 103;
+                    $paixuList = $cat->srcChild($catArr)
+                        ->column('id');
+                    break;
+                default:
+                    // code...
+                    $paixuList = array();
+                    break;
+            }
+            $paixuList = implode('\', \'', $paixuList);
+            $paixuList = "field(" . $src['field'] . ", '". $paixuList. "')";
+            $src['orderSql'] = \think\facade\Db::raw($paixuList);
+        } else {
+            $src['orderSql'] = array($src['field'] => $src['order']);
+        }   
 
         // 查询数据
         $data = $this
@@ -124,14 +151,11 @@ class School extends BaseModel
                     }
                 ]
             )
-            ->when($src['cnt'] == false, function ($query) use($src) {
+            ->when($src['all'] == false, function ($query) use($src) {
                 $query
-                    ->page($src['page'], $src['limit'])
-                    ->order([$src['field'] => $src['order']]);
+                    ->page($src['page'], $src['limit']);
             })
-            ->orderRaw("field(jibie_id, $paixuList)")
-            // ->orderRaw("field(name,'thinkphp','onethink','kancloud')")
-            // ->fetchSql(true)
+            ->order($src['orderSql'])
             ->select();
 
         return $data;
@@ -159,7 +183,7 @@ class School extends BaseModel
             ->when($src['all'] == false, function($query) {
                 $query
                     ->page($src['page'], $src['limit'])
-                    ->order([$src['field'] => $src['order']]);
+                    ->order([$src['field'] => $src['order'], 'paixu']);
             })
             ->select();
         return $data;
@@ -216,27 +240,6 @@ class School extends BaseModel
             ->order(['jibie_id' => $src['order'], 'paixu'])
             ->field('id, title, jiancheng')
             ->select();
-        return $schlist;
-    }
-
-
-    // 根据学段查学校
-    public function srcSchool($low = '幼儿园', $high = '其它学段', $order = 'asc')
-    {
-        // 实例化类别数据模型
-        $cat = new \app\system\model\Category;
-        $catlist = $cat->where('p_id', 103)
-            ->where('status', 1)
-            ->column('id', 'title');
-
-        // 查询学校
-        $schlist = $this->where('xueduan_id', 'between', [$catlist[$low], $catlist[$high]])
-            ->where('status', 1)
-            ->where('jibie_id', 10203)
-            ->order(['xueduan_id' => $order, 'paixu'])
-            ->field('id, title, jiancheng')
-            ->select();
-
         return $schlist;
     }
 

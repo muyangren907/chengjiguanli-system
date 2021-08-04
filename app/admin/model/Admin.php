@@ -69,10 +69,9 @@ class Admin extends BaseModel
                 ,'glGroup'
             ])
             ->when($src['all'] == false, function ($query) use($src) {
-                $query
-                    ->page($src['page'], $src['limit'])
-                    ->order([$src['field'] => $src['order']]);
+                $query->page($src['page'], $src['limit']);
             })
+            ->order([$src['field'] => $src['order']])
             ->hidden([
                 'password'
                 ,'create_time'
@@ -173,9 +172,9 @@ class Admin extends BaseModel
             )
             ->when($src['all'] == false, function ($query) use($src) {
                 $query
-                    ->page($src['page'], $src['limit'])
-                    ->order([$src['field'] => $src['order']]);
+                    ->page($src['page'], $src['limit']);
             })
+            ->order([$src['field'] => $src['order']])
             ->append(['age'])
             ->select();
         return $list;

@@ -43,6 +43,7 @@ class AuthGroup extends BaseModel
             ->when($src['all'] == true, function ($query) {
                 $query->field('id');
             })
+            ->order(['id'])
             ->select();
 
         return $data;

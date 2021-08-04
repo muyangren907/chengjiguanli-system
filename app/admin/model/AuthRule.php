@@ -57,9 +57,9 @@ class AuthRule extends BaseModel
             ->field('id, name, title, condition, paixu, ismenu, url, pid, type, status')
             ->when($src['all'] == false, function ($query) use($src) {
                 $query
-                    ->page($src['page'], $src['limit'])
-                    ->order([$src['field'] => $src['order']]);
+                    ->page($src['page'], $src['limit']);
             })
+            ->order([$src['field'] => $src['order']])
             ->select();
 
         return $data;

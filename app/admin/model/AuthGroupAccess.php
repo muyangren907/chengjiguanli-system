@@ -76,9 +76,9 @@ class AuthGroupAccess extends Pivot
         	])
             ->when($src['all'] == false, function ($query) use($src) {
                 $query
-                    ->page($src['page'], $src['limit'])
-                    ->order([$src['field'] => $src['order']]);
+                    ->page($src['page'], $src['limit']);
             })
+            ->order([$src['field'] => $src['order']])
         	->select();
 
         return $data;

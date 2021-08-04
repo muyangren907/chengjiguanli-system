@@ -12,8 +12,7 @@ class Teach extends BaseController
     {
         // 获取表单数据
         $src = request()->only([
-            'limit' => '100'
-            ,'p_id'
+            'p_id'
         ], 'post');
         // 查询类别
         $category = new \app\system\model\Category;
@@ -22,7 +21,9 @@ class Teach extends BaseController
                 'id'
                 ,'title'
             ]);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $category->srcChild($src)->count();
+        $data = reset_data($data, $src);
 
         return json($data);
     }

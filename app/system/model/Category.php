@@ -59,12 +59,13 @@ class Category extends BaseModel
     {
         $src = [
             'p_id'=>''
+            ,'order' => 'asc'
         ];
-
-        // 用新值替换初始值
-        $src = array_cover($srcfrom, $src) ;
+        $src = array_cover($srcfrom, $src);   # 新值替换旧值
         $child = self::where('p_id', $src['p_id'])
             ->where('status', 1)
+            ->field('id, title, p_id, status, paixu, isupdate')
+            ->order(['paixu' => $src['order']])
             ->select();
         return $child;
     }
