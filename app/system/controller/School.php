@@ -61,7 +61,9 @@ class School extends AdminBase
                 ,'dwJibie'=>['title']
                 ,'update_time'
             ]);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $sch->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }
@@ -246,8 +248,10 @@ class School extends AdminBase
         $src = request()->only([
             'low' => '班级'
             ,'high' => '其它级'
-            ,'order' => 'asc'
-            ,'limit' => 100
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
         ], 'post');
 
         // 实例化单位模型
@@ -258,7 +262,7 @@ class School extends AdminBase
                 ,'title'
                 ,'jiancheng'
             ]);
-        $src['cnt'] = true;
+        $src['all'] = true;
         $cnt = $sch->srcJibie($src)->count();
 
         $data = reset_data($data, $cnt);
@@ -279,8 +283,9 @@ class School extends AdminBase
         ], 'post');
         // 实例化单位模型
         $sch = new sch;
-        $data = $sch->kaoshi();
-        $data = reSetObject($data, $src);
+        $data = $sch->kaoshi($src);
+        $cnt = $data->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }

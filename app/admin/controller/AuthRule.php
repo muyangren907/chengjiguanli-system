@@ -43,7 +43,7 @@ class AuthRule extends AdminBase
         // 根据条件查询数据
         $ar = new AR;
         $data = $ar->search($src);
-        $src['cnt'] = true;
+        $src['all'] = true;
         $cnt = $ar->search($src)->count();
         $data = reset_data($data, $cnt);
 

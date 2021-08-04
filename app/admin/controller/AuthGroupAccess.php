@@ -45,7 +45,7 @@ class AuthGroupAccess extends AdminBase
         // 根据数据查询信息
         $aga = new AGA;
         $data = $aga->search($src);
-        $src['cnt'] = true;
+        $src['all'] = true;
         $cnt = $aga->search($src)->count();
         $data = reset_data($data, $cnt);
 

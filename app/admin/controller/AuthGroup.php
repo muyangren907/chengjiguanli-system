@@ -42,7 +42,7 @@ class AuthGroup extends AdminBase
         // 根据数据查询信息
         $ag = new AG;
         $data = $ag->search($src);
-        $src['cnt'] = true;
+        $src['all'] = true;
         $cnt = $ag->search($src)->count();
         $data = reset_data($data, $cnt);
 
@@ -64,7 +64,7 @@ class AuthGroup extends AdminBase
         $rule = new \app\admin\model\AuthRule;
         $src = [
             'status' => 1
-            ,'cnt' => true
+            ,'all' => true
         ];
         $ruleList = $rule->search($src);
         $ruleSelect = array();
@@ -124,7 +124,7 @@ class AuthGroup extends AdminBase
         $rule = new \app\admin\model\AuthRule;
         $src = [
             'status' => 1
-            ,'cnt' => true
+            ,'all' => true
         ];
         $ruleList = $rule->search($src);
         $aglist = AG::where('id', $id)

@@ -136,7 +136,7 @@ class AdminInfo extends AdminBase
                 ,'hjshijian'
                 ,'update_time'
             ]);
-        $src['cnt'] = true;
+        $src['all'] = true;
         $cnt = $rongyu->srcTeacherRongyu($src['teacher_id'])->count();
         $data = reset_data($data, $cnt);
         return json($data);
@@ -159,7 +159,7 @@ class AdminInfo extends AdminBase
         // 查询数据
         $keti = new \app\keti\model\KetiInfo;
         $data = $keti->srcTeacherKeti($src['teacher_id']);
-        $src['cnt'] = true;
+        $src['all'] = true;
         $cnt = $keti->srcTeacherKeti($src['teacher_id'])->count();
         $data = reset_data($data, $cnt);
 
@@ -183,7 +183,7 @@ class AdminInfo extends AdminBase
         // 查询数据
         $bzr = new \app\teach\model\BanZhuRen;
         $data = $bzr->srcTeacher($src);
-        $src['cnt'] = true;
+        $src['all'] = true;
         $cnt = $bzr->srcTeacher($src)->count();
         $data = reSetObject($data, $cnt);
 

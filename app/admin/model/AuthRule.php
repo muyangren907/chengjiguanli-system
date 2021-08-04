@@ -37,7 +37,7 @@ class AuthRule extends BaseModel
             ,'limit' => 10
             ,'field' => 'id'
             ,'order' => 'desc'
-            ,'cnt' => false
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src);
 
@@ -55,7 +55,7 @@ class AuthRule extends BaseModel
                 }
             ])
             ->field('id, name, title, condition, paixu, ismenu, url, pid, type, status')
-            ->when($src['cnt'] == false, function ($query) use($src) {
+            ->when($src['all'] == false, function ($query) use($src) {
                 $query
                     ->page($src['page'], $src['limit'])
                     ->order([$src['field'] => $src['order']]);

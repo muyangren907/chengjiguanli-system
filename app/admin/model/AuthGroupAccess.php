@@ -33,7 +33,7 @@ class AuthGroupAccess extends Pivot
             ,'limit' => 10
             ,'field' => 'id'
             ,'order' => 'desc'
-            ,'cnt' => false
+            ,'all' => false
         ];
 
         // 用新值替换初始值
@@ -74,7 +74,7 @@ class AuthGroupAccess extends Pivot
         				]);
         		}
         	])
-            ->when($src['cnt'] == false, function ($query) use($src) {
+            ->when($src['all'] == false, function ($query) use($src) {
                 $query
                     ->page($src['page'], $src['limit'])
                     ->order([$src['field'] => $src['order']]);

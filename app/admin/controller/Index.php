@@ -59,7 +59,7 @@ class Index extends AdminBase
                 ,'status'
                 ,'update_time'
             ]);
-        $src['cnt'] = true;
+        $src['all'] = true;
         $cnt = $ad->search($src)->count();
         $data = reset_data($data, $cnt);
 
@@ -219,7 +219,6 @@ class Index extends AdminBase
         // 整理数据
         $id = request()->delete('id');
         $id = explode(',', $id);
-
         
         // 启动事务
         \think\facade\Db::startTrans();
@@ -349,7 +348,6 @@ class Index extends AdminBase
                 ,'limit' => 10
                 ,'field' => 'id'
                 ,'order' => 'desc'
-                ,'cnt' => false
             ], 'POST');
 
         $ad = new AD();
@@ -367,7 +365,7 @@ class Index extends AdminBase
                 ,'id' => $value->id
             ];
         }
-        $src['cnt'] = true;
+        $src['all'] = true;
         $cnt = $ad->strSrcTeachers($src)->count();
         $data = reset_data($data, $cnt);
 

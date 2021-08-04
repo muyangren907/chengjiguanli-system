@@ -31,7 +31,7 @@ class AuthGroup extends BaseModel
             ,'limit' => 10
             ,'field' => 'id'
             ,'order' => 'desc'
-            ,'cnt' => false
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src);
 
@@ -40,7 +40,7 @@ class AuthGroup extends BaseModel
             ->when(strlen($src['searchval']) > 0, function($query) use($src){
                     $query->where('title', 'like', '%' . $src['searchval'] . '%');
                 })
-            ->when($src['cnt'] == true, function ($query) {
+            ->when($src['all'] == true, function ($query) {
                 $query->field('id');
             })
             ->select();

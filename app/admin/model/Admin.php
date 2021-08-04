@@ -7,7 +7,6 @@ use app\BaseModel;
 
 class Admin extends BaseModel
 {
-    
     // 设置字段信息
     protected $schema = [
         'xingming' => 'varchar'
@@ -52,7 +51,7 @@ class Admin extends BaseModel
             ,'limit' => 10
             ,'field' => 'id'
             ,'order' => 'desc'
-            ,'cnt' => false
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src);
 
@@ -69,7 +68,7 @@ class Admin extends BaseModel
                 }
                 ,'glGroup'
             ])
-            ->when($src['cnt'] == false, function ($query) use($src) {
+            ->when($src['all'] == false, function ($query) use($src) {
                 $query
                     ->page($src['page'], $src['limit'])
                     ->order([$src['field'] => $src['order']]);
@@ -146,7 +145,7 @@ class Admin extends BaseModel
             ,'limit' => 10
             ,'field' => 'id'
             ,'order' => 'desc'
-            ,'cnt' => false
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src);
         $src['searchval'] = trim($src['searchval']);
@@ -172,7 +171,7 @@ class Admin extends BaseModel
                     }
                 ]
             )
-            ->when($src['cnt'] == false, function ($query) use($src) {
+            ->when($src['all'] == false, function ($query) use($src) {
                 $query
                     ->page($src['page'], $src['limit'])
                     ->order([$src['field'] => $src['order']]);
@@ -342,28 +341,28 @@ class Admin extends BaseModel
     // 职务关联模型
     public function adZhiwu()
     {
-        return $this->belongsTo('\app\system\model\Category', 'zhiwu_id', 'id');
+        return $this->belongsTo(\app\system\model\Category::class, 'zhiwu_id', 'id');
     }
 
 
     // 职称关联模型
     public function adZhicheng()
     {
-        return $this->belongsTo('\app\system\model\Category', 'zhicheng_id', 'id');
+        return $this->belongsTo(\app\system\model\Category::class, 'zhicheng_id', 'id');
     }
 
 
     // 学历关联模型
     public function adXueli()
     {
-        return $this->belongsTo('\app\system\model\Category', 'xueli_id', 'id');
+        return $this->belongsTo(\app\system\model\Category::class, 'xueli_id', 'id');
     }
 
 
     // 学科关联模型
     public function adSubject()
     {
-        return $this->belongsTo('\app\teach\model\Subject', 'subject_id', 'id');
+        return $this->belongsTo(\app\teach\model\Subject::class, 'subject_id', 'id');
     }
 
 
