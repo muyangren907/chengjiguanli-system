@@ -176,7 +176,7 @@ class School extends BaseModel
         $src = array_cover($srcfrom, $src);
 
 
-        $data = $this->where('kaoshi&&status', 1)
+        $data = $this->where('kaoshi', 1)
             ->where('status', 1)
             ->order(['jibie_id', 'paixu'])
             ->field('id, title, jiancheng, jibie_id')

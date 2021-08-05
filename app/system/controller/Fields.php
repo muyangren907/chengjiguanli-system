@@ -53,7 +53,9 @@ class Fields extends AdminBase
                 ,'update_time'
                 ,'flAdmin'
             ]);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $fl->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }
@@ -82,8 +84,6 @@ class Fields extends AdminBase
         } else {
            return $this->error('文件不存在！');
         }
-
-
     }
 
 
@@ -97,12 +97,30 @@ class Fields extends AdminBase
     {
         $id = request()->delete('id');
         $id = explode(',', $id);
-
+        $fl = new FL();
+        $err = array();
+        
+        $list = $fl->where('id', 'in', $id)->select();      # 查询要删除的信息
+        $id = array();
+        $fengefu = DIRECTORY_SEPARATOR;
+        foreach ($list as $key => $value) {
+            $url = public_path() . 'uploads' . $fengefu . $value->url;
+            if (file_exists($url)) {
+                @$temp = unlink($url);
+                $temp === true ? $id[] = $value->id : $err[] = $value->create_time . '上传的' . $value->oldname;
+            } else {
+                $id[] = $value->id;
+            }
+        }
         $data = FL::destroy($id);
+        if (count($err) > 0) {
+            $msg = implode('、', $err) . '删除失败';
+        } else {
+            $msg = '删除成功!';
+        }
 
         // 根据更新结果设置返回提示信息
-        $data ? $data = ['msg' => '删除成功', 'val' => 1]
-            : $data = ['msg' => '数据处理错误', 'val' => 0];
+        $data = ['msg' => $msg, 'val' => 1];
 
         // 返回信息
         return json($data);

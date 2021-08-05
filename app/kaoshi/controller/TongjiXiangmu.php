@@ -36,7 +36,7 @@ class TongjiXiangmu extends AdminBase
         // 获取参数
         $src = $this->request
             ->only([
-                'page' => '1'
+                'page' => 1
                 ,'limit' => '10'
                 ,'field' => 'id'
                 ,'order' => 'desc'
@@ -56,7 +56,9 @@ class TongjiXiangmu extends AdminBase
                 ,'tjxmCategory'
                 ,'update_time'
             ]);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $tjxm->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }

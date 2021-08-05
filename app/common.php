@@ -121,12 +121,12 @@
     }
 
 
-    // 多字段排序
-    function sort_arr_by_many_field($arr, $srcfrom)
-    {
-        $data = \app\facade\Tools::sortArrByManyField($arr, $srcfrom);
-        return $data;
-    }
+    // // 多字段排序
+    // function sort_arr_by_many_field($arr, $srcfrom)
+    // {
+    //     $data = \app\facade\Tools::sortArrByManyField($arr, $srcfrom);
+    //     return $data;
+    // }
 
 
     // 已知密码进行验证
