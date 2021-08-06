@@ -11,6 +11,19 @@ use app\BaseModel;
  */
 class BanZhuRen extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'teacher_id' => 'int'
+        ,'banji_id' => 'int'
+        ,'bfdate' => 'int'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'beizhu' => 'varchar'
+    ];
+
+
     // 教师关联模型
     public function glAdmin()
     {

@@ -637,15 +637,18 @@ layui.extend({
 					} else {
 						str = '';
 					}
-					temp = "";
-					$(result.data).each(function(i, el) {
-						if (value != '' && value == el.id) {
-							temp = '<input type="checkbox" name="' + myid + '[]' + '" title="' + el.banTitle + '" value="' + el.id + '" lay-skin="primary" pid="1" lay-filter="mycheackbox" checked>';
+					
+					var data = result.data;
+					for (var key in data) {
+						temp = "";
+						if (value != '' && value == data[key].id) {
+							temp = '<input type="checkbox" name="' + myid + '[]' + '" title="' + data[key].banTitle + '" value="' + data[key].id + '" lay-skin="primary" pid="1" lay-filter="mycheackbox" checked>';
 						} else {
-							temp = '<input type="checkbox" name="' + myid + '[]' + '" title="' + el.banTitle + '" value="' + el.id + '" lay-skin="primary" pid="1" lay-filter="mycheackbox">';
+							temp = '<input type="checkbox" name="' + myid + '[]' + '" title="' + data[key].banTitle + '" value="' + data[key].id + '" lay-skin="primary" pid="1" lay-filter="mycheackbox">';
 						}
 						str = str + temp;
-					});
+					}
+
 					$('#' + myid).append(str);
 					form.render('checkbox');
 				},
@@ -669,15 +672,18 @@ layui.extend({
 					} else {
 						str = '';
 					}
-					temp = "";
-					$(result.data).each(function(i, el) {
-						if (value != '' && value == el.id) {
-							temp = '<option value="' + el.id + '" paixu="'+ el.paixu +'" selected>' + el.banTitle + '</option>';
+
+					var data = result.data; 
+					for (var key in data) {
+						temp = "";
+						if (value != '' && value == data[key].id) {
+							temp = '<option value="' + data[key].id + '" paixu="'+ data[key].paixu +'" selected>' + data[key].banTitle + '</option>';
 						} else {
-							temp = '<option value="' + el.id + '" paixu="'+ el.paixu +'">' + el.banTitle + '</option>';
+							temp = '<option value="' + data[key].id + '" paixu="'+ data[key].paixu +'">' + data[key].banTitle + '</option>';
 						}
 						str = str + temp;
-					});
+					}
+
 					$('#' + myid).append(str);
 					form.render('select');
 				},

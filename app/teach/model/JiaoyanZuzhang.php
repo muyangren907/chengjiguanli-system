@@ -10,6 +10,19 @@ use think\Model;
  */
 class JiaoyanZuzhang extends Model
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'teacher_id' => 'int'
+        ,'jiaoyanzu_id' => 'int'
+        ,'bfdate' => 'int'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'beizhu' => 'varchar'
+    ];
+
+
     // 教师关联
     public function glTeacher()
     {

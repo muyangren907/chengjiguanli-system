@@ -7,6 +7,21 @@ use app\BaseModel;
 
 class Banji extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'school_id' => 'int'
+        ,'ruxuenian' => 'int'
+        ,'xueduan_id' => 'int'
+        ,'paixu' => 'int'
+        ,'alias' => 'varchar'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'status' => 'tinyint'
+    ];
+
+
 
     // 查询所有班级
     public function search($srcfrom)

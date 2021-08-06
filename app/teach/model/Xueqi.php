@@ -7,7 +7,23 @@ use app\BaseModel;
 
 class Xueqi extends BaseModel
 {
-     // 开始时间修改器
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'title' => 'varchar'
+        ,'xuenian' => 'varchar'
+        ,'category_id' => 'int'
+        ,'bfdate' => 'int'
+        ,'enddate' => 'int'
+        ,'status' => 'tinyint'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'beizhu' => 'varchar'
+    ];
+
+
+    // 开始时间修改器
     public function setBfdateAttr($value)
     {
         return strtotime($value);

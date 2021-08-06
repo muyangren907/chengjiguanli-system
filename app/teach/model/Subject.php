@@ -6,6 +6,22 @@ use app\BaseModel;
 
 class Subject extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'title' => 'varchar'
+        ,'jiancheng' => 'varchar'
+        ,'lieming' => 'varchar'
+        ,'category_id' => 'int'
+        ,'kaoshi' => 'tinyint'
+        ,'paixu' => 'int'
+        ,'status' => 'tinyint'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+    ];
+
+
     // 按条件查询学科
     public function search($srcfrom)
     {

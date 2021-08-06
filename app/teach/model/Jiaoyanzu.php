@@ -10,6 +10,22 @@ use app\BaseModel;
  */
 class Jiaoyanzu extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'title' => 'varchar'
+        ,'ruxuenian' => 'int'
+        ,'category_id' => 'int'
+        ,'school_id' => 'int'
+        ,'subject_id' => 'varchar'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'beizhu' => 'varchar'
+        ,'status' => 'tinyint'
+    ];
+
+
     // 分类关联
     public function glCategory()
     {

@@ -6,8 +6,20 @@ use app\BaseModel;
 
 class Category extends BaseModel
 {
-	// 关闭全局自动时间戳
-    // protected $autoWriteTimestamp = false;
+	// 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'title' => 'varchar'
+        ,'p_id' => 'int'
+        ,'status' => 'tinyint'
+        ,'paixu' => 'int'
+        ,'isupdate' => 'tinyint'
+        ,'beizhu' => 'varchar'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+    ];
+
 
     // 父级类型关联
     public function glPid()

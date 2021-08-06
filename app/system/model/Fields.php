@@ -6,6 +6,24 @@ use app\BaseModel;
 
 class Fields extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'category_id' => 'int'
+        ,'oldname' => 'varchar'
+        ,'bianjitime' => 'int'
+        ,'newname' => 'varchar'
+        ,'extension' => 'varchar'
+        ,'fieldsize' => 'int'
+        ,'hash' => 'varchar'
+        ,'user_group' => 'varchar'
+        ,'user_id' => 'int'
+        ,'url' => 'varchar'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+    ];
+
 
     // 编辑时间获取器
     public function getBianjitimeAttr($value)

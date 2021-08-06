@@ -6,6 +6,24 @@ use app\BaseModel;
 
 class School extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'title' => 'varchar'
+        ,'jiancheng' => 'varchar'
+        ,'biaoshi' => 'varchar'
+        ,'xingzhi_id' => 'int'
+        ,'jibie_id' => 'int'
+        ,'xueduan_id' => 'int'
+        ,'kaoshi' => 'tinyint'
+        ,'status' => 'tinyint'
+        ,'paixu' => 'int'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'beizhu' => 'varchar'
+    ];
+
 
     // 教师数据模型关联
     public function dwAdmin()
