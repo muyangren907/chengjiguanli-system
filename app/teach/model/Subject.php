@@ -15,6 +15,11 @@ class Subject extends BaseModel
             ,'kaoshi' => ''
             ,'delete_time' => ''
             ,'searchval' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src);
 
@@ -38,14 +43,45 @@ class Subject extends BaseModel
             		$query->field('id, title');
             	}
             ])
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
             ->select();
         return $data;
+    }
+
+
+    // 查询列名是否唯一
+    public function onlyLeiming($srcfrom)
+    {
+        // 初始值
+        $src = [
+            'searchval' => ''
+            ,'id' => ''
+        ];
+        $src = array_cover($srcfrom, $src);
+
+        $list = $this::withTrashed()
+            ->where('lieming', $src['searchval'])
+            ->find();
+        $data = ['msg' => '列标识已经存在！', 'val' => 0];
+
+        if($list)
+        {
+            if($src['id'] == $list->id){
+                $data = ['msg' => '', 'val' => 1];
+            }
+        }else{
+           $data = ['msg' => '', 'val' => 1];
+        }
     }
 
 
     // 大类别关联
     public function sbjCategory()
 	{
-		return $this->belongsTo('\app\system\model\Category', 'category_id', 'id');
+		return $this->belongsTo(\app\system\model\Category::class, 'category_id', 'id');
 	}
 }

@@ -33,9 +33,14 @@ class Jiaoyanzu extends BaseModel
             ,'searchval' => ''
             ,'school_id' => ''
             ,'status' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src) ;
-        $src['school_id'] = strToarray($src['school_id']);
+        $src['school_id'] = str_to_array($src['school_id']);
 
         $njlist = \app\facade\Tools::nianJiNameList(time(), 'num');
 
@@ -68,6 +73,11 @@ class Jiaoyanzu extends BaseModel
                     },
                 ]
             )
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
             ->append(['zuzhang'])
             ->select();
 

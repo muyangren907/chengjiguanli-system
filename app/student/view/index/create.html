@@ -177,17 +177,16 @@ layui.use(['laydate', 'form', 'mytable', 'createInput'], function() {
   })
 
 
-    $('#xingming').blur(function() {
-      var xingming = $('#xingming').val();
-      //获取全写拼音（调用js中方法）
-      var quanpin = pinyin.getFullChars(xingming);
-      //获取简写拼音（调用js中方法）
-      var shoupin = pinyin.getCamelChars(xingming);
-      //给两个文本框赋值
-      $('#quanpin').val(quanpin);
-      $('#shoupin').val(shoupin);
-    })
-
+  $('#xingming').blur(function() {
+    var xingming = $('#xingming').val();
+    //获取全写拼音（调用js中方法）
+    var quanpin = pinyin.getFullChars(xingming);
+    //获取简写拼音（调用js中方法）
+    var shoupin = pinyin.getCamelChars(xingming);
+    //给两个文本框赋值
+    $('#quanpin').val(quanpin);
+    $('#shoupin').val(shoupin);
+  })
 
 });
 

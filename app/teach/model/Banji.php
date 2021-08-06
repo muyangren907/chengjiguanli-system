@@ -20,10 +20,15 @@ class Banji extends BaseModel
                 'check' => true
                 ,'banji_id' => array()
             ]
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src);
-        $src['school_id'] = strToarray($src['school_id']);
-        $src['ruxuenian'] = strToarray($src['ruxuenian']);
+        $src['school_id'] = str_to_array($src['school_id']);
+        $src['ruxuenian'] = str_to_array($src['ruxuenian']);
         if(count($src['ruxuenian']) == 0)
         {
             $njname = $this->gradeName(time(),'num');     # 年级名对应表
@@ -56,6 +61,11 @@ class Banji extends BaseModel
                     $query->where('status', 1);
                 }
             ])
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
             ->append(['banjiTitle', 'banTitle', 'grade', 'bzr'])
             ->select();
 
@@ -73,7 +83,7 @@ class Banji extends BaseModel
             ,'status' => '1'
         ];
         $src = array_cover($srcfrom, $src) ;
-        $src['ruxuenian'] = strToarray($src['ruxuenian']);
+        $src['ruxuenian'] = str_to_array($src['ruxuenian']);
 
         // 查询年级数据
         $data = self:: where('school_id', $src['school_id'])
@@ -99,13 +109,13 @@ class Banji extends BaseModel
 
     // 学校关联模型
     public function glSchool(){
-        return $this->belongsTo('\app\system\model\School', 'school_id', 'id');
+        return $this->belongsTo(\app\system\model\School::class, 'school_id', 'id');
     }
 
 
     // 学校关联模型
     public function glStudent(){
-        return $this->hasMany('\app\student\model\Student', 'banji_id', 'id');
+        return $this->hasMany(\app\student\model\Student::class, 'banji_id', 'id');
     }
 
 
@@ -119,7 +129,7 @@ class Banji extends BaseModel
     // 年级-班级关联表
     public function glBanZhuRen()
     {
-        return $this->hasMany('BanZhuRen', 'banji_id', 'id');
+        return $this->hasMany(BanZhuRen::class, 'banji_id', 'id');
     }
 
 
@@ -179,7 +189,7 @@ class Banji extends BaseModel
     }
 
 
-    // 班级名获取器
+    // 年级名获取器
     public function getGradeAttr()
     {
         $njList = $this->gradeName(time());

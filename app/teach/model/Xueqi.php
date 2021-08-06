@@ -34,7 +34,7 @@ class Xueqi extends BaseModel
     // 分类关联
     public function glCategory()
     {
-        return $this->belongsTo('\app\system\model\Category', 'category_id', 'id');
+        return $this->belongsTo(\app\system\model\Category::class, 'category_id', 'id');
     }
 
     // 根据条件查询学期
@@ -47,6 +47,11 @@ class Xueqi extends BaseModel
             ,'status' => ''
             ,'bfdate' => date("Y-m-d", strtotime("-6 year"))
             ,'enddate' => date("Y-m-d", strtotime('4 year'))
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src) ;
 
@@ -69,6 +74,11 @@ class Xueqi extends BaseModel
                     },
                 ]
             )
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
             ->select();
 
         return $data;
