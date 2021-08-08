@@ -8,20 +8,30 @@ use app\BaseModel;
 class DwRongyuCanyu extends BaseModel
 {
     // 关闭全局自动时间戳
-    protected $autoWriteTimestamp = false;
+    // protected $autoWriteTimestamp = false;
+
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'rongyu_id' => 'int'
+        ,'teacher_id' => 'int'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+    ];
 
 
     // 荣誉册关联
     public function rongyu()
     {
-    	return $this->belongsTo('\app\rongyu\model\DwRongyu', 'rongyu_id', 'id');
+    	return $this->belongsTo(\app\rongyu\model\DwRongyu::class, 'rongyu_id', 'id');
     }
 
 
     // 教师关联
     public function teacher()
     {
-    	return $this->belongsTo('\app\admin\model\Admin', 'teacher_id', 'id');
+    	return $this->belongsTo(\app\admin\model\Admin::class, 'teacher_id', 'id');
     }
 
     //搜索课题册

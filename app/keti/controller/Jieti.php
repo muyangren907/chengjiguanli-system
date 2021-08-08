@@ -56,7 +56,9 @@ class Jieti extends AdminBase
         // 根据条件查询数据
         $keti = new jt;
         $data = $keti->search($src);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $keti->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }

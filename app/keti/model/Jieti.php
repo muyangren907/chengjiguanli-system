@@ -1,5 +1,4 @@
 <?php
-declare (strict_types = 1);
 
 namespace app\keti\model;
 
@@ -10,6 +9,20 @@ use think\Model;
  */
 class Jieti extends Model
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'title' => 'varchar'
+        ,'shijian' => 'int'
+        ,'danwei_id' => 'int'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'beizhu' => 'varchar'
+        ,'status' => 'tinyint'
+    ];
+
+
     //搜索课题册
     public function search($srcfrom)
     {
@@ -17,9 +30,14 @@ class Jieti extends Model
             'danwei_id' => array()
             ,'shijian' => array()
             ,'searchval' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src);
-        $src['danwei_id'] = strToArray($src['danwei_id']);
+        $src['danwei_id'] = str_to_array($src['danwei_id']);
 
     	$data = $this
     		->when(count($src['danwei_id']) > 0, function($query) use($src){
@@ -36,6 +54,11 @@ class Jieti extends Model
                 ]
             )
             ->withCount(['ktInfo' => 'count'])
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
     		->select();
 
     	return $data;
@@ -45,7 +68,7 @@ class Jieti extends Model
     // 结题单位关联
     public function glDanwei()
     {
-    	return $this->belongsTo('\app\system\model\School', 'danwei_id', 'id');
+    	return $this->belongsTo(\app\system\model\School::class, 'danwei_id', 'id');
     }
 
 

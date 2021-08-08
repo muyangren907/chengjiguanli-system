@@ -7,6 +7,24 @@ use app\BaseModel;
 
 class JsRongyuInfo extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'title' => 'varchar'
+        ,'rongyuce_id' => 'int'
+        ,'bianhao' => 'varchar'
+        ,'hjschool_id' => 'int'
+        ,'subject_id' => 'int'
+        ,'jiangxiang_id' => 'int'
+        ,'pic' => 'varchar'
+        ,'hjshijian' => 'int'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'status' => 'tinyint'
+    ];
+
+
     //搜索单位获奖荣誉
     public function search($srcfrom)
     {
@@ -17,13 +35,18 @@ class JsRongyuInfo extends BaseModel
             ,'rongyuce_id' => ''
             ,'subject_id' => array()
             ,'searchval' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
         // 用新值替换初始值
         $src = array_cover($srcfrom, $src);
-        $src['fzschool_id'] = strToArray($src['fzschool_id']);
-        $src['hjschool_id'] = strToArray($src['hjschool_id']);
-        $src['category_id'] = strToArray($src['category_id']);
-        $src['subject_id'] = strToArray($src['subject_id']);
+        $src['fzschool_id'] = str_to_array($src['fzschool_id']);
+        $src['hjschool_id'] = str_to_array($src['hjschool_id']);
+        $src['category_id'] = str_to_array($src['category_id']);
+        $src['subject_id'] = str_to_array($src['subject_id']);
 
     	$data = $this
     		->when(strlen($src['rongyuce_id']) > 0, function($query) use($src){
@@ -103,6 +126,11 @@ class JsRongyuInfo extends BaseModel
                         ]);
                 },
             ])
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
             ->append(['hjJsName', 'cyJsName'])
     		->select();
 
@@ -253,52 +281,52 @@ class JsRongyuInfo extends BaseModel
     // 荣誉图册关联
     public function ryTuce()
     {
-        return $this->belongsTo('\app\rongyu\model\JsRongyu', 'rongyuce_id', 'id');
+        return $this->belongsTo(\app\rongyu\model\JsRongyu::class, 'rongyuce_id', 'id');
     }
 
 
     // 获奖单位关联
     public function hjSchool()
     {
-         return $this->belongsTo('\app\system\model\School', 'hjschool_id', 'id');
+         return $this->belongsTo(\app\system\model\School::class, 'hjschool_id', 'id');
     }
 
     // 颁奖单位关联
     public function fzSchool()
     {
-         return $this->belongsTo('\app\system\model\School', 'fzschool_id', 'id');
+         return $this->belongsTo(\app\system\model\School::class, 'fzschool_id', 'id');
     }
 
     // 荣誉所属学科
     public function rySubject()
     {
-         return $this->belongsTo('\app\teach\model\Subject', 'subject_id', 'id');
+         return $this->belongsTo(\app\teach\model\Subject::class, 'subject_id', 'id');
     }
 
     // 奖项关联
     public function jxCategory()
     {
-         return $this->belongsTo('\app\system\model\Category', 'jiangxiang_id', 'id');
+         return $this->belongsTo(\app\system\model\Category::class, 'jiangxiang_id', 'id');
     }
 
     // 获奖人信息关联
     public function hjJsry()
     {
-        return $this->hasMany('\app\rongyu\model\JsRongyuCanyu', 'rongyu_id', 'id')->where('category_id',11901);
+        return $this->hasMany(\app\rongyu\model\JsRongyuCanyu::class, 'rongyu_id', 'id')->where('category_id',11901);
     }
 
 
     // 获奖人与参与教师关联
     public function allJsry()
     {
-        return $this->hasMany('\app\rongyu\model\JsRongyuCanyu', 'rongyu_id', 'id');
+        return $this->hasMany(\app\rongyu\model\JsRongyuCanyu::class, 'rongyu_id', 'id');
     }
 
 
     // 参与人关联
     public function cyJsry()
     {
-        return $this->hasMany('\app\rongyu\model\JsRongyuCanyu', 'rongyu_id', 'id')->where('category_id', 11902);
+        return $this->hasMany(\app\rongyu\model\JsRongyuCanyu::class, 'rongyu_id', 'id')->where('category_id', 11902);
     }
 
 

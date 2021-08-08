@@ -87,7 +87,9 @@ class JsRongyuInfo extends AdminBase
         // 实例化
         $ryinfo = new ryinfo;
         $data = $ryinfo->search($src);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $ryinfo->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }

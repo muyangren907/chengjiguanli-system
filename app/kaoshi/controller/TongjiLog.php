@@ -51,7 +51,9 @@ class TongjiLog extends AdminBase
 
         $log = new \app\kaoshi\model\TongjiLog;
         $data = $log->search($src);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $log->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }

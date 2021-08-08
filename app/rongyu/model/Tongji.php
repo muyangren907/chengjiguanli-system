@@ -13,10 +13,10 @@ use app\rongyu\model\JsRongyuInfo as info;
  */
 class Tongji extends BaseModel
 {
+    
     // 获取全区各级特别是立项数
     public function quGeji($srcfrom)
     {
-
         // 获取级别ID
         $category = new \app\system\model\Category;
         $categoryList = $category->srcBetweenID(10204, 10208);

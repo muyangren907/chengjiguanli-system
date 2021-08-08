@@ -60,7 +60,9 @@ class KetiInfo extends AdminBase
         // 实例化
         $ktinfo = new ktinfo;
         $data = $ktinfo->search($src);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $ktinfo->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }

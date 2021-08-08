@@ -10,6 +10,22 @@ use \app\BaseModel;
  */
 class TongjiXiangmu extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'category_id' => 'int'
+        ,'title' => 'varchar'
+        ,'biaoshi' => 'varchar'
+        ,'paixu' => 'int'
+        ,'tongji' => 'tinyint'
+        ,'status' => 'tinyint'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'beizhu' => 'varchar'
+    ];
+
+
     // 查询记录
     public function search($srcfrom)
     {

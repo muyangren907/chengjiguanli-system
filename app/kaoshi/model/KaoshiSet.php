@@ -7,10 +7,31 @@ use \app\BaseModel;
 
 class KaoshiSet extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'kaoshi_id' => 'int'
+        ,'ruxuenian' => 'int'
+        ,'nianjiname' => 'varchar'
+        ,'subject_id' => 'int'
+        ,'manfen' => 'int'
+        ,'youxiu' => 'int'
+        ,'lianghao' => 'int'
+        ,'jige' => 'int'
+        ,'youxiu' => 'int'
+        ,'lianghaobi' => 'int'
+        ,'jigebi' => 'int'
+        ,'status' => 'tinyint'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+    ];
+
+
     // 关联学科
     public function subjectName()
     {
-    	return $this->belongsTo('\app\teach\model\Subject', 'subject_id', 'id');
+    	return $this->belongsTo(\app\teach\model\Subject::class, 'subject_id', 'id');
     }
 
 
@@ -23,10 +44,15 @@ class KaoshiSet extends BaseModel
             ,'ruxuenian' => array()
             ,'subject_id' => array()
             ,'searchval' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         );
         $src = array_cover($srcfrom, $src);
-        $src['ruxuenian'] = strToarray($src['ruxuenian']);
-        $src['subject_id'] = strToarray($src['subject_id']);
+        $src['ruxuenian'] = str_to_array($src['ruxuenian']);
+        $src['subject_id'] = str_to_array($src['subject_id']);
 
         $data = $this->where('kaoshi_id', $src['kaoshi_id'])
             ->when(count($src['ruxuenian']) > 0, function($query) use ($src) {
@@ -40,6 +66,11 @@ class KaoshiSet extends BaseModel
         			$query->field('id, title, jiancheng');
         		}
         	])
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
         	->select();
 
         return $data;
@@ -63,7 +94,7 @@ class KaoshiSet extends BaseModel
         );
 
         $src = array_cover($srcfrom, $src);
-        $src['subject_id'] = strToarray($src['subject_id']);
+        $src['subject_id'] = str_to_array($src['subject_id']);
 
         $sbjList = $this->where('kaoshi_id', $src['kaoshi_id'])
             ->where('status', 1)

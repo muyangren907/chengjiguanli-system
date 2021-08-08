@@ -29,14 +29,14 @@ class Jiaoyanzu extends BaseModel
     // 分类关联
     public function glCategory()
     {
-        return $this->belongsTo('\app\system\model\Category', 'category_id', 'id');
+        return $this->belongsTo(\app\system\model\Category::class, 'category_id', 'id');
     }
 
 
     // 教研组关联
     public function glSchool()
     {
-        return $this->belongsTo('\app\system\model\School', 'school_id', 'id');
+        return $this->belongsTo(\app\system\model\School::class, 'school_id', 'id');
     }
 
 

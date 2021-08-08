@@ -7,17 +7,28 @@ use app\BaseModel;
 
 class JsRongyuCanyu extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'category_id' => 'int'
+        ,'rongyu_id' => 'int'
+        ,'teacher_id' => 'int'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+    ];
+
 
     // 荣誉册关联
     public function rongyu()
     {
-    	return $this->belongsTo('\app\rongyu\model\JsRongyu', 'rongyu_id', 'id');
+    	return $this->belongsTo(\app\rongyu\model\JsRongyu::class, 'rongyu_id', 'id');
     }
 
     // 教师关联
     public function teacher()
     {
-    	return $this->belongsTo('\app\admin\model\Admin', 'teacher_id', 'id');
+    	return $this->belongsTo(\app\admin\model\Admin::class, 'teacher_id', 'id');
     }
 
     //搜索课题册

@@ -8,6 +8,26 @@ use \app\BaseModel;
 
 class Kaoshi extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'title' => 'varchar'
+        ,'zuzhi_id' => 'int'
+        ,'xueqi_id' => 'int'
+        ,'category_id' => 'int'
+        ,'user_id' => 'int'
+        ,'fanwei_id' => 'int'
+        ,'bfdate' => 'int'
+        ,'enddate' => 'int'
+        ,'status' => 'tinyint'
+        ,'luru' => 'status'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'beizhu'
+    ];
+
+
     // 查询所有考试
     public function search($srcfrom)
     {
@@ -19,13 +39,18 @@ class Kaoshi extends BaseModel
             ,'xueqi_id' => ''
             ,'category_id' => array()
             ,'searchval' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
         // 用新值替换初始值
         $src = array_cover($srcfrom, $src);
-        $src['zuzhi_id'] = strToarray($src['zuzhi_id']);
-        $src['xueqi_id'] = strToarray($src['xueqi_id']);
-        $src['category_id'] = strToarray($src['category_id']);
-        $src['id'] = strToarray($src['id']);
+        $src['zuzhi_id'] = str_to_array($src['zuzhi_id']);
+        $src['xueqi_id'] = str_to_array($src['xueqi_id']);
+        $src['category_id'] = str_to_array($src['category_id']);
+        $src['id'] = str_to_array($src['id']);
 
         // 查询数据
         $data = $this
@@ -68,6 +93,11 @@ class Kaoshi extends BaseModel
                     }
                 ]
             )
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
             ->append(['ckSubject', 'ckNianji'])
             ->select();
 
@@ -204,49 +234,49 @@ class Kaoshi extends BaseModel
     // 考试设置关联表
     public function ksSet()
     {
-        return $this->hasMany('KaoshiSet', 'kaoshi_id', 'id');
+        return $this->hasMany(KaoshiSet::class, 'kaoshi_id', 'id');
     }
 
 
     // 参考类别关联表
     public function ksCategory()
     {
-        return $this->belongsTo('\app\system\model\Category', 'category_id', 'id');
+        return $this->belongsTo(\app\system\model\Category::class, 'category_id', 'id');
     }
 
 
     // 考试成绩关联表
     public function ksChengji()
     {
-        return $this->hasMany('\app\chengji\model\Chengji', 'kaoshi_id', 'id');
+        return $this->hasMany(\app\chengji\model\Chengji::class, 'kaoshi_id', 'id');
     }
 
 
     // 考试组织单位关联表
     public function ksZuzhi()
     {
-        return $this->belongsTo('\app\system\model\School', 'zuzhi_id', 'id');
+        return $this->belongsTo(\app\system\model\School::class, 'zuzhi_id', 'id');
     }
 
 
     // 学期
     public function ksXueqi()
     {
-        return $this->belongsTo('\app\teach\model\Xueqi', 'xueqi_id', 'id');
+        return $this->belongsTo(\app\teach\model\Xueqi::class, 'xueqi_id', 'id');
     }
 
 
     // 学期
     public function ksFanwei()
     {
-        return $this->belongsTo('\app\system\model\Category', 'fanwei_id', 'id');
+        return $this->belongsTo(\app\system\model\Category::class, 'fanwei_id', 'id');
     }
 
 
     // 学期
     public function ksTeahcer()
     {
-        return $this->belongsTo('\app\admin\model\Admin', 'user_id', 'id');
+        return $this->belongsTo(\app\admin\model\Admin::class, 'user_id', 'id');
     }
 
 }

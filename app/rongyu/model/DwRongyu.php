@@ -7,6 +7,24 @@ use app\BaseModel;
 
 class DwRongyu extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'project' => 'varchar'
+        ,'title' => 'title'
+        ,'hjschool_id' => 'int'
+        ,'fzschool_id' => 'int'
+        ,'fzshijian' => 'int'
+        ,'url' => 'varchar'
+        ,'jiangxiang_id' => 'int'
+        ,'category_id' => 'int'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'status' => 'tinyint'
+    ];
+
+    
     //搜索单位获奖荣誉
     public function search($srcfrom)
     {
@@ -16,11 +34,16 @@ class DwRongyu extends BaseModel
             ,'hjschool_id' => array()
             ,'category_id' => array()
             ,'searchval' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src);
-        $src['fzschool_id'] = strToArray($src['fzschool_id']);
-        $src['hjschool_id'] = strToArray($src['hjschool_id']);
-        $src['category_id'] = strToArray($src['category_id']);
+        $src['fzschool_id'] = str_to_array($src['fzschool_id']);
+        $src['hjschool_id'] = str_to_array($src['hjschool_id']);
+        $src['category_id'] = str_to_array($src['category_id']);
 
         // 查询数据
         $data = $this
@@ -57,6 +80,11 @@ class DwRongyu extends BaseModel
                     }
                 ]
             )
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
             ->select();
         return $data;
     }
@@ -65,35 +93,35 @@ class DwRongyu extends BaseModel
     // 获奖单位关联
     public function hjSchool()
     {
-         return $this->belongsTo('\app\system\model\School', 'hjschool_id', 'id');
+         return $this->belongsTo(\app\system\model\School::class, 'hjschool_id', 'id');
     }
 
 
     // 颁奖单位关联
     public function fzSchool()
     {
-         return $this->belongsTo('\app\system\model\School', 'fzschool_id', 'id');
+         return $this->belongsTo(\app\system\model\School::class, 'fzschool_id', 'id');
     }
 
 
     // 荣誉类型
     public function lxCategory()
     {
-         return $this->belongsTo('\app\system\model\Category', 'category_id', 'id');
+         return $this->belongsTo(\app\system\model\Category::class, 'category_id', 'id');
     }
 
 
     // 奖项
     public function jxCategory()
     {
-         return $this->belongsTo('\app\system\model\Category', 'jiangxiang_id', 'id');
+         return $this->belongsTo(\app\system\model\Category::class, 'jiangxiang_id', 'id');
     }
 
 
     // 参与人
     public function cyDwry()
     {
-        return $this->hasMany('\app\rongyu\model\DwRongyuCanyu', 'rongyu_id', 'id');
+        return $this->hasMany(\app\rongyu\model\DwRongyuCanyu::class, 'rongyu_id', 'id');
     }
 
 

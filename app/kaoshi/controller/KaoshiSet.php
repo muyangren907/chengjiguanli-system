@@ -58,9 +58,11 @@ class KaoshiSet extends AdminBase
             ], 'POST');
 
         // 根据条件查询数据
-        $kssbj = new ksset;
-        $data = $kssbj->search($src);
-        $data = reSetObject($data, $src);
+        $ksset = new ksset;
+        $data = $ksset->search($src);
+        $src['all'] = true;
+        $cnt = $ksset->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }
