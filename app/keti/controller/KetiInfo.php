@@ -125,7 +125,7 @@ class KetiInfo extends AdminBase
 
         // 声明教师数组
             $teacherlist = [];
-            $list['teacher_id'] = explode(',', $list['teacher_id']);
+            $list['teacher_id'] = array_unique(explode(',', $list['teacher_id']));
             // 循环组成获奖教师信息
             foreach ($list['teacher_id'] as $key => $value) {
                 if ($value != "") {
@@ -410,7 +410,7 @@ class KetiInfo extends AdminBase
             $teacherlist = [];
             $canyulist = [];
             // 循环组成获奖教师信息
-            $list['teacher_id'] = explode(',', $list['teacher_id']);
+            $list['teacher_id'] = array_unique(explode(',', $list['teacher_id']));
             foreach ($list['teacher_id'] as $key => $value) {
                 if ($value != "") {
                     $canyulist[] = [
@@ -419,7 +419,7 @@ class KetiInfo extends AdminBase
                     ];
                 }
             }
-            $list['canyu_id'] = explode(',', $list['canyu_id']);
+            $list['canyu_id'] = array_unique(explode(',', $list['canyu_id']));
             foreach ($list['canyu_id'] as $key => $value) {
                 if ($value != "") {
                     $canyulist[] = [
@@ -501,6 +501,7 @@ class KetiInfo extends AdminBase
 
         $cy = new \app\keti\model\KetiCanyu;
         $list = $cy->searchCanyu($src);
+        halt($list->toArray());
         $data = array();
         foreach ($list as $key => $value) {
             if($value->teacher)
@@ -512,6 +513,11 @@ class KetiInfo extends AdminBase
                 ];
             }
         }
+
+        $src['all'] = true;
+        $cnt = $sch->search($src)->count();
+        $data = reset_data($data, $cnt);
+
         $data = reSetArray($data, $src);
 
         return json($data);

@@ -311,7 +311,7 @@ class Jieti extends AdminBase
             $teacherlist = [];
             $canyulist = [];
             // 循环组成获奖教师信息
-            $list['teacher_id'] = explode(',', $list['teacher_id']);
+            $list['teacher_id'] = array_unique(explode(',', $list['teacher_id']));
             foreach ($list['teacher_id'] as $key => $value) {
                 if ($value != "") {
                     $canyulist[] = [
@@ -320,7 +320,7 @@ class Jieti extends AdminBase
                     ];
                 }
             }
-            $list['canyu_id'] = explode(',', $list['canyu_id']);
+            $list['canyu_id'] = array_unique(explode(',', $list['canyu_id']));
             foreach ($list['canyu_id'] as $key => $value) {
                 if ($value != "") {
                     $canyulist[] = [

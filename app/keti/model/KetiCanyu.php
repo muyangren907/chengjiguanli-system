@@ -39,6 +39,11 @@ class KetiCanyu extends BaseModel
             'ketiinfo_id' => array()
             ,'category_id' => array()
             ,'searchval' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src);
         $src['ketiinfo_id'] = str_to_array($src['ketiinfo_id']);
@@ -90,6 +95,11 @@ class KetiCanyu extends BaseModel
         $src = [
             'ketiinfo_id' => ''
             ,'category_id' => array()
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src);
 
@@ -111,6 +121,11 @@ class KetiCanyu extends BaseModel
                     },
                 ]
             )
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
             ->select();
         return $list;
     }
