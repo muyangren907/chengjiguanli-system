@@ -554,7 +554,9 @@ class KetiInfo extends AdminBase
                 ,'title' => '标题：'.$value->title . ' ‖ 编号：' . $value->bianhao
             ];
         }
-        $data = reSetArray($data, $src);
+        $src['all'] = true;
+        $cnt = count($data);
+        $data = reset_data($data, $cnt);
         return json($data);
     }
 }

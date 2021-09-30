@@ -255,7 +255,7 @@ layui.extend({
               searchval: val,
             },
 						success: function(result) {
-							cb(result.data)
+							cb(result.data);
 						},
 						error: function(result) {
 							layer.msg('数据扔半道啦。', function() {});
@@ -267,7 +267,7 @@ layui.extend({
 		},
 
 
-		// 查询老师
+		// 查询学生
 		searchStudent: function(id, radio = false, name = '') {
 			if (name == '') {
 				name = id;
@@ -414,7 +414,6 @@ layui.extend({
 				on: function(data){
 					//arr:  当前多选已选中的数据
 					var arr = data.arr;
-
 					if(arr.length == 1)
 					{
 						$('#title').val(arr[0].title);

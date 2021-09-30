@@ -46,7 +46,7 @@
 		<label for="teacher_name" class="layui-form-label">
 			主持人
 		</label>
-		<div class="layui-input-block" id="teacher_id" school_id="">
+		<div class="layui-input-block" id="teachers" school_id="">
 		</div>
 	</div>
 	<div class="layui-form-item">
@@ -103,7 +103,7 @@ layui.use(['laydate', 'mytable', 'createInput'], function() {
 	cInput.uploadPic('upload', "/rongyu/danwei/upload", '课题', 'keti\\jieti', 'jtpic');
 
 	// 搜索教师
-	xmselectzc = cInput.searchTeacher('teacher_id');
+	xmselectzc = cInput.searchTeacher('teachers');
 	xmselectcy = cInput.searchTeacher('canyu_id');
 	xmselectkt = cInput.searchKeti('srclx');
 
