@@ -539,7 +539,7 @@ class JsRongyuInfo extends AdminBase
                 'str' => ''
                 ,'rongyu_id' => ''
                 ,'category_id' => ''
-                ,'field' => 'serid'
+                ,'field' => 'id'
                 ,'order' => 'asc'
             ], 'POST');
 
@@ -557,7 +557,9 @@ class JsRongyuInfo extends AdminBase
                 ];
             }
         }
-        $data = reSetArray($data, $src);
+        $src['all'] = true;
+        $cnt = $cy->searchCanyu($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }

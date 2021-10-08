@@ -37,6 +37,11 @@ class JsRongyuCanyu extends BaseModel
         $src = [
             'rongyu_id' => ''
             ,'category_id' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src);
 
@@ -58,6 +63,11 @@ class JsRongyuCanyu extends BaseModel
                     },
                 ]
             )
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
             ->select();
         return $list;
     }

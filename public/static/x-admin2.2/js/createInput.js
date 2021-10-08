@@ -255,7 +255,11 @@ layui.extend({
               searchval: val,
             },
 						success: function(result) {
-							cb(result.data);
+							if (result.data.length > 0) {
+								cb(result.data);
+							} else {
+								return cb([]);
+							}
 						},
 						error: function(result) {
 							layer.msg('数据扔半道啦。', function() {});
@@ -322,7 +326,11 @@ layui.extend({
 							banji_id: $($('#' + id)[0]).attr('banji_id'),
 						},
 						success: function(result) {
-							cb(result.data);
+							if (result.data.length > 0) {
+								cb(result.data);
+							} else {
+								return cb([]);
+							}
 						},
 						error: function(result) {
 							layer.msg('数据扔半道啦。', function() {});
@@ -341,8 +349,13 @@ layui.extend({
 				type: 'POST',
 				data: data,
 				success: function(result) {
+					if (result.data.length > 0) {
+						data = result.data;
+					} else {
+						data = [];
+					}
 					obj.update({
-						data: result.data
+						data:data
 					})
 				},
 				error: function(result) {
@@ -404,7 +417,11 @@ layui.extend({
 			              searchval: val,
 			            },
 						success: function(result) {
-							cb(result.data)
+							if (result.data.length > 0) {
+								cb(result.data);
+							} else {
+								return cb([]);
+							}
 						},
 						error: function(result) {
 							layer.msg('数据扔半道啦。', function() {});

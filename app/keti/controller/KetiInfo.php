@@ -501,7 +501,6 @@ class KetiInfo extends AdminBase
 
         $cy = new \app\keti\model\KetiCanyu;
         $list = $cy->searchCanyu($src);
-        halt($list->toArray());
         $data = array();
         foreach ($list as $key => $value) {
             if($value->teacher)
@@ -515,10 +514,8 @@ class KetiInfo extends AdminBase
         }
 
         $src['all'] = true;
-        $cnt = $sch->search($src)->count();
+        $cnt = $cy->searchCanyu($src)->count();
         $data = reset_data($data, $cnt);
-
-        $data = reSetArray($data, $src);
 
         return json($data);
     }
