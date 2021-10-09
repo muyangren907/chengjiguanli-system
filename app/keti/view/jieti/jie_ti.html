@@ -39,7 +39,7 @@
 			编号标题
 		</label>
 		<div class="layui-input-block">
-			<input class="layui-input" type="text" id='title'  title='title' value="{$list.data.bianhao|default=''}  {$list.data.title|default=''}" placeholder="课题编号" disabled>
+			<input class="layui-input" type="text" id='title'  title='title' value="{$list.data.bianhao|default=''}  {$list.data.title|default=''}" placeholder="课题编号">
 		</div>
 	</div>
 	<div class="layui-form-item">
@@ -121,14 +121,21 @@ layui.use(['laydate', 'mytable', 'createInput'], function() {
 		cInput.loadTeacher(xmselectcy, '/keti/info/srccy', data);
 	}
 
+
+	$('#title').bind("change", function () {
+		data = {
+			ketiinfo_id: "{$list.data.info.id|default=''}",
+			category_id: 11901
+		}
+		cInput.loadTeacher(xmselectzc, '/keti/info/srccy', data);
+	})
+
 	// 图片放大
 	$('#img').click(function(){
 		cInput.imgMax(this);
 	})
 
 });
-
-
 
 
 </script>
