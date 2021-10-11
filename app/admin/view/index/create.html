@@ -68,9 +68,9 @@
 				{/php}
 				{volist name="authgrouplist" id="vo"}
 				<input type="checkbox" name="group_id[]" title="{$vo.title}" value="{$vo.id}" lay-skin="primary" {present name="$list.data.gl_group" } {volist name="list.data.gl_group" id="va" } {eq name="$va.title" value="$vo.title" }checked{/eq} {/volist} {/present}> {/volist} </select> </div> </div> <div class="layui-form-item">
-				<label for="zhiwu_id" class="layui-form-label"><span class="x-red">*</span>职务</label>
+				<label for="zhiwu_id" class="layui-form-label">职务</label>
 				<div class="layui-input-block">
-					<select name="zhiwu_id" id="zhiwu_id" lay-verify="required">
+					<select name="zhiwu_id" id="zhiwu_id">
 					</select>
 				</div>
 			</div>

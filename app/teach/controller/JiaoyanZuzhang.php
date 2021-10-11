@@ -57,7 +57,10 @@ class JiaoyanZuzhang extends AdminBase
                 ,'bfdate'
                 ,'update_time'
             ]);  # 查询数据
-        $data = reSetObject($data, $src);
+
+        $src['all'] = true;
+        $cnt = $jyzzmod->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         // 返回数据
         return json($data);
@@ -88,7 +91,7 @@ class JiaoyanZuzhang extends AdminBase
 
 
     /**
-     * 保存班级
+     * 保存教研组长
      *
      * @return \think\Response
      */
@@ -128,7 +131,7 @@ class JiaoyanZuzhang extends AdminBase
     }
 
 
-    // 修改学期信息
+    // 修改教研组长信息
     public function edit($id)
     {
         // 获取学期信息
@@ -171,7 +174,7 @@ class JiaoyanZuzhang extends AdminBase
     }
 
 
-    // 更新学期信息
+    // 更新教研组长信息
     public function update($id)
     {
         // 获取表单数据

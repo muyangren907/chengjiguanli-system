@@ -127,7 +127,7 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 	table.on('toolbar(mytable)', function(obj) {
 		switch (obj.event) {
 			case 'dels':
-				layer.msg('这个～算了吧！');
+				layer.msg('人都已经毕业了，还删他作甚?');
 				break;
 				var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
 				mytable.delAll(checkStatus, '/student/index/delete', 'mytable');

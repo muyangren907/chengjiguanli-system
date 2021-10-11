@@ -152,7 +152,12 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 			case 'del': // 删除
 				// layer.msg('暂时不允许删除');
 				// break;
-				mytable.del(obj, "/teach/banji/delete");
+				layer.confirm('删除班级会造成数据混乱，确定要继续吗？', { btn: ['我确定！', '再想想'] }, 
+					function () {
+						mytable.del(obj, "/teach/banji/delete");
+					},
+					function (){}
+				);
 				break;
 			case 'edit': // 编辑
 				xadmin.open('编辑班级', '/teach/banji/edit/' + obj.data.id, '600', '300');

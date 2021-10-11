@@ -10,7 +10,7 @@ return [
     # 系统版本
     'webtitle' => '码蚁成绩管理',
     # 系统版本
-    'version' => 'v1.3.8',   
+    'version' => 'v1.3.9 Beta',   
     # 是否开启维护跳转
     'weihu' => Env::get('shangma.weihu', false),  
     # 开始时间

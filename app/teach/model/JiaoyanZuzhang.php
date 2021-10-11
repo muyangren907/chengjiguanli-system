@@ -1,6 +1,4 @@
 <?php
-declare (strict_types = 1);
-
 namespace app\teach\model;
 
 use think\Model;
@@ -46,6 +44,11 @@ class JiaoyanZuzhang extends Model
             ,'searchval' => ''
             ,'category_id' => ''
             ,'status' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src) ;
 
@@ -76,6 +79,11 @@ class JiaoyanZuzhang extends Model
                     },
                 ]
             )
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
             ->select();
 
         return $data;

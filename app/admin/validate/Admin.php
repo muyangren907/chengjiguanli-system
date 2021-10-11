@@ -23,7 +23,7 @@ class Admin extends Validate
         'sex|性别'   =>  'require|in:0,1,2',
         'phone|手机号'     =>  'require|mobile|unique:admin',
         'beizhu|备注'    =>  'max:80',
-        'zhiwu_id|职务'      =>      'require|number',
+        'zhiwu_id|职务'      =>      'number',
         'zhicheng_id|职称'     =>  'require|number',
         'xueli_id|学历'    =>  'require|number',
         'biye|毕业院校'    =>  'length:1,50',

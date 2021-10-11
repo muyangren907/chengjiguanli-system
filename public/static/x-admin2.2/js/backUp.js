@@ -28,7 +28,6 @@ layui.define(['table'], function(exports) {
 				'/system/backup/export',
 				'',
 				function(data) {
-					console.log(data);
 					if (data.code == 1) {
 						layer.msg("开始备份，请不要关闭或刷新本页面！");
 						layui.backUp.beifen(data.data.tab);

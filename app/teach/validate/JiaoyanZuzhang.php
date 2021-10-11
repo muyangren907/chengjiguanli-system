@@ -14,6 +14,7 @@ class JiaoyanZuzhang extends Validate
      * @var array
      */
     protected $rule = [
+        'id|ID' => 'require',
         'teacher_id|教师'     =>  'require|number',
         'jiaoyanzu_id|教研组'     =>  'require|number',
         'bfdate|开始时间'     =>  'require|date',
@@ -31,6 +32,11 @@ class JiaoyanZuzhang extends Validate
         'create'  =>  [
             'teacher_id'
             ,'jiaoyanzu_id'
+            ,'bfdate'
+        ],
+        'edit'  =>  [
+            'id'
+            ,'teacher_id'
             ,'bfdate'
         ],
     ];
