@@ -283,7 +283,7 @@ class Bjtongji extends AdminBase
         header('Cache-Control: max-age=0');
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
         ini_set("error_reporting","E_ALL & ~E_NOTICE");
-        $writer->save('php://output');halt($filename);
+        $writer->save('php://output');
         ob_flush();
         flush();
         exit();
@@ -390,8 +390,11 @@ class Bjtongji extends AdminBase
         if (count($src['banji_id']) == 0) {
             // 获取参与考试的班级
             $cy = new \app\kaohao\model\SearchCanYu;
-            $src['banji_id']= array_column($cy->class($src), 'id');
+            $src['banji_id'] = array_column($cy->class($src), 'id');
         }
+
+        $src['auth'] = event('mybanji', array());
+        $src['auth'] = $src['auth'][0];
 
         // 统计成绩
         $btj = new BTJ;
@@ -601,8 +604,6 @@ class Bjtongji extends AdminBase
             'kaoshi' => 1
             ,'status' => 1
         ];
-        // $list['data']['subject_id'] = $sbj->search($src);
-        // halt($list);
         // 设置页面标题
         $list['set'] = array(
             'webtitle'=>'设置任课教师'

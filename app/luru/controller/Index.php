@@ -99,10 +99,12 @@ class Index extends AdminBase
         $khInfo = $kh->where('id', $list['kaohao_id'])->find();
         event('kslu', $khInfo->kaoshi_id);
 
+        // halt($list, $khInfo->toArray());
+
         $src = [
             'kaoshi_id' => $khInfo->kaoshi_id
             ,'banji_id' => $khInfo->banji_id
-            ,'subject_id' => $subject_id
+            ,'subject_id' => $list['subject_id']
         ];
         $auth = event('lrfg', $src);
         $auth = $auth[0];
@@ -115,7 +117,7 @@ class Index extends AdminBase
 
         // 获取本学科满分
         $list['ruxuenian'] = $list['nianji'];
-        $list['kaoshi_id'] = $kaoshi_id;
+        $list['kaoshi_id'] = $khInfo->kaoshi_id;
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $subject = $ksset->srcSubject($list);
 
@@ -289,9 +291,13 @@ class Index extends AdminBase
 
         $khSrc = new \app\kaohao\model\SearchOne;
         $cjlist = $khSrc->srcOneSubjectChengji($id, $subject_id);
-
+        $data = [
+            "msg" => "获取成功"
+            ,"val" => 1
+            ,"data" => $cjlist
+        ];
         // 获取列名
-        return json($cjlist);
+        return json($data);
     }
 
 

@@ -106,7 +106,6 @@ class Tongji extends BaseModel
             $data['cj'][$value['lieming']] = $temp;
         }
 
-
         $temp = $tempNull;
         $cjcol = array_column($cj, 'sum');
         $stu_cnt = count($cjcol);
@@ -123,7 +122,6 @@ class Tongji extends BaseModel
                 $temp['defenlv'] = $temp['avg'] / $sbjdefencnt;
             }
             $temp['biaozhuncha'] = round($this->getVariance($temp['avg'], $cjcol, true), 2);
-
             $temp['avg'] = round($temp['avg'], 2);
             $temp['max'] = max($cjcol);
             $temp['min'] = min($cjcol);
@@ -172,11 +170,11 @@ class Tongji extends BaseModel
             $col = 0; # 记录有成绩的学生数
             // 开始循环这个学生的每个学科成绩
             foreach ($sbj as $k => $val) {
-                if (isset($value[$val['lieming']])) {
-                    if ($value[$val['lieming']] >= $val['fenshuxian'][$category]) {
+                if (isset($value[$val['lieming'].'defen'])) {
+                    if ($value[$val['lieming'].'defen'] >= $val['fenshuxian'][$category]) {
                         $temjige ++;
                     }
-                    if ($value[$val['lieming']] !== null) {
+                    if ($value[$val['lieming'].'defen'] !== null) {
                         $col ++;
                     }
                 }

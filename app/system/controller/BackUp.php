@@ -156,7 +156,18 @@ class BackUp extends AdminBase
                         ]
                     ];
                }
-           }
+           }else if(is_array($start)) {
+                $data = [
+                    'msg' => '备份完成！'
+                    ,'code' => 1
+                    ,'data' => [
+                        'tab' => [
+                            'id' => $id
+                            ,'start' => $start[0]
+                        ]
+                    ]
+                ];
+            }
         }else{
             $data = [
                 'msg' => '参数错误！'

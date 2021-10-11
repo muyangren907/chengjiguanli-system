@@ -2,6 +2,7 @@
 namespace wamkj\thinkphp;
 use think\facade\Db;
 use think\facade\Config;
+use think\facade\Env;
 class Backup
 {
         /**
@@ -306,7 +307,8 @@ class Backup
             $result = $db->query("SELECT * FROM `{$table}` LIMIT {$start}, 1000");
             foreach ($result as $row) {
                 $row = array_map('addslashes', $row);
-                $sql = "INSERT INTO `{$table}` VALUES ('" . str_replace(array("\r","\n"),array('\r','\n'),implode("', '", $row)) . "');\n";
+                $row = str_replace(array("''","\n"), array('null','\n'), "'".implode("', '", $row)."'");
+                $sql = "INSERT INTO `{$table}` VALUES (" . $row . ");\n";
                 if(false === $this->write($sql)){
                     return false;
                 }

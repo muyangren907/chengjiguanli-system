@@ -67,7 +67,7 @@ class OneStudentChengji extends BaseController
         // 获取学生成绩
         $stucj = new STUCJ;
         $data = $stucj->yiBiao($src);
-
+        
         return json($data);
     }
 

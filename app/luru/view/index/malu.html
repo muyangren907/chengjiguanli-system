@@ -50,19 +50,24 @@ $('#saoma').keypress(function(event) {
 			},
 			dataType: 'json',
 			success: function(data) {
-				$('#xsschool').text(data.cjSchool.jiancheng);
-				$('#xsbanji').text(data.cjBanji.banjiTitle);
-				$('#xsxingming').text(data.cjStudent['xingming']);
-				$('#xsxueke').text(data.subjectName.title);
+				if (data.val == 1) {
+					data = data.data;
+					$('#xsschool').text(data.cjSchool.jiancheng);
+					$('#xsbanji').text(data.cjBanji.banjiTitle);
+					$('#xsxingming').text(data.cjStudent['xingming']);
+					$('#xsxueke').text(data.subjectName.title);
 
-				$('#kaohao_id').val(data.id);
-				$('#subject_id').val(data.subjectName.id);
-				$('#nianji').val(data.cjBanji.ruxuenian);
-				if (data.chengji) {
-					$('#defen').val(data.chengji.defen);
+					$('#kaohao_id').val(data.id);
+					$('#subject_id').val(data.subjectName.id);
+					$('#nianji').val(data.cjBanji.ruxuenian);
+					if (data.chengji) {
+						$('#defen').val(data.chengji.defen);
+					}
+					$('#saoma').val('');
+					$('#defen').focus();
+				} else {
+					layer.msg(data.msg);
 				}
-				$('#saoma').val('');
-				$('#defen').focus();
 			},
 			error: function(data) {
 				layer.msg('数据走丢了');

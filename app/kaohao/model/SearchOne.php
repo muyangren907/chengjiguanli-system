@@ -154,17 +154,24 @@ class SearchOne extends BaseModel
             ])
             ->find();
 
-        if($stuCj->cjStudent->isEmpty())
+        if(!$stuCj->cjStudent)
         {
             $stu = new \app\student\model\Student;
             $stuinfo = $stu::withTrashed()
-                ->where('id', $cjlist->student)
+                ->where('id', $stuCj->student)
                 ->field('id, xingming, sex')
                 ->find();
-            $stuCj->cjStudent = array(
-                'id' => $stuinfo->id
-                ,'xingming' => $stuinfo->xingming
-            );
+            if(!$stuinfo){
+                $stuCj->cjStudent = array(
+                    'id' => $stuCj->student
+                    ,'xingming' => "真删除"
+                );
+            } else {
+                $stuCj->cjStudent = array(
+                    'id' => $stuinfo->id
+                    ,'xingming' => $stuinfo->xingming
+                );
+            }
         }
 
         $sbj = new \app\teach\model\Subject;
