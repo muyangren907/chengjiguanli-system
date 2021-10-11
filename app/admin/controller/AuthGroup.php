@@ -42,7 +42,9 @@ class AuthGroup extends AdminBase
         // 根据数据查询信息
         $ag = new AG;
         $data = $ag->search($src);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $ag->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }
@@ -60,12 +62,14 @@ class AuthGroup extends AdminBase
         );
 
         $rule = new \app\admin\model\AuthRule;
-        $src['status'] = 1;
+        $src = [
+            'status' => 1
+            ,'all' => true
+        ];
         $ruleList = $rule->search($src);
         $ruleSelect = array();
         $auth = $rule->digui($ruleList, $ruleSelect); # 递归获取所有权限
         $list['auth'] = $auth;
-        // halt($auth);
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -118,14 +122,15 @@ class AuthGroup extends AdminBase
         );
 
         $rule = new \app\admin\model\AuthRule;
-        $src['status'] = 1;
+        $src = [
+            'status' => 1
+            ,'all' => true
+        ];
         $ruleList = $rule->search($src);
         $aglist = AG::where('id', $id)
             ->field('id, title, miaoshu, rules')
             ->find();
-
         $ruleSelect = explode(",", $aglist->rules);
-        $a = array_search(1, $ruleSelect);
 
         $auth = $rule->digui($ruleList, $ruleSelect, 0);
         $list['auth'] = $auth;

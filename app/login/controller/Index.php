@@ -19,17 +19,21 @@ class Index extends BaseController
         // 清除session（当前作用域）
         session(null);
 
-        // 获取信息
-        $sysbasemod = new \app\system\model\SystemBase;     # 关键字
-        if(!$sysbasemod)
-        {
-            $list = $sysbasemod::sysInfo();     # 描述
-        } else {
+        // 启动事务
+        \think\facade\Db::startTrans();
+        try {
+            $sysbasemod = new \app\system\model\SystemBase;     # 关键字
+            $list = $sysbasemod::sysInfo();
+            if($list == null) {
+                $list['sys_title'] = config('shangma.webtitle');
+            }
+            // \think\facade\Db::commit();
+        } catch (\Exception $e) {
+            // 回滚事务
             $list['sys_title'] = config('shangma.webtitle');
         }
         // 获取系统名称和版本号
         $list['version'] = config('shangma.version');
-
         $this->view->assign('list',$list);
 
         // 渲染输出
@@ -47,6 +51,8 @@ class Index extends BaseController
                 ,'password'
                 ,'category'
             ]);
+        $list['username'] = trim($list['username']);
+        $list['password'] = trim($list['password']);
 
         $validate = new \app\login\validate\Yanzheng;
         $result = $validate->scene('admin')->check($list);
@@ -88,6 +94,8 @@ class Index extends BaseController
                 ,'password'
                 ,'category'
             ]);
+        $list['username'] = trim($list['username']);
+        $list['password'] = trim($list['password']);
 
         $validate = new \app\login\validate\Yanzheng;
         $result = $validate->scene('admin')->check($list);

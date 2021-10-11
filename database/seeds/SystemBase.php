@@ -27,6 +27,8 @@ class SystemBase extends Seeder
             'classmax'      =>  5,
             'classalias'    =>  0,
             'studefen' =>  1,
+            'create_time' => time(),
+            'update_time' => time()
         ];
 
         $serRows = $this->fetchAll('select * from cj_system_base');

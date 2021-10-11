@@ -54,7 +54,9 @@ class Jiaoshi extends AdminBase
         // 根据条件查询数据
         $jsry = new jsry;
         $data = $jsry->search($src);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $jsry->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }

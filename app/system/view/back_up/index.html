@@ -39,12 +39,12 @@ layui.use(['table', 'backUp', 'form'], function() {
 	// 设置列
 	options.cols = [
 		[ //表头
-			{ field: 'time', type: 'checkbox', fixed: 'left' },
-			{ field: 'ltime', title: '时间', sort: true, minWidth: 100, fixed: 'left'},
-			{ field: 'juan', title: '卷数', sort: true, minWidth: 100 },
-			{ field: 'yasuo', title: '压缩', sort: true, minWidth: 100 },
-			{ field: 'lsize', title: '文件大小', minWidth: 100, sort: true },
-			{ field: 'status', title: '状态', minWidth: 100, sort: true },
+			{ field: 'ltime', type: 'checkbox', fixed: 'left' },
+			{ field: 'time', title: '时间', sort: true, minWidth: 100, fixed: 'left'},
+			{ field: 'part', title: '卷数', sort: true, minWidth: 100 },
+			{ field: 'compress', title: '压缩', sort: true, minWidth: 100 },
+			{ field: 'size', title: '文件大小', minWidth: 100, sort: true },
+			{ field: 'status', title: '状态', minWidth: 100 },
 			{ field: 'id', title: '操作', toolbar: '#barDemo', minWidth: 90}
 		]
 	];
@@ -69,13 +69,13 @@ layui.use(['table', 'backUp', 'form'], function() {
 		var tr = obj.tr; //获得当前行 tr 的DOM对象
 		switch (layEvent) {
 			case 'del': // 删除
-				backUp.del('/system/backup/delete/' + obj.data.time);
+				backUp.del('/system/backup/delete/' + obj.data.ltime);
 				break;
 			case 'huifu': // 删除
-				backUp.back('/system/backup/import', this, obj.data.time);
+				backUp.back('/system/backup/import', this, obj.data.ltime);
 				break;
 			case 'down': // 删除
-				window.open("/system/backup/down/" + obj.data.time);
+				window.open("/system/backup/down/" + obj.data.ltime);
 				break;
 		};
 	});

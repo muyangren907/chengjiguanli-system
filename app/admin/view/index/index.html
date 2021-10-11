@@ -62,9 +62,9 @@ layui.use(['table', 'mytable', 'form'], function() {
 		[ //表头
 			{ type: 'checkbox', fixed: 'left' },
 			{ field: 'xingming', title: '姓名', sort: true, minWidth: 80, fixed: 'left' },
-			{ field: 'sex', title: '性别', minWidth: 100, sort: true },
+			{ field: 'sex', title: '性别', minWidth: 80, sort: true },
 			{ field: "shengri", title: '生日', minWidth: 100, sort: true },
-			{ field: 'username', title: '帐号', sort: true },
+			{ field: 'username', title: '帐号', minWidth: 100, sort: true },
 			{
 				field: 'school_id',
 				title: '所在单位',
@@ -76,28 +76,12 @@ layui.use(['table', 'mytable', 'form'], function() {
 					}
 				}
 			},
-			{
-				title: '用户组',
-				minWidth: 130,
-				templet: function(d) {
-					var str = '';
-					if (d.glGroup.length > 0) {
-						for (var k = 0, length = d.glGroup.length; k < length; k++) {
-							if (k == 0) {
-								str = d.glGroup[k].title;
-							} else {
-								str = str + '、' + d.glGroup[k].title;
-							}
-						}
-					}
-					return str;
-				}
-			},
+			{ field:'groupnames', title: '用户组', minWidth: 130},
 			{ field: 'phone', title: '联系电话', minWidth: 120, sort: true },
 			{ field: 'denglucishu', title: '登录次数', minWidth: 100, sort: true },
 			{ field: 'lasttime', title: '最后登录时间', minWidth: 180, sort: true },
 			{ field: 'ip', title: '最后登录地址', minWidth: 130, sort: true },
-			{ field: 'status', title: '状态', templet: '#status', sort: true },
+			{ field: 'status', title: '状态', templet: '#status', minWidth: 100, sort: true },
 			{ field: 'id', title: '操作', toolbar: '#barDemo', minWidth: 140 },
 		]
 	];

@@ -53,9 +53,11 @@ class Danwei extends AdminBase
             ],'POST');
 
         // 查询数据
-        $DW = new DW;
+        $DW = new DW; 
         $data = $DW->search($src);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $DW->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }

@@ -53,7 +53,9 @@ class Category extends AdminBase
                 ,'status'
                 ,'update_time'
             ]);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $cg->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }

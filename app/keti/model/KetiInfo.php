@@ -7,6 +7,29 @@ use app\BaseModel;
 
 class KetiInfo extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'title' => 'varchar'
+        ,'lixiang_id' => 'int'
+        ,'jieti_id' => 'int'
+        ,'bianhao' => 'varchar'
+        ,'lxpic' => 'varchar'
+        ,'subject_id' => 'int'
+        ,'fzdanwei_id' => 'int'
+        ,'category_id' => 'int'
+        ,'jhjtshijian' => 'int'
+        ,'jtshijian' => 'int'
+        ,'jddengji_id' => 'int'
+        ,'jtpic' => 'varchar'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'status' => 'tinyint'
+        ,'beizhu' => 'varchar'
+    ];
+
+
     //搜索课题册
     public function search($srcfrom)
     {
@@ -20,15 +43,20 @@ class KetiInfo extends BaseModel
             ,'lixiang_id' => ''
             ,'jieti_id' => ''
             ,'searchval' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
         // 用新值替换初始值
         $src = array_cover($srcfrom, $src);
-        $src['lxdanwei_id'] = strToArray($src['lxdanwei_id']);
-        $src['lxcategory_id'] = strToArray($src['lxcategory_id']);
-        $src['fzdanwei_id'] = strToArray($src['fzdanwei_id']);
-        $src['subject_id'] = strToArray($src['subject_id']);
-        $src['category_id'] = strToArray($src['category_id']);
-        $src['jddengji_id'] = strToArray($src['jddengji_id']);
+        $src['lxdanwei_id'] = str_to_array($src['lxdanwei_id']);
+        $src['lxcategory_id'] = str_to_array($src['lxcategory_id']);
+        $src['fzdanwei_id'] = str_to_array($src['fzdanwei_id']);
+        $src['subject_id'] = str_to_array($src['subject_id']);
+        $src['category_id'] = str_to_array($src['category_id']);
+        $src['jddengji_id'] = str_to_array($src['jddengji_id']);
 
     	$data = $this
     		->when(count($src['lxdanwei_id']) > 0, function($query) use($src){
@@ -104,6 +132,11 @@ class KetiInfo extends BaseModel
                         $query->field('id, title');
                     }
                 ])
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
     		->select();
 
     	return $data;
@@ -345,7 +378,7 @@ class KetiInfo extends BaseModel
     // 课题主持人关联
     public function ktZcr()
     {
-        return $this->hasMany('\app\keti\model\KetiCanyu', 'ketiinfo_id', 'id')
+        return $this->hasMany(\app\keti\model\KetiCanyu::class, 'ketiinfo_id', 'id')
             ->where('category_id', 11901);
     }
 
@@ -353,7 +386,7 @@ class KetiInfo extends BaseModel
     // 课题参与人关联
     public function ktCy()
     {
-        return $this->hasMany('\app\keti\model\KetiCanyu', 'ketiinfo_id', 'id')
+        return $this->hasMany(\app\keti\model\KetiCanyu::class, 'ketiinfo_id', 'id')
             ->where('category_id', 11902);
     }
 
@@ -361,42 +394,42 @@ class KetiInfo extends BaseModel
     // 立项单位关联
     public function fzSchool()
     {
-         return $this->belongsTo('\app\system\model\School', 'fzdanwei_id','id');
+         return $this->belongsTo(\app\system\model\School::class, 'fzdanwei_id','id');
     }
 
 
     // 研究类型关联
     public function ktCategory()
     {
-         return $this->belongsTo('\app\system\model\Category', 'category_id', 'id');
+         return $this->belongsTo(\app\system\model\Category::class, 'category_id', 'id');
     }
 
 
     // 所属学科关联
     public function ktSubject()
     {
-         return $this->belongsTo('\app\system\model\Category', 'subject_id', 'id');
+         return $this->belongsTo(\app\system\model\Category::class, 'subject_id', 'id');
     }
 
 
     // 结题等级关联
     public function ktJdDengji()
     {
-         return $this->belongsTo('\app\system\model\Category', 'jddengji_id', 'id');
+         return $this->belongsTo(\app\system\model\Category::class, 'jddengji_id', 'id');
     }
 
 
     // 课题册关联
     public function glLixiang()
     {
-         return $this->belongsTo('\app\keti\model\Lixiang', 'lixiang_id', 'id');
+         return $this->belongsTo(\app\keti\model\Lixiang::class, 'lixiang_id', 'id');
     }
 
 
     // 课题册关联
     public function glJieti()
     {
-         return $this->belongsTo('\app\keti\model\Jieti', 'jieti_id', 'id');
+         return $this->belongsTo(\app\keti\model\Jieti::class, 'jieti_id', 'id');
     }
 
 

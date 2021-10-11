@@ -10,17 +10,30 @@ use think\Model;
  */
 class JiaoyanZuzhang extends Model
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'teacher_id' => 'int'
+        ,'jiaoyanzu_id' => 'int'
+        ,'bfdate' => 'int'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'beizhu' => 'varchar'
+    ];
+
+
     // 教师关联
     public function glTeacher()
     {
-        return $this->belongsTo('\app\admin\model\Admin', 'teacher_id', 'id');
+        return $this->belongsTo(\app\admin\model\Admin::class, 'teacher_id', 'id');
     }
 
 
     // 教研组关联
     public function glJiaoyanzu()
     {
-        return $this->belongsTo('\app\teach\model\Jiaoyanzu', 'jiaoyanzu_id', 'id');
+        return $this->belongsTo(\app\teach\model\Jiaoyanzu::class, 'jiaoyanzu_id', 'id');
     }
 
     // 根据条件查询教研组

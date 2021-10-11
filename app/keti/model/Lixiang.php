@@ -8,6 +8,21 @@ use app\BaseModel;
 
 class Lixiang extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'title' => 'varchar'
+        ,'lxshijian' => 'int'
+        ,'lxdanwei_id' => 'int'
+        ,'category_id' => 'int'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'beizhu' => 'varchar'
+        ,'status' => 'tinyint'
+    ];
+
+
     //搜索课题册
     public function search($srcfrom)
     {
@@ -15,10 +30,15 @@ class Lixiang extends BaseModel
             'lxdanwei_id' => array()
             ,'category_id' => array()
             ,'searchval' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src);
-        $src['lxdanwei_id'] = strToArray($src['lxdanwei_id']);
-        $src['category_id'] = strToArray($src['category_id']);
+        $src['lxdanwei_id'] = str_to_array($src['lxdanwei_id']);
+        $src['category_id'] = str_to_array($src['category_id']);
 
     	$data = $this
     		->when(count($src['lxdanwei_id']) > 0, function($query) use($src){
@@ -44,6 +64,11 @@ class Lixiang extends BaseModel
             ->withCount(['ktInfo' => function($query){
                 $query->where('jddengji_id', 'between', [11802, 11803]);
             }])
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
     		->select();
 
     	return $data;
@@ -53,21 +78,21 @@ class Lixiang extends BaseModel
     // 类型关联
     public function ktCategory()
     {
-    	return $this->belongsTo('\app\system\model\Category', 'category_id', 'id');
+    	return $this->belongsTo(\app\system\model\Category::class, 'category_id', 'id');
     }
 
 
     // 立项单位关联
     public function ktLxdanwei()
     {
-    	return $this->belongsTo('\app\system\model\School', 'lxdanwei_id', 'id');
+    	return $this->belongsTo(\app\system\model\School::class, 'lxdanwei_id', 'id');
     }
 
 
     // 课题信息关联
     public function ktInfo()
     {
-    	return $this->hasMany('KetiInfo', 'lixiang_id', 'id');
+    	return $this->hasMany(KetiInfo::class, 'lixiang_id', 'id');
     }
 
 

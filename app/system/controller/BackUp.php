@@ -36,23 +36,32 @@ class BackUp extends AdminBase
     {
         // 获取参数
         $src = $this->request
-                ->only([
-                    'page' => '1'
-                    ,'limit' => '10'
-                    ,'field' => 'time'
-                    ,'order' => 'desc'
-                ],'POST');
+            ->only([
+                'page' => '1'
+                ,'limit' => '10'
+                ,'field' => 'time'
+                ,'order' => 'desc'
+            ],'POST');
+        $src['order'] == 'desc' ? $src['order'] = SORT_DESC
+                : $src['order'] = SORT_ASC;   # 数据排序
+        $start = $src['page'] * $src['limit'] - $src['limit'];
 
         $db= new up($this->upcnf);
         $data = $db->fileList();
+
+        $cnt = count($data);
+        $data = \app\facade\Tools::sortArrByManyField($data, $src['field'], $src['order']);
+        $data = array_slice($data, $start, $src['limit']);
+
         foreach ($data as $key => $value) {
-           $data[$key]['ltime'] = date('Y-m-d H:i:s', $value['time']);
-           $data[$key]['lsize'] = format_bytes($value['size']);
-           $data[$key]['juan'] = $value['part'];
-           $data[$key]['yasuo'] = $value['compress'];
+           $data[$key]['ltime'] = $value['time'];
+           $data[$key]['time'] = date('Y-m-d H:i:s', $value['time']);
+           $data[$key]['size'] = format_bytes($value['size']);
+           $data[$key]['part'] = $value['part'];
+           $data[$key]['compress'] = $value['compress'];
            $data[$key]['status'] = '正常';
         }
-        $data = reSetArray($data, $src);
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }
@@ -260,13 +269,13 @@ class BackUp extends AdminBase
     * 下载备份文件
     */
    public function down($time = 0){
-       $db= new up($this->upcnf);
-       $list = $db->getFile('timeverif', $time);
-       $url = $list['1']['1'];
-       $l = strripos($url, '\\', 0) + 1;
-       $title = substr($url, $l, strlen($url) - $l);
-       $title = str_replace('-', '', $title);
-       return download($url, $title);
+        $db= new up($this->upcnf);
+        $list = $db->getFile('timeverif', $time);
+        $url = $list['1']['1'];
+        $l = strripos($url, '\\', 0) + 1;
+        $title = substr($url, $l, strlen($url) - $l);
+        $title = str_replace('-', '', $title);
+        return download($url, $title);
    }
 
 

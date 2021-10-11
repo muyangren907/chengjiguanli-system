@@ -11,24 +11,37 @@ use app\BaseModel;
  */
 class BanZhuRen extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'teacher_id' => 'int'
+        ,'banji_id' => 'int'
+        ,'bfdate' => 'int'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'beizhu' => 'varchar'
+    ];
+
+
     // 教师关联模型
     public function glAdmin()
     {
-        return $this->belongsTo('\app\admin\model\Admin', 'teacher_id', 'id');
+        return $this->belongsTo(\app\admin\model\Admin::class, 'teacher_id', 'id');
     }
 
 
     // 教师关联模型
     public function glBanji()
     {
-        return $this->belongsTo('\app\teach\model\Banji', 'banji_id', 'id');
+        return $this->belongsTo(\app\teach\model\Banji::class, 'banji_id', 'id');
     }
 
 
     // 班级对应教师
     public function banjiTeachers()
     {
-        return $this->hasMany('\app\teach\model\BanZhuRen', 'banji_id', 'banji_id');
+        return $this->hasMany(\app\teach\model\BanZhuRen::class, 'banji_id', 'banji_id');
     }
 
 

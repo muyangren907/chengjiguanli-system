@@ -17,7 +17,7 @@ class Online
         $weihu = config('shangma.weihu');
         // 判断是否在线，如果不在线则跳转
         $online = session('?onlineCategory');
-        if($online == false)
+        if($online !=true or strlen(session('onlineCategory')) < 1)
         {
             \app\facade\OnLine::jump('/login', '登录超时啦~');
         }

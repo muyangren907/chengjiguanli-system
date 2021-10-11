@@ -24,6 +24,8 @@ class ZauthGroup extends Seeder
                 'title' => '管理员'
                 ,'rules' => $authList
                 ,'miaoshu' => '拥有所有权限'
+                ,'create_time' => time()
+                ,'update_time' => time()
             ]
         ];
 

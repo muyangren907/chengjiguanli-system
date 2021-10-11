@@ -6,20 +6,32 @@ use app\BaseModel;
 
 class Category extends BaseModel
 {
-	// 关闭全局自动时间戳
-    // protected $autoWriteTimestamp = false;
+	// 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'title' => 'varchar'
+        ,'p_id' => 'int'
+        ,'status' => 'tinyint'
+        ,'paixu' => 'int'
+        ,'isupdate' => 'tinyint'
+        ,'beizhu' => 'varchar'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+    ];
+
 
     // 父级类型关联
     public function glPid()
     {
-    	return $this->belongsTo('Category', 'p_id', 'id');
+    	return $this->belongsTo(Category::class, 'p_id', 'id');
     }
 
 
     // 子类型关联
     public function glCid()
     {
-        return $this->hasMany('Category', 'p_id', 'id');
+        return $this->hasMany(Category::class, 'p_id', 'id');
     }
 
 
@@ -29,6 +41,11 @@ class Category extends BaseModel
         $src = [
             'p_id'=>''
             ,'searchval'=>''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
 
         // 用新值替换初始值
@@ -49,23 +66,32 @@ class Category extends BaseModel
                     }
                 ]
             )
-            // ->cache(true, 60)
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
             ->select();
+
         return $data;
     }
+
 
     // 查询子类别
     public function srcChild($srcfrom)
     {
         $src = [
             'p_id'=>''
+            ,'order' => 'asc'
         ];
+        $src = array_cover($srcfrom, $src);   # 新值替换旧值
 
-        // 用新值替换初始值
-        $src = array_cover($srcfrom, $src) ;
         $child = self::where('p_id', $src['p_id'])
             ->where('status', 1)
+            ->field('id, title, p_id, status, paixu, isupdate')
+            ->order(['paixu' => $src['order']])
             ->select();
+
         return $child;
     }
 
@@ -78,6 +104,7 @@ class Category extends BaseModel
             ->where('status', 1)
             ->field('id, title')
             ->select();
+            
         return $data;
     }
 }

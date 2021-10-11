@@ -62,7 +62,9 @@ class Subject extends AdminBase
                 ,'update_time'
             ]);
 
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $sj->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }
@@ -98,7 +100,6 @@ class Subject extends AdminBase
             ,'paixu'
             ,'lieming'
         ], 'post');
-
 
         // 验证表单数据
         $validate = new \app\teach\validate\Subject;
@@ -258,7 +259,7 @@ class Subject extends AdminBase
     }
 
 
-    // 查询用户名是否重复
+    // 查询学科列名是否重复
     public function srcLieming()
     {
         // 获取参数
@@ -267,30 +268,10 @@ class Subject extends AdminBase
                 'searchval' => ''
                 ,'id'
             ], 'POST');
-        $src = [
-                'searchval' => ''
-                ,'id' => ''
-            ];
-        $src = array_cover($srcfrom, $src);
 
         $sj = new SJ();
-        $list = $sj->where('lieming', $src['searchval'])
-            ->find();
+        $data = $sj->onlyLeiming($src);
 
-        // 根据更新结果设置返回提示信息
-        $data = ['msg' => '列标识已经存在！', 'val' => 0];
-        if($list)
-        {
-            if($src['id'] > 0)
-            {
-
-                if($src['id'] == $list->id){
-                    $data = ['msg' => '', 'val' => 1];
-                }
-            }
-        }else{
-           $data = ['msg' => '', 'val' => 1];
-        }
         return json($data);
     }
 }

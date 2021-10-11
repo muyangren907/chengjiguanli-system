@@ -10,7 +10,8 @@ use app\admin\model\AuthGroupAccess as AGA;
 
 class AuthGroupAccess extends AdminBase
 {
-	// 用户列表
+	
+    // 用户列表
     public function index($group_id)
     {
         // 设置要给模板赋值的信息
@@ -44,7 +45,9 @@ class AuthGroupAccess extends AdminBase
         // 根据数据查询信息
         $aga = new AGA;
         $data = $aga->search($src);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $aga->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }
@@ -77,7 +80,7 @@ class AuthGroupAccess extends AdminBase
             'uid'
             ,'group_id'
         ], 'POST');
-        $list['uid'] = strToArray($list['uid']);
+        $list['uid'] = str_to_array($list['uid']);
         $data = array();
 
         // 验证表单数据
@@ -126,7 +129,7 @@ class AuthGroupAccess extends AdminBase
         $id = request()->delete('id');
         $id = explode(',', $id);
 
-        $data = AGA::destroy($id,true);
+        $data = AGA::destroy($id);
 
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '删除成功', 'val' => 1]

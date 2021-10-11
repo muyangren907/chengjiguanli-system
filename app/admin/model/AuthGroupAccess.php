@@ -8,6 +8,20 @@ use think\model\Pivot;
 
 class AuthGroupAccess extends Pivot
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'uid' => 'int'
+        ,'group_id' => 'int'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+    ];
+
+    // 开启软删除
+    use \think\model\concern\SoftDelete;
+    protected $deleteTime = 'delete_time';
+
     // 根据角色ID查询用户
     public function search($srcfrom)
     {
@@ -15,10 +29,16 @@ class AuthGroupAccess extends Pivot
             'group_id' => 0
             ,'searchval' => ''
             ,'school_id' => array()
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
+
         // 用新值替换初始值
         $src = array_cover($srcfrom, $src);
-        $src['school_id'] = strToArray($src['school_id']);
+        $src['school_id'] = str_to_array($src['school_id']);
 
         $data = $this
         	->where('group_id', $src['group_id'])
@@ -43,16 +63,22 @@ class AuthGroupAccess extends Pivot
                 
             })
             ->where('uid','<>', session('userid'))
+            ->where('uid', '>', 2)
         	->with([
         		'jsUser' => function($query) use($src) {
-        			$query->field('id,xingming,school_id,username')
+        			$query->field('id, xingming, school_id, username')
         				->with([
         					'adSchool' => function($q){
-        						$q->field('id,title,jiancheng');
+        						$q->field('id, title, jiancheng');
         					}
         				]);
         		}
         	])
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
         	->select();
 
         return $data;
@@ -62,6 +88,6 @@ class AuthGroupAccess extends Pivot
     // 考试设置关联表
     public function jsUser()
     {
-        return $this->belongsTo('Admin', 'uid', 'id');
+        return $this->belongsTo(Admin::class, 'uid', 'id');
     }
 }

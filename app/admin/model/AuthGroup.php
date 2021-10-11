@@ -7,6 +7,19 @@ use app\BaseModel;
 
 class AuthGroup extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'title' => 'varchar'
+        ,'rules' => 'varchar'
+        ,'miaoshu' => 'varchar'
+        ,'status' => 'tinyint'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+    ];
+
+
     // 查询所有角色
     public function search($srcfrom)
     {
@@ -14,6 +27,11 @@ class AuthGroup extends BaseModel
         $src = [
             'searchval' => ''
             ,'status' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src);
 
@@ -22,6 +40,10 @@ class AuthGroup extends BaseModel
             ->when(strlen($src['searchval']) > 0, function($query) use($src){
                     $query->where('title', 'like', '%' . $src['searchval'] . '%');
                 })
+            ->when($src['all'] == true, function ($query) {
+                $query->field('id');
+            })
+            ->order(['id'])
             ->select();
 
         return $data;

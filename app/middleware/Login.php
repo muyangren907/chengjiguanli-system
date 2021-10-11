@@ -17,10 +17,12 @@ class Login
     public function handle($request, \Closure $next)
     {
         $category = session('onlineCategory');
+
         $yz = [
             'val' => 0
             ,'msg' => '已经掉线啦~'
         ];
+
         switch ($category) {
             case 'admin':
                 $yz = yz::admin(session('username'), session('password'));
@@ -32,10 +34,12 @@ class Login
                 \app\facade\OnLine::jump('/login', '请选择用户角色');
                 break;
         }
-        if($yz['val'] === 0)
+
+        if ($yz['val'] === 0)
         {
             \app\facade\OnLine::jump('/login', $yz['msg']);
         }
+
 
         return $next($request);
     }

@@ -6,31 +6,49 @@ use app\BaseModel;
 
 class School extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'title' => 'varchar'
+        ,'jiancheng' => 'varchar'
+        ,'biaoshi' => 'varchar'
+        ,'xingzhi_id' => 'int'
+        ,'jibie_id' => 'int'
+        ,'xueduan_id' => 'int'
+        ,'kaoshi' => 'tinyint'
+        ,'status' => 'tinyint'
+        ,'paixu' => 'int'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'beizhu' => 'varchar'
+    ];
+
 
     // 教师数据模型关联
     public function dwAdmin()
     {
-        return $this->hasMany('\app\admin\model\Admin', 'school_id', 'id');
+        return $this->hasMany(\app\admin\model\Admin::class, 'school_id', 'id');
     }
 
     // 单位性质数据模型关联
     public function  dwXingzhi()
     {
-        return $this->belongsTo('\app\system\model\Category', 'xingzhi_id', 'id');
+        return $this->belongsTo(\app\system\model\Category::class, 'xingzhi_id', 'id');
     }
 
 
     // 单位级别数模型关联
     public function  dwJibie()
     {
-        return $this->belongsTo('\app\system\model\Category', 'jibie_id', 'id');
+        return $this->belongsTo(\app\system\model\Category::class, 'jibie_id', 'id');
     }
 
 
     // 单位学段数模型关联
     public function  dwXueduan()
     {
-        return $this->belongsTo('\app\system\model\Category', 'xueduan_id', 'id');
+        return $this->belongsTo(\app\system\model\Category::class, 'xueduan_id', 'id');
     }
 
 
@@ -64,11 +82,52 @@ class School extends BaseModel
             ,'kaoshi' => ''
             ,'status' => 1
             ,'searchval' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src);
-        $src['jibie_id'] = strToArray($src['jibie_id']);
-        $src['xingzhi_id'] = strToArray($src['xingzhi_id']);
-        $src['xueduan_id'] = strToArray($src['xueduan_id']);
+        $src['jibie_id'] = str_to_array($src['jibie_id']);
+        $src['xingzhi_id'] = str_to_array($src['xingzhi_id']);
+        $src['xueduan_id'] = str_to_array($src['xueduan_id']);
+
+        // 实例化类别数据模型
+        $arr = array('xingzhi_id', 'jibie_id', 'xueduan_id');
+        if (in_array($src['field'], $arr)) {
+            $cat = new \app\system\model\Category;
+            $catArr['order'] = $src['order'];
+            switch ($src['field']) {
+                case 'xingzhi_id':
+                    // code...
+                    $catArr['p_id'] = 101;
+                    $paixuList = $cat->srcChild($catArr)
+                        ->column('id');
+                    break;
+                case 'jibie_id':
+                    // code...
+                    $catArr['p_id'] = 102;
+                    $paixuList = $cat->srcChild($catArr)
+                        ->column('id');
+                    break;
+                case 'xueduan_id':
+                    // code...
+                    $catArr['p_id'] = 103;
+                    $paixuList = $cat->srcChild($catArr)
+                        ->column('id');
+                    break;
+                default:
+                    // code...
+                    $paixuList = array();
+                    break;
+            }
+            $paixuList = implode('\', \'', $paixuList);
+            $paixuList = "field(" . $src['field'] . ", '". $paixuList. "')";
+            $src['orderSql'] = \think\facade\Db::raw($paixuList);
+        } else {
+            $src['orderSql'] = array($src['field'] => $src['order']);
+        }   
 
         // 查询数据
         $data = $this
@@ -110,17 +169,40 @@ class School extends BaseModel
                     }
                 ]
             )
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order($src['orderSql'])
             ->select();
+
         return $data;
     }
 
 
     // 根据是否能组织考试查询单位
-    public function kaoshi()
+    public function kaoshi($src)
     {
+        // 整理参数
+        $src = [
+            'page' => '1'
+            ,'limit' => '10'
+            ,'field' => 'jibie_id'
+            ,'order' => 'asc'
+            ,'all'=> false
+        ];
+        $src = array_cover($srcfrom, $src);
+
+
         $data = $this->where('kaoshi', 1)
+            ->where('status', 1)
             ->order(['jibie_id', 'paixu'])
             ->field('id, title, jiancheng, jibie_id')
+            ->when($src['all'] == false, function($query) {
+                $query
+                    ->page($src['page'], $src['limit'])
+                    ->order([$src['field'] => $src['order'], 'paixu']);
+            })
             ->select();
         return $data;
     }
@@ -133,7 +215,11 @@ class School extends BaseModel
         $src = [
             'low' => '班级'
             ,'high' => '其他级'
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
             ,'order' => 'asc'
+            ,'cnt' => false
         ];
         $src = array_cover($srcfrom, $src);
 
@@ -172,27 +258,6 @@ class School extends BaseModel
             ->order(['jibie_id' => $src['order'], 'paixu'])
             ->field('id, title, jiancheng')
             ->select();
-        return $schlist;
-    }
-
-
-    // 根据学段查学校
-    public function srcSchool($low = '幼儿园', $high = '其它学段', $order = 'asc')
-    {
-        // 实例化类别数据模型
-        $cat = new \app\system\model\Category;
-        $catlist = $cat->where('p_id', 103)
-            ->where('status', 1)
-            ->column('id', 'title');
-
-        // 查询学校
-        $schlist = $this->where('xueduan_id', 'between', [$catlist[$low], $catlist[$high]])
-            ->where('status', 1)
-            ->where('jibie_id', 10203)
-            ->order(['xueduan_id' => $order, 'paixu'])
-            ->field('id, title, jiancheng')
-            ->select();
-
         return $schlist;
     }
 

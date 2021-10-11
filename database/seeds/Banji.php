@@ -31,16 +31,22 @@ class Banji extends Seeder
                 'school_id' => 2
                 ,'ruxuenian' => $ruxuenian
                 ,'paixu' => 1
+                ,'create_time' => time()
+                ,'update_time' => time()
             ]
             ,[
                 'school_id' => 2
                 ,'ruxuenian' => $ruxuenian
                 ,'paixu' => 2
+                ,'create_time' => time()
+                ,'update_time' => time()
             ]
             ,[
                 'school_id' => 2
                 ,'ruxuenian' => $ruxuenian
                 ,'paixu' => 3
+                ,'create_time' => time()
+                ,'update_time' => time()
             ]
         ];
 

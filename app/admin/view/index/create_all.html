@@ -33,12 +33,20 @@
 {/block}
 {block name="myjs"}
 <script>
-layui.use(['createInput'], function() {
-	var cInput = layui.createInput;
+layui.use(['form', 'mytable', 'createInput'], function() {
+	var cInput = layui.createInput
+		form = layui.form
+		mytable = layui.mytable;
 	// 填充下拉菜单
 	cInput.schoolSelect('school_id', '校级', '区级', "{$list.data.school_id|default=''}");
 	// 上传文件
 	cInput.uploadXls('upload', '11101', 'admin', 'url');
+
+	//监听提交
+    form.on('submit(mysubmit)', function(data) {
+        mytable.saveFormMore("{$list.set.url}", "{$list.set.formpost}", data.field);
+        return false;
+    });
 });
 
 </script>

@@ -60,7 +60,9 @@ class KetiInfo extends AdminBase
         // 实例化
         $ktinfo = new ktinfo;
         $data = $ktinfo->search($src);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $ktinfo->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }
@@ -123,7 +125,7 @@ class KetiInfo extends AdminBase
 
         // 声明教师数组
             $teacherlist = [];
-            $list['teacher_id'] = explode(',', $list['teacher_id']);
+            $list['teacher_id'] = array_unique(explode(',', $list['teacher_id']));
             // 循环组成获奖教师信息
             foreach ($list['teacher_id'] as $key => $value) {
                 if ($value != "") {
@@ -408,7 +410,7 @@ class KetiInfo extends AdminBase
             $teacherlist = [];
             $canyulist = [];
             // 循环组成获奖教师信息
-            $list['teacher_id'] = explode(',', $list['teacher_id']);
+            $list['teacher_id'] = array_unique(explode(',', $list['teacher_id']));
             foreach ($list['teacher_id'] as $key => $value) {
                 if ($value != "") {
                     $canyulist[] = [
@@ -417,7 +419,7 @@ class KetiInfo extends AdminBase
                     ];
                 }
             }
-            $list['canyu_id'] = explode(',', $list['canyu_id']);
+            $list['canyu_id'] = array_unique(explode(',', $list['canyu_id']));
             foreach ($list['canyu_id'] as $key => $value) {
                 if ($value != "") {
                     $canyulist[] = [
@@ -510,7 +512,10 @@ class KetiInfo extends AdminBase
                 ];
             }
         }
-        $data = reSetArray($data, $src);
+
+        $src['all'] = true;
+        $cnt = $cy->searchCanyu($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }
@@ -540,13 +545,23 @@ class KetiInfo extends AdminBase
             ]);
         $data = array();
         foreach ($list as $key => $value) {
+            $zcr = "";
+            foreach ($value->ktZcr as $key=>$v) {
+                if($key == 0) {
+                    $zcr = $v->teacher->xingming;
+                }else {
+                    $zcr = $zcr . '、' . $v->teacher->xingming;
+                }
+            }
             $data[] = [
                 'id' => $value->id
-                ,'srctitle' => '标题：'.$value->title . ' ‖ 编号：' . $value->bianhao  . ' ‖ 鉴定结果：' .  $value->ktJdDengji->title
+                ,'srctitle' => '标题：'.$value->title . ' ‖ 编号：' . $value->bianhao  . ' ‖ 主持人：' . $zcr . ' ‖ 鉴定结果：' .  $value->ktJdDengji->title
                 ,'title' => '标题：'.$value->title . ' ‖ 编号：' . $value->bianhao
             ];
         }
-        $data = reSetArray($data, $src);
+        $src['all'] = true;
+        $cnt = count($data);
+        $data = reset_data($data, $cnt);
         return json($data);
     }
 }

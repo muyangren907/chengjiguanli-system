@@ -64,7 +64,9 @@ class Banji extends AdminBase
                 ,'alias'
                 ,'update_time'
             ]);  # 查询数据
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $bj->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         // 返回数据
         return json($data);
@@ -331,45 +333,48 @@ class Banji extends AdminBase
                     'title'
                     ,'jiancheng'
                 ]
-            ]);
-        $data = reSetObject($data, $src);
+            ])
+            ->toArray();
+        $src['all'] = true;
+        $cnt = $bj->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }
 
 
-    /**
-     * 获取班级信息
-     *
-     * @return \think\Response
-     */
-    public function banjiList()
-    {
-        // 获取参数
-        $src = $this->request
-            ->only([
-                'school_id' => ''
-                ,'ruxuenian' => ''
-                ,'status' => 1
-                ,'limit' =>100
-            ], 'POST');
+    // /**
+    //  * 获取班级信息
+    //  *
+    //  * @return \think\Response
+    //  */
+    // public function banjiList()
+    // {
+    //     // 获取参数
+    //     $src = $this->request
+    //         ->only([
+    //             'school_id' => ''
+    //             ,'ruxuenian' => ''
+    //             ,'status' => 1
+    //             ,'limit' =>100
+    //         ], 'POST');
 
-        // 查询班级
-        $bj = new bjmod;
-        $list = $bj->searchNjGroup($src)
-            ->visible([
-                'ruxuenian'
-                ,'njBanji' => [
-                    'id'
-                    ,'banjiTitle'
-                    ,'banTitle'
-                ]
-            ]);  # 查询数据
-        $data = reSetObject($list, $src);
+    //     // 查询班级
+    //     $bj = new bjmod;
+    //     $list = $bj->searchNjGroup($src)
+    //         ->visible([
+    //             'ruxuenian'
+    //             ,'njBanji' => [
+    //                 'id'
+    //                 ,'banjiTitle'
+    //                 ,'banTitle'
+    //             ]
+    //         ]);  # 查询数据
+    //     $data = reSetObject($list, $src);
 
-        // 返回数据
-        return json($list);
-    }
+    //     // 返回数据
+    //     return json($list);
+    // }
 
 
     // 设置班级别名
@@ -426,7 +431,8 @@ class Banji extends AdminBase
 
         $bj = new bjmod;
         $njList = $bj->gradeName($src['riqi'], $src['category']);
-        $njList = reSetArray($njList, $src);
+        $cnt = count($njList);
+        $njList = reset_data($njList, $cnt);
 
         return json($njList);
     }

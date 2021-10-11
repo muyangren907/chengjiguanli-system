@@ -43,7 +43,9 @@ class AuthRule extends AdminBase
         // 根据条件查询数据
         $ar = new AR;
         $data = $ar->search($src);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $ar->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }
@@ -148,7 +150,7 @@ class AuthRule extends AdminBase
         }
 
         $data = AR::where('id', $id)->update($list);
-        $data>=0 ? $data = ['msg' => '更新成功', 'val' => 1]
+        $data >= 0 ? $data = ['msg' => '更新成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息

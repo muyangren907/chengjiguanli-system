@@ -62,7 +62,9 @@ class Index extends AdminBase
                 ,'ksFanwei' => ['id', 'title']
                 ,'update_time'
             ]);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $ks->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }

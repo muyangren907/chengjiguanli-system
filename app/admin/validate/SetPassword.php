@@ -15,7 +15,7 @@ class SetPassword extends Validate
 	protected $rule = [
         'oldpassword|原密码' => 'require',
         'newpassword|新密码' => ['require', 'regex' => '/^[a-zA-Z]{1}([a-zA-Z0-9]|[._]){6,20}$/'],
-        'newpassword2|两次密码' => 'require|confirm:newpassword',
+        'newpassword2|第二次密码' => 'require|confirm:newpassword',
     ];
 
     /**

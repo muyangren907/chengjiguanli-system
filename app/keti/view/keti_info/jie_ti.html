@@ -85,8 +85,7 @@ layui.use(['laydate', 'mytable', 'createInput'], function() {
 
 	//执行一个laydate实例
 	laydate.render({
-		elem: '#jtshijian' //指定元素
-			,
+		elem: '#jtshijian', //指定元素
 		trigger: 'click' //采用click弹出
 	});
 
@@ -100,7 +99,7 @@ layui.use(['laydate', 'mytable', 'createInput'], function() {
 	formpost = "{$list.set.formpost|default=''}".toLocaleUpperCase();
 	if (formpost == 'PUT') {
 		data = {
-			ketiinfo_id: "{$list.data.id}",
+			ketiinfo_id: "{$list.data.id|default=''}",
 			category_id: 11901
 		}
 		cInput.loadTeacher(xmselectzc, '/keti/info/srccy', data);

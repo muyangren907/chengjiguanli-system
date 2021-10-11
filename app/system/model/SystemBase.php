@@ -6,11 +6,35 @@ use app\BaseModel;
 
 class SystemBase extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'sys_title' => 'varchar'
+        ,'keywords' => 'varchar'
+        ,'description' => 'varchar'
+        ,'thinks' => 'varchar'
+        ,'danwei' => 'varchar'
+        ,'gradelist' => 'varchar'
+        ,'classmax' => 'int'
+        ,'xuenian' => 'int'
+        ,'xueqishang' => 'int'
+        ,'xueqixia' => 'int'
+        ,'classalias' => 'tinyint'
+        ,'teacherrongyu' => 'tinyint'
+        ,'teacherketi' => 'tinyint'
+        ,'studefen' => 'tinyint'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+    ];
+
+
     // 查询系统信息
     static function sysInfo()
     {
         $info = self::order(['id' => 'desc'])
-            ->field('id, keywords, description, sys_title, thinks, danwei, gradelist, studefen')
+            ->field('id, keywords, description, thinks, danwei, gradelist, classmax, classalias, xuenian,  studefen, sys_title')
+            ->order(['id' => 'desc'])
             ->find();
         return $info;
     }

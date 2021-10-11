@@ -15,13 +15,11 @@ class Index extends AdminBase
         // 获取信息
         $sysbasemod = new sysbasemod();     # 关键字
         $list = $sysbasemod::sysInfo();     # 描述
-        // $list['webtitle'] = config('shangma.webtitle'); # 系统名称
         $list['version'] = config('shangma.version');   # 版本号
         $ad = new \app\admin\model\Admin;   # 获取用户姓名
         $list->xingming = $ad->where('id', session('user_id'))->value('xingming');
         $auth = new \app\admin\model\AuthRule;      # 菜单
-        $menu = $auth->menu(session('user_id'));
-        $list['menu'] = $menu;
+        $list['menu'] = $auth::menu();
 
         // 模版赋值
         $this->view->assign('list',$list);
@@ -50,7 +48,7 @@ class Index extends AdminBase
         $admin = new \app\admin\model\Admin;
         $list['xingming'] = $admin->where('id',session('user_id'))
             ->value('xingming');
-        $list['group'] = $admin->getGroupnames(session('user_id'));
+        $list['group'] = $admin->searchOne(session('user_id'))->groupnames;
 
         $list['server'] = request()->server();
         // 获取系统版本号

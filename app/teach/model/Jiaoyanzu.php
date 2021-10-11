@@ -10,17 +10,33 @@ use app\BaseModel;
  */
 class Jiaoyanzu extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'title' => 'varchar'
+        ,'ruxuenian' => 'int'
+        ,'category_id' => 'int'
+        ,'school_id' => 'int'
+        ,'subject_id' => 'varchar'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'beizhu' => 'varchar'
+        ,'status' => 'tinyint'
+    ];
+
+
     // 分类关联
     public function glCategory()
     {
-        return $this->belongsTo('\app\system\model\Category', 'category_id', 'id');
+        return $this->belongsTo(\app\system\model\Category::class, 'category_id', 'id');
     }
 
 
     // 教研组关联
     public function glSchool()
     {
-        return $this->belongsTo('\app\system\model\School', 'school_id', 'id');
+        return $this->belongsTo(\app\system\model\School::class, 'school_id', 'id');
     }
 
 
@@ -33,9 +49,14 @@ class Jiaoyanzu extends BaseModel
             ,'searchval' => ''
             ,'school_id' => ''
             ,'status' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src) ;
-        $src['school_id'] = strToarray($src['school_id']);
+        $src['school_id'] = str_to_array($src['school_id']);
 
         $njlist = \app\facade\Tools::nianJiNameList(time(), 'num');
 
@@ -68,6 +89,11 @@ class Jiaoyanzu extends BaseModel
                     },
                 ]
             )
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
             ->append(['zuzhang'])
             ->select();
 

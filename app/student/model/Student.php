@@ -9,10 +9,35 @@ use app\teach\model\Banji;
 
 class Student extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'xingming' => 'varchar'
+        ,'sex' => 'tinyint'
+        ,'shengri' => 'int'
+        ,'shenfenzhenghao' => 'varchar'
+        ,'password' => 'varchar'
+        ,'denglucishu' => 'int'
+        ,'lastip' => 'varchar'
+        ,'ip' =>  'varchar'
+        ,'lasttime' => 'int'
+        ,'thistime' => 'int'
+        ,'banji_id' => 'int'
+        ,'kaoshi' =>  'tinyint'
+        ,'quanpin' => 'varchar'
+        ,'shoupin' => 'varchar'
+        ,'xuehao' =>  'varchar'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'status' => 'tinyint'
+    ];
+
+
     // 班级关联
     public function stuBanji()
     {
-        return $this->belongsTo('\app\teach\model\Banji', 'banji_id', 'id');
+        return $this->belongsTo(\app\teach\model\Banji::class, 'banji_id', 'id');
     }
 
 
@@ -93,10 +118,15 @@ class Student extends BaseModel
                 'check' => true
                 ,'banji_id' => array()
             ]
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
 
         $src = array_cover($srcfrom, $src);
-        $src['banji_id'] = strToArray($src['banji_id']);
+        $src['banji_id'] = str_to_array($src['banji_id']);
 
         $njlist = \app\facade\Tools::nianJiNameList(time(), 'num');
         $zxnian = min($njlist); # 最近毕业年
@@ -146,6 +176,11 @@ class Student extends BaseModel
                     }
                 ])
                 ->field('id, xingming, sex, shengri, banji_id, kaoshi, xuehao, status, update_time')
+                ->when($src['all'] == false, function ($query) use($src) {
+                    $query
+                        ->page($src['page'], $src['limit']);
+                })
+                ->order([$src['field'] => $src['order']])
                 ->append(['age'])
                 ->select();
 
@@ -165,10 +200,15 @@ class Student extends BaseModel
                 'check' => true
                 ,'banji_id' => array()
             ]
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
 
         $src = array_cover($srcfrom, $src);
-        $src['banji_id'] = strToArray($src['banji_id']);
+        $src['banji_id'] = str_to_array($src['banji_id']);
 
         $njlist = \app\facade\Tools::nianJiNameList(time(), 'num');
         $biyenian = min($njlist); # 最近毕业年
@@ -218,6 +258,11 @@ class Student extends BaseModel
                     }
                 ])
                 ->field('id, xingming, sex, shengri, banji_id, kaoshi, status, update_time')
+                ->when($src['all'] == false, function ($query) use($src) {
+                    $query
+                        ->page($src['page'], $src['limit']);
+                })
+                ->order([$src['field'] => $src['order']])
                 ->append(['age'])
                 ->select();
 
@@ -234,6 +279,11 @@ class Student extends BaseModel
                 'check' => true
                 ,'banji_id' => array()
             ]
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src);
 
@@ -260,6 +310,11 @@ class Student extends BaseModel
                     }
                 ])
                 ->field('id, xingming, sex, shengri, banji_id, status')
+                ->when($src['all'] == false, function ($query) use($src) {
+                    $query
+                        ->page($src['page'], $src['limit']);
+                })
+                ->order([$src['field'] => $src['order']])
                 ->append(['age'])
                 ->select();
 

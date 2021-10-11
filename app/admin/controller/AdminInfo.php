@@ -16,25 +16,10 @@ class AdminInfo extends AdminBase
     {
         // 获取管理员信息
         $ad = new AD;
-        $list = AD::where('id', $id)
-                ->field('id, xingming, sex, shengri, username, teacher_id, school_id, phone, denglucishu, lastip, ip, lasttime, quanpin, shoupin, zhiwu_id, zhicheng_id, biye, zhuanye, xueli_id, worktime, create_time, update_time')
-                ->with([
-                    'adSchool' => function($query){
-                        $query->field('id, title');
-                    },
-                    'adZhiwu' => function($query){
-                        $query->field('id, title');
-                    },
-                    'adZhicheng' => function($query){
-                        $query->field('id, title');
-                    },
-                    'adXueli' => function($query){
-                        $query->field('id, title');
-                    },
-                ])
-                ->find();
+        $list = $ad
+            ->searchOne($id)
+            ->hidden(['beizhu']);
         $list['webtitle'] = '帐号信息';
-        $list->groupnames = $ad->getGroupnames($id);
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -79,7 +64,7 @@ class AdminInfo extends AdminBase
             return json(['msg' => $msg, 'val' => 0]);;
         }
 
-        // 获取用户名
+        // 获取服务器上的密码
         $serpassword = AD::where('id', $id)->value('password');
 
         // 实例化加密类
@@ -89,7 +74,7 @@ class AdminInfo extends AdminBase
 
         if(!$check)
         {
-            $data = ['msg' => '旧密码错误', 'val' => 0];
+            $data = ['msg' => '原密码错误', 'val' => 0];
             return json($data);
         }
 
@@ -109,28 +94,12 @@ class AdminInfo extends AdminBase
     // 读取用户信息
     public function myInfo()
     {
-        $id = session('user_id');
         // 获取管理员信息
         $ad = new AD;
-        $list = AD::where('id', $id)
-                ->field('id, xingming, sex, shengri, username, teacher_id, school_id, phone, denglucishu, lastip, ip, lasttime, quanpin, shoupin, zhiwu_id, zhicheng_id, biye, zhuanye, xueli_id, worktime, create_time, update_time')
-                ->with([
-                    'adSchool' => function($query){
-                        $query->field('id, title');
-                    },
-                    'adZhiwu' => function($query){
-                        $query->field('id, title');
-                    },
-                    'adZhicheng' => function($query){
-                        $query->field('id, title');
-                    },
-                    'adXueli' => function($query){
-                        $query->field('id, title');
-                    },
-                ])
-                ->find();
+        $list = $ad
+            ->searchOne(session('user_id'))
+            ->hidden(['beizhu']);
         $list['webtitle'] = '我的信息';
-        $list->groupnames = $ad->getGroupnames($id);
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -167,7 +136,9 @@ class AdminInfo extends AdminBase
                 ,'hjshijian'
                 ,'update_time'
             ]);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $rongyu->srcTeacherRongyu($src['teacher_id'])->count();
+        $data = reset_data($data, $cnt);
         return json($data);
     }
 
@@ -188,7 +159,9 @@ class AdminInfo extends AdminBase
         // 查询数据
         $keti = new \app\keti\model\KetiInfo;
         $data = $keti->srcTeacherKeti($src['teacher_id']);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $keti->srcTeacherKeti($src['teacher_id'])->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }
@@ -210,7 +183,9 @@ class AdminInfo extends AdminBase
         // 查询数据
         $bzr = new \app\teach\model\BanZhuRen;
         $data = $bzr->srcTeacher($src);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $bzr->srcTeacher($src)->count();
+        $data = reSetObject($data, $cnt);
 
         return json($data); 
     }
@@ -219,16 +194,25 @@ class AdminInfo extends AdminBase
     // 修改信息
     public function edit()
     {
-       $id = session('user_id');
-       // 获取用户信息
-       $list['data'] = AD::where('id', $id)
-            ->field('id, xingming, quanpin, shoupin, username, shengri, sex, phone, zhiwu_id, zhicheng_id, xueli_id, biye, zhuanye, worktime')
-            ->with([
-                'adSchool'=>function($query){
-                    $query->field('id, jiancheng');
-                }
-            ])
-            ->find();
+        $id = session('user_id');
+        // 获取用户信息
+        $ad = new AD;
+        $list['data'] = $ad->searchOne($id)
+            ->visible([
+                'id'
+                ,'xingming'
+                ,'quanpin'
+                ,'shoupin'
+                ,'username'
+                ,'shengri'
+                ,'sex'
+                ,'phone'
+                ,'zhicheng_id'
+                ,'xueli_id'
+                ,'biye'
+                ,'zhuanye'
+                ,'worktime'
+            ]);
 
         // 设置页面标题
         $list['set'] = array(

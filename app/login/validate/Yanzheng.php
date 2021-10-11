@@ -22,10 +22,6 @@ class Yanzheng extends Validate
         'admin'  =>  [
             'username'
             ,'password'
-        ],
-        'fenliu'  =>  [
-            'username'
-            ,'password'
             ,'category'
         ]
     ];

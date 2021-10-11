@@ -7,6 +7,21 @@ use app\BaseModel;
 
 class Banji extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'school_id' => 'int'
+        ,'ruxuenian' => 'int'
+        ,'xueduan_id' => 'int'
+        ,'paixu' => 'int'
+        ,'alias' => 'varchar'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'status' => 'tinyint'
+    ];
+
+
 
     // 查询所有班级
     public function search($srcfrom)
@@ -20,10 +35,15 @@ class Banji extends BaseModel
                 'check' => true
                 ,'banji_id' => array()
             ]
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src);
-        $src['school_id'] = strToarray($src['school_id']);
-        $src['ruxuenian'] = strToarray($src['ruxuenian']);
+        $src['school_id'] = str_to_array($src['school_id']);
+        $src['ruxuenian'] = str_to_array($src['ruxuenian']);
         if(count($src['ruxuenian']) == 0)
         {
             $njname = $this->gradeName(time(),'num');     # 年级名对应表
@@ -56,6 +76,11 @@ class Banji extends BaseModel
                     $query->where('status', 1);
                 }
             ])
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
             ->append(['banjiTitle', 'banTitle', 'grade', 'bzr'])
             ->select();
 
@@ -73,7 +98,7 @@ class Banji extends BaseModel
             ,'status' => '1'
         ];
         $src = array_cover($srcfrom, $src) ;
-        $src['ruxuenian'] = strToarray($src['ruxuenian']);
+        $src['ruxuenian'] = str_to_array($src['ruxuenian']);
 
         // 查询年级数据
         $data = self:: where('school_id', $src['school_id'])
@@ -99,13 +124,13 @@ class Banji extends BaseModel
 
     // 学校关联模型
     public function glSchool(){
-        return $this->belongsTo('\app\system\model\School', 'school_id', 'id');
+        return $this->belongsTo(\app\system\model\School::class, 'school_id', 'id');
     }
 
 
     // 学校关联模型
     public function glStudent(){
-        return $this->hasMany('\app\student\model\Student', 'banji_id', 'id');
+        return $this->hasMany(\app\student\model\Student::class, 'banji_id', 'id');
     }
 
 
@@ -119,7 +144,7 @@ class Banji extends BaseModel
     // 年级-班级关联表
     public function glBanZhuRen()
     {
-        return $this->hasMany('BanZhuRen', 'banji_id', 'id');
+        return $this->hasMany(BanZhuRen::class, 'banji_id', 'id');
     }
 
 
@@ -155,7 +180,7 @@ class Banji extends BaseModel
     public function getBanTitleAttr()
     {
 
-        $alias = \app\facade\System::sysClass();
+        $alias = \app\facade\System::sysInfo();
         if($alias->classalias === 1)
         {
             $title = $this->alias;
@@ -179,7 +204,7 @@ class Banji extends BaseModel
     }
 
 
-    // 班级名获取器
+    // 年级名获取器
     public function getGradeAttr()
     {
         $njList = $this->gradeName(time());
@@ -217,7 +242,7 @@ class Banji extends BaseModel
     // 判断当前班级是否已经毕业
     public function getBiyeAttr()
     {
-        $sys = \app\facade\System::sysClass();
+        $sys = \app\facade\System::sysInfo();
         $cnt = count(explode('|', $sys->gradelist));
         $ruxuenian = $this->ruxuenian;
         $date_r = strtotime($ruxuenian + $cnt . '-8-1');
@@ -268,7 +293,7 @@ class Banji extends BaseModel
             }
         }
 
-        $alias = \app\facade\System::sysClass();
+        $alias = \app\facade\System::sysInfo();
 
         if($nj > 0 && ($bj > 0 || $bj == -1))
         {
@@ -342,7 +367,7 @@ class Banji extends BaseModel
     {
         // 定义学年时间节点日期为每年的8月1日
         // $yd = '8-1';
-        $sysClass = \app\facade\System::sysClass();
+        $sysClass = \app\facade\System::sysInfo();
         $jd = date('-m-d', $sysClass->getData('xuenian'));
 
         if($riqi == 0 || $riqi == '')
@@ -384,7 +409,7 @@ class Banji extends BaseModel
     public function className()
     {
 
-        $sys = \app\facade\System::sysClass();
+        $sys = \app\facade\System::sysInfo();
         $classmax = $sys->classmax;
 
         $bjarr = array();

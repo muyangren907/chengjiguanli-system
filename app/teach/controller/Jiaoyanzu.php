@@ -46,8 +46,8 @@ class Jiaoyanzu extends AdminBase
         }
 
         // 根据条件查询数据
-        $xq = new jyzmod;
-        $data = $xq->search($src)
+        $jyz = new jyzmod;
+        $data = $jyz->search($src)
             ->visible([
                 'id'
                 ,'title'
@@ -58,7 +58,9 @@ class Jiaoyanzu extends AdminBase
                 ,'status'
                 ,'update_time'
             ]);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $jyz->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }

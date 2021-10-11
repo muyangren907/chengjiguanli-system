@@ -21,7 +21,9 @@ class KsCanYu extends AdminBase
 
         $cy = new \app\kaohao\model\SearchCanYu;
         $school = $cy->school($src);
-        $school = reSetArray($school, $src);
+        $src['all'] = true;
+        $cnt = $cy->school($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($school);
     }
@@ -38,7 +40,9 @@ class KsCanYu extends AdminBase
             ], 'POST');
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $nianji = $ksset->srcGrade($src['kaoshi_id']);
-        $nianji = reSetArray($nianji, $src);
+        $src['all'] = true;
+        $cnt = $cy->srcGrade($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($nianji);
     }
@@ -58,7 +62,9 @@ class KsCanYu extends AdminBase
         $khSrc = new \app\kaohao\model\SearchCanYu;
 
         $bj = $khSrc->class($src);
-        $bj = reSetArray($bj, $src);
+        $src['all'] = true;
+        $cnt = $cy->class($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($bj);
     }
@@ -79,7 +85,9 @@ class KsCanYu extends AdminBase
 
         $khSrc = new \app\chengji\model\TongjiBj;
         $bj = $khSrc->searchSubjedt($src);
-        $bj = reSetObject($bj, $src);
+        $src['all'] = true;
+        $cnt = $khSrc->searchSubjedt($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($bj);
     }
@@ -102,8 +110,10 @@ class KsCanYu extends AdminBase
 
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $sbj = $ksset->srcSubject($src);
+        $src['all'] = true;
+        $cnt = $ksset->srcSubject($src)->count();
+        $data = reset_data($data, $cnt);
 
-        $sbj = reSetArray($sbj, $src);
         return json($sbj);
     }
 }

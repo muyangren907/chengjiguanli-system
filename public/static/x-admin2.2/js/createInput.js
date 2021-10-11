@@ -255,7 +255,11 @@ layui.extend({
               searchval: val,
             },
 						success: function(result) {
-							cb(result.data)
+							if (result.data.length > 0) {
+								cb(result.data);
+							} else {
+								return cb([]);
+							}
 						},
 						error: function(result) {
 							layer.msg('数据扔半道啦。', function() {});
@@ -267,7 +271,7 @@ layui.extend({
 		},
 
 
-		// 查询老师
+		// 查询学生
 		searchStudent: function(id, radio = false, name = '') {
 			if (name == '') {
 				name = id;
@@ -322,7 +326,11 @@ layui.extend({
 							banji_id: $($('#' + id)[0]).attr('banji_id'),
 						},
 						success: function(result) {
-							cb(result.data);
+							if (result.data.length > 0) {
+								cb(result.data);
+							} else {
+								return cb([]);
+							}
 						},
 						error: function(result) {
 							layer.msg('数据扔半道啦。', function() {});
@@ -341,8 +349,13 @@ layui.extend({
 				type: 'POST',
 				data: data,
 				success: function(result) {
+					if (result.data.length > 0) {
+						data = result.data;
+					} else {
+						data = [];
+					}
 					obj.update({
-						data: result.data
+						data:data
 					})
 				},
 				error: function(result) {
@@ -404,7 +417,11 @@ layui.extend({
 			              searchval: val,
 			            },
 						success: function(result) {
-							cb(result.data)
+							if (result.data.length > 0) {
+								cb(result.data);
+							} else {
+								return cb([]);
+							}
 						},
 						error: function(result) {
 							layer.msg('数据扔半道啦。', function() {});
@@ -414,7 +431,6 @@ layui.extend({
 				on: function(data){
 					//arr:  当前多选已选中的数据
 					var arr = data.arr;
-
 					if(arr.length == 1)
 					{
 						$('#title').val(arr[0].title);
@@ -637,15 +653,18 @@ layui.extend({
 					} else {
 						str = '';
 					}
-					temp = "";
-					$(result.data).each(function(i, el) {
-						if (value != '' && value == el.id) {
-							temp = '<input type="checkbox" name="' + myid + '[]' + '" title="' + el.banTitle + '" value="' + el.id + '" lay-skin="primary" pid="1" lay-filter="mycheackbox" checked>';
+					
+					var data = result.data;
+					for (var key in data) {
+						temp = "";
+						if (value != '' && value == data[key].id) {
+							temp = '<input type="checkbox" name="' + myid + '[]' + '" title="' + data[key].banTitle + '" value="' + data[key].id + '" lay-skin="primary" pid="1" lay-filter="mycheackbox" checked>';
 						} else {
-							temp = '<input type="checkbox" name="' + myid + '[]' + '" title="' + el.banTitle + '" value="' + el.id + '" lay-skin="primary" pid="1" lay-filter="mycheackbox">';
+							temp = '<input type="checkbox" name="' + myid + '[]' + '" title="' + data[key].banTitle + '" value="' + data[key].id + '" lay-skin="primary" pid="1" lay-filter="mycheackbox">';
 						}
 						str = str + temp;
-					});
+					}
+
 					$('#' + myid).append(str);
 					form.render('checkbox');
 				},
@@ -669,15 +688,18 @@ layui.extend({
 					} else {
 						str = '';
 					}
-					temp = "";
-					$(result.data).each(function(i, el) {
-						if (value != '' && value == el.id) {
-							temp = '<option value="' + el.id + '" paixu="'+ el.paixu +'" selected>' + el.banTitle + '</option>';
+
+					var data = result.data; 
+					for (var key in data) {
+						temp = "";
+						if (value != '' && value == data[key].id) {
+							temp = '<option value="' + data[key].id + '" paixu="'+ data[key].paixu +'" selected>' + data[key].banTitle + '</option>';
 						} else {
-							temp = '<option value="' + el.id + '" paixu="'+ el.paixu +'">' + el.banTitle + '</option>';
+							temp = '<option value="' + data[key].id + '" paixu="'+ data[key].paixu +'">' + data[key].banTitle + '</option>';
 						}
 						str = str + temp;
-					});
+					}
+
 					$('#' + myid).append(str);
 					form.render('select');
 				},

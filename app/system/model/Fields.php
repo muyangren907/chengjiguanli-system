@@ -6,6 +6,24 @@ use app\BaseModel;
 
 class Fields extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'category_id' => 'int'
+        ,'oldname' => 'varchar'
+        ,'bianjitime' => 'int'
+        ,'newname' => 'varchar'
+        ,'extension' => 'varchar'
+        ,'fieldsize' => 'int'
+        ,'hash' => 'varchar'
+        ,'user_group' => 'varchar'
+        ,'user_id' => 'int'
+        ,'url' => 'varchar'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+    ];
+
 
     // 编辑时间获取器
     public function getBianjitimeAttr($value)
@@ -25,14 +43,19 @@ class Fields extends BaseModel
     }
 
 
-    // 查询所有单位
+    // 查询所有文件
     public function search($srcfrom)
     {
         // 整理条件
         $src = [
             'searchval' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
-        $src = array_cover($srcfrom, $src) ;
+        $src = array_cover($srcfrom, $src);
 
         // 查询数据
         $data = $this
@@ -52,6 +75,10 @@ class Fields extends BaseModel
                         ]);
                 }
             ])
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
             ->select();
 
         return $data;
@@ -60,60 +87,13 @@ class Fields extends BaseModel
     // 上传人数据关联
     public function  flAdmin()
     {
-        return $this->belongsTo('\app\admin\model\Admin', 'user_id', 'id');
+        return $this->belongsTo(\app\admin\model\Admin::class, 'user_id', 'id');
     }
-
 
 
     // 文件种类数模型关联
     public function  flCategory()
     {
-        return $this->belongsTo('\app\system\model\Category', 'category_id', 'id');
+        return $this->belongsTo(\app\system\model\Category::class, 'category_id', 'id');
     }
-
-
-    // 上传人信息获取器
-    public function getUserInfoAttr($value, $data)
-    {
-        // halt($data);
-        $xm = '';
-        if($data['user_group'] === 'admin')
-        {
-            if($this->flAdmin)
-            {
-                $xm = $this->flAdmin->xingming;
-                if($this->flAdmin->adSchool)
-                {
-                    $xm = $xm . '(' .  $this->flAdmin->adSchool->jiancheng . ')';
-                }
-            }
-        }elseif ($data['user_group'] === 'teacher') {
-            if($this->flTeacher)
-            {
-                $xm = $this->flTeacher->xingming;
-                if($this->flTeacher->jsDanwei)
-                {
-                    $xm = $xm . '(' . $this->flTeacher->jsDanwei->jiancheng . ')';
-                }
-            }
-        }else{
-            $xm = '';
-        }
-
-        $arr = [
-            'admin' => '管理员'
-            ,'teacher' => '教师'
-            ,'student' => '学生'
-        ];
-
-        if(isset($arr[$data['user_group']]))
-        {
-            $str = $arr[$data['user_group']] . ' ' . $xm;
-        }else{
-            $str = '';
-        }
-
-        return $str;
-    }
-
 }

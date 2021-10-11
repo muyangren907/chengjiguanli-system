@@ -7,19 +7,23 @@ use app\BaseModel;
 
 class AuthRule extends BaseModel
 {
-
-    // 父级菜单数据模型关联
-    public function authPid()
-    {
-        return $this->belongsTo('AuthRule', 'pid', 'id');
-    }
-
-
-    // 子菜单数据模型关联
-    public function authCid()
-    {
-        return $this->hasMany('AuthRule', 'pid', 'id');
-    }
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'name' => 'varchar'
+        ,'title' => 'varchar'
+        ,'status' => 'tinyint'
+        ,'condition' => 'varchar'
+        ,'paixu' => 'int'
+        ,'ismenu' => 'tinyint'
+        ,'font' => 'varchar'
+        ,'url' => 'varchar'
+        ,'pid' => 'int'
+        ,'type' => 'tinyint'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+    ];
 
 
     // 查询所有角色
@@ -29,6 +33,11 @@ class AuthRule extends BaseModel
         $src = [
             'searchval' => ''
             ,'status' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src);
 
@@ -46,6 +55,11 @@ class AuthRule extends BaseModel
                 }
             ])
             ->field('id, name, title, condition, paixu, ismenu, url, pid, type, status')
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
             ->select();
 
         return $data;
@@ -53,8 +67,9 @@ class AuthRule extends BaseModel
 
 
     // 查询菜单
-    public function menu($user_id)
+    public static function menu()
     {
+        $user_id = session('user_id');
         if($user_id == 1 || $user_id ==2)
         {
             $auth = array();
@@ -115,5 +130,19 @@ class AuthRule extends BaseModel
             }
         }
         return $child;
+    }
+
+
+    // 父级菜单数据模型关联
+    public function authPid()
+    {
+        return $this->belongsTo(AuthRule::class, 'pid', 'id');
+    }
+
+
+    // 子菜单数据模型关联
+    public function authCid()
+    {
+        return $this->hasMany('AuthRule', 'pid', 'id');
     }
 }

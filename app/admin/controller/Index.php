@@ -32,13 +32,13 @@ class Index extends AdminBase
     {
         // 获取参数
         $src = $this->request
-                ->only([
-                    'page' => '1'
-                    ,'limit' => '10'
-                    ,'field' => 'id'
-                    ,'order' => 'desc'
-                    ,'searchval' => ''
-                ],'POST');
+            ->only([
+                'page' => '1'
+                ,'limit' => '10'
+                ,'field' => 'id'
+                ,'order' => 'desc'
+                ,'searchval' => ''
+            ],'POST');
 
         // 实例化
         $ad = new AD;
@@ -59,7 +59,9 @@ class Index extends AdminBase
                 ,'status'
                 ,'update_time'
             ]);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $ad->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }
@@ -136,18 +138,10 @@ class Index extends AdminBase
     // 修改信息
     public function edit($id)
     {
+        $ad = new AD;
         // 获取用户信息
-       $list['data'] = AD::where('id',$id)
-            ->field('id, xingming, quanpin, shoupin, username, shengri, sex, phone, school_id, zhiwu_id, zhicheng_id, xueli_id, biye, zhuanye, worktime, tuixiu, beizhu')
-            ->with([
-                'adSchool'=>function($query){
-                    $query->field('id, jiancheng');
-                }
-                ,'glGroup'=>function($query){
-                    $query->where('status', 1)->field('title, rules, miaoshu');
-                }
-            ])
-            ->find();
+        $list['data'] = $ad
+            ->searchOne($id);
 
         // 设置页面标题
         $list['set'] = array(
@@ -225,8 +219,21 @@ class Index extends AdminBase
         // 整理数据
         $id = request()->delete('id');
         $id = explode(',', $id);
-
-        $data = AD::destroy($id);
+        
+        // 启动事务
+        \think\facade\Db::startTrans();
+        try {
+            AD::destroy($id);
+            $aga = new \app\admin\model\AuthGroupAccess;
+            $id = $aga->where('uid', 'in', $id)->column('id');
+            $aga::destroy($id);
+            \think\facade\Db::commit();
+            $data = true;
+        } catch (\Exception $e) {
+            // 回滚事务
+            \think\facade\Db::rollback();
+            $data = false;
+        }
 
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '删除成功', 'val' => 1]
@@ -305,16 +312,15 @@ class Index extends AdminBase
         $teacherinfo = \app\facade\File::readXls(public_path() . 'uploads/' . $list['url']);
 
         // 判断表格是否正确
-        if("教师基本情况表" != $teacherinfo[0][0] || '姓名*' != $teacherinfo[2][1] || '帐号*' != $teacherinfo[2][2])
+        if("教师信息批量录入表" != $teacherinfo[0][0] || '姓名*' != $teacherinfo[2][1] || '帐号*' != $teacherinfo[2][2])
         {
             $this->error('请使用模板上传', '/login/err');
             return json($data);
         }
 
         $admin = new AD;
-        $data = $admin->createAll($teacherinfo, $list['school_id']);
-        $data ? $data = ['msg' => '数据上传成功', 'val' => 1]
-            : ['msg' => '数据上传失败', 'val' => 0];
+        $temp = $admin->createAll($teacherinfo, $list['school_id']);
+        $data = ['msg' => '数据上传成功', 'val' => 1, 'data' => $temp];
 
         return json($data);
     }
@@ -337,9 +343,11 @@ class Index extends AdminBase
             ->only([
                 'searchval' => ''
                 ,'school_id' => ''
+                ,'teacher_id' => ''
+                ,'page' => 1
+                ,'limit' => 10
                 ,'field' => 'id'
                 ,'order' => 'desc'
-                ,'teacher_id' => ''
             ], 'POST');
 
         $ad = new AD();
@@ -357,7 +365,9 @@ class Index extends AdminBase
                 ,'id' => $value->id
             ];
         }
-        $data = reSetArray($data, $src);
+        $src['all'] = true;
+        $cnt = $ad->strSrcTeachers($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }
@@ -372,29 +382,10 @@ class Index extends AdminBase
                 'searchval' => ''
                 ,'id' => ''
             ], 'POST');
-        $src = [
-                'searchval' => ''
-                ,'id' => ''
-            ];
-        $src = array_cover($srcfrom, $src);
 
         $ad = new AD();
-        $list = $ad->where('username', $src['searchval'])
-            ->find();
-        $data = ['msg' => '用户名已经存在！', 'val' => 0];
+        $data = $ad->onlyUsername($srcfrom);
 
-        if($list)
-        {
-            if($src['id'] > 0)
-            {
-
-                if($src['id'] == $list->id){
-                    $data = ['msg' => '', 'val' => 1];
-                }
-            }
-        }else{
-           $data = ['msg' => '', 'val' => 1];
-        }
         return json($data);
     }
 
@@ -408,30 +399,10 @@ class Index extends AdminBase
                 'searchval' => ''
                 ,'id'
             ], 'POST');
-        $src = [
-                'searchval' => ''
-                ,'id' => ''
-            ];
-        $src = array_cover($srcfrom, $src);
 
         $ad = new AD();
-        $list = $ad->where('phone', $src['searchval'])
-            ->find();
+        $data = $ad->onlePhone($srcfrom);
 
-        // 根据更新结果设置返回提示信息
-        $data = ['msg' => '电话号码已经存在！', 'val' => 0];
-        if($list)
-        {
-            if($src['id'] > 0)
-            {
-
-                if($src['id'] == $list->id){
-                    $data = ['msg' => '', 'val' => 1];
-                }
-            }
-        }else{
-           $data = ['msg' => '', 'val' => 1];
-        }
         return json($data);
     }
 }

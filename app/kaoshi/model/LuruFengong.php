@@ -10,6 +10,19 @@ use \app\BaseModel;
  */
 class LuruFengong extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'kaoshi_id' => 'int'
+        ,'admin_id' => 'int'
+        ,'banji_id' => 'int'
+        ,'subject_id' => 'int'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+    ];
+
+
     // 查询统计记录
     public function search($srcfrom)
     {
@@ -19,54 +32,64 @@ class LuruFengong extends BaseModel
             ,'subject_id' => ''
             ,'ruxuenian' => ''
             ,'searchval' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src) ;
-        $src['kaoshi_id'] = strToarray($src['kaoshi_id']);
-        $src['banji_id'] = strToarray($src['banji_id']);
-        $src['subject_id'] = strToarray($src['subject_id']);
+        $src['kaoshi_id'] = str_to_array($src['kaoshi_id']);
+        $src['banji_id'] = str_to_array($src['banji_id']);
+        $src['subject_id'] = str_to_array($src['subject_id']);
 
         $logList = self::where('kaoshi_id', 'in', $src['kaoshi_id'])
-        			->when(count($src['banji_id']) > 0, function($query) use($src){
-                        $query->where('banji_id', 'in', $src['banji_id']);
-                    })
-                    ->when(count($src['subject_id']) > 0, function($query) use($src){
-                        $query->where('subject_id', 'in', $src['subject_id']);
-                    })
-        			->when(strlen($src['searchval']) > 0, function($query) use($src){
-                        $query->where('admin_id', 'in', function ($q) use($src) {
-                            $q->name('admin')
-                                ->where('xingming', 'like', '%'. $src['searchval'] . '%')
-                                ->field('id');
-                        });
-                    })
-                    ->when(strlen($src['ruxuenian']) > 0, function($query) use($src){
-                        $query->where('banji_id', 'in', function ($q) use($src) {
-                            $q->name('banji')
-                                ->where('ruxuenian', $src['ruxuenian'])
-                                ->field('id');
-                        });
-                    })
-                    ->with([
-                        'fgKaoshi' => function ($query) {
-                            $query->field('id, title');
-                        }
-                        ,'fgBanji' => function ($query) {
-                            $query->field('id, ruxuenian, paixu, school_id')
-                            	->with([
-                            		'glSchool' => function($q){
-				                        $q->field('id, title, jiancheng');
-				                    },
-                            	])
-                            	->append(['banjiTitle']);
-                        }
-                        ,'fgSubject' => function ($query) {
-                            $query->field('id, title, jiancheng');
-                        }
-                        ,'fgAdmin' => function ($query) {
-                            $query->field('id, xingming');
-                        }
-                    ])
-                    ->select();
+			->when(count($src['banji_id']) > 0, function($query) use($src){
+                $query->where('banji_id', 'in', $src['banji_id']);
+            })
+            ->when(count($src['subject_id']) > 0, function($query) use($src){
+                $query->where('subject_id', 'in', $src['subject_id']);
+            })
+			->when(strlen($src['searchval']) > 0, function($query) use($src){
+                $query->where('admin_id', 'in', function ($q) use($src) {
+                    $q->name('admin')
+                        ->where('xingming', 'like', '%'. $src['searchval'] . '%')
+                        ->field('id');
+                });
+            })
+            ->when(strlen($src['ruxuenian']) > 0, function($query) use($src){
+                $query->where('banji_id', 'in', function ($q) use($src) {
+                    $q->name('banji')
+                        ->where('ruxuenian', $src['ruxuenian'])
+                        ->field('id');
+                });
+            })
+            ->with([
+                'fgKaoshi' => function ($query) {
+                    $query->field('id, title');
+                }
+                ,'fgBanji' => function ($query) {
+                    $query->field('id, ruxuenian, paixu, school_id')
+                    	->with([
+                    		'glSchool' => function($q){
+		                        $q->field('id, title, jiancheng');
+		                    },
+                    	])
+                    	->append(['banjiTitle']);
+                }
+                ,'fgSubject' => function ($query) {
+                    $query->field('id, title, jiancheng');
+                }
+                ,'fgAdmin' => function ($query) {
+                    $query->field('id, xingming');
+                }
+            ])
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
+            ->select();
 
         return $logList;
     }
@@ -201,28 +224,28 @@ class LuruFengong extends BaseModel
     // 考试关联表
     public function fgKaoshi()
     {
-        return $this->belongsTo('\app\kaoshi\model\Kaoshi', 'kaoshi_id', 'id');
+        return $this->belongsTo(\app\kaoshi\model\Kaoshi::class, 'kaoshi_id', 'id');
     }
 
 
     // 班级关联表
     public function fgBanji()
     {
-        return $this->belongsTo('\app\teach\model\Banji', 'banji_id', 'id');
+        return $this->belongsTo(\app\teach\model\Banji::class, 'banji_id', 'id');
     }
 
 
     // 学科关联表
     public function fgSubject()
     {
-        return $this->belongsTo('\app\teach\model\Subject', 'subject_id', 'id');
+        return $this->belongsTo(\app\teach\model\Subject::class, 'subject_id', 'id');
     }
 
 
     // 考试关联表
     public function fgAdmin()
     {
-        return $this->belongsTo('\app\admin\model\Admin', 'admin_id', 'id');
+        return $this->belongsTo(\app\admin\model\Admin::class, 'admin_id', 'id');
     }
 
 

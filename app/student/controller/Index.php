@@ -50,7 +50,9 @@ class Index extends AdminBase
         // 根据条件查询数据
         $stu = new STU;
         $data = $stu->search($src);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $stu->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }
@@ -98,7 +100,9 @@ class Index extends AdminBase
         // 根据条件查询数据
         $stu = new STU;
         $data = $stu->searchBy($src);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $stu->searchBy($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }
@@ -142,7 +146,9 @@ class Index extends AdminBase
         // 实例化
         $stu = new STU;
         $data = $stu->searchDel($src);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $stu->searchDel($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }

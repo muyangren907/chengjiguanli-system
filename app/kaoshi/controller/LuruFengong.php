@@ -61,7 +61,9 @@ class LuruFengong extends AdminBase
         // 根据条件查询数据
         $lrfgsbj = new lrfg;
         $data = $lrfgsbj->search($src);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $lrfgsbj->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }

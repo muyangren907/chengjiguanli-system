@@ -7,12 +7,51 @@ use app\BaseModel;
 
 class Admin extends BaseModel
 {
-    // 查询所有角色
+    // 设置字段信息
+    protected $schema = [
+        'xingming' => 'varchar'
+        ,'sex' => 'tinyint'
+        ,'shengri' => 'int'
+        ,'username' => 'varchar'
+        ,'password' => 'varchar'
+        ,'teacher_id' => 'int'
+        ,'school_id' => 'int'
+        ,'phone' => 'varchar'
+        ,'id' => 'int'
+        ,'worktime' => 'int'
+        ,'zhiwu_id' => 'int'
+        ,'zhicheng_id' => 'int'
+        ,'biye' => 'varchar'
+        ,'zhuanye' => 'varchar'
+        ,'xueli_id' => 'int'
+        ,'subject_id' => 'int'
+        ,'quanpin' => 'varchar'
+        ,'shoupin' => 'varchar'
+        ,'tuixiu' => 'tinyint'
+        ,'denglucishu' => 'int'
+        ,'lastip' => 'varchar'
+        ,'ip' => 'varchar'
+        ,'lasttime' => 'int'
+        ,'thistime' => 'int'
+        ,'status' => 'tinyint'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'beizhu' => 'varchar'
+    ];
+
+
+    // 查询按条件查用户
     public function search($srcfrom)
     {
         // 整理变量
         $src = [
             'searchval' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src);
 
@@ -24,18 +63,24 @@ class Admin extends BaseModel
                     $query->where('xingming|username|quanpin|shoupin', 'like', '%' . $src['searchval'] . '%');
                 })
             ->with([
-                'adSchool' => function($query){
-                    $query->field('id, jiancheng');
+                'adSchool' => function ($q) {
+                    $q->field('id, jiancheng');
                 }
                 ,'glGroup'
             ])
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
             ->hidden([
                 'password'
                 ,'create_time'
                 ,'update_time'
                 ,'delete_time'
             ])
+            ->append(['groupnames'])
             ->select();
+
         return $data;
     }
 
@@ -44,31 +89,47 @@ class Admin extends BaseModel
     public function srcAuth($user_id)
     {
         // 查询权限
-        $data = self::where('id', $user_id)
-            ->field('id')
-            ->with([
-                'glGroup'
-            ])
+        $group = self::where('id', $user_id)
+            ->with(['glGroup'])
+            ->where('status', 1)
             ->find();
 
-        // 整理权限
-        $arr = array();
-        foreach ($data->glGroup as $key => $value) {
-            $temp = explode(",", $value->rules);
-            $arr = array_merge($arr, $temp);
+        $rules = array();
+        foreach ($group->glGroup as $key => $value) {
+            // code...
+            $rules[] = $value->rules;
         }
-        $arr = array_unique($arr);
+        // 整理权限
+        $rules = array_unique(explode(',', implode(',', $rules)));
 
-        return $arr;
+        return $rules;
     }
 
 
     // 查询管理员资料
     public function searchOne($id)
     {
-        $adminInfo = $this->where('id', $id)
-            ->field('id, username, xingming, teacher_id')
+        $adminInfo = $this
+            ->where('id', $id)
+            ->with([
+                'adSchool' => function($query){
+                    $query->field('id, title');
+                },
+                'adZhiwu' => function($query){
+                    $query->field('id, title');
+                },
+                'adZhicheng' => function($query){
+                    $query->field('id, title');
+                },
+                'adXueli' => function($query){
+                    $query->field('id, title');
+                },
+                'glGroup'
+            ])
+            ->append(['groupnames'])
+            ->hidden(['password', 'delete_time'])
             ->find();
+
         return $adminInfo;
     }
 
@@ -79,9 +140,17 @@ class Admin extends BaseModel
         $src = [
             'searchval' => ''
             ,'school_id' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src);
-        trim($src['searchval']);
+        $src['searchval'] = trim($src['searchval']);
+        if ($src['searchval'] == "" && $src['school_id'] == "") {
+            return array();
+        }
         // 如果有数据则查询教师信息
         $list = self::field('id, xingming, school_id, shengri, sex')
             ->when(strlen($src['school_id']) > 0, function ($query) use($src) {
@@ -98,9 +167,14 @@ class Admin extends BaseModel
                 [
                     'adSchool' => function($query){
                         $query->field('id, jiancheng');
-                    },
+                    }
                 ]
             )
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
             ->append(['age'])
             ->select();
         return $list;
@@ -108,95 +182,186 @@ class Admin extends BaseModel
 
 
     // 表格导入教师信息
-    public function createAll($arr, $School_id)
+    public function createAll($arr, $school_id)
     {
         $pinyin = new \Overtrue\Pinyin\Pinyin;
 
         // 整理表格数据
         array_splice($arr, 0, 4); # 删除标题行
-        $arr = array_filter($arr,function($item){ #过滤空值
-                return $item[1] !== null && $item[2] !== null && $item[3] !== null ;
-            });
 
         // 组合需要保存的数据
         $i = 0;
         $teacherlist = array();
         $validate = new \app\admin\validate\Admin;
+        $err = ['导入失败原因如下：'];
+        $cnt = 0;
+        $i = 0;
         foreach ($arr as $key => $value) {
-            $phone = str_replace(' ', '', $value[5]);
-            $temp = $this->wherePhone($phone)->find();
-            if($temp)
-            {
+            array_map("trim", $value);      # 去除表格中的空格
+            $temp = array_filter($value,function($q){       # 判断是否是行，如果是空行则删除
+                return $q != "";
+            });
+            if (count($temp) == 1 && $temp[0] != "") {
                 continue;
             }
-            $temp = $this->whereUsername(trim($value[2]))->find();
-            if($temp)
-            {
-                continue;
-            }
-            $teacherlist[$i]['xingming'] = $value[1];
-            $teacherlist[$i]['username'] = trim(strtolower($value[2]));
-            $teacherlist[$i]['sex'] = $this->cutStr($value[3]);
-            $teacherlist[$i]['shengri'] = $value[4];
-            $teacherlist[$i]['phone'] = $phone;
-            $teacherlist[$i]['worktime'] = $value[6];
-            $teacherlist[$i]['zhiwu_id'] = $this->cutStr($value[7]);
-            $teacherlist[$i]['zhicheng_id'] = $this->cutStr($value[8]);
-            $teacherlist[$i]['school_id'] = $School_id;
-            $teacherlist[$i]['biye'] = $value[9];
-            $teacherlist[$i]['zhuanye'] = $value[10];
-            $teacherlist[$i]['xueli_id'] = $this->cutStr($value[11]);
+            $cnt++;
+            $teacherInfo[$i]['xingming'] = trim($value[1]);
+            $teacherInfo[$i]['username'] = trim(strtolower($value[2]));
+            $teacherInfo[$i]['sex'] = $this->cutStr($value[3]);
+            $teacherInfo[$i]['shengri'] = $value[4];
+            $teacherInfo[$i]['phone'] = str_replace(' ', '', $value[5]);
+            $teacherInfo[$i]['worktime'] = $value[6];
+            $teacherInfo[$i]['zhiwu_id'] = $this->cutStr($value[7]);
+            $teacherInfo[$i]['zhicheng_id'] = $this->cutStr($value[8]);
+            $teacherInfo[$i]['school_id'] = $school_id;
+            $teacherInfo[$i]['biye'] = trim($value[9]);
+            $teacherInfo[$i]['zhuanye'] = trim($value[10]);
+            $teacherInfo[$i]['xueli_id'] = $this->cutStr($value[11]);
             $quanpin = $pinyin->sentence($value[1]);
             $jianpin = $pinyin->abbr($value[1]);
-            $teacherlist[$i]['quanpin'] = trim(strtolower(str_replace(' ', '', $quanpin)));
-            $teacherlist[$i]['shoupin'] = trim(strtolower($jianpin));
-            $teacherlist[$i]['beizhu'] = $value[12];
-
-            $result = $validate->scene('admincreateall')->check($teacherlist[$i]);
+            $teacherInfo[$i]['quanpin'] = trim(strtolower(str_replace(' ', '', $quanpin)));
+            $teacherInfo[$i]['shoupin'] = trim(strtolower($jianpin));
+            $teacherInfo[$i]['beizhu'] = $value[12];
+            $teacherInfo[$i]['lasttime'] = time();
+            $teacherInfo[$i]['thistime'] = time();
+            // 验证数据
+            $result = $validate->scene('admincreateall')->check($teacherInfo[$i]);
             $msg = $validate->getError();
-            if(!$result){
-                unset($teacherlist[$i]);
+            if (!$result) {
+                $err[] = '第' . $value[0] . '行,' . $msg;
+                unset($teacherInfo[$i]);
             }
-            $i++;
+            $i ++;
         }
 
-        $teacherlist = array_filter($teacherlist, function($q){ ## 过滤姓名、身份证号或班级为空的数据
-            return $q['xingming'] != null && $q['username'] != null && $q['sex'] != null && $q['zhiwu_id'] != null && $q['zhicheng_id'] != null && $q['xueli_id'] != null;
-        });
+        // 启动事务
+        \think\facade\Db::startTrans();
+        try {
+            $data = $this->saveAll($teacherInfo);
+            $success = $data->count();
+            \think\facade\Db::commit();
+        } catch (\Exception $e) {
+            // 回滚事务
+            \think\facade\Db::rollback();
+            $success = 0;
+            $err[] = $e->getMessage();
+        }
 
-        // 保存或更新信息
-        $data = $this->saveAll($teacherlist);
-
-        $data ? $data = true : $data = false;
+        // 整理返回信息
+        $data['success'] = '共有'. $cnt .'条记录，成功导入' . $success . '条记录。';
+        if($cnt == $success) {
+            $data['err'] = array();
+        } else {
+            $data['err'] = $err;
+        }
 
         return $data;
-    }
-
-
-    // 关联用户组
-    public function glGroup()
-    {
-        return $this->belongsToMany('AuthGroup', 'AuthGroupAccess', 'group_id', 'uid');
-    }
-
-
-    // 单位关联模型
-    public function adSchool()
-    {
-        return $this->belongsTo('\app\system\model\School', 'school_id', 'id');
     }
 
 
     // 获取密码
     public function password($username)
     {
-    	// 查询数据
-    	$pasW = $this
-    		->where('username', $username)
-    		->value('password');
+        // 查询数据
+        $pasW = $this
+            ->where('username', $username)
+            ->value('password');
 
-    	// 返回数据
-    	return $pasW;
+        // 返回数据
+        return $pasW;
+    }
+
+
+    // 查询用户名是否唯一
+    public function onlyUsername($srcfrom)
+    {
+        // 初始值
+        $src = [
+            'searchval' => ''
+            ,'id' => ''
+        ];
+        $src = array_cover($srcfrom, $src);
+
+        $list = $this::withTrashed()
+            ->where('username', $src['searchval'])
+            ->find();
+        $data = ['msg' => '用户名已经存在！', 'val' => 0];
+
+        if($list)
+        {
+            if($src['id'] == $list->id){
+                $data = ['msg' => '', 'val' => 1];
+            }
+        }else{
+           $data = ['msg' => '', 'val' => 1];
+        }
+    }
+
+    // 查询用户名是否唯一
+    public function onlyPhone($srcfrom)
+    {
+        // 初始值
+        $src = [
+            'searchval' => ''
+            ,'id' => ''
+        ];
+        $src = array_cover($srcfrom, $src);
+
+        $list = $this::withTrashed()
+            ->where('phone', $src['searchval'])
+            ->find();
+        $data = ['msg' => '手机号已经存在！', 'val' => 0];
+
+        if($list)
+        {
+            if($src['id'] == $list->id){
+                $data = ['msg' => '', 'val' => 1];
+            }
+        }else{
+           $data = ['msg' => '', 'val' => 1];
+        }
+    }
+
+
+    // 关联用户组
+    public function glGroup()
+    {
+        return $this->belongsToMany(AuthGroup::class, 'AuthGroupAccess', 'group_id', 'uid');
+    }
+
+
+    // 单位关联模型
+    public function adSchool()
+    {
+        return $this->belongsTo(\app\system\model\School::class, 'school_id', 'id');
+    }
+
+
+    // 职务关联模型
+    public function adZhiwu()
+    {
+        return $this->belongsTo(\app\system\model\Category::class, 'zhiwu_id', 'id');
+    }
+
+
+    // 职称关联模型
+    public function adZhicheng()
+    {
+        return $this->belongsTo(\app\system\model\Category::class, 'zhicheng_id', 'id');
+    }
+
+
+    // 学历关联模型
+    public function adXueli()
+    {
+        return $this->belongsTo(\app\system\model\Category::class, 'xueli_id', 'id');
+    }
+
+
+    // 学科关联模型
+    public function adSubject()
+    {
+        return $this->belongsTo(\app\teach\model\Subject::class, 'subject_id', 'id');
     }
 
 
@@ -210,13 +375,6 @@ class Admin extends BaseModel
 
     // 生日获取器
     public function getShengriAttr($value)
-    {
-        return date('Y-m-d', $value);
-    }
-
-
-    // 创建时间获取器
-    public function getCreateTimeAttr($value)
     {
         return date('Y-m-d', $value);
     }
@@ -238,14 +396,8 @@ class Admin extends BaseModel
         }else{
             $str = '未知';
         }
+
         return $str;
-    }
-
-
-    // 最后登录时间取器
-    public function getLasttimeAttr($value)
-    {
-        return date('Y年m月d日 H:i:s', $value);
     }
 
 
@@ -256,47 +408,40 @@ class Admin extends BaseModel
     }
 
 
-    // 参加工作时间获取器
+    // 最后一次登录时间取器
+    public function getLasttimeAttr($value)
+    {
+        return date('Y年m月d日 H:i:s', $value);
+    }
+
+
+    // 参加工作时间修改器
     public function getWorktimeAttr($value)
     {
         return date('Y-m-d', $value);
     }
 
 
-    // 参加工作时间修改器
+    // 生日修改器
     public function setWorktimeAttr($value)
     {
-        return strtotime($value);
+        strlen($value) >0 ? $value = strtotime($value) : $value = '';
+        return $value;
     }
 
 
     // 获取角色名称
-    public function getGroupnames($userid)
+    public function getGroupnamesAttr($value)
     {
         // 如果用户ID为1或2，则为超级管理员
-        if($userid == 1 || $userid == 2)
+        if($this->getAttr('id') == 1 || $this->getAttr('id') == 2)
         {
             return '超级管理员';
         }
 
         // 查询用户拥有的权限
-        $admininfo = $this->where('id', $userid)
-            ->field('id')
-            ->with([
-                'glGroup'=>function($query){
-                    $query->where('status', 1);
-                }
-            ])
-            ->find();
-
-        $groupname = '';
-        foreach ($admininfo->gl_group as $key => $value) {
-            if($key == 0){
-                $groupname = $value->title;
-            }else{
-                $groupname = $groupname . '、' . $value->title;
-            }
-        }
+        $group = $this->glGroup()->where('status', 1)->column(['title']);
+        $groupname = implode('、', $group);
 
         // 返回角色名
         return $groupname;
@@ -332,41 +477,6 @@ class Admin extends BaseModel
     }
 
 
-    // 职务关联模型
-    public function adZhiwu()
-    {
-        return $this->belongsTo('\app\system\model\Category', 'zhiwu_id', 'id');
-    }
-
-
-    // 职称关联模型
-    public function adZhicheng()
-    {
-        return $this->belongsTo('\app\system\model\Category', 'zhicheng_id', 'id');
-    }
-
-
-    // 学历关联模型
-    public function adXueli()
-    {
-        return $this->belongsTo('\app\system\model\Category', 'xueli_id', 'id');
-    }
-
-
-    // 单位关联模型
-    public function adDanwei()
-    {
-        return $this->belongsTo('\app\system\model\School', 'danwei_id', 'id');
-    }
-
-
-    // 学科关联模型
-    public function adSubject()
-    {
-        return $this->belongsTo('\app\teach\model\Subject', 'subject_id', 'id');
-    }
-
-
     // 分割表格上传数据
     private function cutStr($value)
     {
@@ -390,7 +500,7 @@ class Admin extends BaseModel
     // 职务权限
     public function zwAuth()
     {
-        $adInfo = \app\facade\OnLine::myInfo();
+        $adInfo = $this->searchOne(session('user_id'));
         $banji_id = array();
         // 获取职务权限
         $zhiwu_array = array(10703, 10705);
@@ -400,7 +510,7 @@ class Admin extends BaseModel
             $bjList = $bj->where('school_id', $adInfo->school_id)
                 ->where('status', 1)
                 ->column('id');
-            $banji_id = array_merge($banji_id, $bjList);
+            $banji_id = array_merge($banji_id, $bjList);  # 这个地方为什么要合并？
         }
 
         return $banji_id;

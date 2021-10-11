@@ -11,28 +11,8 @@
 
 // 应用公共文件
 
-	// // 获取类别列表
-	// function categoryChildren($p_id = 0)
-	// {
-	// 	// 查询类别
- //        $category = new \app\system\model\Category;
- //        $list = $category->srcChild($p_id);
-	// 	// 返回类别列表
-	// 	return $list;
-	// }
-
-// // 单位列表
-//     function danweiJibie($low = '班级', $high = '其它级', $order = 'asc')
-//     {
-//      // 实例化单位模型
-//      $sch = new \app\system\model\School;
-//      $data = $sch->srcJibie($low, $high, $order);
-//      return $data;
-//     }
-
-
 	// 班级列表
-	function banJiNamelist()
+	function banji_name_list()
 	{
 		// 实例化年级控制器
         $bj = new \app\teach\model\Banji;
@@ -41,7 +21,7 @@
 	}
 
     // 查询统计项目
-    function srcTjxm($category_id)
+    function src_tjxm($category_id)
     {
         $tjxm = new \app\kaoshi\model\TongjiXiangmu;
         $data = $tjxm->srcTongji($category_id);
@@ -50,7 +30,7 @@
 
 
     // 可以组织考试的单位列表
-    function kaoshiSchoolList()
+    function kaoshi_school_list()
     {
         // 实例化单位模型
         $sch = new \app\system\model\School;
@@ -59,8 +39,8 @@
     }
 
 
-	// 整理教师名
-	function teacherNames($list = array())
+	// 整理教师名,数组转字符串
+	function teacher_names($list = array())
 	{
 		if (count($list) == 0) {
             return '';
@@ -100,7 +80,7 @@
     * @param str或array $str 表单中获取的参数
     * @return array 返回类型
     */
-    function strToArray($str)
+    function str_to_array($str)
     {
         $data = \app\facade\Tools::strToArray($str);
         return $data;
@@ -113,44 +93,44 @@
     * @param str或array $str 表单中获取的参数
     * @return array 返回类型
     */
-    function reSetObject($obj, $srcfrom)
+    function reset_data($data, $cnt)
     {
-        $data = \app\facade\Tools::reSetObject($obj, $srcfrom);
+        $data = \app\facade\Tools::reSetData($data, $cnt);
         return $data;
     }
 
 
-    /**
-    * 把重新整理从数据模型中返回的对象
-    * @access public
-    * @param str或array $str 表单中获取的参数
-    * @return array 返回类型
-    */
-    function reSetArray($arr, $srcfrom)
-    {
-        $data = \app\facade\Tools::reSetArray($arr, $srcfrom);
-        return $data;
-    }
+    // /**
+    // * 把重新整理从数据模型中返回的对象
+    // * @access public
+    // * @param str或array $str 表单中获取的参数
+    // * @return array 返回类型
+    // */
+    // function reset_array($arr, $srcfrom)
+    // {
+    //     $data = \app\facade\Tools::reSetArray($arr, $srcfrom);
+    //     return $data;
+    // }
 
 
     // 定义EXCEL列名
-    function excelColumnName()
+    function excel_column_name()
     {
         $liemingarr = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM','BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW'];
         return $liemingarr;
     }
 
 
-    // 多字段排序
-    function sortArrByManyField($arr, $srcfrom)
-    {
-        $data = \app\facade\Tools::sortArrByManyField($arr, $srcfrom);
-        return $data;
-    }
+    // // 多字段排序
+    // function sort_arr_by_many_field($arr, $srcfrom)
+    // {
+    //     $data = \app\facade\Tools::sortArrByManyField($arr, $srcfrom);
+    //     return $data;
+    // }
 
 
     // 已知密码进行验证
-    function loginCheck($inputPassword, $serverPassword)
+    function login_check($inputPassword, $serverPassword)
     {
         // 实例化加密类
         $md5 = new \WhiteHat101\Crypt\APR1_MD5;

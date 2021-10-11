@@ -53,7 +53,9 @@ class Xueqi extends AdminBase
                 ,'status'
                 ,'update_time'
             ]);
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $xq->search($src)->count();
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }
@@ -90,7 +92,6 @@ class Xueqi extends AdminBase
             ,'bfdate'
             ,'enddate'
         ], 'post');
-
 
         // 验证表单数据
         $validate = new \app\teach\validate\Xueqi;
@@ -212,17 +213,10 @@ class Xueqi extends AdminBase
     // 查询单位列表
     public function srcXueqi()
     {
-        // 获取参数
-        $src = $this->request
-            ->only([
-                'page' => '1'
-                ,'limit' => '10'
-            ], 'POST');
-
-            // 实例化单位模型
+        // 实例化单位模型
         $xq = new XQ;
         $data = $xq->lastXueqi();
-        $data = reSetObject($data, $src);
+        $data = reset_data($data, 6);
 
         return json($data);
     }
