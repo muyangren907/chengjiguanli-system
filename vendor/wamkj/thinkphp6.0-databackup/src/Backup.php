@@ -62,7 +62,9 @@ class Backup
     public function setDbConn($dbconfig=[])
     {
         if (empty($dbconfig)) {
-            $this->dbconfig = Config::get('database'); 
+            $dbconfig = Config::get('database');
+            $default = $dbconfig['default'];
+            $this->dbconfig = $dbconfig['connections'][$default];
         }else{
             $this->dbconfig=$dbconfig;
         }
