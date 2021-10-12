@@ -25,9 +25,12 @@ class KaoshiSet extends AdminBase
         $list['status'] = '/kaoshi/kaoshiset/status';
 
         $ksset = new ksset;
-        $src['kaoshi_id'] = $kaoshi_id;
+        $src = [
+            'kaoshi_id' => $kaoshi_id
+            ,'all' => true
+        ];
         // $list['subject'] = $ksset->srcSubject($src);
-        $nj = $ksset->srcGrade($kaoshi_id);
+        $nj = $ksset->srcGrade($src);
         $list['nj'] = $nj;
         $kaoshi = new \app\kaoshi\model\Kaoshi;
         $list['sj']  = $kaoshi::where('id', $kaoshi_id)->value('bfdate');

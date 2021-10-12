@@ -44,7 +44,6 @@ class Index extends AdminBase
             ], 'POST');
         $ks = new KS;
         if(session('user_id') != 1 && session('user_id') !=2) {
-
             $src['id'] = $ks->srcAuth(); 
         }
         // 根据条件查询数据
@@ -216,8 +215,8 @@ class Index extends AdminBase
     {
         // 获取参考年级
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['data']['nianji'] = $ksset->srcGrade($kaoshi_id);
-        $list['data']['nianjiNum'] = array_column($list['data']['nianji'], 'ruxuenian');
+        // $list['data']['nianji'] = $ksset->srcGrade($kaoshi_id);
+        // $list['data']['nianjiNum'] = array_column($list['data']['nianji'], 'ruxuenian');
 
         // 设置页面标题
         $list['set'] = array(
@@ -227,6 +226,8 @@ class Index extends AdminBase
             ,'url' => '/kaohao/index/saveall'
             ,'kaoshi_id' => $kaoshi_id
         );
+
+
 
         // 模板赋值
         $this->view->assign('list', $list);

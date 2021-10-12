@@ -24,7 +24,7 @@ class Kaoshi extends BaseModel
         ,'create_time' => 'int'
         ,'update_time' => 'int'
         ,'delete_time' => 'int'
-        ,'beizhu'
+        ,'beizhu' => 'varchar'
     ];
 
 
@@ -210,7 +210,11 @@ class Kaoshi extends BaseModel
     {
         // 查询参考年级
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $data = $ksset->srcGrade($this->getAttr('id'));
+        $src = [
+            'kaoshi_id' => $this->getAttr('id')
+            ,'all' => true
+        ];
+        $data = $ksset->srcGrade($src);
         // 重新整理数据
         $str = '';
         if(isset($data))

@@ -7,45 +7,62 @@ use \app\BaseModel;
 
 class Kaohao extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' => 'int'
+        ,'kaoshi_id' => 'int'
+        ,'school_id' => 'int'
+        ,'ruxuenian' => 'int'
+        ,'nianji' => 'varchar'
+        ,'banji_id' => 'int'
+        ,'paixu' => 'int'
+        ,'student_id' => 'int'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'status' => 'tinyint'
+    ];
+
+
     // 班级成绩关联
     public function banjiKaohao()
     {
-        return $this->hasMany('\app\kaohao\model\Kaohao', 'banji_id', 'banji_id');
+        return $this->hasMany(\app\kaohao\model\Kaohao::class, 'banji_id', 'banji_id');
     }
 
 
     // 学校信息关联表
     public function cjSchool()
     {
-    	return $this->belongsTo('\app\system\model\School', 'school_id', 'id');
+    	return $this->belongsTo(\app\system\model\School::class, 'school_id', 'id');
     }
 
 
     // 班级信息关联表
     public function cjBanji()
     {
-    	return $this->belongsTo('\app\teach\model\Banji', 'banji_id', 'id');
+    	return $this->belongsTo(\app\teach\model\Banji::class, 'banji_id', 'id');
     }
 
 
     // 学生信息关联
     public function cjStudent()
     {
-    	return $this->belongsTo('\app\student\model\Student', 'student_id', 'id');
+    	return $this->belongsTo(\app\student\model\Student::class, 'student_id', 'id');
     }
 
 
     // 考试关联
     public function cjKaoshi()
     {
-    	return $this->belongsTo('\app\kaoshi\model\Kaoshi', 'kaoshi_id', 'id');
+    	return $this->belongsTo(\app\kaoshi\model\Kaoshi::class, 'kaoshi_id', 'id');
     }
 
 
     // 考试成绩
     public function ksChengji()
     {
-        return $this->hasMany('\app\chengji\model\Chengji', 'kaohao_id', 'id');
+        return $this->hasMany(\app\chengji\model\Chengji::class, 'kaohao_id', 'id');
     }
 
 

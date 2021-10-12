@@ -16,7 +16,10 @@ class KsCanYu extends AdminBase
             ->only([
                 'ruxuenian' => ''
                 ,'kaoshi_id' => ''
-                ,'limit' => 100
+                ,'page' => '1'
+                ,'limit' => '10'
+                ,'field' => 'id'
+                ,'order' => 'desc'
             ], 'POST');
 
         $cy = new \app\kaohao\model\SearchCanYu;
@@ -36,15 +39,18 @@ class KsCanYu extends AdminBase
         $src = $this->request
             ->only([
                 'kaoshi_id' => ''
-                ,'limit' => 100
+                ,'page' => '1'
+                ,'limit' => '10'
+                ,'field' => 'ruxuenian'
+                ,'order' => 'desc'
             ], 'POST');
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $nianji = $ksset->srcGrade($src['kaoshi_id']);
+        $nianji = $ksset->srcGrade($src);
         $src['all'] = true;
-        $cnt = $cy->srcGrade($src)->count();
-        $data = reset_data($data, $cnt);
+        $cnt = count($ksset->srcGrade($src));
+        $data = reset_data($nianji, $cnt);
 
-        return json($nianji);
+        return json($data);
     }
 
 
@@ -111,9 +117,9 @@ class KsCanYu extends AdminBase
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $sbj = $ksset->srcSubject($src);
         $src['all'] = true;
-        $cnt = $ksset->srcSubject($src)->count();
-        $data = reset_data($data, $cnt);
+        $cnt = count($ksset->srcSubject($src));
+        $data = reset_data($sbj, $cnt);
 
-        return json($sbj);
+        return json($data);
     }
 }

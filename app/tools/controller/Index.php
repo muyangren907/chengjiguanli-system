@@ -115,6 +115,7 @@ class Index extends BaseController
         // 整理数据
         if($cnt > 0)
         {
+            
             $arr = [
                 'code' => 0  // ajax请求次数，作为标识符
                 ,'msg' => ""  // 获取到的结果数(每页显示数量)

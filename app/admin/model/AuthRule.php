@@ -143,6 +143,6 @@ class AuthRule extends BaseModel
     // 子菜单数据模型关联
     public function authCid()
     {
-        return $this->hasMany('AuthRule', 'pid', 'id');
+        return $this->hasMany(AuthRule::class, 'pid', 'id');
     }
 }

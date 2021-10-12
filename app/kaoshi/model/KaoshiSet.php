@@ -149,16 +149,31 @@ class KaoshiSet extends BaseModel
      * @return \think\Response
      */
     // 显示考试列表
-    public function srcGrade($kaoshi_id)
+    public function srcGrade($srcfrom)
     {
-        $njList = $this->where('kaoshi_id', $kaoshi_id)
+        // 初始化参数
+        $src = array(
+            'kaoshi_id' => '0'
+            ,'page' => '1'
+            ,'limit' => '10'
+            ,'field' => 'ruxuenian'
+            ,'order' => 'desc'
+            ,'all' => false
+        );
+        $src = array_cover($srcfrom, $src);
+
+        $njList = $this->where('kaoshi_id', $src['kaoshi_id'])
             ->group('ruxuenian')
             ->field("ruxuenian
                 ,any_value(nianjiname) as nianjiname")
-            // ->cache(true)
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
             ->select();
 
-        // 重新整理学科信息
+        // 重新整理年级信息
         $data = array();
         foreach ($njList as $key => $value) {
             # code...
@@ -167,10 +182,7 @@ class KaoshiSet extends BaseModel
                 'nianjiname' => $value->nianjiname
             ];
         }
-        // 按条件排序
-        if(count($data) > 0){
-            $data = \app\facade\Tools::sortArrByManyField($data, 'ruxuenian', SORT_ASC);
-        }
+
         return $data;
     }
 
