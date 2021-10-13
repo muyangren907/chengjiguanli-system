@@ -29,7 +29,7 @@ class SearchMore extends BaseModel
 
         // 用新值替换初始值
         $src = array_cover($srcfrom, $src);
-        $src['banji_id'] = strToArray($src['banji_id']);
+        $src['banji_id'] = str_to_array($src['banji_id']);
 
         // 查询成绩
         $kh = new kh();
@@ -86,7 +86,7 @@ class SearchMore extends BaseModel
 
         // 用新值替换初始值
         $src = array_cover($srcfrom, $src);
-        $src['banji_id'] = strToArray($src['banji_id']);
+        $src['banji_id'] = str_to_array($src['banji_id']);
 
         // 查询成绩
         $kh = new kh();
@@ -301,7 +301,7 @@ class SearchMore extends BaseModel
         );
         // 用新值替换初始值
         $src = array_cover($srcfrom, $src);
-        $src['banji_id'] = strToArray($src['banji_id']);
+        $src['banji_id'] = str_to_array($src['banji_id']);
 
         // 获取考试标签
         $kh = new kh;

@@ -32,7 +32,7 @@ class OneStudentChengji extends BaseController
         // 获取学生成绩
         $stucj = new STUCJ;
         $khList = $stucj->oldList($src);
-        $data = reSetArray($khList, $src);
+        $data = reset_data($khList, $src);
 
         return json($data);
     }
@@ -84,7 +84,7 @@ class OneStudentChengji extends BaseController
         // 获取学生成绩
         $stucj = new STUCJ;
         $data = $stucj->oneChengji($src);
-        $data = reSetArray($data, $src);
+        $data = reset_data($data, $src);
 
         return json($data);
     }

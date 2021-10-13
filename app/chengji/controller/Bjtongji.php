@@ -27,7 +27,7 @@ class Bjtongji extends AdminBase
         $list['kaoshi_id'] = $kaoshi_id;
         $list['kaoshititle'] = $ksinfo->title;
         $list['dataurl'] = '/chengji/bjtj/data';
-        $list['tjxm'] = srcTjxm(12201);
+        $list['tjxm'] = src_tjxm(12201);
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -67,7 +67,7 @@ class Bjtongji extends AdminBase
         // 统计成绩
         $btj = new BTJ;
         $data = $btj->search($src);
-        $data = reSetArray($data, $src);
+        $data = reset_data($data, $src);
 
         return json($data);
     }
@@ -134,7 +134,7 @@ class Bjtongji extends AdminBase
                 ,'ruxuenian' => ''
                 ,'school_id' => array()
             ], 'POST');
-        $src['school_id'] = strToarray($src['school_id']);
+        $src['school_id'] = str_to_array($src['school_id']);
 
         // 获取相关参数
         ob_start();
@@ -177,7 +177,7 @@ class Bjtongji extends AdminBase
             ->setCategory("成绩管理"); //分类
 
         // 设置要导出的项目、列名、起始行
-        $sbjcol = srcTjxm(12202);
+        $sbjcol = src_tjxm(12202);
         $sbjcolcnt = count($sbjcol);
         $colname = excelColumnName();
         $colcnt = $sbjcolcnt*count($xk)+3;
@@ -678,7 +678,7 @@ class Bjtongji extends AdminBase
         $btj = new BTJ();
         // 获取参考年级
         $data = $btj->srcSubject($src); 
-        $data = reSetArray($data, $src);
+        $data = reset_data($data, $src);
         return json($data);
     }
 

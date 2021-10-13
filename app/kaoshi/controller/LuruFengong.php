@@ -26,9 +26,12 @@ class LuruFengong extends AdminBase
         $list['kaoshi_id'] = $kaoshi_id;
 
         $ksset = new ksset;
-        $src['kaoshi_id'] = $kaoshi_id;
+        $src = [
+            'kaoshi_id' => $kaoshi_id
+            ,'all' => true
+        ];
         $list['subject'] = $ksset->srcSubject($src);
-        $nj = $ksset->srcGrade($kaoshi_id);
+        $nj = $ksset->srcGrade($src);
         $list['nj'] = $nj;
         $kaoshi = new \app\kaoshi\model\Kaoshi;
         $list['sj']  = $kaoshi::where('id', $kaoshi_id)->value('bfdate');
@@ -53,7 +56,7 @@ class LuruFengong extends AdminBase
                 ,'ruxuenian' => ''
                 ,'page' => '1'
                 ,'limit' => '10'
-                ,'field' => 'update_id'
+                ,'field' => 'update_time'
                 ,'order' => 'asc'
                 ,'searchval' => ''
             ], 'POST');
@@ -220,7 +223,7 @@ class LuruFengong extends AdminBase
             ], 'POST');
         $lrfg = new \app\kaoshi\model\LuruFengong;
         $bj = $lrfg->srcMyLuruBanji($src);
-        $bj = reSetArray($bj, $src);
+        $bj = reset_data($bj, $src);
         return json($bj);
     }
 
@@ -238,7 +241,7 @@ class LuruFengong extends AdminBase
             ], 'POST');
         $lrfg = new \app\kaoshi\model\LuruFengong;
         $bj = $lrfg->srcMyLuruSubject($src);
-        $bj = reSetArray($bj, $src);
+        $bj = reset_data($bj, $src);
         return json($bj);
     }
 }

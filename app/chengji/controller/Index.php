@@ -16,20 +16,23 @@ class Index extends AdminBase
 
         // 获取参加考试的年级和学科
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['set']['nianji'] = $ksset->srcGrade($kaoshi_id);
-        $src['kaoshi_id'] = $kaoshi_id;
+        $src = [
+            'kaoshi_id' => $kaoshi_id
+            ,'all' => true
+        ];
+
+        $list['set']['nianji'] = $ksset->srcGrade($src);
         $list['set']['subject_id'] = $ksset->srcSubject($src);
         if (count($list['set']['nianji']) > 0) {
             $src['ruxuenian']=$list['set']['nianji'][0];
         } else {
             $src['ruxuenian']=array();
         }
-        $src['kaoshi_id'] = $kaoshi_id;
         $cy = new \app\kaohao\model\SearchCanYu;
         $list['set']['school_id'] = $cy->school($src);
         $list['kaoshi_id'] = $kaoshi_id;
         $list['dataurl'] = '/chengji/index/data';
-        $list['tjxm'] = srcTjxm(12205);
+        $list['tjxm'] = src_tjxm(12205);
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -66,7 +69,9 @@ class Index extends AdminBase
         // 实例化并查询成绩
         $cj = new Chengji;
         $data = $cj->search($src);
-        $data = reSetArray($data, $src);
+        $src['all'] = true;
+        $cnt = $data = $cj->search($src);
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }
@@ -265,8 +270,8 @@ class Index extends AdminBase
         $chengjiinfo = $more->srcChengjiList($src);
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $subject_id = $ksset->srcSubject($src);
-        $tjxm_left = srcTjxm(12210);
-        $tjxm_right = srcTjxm(12206);
+        $tjxm_left = src_tjxm(12210);
+        $tjxm_right = src_tjxm(12206);
 
         // 获取考试标题
         $ks = new \app\kaoshi\model\Kaoshi;
@@ -566,8 +571,8 @@ class Index extends AdminBase
             $mf[$mf_v['id']]['jige'] = $mf_v['fenshuxian']['jige'];
         }
 
-        $tjxm_stu = srcTjxm(12211);   # 统计项目
-        $tjxm_bj = srcTjxm(12212);   # 统计项目
+        $tjxm_stu = src_tjxm(12211);   # 统计项目
+        $tjxm_bj = src_tjxm(12212);   # 统计项目
         $colname = excelColumnName();
 
         // set_time_limit(0);

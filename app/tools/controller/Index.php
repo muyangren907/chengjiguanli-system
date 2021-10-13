@@ -72,7 +72,7 @@ class Index extends BaseController
     * @param str或array $str 表单中获取的参数
     * @return array 返回类型
     */
-    public function strToArray($str = array())
+    public function str_to_array($str = array())
     {
         // 如果str是字符串，则转换成数组
         if(is_array($str) == false)
@@ -133,7 +133,7 @@ class Index extends BaseController
     * @param str或array $str 表单中获取的参数
     * @return array 返回类型
     */
-    public function reSetArray($arr = array(), $srcfrom)
+    public function reset_data($arr = array(), $srcfrom)
     {
         // 整理变量
         $src = [

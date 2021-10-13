@@ -27,8 +27,8 @@ class TongjiLog extends BaseModel
     public function search($srcfrom)
     {
         $src = [
-            'kaoshi_id' => '',
-            'cjlast' => 0,
+            'kaoshi_id' => ''
+            ,'cjlast' => 0
             ,'page' => 1
             ,'limit' => 10
             ,'field' => 'id'

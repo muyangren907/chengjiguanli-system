@@ -185,7 +185,7 @@ class AdminInfo extends AdminBase
         $data = $bzr->srcTeacher($src);
         $src['all'] = true;
         $cnt = $bzr->srcTeacher($src)->count();
-        $data = reSetObject($data, $cnt);
+        $data = reset_data($data, $cnt);
 
         return json($data); 
     }

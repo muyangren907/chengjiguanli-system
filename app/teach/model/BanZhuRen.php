@@ -1,5 +1,4 @@
 <?php
-declare (strict_types = 1);
 
 namespace app\teach\model;
 
@@ -94,11 +93,16 @@ class BanZhuRen extends BaseModel
             ,'bfdate' => date("Y-m-d", strtotime("-6 year"))
             ,'enddate' => date("Y-m-d", strtotime('1 day'))
             ,'searchval' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'bfdate'
+            ,'order' => 'desc'
+            ,'all' => false
         ];
 
         $src = array_cover($srcfrom, $src) ;
-        $src['banji_id'] = strToarray($src['banji_id']);
-        $src['teacher_id'] = strToarray($src['teacher_id']);
+        $src['banji_id'] = str_to_array($src['banji_id']);
+        $src['teacher_id'] = str_to_array($src['teacher_id']);
 
         // 查询数据
         $data = $this
@@ -123,7 +127,11 @@ class BanZhuRen extends BaseModel
                     },
                 ]
             )
-            ->order(['update_time' => 'desc'])
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
             ->select();
 
         return $data;

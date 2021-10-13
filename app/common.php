@@ -82,7 +82,7 @@
     */
     function str_to_array($str)
     {
-        $data = \app\facade\Tools::strToArray($str);
+        $data = \app\facade\Tools::str_to_array($str);
         return $data;
     }
 
@@ -108,7 +108,7 @@
     // */
     // function reset_array($arr, $srcfrom)
     // {
-    //     $data = \app\facade\Tools::reSetArray($arr, $srcfrom);
+    //     $data = \app\facade\Tools::reset_data($arr, $srcfrom);
     //     return $data;
     // }
 

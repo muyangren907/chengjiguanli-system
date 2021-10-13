@@ -32,12 +32,12 @@ class Kaoshi extends BaseModel
     public function search($srcfrom)
     {
         $src = [
-            'field' => 'id'
-            ,'order' => 'desc'
-            ,'id' => array()
+            'id' => array()
             ,'zuzhi_id' => array()
             ,'xueqi_id' => ''
             ,'category_id' => array()
+            ,'luru' => ''
+            ,'status' => ''
             ,'searchval' => ''
             ,'page' => 1
             ,'limit' => 10
@@ -74,6 +74,12 @@ class Kaoshi extends BaseModel
             ->when(session('user_id') !=1 && session('user_id') !=2, function($query) use($src){
                     $query->where('id', 'in', $src['id']);
                 })
+            ->when(strlen($src['luru']) > 0, function ($query) use($src) {
+                    $query->where('luru', $src['luru']);
+            })
+            ->when(strlen($src['status']) > 0, function ($query) use($src) {
+                    $query->where('status', $src['status']);
+            })
             ->with(
                 [
                     'ksCategory' => function ($query) {

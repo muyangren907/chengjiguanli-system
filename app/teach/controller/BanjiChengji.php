@@ -57,7 +57,7 @@ class BanjiChengji extends AdminBase
         $data = $bjcjmod->srcBanjiChengji($src);
         $bjcjmod = new bjcjmod;
         $data = $bjcjmod->banjiChengjiList($data);
-        $data = reSetArray($data, $src);
+        $data = reset_data($data, $src);
 
         return json($data);
     }

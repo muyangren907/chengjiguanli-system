@@ -27,7 +27,7 @@ class Tongji extends AdminBase
             $ksset = new \app\kaoshi\model\KaoshiSet;
 
             // 重新计算得分率
-            $nj = $ksset->srcGrade($src['kaoshi_id']); # 获取参考年级
+            $nj = $ksset->srcGrade($src); # 获取参考年级
             foreach ($nj as $key => $value) { # 循环获取各年级参考学科
                 $src['ruxuenian'] = $value['ruxuenian'];
                 $manfen = $ksset->srcSubject($src); # 获取本年级各学科满分

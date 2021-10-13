@@ -435,15 +435,24 @@ class Index extends AdminBase
     // 获取允许录入成绩的考试
     public function srcEditKaoshi()
     {
+        $src = [
+            'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'luru' => true
+            ,'status' => true
+        ];
         $ks = new KS();
-        // 获取参考年级
-        $data = $ks->order(['id' => 'desc'])
-                ->field('id, title')
-                ->where('luru', 1)
-                ->where('status', 1)
-                ->select(); 
-        $src = array();
-        $data = reSetObject($data, $src);
+        // 获取考试
+        $data = $ks->search($src)
+            ->visible([
+                'id'
+                ,'title'
+            ]);
+        $src['all'] = true;
+        $cnt = $ks->search($src)->count();
+        $data = reset_data($data, $cnt);
         return json($data);
     }
 }

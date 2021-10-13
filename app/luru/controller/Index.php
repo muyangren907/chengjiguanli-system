@@ -59,7 +59,7 @@ class Index extends AdminBase
         // 根据条件查询数据
         $cj = new Chengji;
         $data = $cj->searchLuru($src);
-        $data = reSetArray($data, $src);
+        $data = reset_data($data, $src);
 
         return json($data);
     }
@@ -809,7 +809,7 @@ class Index extends AdminBase
         $cj = new \app\kaohao\model\SearchMore;
         $data = $cj->srcOnlineEdit($src);
         // halt($data);
-        $data = reSetArray($data, $src);
+        $data = reset_data($data, $src);
 
         return json($data);
     }
@@ -901,7 +901,7 @@ class Index extends AdminBase
         // 统计成绩
         $btj = new \app\chengji\model\TongjiBj;
         $data = $btj->tjBanjiCnt($src);
-        $data = reSetArray($data, $src);
+        $data = reset_data($data, $src);
 
         return json($data);
     }

@@ -18,17 +18,17 @@ class KsCanYu extends AdminBase
                 ,'kaoshi_id' => ''
                 ,'page' => '1'
                 ,'limit' => '10'
-                ,'field' => 'id'
+                ,'field' => 'school_id'
                 ,'order' => 'desc'
             ], 'POST');
 
         $cy = new \app\kaohao\model\SearchCanYu;
         $school = $cy->school($src);
         $src['all'] = true;
-        $cnt = $cy->school($src)->count();
-        $data = reset_data($data, $cnt);
+        $cnt = count($cy->school($src));
+        $data = reset_data($school, $cnt);
 
-        return json($school);
+        return json($data);
     }
 
 
@@ -63,40 +63,43 @@ class KsCanYu extends AdminBase
                 'school_id' => ''
                 ,'ruxuenian' => ''
                 ,'kaoshi_id' => ''
-                ,'limit' => 100
+                ,'page' => '1'
+                ,'limit' => '10'
+                ,'field' => 'school_id'
+                ,'order' => 'desc'
             ], 'POST');
         $khSrc = new \app\kaohao\model\SearchCanYu;
 
         $bj = $khSrc->class($src);
         $src['all'] = true;
-        $cnt = $cy->class($src)->count();
-        $data = reset_data($data, $cnt);
+        $cnt = count($khSrc->class($src));
+        $data = reset_data($bj, $cnt);
 
-        return json($bj);
+        return json($data);
     }
 
 
-    // 根据考试ID和年级获取参加考试班级
-    public function tjClass()
-    {
-        // 获取参数
-        $src = $this->request
-            ->only([
-                'school_id' => ''
-                ,'ruxuenian' => ''
-                ,'kaoshi_id' => ''
-                ,'subject_id' => ''
-                ,'limit' => 100
-            ], 'POST');
+    // // 根据考试ID和年级获取参加考试班级
+    // public function tjClass()
+    // {
+    //     // 获取参数
+    //     $src = $this->request
+    //         ->only([
+    //             'school_id' => ''
+    //             ,'ruxuenian' => ''
+    //             ,'kaoshi_id' => ''
+    //             ,'subject_id' => ''
+    //             ,'limit' => 100
+    //         ], 'POST');
 
-        $khSrc = new \app\chengji\model\TongjiBj;
-        $bj = $khSrc->searchSubjedt($src);
-        $src['all'] = true;
-        $cnt = $khSrc->searchSubjedt($src)->count();
-        $data = reset_data($data, $cnt);
+    //     $khSrc = new \app\chengji\model\TongjiBj;
+    //     $bj = $khSrc->searchSubjedt($src);
+    //     $src['all'] = true;
+    //     $cnt = $khSrc->searchSubjedt($src)->count();
+    //     $data = reset_data($data, $cnt);
 
-        return json($bj);
-    }
+    //     return json($bj);
+    // }
 
 
     // 根据考试ID和年级获取已经参加本次考试学科

@@ -31,7 +31,7 @@ class Njtongji extends AdminBase
         $list['kaoshi_id'] = $kaoshi_id;
         $list['kaoshititle'] = $ksinfo->title;
         $list['dataurl'] = '/chengji/njtj/data';
-        $list['tjxm'] = srcTjxm(12203);
+        $list['tjxm'] = src_tjxm(12203);
 
 
         // 模板赋值
@@ -150,7 +150,7 @@ class Njtongji extends AdminBase
             ->setCategory("成绩管理"); //分类
 
         // 设置导出项目、列表等
-        $sbjcol = srcTjxm(12204);
+        $sbjcol = src_tjxm(12204);
         $sbjcolcnt = count($sbjcol);
         $colname = excelColumnName();
         $colcnt = $sbjcolcnt * count($xk) + 3;

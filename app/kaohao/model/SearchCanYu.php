@@ -17,9 +17,16 @@ class SearchCanyu extends BaseModel
         $src = array(
             'kaoshi_id' => ''
             ,'ruxuenian' => ''
+            ,'page' => '1'
+            ,'limit' => '10'
+            ,'field' => 'school_id'
+            ,'order' => 'asc'
+            ,'all' => false
         );
         $src = array_cover($srcfrom, $src);
-        $src['ruxuenian'] = strToarray($src['ruxuenian']);
+        $src['ruxuenian'] = str_to_array($src['ruxuenian']); 
+
+        $src['orderSql'] = $this->schPaixu($src['field']);
 
         $kh = new kh;
         $schoolList = $kh->where('kaoshi_id', $src['kaoshi_id'])
@@ -28,11 +35,16 @@ class SearchCanyu extends BaseModel
             })
             ->with(['cjSchool' => function($query){
                     $query->field('id, jiancheng, paixu, title')
-                    ->order(['paixu' => 'asc']);
+                        ->order(['paixu' => 'asc']);
                 }
             ])
             ->distinct(true)
             ->field('school_id')
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order($src['orderSql'])
             ->select();
 
         // 重新整理参加学校信息
@@ -44,11 +56,6 @@ class SearchCanyu extends BaseModel
                 'title' => $value->cjSchool->title,
                 'jiancheng' => $value->cjSchool->jiancheng,
             ];
-        }
-
-        if(count($data) > 0)
-        {
-            $data = \app\facade\Tools::sortArrByManyField($data, 'paixu', SORT_ASC);
         }
 
         return $data;
@@ -70,11 +77,31 @@ class SearchCanyu extends BaseModel
             ,'ruxuenian' => array()
             ,'school_id' => array()
             ,'banji_id' => array()
+            ,'page' => '1'
+            ,'limit' => '10'
+            ,'field' => 'school_id'
+            ,'order' => 'asc'
+            ,'all' => false
         );
         $src = array_cover($srcfrom, $src);
-        $src['school_id'] = strToarray($src['school_id']);
-        $src['banji_id'] = strToarray($src['banji_id']);
-        $src['ruxuenian'] = strToarray($src['ruxuenian']);
+        $src['school_id'] = str_to_array($src['school_id']);
+        $src['banji_id'] = str_to_array($src['banji_id']);
+        $src['ruxuenian'] = str_to_array($src['ruxuenian']);
+
+        $src['orderSql'] = $this->schPaixu('school_id');
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $bjdate = $ks->where('id', $src['kaoshi_id'])->value('bfdate');
+        $bj = new \app\teach\model\Banji;
+        $njList = $bj->gradeName($bjdate,'num');
+        $bjList = $bj->where('ruxuenian', 'in', $njList)
+            ->order($src['orderSql'])
+            ->order(['ruxuenian' => 'asc'])
+            ->order(['paixu' => 'asc'])
+            ->column(['id']);
+        $paixuList = implode('\', \'', $bjList);
+        $paixuList = "field(banji_id, '". $paixuList. "')";
+        $orderSql = \think\facade\Db::raw($paixuList);
+
 
         // 通过给定参数，从考号表中获取参加考试的班级
         $kh = new kh;
@@ -101,9 +128,13 @@ class SearchCanyu extends BaseModel
                     ,any_value(school_id) as school_id')
                 ->group('banji_id')
                 ->append(['banjiTitle', 'banTitle'])
+                ->when($src['all'] == false, function ($query) use($src) {
+                    $query
+                        ->page($src['page'], $src['limit']);
+                })
+                ->order($orderSql)
                 ->select();
 
-        $bj = new \app\teach\model\Banji;
         $data = array();
         foreach ($bjids as $key => $value) {
             $data[] = [
@@ -116,12 +147,29 @@ class SearchCanyu extends BaseModel
                 'banjiTitle'=>$value->banjiTitle,
             ];
         }
-        if(count($data) > 0)
-        {
-            $data = \app\facade\Tools::sortArrByManyField($data, 'schPaixu', SORT_ASC, 'paixu', SORT_ASC);
-        }
 
         return $data;
+    }
+
+
+    /**
+    * 获取参加考试的班级
+    * @access public
+    * @param number $kaoshi 考试id
+    * @param number $ruxuenian 入学年
+    * @return array 返回班级数据模型
+    */
+    public function schPaixu($field)
+    {
+        $sch = new \app\system\model\School;
+        $schList = $sch->where('jibie_id', 10203)
+            ->order(['paixu' => 'asc'])
+            ->field('id, title, paixu')
+            ->column(['id']);
+        $paixuList = implode('\', \'', $schList);
+        $paixuList = "field(" . $field . ", '". $paixuList. "')";
+        $orderSql = \think\facade\Db::raw($paixuList);
+        return $orderSql;
     }
 
 }

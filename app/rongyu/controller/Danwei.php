@@ -392,7 +392,7 @@ class Danwei extends AdminBase
                 ];
             }
         }
-        $data = reSetArray($data, $src);
+        $data = reset_data($data, $src);
 
         return json($data);
     }

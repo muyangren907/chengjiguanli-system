@@ -322,6 +322,47 @@ class Student extends BaseModel
     }
 
 
+    // 根据学生姓名、首拼、全拼搜索学生信息
+    public function searchStr($srcfrom)
+    {
+        $src = [
+            'searchval' => ''
+            ,'banji_id' => ''
+            ,'kaoshi' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
+        ];
+        $src = array_cover($srcfrom, $src);
+
+        $data = $this->field('id, xingming, shengri, sex')
+            ->whereOr('xingming|shoupin', 'like', '%' . $src['searchval'] . '%')
+            ->when(strlen($src['banji_id']) > 0, function ($query) use ($src) {
+                $query->where('banji_id', $src['banji_id']);
+            })
+            ->when(strlen($src['kaoshi']) > 0, function ($query) use ($src) {
+                $query->where('kaoshi', $src['kaoshi']);
+            })
+            ->with(
+                [
+                    'stuBanji' => function ($query) {
+                        $query->field('id, jiancheng')
+                            ->with([
+                                'glSchool'=>function($query){
+                                    $query->field('id, title, jiancheng');
+                                },
+                            ]);
+                    }
+                ]
+            )
+            ->append(['age'])
+            ->select();
+        return $data;
+}
+
+
     // 获取全部数据
     public function searchAll()
     {

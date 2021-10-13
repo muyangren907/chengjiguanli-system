@@ -22,9 +22,9 @@ class SearchOne extends BaseModel
             ,'searchval' => ''
         );
         $src = array_cover($srcfrom, $src);
-        $src['category_id'] = strToArray($src['category_id']);
-        $src['xueqi_id'] = strToArray($src['xueqi_id']);
-        $src['kaoshi_id'] = strToArray($src['kaoshi_id']);
+        $src['category_id'] = str_to_array($src['category_id']);
+        $src['xueqi_id'] = str_to_array($src['xueqi_id']);
+        $src['kaoshi_id'] = str_to_array($src['kaoshi_id']);
 
         if(isset($srcfrom['bfdate']) && strlen($srcfrom['bfdate'])>0)
         {

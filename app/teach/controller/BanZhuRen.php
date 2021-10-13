@@ -60,7 +60,9 @@ class BanZhuRen extends AdminBase
                 ,'bfdate'
                 ,'update_time'
             ]);  # 查询数据
-        $data = reSetObject($data, $src);
+        $src['all'] = true;
+        $cnt = $bzr->search($src)->count();
+        $data = reset_data($data, $src);
 
         // 返回数据
         return json($data);

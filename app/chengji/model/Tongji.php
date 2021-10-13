@@ -7,10 +7,10 @@ use \app\BaseModel;
 
 class Tongji extends BaseModel
 {
+
     // 统计成绩
     public function tongjiCnt($cj = array(), $subject_id)
     {
-        // halt($cj);
         $data = array();
         // 循环统计各学科成绩
         foreach ($subject_id as $key => $value) {

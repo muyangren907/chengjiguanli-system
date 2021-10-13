@@ -41,7 +41,7 @@ class Index extends StudentSearchBase
         $list['student_id'] = session('user_id');
         $subject = new \app\teach\model\Subject;
         $list['sbj'] = $subject->search(['kaoshi' => 1]);
-        $list['tjxm'] = srcTjxm(12207);
+        $list['tjxm'] = src_tjxm(12207);
 
 
         // 模板赋值

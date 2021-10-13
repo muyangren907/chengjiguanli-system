@@ -144,7 +144,7 @@ class Banji extends BaseModel
     // 年级-班级关联表
     public function glBanZhuRen()
     {
-        return $this->hasMany(BanZhuRen::class, 'banji_id', 'id');
+        return $this->hasMany(\app\teach\model\BanZhuRen::class, 'banji_id', 'id');
     }
 
 
@@ -221,7 +221,9 @@ class Banji extends BaseModel
     // 班主任获取器
     public function getBzrAttr()
     {
-        $bzrList = $this->glBanZhuRen;
+        $bzrList = $this->glBanZhuRen
+            ->order('bfdate', 'desc')
+            ->slice(0,1);
         $str = '';
 
         if (isset($bzrList[0]))

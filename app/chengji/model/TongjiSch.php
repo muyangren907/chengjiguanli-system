@@ -10,6 +10,34 @@ use app\chengji\model\Tongji as TJ;
  */
 class TongjiSch extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' =>  'int'
+        ,'kaoshi_id' =>   'int'
+        ,'ruxuenian' =>   'int'
+        ,'subject_id' =>  'int'
+        ,'stu_cnt' => 'int'
+        ,'chengji_cnt' => 'int'
+        ,'sum' => 'decimal'
+        ,'avg' => 'decimal'
+        ,'defenlv' => 'decimal'
+        ,'biaozhuncha' => 'decimal'
+        ,'youxiu' =>  'int'
+        ,'jige' =>    'int'
+        ,'max' => 'decimal'
+        ,'min' => 'decimal'
+        ,'q1' =>  'decimal'
+        ,'q2' =>  'decimal'
+        ,'q3' =>  'decimal'
+        ,'zhongshu' =>    'varchar'
+        ,'zhongweishu' => 'decimal'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'status' =>  'tinyint'
+    ];
+
+
     // 统计参加本次考试所有学校成绩
     public function tjSchool($kaoshi_id)
     {
@@ -19,7 +47,11 @@ class TongjiSch extends BaseModel
         $more = new \app\kaohao\model\SearchMore;
         // 查询要统计的年级
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $njList = $ksset->srcGrade($kaoshi_id);
+        $src = [
+            'kaoshi_id' => $kaoshi_id
+            ,'all' => true
+        ];
+        $njList = $ksset->srcGrade($src);
 
         // 实例化学生成绩统计类
         $tj = new TJ;
@@ -176,7 +208,11 @@ class TongjiSch extends BaseModel
         $more = new \app\kaohao\model\SearchMore;
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $cj = new \app\chengji\model\Chengji;
-        $nianji = $ksset->srcGrade($kaoshi_id);
+        $src = [
+            'kaoshi_id' => $kaoshi_id
+            ,'all' => true
+        ];
+        $nianji = $ksset->srcGrade($src);
 
         // 循环年级
         $data = array();

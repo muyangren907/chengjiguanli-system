@@ -17,6 +17,35 @@ use \app\kaoshi\model\KaoshiSet as ksset;
  */
 class TongjiBj extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' =>   'int'
+        ,'kaoshi_id' =>   'int'
+        ,'teacher_id' =>  'int'
+        ,'banji_id' =>    'int'
+        ,'subject_id' =>  'int'
+        ,'stu_cnt' => 'int'
+        ,'chengji_cnt' => 'int'
+        ,'sum' => 'decimal'
+        ,'avg' => 'decimal'
+        ,'defenlv' => 'decimal'
+        ,'biaozhuncha' => 'decimal'
+        ,'youxiu' =>  'int'
+        ,'jige' =>    'int'
+        ,'max' => 'decimal'
+        ,'min' => 'decimal'
+        ,'q1' =>  'decimal'
+        ,'q2' =>  'decimal'
+        ,'q3' =>  'decimal'
+        ,'zhongshu' =>    'varchar'
+        ,'zhongweishu' => 'decimal'
+        ,'create_time' => 'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'status' =>  'tinyint'
+    ];
+
+
     // 统计参加本次考试所有班级的成绩并保存
     public function tjBanji($kaoshi_id)
     {
@@ -26,7 +55,11 @@ class TongjiBj extends BaseModel
         $more = new More();
         $cy = new Canyu();
         $ksset = new ksset();
-        $nianji = $ksset->srcGrade($kaoshi_id);
+        $src = [
+            'kaoshi_id' => $kaoshi_id
+            ,'all' => true
+        ];
+        $nianji = $ksset->srcGrade($src);
 
         // 循环年级统计结果
         $data = array();
@@ -122,8 +155,8 @@ class TongjiBj extends BaseModel
         );
         $src = array_cover($srcfrom, $src);
 
-        $src['banji_id'] = strToArray($src['banji_id']);
-        $src['school_id'] = strToArray($src['school_id']);
+        $src['banji_id'] = str_to_array($src['banji_id']);
+        $src['school_id'] = str_to_array($src['school_id']);
 
         // 实例化学生成绩统计类
         $tj = new TJ();
@@ -183,7 +216,7 @@ class TongjiBj extends BaseModel
         );
 
         $src = array_cover($srcfrom, $src);
-        $src['banji_id'] = strToArray($src['banji_id']);
+        $src['banji_id'] = str_to_array($src['banji_id']);
 
         // 实例化学生成绩统计类
         $tj = new TJ;
@@ -295,7 +328,7 @@ class TongjiBj extends BaseModel
             ]
         );
         $src = array_cover($srcfrom, $src);
-        $src['banji_id'] = strToarray($src['banji_id']);
+        $src['banji_id'] = str_to_array($src['banji_id']);
         $kaoshi_id = $src['kaoshi_id'];
 
         if(count($src['banji_id']) == 0){
@@ -356,9 +389,9 @@ class TongjiBj extends BaseModel
             ,'teacher_id' => ''
         );
         $src = array_cover($srcfrom, $src);
-        $src['banji_id'] = strToarray($src['banji_id']);
-        $src['subject_id'] = strToarray($src['subject_id']);
-        $src['teacher_id'] = strToarray($src['teacher_id']);
+        $src['banji_id'] = str_to_array($src['banji_id']);
+        $src['subject_id'] = str_to_array($src['subject_id']);
+        $src['teacher_id'] = str_to_array($src['teacher_id']);
 
         $data = $this->where('kaoshi_id', $src['kaoshi_id'])
                 ->when(count($src['banji_id']) > 0, function ($query) use($src) {
@@ -401,9 +434,9 @@ class TongjiBj extends BaseModel
             ,'enddate' => ''
         );
         $src = array_cover($srcfrom, $src);
-        $src['xueqi_id'] = strToarray($src['xueqi_id']);
-        $src['subject_id'] = strToarray($src['subject_id']);
-        $src['category_id'] = strToarray($src['category_id']);
+        $src['xueqi_id'] = str_to_array($src['xueqi_id']);
+        $src['subject_id'] = str_to_array($src['subject_id']);
+        $src['category_id'] = str_to_array($src['category_id']);
 
         if(isset($srcfrom['bfdate']) && strlen($srcfrom['bfdate'])>0)
         {
@@ -528,8 +561,8 @@ class TongjiBj extends BaseModel
             ,'searchval' => ''
         );
         $src = array_cover($srcfrom, $src);
-        $src['xueqi_id'] = strToarray($src['xueqi_id']);
-        $src['category_id'] = strToarray($src['category_id']);
+        $src['xueqi_id'] = str_to_array($src['xueqi_id']);
+        $src['category_id'] = str_to_array($src['category_id']);
         if(isset($srcfrom['bfdate']) && strlen($srcfrom['bfdate']) > 0)
         {
             $src['bfdate'] = $srcfrom['bfdate'];
@@ -592,13 +625,14 @@ class TongjiBj extends BaseModel
         $ksset = new ksset();
         $cj = new \app\chengji\model\Chengji;
 
-        $nianji = $ksset->srcGrade($kaoshi_id);
+        $src = [
+            'kaoshi_id' => $kaoshi_id
+            ,'all' => true
+        ];
+        $nianji = $ksset->srcGrade($src);
         $col = ['bpaixu', 'bweizhi'];
 
-        $src = array(
-            'kaoshi_id' => $kaoshi_id
-            ,'ruxuenian' => 0
-        );
+        $src['ruxuenian'] = 0;
 
         // 初始化统计结果
         $data = array();

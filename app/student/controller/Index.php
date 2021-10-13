@@ -283,8 +283,6 @@ class Index extends AdminBase
         ], 'PUT');
         $list['id'] = $id;
 
-
-
         // 验证表单数据
         $validate = new \app\student\validate\Student;
         $result = $validate->scene('edit')->check($list);
@@ -598,46 +596,34 @@ class Index extends AdminBase
     }
 
 
-    // 根据学生姓名、首拼、全拼搜索教师信息
+    // 根据学生姓名、首拼、全拼搜索学生信息
     public function srcStudent()
     {
         // 声明结果数组
         $data = array();
-        $str = input("post.searchval");
-        $banji_id = input("post.banji_id");
-        $kaoshi = input("post.kaoshi");
-
-        $src = array();
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'kaoshi' => 1
+                ,'banji_id' => ''
+                ,'searchval' => ''
+                ,'page' => 1
+                ,'limit' => 10
+                ,'field' => 'id'
+                ,'order' => 'desc'
+            ],'POST');
 
         // 判断是否存在数据，如果没有数据则返回。
         if(strlen($str) <= 0){
-            $data = reSetObject($data, $src);
+            $data = reset_data($data, 0);
             return json($data);
         }
 
         // 如果有数据则查询教师信息
-        $list = STU::field('id, xingming, shengri, sex')
-                    ->whereOr('xingming|shoupin', 'like', '%' . $str . '%')
-                    ->when(strlen($banji_id) > 0, function ($query) use ($banji_id) {
-                        $query->where('banji_id', $banji_id);
-                    })
-                    ->when(strlen($kaoshi) > 0, function ($query) use ($kaoshi) {
-                        $query->where('kaoshi', $kaoshi);
-                    })
-                    ->with(
-                        [
-                            'stuBanji' => function ($query) {
-                                $query->field('id, jiancheng')
-                                    ->with([
-                                        'glSchool'=>function($query){
-                                            $query->field('id, title, jiancheng');
-                                        },
-                                    ]);
-                            }
-                        ]
-                    )
-                    ->append(['age'])
-                    ->select();
+        $stu = new STU();
+        $list = $stu->searchStr($src);
+        $src['all'] = true;
+        $cnt = $stu->searchStr($src)->count();
 
         foreach ($list as $key => $value) {
             $data[] = [
@@ -647,7 +633,7 @@ class Index extends AdminBase
             ];
         }
 
-        $data = reSetArray($data, $src);
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }

@@ -8,11 +8,34 @@ use \app\BaseModel;
 
 class Chengji extends BaseModel
 {
+    // 设置字段信息
+    protected $schema = [
+        'id' =>  'int'
+        ,'kaohao_id' =>   'int'
+        ,'user_id' => 'int'
+        ,'user_group' =>  'varchar'
+        ,'subject_id' =>  'int'
+        ,'defen' =>   'decimal'
+        ,'defenlv' => 'decimal'
+        ,'bpaixu' =>  'int'
+        ,'bweizhi' => 'decimal'
+        ,'xpaixu' =>  'int'
+        ,'xweizhi' => 'decimal'
+        ,'qpaixu' =>  'int'
+        ,'qweizhi' =>' decimal'
+        ,'create_time' =>'int'
+        ,'update_time' => 'int'
+        ,'delete_time' => 'int'
+        ,'status' =>  'tinyint'
+    ];
+
+
     // 学科关联
     public function subjectName()
     {
         return $this->belongsTo('\app\teach\model\Subject','subject_id','id');
     }
+
 
     // 学科关联
     public function cjAdmin()
@@ -41,9 +64,9 @@ class Chengji extends BaseModel
             ,'user_group' =>''
         );
         $src = array_cover($srcfrom, $src) ;
-        $src['kaoshi_id'] = strToarray($src['kaoshi_id']);
-        $src['banji_id'] = strToarray($src['banji_id']);
-        $src['subject_id'] = strToarray($src['subject_id']);
+        $src['kaoshi_id'] = str_to_array($src['kaoshi_id']);
+        $src['banji_id'] = str_to_array($src['banji_id']);
+        $src['subject_id'] = str_to_array($src['subject_id']);
 
         $khid = array();
         if(count($src['kaoshi_id']) > 0 || count($src['banji_id']) > 0 || strlen($src['searchval']) > 0)

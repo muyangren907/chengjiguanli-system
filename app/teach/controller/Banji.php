@@ -98,7 +98,7 @@ class Banji extends AdminBase
      */
     public function create()
     {
-        $alias = \app\facade\System::sysClass();
+        $alias = \app\facade\System::sysInfo();
 
         // 设置页面标题
         $list['set'] = array(
@@ -145,7 +145,7 @@ class Banji extends AdminBase
             ->max('paixu');
 
         // 获取班级最大数
-        $cnfMax = \app\facade\System::sysClass();
+        $cnfMax = \app\facade\System::sysInfo();
 
         if($paixumax + $list['bjsum'] > $cnfMax->classmax) # 如果增加班级数超过2个，则少加班级
         {
@@ -246,24 +246,24 @@ class Banji extends AdminBase
         if( $caozuo > 0 )
         {
             $bjinfo = bjmod::withTrashed()
-            ->where('school_id', $thisbj->getData('school_id'))
-            ->where('ruxuenian', $thisbj->ruxuenian)
-            ->where('paixu', '>=', $thisbj->paixu)
-            ->order(['paixu'])
-            ->limit('2')
-            ->field('id, paixu, ruxuenian')
-            ->append(['banjiTitle'])
-            ->select();
+                ->where('school_id', $thisbj->getData('school_id'))
+                ->where('ruxuenian', $thisbj->ruxuenian)
+                ->where('paixu', '>=', $thisbj->paixu)
+                ->order(['paixu'])
+                ->limit('2')
+                ->field('id, paixu, ruxuenian')
+                ->append(['banjiTitle'])
+                ->select();
         }else{
             $bjinfo = bjmod::withTrashed()
-            ->where('school_id', $thisbj->getData('school_id'))
-            ->where('ruxuenian', $thisbj->ruxuenian)
-            ->where('paixu', '<=', $thisbj->paixu)
-            ->order(['paixu' => 'desc'])
-            ->limit('2')
-            ->field('id, paixu, ruxuenian')
-            ->append(['banjiTitle'])
-            ->select();
+                ->where('school_id', $thisbj->getData('school_id'))
+                ->where('ruxuenian', $thisbj->ruxuenian)
+                ->where('paixu', '<=', $thisbj->paixu)
+                ->order(['paixu' => 'desc'])
+                ->limit('2')
+                ->field('id, paixu, ruxuenian')
+                ->append(['banjiTitle'])
+                ->select();
         }
 
         // 交换班级排序
@@ -291,7 +291,6 @@ class Banji extends AdminBase
 
         // 返回处理结果
         return json($data);
-
     }
 
 
@@ -370,7 +369,7 @@ class Banji extends AdminBase
     //                 ,'banTitle'
     //             ]
     //         ]);  # 查询数据
-    //     $data = reSetObject($list, $src);
+    //     $data = reset_data($list, $src);
 
     //     // 返回数据
     //     return json($list);
@@ -396,7 +395,7 @@ class Banji extends AdminBase
             return json(['msg' => $msg, 'val' => 0]);
         }
 
-        $sysInfo = \app\facade\System::sysClass();
+        $sysInfo = \app\facade\System::sysInfo();
         if($sysInfo->classalias == false)
         {
             return json(['msg' => '不允许使用班级别名', 'val' => 0]);

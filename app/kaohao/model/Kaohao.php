@@ -91,8 +91,8 @@ class Kaohao extends BaseModel
             ,'searchval' => ''
         );
         $src = array_cover($srcfrom, $src);
-        $src['ruxuenian'] = strToarray($src['ruxuenian']);
-        $src['subject_id'] = strToarray($src['subject_id']);
+        $src['ruxuenian'] = str_to_array($src['ruxuenian']);
+        $src['subject_id'] = str_to_array($src['subject_id']);
 
         $manfen = $ksset->search($src)
                 ->visible([
@@ -110,7 +110,7 @@ class Kaohao extends BaseModel
     public function getBanTitleAttr()
     {
         $bj = new \app\teach\model\Banji;
-        $alias = \app\facade\System::sysClass();
+        $alias = \app\facade\System::sysInfo();
         if($alias->classalias)
         {
             $title = $bj->where('id', $this->getAttr('banji_id'))->value('alias');
