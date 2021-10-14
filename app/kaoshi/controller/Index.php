@@ -197,6 +197,11 @@ class Index extends AdminBase
                 ,'checked' => ' checked'
             ]
             ,[
+                'title' => '统计标准分'
+                ,'url' => '/chengji/tongji/biaozhunfen'
+                ,'checked' => ' checked'
+            ]
+            ,[
                 'title' => '重算得分率'
                 ,'url' => '/chengji/tongji/editdfl'
                 ,'checked' => ''

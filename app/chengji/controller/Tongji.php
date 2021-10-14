@@ -67,4 +67,45 @@ class Tongji extends AdminBase
         // 渲染模板
         return $this->view->fetch();
     }
+
+
+    // 统计标准分
+    public function biaoZhunFen()
+    {
+        // 获取参数
+        $src = $this->request
+            ->only([
+                'kaoshi_id' => 0
+                ,'ruxuenian'
+                ,'subject_id'
+            ], 'POST');
+
+        $tj = new TJ();
+        if(isset($src['ruxuenian']) && isset($src['subject_id']))
+        {
+            $data = $tj->biaoZhunFen($src);
+        }else{
+            $ksset = new \app\kaoshi\model\KaoshiSet;
+
+            // 重新计算得分率
+            $nj = $ksset->srcGrade($src); # 获取参考年级
+            $jg = 1;
+            foreach ($nj as $key => $value) { # 循环获取各年级参考学科
+                $src['ruxuenian'] = $value['ruxuenian'];
+                $manfen = $ksset->srcSubject($src); # 获取本年级各学科满分
+                // 循环取出当前学科成绩
+                foreach ($manfen as $mf_k => $mf_v) {
+                    $src['subject_id'] = $mf_v['id'];
+                    $data = $tj->biaoZhunFen($src);
+                    $jg = $jg * $data;
+                }
+            }
+        }
+       
+        $data ? $data = ['msg' => '完成', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
+
+        // 返回信息
+        return json($data);
+    }
 }

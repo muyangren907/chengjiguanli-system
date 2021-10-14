@@ -101,7 +101,6 @@ class Tongji extends BaseModel
                 $temp['defenlv'] = round($temp['defenlv'] * 100, 2);
                 $temp['canshilv'] = round($temp['chengji_cnt'] / $temp['stu_cnt'] * 100, 2);
                 $temp['chashenglv'] = round(($temp['chengji_cnt'] - $temp['jige']) / $temp['chengji_cnt'] * 100, 2);
-
             }
             $data['cj'][$value['lieming']] = $temp;
         }
@@ -412,6 +411,69 @@ class Tongji extends BaseModel
         $data = $cj->saveAll($data);
 
         $data ? $data = true : false;
+
+        return $data;
+    }
+
+
+    // 计算标准分
+    public function biaoZhunFen($srcfrom)
+    {
+        $src = [
+            'kaoshi_id' => 0
+            ,'ruxuenian' => 0
+            ,'subject_id' => 0
+        ];
+        // 用新值替换初始值
+        $src = array_cover($srcfrom, $src);
+        // $src = 
+        $cj = new \app\chengji\model\Chengji;
+        $kh = new \app\kaohao\model\Kaohao;
+        $ksset = new \app\kaoshi\model\KaoshiSet;
+        $schTj = new \app\chengji\model\TongjiSch;
+
+        // 查询考号
+        $kaohaoid = $kh->where('kaoshi_id', $src['kaoshi_id'])
+            ->where('ruxuenian', $src['ruxuenian'])
+            ->column('id');
+        // 查询成绩
+        $cjList = $cj->where('kaohao_id', 'in', $kaohaoid)
+            ->where('subject_id', $src['subject_id'])
+            ->whereNotNull('defen')
+            ->field('id, defen, defenlv')
+            ->select();
+        // 查询全区(所有学生)标准差和平均分
+        $schJg = $schTj->where('kaoshi_id', $src['kaoshi_id'])
+            ->where('ruxuenian', $src['ruxuenian'])
+            ->where('subject_id', $src['subject_id'])
+            ->whereNotNull('avg&biaozhuncha')
+            ->field('avg, biaozhuncha')
+            ->find();
+
+        $data = array();
+        if ($schJg) {
+            // $cha = $schJg->avg * 1 / $schJg->biaozhuncha * 1;   # 平均分/标准分
+            // $cha = round($cha, 2);
+
+            // 循环写入新成绩
+            foreach ($cjList as $cj_k => $cj_v) {
+                $bzf = ($cj_v->defen - $schJg->avg * 1) / ($schJg->biaozhuncha * 1);    #计算标准分
+                $bzf = round($bzf, 2);  # 取两位小数
+                $data[] = [
+                    'id' => $cj_v->id
+                    ,'biaozhunfen' => $bzf
+                ];
+            }
+        }
+
+        $cnt = count($data);
+        $data = $cj->saveAll($data)->count();
+        if($cnt == $data)
+        {
+            $data = 1;
+        }else{
+            $data = 0;
+        }
 
         return $data;
     }

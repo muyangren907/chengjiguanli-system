@@ -32,7 +32,8 @@ Route::group('index', function () {
 Route::group('tongji', function () {
 	
     // Route::rule('editdfl/<kaoshi_id>','Tongji/editDefenLv','get');           # 扫码界面
-    Route::rule('editdfl','Tongji/updateDefenLv','post');           # 扫码界面
+    Route::rule('editdfl','Tongji/updateDefenLv','post');           # 重新计算得分率
+    Route::rule('biaozhunfen','Tongji/biaoZhunFen','post');           # 计算标准分
 });
 
 

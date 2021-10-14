@@ -44,12 +44,48 @@
 function checkAll() {
 	var inputs;
 	inputs = $(":checked");
-	inputs.each(function() {
-		var obj;
-		obj = $(this).parents("tr").children().last().find("a");
-		tongji(obj);
-	});
+	tongjiAll(inputs);
 	return false;
+}
+
+function tongjiAll(inputs, xiabiao=0) {
+	cnt = inputs.length - 1;
+	obj = inputs[xiabiao];
+	obj = $(obj).parents("tr").children().last().find("a");
+	var data;
+	data = {
+		'kaoshi_id': "{$list.set.kaoshi_id}"
+	}
+	var url;
+	url = obj.attr('url');
+	var val;
+	val = $(obj).attr('val');
+
+	// 到服务器去删除数据。
+	$.ajax({
+		url: url,
+		type: 'POST',
+		async: true,
+		data: data,
+		beforeSend: function() {
+			$('#showtd' + val).text('正在统计');
+			$('#showtd' + val).append("<i class='layui-icon layui-icon-loading layui-anim layui-anim-rotate layui-anim-loop'>");
+		},
+		complete: function() {
+			$('#showtd' + val).children("i").remove();
+		},
+		success: function(result) {
+			$('#showtd' + val).text(result.msg);
+			
+			if(xiabiao >= 0 && xiabiao < cnt)
+			{
+				tongjiAll(inputs, xiabiao + 1);
+			}
+		},
+		error: function(result) {
+			$('#showtd' + val).text(result.msg);
+		},
+	});
 }
 
 function tongji(obj) {
@@ -81,10 +117,9 @@ function tongji(obj) {
 		error: function(result) {
 			$('#showtd' + val).text(result.msg);
 		},
-
 	});
-
 }
+
 
 </script>
 {/block}

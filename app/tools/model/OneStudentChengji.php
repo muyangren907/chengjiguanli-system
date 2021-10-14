@@ -209,11 +209,6 @@ class OneStudentChengji extends BaseModel
                     ->find();
         $stuCj = $khInfo->ksChengji;    # 拿出学生成绩
 
-        // dump($khInfo->toArray());
-
-        // 参加考试学科
-        // $sbj = new \app\teach\model\Subject;
-        // $subject = subjectKaoshiList();
         // 获取参加考试学科满分
         $src['kaoshi_id'] = $khInfo->kaoshi_id;
         $src['ruxuenian'] = $khInfo->ruxuenian;
@@ -337,8 +332,8 @@ class OneStudentChengji extends BaseModel
         $src['banji_id'] = $khInfo->banji_id;
         $src['auth']['check'] = false;
         $data = $cj->search($src);
-        $data = sortArrByManyField($data, 'sum', SORT_DESC);
-        $data = array_column($data, 'sum', 'id');
+        $data =array_column($data, 'sum', 'id');
+        asort($data);
         $rank = \app\facade\Tools::paiwei($data, $src['kaohao_id']);
         $paixu['ban']['paixu'] = $rank['rank'];
         $paixu['ban']['weizhi'] = $rank['weizhi'];
@@ -346,8 +341,8 @@ class OneStudentChengji extends BaseModel
         $cy = new \app\kaohao\model\SearchCanYu;
         $src['banji_id'] = array_column($cy->class($src), 'id');
         $data = $cj->search($src);
-        $data = sortArrByManyField($data, 'sum', SORT_DESC);
         $data = array_column($data, 'sum', 'id');
+        asort($data);
         $rank = \app\facade\Tools::paiwei($data, $src['kaohao_id']);
         $paixu['qu']['paixu'] = $rank['rank'];
         $paixu['qu']['weizhi'] = $rank['weizhi'];
@@ -355,8 +350,8 @@ class OneStudentChengji extends BaseModel
         $src['school_id'] = $khInfo->school_id;
         $src['banji_id'] = array_column($cy->class($src), 'id');
         $data = $cj->search($src);
-        $data = sortArrByManyField($data, 'sum', SORT_DESC);
         $data = array_column($data, 'sum', 'id');
+        asort($data);
         $rank = \app\facade\Tools::paiwei($data, $src['kaohao_id']);
         $paixu['xiao']['paixu'] = $rank['rank'];
         $paixu['xiao']['weizhi'] = $rank['weizhi'];
