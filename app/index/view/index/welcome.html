@@ -171,18 +171,20 @@
             </div>
         </div>
         </div>
-    <script type="text/javascript">
-        window.onload = function() {
-            var show = document.getElementById("show");
+        <script type="text/javascript">
+          window.onload = function() {
+            let show = document.getElementById("show");
             setInterval(function() {
-                var time = new Date();   // 程序计时的月从0开始取值后+1
-                var m = time.getMonth() + 1;
-                var t = time.getFullYear() + "-" + m + "-"
-                + time.getDate() + " " + time.getHours() + ":"
-                + time.getMinutes() + ":" + time.getSeconds();
-                show.innerHTML = t;
+              let date = new Date();   // 程序计时的月从0开始取值后+1
+              let y = date.getFullYear(),
+                m = ((date.getMonth()+1) >= 10 ? (date.getMonth() + 1 ) : '0' + (date.getMonth() + 1)),
+                d = (date.getDate() >= 10 ? date.getDate() : '0' + date.getDate()),
+                hh = date.getHours() >= 10 ? date.getHours() : '0' + date.getHours(),
+                mm = date.getMinutes() >= 10 ? date.getMinutes() : '0' + date.getMinutes(),
+                ss = date.getSeconds() >= 10 ? date.getSeconds()  : '0' +  date.getSeconds() ;
+              show.innerHTML = y + '-' + m + '-' + d + ' ' + hh + ':' + mm + ':' + ss;
             }, 1000);
-        };
-    </script>
+          };
+        </script>
     </body>
 </html>
