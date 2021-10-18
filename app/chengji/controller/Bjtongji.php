@@ -179,7 +179,7 @@ class Bjtongji extends AdminBase
         // 设置要导出的项目、列名、起始行
         $sbjcol = src_tjxm(12202);
         $sbjcolcnt = count($sbjcol);
-        $colname = excelColumnName();
+        $colname = excel_column_name();
         $colcnt = $sbjcolcnt*count($xk)+3;
 
         // 设置表头信息

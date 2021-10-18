@@ -1,6 +1,4 @@
 <?php
-declare (strict_types = 1);
-
 // 引用控制器基类
 namespace app\luru\controller;
 
@@ -508,7 +506,7 @@ class Index extends AdminBase
         $kaohao = $srcMore->srcBanjiKaohao($src);
 
         // 获取电子表格列名
-        $lieming = excelColumnName();
+        $lieming = excel_column_name();
         // 创建表格
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -552,7 +550,7 @@ class Index extends AdminBase
         foreach ($kaohao as $key=>$bj)
         {
             $bjkh = $bj->banjiKaohao->toArray();
-            $bjkh = sortArrByManyField($bjkh, 'shoupin', SORT_ASC);
+            $bjkh = \app\facade\Tools::sortArrByManyField($bjkh, 'shoupin', SORT_ASC);
             foreach ($bjkh as $k => $kh) {
                 $sheet->setCellValue('A' . $i, $i - 3);
                 if(isset($kh['cjStudent']['xingming']))
@@ -818,12 +816,12 @@ class Index extends AdminBase
     // 统计已经录入成绩数量--选择页面
     public function yiluCnt()
     {
-        $ks = new \app\kaoshi\model\Kaoshi;
-        // 获取参考年级
-        $list['data'] = $ks::order(['id' => 'desc'])
-                ->field('id, title')
-                ->where('status', 1)
-                ->select();
+        // $ks = new \app\kaoshi\model\Kaoshi;
+        // // 获取参考年级
+        // $list['data'] = $ks::order(['id' => 'desc'])
+        //         ->field('id, title')
+        //         ->where('status', 1)
+        //         ->select();
 
         // 设置页面标题
         $list['set'] = array(
@@ -854,10 +852,11 @@ class Index extends AdminBase
 
         // 获取参加考试的年级和学科
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['nianji'] = $ksset->srcGrade($kaoshi_id);
         $src = [
             'kaoshi_id' => $kaoshi_id
+            ,'all' => true
         ];
+        $list['nianji'] = $ksset->srcGrade($src);
         $list['subject_id'] = $ksset->srcSubject($src);
 
         // 获取参与学校

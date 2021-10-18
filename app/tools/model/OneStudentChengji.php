@@ -95,10 +95,10 @@ class OneStudentChengji extends BaseModel
             }
 
             $defen = array_column($value->ksChengji->toArray(), 'defen');
-            $sum = array_sum($defen );
-            $avg = $sum / $cjcnt;
+            $sum = array_sum($defen);
+            $cjcnt > 0 ? $avg = $sum / $cjcnt : $avg = "";
             $data[$key]['sum'] = $sum;
-            $data[$key]['avg'] = round($avg,2);
+            $data[$key]['avg'] = round($avg, 2);
         }
 
         return $data;
@@ -1086,7 +1086,7 @@ class OneStudentChengji extends BaseModel
     public function toDengji($fsx, $defen)
     {
         $defen = $defen * 1;
-        $djarr = excelColumnName();
+        $djarr = excel_column_name();
         $fsx = array_values($fsx);
         $cnt = count($fsx);
         arsort($fsx);

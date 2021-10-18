@@ -452,8 +452,6 @@ class Tongji extends BaseModel
 
         $data = array();
         if ($schJg) {
-            // $cha = $schJg->avg * 1 / $schJg->biaozhuncha * 1;   # 平均分/标准分
-            // $cha = round($cha, 2);
 
             // 循环写入新成绩
             foreach ($cjList as $cj_k => $cj_v) {

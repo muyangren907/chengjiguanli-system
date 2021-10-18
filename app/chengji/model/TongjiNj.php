@@ -228,7 +228,7 @@ class TongjiNj extends BaseModel
 
             }
         }
-        $data = sortArrByManyField($data, 'school_paixu', SORT_ASC);
+        $data = \app\facade\Tools::sortArrByManyField($data, 'school_paixu', SORT_ASC);
 
         return $data;
     }

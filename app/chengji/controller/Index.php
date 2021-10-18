@@ -283,7 +283,7 @@ class Index extends AdminBase
         $njlist = \app\facade\Tools::nianJiNameList($ks->getData('bfdate'));
         $nianji = $njlist[$src['ruxuenian']];
         $tabletitle = $ks->title . ' ' . $schoolname . ' ' . $nianji . ' ' . '学生成绩详细列表';
-        $colname = excelColumnName();
+        $colname = excel_column_name();
 
         // set_time_limit(0);
         // 创建表格
@@ -573,7 +573,7 @@ class Index extends AdminBase
 
         $tjxm_stu = src_tjxm(12211);   # 统计项目
         $tjxm_bj = src_tjxm(12212);   # 统计项目
-        $colname = excelColumnName();
+        $colname = excel_column_name();
 
         // set_time_limit(0);
         // 创建表格

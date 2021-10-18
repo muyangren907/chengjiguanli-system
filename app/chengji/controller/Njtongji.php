@@ -19,11 +19,15 @@ class Njtongji extends AdminBase
             ->find();
         // 获取参与学校
         $cy = new \app\kaohao\model\SearchCanYu;
-        $src['kaoshi_id'] = $kaoshi_id;
+        $src = [
+            'kaoshi_id' => $kaoshi_id
+            ,'all' => true
+        ];
         $list['school_id'] = $cy->school($src);
         // 获取年级与学科
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['nianji'] = $ksset->srcGrade($kaoshi_id);
+        
+        $list['nianji'] = $ksset->srcGrade($src);
         $list['subject_id'] = $ksset->srcSubject($src);
 
         // 设置要给模板赋值的信息
@@ -152,7 +156,7 @@ class Njtongji extends AdminBase
         // 设置导出项目、列表等
         $sbjcol = src_tjxm(12204);
         $sbjcolcnt = count($sbjcol);
-        $colname = excelColumnName();
+        $colname = excel_column_name();
         $colcnt = $sbjcolcnt * count($xk) + 3;
 
         // 设置表头信息
