@@ -116,7 +116,7 @@
                 </div>
                 <input type="hidden" name='student_id' id='student_id' value="{$list.student_id}">
                 <div class="layui-form-item" style="text-align: right;">
-                  <input type="hidden" class="layui-btn" id="srcsubmit" lay-filter="srcsubmit" lay-submit="">
+                  <button class="layui-btn" lay-filter="searchSubmit" lay-submit="">搜索</button>
                 </div>
               </form>
             </div>
@@ -242,7 +242,6 @@ layui.use(['element', 'table', 'form', 'laydate', 'myEchart', 'createInput'], fu
       form.val("search", {
         "bfdate": value,
       });
-      $("#srcsubmit").click();
     }
   });
   //结束时间
@@ -257,8 +256,15 @@ layui.use(['element', 'table', 'form', 'laydate', 'myEchart', 'createInput'], fu
       form.val("search", {
         "enddate": value,
       });
-      $("#srcsubmit").click();
     }
+  });
+
+  // 监听筛选
+  form.on('submit(searchSubmit)', function(data) {
+    options.where = form.val("search");
+    $('#srcmianban').removeClass("layui-show");
+    table.render(options); //获取数据并渲染
+    return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
   });
 
 });
