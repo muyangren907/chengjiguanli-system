@@ -57,7 +57,7 @@ class YanZheng
         }
 
         // 验证用户名和密码
-        $check = loginCheck($password, $userinfo->password);
+        $check = login_check($password, $userinfo->password);
 
         if ($check === true)
         {
