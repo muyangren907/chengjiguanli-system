@@ -43,7 +43,6 @@ class Index extends StudentSearchBase
         $list['sbj'] = $subject->search(['kaoshi' => 1]);
         $list['tjxm'] = srcTjxm(12207);
 
-
         // 模板赋值
         $this->view->assign('list', $list);
 

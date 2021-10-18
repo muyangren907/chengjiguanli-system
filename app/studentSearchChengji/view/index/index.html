@@ -113,12 +113,12 @@
                     <input type="text" class="layui-input" id="enddate" name="enddate" placeholder="结束：默认明天" value="{$list.data.enddate|default=''}" autocomplete="off" lay-filter="riqi">
                   </div>
                 </div>
-              </div>
-              <input type="hidden" name='student_id' id='student_id' value="{$list.student_id}">
-              <div class="layui-form-item" style="text-align: right;">
-                <input   type="hidden"  id="srcsubmit" name="srcsubmit" class="layui-btn" lay-filter="srcsubmit"  lay-submit="" />
-              </div>
-            </form>
+                <input type="hidden" name='student_id' id='student_id' value="{$list.student_id}">
+                <div class="layui-form-item" style="text-align: right;">
+                  <button class="layui-btn" lay-filter="searchSubmit" lay-submit="">搜索</button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
@@ -239,32 +239,36 @@
       ,
       format: 'yyyy-M-d' //可任意组合
       ,
-      done: function(value, date, endDate) {
-        form.val("search", {
-          "bfdate": value,
-        });
-        options.where = form.val("search");
-        chengjiTable = table.render(options); //获取数据并渲染
-      }
-    });
-    //结束时间
-    laydate.render({
-      elem: '#enddate',
-      type: 'datetime',
-      trigger: 'click' //采用click弹出
+    done: function(value, date, endDate) {
+      form.val("search", {
+        "bfdate": value,
+      });
+    }
+  });
+  //结束时间
+  laydate.render({
+    elem: '#enddate',
+    type: 'datetime',
+    trigger: 'click' //采用click弹出
       ,
       format: 'yyyy-M-d' //可任意组合
       ,
-      done: function(value, date, endDate) {
-        form.val("search", {
-          "enddate": value,
-        });
-        options.where = form.val("search");
-        chengjiTable = table.render(options); //获取数据并渲染
-      }
-    });
-
+    done: function(value, date, endDate) {
+      form.val("search", {
+        "enddate": value,
+      });
+    }
   });
+
+  // 监听筛选
+  form.on('submit(searchSubmit)', function(data) {
+    options.where = form.val("search");
+    $('#srcmianban').removeClass("layui-show");
+    table.render(options); //获取数据并渲染
+    return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+  });
+
+});
 
 </script>
 
