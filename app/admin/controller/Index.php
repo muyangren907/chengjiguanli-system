@@ -8,6 +8,9 @@ use app\base\controller\AdminBase;
 use app\admin\model\Admin as AD;
 // 引用加密类
 use WhiteHat101\Crypt\APR1_MD5;
+// 引用PhpSpreadsheet类
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Index extends AdminBase
 {
@@ -331,7 +334,147 @@ class Index extends AdminBase
     {
         $fengefu = DIRECTORY_SEPARATOR;
         $url = public_path() . 'uploads' . $fengefu . 'admin' . $fengefu . 'AdminInfo.xlsx';
-        return download($url, '管理员模板.xlsx');
+        // 读取表格数据
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($url);
+        $stuinfo = $spreadsheet->getActiveSheet();
+
+        // 写入性别数据有效性
+        $value = "男|1,女|0,未知|2";
+        $this->youxiaoxingAll($stuinfo, 'D', $value);
+
+        $category = new \app\system\model\Category;
+        $src = [
+            'p_id' => 107
+            ,'order' => 'asc'
+        ];
+        // 写入行政职务
+        $zw = $category->srcChild($src);
+        $value = "";
+        foreach ($zw as $key => $val) {
+            if ($key == 0)
+            {
+                $value = $val->title . '|' . $val->id;
+            } else {
+                $value = $value . ',' . $val->title . '|' . $val->id;
+            }
+        }
+        $this->youxiaoxingAll($stuinfo, 'H', $value);
+
+        // 专业职务
+        $src['p_id'] = 106;
+        $zw = $category->srcChild($src);
+        $value = "";
+        foreach ($zw as $key => $val) {
+            if ($key == 0)
+            {
+                $value = $val->title . '|' . $val->id;
+            } else {
+                $value = $value . ',' . $val->title . '|' . $val->id;
+            }
+        }
+        $this->youxiaoxingAll($stuinfo, 'I', $value);
+
+        // 学历
+        $src['p_id'] = 105;
+        $zw = $category->srcChild($src);
+        $value = "";
+        foreach ($zw as $key => $val) {
+            if ($key == 0)
+            {
+                $value = $val->title . '|' . $val->id;
+            } else {
+                $value = $value . ',' . $val->title . '|' . $val->id;
+            }
+        }
+        $this->youxiaoxingAll($stuinfo, 'L', $value);
+        
+        // // 用户组
+        // $group = new \app\admin\model\AuthGroup;
+        // $group = $group
+        //     ->where('status', 1)
+        //     ->order(['id' => 'asc'])
+        //     ->select();
+        // $value = "";
+        // foreach ($group as $key => $val) {
+        //     if ($key == 0)
+        //     {
+        //         $value = $val->title . '|' . $val->id;
+        //     } else {
+        //         $value = $value . ',' . $val->title . '|' . $val->id;
+        //     }
+        // }
+        // $this->youxiaoxingAll($stuinfo, 'M', $value);
+
+        // 设置格式
+        // 给单元格加边框
+        $styleArray = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => '000000'],
+                ],
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, //垂直居中
+            ],
+        ];
+        $stuinfo->getStyle('A5:N154')->applyFromArray($styleArray);
+        // 给单元格加边框
+        $styleArray = [
+            'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'color' => array('argb' => '66cc99')
+                ],
+        ];
+        $stuinfo->getStyle('A4:N4')->applyFromArray($styleArray);
+
+        //告诉浏览器输出07Excel文件
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        //告诉浏览器输出浏览器名称
+        header('Content-Disposition: attachment;filename="教师信息批量录入表.xlsx"');
+        //禁止缓存
+        header('Cache-Control: max-age=0');
+        $writer = new Xlsx($spreadsheet);
+        ini_set("error_reporting","E_ALL & ~E_NOTICE");
+        $writer->save('php://output');
+        ob_flush();
+        flush();
+        exit();
+
+    }
+
+
+    private function youxiaoxing($obj, $cell, $value)
+    {
+        $yxx = $obj->getCell($cell)
+            ->getDataValidation();
+        $yxx->setType( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_LIST );
+        $yxx->setErrorStyle( \PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_INFORMATION );
+        $yxx->setAllowBlank(false);
+        $yxx->setShowInputMessage(true);
+        $yxx->setShowErrorMessage(true);
+        $yxx->setShowDropDown(true);
+        $yxx->setErrorTitle('输入错误');
+        $yxx->setError('数值不在列表中');
+        $yxx->setPromptTitle('从列表中选择');
+        $yxx->setPrompt('请从下拉列表中选择一个值');
+        $yxx->setFormula1('"' . $value . '"');
+        return true;
+    }
+
+
+    private function youxiaoxingAll($obj, $colmun, $value)
+    {
+        
+        $i = 5;
+        while ($i <= 154)
+        {
+
+            $this->youxiaoxing($obj, $colmun . $i, $value);
+            $i ++;
+        }
+        return true;
     }
 
 

@@ -95,11 +95,7 @@ class OneStudentChengji extends BaseModel
             }
 
             $defen = array_column($value->ksChengji->toArray(), 'defen');
-<<<<<<< HEAD
-            $sum = array_sum($defen);
-=======
             $sum = array_sum($defen );
->>>>>>> master
             $cjcnt > 0 ? $avg = $sum / $cjcnt : $avg = "";
             $data[$key]['sum'] = $sum;
             $data[$key]['avg'] = round($avg, 2);
@@ -127,7 +123,6 @@ class OneStudentChengji extends BaseModel
 
         $one = new \app\kaohao\model\SearchOne;
         $stuCj = $one->oldChengji($src);
-
 
         // 整理数据
         $data = array();
