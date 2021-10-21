@@ -45,7 +45,7 @@ class TongjiXiangmu extends BaseModel
         // 查询数据
         $data = $this
             ->when(strlen($src['searchval']) > 0, function($query) use($src){
-                    $query->where('title|biaoshi', 'like', '%' . $src['searchval']. ' %');
+                    $query->where('title|biaoshi', 'like', '%' . $src['searchval']. '%');
                 })
             ->when(count($src['category_id']) > 0, function($query) use($src){
                     $query->where('category_id', 'in', $src['category_id']);
@@ -59,6 +59,7 @@ class TongjiXiangmu extends BaseModel
                 $query->page($src['page'], $src['limit']);
             })
             ->order([$src['field'] => $src['order']])
+            // ->fetchsql(true)
             ->select();
 
         return $data;

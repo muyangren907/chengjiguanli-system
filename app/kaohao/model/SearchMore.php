@@ -51,7 +51,7 @@ class SearchMore extends BaseModel
             })
             ->with([
                 'ksChengji' => function($query){
-                    $query->field('id, kaohao_id, subject_id, defen, defenlv, bpaixu, xpaixu, qpaixu, bweizhi, xweizhi, qweizhi')
+                    $query->field('id, kaohao_id, subject_id, defen, defenlv, bpaixu, xpaixu, qpaixu, bweizhi, xweizhi, qweizhi, biaozhunfen')
                         ->with([
                             'subjectName' => function ($q) {
                                 $q->field('id, title, jiancheng, lieming');
@@ -105,7 +105,7 @@ class SearchMore extends BaseModel
             })
             ->with([
                 'ksChengji' => function($query){
-                    $query->field('id, kaohao_id, subject_id, defen, defenlv, bpaixu, xpaixu, qpaixu, bweizhi, xweizhi, qweizhi')
+                    $query->field('id, kaohao_id, subject_id, defen, defenlv, bpaixu, xpaixu, qpaixu, bweizhi, xweizhi, qweizhi, biaozhunfen')
                         ->with([
                             'subjectName' => function ($q) {
                                 $q->field('id, title, jiancheng, lieming');
@@ -193,6 +193,7 @@ class SearchMore extends BaseModel
                         $data[$key][$val['lieming'] . 'xweizhi'] = $value->ksChengji[$val['lieming']]->xweizhi;
                         $data[$key][$val['lieming'] . 'qpaixu'] = $value->ksChengji[$val['lieming']]->qpaixu * 1;
                         $data[$key][$val['lieming'] . 'qweizhi'] = $value->ksChengji[$val['lieming']]->qweizhi;
+                        $data[$key][$val['lieming'] . 'biaozhunfen'] = $value->ksChengji[$val['lieming']]->biaozhunfen;
                         $dfsum = $dfsum + $data[$key][$val['lieming'] . 'defen'];
                         $sbjcnt++;
                     }else{
@@ -204,6 +205,8 @@ class SearchMore extends BaseModel
                         $data[$key][$val['lieming'] . 'xweizhi'] = null;
                         $data[$key][$val['lieming'] . 'qpaixu'] = null;
                         $data[$key][$val['lieming'] . 'qweizhi'] = null;
+                        $data[$key][$val['lieming'] . 'biaozhunfen'] = null;
+
                     }
                 }
             }else{
@@ -216,6 +219,7 @@ class SearchMore extends BaseModel
                     $data[$key][$val['lieming'] . 'xweizhi'] = null;
                     $data[$key][$val['lieming'] . 'qpaixu'] = null;
                     $data[$key][$val['lieming'] . 'qweizhi'] = null;
+                    $data[$key][$val['lieming'] . 'biaozhunfen'] = null;
                 }
             }
 

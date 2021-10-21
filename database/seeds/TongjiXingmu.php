@@ -773,6 +773,15 @@ class TongjiXingmu extends Seeder
                 ,'create_time' => time()
                 ,'update_time' => time()
             ]
+            ,[
+                'title'      =>  '标准分'
+                ,'biaoshi'   =>  'biaozhunfen'
+                ,'tongji'    =>  0
+                ,'paixu' => 9
+                ,'category_id' => 12205
+                ,'create_time' => time()
+                ,'update_time' => time()
+            ]
 
             // 教师-学科-网页
             ,[
@@ -1185,6 +1194,15 @@ class TongjiXingmu extends Seeder
                 ,'create_time' => time()
                 ,'update_time' => time()
             ]
+            ,[
+                'title'      =>  '标准分'
+                ,'biaoshi'   =>  'biaozhunfen'
+                ,'tongji'    =>  0
+                ,'paixu' => 9
+                ,'category_id' => 12210
+                ,'create_time' => time()
+                ,'update_time' => time()
+            ]
 
             // 教师-各学生-网页
             ,[
@@ -1246,6 +1264,15 @@ class TongjiXingmu extends Seeder
                 ,'biaoshi' => 'qweizhi'
                 ,'tongji' => 0
                 ,'paixu' => 8
+                ,'category_id' => 12208
+                ,'create_time' => time()
+                ,'update_time' => time()
+            ]
+            ,[
+                'title'      =>  '标准分'
+                ,'biaoshi'   =>  'biaozhunfen'
+                ,'tongji'    =>  0
+                ,'paixu' => 9
                 ,'category_id' => 12208
                 ,'create_time' => time()
                 ,'update_time' => time()
@@ -1423,6 +1450,15 @@ class TongjiXingmu extends Seeder
                 ,'create_time' => time()
                 ,'update_time' => time()
             ]
+            ,[
+                'title'      =>  '标准分'
+                ,'biaoshi'   =>  'biaozhunfen'
+                ,'tongji'    =>  0
+                ,'paixu' => 20
+                ,'category_id' => 12212
+                ,'create_time' => time()
+                ,'update_time' => time()
+            ]
 
             // 管理员-学生成绩列表-成绩条(学生)
             ,[
@@ -1484,6 +1520,15 @@ class TongjiXingmu extends Seeder
                 ,'biaoshi' => 'qweizhi'
                 ,'tongji' => 0
                 ,'paixu' => 8
+                ,'category_id' => 12211
+                ,'create_time' => time()
+                ,'update_time' => time()
+            ]
+            ,[
+                'title'      =>  '标准分'
+                ,'biaoshi'   =>  'biaozhunfen'
+                ,'tongji'    =>  0
+                ,'paixu' => 9
                 ,'category_id' => 12211
                 ,'create_time' => time()
                 ,'update_time' => time()

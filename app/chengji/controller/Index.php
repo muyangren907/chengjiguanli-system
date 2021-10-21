@@ -219,9 +219,10 @@ class Index extends AdminBase
         // 获取参加考试的学校和年级
         $cy = new \app\kaohao\model\SearchCanYu;
         $src['kaoshi_id'] = $kaoshi_id;
+
         $list['school_id'] = $cy->school($src);
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['nianji'] = $ksset->srcGrade($kaoshi_id);
+        $list['nianji'] = $ksset->srcGrade($src);
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -484,7 +485,7 @@ class Index extends AdminBase
         $src['kaoshi_id'] = $kaoshi_id;
         $list['school_id'] = $cy->school($src);
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['nianji'] = $ksset->srcGrade($kaoshi_id);
+        $list['nianji'] = $ksset->srcGrade($src);
 
         // 模板赋值
         $this->view->assign('list', $list);

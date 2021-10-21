@@ -236,6 +236,7 @@ class Chengji extends BaseModel
                 ,'xweizhi' => $value->xweizhi
                 ,'qpaixu' => $value->qpaixu
                 ,'qweizhi' => $value->qweizhi
+                ,'biaozhunfen' => $value->biaozhunfen
             ];
             $value->cjKaohao->cjStudent ? $data[$key]['student_name'] = $value->cjKaohao->cjStudent->xingming : $data[$key]['student_name'] = '';
         }
