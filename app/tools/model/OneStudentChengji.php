@@ -96,7 +96,7 @@ class OneStudentChengji extends BaseModel
 
             $defen = array_column($value->ksChengji->toArray(), 'defen');
             $sum = array_sum($defen );
-            $cjcnt > 0 ? $avg = $sum / $cjcnt : $avg = "";
+            $avg = $cjcnt == 0 ? '' : ($sum / $cjcnt); // pkkgu 说这样香，我也觉得香，但是不知道为什么
             $data[$key]['sum'] = $sum;
             $data[$key]['avg'] = round($avg,2);
         }
