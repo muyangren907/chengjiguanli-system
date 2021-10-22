@@ -679,17 +679,16 @@ class TongjiBj extends BaseModel
     public function getBanjiTitleAttr()
     {
         $ks = new \app\kaoshi\model\Kaoshi;
-        $ksInfo = $ks->where('id', $this->getAttr('kaoshi_id'))
+        $riqi = $ks->where('id', $this->getAttr('kaoshi_id'))
             ->field('id, enddate')
-            ->find();
+            ->value('enddate');
 
         $bj = new \app\teach\model\Banji;
         $bjInfo = $bj->where('id', $this->getAttr('banji_id'))
             ->field('id, ruxuenian, alias, paixu')
             ->append(['banTitle'])
             ->find();
-
-        $njlist = \app\facade\Tools::nianJiNameList($ksInfo->getData('enddate'), 'str');
+        $njlist = \app\facade\Tools::nianJiNameList($riqi, 'str');
         $njname = $njlist[$bjInfo->ruxuenian];
         $title = $njname . $bjInfo->banTitle;
 
