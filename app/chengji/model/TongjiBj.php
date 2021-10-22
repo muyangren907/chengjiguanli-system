@@ -307,7 +307,7 @@ class TongjiBj extends BaseModel
             ->where('banji_id', 'in', $src['banji_id'])
             ->when($src['auth']['check'] == true, function ($query) use($src) {
                     $query->where('banji_id', 'in', $src['auth']['banji_id'])
-                        ->whereOr('teacher_id', session('user_id'));
+                        ->where('teacher_id', session('user_id'));
                 })
             ->field('banji_id, kaoshi_id')
             ->with([
@@ -688,6 +688,7 @@ class TongjiBj extends BaseModel
             ->field('id, ruxuenian, alias, paixu')
             ->append(['banTitle'])
             ->find();
+
         $njlist = \app\facade\Tools::nianJiNameList($riqi, 'str');
         $njname = $njlist[$bjInfo->ruxuenian];
         $title = $njname . $bjInfo->banTitle;
