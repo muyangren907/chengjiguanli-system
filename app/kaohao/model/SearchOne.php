@@ -45,7 +45,7 @@ class SearchOne extends BaseModel
             ->where('kaoshi_id', 'in', function($query) use($src){
                 $query->name('kaoshi')
                     ->whereTime('bfdate|enddate', 'between', [$src['bfdate'], $src['enddate']])
-                    ->where('luru&status', '1')
+                    ->where('luru&status', '0')
                     ->when(count($src['kaoshi_id'])>0, function($w) use($src){
                         $w->where('id', 'in', $src['kaoshi_id']);
                     })

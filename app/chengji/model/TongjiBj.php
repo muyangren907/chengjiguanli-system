@@ -307,7 +307,7 @@ class TongjiBj extends BaseModel
             ->where('banji_id', 'in', $src['banji_id'])
             ->when($src['auth']['check'] == true, function ($query) use($src) {
                     $query->where('banji_id', 'in', $src['auth']['banji_id'])
-                        ->where('teacher_id', session('user_id'));
+                        ->whereOr('teacher_id', session('user_id'));
                 })
             ->field('banji_id, kaoshi_id')
             ->with([
@@ -679,9 +679,9 @@ class TongjiBj extends BaseModel
     public function getBanjiTitleAttr()
     {
         $ks = new \app\kaoshi\model\Kaoshi;
-        $riqi = $ks->where('id', $this->getAttr('kaoshi_id'))
+        $ksInfo = $ks->where('id', $this->getAttr('kaoshi_id'))
             ->field('id, enddate')
-            ->value('enddate');
+            ->find();
 
         $bj = new \app\teach\model\Banji;
         $bjInfo = $bj->where('id', $this->getAttr('banji_id'))
@@ -689,7 +689,7 @@ class TongjiBj extends BaseModel
             ->append(['banTitle'])
             ->find();
 
-        $njlist = \app\facade\Tools::nianJiNameList($riqi, 'str');
+        $njlist = \app\facade\Tools::nianJiNameList($ksInfo->getData('enddate'), 'str');
         $njname = $njlist[$bjInfo->ruxuenian];
         $title = $njname . $bjInfo->banTitle;
 

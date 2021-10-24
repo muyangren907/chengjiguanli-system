@@ -133,7 +133,6 @@ class Bjtongji extends AdminBase
                 'kaoshi_id' => ''
                 ,'ruxuenian' => ''
                 ,'school_id' => array()
-                ,'auth' => []
             ], 'POST');
         $src['school_id'] = strToarray($src['school_id']);
 
@@ -160,12 +159,6 @@ class Bjtongji extends AdminBase
             }
         }
         $btj = new BTJ;     # 成绩统计结果
-        $src['auth'] = event('mybanji', $src['auth']);
-        $src['auth'] = $src['auth'][0];
-        if(count($src['banji_id']) > 0)        # 如果没有获取到班级id,则查询班级id
-        {
-            $src['auth']['banji_id'] = array_intersect($src['auth']['banji_id'], $src['banji_id']);
-        }
         $data = $btj->search($src);
         $ntj = new \app\chengji\model\TongjiNj;
         $dataAll = $ntj->search($src);
@@ -187,7 +180,7 @@ class Bjtongji extends AdminBase
         $sbjcol = srcTjxm(12202);
         $sbjcolcnt = count($sbjcol);
         $colname = excelColumnName();
-        $colcnt = $sbjcolcnt*count($xk)+3;
+        $colcnt = $sbjcolcnt * count($xk)+3;
 
         // 设置表头信息
         $sheet->mergeCells('A1:' . $colname[$colcnt] . '1');
