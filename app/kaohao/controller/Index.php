@@ -64,7 +64,11 @@ class Index extends AdminBase
             ,'status' => 1
         ];
  
-        $src['auth'] = event('mybanji', array());
+        $src['auth'] = event('mybanji', array(
+            'guanliyuan' => false
+            ,'zhiwu' => false
+            ,'zuzhang' => false
+            ,'banzhuren' => false));
         $src['auth'] = $src['auth'][0];
         $src['auth']['banji_id'] = array_intersect($src['auth']['banji_id'], $src['banji_id']);
 
