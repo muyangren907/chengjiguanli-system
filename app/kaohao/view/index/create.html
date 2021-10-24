@@ -63,6 +63,12 @@ layui.use(['form', 'canyuKaoshi', 'createInput'], function() {
 	// 监听学校下拉菜单
 	form.on('select(nj)', function(data) {
 		data = form.val("myform");
+		data.auth = {
+			'guanliyuan' : true
+            ,'zhiwu' : true
+            ,'zuzhang' : true
+            ,'banzhuren' : true
+		}
 		if (data.school_id > 0 && data.ruxuenian > 0) {
 			cInput.banjiSelect('banji_id', data);
 		}
