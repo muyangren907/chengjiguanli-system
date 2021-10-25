@@ -75,7 +75,7 @@ class Jieti extends Model
     // 课题信息关联
     public function ktInfo()
     {
-    	return $this->hasMany('KetiInfo', 'jieti_id', 'id')
+    	return $this->hasMany('KetiInfo', 'ketice_id', 'id')
     		->where('jddengji_id', 'between', [11802, 11803]);
     }
 

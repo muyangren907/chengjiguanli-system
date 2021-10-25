@@ -92,7 +92,11 @@ class Lixiang extends BaseModel
     // 课题信息关联
     public function ktInfo()
     {
+<<<<<<< Updated upstream
     	return $this->hasMany(KetiInfo::class, 'lixiang_id', 'id');
+=======
+    	return $this->hasMany('KetiInfo', 'ketice_id', 'id');
+>>>>>>> Stashed changes
     }
 
 
