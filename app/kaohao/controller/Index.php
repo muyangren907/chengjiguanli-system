@@ -68,11 +68,7 @@ class Index extends AdminBase
             ,'status' => 1
         ];
  
-        $src['auth'] = event('mybanji', array(
-            'guanliyuan' => false
-            ,'zhiwu' => false
-            ,'zuzhang' => false
-            ,'banzhuren' => false));
+        $src['auth'] = event('mybanji', array());
         $src['auth'] = $src['auth'][0];
         $src['auth']['banji_id'] = array_intersect($src['auth']['banji_id'], $src['banji_id']);
 
@@ -156,9 +152,10 @@ class Index extends AdminBase
                 ,'update_time'
             ])
             ->saveAll($kaohao);
+        $cnt = $data->count();
 
         // 根据更新结果设置返回提示信息
-        $data ? $data = ['msg' => '生成成功', 'val' => 1]
+        $data ? $data = ['msg' => '成功生成' . $cnt . '个考号。', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息
