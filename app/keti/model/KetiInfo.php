@@ -32,12 +32,12 @@ class KetiInfo extends BaseModel
 
     	$data = $this
     		->when(count($src['lxdanwei_id']) > 0, function($query) use($src){
-                	$query->where('lixiang_id', 'in', function ($q) use($src){
-                        $q->name('lixiang')->where('lxdanwei_id', 'in', $src['lxdanwei_id'])->field('id');
+                	$query->where('ketice_id', 'in', function ($q) use($src){
+                        $q->name('lixiang')->where('ketice_id', 'in', $src['lxdanwei_id'])->field('id');
                     });
                 })
     		->when(count($src['lxcategory_id']) > 0, function($query) use($src){
-                	$query->where('lixiang_id', 'in', function($q) use($src){
+                	$query->where('ketice_id', 'in', function($q) use($src){
                         $q->name('lixiang')->where('category_id', 'in', $src['lxcategory_id'])->field('id');
                     });
                 })
@@ -54,7 +54,7 @@ class KetiInfo extends BaseModel
                     $query->where('jddengji_id', 'in', $src['jddengji_id']);
                 })
             ->when(strlen($src['lixiang_id']) > 0, function($query) use($src){
-                    $query->where('lixiang_id', $src['lixiang_id']);
+                    $query->where('ketice_id', $src['lixiang_id']);
                 })
             ->when(strlen($src['jieti_id']) > 0, function($query) use($src){
                     $query->where('jieti_id', $src['jieti_id']);
@@ -122,13 +122,13 @@ class KetiInfo extends BaseModel
         $src['time'] = explode('～', $src['betweentime']);
 
         $data = $this
-            ->where('lixiang_id', 'in', function($query) use($src){
+            ->where('ketice_id', 'in', function($query) use($src){
                 $query->name('lixiang')
                     ->whereBetweenTime('lxshijian', $src['time'][0], $src['time'][1])
                     ->where('status', 1)
                     ->field('id');
             })
-            ->field('id, title, lixiang_id, bianhao, subject_id, fzdanwei_id, category_id')
+            ->field('id, title, ketice_id, bianhao, subject_id, fzdanwei_id, category_id')
             ->with([
                 'fzSchool' => function($query){
                     $query->field('id, jiancheng');
@@ -169,14 +169,14 @@ class KetiInfo extends BaseModel
         $src['time'] = explode('～', $src['betweentime']);
 
         $data = $this
-            ->where('jieti_id', 'in', function($query) use($src){
+            ->where('ketice_id', 'in', function($query) use($src){
                 $query->name('jieti')
                     ->whereBetweenTime('shijian', $src['time'][0], $src['time'][1])
                     ->where('status', 1)
                     ->field('id');
             })
             ->where('jddengji_id', 'in', '11802, 11803')
-            ->field('id, title, jieti_id, bianhao, subject_id, fzdanwei_id, category_id')
+            ->field('id, title, ketice_id, bianhao, subject_id, fzdanwei_id, category_id')
             ->with([
                 'fzSchool' => function($query){
                     $query->field('id, jiancheng');
@@ -249,7 +249,7 @@ class KetiInfo extends BaseModel
                         ]);
                 },
             ])
-            ->field('id, title, fzdanwei_id, category_id, jddengji_id, bianhao, lixiang_id')
+            ->field('id, title, fzdanwei_id, category_id, jddengji_id, bianhao, ketice_id')
             ->order('id')
             ->select();
 

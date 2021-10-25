@@ -33,8 +33,8 @@ class Tongji extends BaseModel
         foreach ($list as $key => $value) {
             if(isset($value->glLixiang->ktLxdanwei))
             {
-                if(isset($tongji[$value->glLixiang->ktLxdanwei->jibie_id])){
-                    $tongji[$value->glLixiang->ktLxdanwei->jibie_id]++;
+                if(isset($tongji[$value->glLixiang->ktLxdanwei->ketice_id])){
+                    $tongji[$value->glLixiang->ktLxdanwei->ketice_id]++;
                 }
             }
         }
@@ -93,14 +93,14 @@ class Tongji extends BaseModel
         foreach ($list as $key => $value) {
             if(isset($value->fzdanwei_id))
             {
-                if(isset($value->glLixiang->ktLxdanwei->jibie_id)){
-                    $tongji[$value->fzdanwei_id][$value->glLixiang->ktLxdanwei->jibie_id] ++;
+                if(isset($value->glLixiang->ktLxdanwei->ketice_id)){
+                    $tongji[$value->fzdanwei_id][$value->glLixiang->ktLxdanwei->ketice_id] ++;
                 }else{
                     $tongji[$value->fzdanwei_id]['qt'] ++;
                 }
             }else{
-                if(isset($value->glLixiang->ktLxdanwei->jibie_id)){
-                    $tongji['qt'][$value->glLixiang->ktLxdanwei->jibie_id] ++;
+                if(isset($value->glLixiang->ktLxdanwei->ketice_id)){
+                    $tongji['qt'][$value->glLixiang->ktLxdanwei->ketice_id] ++;
                 }else{
                     $tongji['qt']['qt'] ++;
                 }
@@ -170,8 +170,8 @@ class Tongji extends BaseModel
         foreach ($list as $key => $value) {
             if(isset($value->glJieti->glDanwei))
             {
-                if(isset($tongji[$value->glJieti->glDanwei->jibie_id])){
-                    $tongji[$value->glJieti->glDanwei->jibie_id]++;
+                if(isset($tongji[$value->glJieti->glDanwei->ketice_id])){
+                    $tongji[$value->glJieti->glDanwei->ketice_id]++;
                 }
             }
         }
@@ -230,14 +230,14 @@ class Tongji extends BaseModel
         foreach ($list as $key => $value) {
             if(isset($value->fzdanwei_id))
             {
-                if(isset($value->glJieti->glDanwei->jibie_id)){
-                    $tongji[$value->fzdanwei_id][$value->glJieti->glDanwei->jibie_id] ++;
+                if(isset($value->glJieti->glDanwei->ketice_id)){
+                    $tongji[$value->fzdanwei_id][$value->glJieti->glDanwei->ketice_id] ++;
                 }else{
                     $tongji[$value->fzdanwei_id]['qt'] ++;
                 }
             }else{
-                if(isset($value->glJieti->glDanwei->jibie_id)){
-                    $tongji['qt'][$value->glJieti->glDanwei->jibie_id] ++;
+                if(isset($value->glJieti->glDanwei->ketice_id)){
+                    $tongji['qt'][$value->glJieti->glDanwei->ketice_id] ++;
                 }else{
                     $tongji['qt']['qt'] ++;
                 }

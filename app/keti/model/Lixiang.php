@@ -67,7 +67,7 @@ class Lixiang extends BaseModel
     // 课题信息关联
     public function ktInfo()
     {
-    	return $this->hasMany('KetiInfo', 'lixiang_id', 'id');
+    	return $this->hasMany('KetiInfo', 'ketice_id', 'id');
     }
 
 
