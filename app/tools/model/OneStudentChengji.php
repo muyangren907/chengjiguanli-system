@@ -440,9 +440,14 @@ class OneStudentChengji extends BaseModel
                 ,'bweizhi' => $value->bweizhi
                 ,'xweizhi' => $value->xweizhi
                 ,'qweizhi' => $value->qweizhi
-                ,'max' => $schtjInfo[$value->subject_id]['max']
-                ,'min' => $schtjInfo[$value->subject_id]['min']
             ];
+            if (count($schtjInfo) > 0) {
+                $data[$key]['max'] = $schtjInfo[$value->subject_id]['max'];
+                $data[$key]['min'] = $schtjInfo[$value->subject_id]['min'];
+            } else {
+                $data[$key]['max'] = '未统计';
+                $data[$key]['min'] = '未统计';
+            }
             if($cjDengji === false)
             {
                 $data[$key]['defen'] = $this->toDengji($mf[$value->subject_id], $value->defen);
@@ -742,6 +747,10 @@ class OneStudentChengji extends BaseModel
         $btCj = $btj->where('kaoshi_id', $src['kaoshi_id'])
                     ->where('banji_id', $src['banji_id'])
                     ->select();
+        if($btCj->isEmpty())
+        {
+            return '';
+        }
         $avg = array();
         foreach ($btCj as $key => $value) {
             $avg[$value->subject_id] = $value->avg;
