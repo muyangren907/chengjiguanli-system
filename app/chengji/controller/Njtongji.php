@@ -96,7 +96,8 @@ class Njtongji extends AdminBase
 
         // 获取年级与学科
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['set']['nianji'] = $ksset->srcGrade($kaoshi_id);
+        $src['kaoshi_id'] = $kaoshi_id;
+        $list['set']['nianji'] = $ksset->srcGrade($src);
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -143,6 +144,7 @@ class Njtongji extends AdminBase
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet;
         $sheet = $spreadsheet->getActiveSheet();
         $thistime = date("Y-m-d h:i:sa");
+
 
         // 设置文档属性
         $spreadsheet->getProperties()
@@ -230,7 +232,8 @@ class Njtongji extends AdminBase
 
         $sheet->getStyle('A1')->getFont()->setBold(true)->setName('宋体')->setSize(20); # 修改标题字号
         $sheet->getDefaultRowDimension()->setRowHeight(35); # 设置行高
-        $sheet->getRowDimension('3:4')->setRowHeight(25);
+        $sheet->getRowDimension(3)->setRowHeight(25);;
+        $sheet->getRowDimension(4)->setRowHeight(25);;
         $sheet->getDefaultColumnDimension()->setWidth(8.3); # 设置列宽
         $sheet->getColumnDimension('A')->setWidth(5);
         $sheet->getColumnDimension('B')->setWidth(10.5);

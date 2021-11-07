@@ -324,6 +324,7 @@ class Index extends AdminBase
         $sheet->setCellValue($colname [$i]. '3', '平均分');
         $i ++;
         $sheet->setCellValue($colname[$i] . '3', '总分');
+        $left_i = $i;
         $sheet->mergeCells('A1:' . $colname[$i] . '1');   # 合并标题行
         $sheet->mergeCells('A2:' . $colname[$i] . '2');   # 合并时间行
         $col_null = 3;  # 统计结果与成绩列表空两列
@@ -340,6 +341,7 @@ class Index extends AdminBase
             $sheet->setCellValue($colname[$i] . $row, $value['title']);
             $i ++;
         }
+        $right_i = $i;
 
         // 循环写出成绩及个人信息
         $i = 0;
@@ -396,14 +398,14 @@ class Index extends AdminBase
                 ],
             ],
         ];
-        $sheet->getStyle('A3:'.$colname[$i] . ($row_temp - 1))->applyFromArray($styleArrayBK);
+        $sheet->getStyle('A3:'.$colname[$left_i] . ($row_temp - 1))->applyFromArray($styleArrayBK);
 
         $tj = new \app\chengji\model\Tongji;
 
         $temp = $tj->tongjiSubject($chengjiinfo, $subject_id);
 
         // 左侧开始列
-        $i = $i + $col_null ;
+        $i = $left_i + $col_null ;
         $col_r = $i;
 
         // 循环写出统计结果
