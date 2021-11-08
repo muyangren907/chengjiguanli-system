@@ -35,7 +35,7 @@ class Auth
             $act = strtolower($request->action());
 
             $url = $mod.'/'.$con.'/'.$act;
-            // dump($admin);
+            // dump($admin, $url);
             // halt($url);
 
             // 排除应用
@@ -125,7 +125,7 @@ class Auth
                 'luru/index/biaoqianxls',   # 获取试卷标签数据
                 'luru/index/ajaxdataonline',   # 获取试卷标签数据
                 // 系统设置
-                'system/school/srcschool',      # 获学校 
+                'system/school/srcschool',      # 获学校
             );
 
             // 验证是否是排除方法

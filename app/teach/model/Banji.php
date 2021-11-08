@@ -144,7 +144,8 @@ class Banji extends BaseModel
     // 年级-班级关联表
     public function glBanZhuRen()
     {
-        return $this->hasMany(\app\teach\model\BanZhuRen::class, 'banji_id', 'id');
+        return $this->hasMany(\app\teach\model\BanZhuRen::class, 'banji_id', 'id')
+            ->where('bfdate', '<=', time());
     }
 
 

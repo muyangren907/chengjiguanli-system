@@ -61,7 +61,7 @@ class BanZhuRen extends BaseModel
     // 查询任职结束时间
     public function getJieShuAttr()
     {
-        $str = '现在';
+        $str = '?';
 
         if($this->glBanji->biye === true)
         {
@@ -165,6 +165,7 @@ class BanZhuRen extends BaseModel
     public function srcTeacherNow($admin_id)
     {
         $teacher = $this->where('teacher_id', $admin_id)
+            ->whereTime('bfdate', '<=', time())
             ->order(['bfdate'=>'desc'])
             ->field('banji_id
                 ,any_value(teacher_id) as teacher_id

@@ -123,6 +123,35 @@ layui.use(['table', 'mytable', 'laydate', 'form'], function() {
 		};
 	});
 
+  //开始时间
+    laydate.render({
+      elem: '#bfdate',
+      type: 'datetime',
+      trigger: 'click' //采用click弹出
+      ,
+      format: 'yyyy-M-d' //可任意组合
+      ,
+    done: function(value, date, endDate) {
+      form.val("search", {
+        "bfdate": value,
+      });
+    }
+  });
+  //结束时间
+  laydate.render({
+    elem: '#enddate',
+    type: 'datetime',
+    trigger: 'click' //采用click弹出
+      ,
+      format: 'yyyy-M-d' //可任意组合
+      ,
+    done: function(value, date, endDate) {
+      form.val("search", {
+        "enddate": value,
+      });
+    }
+  });
+
 });
 
 </script>

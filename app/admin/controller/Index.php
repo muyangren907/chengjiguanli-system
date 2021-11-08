@@ -80,6 +80,7 @@ class Index extends AdminBase
             ,'formpost' => 'POST'
             ,'url' => 'save'
         );
+        $list['data']['worktime'] = date('Y-m-d', time());
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -222,7 +223,7 @@ class Index extends AdminBase
         // 整理数据
         $id = request()->delete('id');
         $id = explode(',', $id);
-        
+
         // 启动事务
         \think\facade\Db::startTrans();
         try {
@@ -387,7 +388,7 @@ class Index extends AdminBase
             }
         }
         $this->youxiaoxingAll($stuinfo, 'L', $value);
-        
+
         // // 用户组
         // $group = new \app\admin\model\AuthGroup;
         // $group = $group
@@ -466,7 +467,7 @@ class Index extends AdminBase
 
     private function youxiaoxingAll($obj, $colmun, $value)
     {
-        
+
         $i = 5;
         while ($i <= 154)
         {
