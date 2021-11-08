@@ -156,14 +156,15 @@ class Jiaoyanzu extends BaseModel
     {
         $zh = new \app\teach\model\JiaoyanZuzhang;
         $zhInfo = $zh->where('jiaoyanzu_id', $this->id)
+            ->where('bfdate', '<=', time())
             ->order(['bfdate' => 'desc'])
             ->with([
                 'glTeacher' => function ($query) {
                     $query->field('id, xingming');
                 }
             ])
-            ->find(); 
-            
+            ->find();
+
         $str = ['id', 'xingming'];
         if ($zhInfo) {
             $str = [

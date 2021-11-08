@@ -94,6 +94,7 @@ class JiaoyanZuzhang extends Model
     public function srcTeacherNow($admin_id)
     {
         $teacher = $this->where('teacher_id', $admin_id)
+            ->whereTime('bfdate', '<=', time())
             ->order(['bfdate'=>'desc'])
             ->field('jiaoyanzu_id
                 ,any_value(teacher_id) as teacher_id
