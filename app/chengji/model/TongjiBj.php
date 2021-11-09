@@ -326,6 +326,7 @@ class TongjiBj extends BaseModel
                 'check' => true
                 ,'banji_id' => array()
             ]
+            ,'all' => false
         );
         $src = array_cover($srcfrom, $src);
         $src['banji_id'] = str_to_array($src['banji_id']);

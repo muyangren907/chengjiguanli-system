@@ -47,7 +47,7 @@ class Chengji extends Migrator
             // 区排序和位置
             ->addColumn('qpaixu','integer',['limit'=>4,'null'=>true,'comment'=>'区排序'])
             ->addColumn('qweizhi','decimal',['precision'=>6,'scale'=>2,'null'=>true,'comment'=>'区位置'])
-            ->addColumn('biaozhunfen','decimal',['precision'=>6,'scale'=>2,'default'=>Null,'null'=>false,'comment'=>'标准分'])
+            ->addColumn('biaozhunfen','decimal',['precision'=>6,'scale'=>2,'default'=>null,'null'=>true,'comment'=>'标准分'])
             ->addColumn('create_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'更新时间'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
