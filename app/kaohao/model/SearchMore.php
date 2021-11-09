@@ -31,6 +31,7 @@ class SearchMore extends BaseModel
         $src = array_cover($srcfrom, $src);
         $src['banji_id'] = str_to_array($src['banji_id']);
 
+
         // 查询成绩
         $kh = new kh();
         $data = $kh->where('kaoshi_id', $src['kaoshi_id'])
@@ -65,8 +66,11 @@ class SearchMore extends BaseModel
                     $query->field('id, xingming, sex, shengri');
                 }
             ])
+
             ->append(['banjiTitle', 'banTitle'])
             ->select();
+
+
         return $data;
     }
 
@@ -82,6 +86,11 @@ class SearchMore extends BaseModel
             'kaoshi_id' => '0'
             ,'banji_id' => array()
             ,'searchval' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'asc'
+            ,'all' => false
         );
 
         // 用新值替换初始值
@@ -119,6 +128,11 @@ class SearchMore extends BaseModel
                     $query->field('id, xingming, sex, shengri, xuehao');
                 }
             ])
+             ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
+            ->order([$src['field'] => $src['order']])
             ->append(['banjiTitle', 'banTitle', 'xuehao'])
             ->select();
         return $data;
@@ -171,7 +185,7 @@ class SearchMore extends BaseModel
                     $data[$key]['student_xingming'] = '被真删除';
                     $data[$key]['sex'] = '未知';
                 }
-                
+
             }
 
             $data[$key]['ban_title'] = $value->banjiTitle;
@@ -223,14 +237,15 @@ class SearchMore extends BaseModel
                 }
             }
 
-            if($sbjcnt>0){
+            if ($sbjcnt > 0) {
                 $data[$key]['sum'] = $dfsum;
                 $data[$key]['avg'] = round($dfsum / $sbjcnt, 1);
-            }else{
+            } else {
                 $data[$key]['sum'] = null;
                 $data[$key]['avg'] = null;
             }
         }
+
 
         return $data;
     }

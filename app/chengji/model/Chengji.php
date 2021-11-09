@@ -257,6 +257,11 @@ class Chengji extends BaseModel
                 'check' => true
                 ,'banji_id' => array()
             ]
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'asc'
+            ,'all' => false
         );
         $src = array_cover($srcfrom, $src);
 

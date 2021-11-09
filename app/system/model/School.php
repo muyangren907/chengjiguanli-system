@@ -127,7 +127,7 @@ class School extends BaseModel
             $src['orderSql'] = \think\facade\Db::raw($paixuList);
         } else {
             $src['orderSql'] = array($src['field'] => $src['order']);
-        }   
+        }
 
         // 查询数据
         $data = $this
@@ -240,7 +240,7 @@ class School extends BaseModel
            {
             $bf = true;
            }
-           
+
            if($bf == true)
            {
             $ids[] = $value->id;
@@ -259,6 +259,22 @@ class School extends BaseModel
             ->field('id, title, jiancheng')
             ->select();
         return $schlist;
+    }
+
+
+    // 学校排序
+    # ziduan   生成后的字段名字
+    public function schPaixu($ziduan = 'school_id', $order = 'asc')
+    {
+        $sch = new \app\system\model\School;
+        $schList = $sch->where('jibie_id', 10203)
+            ->order(['paixu' => $order])
+            ->field('id, title, paixu')
+            ->column(['id']);
+        $paixuList = implode('\', \'', $schList);
+        $paixuList = "field(" . $ziduan . ", '". $paixuList. "')";
+        $orderSql = \think\facade\Db::raw($paixuList);
+        return $orderSql;
     }
 
 }

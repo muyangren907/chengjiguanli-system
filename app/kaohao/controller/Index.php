@@ -11,7 +11,7 @@ use app\kaohao\model\Kaohao as KH;
 use app\student\model\Student as stu;
 
 
-class Index extends AdminBase 
+class Index extends AdminBase
 {
     // 生成考号
     public function createAll($kaoshi_id)
@@ -67,7 +67,7 @@ class Index extends AdminBase
             ,'kaoshi' => 1
             ,'status' => 1
         ];
- 
+
         $src['auth'] = event('mybanji', array());
         $src['auth'] = $src['auth'][0];
         $src['auth']['banji_id'] = array_intersect($src['auth']['banji_id'], $src['banji_id']);
@@ -106,7 +106,7 @@ class Index extends AdminBase
                     $check->status = 1;
                     $check->save();
                 }
-                
+
                 $stuInfo = stu::where('id', $value->id)
                     ->field('id, banji_id')
                     ->with([
@@ -168,9 +168,12 @@ class Index extends AdminBase
     {
         // 获取参考年级、学科
         $ksset = new ksset;
-        $list['data']['nianji'] = $ksset->srcGrade($kaoshi_id);
+        $src = [
+            'kaoshi_id' => $kaoshi_id
+            ,'all' => true
+        ];
+        $list['data']['nianji'] = $ksset->srcGrade($src);
         $kh = new KH;
-        $src['kaoshi_id'] = $kaoshi_id;
         if(count($list['data']['nianji']) > 0){
             $src['ruxuenian'] = $list['data']['nianji'][0];
         } else {

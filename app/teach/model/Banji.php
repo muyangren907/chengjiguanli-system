@@ -37,8 +37,8 @@ class Banji extends BaseModel
             ]
             ,'page' => 1
             ,'limit' => 10
-            ,'field' => 'id'
-            ,'order' => 'desc'
+            ,'field' => 'paixu'
+            ,'order' => 'asc'
             ,'all' => false
         ];
         $src = array_cover($srcfrom, $src);
@@ -49,6 +49,14 @@ class Banji extends BaseModel
             $njname = $this->gradeName(time(),'num');     # 年级名对应表
             $src['ruxuenian'] = array_values($njname);
         }
+
+        $sch = new \app\system\model\School;
+        if ($src['field'] == 'paixu') {
+            $src['orderSql'] = $this->classPaixu(time(), 'id', $src['order']);
+        } else {
+            $src['orderSql'] = $this->classPaixu(time(), 'id');
+        }
+
 
         // 查询数据
         $data = $this
@@ -80,7 +88,12 @@ class Banji extends BaseModel
                 $query
                     ->page($src['page'], $src['limit']);
             })
-            ->order([$src['field'] => $src['order']])
+            ->when($src['field'] == 'paixu', function ($query) use($src) {
+                $query->order($src['orderSql'])
+                    ->order([$src['field'] => $src['order']]);
+            }, function ($query) use($src) {
+                $query->order([$src['field'] => $src['order']]);
+            })
             ->append(['banjiTitle', 'banTitle', 'grade', 'bzr'])
             ->select();
 
@@ -119,6 +132,25 @@ class Banji extends BaseModel
         ->select();
 
         return $data;
+    }
+
+
+    // 班级排序
+    # ziduan 生成后的字段名称
+    public function classPaixu($riqi = 0, $ziduan = 'banji_id', $order = 'asc')
+    {
+        $sch = new \app\system\model\School;
+        $orderSql = $sch->schPaixu('school_id');;
+        $njList = $this->gradeName($riqi,'num');
+        $bjList = $this->where('ruxuenian', 'in', $njList)
+            ->order($orderSql)
+            ->order(['ruxuenian' => 'desc'])
+            ->order(['paixu' => $order])
+            ->column(['id']);
+        $paixuList = implode('\', \'', $bjList);
+        $paixuList = "field(" . $ziduan . ", '". $paixuList. "')";
+        $orderSql = \think\facade\Db::raw($paixuList);
+        return $orderSql;
     }
 
 

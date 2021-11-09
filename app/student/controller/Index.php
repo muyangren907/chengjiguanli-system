@@ -613,8 +613,9 @@ class Index extends AdminBase
                 ,'order' => 'desc'
             ],'POST');
 
+
         // 判断是否存在数据，如果没有数据则返回。
-        if(strlen($str) <= 0){
+        if(strlen($src['searchval']) <= 0){
             $data = reset_data($data, 0);
             return json($data);
         }

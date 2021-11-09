@@ -46,22 +46,22 @@ class Index extends AdminBase
         // 获取参数
         $src = $this->request
             ->only([
-                'page'
-                ,'limit'
-                ,'field' => 'id'
-                ,'order' => 'asc'
-                ,'kaoshi_id'
+                'kaoshi_id'
                 ,'school_id'
                 ,'ruxuenian'
                 ,'banji_id' => array()
                 ,'searchval'
+                ,'page' => 1
+                ,'limit' => 10
+                ,'field' => 'id'
+                ,'order' => 'asc'
             ], 'POST');
 
         // 获取参与考试的班级
         if (count($src['banji_id']) == 0) {
             $cy = new \app\kaohao\model\SearchCanYu;
             $src['banji_id']= array_column($cy->class($src), 'id');
-        } 
+        }
 
         $src['auth'] = event('mybanji', array());
         $src['auth'] = $src['auth'][0];
@@ -69,9 +69,7 @@ class Index extends AdminBase
         // 实例化并查询成绩
         $cj = new Chengji;
         $data = $cj->search($src);
-        $src['all'] = true;
-        $cnt = $data = $cj->search($src);
-        $data = reset_data($data, $cnt);
+        $data = \app\facade\Tools::reset_array($data, $src);
 
         return json($data);
     }
@@ -779,7 +777,7 @@ class Index extends AdminBase
                 $i++;
             }
             $newStr = $newStr . '*';
-            for ($i=$cnt - $l; $i < $cnt; $i++) { 
+            for ($i=$cnt - $l; $i < $cnt; $i++) {
                 $newStr = $newStr . $arr[$i];
             }
         }

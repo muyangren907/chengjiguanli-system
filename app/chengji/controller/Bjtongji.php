@@ -17,8 +17,10 @@ class Bjtongji extends AdminBase
         $ksinfo = $ks->where('id', $kaoshi_id)
             ->field('id, title')
             ->find();
-        // 获取参与学校
-        $src['kaoshi_id'] = $kaoshi_id;
+        $src = [
+            'kaoshi_id' => $kaoshi_id
+            ,'all' => true
+        ];
         // 获取年级与学科
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $list['subject_id'] = $ksset->srcSubject($src);

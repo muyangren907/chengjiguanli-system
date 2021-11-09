@@ -103,7 +103,7 @@ class Index extends BaseController
     * @param str或array $str 表单中获取的参数
     * @return array 返回类型
     */
-    public function reSetData($data, $cnt)
+    public function reset_data($data = array(), $cnt)
     {
         $arr = [
             'code' => 0  // ajax请求次数，作为标识符
@@ -115,7 +115,7 @@ class Index extends BaseController
         // 整理数据
         if($cnt > 0)
         {
-            
+
             $arr = [
                 'code' => 0  // ajax请求次数，作为标识符
                 ,'msg' => ""  // 获取到的结果数(每页显示数量)
@@ -127,20 +127,21 @@ class Index extends BaseController
     }
 
 
-    /**
+
+        /**
     * 把重新整理从数据模型中返回的对象
     * @access public
     * @param str或array $str 表单中获取的参数
     * @return array 返回类型
     */
-    public function reset_data($arr = array(), $srcfrom)
+    public function reset_array($arr = array(), $srcfrom)
     {
         // 整理变量
         $src = [
             'field' => ''
             ,'order' => 'desc'
-            ,'page' => ''
-            ,'limit' => ''
+            ,'page' => '1'
+            ,'limit' => '10'
         ];
         $src = array_cover($srcfrom, $src) ;
         $data = [   # 数据合并
@@ -149,6 +150,7 @@ class Index extends BaseController
             'count' => 0, # 符合条件的总数据量
             'data' => [], # 获取到的数据结果
         ];
+
 
         // 重新整理数据
         $cnt = count($arr);    # 记录总数
@@ -159,7 +161,6 @@ class Index extends BaseController
                 : $src['order'] = SORT_ASC;   # 数据排序
                 $arr = $this->sortArrByManyField($arr, $src['field'], $src['order']);
             }
-            // halt($arr);
             if($src['page'] > 0 and $src['limit'] > 0)
             {
                 $limit_start = $src['page'] * $src['limit'] - $src['limit']; # 获取当前页数据
@@ -176,6 +177,8 @@ class Index extends BaseController
         }
         return $data;
     }
+
+
 
 
     // 加密

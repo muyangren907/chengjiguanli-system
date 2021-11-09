@@ -24,9 +24,10 @@ class SearchCanyu extends BaseModel
             ,'all' => false
         );
         $src = array_cover($srcfrom, $src);
-        $src['ruxuenian'] = str_to_array($src['ruxuenian']); 
+        $src['ruxuenian'] = str_to_array($src['ruxuenian']);
 
-        $src['orderSql'] = $this->schPaixu($src['field']);
+        $sch = new \app\system\model\School;
+        $src['orderSql'] = $sch->schPaixu('school_id');
 
         $kh = new kh;
         $schoolList = $kh->where('kaoshi_id', $src['kaoshi_id'])
@@ -88,20 +89,10 @@ class SearchCanyu extends BaseModel
         $src['banji_id'] = str_to_array($src['banji_id']);
         $src['ruxuenian'] = str_to_array($src['ruxuenian']);
 
-        $src['orderSql'] = $this->schPaixu('school_id');
         $ks = new \app\kaoshi\model\Kaoshi;
-        $bjdate = $ks->where('id', $src['kaoshi_id'])->value('bfdate');
+        $bfdate = $ks->where('id', $src['kaoshi_id'])->value('bfdate');
         $bj = new \app\teach\model\Banji;
-        $njList = $bj->gradeName($bjdate,'num');
-        $bjList = $bj->where('ruxuenian', 'in', $njList)
-            ->order($src['orderSql'])
-            ->order(['ruxuenian' => 'asc'])
-            ->order(['paixu' => 'asc'])
-            ->column(['id']);
-        $paixuList = implode('\', \'', $bjList);
-        $paixuList = "field(banji_id, '". $paixuList. "')";
-        $orderSql = \think\facade\Db::raw($paixuList);
-
+        $orderSql = $bj->classPaixu($bfdate, 'banji_id');
 
         // 通过给定参数，从考号表中获取参加考试的班级
         $kh = new kh;
@@ -149,27 +140,6 @@ class SearchCanyu extends BaseModel
         }
 
         return $data;
-    }
-
-
-    /**
-    * 获取参加考试的班级
-    * @access public
-    * @param number $kaoshi 考试id
-    * @param number $ruxuenian 入学年
-    * @return array 返回班级数据模型
-    */
-    public function schPaixu($field)
-    {
-        $sch = new \app\system\model\School;
-        $schList = $sch->where('jibie_id', 10203)
-            ->order(['paixu' => 'asc'])
-            ->field('id, title, paixu')
-            ->column(['id']);
-        $paixuList = implode('\', \'', $schList);
-        $paixuList = "field(" . $field . ", '". $paixuList. "')";
-        $orderSql = \think\facade\Db::raw($paixuList);
-        return $orderSql;
     }
 
 }

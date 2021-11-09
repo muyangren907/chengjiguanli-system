@@ -95,7 +95,7 @@
     */
     function reset_data($data, $cnt)
     {
-        $data = \app\facade\Tools::reSetData($data, $cnt);
+        $data = \app\facade\Tools::reset_data($data, $cnt);
         return $data;
     }
 
