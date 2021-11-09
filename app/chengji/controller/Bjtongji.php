@@ -457,6 +457,10 @@ class Bjtongji extends AdminBase
 
         // 获取年级与学科
         $ksset = new \app\kaoshi\model\KaoshiSet;
+        $src = [
+            'kaoshi_id' => $kaoshi_id
+            ,'all' => true
+        ];
         $list['nianji'] = $ksset->srcGrade($kaoshi_id);
         $list['subject_id'] = $ksset->srcSubject($src);
         // 设置要给模板赋值的信息
@@ -486,12 +490,20 @@ class Bjtongji extends AdminBase
                 ,'ruxuenian' => ''
                 ,'school_id' => array()
                 ,'banji_id' => array()
+                ,'auth' => []
             ], 'POST');
 
         if (count($src['banji_id'])==0) {
             // 获取参与考试的班级
             $cy = new \app\kaohao\model\SearchCanYu;
             $src['banji_id']= array_column($cy->class($src),'id');
+        }
+
+        $src['auth'] = event('mybanji', $src['auth']);
+        $src['auth'] = $src['auth'][0];
+        if(count($src['banji_id']) > 0)        # 如果没有获取到班级id,则查询班级id
+        {
+            $src['auth']['banji_id'] = array_intersect($src['auth']['banji_id'], $src['banji_id']);
         }
 
         // 统计成绩
@@ -677,7 +689,7 @@ class Bjtongji extends AdminBase
             ], 'POST');
         $btj = new BTJ();
         // 获取参考年级
-        $data = $btj->srcSubject($src); 
+        $data = $btj->srcSubject($src);
         $data = reSetArray($data, $src);
         return json($data);
     }
