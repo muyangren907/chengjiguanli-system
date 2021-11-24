@@ -405,7 +405,7 @@ class Banji extends BaseModel
         {
             $riqi = strtotime($riqi);
         }
-        
+
         // 定义学年时间节点日期为每年的8月1日
         // $yd = '8-1';
         $sysClass = \app\facade\System::sysInfo();
