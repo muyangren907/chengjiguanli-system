@@ -340,6 +340,12 @@ class Banji extends BaseModel
     // 生成年级名
     public function gradeName($riqi, $category = 'str')
     {
+        //  转换日期格式
+        if(!is_numeric($riqi))
+        {
+            $riqi = strtotime($riqi);
+        }
+
         // 定义学年时间节点日期为每年的8月1日
         // $yd = '8-1';
         $sysClass = \app\facade\System::sysClass();

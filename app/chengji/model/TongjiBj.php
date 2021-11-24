@@ -289,10 +289,6 @@ class TongjiBj extends BaseModel
         $src = array(
             'kaoshi_id' => ''
             ,'banji_id' => array()
-            ,'auth' => [
-                'check' => true
-                ,'banji_id' => array()
-            ]
         );
         $src = array_cover($srcfrom, $src);
         $src['banji_id'] = strToarray($src['banji_id']);
@@ -305,10 +301,6 @@ class TongjiBj extends BaseModel
         $tongjiJg = $this
             ->where('kaoshi_id', $src['kaoshi_id'])
             ->where('banji_id', 'in', $src['banji_id'])
-            ->when($src['auth']['check'] == true, function ($query) use($src) {
-                    $query->where('banji_id', 'in', $src['auth']['banji_id'])
-                        ->whereOr('teacher_id', session('user_id'));
-                })
             ->field('banji_id, kaoshi_id')
             ->with([
                 'bjBanji '=> function ($query) {
