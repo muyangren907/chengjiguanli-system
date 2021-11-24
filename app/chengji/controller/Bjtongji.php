@@ -129,13 +129,28 @@ class Bjtongji extends AdminBase
     // 年级、班级学生成绩统计下载表格
     public function dwBanjixls()
     {
-        // 获取表单参数
+        // 获取参数
         $src = $this->request
             ->only([
                 'kaoshi_id' => ''
                 ,'ruxuenian' => ''
                 ,'school_id' => array()
+                ,'banji_id' => array()
+                ,'auth' => []
             ], 'POST');
+
+        if (count($src['banji_id'])==0) {
+            // 获取参与考试的班级
+            $cy = new \app\kaohao\model\SearchCanYu;
+            $src['banji_id']= array_column($cy->class($src),'id');
+        }
+
+        $src['auth'] = event('mybanji', $src['auth']);
+        $src['auth'] = $src['auth'][0];
+        if(count($src['banji_id']) > 0)        # 如果没有获取到班级id,则查询班级id
+        {
+            $src['auth']['banji_id'] = array_intersect($src['auth']['banji_id'], $src['banji_id']);
+        }
         $src['school_id'] = str_to_array($src['school_id']);
 
         // 获取相关参数
@@ -162,6 +177,7 @@ class Bjtongji extends AdminBase
         }
         $btj = new BTJ;     # 成绩统计结果
         $data = $btj->search($src);
+
         $ntj = new \app\chengji\model\TongjiNj;
         $dataAll = $ntj->search($src);
         count($dataAll) > 0 ? $data['all'] = $dataAll[0] : $data;
@@ -262,7 +278,8 @@ class Bjtongji extends AdminBase
         $sheet->getStyle('A1')->getFont()->setBold(true)
             ->setName('宋体')->setSize(20); # 修改标题字号
         $sheet->getDefaultRowDimension()->setRowHeight(35); # 设置行高
-        $sheet->getRowDimension('3:4')->setRowHeight(25);
+        $sheet->getRowDimension('3')->setRowHeight(25);
+        $sheet->getRowDimension('4')->setRowHeight(25);
         $sheet->getDefaultColumnDimension()->setWidth(8.3); # 设置列宽
         $sheet->getColumnDimension('A')->setWidth(5);
         $sheet->getColumnDimension('B')->setWidth(10.5);
