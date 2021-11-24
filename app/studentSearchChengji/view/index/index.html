@@ -265,6 +265,7 @@
     options.where = form.val("search");
     $('#srcmianban').removeClass("layui-show");
     table.render(options); //获取数据并渲染
+    getDefenlv();
     return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
   });
 
