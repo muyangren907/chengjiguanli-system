@@ -134,8 +134,8 @@ layui.use(['table', 'mytable', 'laydate', 'element', 'form', 'myEchart', 'create
   });
 
   // 监听表单提交
-  form.on('submit(srcsubmit)', function(data) {
-    options.where = lForm.val("search");
+  form.on('submit(searchSubmit)', function(data) {
+    options.where = form.val("search");
     table.render(options); //获取数据并渲染
     getDefenlv();
     return false;
