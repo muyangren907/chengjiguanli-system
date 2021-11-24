@@ -326,6 +326,10 @@ class TongjiBj extends BaseModel
                 'check' => true
                 ,'banji_id' => array()
             ]
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'paixu'
+            ,'order' => 'asc'
             ,'all' => false
         );
         $src = array_cover($srcfrom, $src);
@@ -339,6 +343,13 @@ class TongjiBj extends BaseModel
         $tongjiJg = $this
             ->where('kaoshi_id', $src['kaoshi_id'])
             ->where('banji_id', 'in', $src['banji_id'])
+            ->when($src['auth']['check'] != false, function($query) use($src){
+                    $query->where('id', 'in', $src['auth']['banji_id']);
+                })
+            ->when($src['all'] == false, function ($query) use($src) {
+                $query
+                    ->page($src['page'], $src['limit']);
+            })
             ->field('banji_id, kaoshi_id')
             ->with([
                 'bjBanji '=> function ($query) {
