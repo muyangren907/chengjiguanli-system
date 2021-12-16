@@ -1412,7 +1412,7 @@ class Rule extends Seeder
             ['id' => 704
                 ,'title' => '数据备份'
                 ,'name' => 'system/backup/index'
-                ,'paixu' => 5
+                ,'paixu' => 6
                 ,'ismenu'  => 1
                 ,'pid'  => 7
                 ,'url' => '/system/backup/index'
@@ -1445,7 +1445,7 @@ class Rule extends Seeder
             ['id' => 705
                 ,'title' => '系统设置'
                 ,'name' => 'system/systembase/edit'
-                ,'paixu' => 6
+                ,'paixu' => 7
                 ,'ismenu'  => 1
                 ,'pid'  => 7
                 ,'url' => '/system/'
@@ -1465,7 +1465,7 @@ class Rule extends Seeder
             ['id' => 706
                 ,'title' => '统计项目'
                 ,'name' => 'kaoshi/tongjixiangmu/index'
-                ,'paixu' => 4
+                ,'paixu' => 5
                 ,'ismenu'  => 1
                 ,'pid'  => 7
                 ,'url' => '/kaoshi/tjxm/index'
@@ -1511,6 +1511,56 @@ class Rule extends Seeder
                     ,'name' => 'kaoshi/tongjixiangmu/delete'
                     ,'paixu' => 7
                     ,'pid'  => 706
+                ],
+            ['id' => 707
+                ,'title' => '教室管理'
+                ,'name' => 'system/classroom/index'
+                ,'paixu' => 4
+                ,'ismenu'  => 1
+                ,'pid'  => 7
+                ,'url' => '/system/classroom'
+            ],
+                ['id' => 70701
+                    ,'title' => '添加'
+                    ,'name' => 'system/classroom/create'
+                    ,'paixu'  => 1
+                    ,'pid' => 707
+                ],
+                ['id' => 70702
+                    ,'title' => '保存'
+                    ,'name' => 'system/classroom/save'
+                    ,'paixu'  => 2
+                    ,'pid' => 707
+                ],
+                ['id' => 70703
+                    ,'title' => '删除'
+                    ,'name' => 'system/classroom/delete'
+                    ,'paixu' => 3
+                    ,'pid' => 707
+                ],
+                ['id' => 70704
+                    ,'title' => '编辑'
+                    ,'name' => 'system/classroom/edit'
+                    ,'paixu' => 4
+                    ,'pid' => 707
+                ],
+                ['id' => 70705
+                    ,'title' => '更新'
+                    ,'name' => 'system/classroom/update'
+                    ,'paixu'  => 5
+                    ,'pid' => 707
+                ],
+                ['id' => 70706
+                    ,'title' => '查看'
+                    ,'name' => 'system/classroom/read'
+                    ,'paixu' => 6
+                    ,'pid' => 707
+                ],
+                ['id' => 70707
+                    ,'title' => '状态'
+                    ,'name' => 'system/classroom/setstatus'
+                    ,'paixu' => 7
+                    ,'pid' => 707
                 ],
 
 

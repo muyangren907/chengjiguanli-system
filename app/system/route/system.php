@@ -65,3 +65,15 @@ Route::group('backup', function () {
 	});
 
 
+// 教室管理
+Route::group('classroom', function () {
+	    Route::rule('','ClassRoom/index','get');						# 信息列表
+	    Route::rule('data','ClassRoom/ajaxdata','post');				# 获取数据
+	    Route::rule('create','ClassRoom/create','get');				# 添加信息
+	    Route::rule('save','ClassRoom/save','post');					# 保存信息
+	    Route::rule('edit/<id>','ClassRoom/edit','get');				# 修改信息
+	    Route::rule('update/<id>','ClassRoom/update','put');			# 更新信息
+	    Route::rule('delete','ClassRoom/delete','delete');		# 删除信息
+	    Route::rule('status','ClassRoom/setStatus','post');		# 删除信息
+	});
+

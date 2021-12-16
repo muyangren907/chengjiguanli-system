@@ -333,6 +333,16 @@ class Category extends Seeder
                 //  考试查询权限
                 ['id' => 12501,'title' => '年级组','p_id' => 125,'paixu' => 1,'isupdate' => 0],
                 ['id' => 12502,'title' => '学科组','p_id' => 125,'paixu' => 2,'isupdate' => 0],
+            ['id' => 126
+                ,'title' => '房间功能'
+                ,'p_id' => 0
+                ,'paixu' => 26
+                ,'isupdate' => 0
+            ],
+                //  考试查询权限
+                ['id' => 12601,'title' => '办公室','p_id' => 126,'paixu' => 1,'isupdate' => 0],
+                ['id' => 12602,'title' => '学生教室','p_id' => 126,'paixu' => 2,'isupdate' => 0],
+                ['id' => 12603,'title' => '专用教室','p_id' => 126,'paixu' => 3,'isupdate' => 0],
         ];
 
         $serRows = $this->fetchAll('select * from cj_category');

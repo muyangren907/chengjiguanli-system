@@ -33,7 +33,7 @@ class Jieti extends Migrator
 
         // 添加当前表字段
         $table
-            ->addColumn('title','string',['limit'=>100,'default'=>'a','null'=>false,'default'=>0,'comment'=>'结题册名称'])
+            ->addColumn('title','string',['limit'=>100,'default'=>'a','null'=>false,'comment'=>'结题册名称'])
             ->addColumn('shijian','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'结题时间'])
             ->addColumn('danwei_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'结题单位id'])
             ->addColumn('create_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'创建时间'])

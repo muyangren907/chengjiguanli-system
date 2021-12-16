@@ -33,7 +33,7 @@ class Jiaoyanzu extends Migrator
 
         // 添加当前表字段
         $table
-            ->addColumn('title','string',['limit'=>100,'default'=>'a','null'=>false,'default'=>0,'comment'=>'教研组名称'])
+            ->addColumn('title','string',['limit'=>100,'default'=>'a','null'=>false,'comment'=>'教研组名称'])
             ->addColumn('ruxuenian','integer',['limit'=>11,'default'=>null,'null'=>true,'comment'=>'入学年'])
             ->addColumn('category_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'教研组类别'])
             ->addColumn('school_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'学校类别'])
