@@ -6,7 +6,7 @@
 			<span class="x-red">*</span>名称
 		</label>
 		<div class="layui-input-block">
-			<input type="text" id="title" name="title" lay-verify="required" autocomplete="off" class="layui-input " value="{$list.data.title|default=''}" placeholder="中文2-25个字符">
+			<input type="text" id="title" name="title" lay-verify="required" autocomplete="off" class="layui-input " value="{$list.data.title|default=''}" placeholder="2-15个字符">
 		</div>
 	</div>
 	<div class="layui-form-item">
@@ -19,7 +19,7 @@
 	<div class="layui-form-item" pane>
 		<label for="shangke" class="layui-form-label"><span class="x-red">*</span>是否可以上课</label>
 		<div class="layui-input-block">
-			<input type="radio" name="shangke" value="1" title="是" {present name="$list.data.shangke" } {$list.data.shangke} {eq name="$list.data.shangke" value="是" } checked {/eq} {/present}> <input type="radio" name="shangke" value="0" title="否" {present name="$list.data.shangke" } {eq name="list.data.shangke" value="否" } checked {/eq} {/present} {notpresent name="$list.data.shangke" } checked {/notpresent}>
+			<input type="radio" name="shangke" value="1" title="是" {present name="$list.data.shangke"} {eq name="$list.data.shangke" value="是" } checked {/eq} {/present}> <input type="radio" name="shangke" value="0" title="否" {present name="$list.data.shangke" } {eq name="list.data.shangke" value="否" } checked {/eq} {/present} {notpresent name="$list.data.shangke" } checked {/notpresent}>
 		</div>
 	</div>
 	<div class="layui-form-item">
@@ -27,7 +27,7 @@
 			位置
 		</label>
 		<div class="layui-input-block">
-			<input type="text" id="weizhi" name="weizhi" autocomplete="off" class="layui-input" value="{$list.data.weizhi|default=''}" placeholder="中文1-6个字符">
+			<input type="text" id="weizhi" name="weizhi" autocomplete="off" class="layui-input" value="{$list.data.weizhi|default=''}" placeholder="2-100个字符">
 		</div>
 	</div>
 	<div class="layui-form-item">
@@ -35,7 +35,7 @@
 			备注
 		</label>
 		<div class="layui-input-block">
-			<input type="text" id="beizhu" name="beizhu" autocomplete="off" class="layui-input" value="{$list.data.beizhu|default=''}" placeholder="中文1-6个字符">
+			<input type="text" id="beizhu" name="beizhu" autocomplete="off" class="layui-input" value="{$list.data.beizhu|default=''}" placeholder="2-100个字符">
 		</div>
 	</div>
 	<div class="layui-form-item" style="text-align: right;">

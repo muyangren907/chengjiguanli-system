@@ -15,6 +15,7 @@ class ClassRoom extends BaseModel
         ,'title' =>   'varchar'
         ,'weizhi' =>  'varchar'
         ,'category_id' => 'int'
+        ,'shangke' => 'tinyint'
         ,'status' =>  'tinyint'
         ,'create_time' => 'int'
         ,'update_time' => 'int'
@@ -65,6 +66,25 @@ class ClassRoom extends BaseModel
     public function  crCategory()
     {
         return $this->belongsTo(\app\system\model\Category::class, 'category_id', 'id');
+    }
+
+
+    // 性别获取器
+    public function getShangkeAttr($value)
+    {
+        $shangke = [
+            '0' => '否'
+            ,'1' => '是'
+        ];
+
+        $str = '';
+        if(isset($shangke[$value]))
+        {
+            $str = $shangke[$value];
+        }else{
+            $str = '未知';
+        }
+        return $str;
     }
 
 

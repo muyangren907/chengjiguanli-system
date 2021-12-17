@@ -15,8 +15,8 @@ class ClassRoom extends Validate
      */
     protected $rule = [
         'id|ID'     =>  'require|number',
-        'title|教室名称'     =>  'require|length:2,100',
-        'weizhi|位置'     =>  'length:0,100',
+        'title|教室名称'     =>  'require|length:2,15',
+        'weizhi|位置'     =>  'length:2,100',
         'category_id|教室功能'      =>      'number',
         'shangke|是否可以上课 '     =>  'require|boolean',
         'beizhu|备注'    =>  'length:2,100'

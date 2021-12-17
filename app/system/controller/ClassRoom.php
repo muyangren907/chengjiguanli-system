@@ -130,15 +130,15 @@ class ClassRoom extends AdminBase
         // 获取表单数据
         $list = request()->only([
             'title'
-            ,'xuenian'
+            ,'weizhi'
             ,'category_id'
-            ,'bfdate'
-            ,'enddate'
+            ,'shangke'
+            ,'beizhu'
         ], 'put');
         $list['id'] = $id;
 
         // 验证表单数据
-        $validate = new \app\teach\validate\Xueqi;
+        $validate = new \app\system\validate\ClassRoom;
         $result = $validate->scene('edit')->check($list);
         $msg = $validate->getError();
         if(!$result){
@@ -146,16 +146,16 @@ class ClassRoom extends AdminBase
         }
 
         // 更新数据
-        $xueqilist = CR::find($id);
-        $xueqilist->title = $list['title'];
-        $xueqilist->xuenian = $list['xuenian'];
-        $xueqilist->category_id = $list['category_id'];
-        $xueqilist->bfdate = $list['bfdate'];
-        $xueqilist->enddate = $list['enddate'];
-        $data = $xueqilist->save();
+        $classroomlist = CR::find($id);
+        $classroomlist->title = $list['title'];
+        $classroomlist->weizhi = $list['weizhi'];
+        $classroomlist->category_id = $list['category_id'];
+        $classroomlist->shangke = $list['shangke'];
+        $classroomlist->beizhu = $list['beizhu'];
+        $data = $classroomlist->save();
 
         // 根据更新结果设置返回提示信息
-        $data>=0 ? $data = ['msg' => '更新成功', 'val' => 1]
+        $data >= 0 ? $data = ['msg' => '更新成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息
@@ -199,16 +199,4 @@ class ClassRoom extends AdminBase
         return json($data);
     }
 
-
-    // 获取最近6个教室
-    // 查询单位列表
-    public function srcXueqi()
-    {
-        // 实例化单位模型
-        $xq = new XQ;
-        $data = $xq->lastXueqi();
-        $data = reset_data($data, 6);
-
-        return json($data);
-    }
 }

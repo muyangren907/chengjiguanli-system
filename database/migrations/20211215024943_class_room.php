@@ -33,7 +33,7 @@ class ClassRoom extends Migrator
 
         // 添加当前表字段
         $table
-            ->addColumn('title','string',['limit'=>100,'default'=>'a','null'=>false,'comment'=>'名称'])
+            ->addColumn('title','string',['limit'=>15,'default'=>'a','null'=>false,'comment'=>'名称'])
             ->addColumn('weizhi','string',['limit'=>100,'default'=>'a','null'=>false,'comment'=>'位置'])
             ->addColumn('category_id','integer',['limit'=>11,'null'=>true,'comment'=>'类型ID'])
             ->addColumn('shangke','boolean',['default'=>0,'null'=>false,'comment'=>'能否上课'])
@@ -41,7 +41,7 @@ class ClassRoom extends Migrator
             ->addColumn('create_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'更新时间'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
-            ->addColumn('beizhu','string',['limit'=>10,'null'=>true,'comment'=>'备注'])
+            ->addColumn('beizhu','string',['limit'=>100,'null'=>true,'comment'=>'备注'])
             ->create();
     }
 }

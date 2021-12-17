@@ -313,7 +313,7 @@ class Index extends AdminBase
 
         // 更新数据
         $stu = new STU();
-        $data = $stu::update($list, ['id' => $id]);
+        $data = $stu::update($list);
 
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '更新成功', 'val' => 1]
