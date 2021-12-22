@@ -85,12 +85,15 @@ class Bjtongji extends AdminBase
             ->find();
         // 获取参与学校
         $cy = new \app\kaohao\model\SearchCanYu;
-        $src['kaoshi_id'] = $kaoshi_id;
+        $src = [
+            'kaoshi_id'=>$kaoshi_id
+        ];
         $list['school_id'] = $cy->school($src);
+
 
         // 获取年级与学科
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $list['nianji'] = $ksset->srcGrade($kaoshi_id);
+        $list['nianji'] = $ksset->srcGrade($src);
         $list['subject_id'] = $ksset->srcSubject($src);
         // 设置要给模板赋值的信息
         $list['webtitle'] = '各年级的班级成绩列表';

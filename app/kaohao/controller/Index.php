@@ -51,7 +51,7 @@ class Index extends AdminBase
             ,'banji_id'
         ], 'POST');
 
-        event('kslu', $list['kaoshi_id']);
+        // event('kslu', $list['kaoshi_id']);
         // 验证表单数据
         $validate = new \app\kaohao\validate\Kaohao;
         $result = $validate->scene('createAll')->check($list);
@@ -66,6 +66,7 @@ class Index extends AdminBase
             'banji_id' => $list['banji_id']
             ,'kaoshi' => 1
             ,'status' => 1
+            ,'all' => true
         ];
 
         $src['auth'] = event('mybanji', array());
