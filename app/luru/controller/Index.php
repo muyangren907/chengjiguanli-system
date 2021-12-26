@@ -796,7 +796,7 @@ class Index extends AdminBase
             ->only([
                 'page'
                 ,'limit'
-                ,'field' => 'student_xingming'
+                ,'field' => 'id'
                 ,'order' => 'asc'
                 ,'kaoshi_id'
                 ,'banji_id' => array()

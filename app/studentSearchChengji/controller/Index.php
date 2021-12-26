@@ -43,6 +43,30 @@ class Index extends StudentSearchBase
         $list['sbj'] = $subject->search(['kaoshi' => 1]);
         $list['tjxm'] = src_tjxm(12207);
 
+
+        // 查询学生成绩
+        // 获取表单参数
+        $src = $this->request
+            ->only([
+                'page' => '1'
+                ,'limit' => '10'
+                ,'field' => 'kaoshi_id'
+                ,'order' => 'desc'
+                ,'student_id' => session('user_id')
+                ,'category_id' => ''
+                ,'xueqi_id' => ''
+                ,'bfdate' => ''
+                ,'enddate' => ''
+                ,'searchval' => ''
+            ], 'POST');
+
+        // 获取学生成绩
+        $stucj = new \app\tools\model\OneStudentChengji;
+        $khList = $stucj->oldList($src);
+        // $data = reset_data($khList, $src);
+
+        // halt($data);
+
         // 模板赋值
         $this->view->assign('list', $list);
 
