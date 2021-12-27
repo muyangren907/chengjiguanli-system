@@ -40,9 +40,6 @@ class Index extends StudentSearchBase
         $list['banjiTitle'] = $stuInfo->stuBanji->banjiTitle;
         $list['student_id'] = session('user_id');
         $subject = new \app\teach\model\Subject;
-        $list['sbj'] = $subject->search(['kaoshi' => 1]);
-        $list['tjxm'] = src_tjxm(12207);
-
 
         // 查询学生成绩
         // 获取表单参数
@@ -63,9 +60,15 @@ class Index extends StudentSearchBase
         // 获取学生成绩
         $stucj = new \app\tools\model\OneStudentChengji;
         $khList = $stucj->oldList($src);
-        // $data = reset_data($khList, $src);
 
-        // halt($data);
+        $sbj = new \app\teach\model\Subject;
+        $list['subject'] = $sbj
+            ->where('kaoshi', 1)
+            ->column('title', 'lieming');
+
+        $list['chengji'] = $khList;
+
+        // halt($list->toArray());
 
         // 模板赋值
         $this->view->assign('list', $list);

@@ -796,7 +796,7 @@ class Index extends AdminBase
             ->only([
                 'page'
                 ,'limit'
-                ,'field' => 'id'
+                ,'field' => 'student_xingming'
                 ,'order' => 'asc'
                 ,'kaoshi_id'
                 ,'banji_id' => array()
@@ -806,7 +806,6 @@ class Index extends AdminBase
         // 实例化并查询成绩
         $cj = new \app\kaohao\model\SearchMore;
         $data = $cj->srcOnlineEdit($src);
-        // halt($data);
         $data = reset_data($data, $src);
 
         return json($data);
@@ -816,13 +815,6 @@ class Index extends AdminBase
     // 统计已经录入成绩数量--选择页面
     public function yiluCnt()
     {
-        // $ks = new \app\kaoshi\model\Kaoshi;
-        // // 获取参考年级
-        // $list['data'] = $ks::order(['id' => 'desc'])
-        //         ->field('id, title')
-        //         ->where('status', 1)
-        //         ->select();
-
         // 设置页面标题
         $list['set'] = array(
             'webtitle' => '已录统计'

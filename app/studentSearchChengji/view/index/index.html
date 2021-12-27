@@ -40,44 +40,79 @@
 </head>
 
 <body>
-<!-- 顶部开始 -->
-<div class="container">
-  <div class="logo">
-    <a href="/studentSearchChengji/index/index">{$list['sys_title']}</a></div>
-  <ul class="layui-nav right" lay-filter="">
-    <li class="layui-nav-item">
-      <a href="javascript:;">{$list.banjiTitle}&nbsp;&nbsp;{$list.xingming}</a>
-      <dl class="layui-nav-child">
-        <!-- 二级菜单 -->
-        <dd>
-          <!-- <a onclick="layer.msg('修改密码，请下载后本地测试。')">
+  <!-- 顶部开始 -->
+  <div class="container">
+    <div class="logo">
+      <a href="/studentSearchChengji/index/index">{$list['sys_title']}</a></div>
+    <ul class="layui-nav right" lay-filter="">
+      <li class="layui-nav-item">
+        <a href="javascript:;">{$list.banjiTitle}&nbsp;&nbsp;{$list.xingming}</a>
+        <dl class="layui-nav-child">
+          <!-- 二级菜单 -->
+          <dd>
+            <!-- <a onclick="layer.msg('修改密码，请下载后本地测试。')">
                           修改密码</a> -->
-          <a onclick="xadmin.open('修改密码','/studentSearchChengji/index/editpassword','400','250')">
-            修改密码</a>
-        </dd>
+            <a onclick="xadmin.open('修改密码','/studentSearchChengji/index/editpassword','400','250')">
+              修改密码</a>
+          </dd>
           <a href="/login">切换帐号</a></dd>
-      </dl>
-    </li>
-    <li class="layui-nav-item to-index">
-      <a href="/login">退了</a></li>
-  </ul>
-</div>
-{if (session('password') == 123456) }
-<blockquote class="layui-elem-quote" style="margin-top: 10px;color: red;">
-  您现在使用的是默认密码，为了您的信息不被漏，请及时修改密码。
-</blockquote>
-{/if}
-  <div class="myrow" style="height: 50px;">
-    asdfasdf
+        </dl>
+      </li>
+      <li class="layui-nav-item to-index">
+        <a href="/login">退了</a></li>
+    </ul>
   </div>
-  <hr class="hr20">
-  <div class="myrow" style="height: 50px;">
-    <div class="layui-col-md12">
-      <blockquote class="layui-elem-quote layui-quote-nm">
-        感谢{$list.thinks}提供技术支持。<br>
-      </blockquote>
+  {if (session('password') == 123456) }
+  <blockquote class="layui-elem-quote" style="margin-top: 10px;color: red;">
+    您现在使用的是默认密码，为了您的信息安全，请及时修改密码。
+  </blockquote>
+  {/if}
+  <div class="layui-row">
+    {volist name="list.chengji" id="vo"}
+    <div class="layui-col-xs12 layui-col-sm12 layui-col-md6">
+      <div class="layui-card">
+        <div class="layui-card-header">
+          <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" float="left">{$vo.kaoshiTitle}</div>
+          <div class="layui-col-xs6 layui-col-sm6 layui-col-md3" text-align="right" float="right">{php} echo $vo['bfdate'] . "~" . $vo['enddate'];{/php}</div>
+        </div>
+        <div class="layui-card-body">
+          <table class="layui-table" lay-size="lg">
+            <colgroup>
+              <col>
+              <col>
+            </colgroup>
+            <thead>
+              <tr>
+                <th>学科</th>
+                <th>得分</th>
+              </tr>
+            </thead>
+            <tbody>
+              {volist name="list.subject" id="sbj"}
+              <?php $str = "list.chengji[$key]." & $sbj;?>
+              {present name="$str"}
+              <tr>
+                <td>{$sbj}</td>
+                <td>{$vo[$key]}</td>
+              </tr>
+              {/present}
+              {/volist}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-  </div>
+
+    {/volist}
+    </div>
+    <hr class="hr20">
+    <div class="myrow" style="height: 50px;">
+      <div class="layui-col-md12">
+        <blockquote class="layui-elem-quote layui-quote-nm">
+          感谢{$list.thinks}提供技术支持。<br>
+        </blockquote>
+      </div>
+    </div>
 </body>
 <script type="text/html" id="barDemo">
   <a class="layui-btn-xs" lay-event="detail" title="查看"><i class="layui-icon layui-icon-search"></i></a>

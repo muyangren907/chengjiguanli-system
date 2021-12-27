@@ -100,33 +100,12 @@
     }
 
 
-    // /**
-    // * 把重新整理从数据模型中返回的对象
-    // * @access public
-    // * @param str或array $str 表单中获取的参数
-    // * @return array 返回类型
-    // */
-    // function reset_array($arr, $srcfrom)
-    // {
-    //     $data = \app\facade\Tools::reset_data($arr, $srcfrom);
-    //     return $data;
-    // }
-
-
     // 定义EXCEL列名
     function excel_column_name()
     {
         $liemingarr = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM','BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW'];
         return $liemingarr;
     }
-
-
-    // // 多字段排序
-    // function sort_arr_by_many_field($arr, $srcfrom)
-    // {
-    //     $data = \app\facade\Tools::sortArrByManyField($arr, $srcfrom);
-    //     return $data;
-    // }
 
 
     // 已知密码进行验证

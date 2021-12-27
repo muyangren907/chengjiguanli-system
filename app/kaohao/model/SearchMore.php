@@ -266,6 +266,9 @@ class SearchMore extends BaseModel
         );
         // 用新值替换初始值
         $src = array_cover($srcfrom, $src);
+        $field = $src['field'];
+        $order = $src['order'];
+        unset($src['field'], $src['order']);
         $khlist = $this->searchLuruBase($src);
         if($khlist->isEmpty())
         {
@@ -306,6 +309,10 @@ class SearchMore extends BaseModel
                 }
             }
         }
+
+        $order == 'asc' ? $order = SORT_ASC : $order = SORT_DESC;
+        $data = \app\facade\Tools::sortArrByManyField($data, $field, $order);
+
         return $data;
     }
 
