@@ -73,6 +73,63 @@ class AuthGroupAccess extends AdminBase
 
 
     // 保存
+    public function saveAll()
+    {
+        // 获取表单数据
+        $list = request()->only([
+            'group_id'
+        ], 'POST');
+        $data = array();
+
+        // 验证表单数据
+        $validate = new \app\admin\validate\AuthGroupAccess;
+        $aga = new AGA;
+
+        // 查询所有用户
+        $ad = new \app\admin\model\Admin;
+        $adList = $ad
+            ->where('id', '>', 2)
+            ->where('status', 1)
+            ->column(['id']);
+        foreach ($adList as $key => $value) {
+            // 组合数组
+            $temp = [
+                'group_id' => $list['group_id']
+                ,'uid' => $value
+            ];
+            // 验证数据
+            $result = $validate->check($temp);
+            $msg = $validate->getError();
+            if(!$result){
+                continue;
+            }
+            // 查询数据是否存在
+            $tempObj = $aga
+                ->where('uid', $value)
+                ->where('group_id', $list['group_id'])
+                ->find();
+            if($tempObj)
+            {
+                continue;
+            }
+            $data[] = $temp;
+        }
+
+
+        // 保存数据
+        $data = $aga->saveAll($data);
+        $cnt = $data->count();
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data = ['msg' => '添加成功' . $cnt . '条记录。', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
+    // 保存
     public function save()
     {
         // 获取表单数据

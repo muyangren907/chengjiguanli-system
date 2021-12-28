@@ -66,6 +66,7 @@ Route::group('authgroupaccess', function () {
     Route::rule('create/<group_id>','AuthGroupAccess/create','get');             # 添加信息
     Route::rule('save','AuthGroupAccess/save','post');                    # 保存信息
     Route::rule('delete','AuthGroupAccess/delete','delete');     # 删除信息
+    Route::rule('all','AuthGroupAccess/saveAll','post');                # 全部设置成此权限
 });
 
 

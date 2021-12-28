@@ -45,6 +45,9 @@
 		<button class="layui-btn" lay-event="add">
 			<i class="iconfont">&#xe6b9;</i> 分配
 		</button>
+    <button class="layui-btn" lay-event="all">
+      <i class="iconfont">&#xe6b9;</i> 全部
+    </button>
 	</div>
 </script>
 <!-- 记录操作按钮模板 -->
@@ -119,6 +122,26 @@ layui.use(['table', 'mytable', 'createInput', 'form'], function() {
 			case 'add':
 				xadmin.open('角色用户分配', '/admin/authgroupaccess/create/' + "{$list.group_id}", '500', '300', false);
 				break;
+      case 'all':
+        $.ajax({
+          url: '/admin/authgroupaccess/all',
+          type: 'POST',
+          data: {
+            group_id: "{$list.group_id}"
+          },
+          success: function(result) {
+            if (result.val == 1) {
+              obj.del();
+              layer.msg(result.msg);
+            } else {
+              layer.msg(result.msg, function() {});
+            }
+          },
+          error: function(result) {
+            layer.msg('数据扔半道啦。', function() {});
+          },
+        });
+        break;
 		};
 	});
 
