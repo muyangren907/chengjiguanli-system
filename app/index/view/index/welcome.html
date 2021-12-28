@@ -39,6 +39,22 @@
                         </div>
                     </div>
                 </div>
+                {if session("password") == 123456}
+                    <div class="layui-col-md12">
+                        <div class="layui-card">
+                            <div class="layui-card-body">
+                                <blockquote class="layui-elem-quote">
+                                  为了信息安全，请及时
+                                  <span>
+                                    <b><a onclick="xadmin.open('修改密码','/admin/info/editpassword','400','250')" style="color: red; font-size: 14px;">
+                            修改密码</a></b>
+                                </span>
+                                    。修改方法：右上角->姓名->修改密码。
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+                {/if}
                 <div class="layui-col-md12">
                     <div class="layui-card">
                         <div class="layui-card-body">
@@ -54,14 +70,14 @@
                                         </li>
                                         <li class="layui-col-xs2">
                                             <a href="javascript:;" class="x-admin-backlog-body">
-                                                <h3>学生数</h3>
+                                                <h3>现有学生数</h3>
                                                 <p>
                                                     <cite>{$list.student}</cite></p>
                                             </a>
                                         </li>
                                         <li class="layui-col-xs2">
                                             <a href="javascript:;" class="x-admin-backlog-body">
-                                                <h3>管理员数</h3>
+                                                <h3>教师数</h3>
                                                 <p>
                                                     <cite>{$list.admin}</cite></p>
                                             </a>

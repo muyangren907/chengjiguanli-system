@@ -445,8 +445,8 @@ class Index extends AdminBase
             ,'limit' => 10
             ,'field' => 'id'
             ,'order' => 'desc'
-            ,'luru' => true
-            ,'status' => true
+            ,'luru' => 1
+            ,'status' => 1
         ];
         $ks = new KS();
         // 获取考试

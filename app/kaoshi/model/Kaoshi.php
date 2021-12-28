@@ -71,9 +71,12 @@ class Kaoshi extends BaseModel
             ->when(count($src['category_id']) > 0, function($query) use($src){
                     $query->where('category_id', 'in', $src['category_id']);
                 })
-            ->when(session('user_id') !=1 && session('user_id') !=2, function($query) use($src){
-                    $query->where('id', 'in', $src['id']);
-                })
+            // ->when(session('user_id') !=1 && session('user_id') !=2, function($query) use($src){
+            //         $query->where('id', 'in', $src['id']);
+            //     })
+            // ->when(session('user_id') !=1 && session('user_id') !=2, function($query) use($src){
+            //         $query->whereOr('user_id', session('user_id'));
+            //     })
             ->when(strlen($src['luru']) > 0, function ($query) use($src) {
                     $query->where('luru', $src['luru']);
             })

@@ -226,11 +226,11 @@ class OneStudentChengji extends BaseModel
 
         // 循环写入成绩
         $indicator = array();
-        $legend = ['得分','年级平均分'];
+        $legend = ['得分','平均分'];
         $stucjArray = array();
         $stucjArray['name'] = '得分';
         $nianjichengji = array();
-        $nianjichengji['name'] = '年级平均分';
+        $nianjichengji['name'] = '平均分';
         $i = 0;
 
         // 循环参加本次考试的学科
@@ -1085,8 +1085,12 @@ class OneStudentChengji extends BaseModel
             $py = $py . $fu . '。';
         }
 
+        if (strlen($py) > 0) {
+            $py = $bjdbpy . $py;
+        }
 
-        return $bjdbpy . $py;
+
+        return $py;
     }
 
 

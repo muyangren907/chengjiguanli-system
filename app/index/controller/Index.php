@@ -83,6 +83,7 @@ class Index extends AdminBase
                 'check' => false
                 ,'banji_id' => array()
             ];
+        $tempsrc['all'] = true;
         $bjids = $con->search($tempsrc)->column('id');
         $con = new \app\student\model\Student;
         $list['student'] =  $con->where('banji_id', 'in', $bjids)
