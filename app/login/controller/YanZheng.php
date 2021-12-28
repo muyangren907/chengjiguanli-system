@@ -9,9 +9,9 @@ class YanZheng
     {
         // 获取服务器密码
         $admin = new \app\admin\model\Admin;
-        $userinfo = $admin::where('username', $username)
+        $userinfo = $admin::where('username|phone', $username)
             ->where('status', 1)
-            ->field('id, lastip, username, ip, denglucishu, lasttime, thistime, password')
+            ->field('id, lastip, username, ip, denglucishu, lasttime, thistime, password, phone')
             ->find();
         if ($userinfo == null)
         {

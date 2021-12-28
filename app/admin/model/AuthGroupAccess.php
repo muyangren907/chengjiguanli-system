@@ -3,10 +3,10 @@
 namespace app\admin\model;
 
 // 引用用户数据模型
+// 引用用户数据模型
 use app\BaseModel;
-use think\model\Pivot;
 
-class AuthGroupAccess extends Pivot
+class AuthGroupAccess extends BaseModel
 {
     // 设置字段信息
     protected $schema = [
@@ -18,9 +18,6 @@ class AuthGroupAccess extends Pivot
         ,'delete_time' => 'int'
     ];
 
-    // 开启软删除
-    use \think\model\concern\SoftDelete;
-    protected $deleteTime = 'delete_time';
 
     // 根据角色ID查询用户
     public function search($srcfrom)

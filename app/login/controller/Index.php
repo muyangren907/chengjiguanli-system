@@ -67,7 +67,7 @@ class Index extends BaseController
         {
             // 获取服务器密码
             $admin = new \app\admin\model\Admin;
-            $userinfo = $admin::where('username', $list['username'])
+            $userinfo = $admin::where('username|phone', $list['username'])
                 ->where('status', 1)
                 ->field('id, lastip, username, ip, denglucishu, lasttime, thistime, password')
                 ->find();
