@@ -186,7 +186,7 @@ class AuthGroupAccess extends AdminBase
         $id = request()->delete('id');
         $id = explode(',', $id);
 
-        $data = AGA::destroy($id);
+        $data = AGA::destroy($id, true);
 
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '删除成功', 'val' => 1]
