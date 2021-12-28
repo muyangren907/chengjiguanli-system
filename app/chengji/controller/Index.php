@@ -60,6 +60,7 @@ class Index extends AdminBase
         // 获取参与考试的班级
         if (count($src['banji_id']) == 0) {
             $cy = new \app\kaohao\model\SearchCanYu;
+            $src['all'] = true;
             $src['banji_id']= array_column($cy->class($src), 'id');
         }
 
@@ -68,6 +69,7 @@ class Index extends AdminBase
 
         // 实例化并查询成绩
         $cj = new Chengji;
+        $src['all'] = false;
         $data = $cj->search($src);
         $data = \app\facade\Tools::reset_array($data, $src);
 
