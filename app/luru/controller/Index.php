@@ -801,12 +801,15 @@ class Index extends AdminBase
                 ,'kaoshi_id'
                 ,'banji_id' => array()
                 ,'subject_id' => array()
+                ,'all' => false
             ], 'POST');
 
         // 实例化并查询成绩
         $cj = new \app\kaohao\model\SearchMore;
         $data = $cj->srcOnlineEdit($src);
-        $data = reset_data($data, $src);
+        $src['all'] = true;
+        $cnt =  count($cj->srcOnlineEdit($src));
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }

@@ -261,8 +261,9 @@ class SearchMore extends BaseModel
             ,'subject_id' => array()
             ,'field' => 'student_xingming'
             ,'order' => 'desc'
-            ,'page'
-            ,'limit'
+            ,'page' => 1
+            ,'limit' => 50
+            ,'all' => false
         );
         // 用新值替换初始值
         $src = array_cover($srcfrom, $src);
