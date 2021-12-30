@@ -28,5 +28,6 @@ return [
         # 数据库备份文件压缩级别 1普通 4 一般  9最高
         'level' => 9 
     ],
-    'lurufanwei' => Env::get('shangma.lurufanwei', false)   # 是否开启教师只能录入自己任课班级的成绩
+    'lurufanwei' => Env::get('shangma.lurufanwei', false),   # 是否开启教师只能录入自己任课班级的成绩
+    'mimaguoqi' => 1    # 创建帐号后，x天不修改初始密码，帐号将被禁用。
 ];

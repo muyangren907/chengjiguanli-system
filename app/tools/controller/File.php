@@ -62,7 +62,7 @@ class File extends BaseController
             $saveinfo = $f::create($list);
         }
 
-        $data['msg'] = '上传成功';
+        $data['msg'] = '文件上传成功';
         $data['val'] = 1;
         $data['url'] = $savename;
 
