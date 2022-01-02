@@ -331,4 +331,14 @@ class Index extends BaseController
         }
         return $data;
     }
+
+
+    public function mima_guoqi() {
+        // 计算帐号禁用时间
+        $jyshijian = config('shangma.mimaguoqi');
+        $now = date("Y-m-d", time());
+        $jinyong = strtotime("$now+".$jyshijian." day");
+        return $jinyong;
+    }
+    
 }

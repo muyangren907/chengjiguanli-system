@@ -27,10 +27,12 @@ class Student extends BaseModel
         ,'quanpin' => 'varchar'
         ,'shoupin' => 'varchar'
         ,'xuehao' =>  'varchar'
+        ,'guoqi' => 'int'
+        ,'status' => 'tinyint'
         ,'create_time' => 'int'
         ,'update_time' => 'int'
         ,'delete_time' => 'int'
-        ,'status' => 'tinyint'
+        
     ];
 
 
@@ -521,6 +523,7 @@ class Student extends BaseModel
                     ,'xuehao' => $value[$add_k][2]
                     ,'quanpin' => trim(strtolower(str_replace(' ', '', $quanpin)))
                     ,'shoupin' => trim(strtolower(str_replace(' ', '', $shoupin)))
+                    ,'guoqi' => \app\facade\Tools::mima_guoqi()
                 ];
 
                 $result = $validate->scene('create')->check($list[$add_k]);

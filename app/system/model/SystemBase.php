@@ -32,10 +32,11 @@ class SystemBase extends BaseModel
     // 查询系统信息
     static function sysInfo()
     {
-        $info = self::order(['id' => 'desc'])
+        $info = self::where('id', 1)
             ->field('id, keywords, description, thinks, danwei, gradelist, classmax, classalias, xuenian,  studefen, sys_title')
-            ->order(['id' => 'desc'])
+            ->cache(true)
             ->find();
+
         return $info;
     }
 

@@ -34,6 +34,7 @@ class Admin extends BaseModel
         ,'lasttime' => 'int'
         ,'thistime' => 'int'
         ,'status' => 'tinyint'
+        ,'guoqi' => 'int'
         ,'create_time' => 'int'
         ,'update_time' => 'int'
         ,'delete_time' => 'int'
@@ -189,8 +190,9 @@ class Admin extends BaseModel
         // 整理表格数据
         array_splice($arr, 0, 4); # 删除标题行
 
+        // 获取帐号禁用时间
+        $jinyong = \app\facade\Tools::mima_guoqi();
         // 组合需要保存的数据
-        $i = 0;
         $teacherlist = array();
         $validate = new \app\admin\validate\Admin;
         $err = ['导入失败原因如下：'];
@@ -224,6 +226,7 @@ class Admin extends BaseModel
             $teacherInfo[$i]['beizhu'] = $value[12];
             $teacherInfo[$i]['lasttime'] = time();
             $teacherInfo[$i]['thistime'] = time();
+            $teacherInfo[$i]['guoqi'] = $jinyong;
             // 验证数据
             $result = $validate->scene('admincreateall')->check($teacherInfo[$i]);
             $msg = $validate->getError();

@@ -14,6 +14,11 @@ class Admin extends Seeder
      */
     public function run()
     {
+        // 计算帐号禁用时间
+        $jyshijian = config('shangma.mimaguoqi');
+        $now = date("Y-m-d", time());
+        $jinyong = strtotime("$now+".$jyshijian." day");
+
         // 定义表的名称
         $rows = [
             [
@@ -33,6 +38,7 @@ class Admin extends Seeder
                 "tuixiu" => 0,
                 "lasttime" => time(),
                 "thistime" => time(),
+                "guoqi" => $jinyong,
                 "create_time" => time(),
                 "update_time" => time()
             ],
@@ -53,6 +59,7 @@ class Admin extends Seeder
                 "tuixiu" => 0,
                 "lasttime" => time(),
                 "thistime" => time(),
+                "guoqi" => $jinyong,
                 "create_time" => time(),
                 "update_time" => time()
             ],

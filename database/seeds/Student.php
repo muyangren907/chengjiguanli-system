@@ -23,6 +23,7 @@ class Student extends Seeder
                 ,'shenfenzhenghao' => '210202201210018223'
                 ,'banji_id' => 1
                 ,'shoupin' => 'yn'
+                ,'guoqi' => 33198038411
                 ,'create_time' => time()
                 ,'update_time' => time()
             ]
@@ -33,6 +34,7 @@ class Student extends Seeder
                 ,'shenfenzhenghao' => '210202201210018214'
                 ,'banji_id' => 1
                 ,'shoupin' => 'lbl'
+                ,'guoqi' => 33198038411
                 ,'create_time' => time()
                 ,'update_time' => time()
             ]
@@ -43,6 +45,7 @@ class Student extends Seeder
                 ,'shenfenzhenghao' => '210202201210018255'
                 ,'banji_id' => 1
                 ,'shoupin' => 'zyz'
+                ,'guoqi' => 33198038411
                 ,'create_time' => time()
                 ,'update_time' => time()
             ]
@@ -53,6 +56,7 @@ class Student extends Seeder
                 ,'shenfenzhenghao' => '210202201210018236'
                 ,'banji_id' => 1
                 ,'shoupin' => 'wxt'
+                ,'guoqi' => 33198038411
                 ,'create_time' => time()
                 ,'update_time' => time()
             ]
@@ -63,6 +67,7 @@ class Student extends Seeder
                 ,'shenfenzhenghao' => '210202201210018227'
                 ,'banji_id' => 1
                 ,'shoupin' => 'zyf'
+                ,'guoqi' => 33198038411
                 ,'create_time' => time()
                 ,'update_time' => time()
             ]
@@ -73,6 +78,7 @@ class Student extends Seeder
                 ,'shenfenzhenghao' => '210202201210018218'
                 ,'banji_id' => 1
                 ,'shoupin' => 'cly'
+                ,'guoqi' => 33198038411
                 ,'create_time' => time()
                 ,'update_time' => time()
             ]
