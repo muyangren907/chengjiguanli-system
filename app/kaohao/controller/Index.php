@@ -291,9 +291,24 @@ class Index extends AdminBase
         $list['data'] = KH::where('id', $id)
             ->field('id, ruxuenian, nianji, banji_id, paixu, student_id')
             ->with([
-                'cjStudent'
+                'cjStudent' => function($query) {
+                    $query->field('id, xingming, banji_id')
+                        ->with([
+                            'stuBanji'=>function($query){
+                                $query
+                                    ->field('id, ruxuenian, paixu, alias, school_id')
+                                    ->with([
+                                        'glSchool' => function($query){
+                                            $query->field('id, title, jiancheng');
+                                        },
+                                    ])
+                                    ->append(['banjiTitle']);
+                            }
+                        ]);
+                }
                 ,'cjBanji'
             ])
+            ->append(['banjiTitle'])
             ->find();
 
         // 设置页面标题
@@ -304,12 +319,12 @@ class Index extends AdminBase
             ,'url' => '/kaohao/index/update/' . $id
         );
 
-        halt($list['data']->toArray());
+        // halt($list['data']->toArray());
 
         // 模板赋值
         $this->view->assign('list', $list);
         // 渲染
-        return $this->view->fetch('create');
+        return $this->view->fetch('edit');
     }
 
 
