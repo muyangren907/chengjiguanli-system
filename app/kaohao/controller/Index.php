@@ -289,7 +289,7 @@ class Index extends AdminBase
     {
         // 获取考试信息
         $list['data'] = KH::where('id', $id)
-            ->field('id, ruxuenian, nianji, banji_id, paixu, student_id')
+            ->field('id, ruxuenian, nianji, banji_id, paixu, student_id, kaoshi_id')
             ->with([
                 'cjStudent' => function($query) {
                     $query->field('id, xingming, banji_id')
@@ -319,7 +319,6 @@ class Index extends AdminBase
             ,'url' => '/kaohao/index/update/' . $id
         );
 
-        // halt($list['data']->toArray());
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -331,21 +330,33 @@ class Index extends AdminBase
     // 更新考试信息
     public function update($id)
     {
-        event('kslu', $id);
+        
         // 获取表单数据
         $list = request()->only([
-            'title',
-            'xueqi_id',
-            'category_id',
-            'bfdate',
-            'enddate',
-            'zuzhi_id',
-            'fanwei_id'
+            'banji_id',
+            'kaoshi_id'
         ], 'post');
         $list['id'] = $id;
+        event('kslu', $list['kaoshi_id']);
+
+        $bj = new \app\teach\model\Banji;
+        $bjInfo = $bj->where('id', $list['banji_id'])->find();
+
+        $list['ruxuenian'] = $bjInfo->ruxuenian;
+        $list['paixu'] = $bjInfo->paixu;
+
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $bfdate = $ks->where('id', $list['kaoshi_id'])->value('bfdate');
+        $njlist = \app\facade\Tools::nianJiNameList($bfdate);
+        $njlistNow = \app\facade\Tools::nianJiNameList($bfdate);
+        if ($njlist[$list['ruxuenian']] != $njlistNow[$list['ruxuenian']]) {
+            return json(['msg' => '已经跨学年了，不建议修改。', 'val' => 0]);
+        }
+        $list['nianji'] = $njlist[$list['ruxuenian']];
+        
 
         // 验证表单数据
-        $validate = new \app\kaoshi\validate\Kaoshi;
+        $validate = new \app\kaohao\validate\Kaohao;
         $result = $validate->scene('edit')->check($list);
         $msg = $validate->getError();
         if(!$result){
@@ -353,9 +364,9 @@ class Index extends AdminBase
         }
 
         // 更新数据
-        $ks = new KS();
-        $ksdata = $ks::update($list);
-        $ksdata ? $data = ['msg' => '更新成功', 'val' => 1, 'kaoshi_id'=> $ksdata->id]
+        $kh = new KH();
+        $khdata = $kh::update($list);
+        $khdata ? $data = ['msg' => '更新成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息

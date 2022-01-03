@@ -26,6 +26,7 @@ class Online
         if($weihu == true && $user_id > 2)
         {
             \app\facade\OnLine::jump('/login/weihu', '系统维护中~');
+            session(null);
         }
 
         return $next($request);

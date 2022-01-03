@@ -16,7 +16,7 @@ class Kaohao extends Validate
         'kaoshi_id|考试号'      =>  'require|number',
         'school_id|学校'      =>  'require|number',
         'ruxuenian|入学年'      =>  'require|number',
-        'nianji|年级名称'      =>  'require|number',
+        'nianji|年级名称'      =>  'require|chs',
         'banji_id|参考班级'      =>  'require',
         'paixu|班级排序'      =>  'require|number',
         'student_id|学生'      =>  'require',
@@ -42,7 +42,19 @@ class Kaohao extends Validate
         ],
         'createAll'  =>  [
             'kaoshi_id'
+            ,'school_id'
+            ,'ruxuenian'
             ,'banji_id'
+            ,'nianji'
+            ,'paixu'
+            ,'student_id'
+        ],
+        'edit'  =>  [
+            'id'
+            ,'ruxuenian'
+            ,'nianji'
+            ,'banji_id'
+            ,'paixu'
         ]
     ];
 }
