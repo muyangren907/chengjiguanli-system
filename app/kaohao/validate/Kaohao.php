@@ -51,6 +51,7 @@ class Kaohao extends Validate
         ],
         'edit'  =>  [
             'id'
+            ,'school_id'
             ,'ruxuenian'
             ,'nianji'
             ,'banji_id'

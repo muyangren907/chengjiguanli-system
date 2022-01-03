@@ -334,7 +334,8 @@ class Index extends AdminBase
         // 获取表单数据
         $list = request()->only([
             'banji_id',
-            'kaoshi_id'
+            'kaoshi_id',
+            'school_id',
         ], 'post');
         $list['id'] = $id;
         event('kslu', $list['kaoshi_id']);
