@@ -22,6 +22,7 @@ class Index extends AdminBase
             'kaoshi_id' => $kaoshi_id
             ,'all' => true
         ];
+        event('kslu', $src['kaoshi_id']);
         $list['data']['nianji'] = $ksset->srcGrade($src);
         $list['data']['nianjiNum'] = array_column($list['data']['nianji'], 'ruxuenian');
 
@@ -51,7 +52,7 @@ class Index extends AdminBase
             ,'banji_id'
         ], 'POST');
 
-        // event('kslu', $list['kaoshi_id']);
+        event('kslu', $list['kaoshi_id']);
         // 验证表单数据
         $validate = new \app\kaohao\validate\Kaohao;
         $result = $validate->scene('createAll')->check($list);
@@ -173,6 +174,7 @@ class Index extends AdminBase
             'kaoshi_id' => $kaoshi_id
             ,'all' => true
         ];
+        event('kslu', $src['kaoshi_id']);
         $list['data']['nianji'] = $ksset->srcGrade($src);
         $kh = new KH;
         if(count($list['data']['nianji']) > 0){
@@ -275,6 +277,70 @@ class Index extends AdminBase
 
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '生成成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
+
+        // 返回信息
+        return json($data);
+    }
+
+
+    // 修改考号信息
+    public function edit($id)
+    {
+        // 获取考试信息
+        $list['data'] = KH::where('id', $id)
+            ->field('id, ruxuenian, nianji, banji_id, paixu, student_id')
+            ->with([
+                'cjStudent'
+                ,'cjBanji'
+            ])
+            ->find();
+
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle' => '编辑考号'
+            ,'butname' => '修改'
+            ,'formpost' => 'PUT'
+            ,'url' => '/kaohao/index/update/' . $id
+        );
+
+        halt($list['data']->toArray());
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+        // 渲染
+        return $this->view->fetch('create');
+    }
+
+
+    // 更新考试信息
+    public function update($id)
+    {
+        event('kslu', $id);
+        // 获取表单数据
+        $list = request()->only([
+            'title',
+            'xueqi_id',
+            'category_id',
+            'bfdate',
+            'enddate',
+            'zuzhi_id',
+            'fanwei_id'
+        ], 'post');
+        $list['id'] = $id;
+
+        // 验证表单数据
+        $validate = new \app\kaoshi\validate\Kaoshi;
+        $result = $validate->scene('edit')->check($list);
+        $msg = $validate->getError();
+        if(!$result){
+            return json(['msg' => $msg, 'val' => 0]);
+        }
+
+        // 更新数据
+        $ks = new KS();
+        $ksdata = $ks::update($list);
+        $ksdata ? $data = ['msg' => '更新成功', 'val' => 1, 'kaoshi_id'=> $ksdata->id]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
         // 返回信息

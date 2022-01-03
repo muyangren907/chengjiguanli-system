@@ -48,7 +48,8 @@ class Kaohao extends BaseModel
     // 学生信息关联
     public function cjStudent()
     {
-    	return $this->belongsTo(\app\student\model\Student::class, 'student_id', 'id');
+    	return $this->belongsTo(\app\student\model\Student::class, 'student_id', 'id')
+            ->hidden(['password', 'shenfenzhenghao']);
     }
 
 

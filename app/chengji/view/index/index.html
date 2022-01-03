@@ -72,6 +72,7 @@
 </script>
 <!-- 记录操作按钮模板 -->
 <script type="text/html" id="barDemo">
+	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon layui-icon-edit"></i></a>
 	<a class="layui-btn-xs" lay-event="detail" title="录入信息"><i class="layui-icon layui-icon-search"></i></a>
   <a class="layui-btn-xs" lay-event="chengji" title="成绩图表"><i class="layui-icon layui-icon-chart-screen"></i></a>
   <a class="layui-btn-xs" lay-event="del" title="删除考号"><i class="layui-icon">&#xe640;</i></a>
@@ -138,7 +139,7 @@ layui.use(['table', 'mytable', 'form', 'canyuKaoshi', 'createInput'], function()
 
 	options.cols[0].push({ field: 'avg', title: '平均分', minWidth: 100, sort: true });
 	options.cols[0].push({ field: 'sum', title: '总分', minWidth: 100, sort: true });
-	options.cols[0].push({ field: 'id', title: '操作', toolbar: '#barDemo', minWidth: 125 });
+	options.cols[0].push({ field: 'id', title: '操作', toolbar: '#barDemo', minWidth: 135 });
 	// 设置每页显示条数
 	options.limit = 10;
 	options.limits = [10, 15];
@@ -175,6 +176,9 @@ layui.use(['table', 'mytable', 'form', 'canyuKaoshi', 'createInput'], function()
 		var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
 		var tr = obj.tr; //获得当前行 tr 的DOM对象
 		switch (layEvent) {
+			case 'edit': // 编辑
+				xadmin.open('编辑考号', '/kaohao/index/edit/' + obj.data.id, '', '', true);
+				break;
 			case 'detail': // 查看
 				xadmin.open(obj.data.student_xingming + ' 成绩录入信息', '/chengji/index/readcjadd/' + obj.data.id, '', '', true);
 				break;
