@@ -48,11 +48,13 @@ class Index extends AdminBase
         $admin = new \app\admin\model\Admin;
         $list['xingming'] = $admin->where('id',session('user_id'))
             ->value('xingming');
-        $create_time = $admin->where('id',session('user_id'))
-            ->value('create_time');
-        $create_time = date("Y-m-d G:i:s", $create_time);
-        $jyshijian = config('shangma.mimaguoqi');
-        $list['create_time'] = strtotime("$create_time+".$jyshijian." day");
+
+        // 过期时间
+        $guoqi = $admin->where('id', session('user_id'))
+            ->field('guoqi')
+            ->find();
+        $list['guoqi'] = $guoqi->guoqi;
+
 
         $list['group'] = $admin->searchOne(session('user_id'))->groupnames;
 

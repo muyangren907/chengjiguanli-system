@@ -69,12 +69,10 @@ class Index extends BaseController
             $admin = new \app\admin\model\Admin;
             $userinfo = $admin::where('username|phone', $list['username'])
                 ->where('status', 1)
-                ->field('id, lastip, username, ip, denglucishu, lasttime, thistime, password, create_time')
+                ->field('id, lastip, username, ip, denglucishu, lasttime, thistime, password, guoqi')
                 ->find();
-            $jyshijian = config('shangma.mimaguoqi');
             $now = time();
-            $jinyong = strtotime("$userinfo->create_time+".$jyshijian." day");
-            if ($jinyong < $now && $list['password'] == '123456') {
+            if ($userinfo->getData("guoqi") < $now && $list['password'] == '123456') {
                 $userinfo->status = false;
             }
             // 将本次信息上传到服务器上

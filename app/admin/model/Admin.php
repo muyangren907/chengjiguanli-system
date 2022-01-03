@@ -433,6 +433,13 @@ class Admin extends BaseModel
     }
 
 
+    // 初始密码过期时间获取器
+    public function getGuoqiAttr($value)
+    {
+        return date('Y年m月d日 H:i:s', $value);
+    }
+
+
     // 获取角色名称
     public function getGroupnamesAttr($value)
     {
