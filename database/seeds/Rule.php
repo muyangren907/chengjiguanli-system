@@ -119,8 +119,8 @@ class Rule extends Seeder
             ],
                 // 占位
                 ['id' => 10601
-                    ,'title' => '占位'
-                    ,'name' => 'biaoqian1'
+                    ,'title' => '获取标签数据'
+                    ,'name' => 'luru/index/biaoqianxls'
                     ,'paixu' => 1
                     ,'pid' => 106
                 ],

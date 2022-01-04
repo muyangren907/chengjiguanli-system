@@ -107,7 +107,7 @@ layui.use(['table', 'form', 'canyuKaoshi'], function() {
 
   $.each(xk, function(index, value) {
     var colname = xk[index].lieming
-    coltitle = xk[index].title;
+    coltitle = xk[index].title + '成绩数';
     options.cols[0].push({
       field: 'id',
       title: coltitle,
@@ -119,6 +119,9 @@ layui.use(['table', 'form', 'canyuKaoshi'], function() {
           if (d.chengji[colname]) {
             str = d.chengji[colname].xkcnt;
           }
+        }
+        if (d.chengji.stucnt != str && str != 0) {
+          str = '<span style="color:red">'+str+'</span>'
         }
         return str;
       }
