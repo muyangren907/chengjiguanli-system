@@ -443,7 +443,7 @@ class Rule extends Seeder
                             ,'pid' => 3020401
                         ],
                             ['id' => 30204011
-                                ,'title' => '批量删除成绩'
+                                ,'title' => '删除单条成绩'
                                 ,'name' => 'chengji/index/delete'
                                 ,'paixu' => 3
                                 ,'pid' => 3020401
