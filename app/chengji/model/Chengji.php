@@ -139,6 +139,11 @@ class Chengji extends BaseModel
             ,'subject_id' => ''
             ,'searchval' => ''
             ,'user_id' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'desc'
+            ,'all' => false
         );
         $src = array_cover($srcfrom, $src);
         $cjList = $this
@@ -178,7 +183,6 @@ class Chengji extends BaseModel
             ])
             ->select();
 
-
         // 重新整理成绩
         $data = array();
         foreach ($cjList as $key => $value) {
@@ -208,7 +212,23 @@ class Chengji extends BaseModel
             $data[$key]['update_time'] = $value->update_time;
 
         }
+
+        if ($src['order'] == 'asc') {
+            $src['order'] = SORT_ASC;
+        } else {
+            $src['order'] = SORT_DESC;
+        }
+        // halt($src['order']);
+
+        $data = \app\facade\Tools::sortArrByManyField($data, $src['field'], $src['order']);
+        if($src['all'] != true)
+        {
+            $start = ($src['page'] - 1) * $src['limit'];
+            $data = array_slice($data, $start, $src['limit']);
+        }
+
         return $data;
+
     }
 
 

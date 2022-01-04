@@ -120,8 +120,13 @@ layui.use(['table', 'form', 'canyuKaoshi'], function() {
             str = d.chengji[colname].xkcnt;
           }
         }
-        if (d.chengji.stucnt != str && str != 0) {
-          str = '<span style="color:red">'+str+'</span>'
+        if (d.chengji.stucnt != str) {
+          if (str == 0) {
+            str = '';
+          } else {
+            var cha = str - d.chengji.stucnt;
+            str = str + ' <span style="color:red;">(' + cha + ')</span>'
+          }
         }
         return str;
       }

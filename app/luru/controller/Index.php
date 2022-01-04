@@ -52,12 +52,15 @@ class Index extends AdminBase
                 ,'subject_id' => ''
                 ,'searchval'
                 ,'user_id' => session('user_id')
+                ,'all' => false
             ], 'POST');
 
         // 根据条件查询数据
         $cj = new Chengji;
-        $data = $cj->searchLuru($src);
-        $data = reset_data($data, $src);
+        $data = $cj->searchLuru($src); 
+        $src['all'] = true;
+        $cnt = count($cj->searchLuru($src));
+        $data = reset_data($data, $cnt);
 
         return json($data);
     }
