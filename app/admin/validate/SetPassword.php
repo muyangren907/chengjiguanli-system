@@ -25,6 +25,6 @@ class SetPassword extends Validate
      * @var array
      */
     protected $message = [
-        'newpassword.regex' => '只能输入6-16个字母、数字、半角句号、下划线',
+        'newpassword.regex' => '只能输入7-20个字母、数字、半角句号、下划线',
     ];
 }
