@@ -165,6 +165,7 @@ class TongjiBj extends BaseModel
         $ksset = new ksset();
 
         // 获取参加考试学科
+        $src['all'] = true;
         $subject = $ksset->srcSubject($src);
         $banji =$cy->class($src);
 
@@ -186,6 +187,7 @@ class TongjiBj extends BaseModel
 
         $srcfrom['banji_id'] = array_column($banji, 'id');
         $temp = $more->srcChengjiList($srcfrom);
+        
         $temp = $tj->tongjiCnt($temp, $subject);
         $data[] = [
             'banji_id' => '合计',

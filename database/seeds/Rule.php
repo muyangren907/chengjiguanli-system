@@ -119,8 +119,8 @@ class Rule extends Seeder
             ],
                 // 占位
                 ['id' => 10601
-                    ,'title' => '占位'
-                    ,'name' => 'biaoqian1'
+                    ,'title' => '获取标签数据'
+                    ,'name' => 'luru/index/biaoqianxls'
                     ,'paixu' => 1
                     ,'pid' => 106
                 ],
@@ -443,7 +443,7 @@ class Rule extends Seeder
                             ,'pid' => 3020401
                         ],
                             ['id' => 30204011
-                                ,'title' => '批量删除成绩'
+                                ,'title' => '删除单条成绩'
                                 ,'name' => 'chengji/index/delete'
                                 ,'paixu' => 3
                                 ,'pid' => 3020401
