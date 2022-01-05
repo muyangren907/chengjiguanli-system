@@ -344,7 +344,7 @@ class Index extends AdminBase
         }
         $right_i = $i;
 
-        // 循环写出成绩及个人信息
+        // 循环写出个人信息和成绩
         $i = 0;
         $row++;
         $row_temp = $row;
@@ -368,6 +368,8 @@ class Index extends AdminBase
                         $sheet->setCellValue($colname[$i] . $row_temp, $value[$val['lieming'] . $tjxml_v['biaoshi']]);
                         $i++;
                     }
+                }else{
+                    $i++;
                 }
             }
             $sheet->setCellValue($colname[$i] . $row_temp, $value['avg']);
