@@ -5,7 +5,7 @@
 <span class="layui-breadcrumb">
 	<a href="">系统管理</a>
 	<a href="">教务管理</a>
-	<a><cite>学科列表</cite></a>
+	<a><cite>任务分工</cite></a>
 </span>
 {/block}
 {block name="search"}
@@ -15,6 +15,15 @@
 	</label>
 	<div class="layui-input-block">
 		<input type="text" id="searchval" name="searchval" autocomplete="off" class="layui-input" placeholder="输入关键字并回车">
+	</div>
+</div>
+<div class="layui-form-item" style="margin-bottom: 0;">
+	<label for="delete_time" class="layui-form-label">
+		删除数据
+	</label>
+	<div class="layui-input-block">
+		<input type="radio" name="delete_time" value="1" title="是" class="layui-input">
+		<input type="radio" name="delete_time" value="" title="否" class="layui-input" checked="checked">
 	</div>
 </div>
 <div class="layui-form-item" style="text-align: right;">

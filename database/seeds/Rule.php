@@ -1058,6 +1058,57 @@ class Rule extends Seeder
                     ,'paixu' => 7
                     ,'pid' => 505
                 ],
+            ['id' => 506
+                ,'title' => '任务分工'
+                ,'name' => 'teach/fengong/index'
+                ,'paixu' => 6
+                ,'ismenu'  => 1
+                ,'pid'  => 6
+                ,'url' => '/teach/fengong'
+            ],
+                // 学科列表权限
+                ['id' => 50601
+                    ,'title' => '添加'
+                    ,'name' => 'teach/fengong/create'
+                    ,'paixu'  => 1
+                    ,'pid' => 506
+                ],
+                ['id' => 50602
+                    ,'title' => '保存'
+                    ,'name' => 'teach/fengong/save'
+                    ,'paixu'  => 2
+                    ,'pid' => 506
+                ],
+                ['id' => 50603
+                    ,'title' => '删除'
+                    ,'name' => 'teach/fengong/delete'
+                    ,'paixu' => 3
+                    ,'pid' => 506
+                ],
+                ['id' => 50604
+                    ,'title' => '编辑'
+                    ,'name' => 'teach/fengong/edit'
+                    ,'paixu' => 4
+                    ,'pid' => 506
+                ],
+                ['id' => 50605
+                    ,'title' => '更新'
+                    ,'name' => 'teach/fengong/update'
+                    ,'paixu'  => 5
+                    ,'pid' => 506
+                ],
+                ['id' => 50606
+                    ,'title' => '查看'
+                    ,'name' => 'teach/fengong/read'
+                    ,'paixu' => 6
+                    ,'pid' => 506
+                ],
+                ['id' => 50607
+                    ,'title' => '状态'
+                    ,'name' => 'teach/fengong/setstatus'
+                    ,'paixu' => 7
+                    ,'pid' => 506
+                ],
 
             /*======================================================================
              * 考试管理

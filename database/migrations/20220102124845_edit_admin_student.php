@@ -46,6 +46,15 @@ class EditAdminStudent extends Migrator
                 ->update();
         }
 
+        // 教师任务分工
+        $table = $this->table('fen_gong');
+        $column = $table->hasColumn('gbfdate');
+        if (!$column) {
+            $table
+                ->addColumn('bfdate','integer',['limit'=>11,'null'=>true,'comment'=>'开始日期'])
+                ->update();
+        }
+
 
     }
 }
