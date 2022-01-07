@@ -40,11 +40,10 @@ class FenGong extends AdminBase
                 ,'limit' => '10'
                 ,'field' => 'update_time'
                 ,'order' => 'asc'
-                ,'kaoshi' => ''
                 ,'status' => ''
                 ,'delete_time' => ''
-                ,'xingzhi' => array()
                 ,'searchval' => ''
+                ,'student_id' => ''
             ],'POST');
 
         // 按条件查询数据
