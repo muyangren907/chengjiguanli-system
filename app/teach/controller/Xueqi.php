@@ -220,4 +220,5 @@ class Xueqi extends AdminBase
 
         return json($data);
     }
+    
 }

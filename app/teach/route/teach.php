@@ -110,13 +110,13 @@ Route::group('zuzhang', function () {
 
 // 任务分工
 Route::group('fengong', function () {
-	    Route::rule('','fengong/index','get');	# 信息列表
-	    Route::rule('data','fengong/ajaxdata','post');	# 获取数据
-	    Route::rule('create','fengong/create','get');	# 添加信息
-	    Route::rule('save','fengong/save','post');		# 保存信息
-	    Route::rule('edit/<id>','fengong/edit','get');		# 修改信息
-	    Route::rule('update/<id>','fengong/update','put');		# 更新信息
-	    Route::rule('delete','fengong/delete','delete');		# 删除信息
-	    Route::rule('status','fengong/setStatus','post');		# 删除信息
+	    Route::rule('','FenGong/index','get');	# 信息列表
+	    Route::rule('data','FenGong/ajaxdata','post');	# 获取数据
+	    Route::rule('create','FenGong/create','get');	# 添加信息
+	    Route::rule('save','FenGong/save','post');		# 保存信息
+	    Route::rule('edit/<id>','FenGong/edit','get');		# 修改信息
+	    Route::rule('update/<id>','FenGong/update','put');		# 更新信息
+	    Route::rule('delete','FenGong/delete','delete');		# 删除信息
+	    Route::rule('status','FenGong/setStatus','post');		# 删除信息
 
 	});

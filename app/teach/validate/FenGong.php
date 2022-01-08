@@ -13,7 +13,14 @@ class FenGong extends Validate
      *
      * @var array
      */
-    protected $rule = [];
+    protected $rule = [
+        'id|ID'         =>     'require|number',
+        'teacher_id|教师'     =>      'require|number',
+        'subject_id|学科'  =>      'require|array',
+        'banji_id|班级'    =>      'require|array',
+        'xueqi_id|学期'    =>      'require|number',
+        'bfdate|上任时间' =>  'require|date',
+    ];
 
     /**
      * 定义错误信息
@@ -21,5 +28,13 @@ class FenGong extends Validate
      *
      * @var array
      */
-    protected $message = [];
+    protected $scene = [
+        'create'  =>  [
+            'teacher_id'
+            ,'subject_id'
+            ,'banji_id'
+            ,'xueqi_id'
+            ,'bfdate'
+        ]
+    ];
 }

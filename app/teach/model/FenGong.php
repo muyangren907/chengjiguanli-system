@@ -14,6 +14,7 @@ class FenGong extends BaseModel
         ,'banji_id' =>     'int'
         ,'subject_id' =>   'int'
         ,'teacher_id' =>   'int'
+        ,'xueqi_id' => 'int'
         ,'create_time' =>  'int'
         ,'bfdate' => 'int'
         ,'update_time' =>  'int'
@@ -33,12 +34,14 @@ class FenGong extends BaseModel
             ,'field' => 'id'
             ,'order' => 'desc'
             ,'subject_id' => ''
+            ,'banji_id' => ''
             ,'xueqi_id' => ''
             ,'all' => false
         ];
         $src = array_cover($srcfrom, $src);
         $src['subject_id'] = str_to_array($src['subject_id']);
         $src['xueqi_id'] = str_to_array($src['xueqi_id']);
+        $src['banji_id'] = str_to_array($src['banji_id']);
 
         // 查询数据
         $data = $this
@@ -51,6 +54,9 @@ class FenGong extends BaseModel
             ->when(count($src['xueqi_id']) > 0, function($query) use($src){
                 $query->where('xueqi_id', 'in', $src['xueqi_id']);
             })
+            ->when(count($src['banji_id']) > 0, function($query) use($src){
+                $query->where('banji_id', 'in', $src['banji_id']);
+            })
             ->when($src['all'] == false, function ($query) use($src) {
                 $query
                     ->page($src['page'], $src['limit']);
@@ -62,9 +68,72 @@ class FenGong extends BaseModel
                 ,'fgSubject' => function ($query) {
                     $query->field('id, title, jiancheng, lieming');
                 }
+                ,'fgTeacher' => function ($query) {
+                    $query->field('id, xingming');
+                }
+                ,'fgBanji' => function ($query) {
+                    $query->field('id, ruxuenian, paixu')
+                        ->append(['banjiTitle']);
+                }
             ])
             ->order([$src['field'] => $src['order']])
             ->select();
+        return $data;
+    }
+
+
+    // 查教师现任务分工
+    public function teacherFengong($teacher_id = 0, $time = 0)
+    {
+        $time == 0 ? $time = time() : $time;
+
+        // 查询学期
+        $xq = new \app\teach\model\Xueqi;
+        $xueqi_id = $xq->timeSrcXueqi($time);
+        $xueqi_id ? $xueqi_id = $xueqi_id->id : $xueqi_id = 0;
+
+        // 查询任务分工情况
+        $data = $this
+            ->where('teacher_id', $teacher_id)
+            ->where('xueqi_id', $xueqi_id)
+            ->where('bfdate', '<', $time)
+            ->field('any_value(id) as id
+                ,any_value(xueqi_id) as xueqi_id
+                ,any_value(banji_id) as banji_id
+                ,any_value(subject_id) as subject_id
+                ,any_value(teacher_id) as teacher_id
+                ,any_value(bfdate) as bfdate')
+            ->group('xueqi_id,banji_id,subject_id')
+            ->select();
+
+        return $data;
+    }
+
+
+    // 查询班级现任课教师
+    public function banjiSubjectFengong($banji_id=0, $time=0)
+    {
+        $time == 0 ? $time = time() : $time;
+
+        // 查询学期
+        $xq = new \app\teach\model\Xueqi;
+        $xueqi_id = $xq->timeSrcXueqi($time);
+        $xueqi_id ? $xueqi_id = $xueqi_id->id : $xueqi_id = 0;
+
+        // 查询任务分工情况
+        $data = $this
+            ->where('banji_id', $banji_id)
+            ->where('xueqi_id', $xueqi_id)
+            ->where('bfdate', '<', $time)
+            ->field('any_value(id) as id
+                ,any_value(xueqi_id) as xueqi_id
+                ,any_value(banji_id) as banji_id
+                ,any_value(subject_id) as subject_id
+                ,any_value(teacher_id) as teacher_id
+                ,any_value(bfdate) as bfdate')
+            ->group('subject_id')
+            ->select();
+
         return $data;
     }
 
@@ -76,10 +145,39 @@ class FenGong extends BaseModel
     }
 
 
-    // 学期关联
+    // 学科关联
     public function fgSubject()
     {
-        return $this->belongsTo(\app\teach\model\Subject::class, 'xueqi_id', 'id');
+        return $this->belongsTo(\app\teach\model\Subject::class, 'subject_id', 'id');
+    }
+
+
+    // 教师关联
+    public function fgTeacher()
+    {
+        return $this->belongsTo(\app\admin\model\Admin::class, 'teacher_id', 'id')
+            ->visible(['id', 'xingming']);
+    }
+
+
+    // 教师关联
+    public function fgBanji()
+    {
+        return $this->belongsTo(\app\teach\model\Banji::class, 'banji_id', 'id');
+    }
+
+
+    // 接任时间获取器
+    public function getBfdateAttr($value)
+    {
+        return date('Y-m-d', $value);
+    }
+
+
+    // 接任时间修改器
+    public function setBfdateAttr($value)
+    {
+        return strtotime($value);
     }
 
 

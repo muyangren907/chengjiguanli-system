@@ -21,6 +21,10 @@ class FenGong extends AdminBase
         $list['dataurl'] = 'fengong/data';
         $list['status'] = '/teach/fengong/status';
         $list['kaoshi'] = '/teach/fengong/kaoshi';
+        $list['nianji'] = \app\facade\Tools::nianJiNameList();
+
+        $fg = new FG();
+        $qx = $fg->teacherFengong(67);
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -43,22 +47,29 @@ class FenGong extends AdminBase
                 ,'status' => ''
                 ,'delete_time' => ''
                 ,'searchval' => ''
-                ,'student_id' => ''
+                ,'subject_id' => ''
+                ,'ruxuenian' => ''
             ],'POST');
+
+        if (strlen($src['ruxuenian']) > 0) {
+            $bj = new \app\teach\model\Banji;
+            $src['banji_id'] = $bj ->where('ruxuenian', $src['ruxuenian'])
+                ->where('status', true)
+                ->column('id');
+        }
 
         // 按条件查询数据
         $fg = new FG;
         $data = $fg->search($src)
             ->visible([
                 'id'
-                ,'title'
-                ,'jiancheng'
-                ,'lieming'
-                ,'sbjCategory' => ['title']
-                ,'status'
-                ,'kaoshi'
-                ,'paixu'
-                ,'update_time'
+                ,'teacher_id'
+                ,'subject_id'
+                ,'xueqi_id'
+                ,'fgTeacher' => ['id', 'xingming']
+                ,'fgSubject' => ['id', 'title']
+                ,'fgXueqi' => ['id', 'title']
+                ,'bfdate'
             ]);
 
         $src['all'] = true;
@@ -79,6 +90,7 @@ class FenGong extends AdminBase
             ,'formpost' => 'POST'
             ,'url' => 'save'
         );
+        $list['data']['nianji'] = \app\facade\Tools::nianJiNameList();
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -92,24 +104,39 @@ class FenGong extends AdminBase
     {
         // 获取表单数据
         $list = request()->only([
-            'title'
-            ,'jiancheng'
-            ,'category_id'
-            ,'kaoshi'
-            ,'paixu'
-            ,'lieming'
+            'teacher_id'
+            ,'subject_id'
+            ,'banji_id'
+            ,'xueqi_id'
+            ,'bfdate'
         ], 'post');
 
         // 验证表单数据
         $validate = new \app\teach\validate\FenGong;
+
         $result = $validate->scene('create')->check($list);
         $msg = $validate->getError();
         if(!$result){
             return json(['msg' => $msg, 'val' => 0]);
         }
 
+
+        $data = array();
+        foreach ($list['banji_id'] as $key => $value) {
+            foreach ($list['subject_id'] as $k => $val) {
+                $data[] = [
+                    'teacher_id' => $list['teacher_id']
+                    ,'banji_id' => $value
+                    ,'subject_id' => $val
+                    ,'bfdate' => $list['bfdate']
+                    ,'xueqi_id' => $list['xueqi_id']
+                ];
+            }
+        }
+
         // 保存数据
-        $data = FG::create($list);
+        $fg = new FG();
+        $data = $fg->saveAll($data);
 
         // 根据更新结果设置返回提示信息
         $data ? $data = ['msg' => '添加成功', 'val' => 1]
