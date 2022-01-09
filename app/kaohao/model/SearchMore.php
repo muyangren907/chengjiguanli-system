@@ -151,6 +151,11 @@ class SearchMore extends BaseModel
                 ,'banji_id' => array()
             ]
             ,'searchval' => ''
+            ,'page' => 1
+            ,'limit' => 10
+            ,'field' => 'id'
+            ,'order' => 'asc'
+            ,'all' => false
         );
 
         // 用新值替换初始值
@@ -163,6 +168,21 @@ class SearchMore extends BaseModel
 
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $xk = $ksset->srcSubject($src);
+
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $ksInfo = $ks->kaoshiInfo($src['kaoshi_id']);
+        $fg = new \app\teach\model\FenGong;
+        $fgList = $fg->teacherFengong(session('user_id'), $ksInfo->getData("bfdate"));
+
+        // 查询是否需要判断权限
+        $user_id = session("user_id");
+        $userInfo = \app\facade\OnLine::myInfo();
+        if($userInfo->zhiwu_id == 10701 || $userInfo->zhiwu_id == 10703 || $userInfo->zhiwu_id == 10705 || $user_id > 2)
+        {
+            $yzfg = false;
+        } else {
+            $yzfg = true;
+        }
 
         // 实例化学生数据模型
         $stu = new \app\student\model\Student;
@@ -185,7 +205,6 @@ class SearchMore extends BaseModel
                     $data[$key]['student_xingming'] = '被真删除';
                     $data[$key]['sex'] = '未知';
                 }
-
             }
 
             $data[$key]['ban_title'] = $value->banjiTitle;
@@ -194,22 +213,35 @@ class SearchMore extends BaseModel
             $sbjcnt = 0;
 
             if (!$value->ksChengji->isEmpty()) {
-
                 $value->ksChengji = self::zzcj($value->ksChengji);
                 foreach ($xk as $k => $val) {
-                    if(isset($value->ksChengji[$val['lieming']]))
+                    if (isset($value->ksChengji[$val['lieming']]))
                     {
-                        $data[$key][$val['lieming'] . 'defen'] = $value->ksChengji[$val['lieming']]->defen * 1;
-                        $data[$key][$val['lieming'] . 'defenlv'] = $value->ksChengji[$val['lieming']]->defenlv * 1;
-                        $data[$key][$val['lieming'] . 'bpaixu'] = $value->ksChengji[$val['lieming']]->bpaixu * 1;
-                        $data[$key][$val['lieming'] . 'bweizhi'] = $value->ksChengji[$val['lieming']]->bweizhi;
-                        $data[$key][$val['lieming'] . 'xpaixu'] = $value->ksChengji[$val['lieming']]->xpaixu * 1;
-                        $data[$key][$val['lieming'] . 'xweizhi'] = $value->ksChengji[$val['lieming']]->xweizhi;
-                        $data[$key][$val['lieming'] . 'qpaixu'] = $value->ksChengji[$val['lieming']]->qpaixu * 1;
-                        $data[$key][$val['lieming'] . 'qweizhi'] = $value->ksChengji[$val['lieming']]->qweizhi;
-                        $data[$key][$val['lieming'] . 'biaozhunfen'] = $value->ksChengji[$val['lieming']]->biaozhunfen;
-                        $dfsum = $dfsum + $data[$key][$val['lieming'] . 'defen'];
-                        $sbjcnt++;
+                        if ($yzfg == false && isset($fgList[$value->banji_id][$val['id']]) && $fgList[$value->banji_id][$val['id']])
+                        {
+                            $data[$key][$val['lieming'] . 'defen'] = $value->ksChengji[$val['lieming']]->defen * 1;
+                            $data[$key][$val['lieming'] . 'defenlv'] = $value->ksChengji[$val['lieming']]->defenlv * 1;
+                            $data[$key][$val['lieming'] . 'bpaixu'] = $value->ksChengji[$val['lieming']]->bpaixu * 1;
+                            $data[$key][$val['lieming'] . 'bweizhi'] = $value->ksChengji[$val['lieming']]->bweizhi;
+                            $data[$key][$val['lieming'] . 'xpaixu'] = $value->ksChengji[$val['lieming']]->xpaixu * 1;
+                            $data[$key][$val['lieming'] . 'xweizhi'] = $value->ksChengji[$val['lieming']]->xweizhi;
+                            $data[$key][$val['lieming'] . 'qpaixu'] = $value->ksChengji[$val['lieming']]->qpaixu * 1;
+                            $data[$key][$val['lieming'] . 'qweizhi'] = $value->ksChengji[$val['lieming']]->qweizhi;
+                            $data[$key][$val['lieming'] . 'biaozhunfen'] = $value->ksChengji[$val['lieming']]->biaozhunfen;
+                            $dfsum = $dfsum + $data[$key][$val['lieming'] . 'defen'];
+                            $sbjcnt++;
+                        } else {
+                            $data[$key][$val['lieming'] . 'defen'] = null;
+                            $data[$key][$val['lieming'] . 'defenlv'] = null;
+                            $data[$key][$val['lieming'] . 'bpaixu'] = null;
+                            $data[$key][$val['lieming'] . 'bweizhi'] = null;
+                            $data[$key][$val['lieming'] . 'xpaixu'] = null;
+                            $data[$key][$val['lieming'] . 'xweizhi'] = null;
+                            $data[$key][$val['lieming'] . 'qpaixu'] = null;
+                            $data[$key][$val['lieming'] . 'qweizhi'] = null;
+                            $data[$key][$val['lieming'] . 'biaozhunfen'] = null;
+                        }
+                        
                     }else{
                         $data[$key][$val['lieming'] . 'defen'] = null;
                         $data[$key][$val['lieming'] . 'defenlv'] = null;
@@ -220,7 +252,6 @@ class SearchMore extends BaseModel
                         $data[$key][$val['lieming'] . 'qpaixu'] = null;
                         $data[$key][$val['lieming'] . 'qweizhi'] = null;
                         $data[$key][$val['lieming'] . 'biaozhunfen'] = null;
-
                     }
                 }
             }else{
@@ -245,7 +276,6 @@ class SearchMore extends BaseModel
                 $data[$key]['avg'] = null;
             }
         }
-
 
         return $data;
     }

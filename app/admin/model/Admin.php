@@ -535,6 +535,8 @@ class Admin extends BaseModel
             ,'zhiwu' => true
             ,'zuzhang' => true
             ,'banzhuren' => true
+            ,'renke' => true
+            ,'time' => 0
         ];
         $src = array_cover($srcfrom, $src);
 
@@ -577,6 +579,14 @@ class Admin extends BaseModel
         if ($src['banzhuren'] === true) {
             $auth = new \app\teach\model\BanZhuRen;
             $banji_id = $auth->bzrAuth();
+            $data['banji_id'] = array_merge($data['banji_id'], $banji_id);
+        }
+
+        // 获取任课教师权限
+        if ($src['renke'] === true) {
+            $auth = new \app\teach\model\FenGong;
+            $banji_id = $auth->teacherFengong(session('user_id'), $src['time']);
+            $banji_id = array_keys($banji_id);
             $data['banji_id'] = array_merge($data['banji_id'], $banji_id);
         }
 

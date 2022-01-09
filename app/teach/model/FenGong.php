@@ -106,6 +106,7 @@ class FenGong extends BaseModel
             ->group('xueqi_id,banji_id,subject_id')
             ->select();
 
+        $list = array();
         foreach ($data as $key => $value) {
             $src = [
                 'banji_id' => $value->banji_id
@@ -114,14 +115,12 @@ class FenGong extends BaseModel
                 ,'time' => $time
             ];
             $dqfg = $this->subjectFengong($src);
-            if($value->teacher_id != $dqfg->teacher_id) {
-                unset($data[$key]);
+            if($value->teacher_id == $dqfg->teacher_id) {
+                $list[$value->banji_id][$value->subject_id] = true;
             }
         }
 
-
-
-        return $data;
+        return $list;
     }
 
 

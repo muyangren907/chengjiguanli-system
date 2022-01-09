@@ -115,7 +115,6 @@ class Index extends BaseController
         // 整理数据
         if($cnt > 0)
         {
-
             $arr = [
                 'code' => 0  // ajax请求次数，作为标识符
                 ,'msg' => ""  // 获取到的结果数(每页显示数量)
@@ -143,7 +142,7 @@ class Index extends BaseController
             ,'page' => '1'
             ,'limit' => '10'
         ];
-        $src = array_cover($srcfrom, $src) ;
+        $src = array_cover($srcfrom, $src);
         $data = [   # 数据合并
             'code' => 0 , # ajax请求次数，作为标识符
             'msg' => "",  # 获取到的结果数(每页显示数量)
@@ -161,7 +160,7 @@ class Index extends BaseController
                 : $src['order'] = SORT_ASC;   # 数据排序
                 $arr = $this->sortArrByManyField($arr, $src['field'], $src['order']);
             }
-            if($src['page'] > 0 and $src['limit'] > 0)
+            if($src['page'] > 0 && $src['limit'] > 0)
             {
                 $limit_start = $src['page'] * $src['limit'] - $src['limit']; # 获取当前页数据
                 $limit_length = $src['limit'];
