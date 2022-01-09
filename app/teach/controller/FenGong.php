@@ -24,7 +24,8 @@ class FenGong extends AdminBase
         $list['nianji'] = \app\facade\Tools::nianJiNameList();
 
         $fg = new FG();
-        $qx = $fg->teacherFengong(67);
+        $time = strtotime('2021-10-1');
+        $qx = $fg->teacherFengong(67, $time);
 
         // 模板赋值
         $this->view->assign('list', $list);
@@ -262,7 +263,6 @@ class FenGong extends AdminBase
         // 返回信息
         return json($data);
     }
-
 
 
     // 设置任务分工是否参加考试

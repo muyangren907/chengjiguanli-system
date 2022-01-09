@@ -106,12 +106,53 @@ class FenGong extends BaseModel
             ->group('xueqi_id,banji_id,subject_id')
             ->select();
 
+        foreach ($data as $key => $value) {
+            $src = [
+                'banji_id' => $value->banji_id
+                ,'subject_id' => $value->subject_id
+                ,'xueqi_id' => $value->xueqi_id
+                ,'time' => $time
+            ];
+            $dqfg = $this->subjectFengong($src);
+            if($value->teacher_id != $dqfg->teacher_id) {
+                unset($data[$key]);
+            }
+        }
+
+
+
+        return $data;
+    }
+
+
+    // 查询班级学科当前分工
+    public function subjectFengong($srcfrom)
+    {
+        // 整理变量
+        $src = [
+            'banji_id' => 0
+            ,'xueqi_id' => 0
+            ,'subject_id' => 0
+            ,'bfdate' => 0
+            ,'time' => 0
+        ];
+        $src = array_cover($srcfrom, $src);
+
+        $data = $this
+            ->where('banji_id', $src['banji_id'])
+            ->where('xueqi_id', $src['xueqi_id'])
+            ->where('subject_id', $src['subject_id'])
+            ->where('bfdate', '<', $src['time'])
+            ->field('id, teacher_id, banji_id, subject_id, xueqi_id')
+            ->order(['bfdate' => 'desc'])
+            ->find();
+
         return $data;
     }
 
 
     // 查询班级现任课教师
-    public function banjiSubjectFengong($banji_id=0, $time=0)
+    public function banjiFengong($banji_id=0, $time=0)
     {
         $time == 0 ? $time = time() : $time;
 
@@ -131,10 +172,20 @@ class FenGong extends BaseModel
                 ,any_value(subject_id) as subject_id
                 ,any_value(teacher_id) as teacher_id
                 ,any_value(bfdate) as bfdate')
-            ->group('subject_id')
+            // ->group('subject_id')
+            ->order(['subject_id', 'bfdate' => 'asc'])  # 按时间正序排序
             ->select();
+        $list = array();
+        // 循环写出分工
+        foreach ($data as $key => $value) { # 后接任替换早接任
+            // code...
+            $list[$value->subject_id] = [
+                'subject_id' => $value->subject_id
+                ,'teacher_id' => $value->teacher_id
+            ];
+        }
 
-        return $data;
+        return $list;
     }
 
 
