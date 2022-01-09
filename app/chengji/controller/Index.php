@@ -73,8 +73,6 @@ class Index extends AdminBase
         // 实例化并查询成绩
         $cj = new Chengji;
         $data = $cj->search($src);
-        $cnt = count($data);
-        $data = array_slice($data, ($src['page'] - 1) * $src['limit'], $src['limit']);
         $data = \app\facade\Tools::reset_array($data, $src);
 
         return json($data);

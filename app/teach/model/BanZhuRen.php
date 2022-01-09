@@ -144,11 +144,13 @@ class BanZhuRen extends BaseModel
         // 整理变量
         $src = [
             'teacher_id' => ''
+            ,'time' => time()
         ];
         $src = array_cover($srcfrom, $src) ;
 
         $data = $this->where('teacher_id', $src['teacher_id'])
-            ->order(['update_time'=>'desc'])
+            ->where('bfdate', '<', $src['time'])
+            ->order(['bfdate'=>'desc'])
             ->with([
                 'glBanji' => function ($query) {
                     $query->field('id, ruxuenian, paixu')->append(['banJiTitle', 'biye']);

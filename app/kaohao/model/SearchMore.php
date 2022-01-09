@@ -184,6 +184,9 @@ class SearchMore extends BaseModel
             $yzfg = true;
         }
 
+        $bzr = new \app\teach\model\BanZhuRen;
+        $bzrAuth = $bzr->srcTeacherNow(session("user_id"));
+
         // 实例化学生数据模型
         $stu = new \app\student\model\Student;
         $data = array();
@@ -217,8 +220,37 @@ class SearchMore extends BaseModel
                 foreach ($xk as $k => $val) {
                     if (isset($value->ksChengji[$val['lieming']]))
                     {
-                        if ($yzfg == false && isset($fgList[$value->banji_id][$val['id']]) && $fgList[$value->banji_id][$val['id']])
+                        $temp_yzfg = $yzfg; # 如果是班主任则跳过验证
+                        if (in_array($value->banji_id, $bzrAuth))
                         {
+                            $temp_yzfg = true;
+                        }
+                        if ($temp_yzfg == false) {
+                            if (isset($fgList[$value->banji_id][$val['id']]) && $fgList[$value->banji_id][$val['id']])
+                            {
+                                $data[$key][$val['lieming'] . 'defen'] = $value->ksChengji[$val['lieming']]->defen * 1;
+                                $data[$key][$val['lieming'] . 'defenlv'] = $value->ksChengji[$val['lieming']]->defenlv * 1;
+                                $data[$key][$val['lieming'] . 'bpaixu'] = $value->ksChengji[$val['lieming']]->bpaixu * 1;
+                                $data[$key][$val['lieming'] . 'bweizhi'] = $value->ksChengji[$val['lieming']]->bweizhi;
+                                $data[$key][$val['lieming'] . 'xpaixu'] = $value->ksChengji[$val['lieming']]->xpaixu * 1;
+                                $data[$key][$val['lieming'] . 'xweizhi'] = $value->ksChengji[$val['lieming']]->xweizhi;
+                                $data[$key][$val['lieming'] . 'qpaixu'] = $value->ksChengji[$val['lieming']]->qpaixu * 1;
+                                $data[$key][$val['lieming'] . 'qweizhi'] = $value->ksChengji[$val['lieming']]->qweizhi;
+                                $data[$key][$val['lieming'] . 'biaozhunfen'] = $value->ksChengji[$val['lieming']]->biaozhunfen;
+                                $dfsum = $dfsum + $data[$key][$val['lieming'] . 'defen'];
+                                $sbjcnt++;
+                            } else {
+                                $data[$key][$val['lieming'] . 'defen'] = null;
+                                $data[$key][$val['lieming'] . 'defenlv'] = null;
+                                $data[$key][$val['lieming'] . 'bpaixu'] = null;
+                                $data[$key][$val['lieming'] . 'bweizhi'] = null;
+                                $data[$key][$val['lieming'] . 'xpaixu'] = null;
+                                $data[$key][$val['lieming'] . 'xweizhi'] = null;
+                                $data[$key][$val['lieming'] . 'qpaixu'] = null;
+                                $data[$key][$val['lieming'] . 'qweizhi'] = null;
+                                $data[$key][$val['lieming'] . 'biaozhunfen'] = null;
+                            }
+                        } else {
                             $data[$key][$val['lieming'] . 'defen'] = $value->ksChengji[$val['lieming']]->defen * 1;
                             $data[$key][$val['lieming'] . 'defenlv'] = $value->ksChengji[$val['lieming']]->defenlv * 1;
                             $data[$key][$val['lieming'] . 'bpaixu'] = $value->ksChengji[$val['lieming']]->bpaixu * 1;
@@ -230,18 +262,7 @@ class SearchMore extends BaseModel
                             $data[$key][$val['lieming'] . 'biaozhunfen'] = $value->ksChengji[$val['lieming']]->biaozhunfen;
                             $dfsum = $dfsum + $data[$key][$val['lieming'] . 'defen'];
                             $sbjcnt++;
-                        } else {
-                            $data[$key][$val['lieming'] . 'defen'] = null;
-                            $data[$key][$val['lieming'] . 'defenlv'] = null;
-                            $data[$key][$val['lieming'] . 'bpaixu'] = null;
-                            $data[$key][$val['lieming'] . 'bweizhi'] = null;
-                            $data[$key][$val['lieming'] . 'xpaixu'] = null;
-                            $data[$key][$val['lieming'] . 'xweizhi'] = null;
-                            $data[$key][$val['lieming'] . 'qpaixu'] = null;
-                            $data[$key][$val['lieming'] . 'qweizhi'] = null;
-                            $data[$key][$val['lieming'] . 'biaozhunfen'] = null;
                         }
-                        
                     }else{
                         $data[$key][$val['lieming'] . 'defen'] = null;
                         $data[$key][$val['lieming'] . 'defenlv'] = null;

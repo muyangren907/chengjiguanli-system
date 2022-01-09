@@ -51,7 +51,9 @@ class Bjtongji extends AdminBase
                 ,'ruxuenian' => ''
                 ,'school_id' => array()
                 ,'banji_id' => array()
-                ,'auth' => []
+                ,'auth' => [
+                    'renke' => false
+                ]
             ], 'POST');
 
         if (count($src['banji_id'])==0) {
@@ -66,6 +68,14 @@ class Bjtongji extends AdminBase
         {
             $src['auth']['banji_id'] = array_intersect($src['auth']['banji_id'], $src['banji_id']);
         }
+
+        // 获取参与考试的班级
+        if (count($src['banji_id']) == 0) {
+            $cy = new \app\kaohao\model\SearchCanYu;
+            $src['all'] = true;
+            $src['banji_id']= array_column($cy->class($src), 'id');
+        }
+
         // 统计成绩
         $btj = new BTJ;
         $data = $btj->search($src);
