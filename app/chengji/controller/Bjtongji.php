@@ -62,10 +62,7 @@ class Bjtongji extends AdminBase
 
         $src['auth'] = event('mybanji', $src['auth']);
         $src['auth'] = $src['auth'][0];
-        if(count($src['banji_id']) > 0)        # 如果没有获取到班级id,则查询班级id
-        {
-            $src['auth']['banji_id'] = array_intersect($src['auth']['banji_id'], $src['banji_id']);
-        }
+
         // 统计成绩
         $btj = new BTJ;
         $data = $btj->search($src);

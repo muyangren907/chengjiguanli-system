@@ -513,7 +513,7 @@ class Admin extends BaseModel
         $adInfo = $this->searchOne(session('user_id'));
         $banji_id = array();
         // 获取职务权限
-        $zhiwu_array = array(10703, 10705);
+        $zhiwu_array = array(10701, 10703, 10705);
 
         if (in_array($adInfo->zhiwu_id, $zhiwu_array)) {
             $bj = new \app\teach\model\Banji;

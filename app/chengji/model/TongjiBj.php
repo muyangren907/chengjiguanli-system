@@ -346,7 +346,7 @@ class TongjiBj extends BaseModel
             ->where('kaoshi_id', $src['kaoshi_id'])
             ->where('banji_id', 'in', $src['banji_id'])
             ->when($src['auth']['check'] != false, function($query) use($src){
-                    $query->where('id', 'in', $src['auth']['banji_id']);
+                    $query->where('banji_id', 'in', $src['auth']['banji_id']);
                 })
             ->when($src['all'] == false, function ($query) use($src) {
                 $query
