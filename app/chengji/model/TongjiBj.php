@@ -264,9 +264,31 @@ class TongjiBj extends BaseModel
         // 查询数据
         $tongjiJg = $this->searchBase($srcfrom);
 
+        // 查询是否需要判断权限
+        $user_id = session("user_id");
+        $userInfo = \app\facade\OnLine::myInfo();
+        if($userInfo->zhiwu_id == 10701 || $userInfo->zhiwu_id == 10703 || $userInfo->zhiwu_id == 10705 || $user_id <= 2)
+        {
+            $yzfg = true;
+        } else {
+            $ks = new \app\kaoshi\model\Kaoshi;
+            $ksInfo = $ks->kaoshiInfo($srcfrom['kaoshi_id']);
+            $fg = new \app\teach\model\FenGong;
+            $fgList = $fg->teacherFengong(session('user_id'), $ksInfo->getData("bfdate"));
+            $yzfg = false;
+        }
+
+        $bzr = new \app\teach\model\BanZhuRen;
+        $bzrAuth = $bzr->srcTeacherNow(session("user_id"));
+
         // 重组数据
         $data = array();
         foreach ($tongjiJg as $key => $value) {
+            $temp_yzfg = $yzfg; # 如果是班主任则跳过验证
+            if ($yzfg == false && in_array($value->banji_id, $bzrAuth))
+            {
+                $temp_yzfg = true;
+            }
             $data[$value->banji_id] = [
                 'id' => $value->id
                 ,'school_jiancheng' => $value->bjBanji->glSchool->jiancheng
@@ -276,35 +298,102 @@ class TongjiBj extends BaseModel
                 ,'stu_cnt' => $value->stuCnt
             ];
             foreach ($value->bjJieguo as $k => $val) {
-                if($val->subject_id > 0){
-                    $data[$value->banji_id]['chengji'][$val->bjSubject->lieming] = [
-                        'title' => $val->bjSubject->title
-                        ,'jiancheng' => $val->bjSubject->jiancheng
-                        ,'stu_cnt' => $val->stu_cnt
-                        ,'chengji_cnt' => $val->chengji_cnt
-                        ,'sum' => $val->sum
-                        ,'avg' => $val->avg * 1
-                        ,'defenlv' => $val->defenlv
-                        ,'biaozhuncha' => $val->biaozhuncha * 1
-                        ,'youxiu' => $val->youxiu
-                        ,'jige' => $val->jige
-                        ,'youxiulv' => $val->youxiulv
-                        ,'jigelv' => $val->jigelv
-                        ,'max' => $val->max
-                        ,'min' => $val->min
-                        ,'q1' => $val->q1 * 1
-                        ,'q2' => $val->q2 * 1
-                        ,'q3' => $val->q3 * 1
-                        ,'zhongshu' => $val->zhongshu
-                        ,'zhongweishu' => $val->zhongweishu
-                        ,'chashenglv' => $val->chashenglv
-                        ,'canshilv' => $val->canshilv
-                    ];
-                }else{
-                    $data[$value->banji_id]['quanke'] = [
-                        'avg' => $val->avg
-                        ,'jigelv' => $val->jigelv
-                    ];
+                if ($temp_yzfg == false) {
+                    if (isset($fgList[$value->banji_id][$val->subject_id]) && $fgList[$value->banji_id][$val->subject_id])
+                    {
+                        if($val->subject_id > 0){
+                            $data[$value->banji_id]['chengji'][$val->bjSubject->lieming] = [
+                                'title' => $val->bjSubject->title
+                                ,'jiancheng' => $val->bjSubject->jiancheng
+                                ,'stu_cnt' => $val->stu_cnt
+                                ,'chengji_cnt' => $val->chengji_cnt
+                                ,'sum' => $val->sum
+                                ,'avg' => $val->avg * 1
+                                ,'defenlv' => $val->defenlv
+                                ,'biaozhuncha' => $val->biaozhuncha * 1
+                                ,'youxiu' => $val->youxiu
+                                ,'jige' => $val->jige
+                                ,'youxiulv' => $val->youxiulv
+                                ,'jigelv' => $val->jigelv
+                                ,'max' => $val->max
+                                ,'min' => $val->min
+                                ,'q1' => $val->q1 * 1
+                                ,'q2' => $val->q2 * 1
+                                ,'q3' => $val->q3 * 1
+                                ,'zhongshu' => $val->zhongshu
+                                ,'zhongweishu' => $val->zhongweishu
+                                ,'chashenglv' => $val->chashenglv
+                                ,'canshilv' => $val->canshilv
+                            ];
+                        }else{
+                            $data[$value->banji_id]['quanke'] = [
+                                'avg' => $val->avg
+                                ,'jigelv' => $val->jigelv
+                            ];
+                        }
+                    }else{
+                        if($val->subject_id > 0){
+                            $data[$value->banji_id]['chengji'][$val->bjSubject->lieming] = [
+                                'title' => ""
+                                ,'jiancheng' => ""
+                                ,'stu_cnt' => ""
+                                ,'chengji_cnt' => ""
+                                ,'sum' => ""
+                                ,'avg' => ""
+                                ,'defenlv' => ""
+                                ,'biaozhuncha' => ""
+                                ,'youxiu' => ""
+                                ,'jige' => ""
+                                ,'youxiulv' => ""
+                                ,'jigelv' => ""
+                                ,'max' => ""
+                                ,'min' => ""
+                                ,'q1' => ""
+                                ,'q2' => ""
+                                ,'q3' => ""
+                                ,'zhongshu' => ""
+                                ,'zhongweishu' => ""
+                                ,'chashenglv' => ""
+                                ,'canshilv' => ""
+                            ];
+                        }else{
+                            $data[$value->banji_id]['quanke'] = [
+                                'avg' => $val->avg
+                                ,'jigelv' => $val->jigelv
+                            ];
+                        }
+                    }
+                } else {
+                    if($val->subject_id > 0){
+                        $data[$value->banji_id]['chengji'][$val->bjSubject->lieming] = [
+                            'title' => $val->bjSubject->title
+                            ,'jiancheng' => $val->bjSubject->jiancheng
+                            ,'stu_cnt' => $val->stu_cnt
+                            ,'chengji_cnt' => $val->chengji_cnt
+                            ,'sum' => $val->sum
+                            ,'avg' => $val->avg * 1
+                            ,'defenlv' => $val->defenlv
+                            ,'biaozhuncha' => $val->biaozhuncha * 1
+                            ,'youxiu' => $val->youxiu
+                            ,'jige' => $val->jige
+                            ,'youxiulv' => $val->youxiulv
+                            ,'jigelv' => $val->jigelv
+                            ,'max' => $val->max
+                            ,'min' => $val->min
+                            ,'q1' => $val->q1 * 1
+                            ,'q2' => $val->q2 * 1
+                            ,'q3' => $val->q3 * 1
+                            ,'zhongshu' => $val->zhongshu
+                            ,'zhongweishu' => $val->zhongweishu
+                            ,'chashenglv' => $val->chashenglv
+                            ,'canshilv' => $val->canshilv
+                        ];
+                    }else{
+                        $data[$value->banji_id]['quanke'] = [
+                            'avg' => $val->avg
+                            ,'jigelv' => $val->jigelv
+                        ];
+                    }
                 }
             }
         }

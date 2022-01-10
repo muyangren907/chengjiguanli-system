@@ -51,9 +51,7 @@ class Bjtongji extends AdminBase
                 ,'ruxuenian' => ''
                 ,'school_id' => array()
                 ,'banji_id' => array()
-                ,'auth' => [
-                    'renke' => false
-                ]
+                ,'auth' => []
             ], 'POST');
 
         if (count($src['banji_id'])==0) {
@@ -62,7 +60,7 @@ class Bjtongji extends AdminBase
             $src['banji_id']= array_column($cy->class($src),'id');
         }
 
-        $src['auth'] = event('mybanji', $src['auth']);
+        $src['auth'] = event('mybanji', array());
         $src['auth'] = $src['auth'][0];
 
         // 统计成绩
@@ -149,10 +147,6 @@ class Bjtongji extends AdminBase
 
         $src['auth'] = event('mybanji', $src['auth']);
         $src['auth'] = $src['auth'][0];
-        if(count($src['banji_id']) > 0)        # 如果没有获取到班级id,则查询班级id
-        {
-            $src['auth']['banji_id'] = array_intersect($src['auth']['banji_id'], $src['banji_id']);
-        }
         $src['school_id'] = str_to_array($src['school_id']);
 
         // 获取相关参数
@@ -170,19 +164,25 @@ class Bjtongji extends AdminBase
         $tabletitle = $ksinfo->title . ' ' . $schoolname . $nianji . '各班级成绩汇总';
         $cy = new \app\kaohao\model\SearchCanYu;  # 参考班级
         $src['banji_id']= array_column($cy->class($src), 'id');
-        // 用户职务判断
-        if (session('user_id') !=1 && session('user_id') !=2) {
-            $qxBanjiIds = event('mybanji');
-            if (is_array($qxBanjiIds[0])) {
-                $src['banji_id'] = array_intersect($src['banji_id'], $qxBanjiIds[0]);
-            }
-        }
+        // // 用户职务判断
+        // if (session('user_id') !=1 && session('user_id') !=2) {
+        //     $qxBanjiIds = event('mybanji');
+        //     if (is_array($qxBanjiIds[0])) {
+        //         $src['banji_id'] = array_intersect($src['banji_id'], $qxBanjiIds[0]);
+        //     }
+        // }
         $btj = new BTJ;     # 成绩统计结果
         $data = $btj->search($src);
 
-        $ntj = new \app\chengji\model\TongjiNj;
-        $dataAll = $ntj->search($src);
-        count($dataAll) > 0 ? $data['all'] = $dataAll[0] : $data;
+        // 查询是否需要判断权限 如果不是学校领导和管理员则不写入年级成绩
+        $user_id = session("user_id");
+        $userInfo = \app\facade\OnLine::myInfo();
+        if($userInfo->zhiwu_id == 10701 || $userInfo->zhiwu_id == 10703 || $userInfo->zhiwu_id == 10705 || $user_id <= 2)
+        {
+            $ntj = new \app\chengji\model\TongjiNj;
+            $dataAll = $ntj->search($src);
+            count($dataAll) > 0 ? $data['all'] = $dataAll[0] : $data;
+        }
 
         // 将数据写入表格中
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet;  # 创建文档

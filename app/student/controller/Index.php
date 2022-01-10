@@ -44,7 +44,7 @@ class Index extends AdminBase
                 ,'searchval' => ''
             ], 'POST');
 
-        $src['auth'] = event('mybanji', array());
+        $src['auth'] = event('mybanji', array('renke' => false));
         $src['auth'] = $src['auth'][0];
 
         // 根据条件查询数据

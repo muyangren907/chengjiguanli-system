@@ -177,11 +177,11 @@ class SearchMore extends BaseModel
         // 查询是否需要判断权限
         $user_id = session("user_id");
         $userInfo = \app\facade\OnLine::myInfo();
-        if($userInfo->zhiwu_id == 10701 || $userInfo->zhiwu_id == 10703 || $userInfo->zhiwu_id == 10705 || $user_id > 2)
+        if($userInfo->zhiwu_id == 10701 || $userInfo->zhiwu_id == 10703 || $userInfo->zhiwu_id == 10705 || $user_id <= 2)
         {
-            $yzfg = false;
-        } else {
             $yzfg = true;
+        } else {
+            $yzfg = false;
         }
 
         $bzr = new \app\teach\model\BanZhuRen;
@@ -221,7 +221,7 @@ class SearchMore extends BaseModel
                     if (isset($value->ksChengji[$val['lieming']]))
                     {
                         $temp_yzfg = $yzfg; # 如果是班主任则跳过验证
-                        if (in_array($value->banji_id, $bzrAuth))
+                        if ($yzfg == false && in_array($value->banji_id, $bzrAuth))
                         {
                             $temp_yzfg = true;
                         }

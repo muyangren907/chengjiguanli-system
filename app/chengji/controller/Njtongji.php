@@ -145,7 +145,6 @@ class Njtongji extends AdminBase
         $sheet = $spreadsheet->getActiveSheet();
         $thistime = date("Y-m-d h:i:sa");
 
-
         // 设置文档属性
         $spreadsheet->getProperties()
             ->setCreator("码蚁成绩管理系统")    //作者
