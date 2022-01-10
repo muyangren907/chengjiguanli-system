@@ -36,6 +36,8 @@ class FenGong extends Migrator
             ->addColumn('banji_id','integer',['limit'=>11,'null'=>true,'comment'=>'学科ID'])
             ->addColumn('subject_id','integer',['limit'=>11,'null'=>true,'comment'=>'学科ID'])
             ->addColumn('teacher_id','integer',['limit'=>11,'null'=>true,'comment'=>'教师ID'])
+            ->addColumn('bfdate','integer',['limit'=>11,'null'=>true,'comment'=>'开始日期'])
+            ->addColumn('xueqi_id','integer',['limit'=>11,'null'=>true,'comment'=>'学期'])
             ->addColumn('create_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'更新时间'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])

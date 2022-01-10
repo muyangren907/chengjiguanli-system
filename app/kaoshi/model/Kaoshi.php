@@ -150,6 +150,7 @@ class Kaoshi extends BaseModel
         // 获取参考年级
         $kaoshiList = $this->where('id', $id)
                 ->field('id, title, user_id, status, luru, bfdate, enddate')
+                ->cache(true)
                 ->find();
         return $kaoshiList;
     }

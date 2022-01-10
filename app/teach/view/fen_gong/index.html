@@ -5,7 +5,7 @@
 <span class="layui-breadcrumb">
 	<a href="">系统管理</a>
 	<a href="">教务管理</a>
-	<a><cite>学科列表</cite></a>
+	<a><cite>任务分工</cite></a>
 </span>
 {/block}
 {block name="search"}
@@ -15,6 +15,24 @@
 	</label>
 	<div class="layui-input-block">
 		<input type="text" id="searchval" name="searchval" autocomplete="off" class="layui-input" placeholder="输入关键字并回车">
+	</div>
+</div>
+<div class="layui-form-item">
+	<label for="subject_id" class="layui-form-label"><span class="x-red">*</span>学科</label>
+	<div class="layui-input-block">
+		<select name="subject_id" id="subject_id" lay-filter="src">
+		</select>
+	</div>
+</div>
+<div class="layui-form-item">
+	<label for="ruxuenian" class="layui-form-label"><span class="x-red">*</span>年级</label>
+	<div class="layui-input-block">
+		<select name="ruxuenian" id="ruxuenian" lay-filter="src">
+			<option value="">请选择学科</option>
+			{volist name="list.nianji" id="value"}
+			<option value="{$key}">{$value}</option>
+			{/volist}
+		</select>
 	</div>
 </div>
 <div class="layui-form-item" style="text-align: right;">
@@ -40,7 +58,6 @@
 <script type="text/html" id="barDemo">
 	<a class="layui-btn-xs" lay-event="edit" title="编辑"><i class="layui-icon">&#xe642;</i></a>
 	<a class="layui-btn-xs" lay-event="del" title="删除"><i class="layui-icon">&#xe640;</i></a>
-	<a class="layui-btn-xs" lay-event="huifu" title="恢复删除"><i class="layui-icon layui-icon-refresh-1"></i></a>
 </script>
 <!-- 状态按钮 -->
 <script type="text/html" id="kaoshi">
@@ -49,33 +66,47 @@
 <!-- 表格操作 -->
 <script>
 // 提交搜索条件后重载表格
-layui.use(['table', 'mytable', 'form'], function() {
+layui.use(['table', 'mytable', 'form', 'laydate', 'createInput'], function() {
 	var table = layui.table,
 		form = layui.form,
-		mytable = layui.mytable;
+		mytable = layui.mytable
+		cInput = layui.createInput;
+
+	cInput.subjectSelect('subject_id', "", "", true);
 
 	// 设置列
 	options.cols = [
 		[ //表头
 			{ type: 'checkbox', fixed: 'left' },
-			{ field: 'title', title: '名称', sort: true, minWidth: 240 },
-			{ field: 'jiancheng', title: '简称', minWidth: 100, sort: true },
-			{
-				field: "category_id",
-				title: '类别',
-				sort: true,
-				templet: function(d) {
+			{ field: 'teacher_id', title: '姓名', sort: true, minWidth: 100, templet: function(d) {
 					var str = '';
-					if (d.sbjCategory) {
-						str = d.sbjCategory.title;
+					if (d.fgTeacher) {
+						str = d.fgTeacher.xingming;
 					}
 					return str;
-				}
-			},
-			{ field: 'lieming', title: '列标识', sort: true },
-			{ field: 'kaoshi', title: '考试', templet: '#kaoshi', sort: true },
-			{ field: 'paixu', title: '排序', sort: true },
-			{ field: 'status', title: '状态', templet: '#status', sort: true },
+				}},
+			{ field: 'banji_id', title: '班级', sort: true, minWidth: 100, templet: function(d) {
+					var str = '';
+					if (d.fgBanji) {
+						str = d.fgBanji.banjiTitle;
+					}
+					return str;
+				}},
+			{ field: 'subject_id', title: '学科', minWidth: 100, sort: true, templet: function(d) {
+					var str = '';
+					if (d.fgSubject) {
+						str = d.fgSubject.title;
+					}
+					return str;
+				}},
+			{ field: 'xueqi_id', title: '学期', sort: true, minWidth:150, templet: function(d) {
+					var str = '';
+					if (d.fgXueqi) {
+						str = d.fgXueqi.title;
+					}
+					return str;
+				}},
+			{ field: 'bfdate', title: '接任时间', sort: true },
 			{ field: 'id', title: '操作', toolbar: '#barDemo', minWidth: 140 }
 		]
 	];
@@ -89,10 +120,10 @@ layui.use(['table', 'mytable', 'form'], function() {
 		switch (obj.event) {
 			case 'dels':
 				var checkStatus = table.checkStatus('mytable'); //idmytable 即为基础参数 id 对应的值
-				mytable.delAll(checkStatus, '/teach/subject/delete', 'mytable');
+				mytable.delAll(checkStatus, '/teach/fengong/delete', 'mytable');
 				break;
 			case 'add':
-				xadmin.open('添加学科', '/teach/subject/create', '650', '450');
+				xadmin.open('添加分工', '/teach/fengong/create', '650', '550');
 				break;
 		};
 	});
@@ -104,16 +135,14 @@ layui.use(['table', 'mytable', 'form'], function() {
 		var tr = obj.tr; //获得当前行 tr 的DOM对象
 		switch (layEvent) {
 			case 'del': // 删除
-				mytable.del(obj, '/teach/subject/delete');
+				mytable.del(obj, '/teach/fengong/delete');
 				break;
 			case 'edit': // 编辑
-				xadmin.open('编辑学科', '/teach/subject/edit/' + obj.data.id, '650', '450');
-				break;
-			case 'huifu': // 编辑
-				mytable.redel(obj, '/teach/subject/redel');
+				xadmin.open('编辑学科', '/teach/fengong/edit/' + obj.data.id, '650', '450');
 				break;
 		};
 	});
+
 });
 
 </script>

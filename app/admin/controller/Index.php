@@ -452,6 +452,7 @@ class Index extends AdminBase
     }
 
 
+    // 表格有效性
     private function youxiaoxing($obj, $cell, $value)
     {
         $yxx = $obj->getCell($cell)

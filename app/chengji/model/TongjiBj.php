@@ -334,6 +334,7 @@ class TongjiBj extends BaseModel
             ,'order' => 'asc'
             ,'all' => false
         );
+
         $src = array_cover($srcfrom, $src);
         $src['banji_id'] = str_to_array($src['banji_id']);
         $kaoshi_id = $src['kaoshi_id'];

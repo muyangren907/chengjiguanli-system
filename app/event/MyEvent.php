@@ -70,4 +70,13 @@ class MyEvent
         return $fginfo;
     }
 
+
+    // 获取任务分工
+    public function fenGong($srcfrom)
+    {
+        $fg = new \app\teach\model\FenGong;
+        $fginfo = $fg->teacherFengong($srcfrom);
+        return $fginfo;
+    }
+
 }

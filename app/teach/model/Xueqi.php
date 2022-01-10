@@ -111,4 +111,21 @@ class Xueqi extends BaseModel
           ->select();
         return $list;
     }
+
+
+    // 根据时间查询学期
+    public function timeSrcXueqi($time = 0)
+    {
+        if($time == 0)
+        {
+            $time = time();
+        }
+
+        $data = $this
+            ->where('bfdate', '<', $time)
+            ->where('enddate', '>', $time)
+            ->cache(true)
+            ->find();
+        return $data;
+    }
 }

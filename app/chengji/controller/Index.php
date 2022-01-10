@@ -64,12 +64,14 @@ class Index extends AdminBase
             $src['banji_id']= array_column($cy->class($src), 'id');
         }
 
-        $src['auth'] = event('mybanji', array());
+        $ks = new \app\kaoshi\model\Kaoshi;
+        $ksInfo = $ks->kaoshiInfo($src['kaoshi_id']);
+
+        $src['auth'] = event('mybanji', array('time'=>$ksInfo->getData("bfdate")));
         $src['auth'] = $src['auth'][0];
 
         // 实例化并查询成绩
         $cj = new Chengji;
-        $src['all'] = false;
         $data = $cj->search($src);
         $data = \app\facade\Tools::reset_array($data, $src);
 
@@ -269,6 +271,7 @@ class Index extends AdminBase
         // 获取参与考试的班级
         ob_start();
         $more = new \app\kaohao\model\SearchMore;
+        $src['all'] = true;
         $chengjiinfo = $more->srcChengjiList($src);
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $subject_id = $ksset->srcSubject($src);
@@ -539,6 +542,7 @@ class Index extends AdminBase
         ob_start();
         $more = new \app\kaohao\model\SearchMore;
         $cy = new \app\kaohao\model\SearchCanYu;
+        $src['all'] = true;
         $chengjiinfo = $more->srcChengjiList($src);
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $subject_id = $ksset->srcSubject($src);
@@ -550,6 +554,7 @@ class Index extends AdminBase
             'ruxuenian' => $src['ruxuenian']
         ];
         $srcAll['banji_id']= array_column($cy->class($srcAll), 'id');
+        $src['all'] = true;
         $chengjiinfo = $more->srcChengjiList($src);
         $njtj = $tj->tongjiSubject($chengjiinfo, $subject_id);
 

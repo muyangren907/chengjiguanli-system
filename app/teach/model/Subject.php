@@ -29,7 +29,6 @@ class Subject extends BaseModel
         $src = [
             'status' => ''
             ,'kaoshi' => ''
-            ,'delete_time' => ''
             ,'searchval' => ''
             ,'page' => 1
             ,'limit' => 10
@@ -41,7 +40,6 @@ class Subject extends BaseModel
 
         // 查询数据
         $data = $this
-            ->withTrashed()
             ->when(strlen($src['searchval']) > 0, function($query) use($src){
                 $query->where('title|jiancheng', 'like', '%' . $src['searchval'] . '%');
             })
@@ -50,9 +48,6 @@ class Subject extends BaseModel
             })
             ->when(strlen($src['status']) > 0, function($query) use($src){
                 $query->where('status', $src['status']);
-            })
-            ->when(strlen($src['delete_time']) > 0, function($query){
-                $query->whereNotNull('delete_time');
             })
             ->with([
             	'sbjCategory' => function($query){

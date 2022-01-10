@@ -51,7 +51,9 @@ class Bjtongji extends AdminBase
                 ,'ruxuenian' => ''
                 ,'school_id' => array()
                 ,'banji_id' => array()
-                ,'auth' => []
+                ,'auth' => [
+                    'renke' => false
+                ]
             ], 'POST');
 
         if (count($src['banji_id'])==0) {
