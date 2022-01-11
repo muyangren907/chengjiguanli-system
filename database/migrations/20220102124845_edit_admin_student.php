@@ -57,7 +57,7 @@ class EditAdminStudent extends Migrator
         $column = $table->hasColumn('xueqi_id');
         if (!$column) {
             $table
-                ->addColumn('xueqi_id','integer',['limit'=>11,'null'=>true,'comment'=>'开始日期'])
+                ->addColumn('xueqi_id','integer',['limit'=>11,'null'=>true,'comment'=>'学期'])
                 ->update();
         }
 
