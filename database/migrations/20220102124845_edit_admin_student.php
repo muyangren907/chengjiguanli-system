@@ -33,7 +33,7 @@ class EditAdminStudent extends Migrator
         $column = $table->hasColumn('guoqi');
         if (!$column) {
             $table
-                ->addColumn('guoqi','integer',['limit'=>11,'null'=>false,'default'=>1539158918,'comment'=>'帐号过期时间'])
+                ->addColumn('guoqi','integer',['limit'=>11,'null'=>true, 'comment'=>'帐号过期时间'])
                 ->update();
         }
 
@@ -42,7 +42,7 @@ class EditAdminStudent extends Migrator
         $column = $table->hasColumn('guoqi');
         if (!$column) {
             $table
-                ->addColumn('guoqi','integer',['limit'=>11,'null'=>false,'default'=>1539158918,'comment'=>'帐号过期时间'])
+                ->addColumn('guoqi','integer',['limit'=>11,'null'=>true, 'comment'=>'帐号过期时间'])
                 ->update();
         }
 

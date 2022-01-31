@@ -354,6 +354,10 @@ class Index extends AdminBase
         // 删除成绩采集表无用的标题行得到成绩数组
         array_splice($cjinfo,0,3);
 
+        $cjinfo = array_filter($cjinfo, function ($cjTemp) {
+            return $cjTemp[1] != "";
+        });
+
         // 查询考试信息
         $ksset = new \app\kaoshi\model\KaoshiSet;
         $src = [

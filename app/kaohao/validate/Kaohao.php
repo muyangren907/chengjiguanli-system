@@ -43,11 +43,7 @@ class Kaohao extends Validate
         'createAll'  =>  [
             'kaoshi_id'
             ,'school_id'
-            ,'ruxuenian'
             ,'banji_id'
-            ,'nianji'
-            ,'paixu'
-            ,'student_id'
         ],
         'edit'  =>  [
             'id'

@@ -316,7 +316,7 @@ class Banji extends AdminBase
             return '';
         }
 
-        $src['auth'] = event('mybanji', $src['auth']);
+        $src['auth'] = event('mybanji', array());
         $src['auth'] = $src['auth'][0];
 
         // 查询班级
