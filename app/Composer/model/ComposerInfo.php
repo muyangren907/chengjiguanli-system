@@ -29,15 +29,6 @@ class ComposerInfo extends BaseModel
     ];
 
 
-    // 系统安装日期修改器
-    public function setXitongTimeAttr($value)
-    {
-        $sj = strval($value);
-        $value = strtotime(strval($sj));
-        return $value;
-    }
-
-
     // 系统安装日期获取器
     public function getXitongTimeAttr($value)
     {
@@ -48,10 +39,11 @@ class ComposerInfo extends BaseModel
     // 系统安装日期修改器
     public function setBiaoqianTimeAttr($value)
     {
-        $sj = strtotime(strval($value));
-        return $sj;
+        $value = $value . ' ' . '00:00:00';
+        $value = strtotime($value, time());
+        return$value;
     }
-
+    
 
     // 系统安装日期获取器
     public function getBiaoqianTimeAttr($value)

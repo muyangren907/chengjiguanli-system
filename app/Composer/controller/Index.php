@@ -100,6 +100,7 @@ class Index extends AdminBase
         // 获取表单数据
         $list = request()->only([
             'teacher_id' => ""
+            ,'url' => ""
             ,'xinghao' => ""
             ,'xuliehao' => ''
             ,'weizhi' => ""
@@ -122,10 +123,6 @@ class Index extends AdminBase
             return json(['msg' => $msg, 'val' => 0]);
         }
 
-        // var_dump($list['xitong_time']);
-
-        // halt($list);
-
         // 保存数据
         try{
             $comp = new Comp;
@@ -135,6 +132,11 @@ class Index extends AdminBase
             $comp->mac = $list['mac'];
             $info->teacher_id = $list['teacher_id'];
             $info->xitong = $list['xitong'];
+
+            $list['xitong_time'] = str_replace('/', '-', $list['xitong_time']);
+            $list['xitong_time'] = $list['xitong_time'] . ' ' . '00:00:00';
+            $list['xitong_time'] = strtotime($list['xitong_time'], time());
+
             $info->xitong_time = $list['xitong_time'];
             $info->xitong = $list['xitong'];
             $info->weizhi = $list['weizhi'];
@@ -155,9 +157,6 @@ class Index extends AdminBase
             $data = ['msg' => $e->getMessage(), 'val' => 0];
         }
 
-        dump($data);
-        
-        halt('bb');
         // 返回信息
         return json($data);
     }

@@ -95,10 +95,7 @@ class ReadTxt extends BaseController
             
         }
         $info['gailan'] = $arr[$gailan];
-        foreach ($arr as $key => $value) {
-            $arr[$key] = $value . '<br>';
-        }
-        $info['info'] = $arr;
+        $info['info'] = implode('<br>', $arr);
         return json($info);
     }
 
