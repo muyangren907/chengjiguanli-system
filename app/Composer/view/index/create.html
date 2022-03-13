@@ -1,0 +1,120 @@
+{extend name=".././view/create.html" /} {block name="form"}
+<form class="layui-form layui-form-pane" lay-filter="myform">
+    <div class="layui-form-item">
+        <label for="title" class="layui-form-label">
+			文件
+		</label>
+        <div class="layui-input-block">
+            <div class="layui-input-inline" style="min-width: 250px;">
+                <input type="text" id="url" name="url" autocomplete="off" class="layui-input" value="{$list.data.url|default=''}" placeholder="地址" readonly>
+            </div>
+            <div class="layui-input-inline" style="min-width: 100px;">
+                <button type="button" class="layui-btn" id="upload">
+					<i class="layui-icon">&#xe67c;</i>上传文件
+				</button>
+                <button class="layui-btn" lay-filter="mysubmit" lay-submit="">
+					{$list.set.butname}
+				</button>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label for="teacher_name" class="layui-form-label">
+			<span class="x-red">*</span>教师姓名
+		</label>
+        <div class="layui-input-block" id="teacher_id" school_id="{$list.data.school_id|default=''}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label for="weizhi" class="layui-form-label">
+			位置
+		</label>
+        <div class="layui-input-block">
+            <div class="layui-input-inline" style="min-width: 250px;">
+                <input name="weizhi" id="weizhi" type="text" class="layui-input" lay-verify="required" autocomplete="on">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label for="ip" class="layui-form-label">
+			IP地址
+		</label>
+        <div class="layui-input-block">
+            <div class="layui-input-inline" style="width: 100%;">
+                <input name="ip" id="ip" type="text" class="layui-input" lay-verify="required" autocomplete="on">
+            </div>
+        </div>
+    </div>
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend style="font-size: 14px;">下面参数上传后获取</legend>
+    </fieldset>
+    <div class="layui-form-item">
+        <label for="xinghao" class="layui-form-label">
+			型号
+		</label>
+        <div class="layui-input-block">
+            <div class="layui-input-inline" style="width: 100%;">
+                <input id="xinghao" name="xinghao" type="text" class="layui-input" lay-verify="required" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label for="xuliehao" class="layui-form-label">
+			主板编号
+		</label>
+        <div class="layui-input-block">
+            <div class="layui-input-inline" style="width: 100%;">
+                <input id="xuliehao" name="xuliehao" type="text" class="layui-input" lay-verify="required" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label for="mac" class="layui-form-label">
+			物理网卡地址
+		</label>
+        <div class="layui-input-block">
+            <div class="layui-input-inline" style="width: 100%;">
+                <input id="mac" name="mac" type="text" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label for="biaoqian_time" class="layui-form-label">
+			获取配置时间
+		</label>
+        <div class="layui-input-block">
+            <div class="layui-input-inline" style="width: 100%;">
+                <input id="biaoqian_time" name="biaoqian_time" type="text" lay-verify="required" class="layui-input" readonly>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label for="biaoqian_time" class="layui-form-label">
+			电脑概览
+		</label>
+        <div class="layui-input-block" id="gailan">
+        </div>
+    </div>
+    <input type="hidden" id="info" name="info">
+    <input type="hidden" id="infos" name="infos">
+    <input type="hidden" id="xitong" name="xitong">
+    <input type="hidden" id="xitong_time" name="xitong_time">
+</form>
+{/block} {block name="myjs"}
+<script>
+    layui.use(['createInput', 'mytable'], function() {
+        var cInput = layui.createInput,
+            mytable = layui.mytable;
+
+        cInput.uploadTxt('upload', "11104", 'composer', 'url')
+            // 搜索教师
+        xmselect = cInput.searchTeacher('teacher_id');
+
+        form.on('submit(mysubmit)', function(data) {
+            mytable.saveForm("{$list.set.url}", "post", data.field);
+            return false;
+        });
+
+    });
+</script>
+{/block}

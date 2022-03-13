@@ -42,6 +42,8 @@ class ComputerInfo extends Migrator
             ->addColumn('biaoqian_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'标签时间'])
             ->addColumn('info','text',['null'=>false,'comment'=>'电脑概览'])
             ->addColumn('infos','text',['null'=>false,'comment'=>'电脑详细信息'])
+            ->addColumn('shangchuan_id','integer',['limit'=>11,'default'=>0,'null'=>false,'comment'=>'上传信息人id'])
+            ->addColumn('beizhu','text',['null'=>false,'comment'=>'备注'])
             ->addColumn('create_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'更新时间'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])

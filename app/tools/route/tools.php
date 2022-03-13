@@ -42,3 +42,9 @@ Route::group('teacherinfo', function () {
 Route::group('teach', function () {
     Route::rule('children','Teach/srcChildren','post');    # 获取荣誉数据
 });
+
+
+// 读取txt文件内容
+Route::group('readtxt', function () {
+    Route::rule('read','Readtxt/read','post');    # 读取txt文件内容
+});

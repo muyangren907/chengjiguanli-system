@@ -1329,7 +1329,7 @@ class Rule extends Seeder
             ['id' => 7
                 ,'title' => '系统管理'
                 ,'name'  => 'system'
-                ,'paixu'  => 10
+                ,'paixu'  => 100
                 ,'ismenu'  => 1
                 ,'font'  => '&#xe6ae;'
             ],
@@ -1824,7 +1824,7 @@ class Rule extends Seeder
 
 
             /*======================================================================
-             * 考试管理
+             * 课题管理
              */
             ['id' => 9
                 ,'title' => '课题管理'
@@ -2049,6 +2049,69 @@ class Rule extends Seeder
                 ,'pid'  => 9
                 ,'url' => '/keti/tongji'
             ],
+            /*======================================================================
+             * 设备管理
+             */
+            ['id' => 10
+                ,'title' => '设备管理'
+                ,'name'  => 'composer'
+                ,'paixu'  => 10
+                ,'ismenu'  => 1
+                ,'font'  => '&#xe6b3;'
+                ,'status' => 1
+            ],
+            /*====================================*/
+            ['id' => 1001
+                ,'title' => '电脑列表'
+                ,'name' => 'composer/index/index'
+                ,'paixu' => 1
+                ,'ismenu'  => 1
+                ,'pid'  => 10
+                ,'url' => '/composer/index'
+            ],
+                // 计算机列表权限
+                ['id' => 100101
+                    ,'title' => '添加'
+                    ,'name' => 'composer/index/create'
+                    ,'paixu'  => 1
+                    ,'pid' => 1001
+                ],
+                ['id' => 100102
+                    ,'title' => '保存'
+                    ,'name' => 'composer/index/save'
+                    ,'paixu'  => 2
+                    ,'pid' => 1001
+                ],
+                ['id' => 100103
+                    ,'title' => '删除'
+                    ,'name' => 'composer/index/delete'
+                    ,'paixu' => 3
+                    ,'pid' => 1001
+                ],
+                ['id' => 100104
+                    ,'title' => '编辑'
+                    ,'name' => 'composer/index/edit'
+                    ,'paixu' => 4
+                    ,'pid' => 1001
+                ],
+                ['id' => 100105
+                    ,'title' => '更新'
+                    ,'name' => 'composer/index/update'
+                    ,'paixu'  => 5
+                    ,'pid' => 1001
+                ],
+                ['id' => 100106
+                    ,'title' => '查看'
+                    ,'name' => 'composer/index/read'
+                    ,'paixu' => 6
+                    ,'pid' => 1001
+                ],
+                ['id' => 100107
+                    ,'title' => '状态'
+                    ,'name' => 'composer/index/setstatus'
+                    ,'paixu' => 7
+                    ,'pid' => 1001
+                ],
         ];
 
         $this->execute('DELETE FROM cj_auth_rule where id>0');

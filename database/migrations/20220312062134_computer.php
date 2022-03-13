@@ -40,7 +40,6 @@ class Computer extends Migrator
             ->addColumn('update_time','integer',['limit'=>11,'default'=>'1539158918','null'=>false,'comment'=>'更新时间'])
             ->addColumn('delete_time','integer',['limit'=>11,'null'=>true,'comment'=>'删除时间'])
             ->addIndex(array('xuliehao'), array('unique' => true))
-            // ->addIndex(array('mac'), array('unique' => true))
             ->create();
     }
 }
