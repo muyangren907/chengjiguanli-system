@@ -45,9 +45,11 @@ class ComposerInfo extends BaseModel
     }
     
 
-    // 系统安装日期获取器
-    public function getBiaoqianTimeAttr($value)
+    // 教师关联
+    public function glTeacher()
     {
-        return date('Y-m-d', $value);
+        return $this->belongsTo(\app\admin\model\Admin::class, 'teacher_id', 'id');
     }
+
+    // 
 }

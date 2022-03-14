@@ -102,9 +102,10 @@
 </form>
 {/block} {block name="myjs"}
 <script>
-    layui.use(['createInput', 'mytable'], function() {
+    layui.use(['createInput', 'mytable', 'form'], function() {
         var cInput = layui.createInput,
-            mytable = layui.mytable;
+            mytable = layui.mytable,
+            form = layui.form;
 
         cInput.uploadTxt('upload', "11104", 'composer', 'url')
             // 搜索教师

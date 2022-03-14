@@ -22,7 +22,7 @@ class ReadTxt extends BaseController
         }
         $arr = array();
         $i = 0;
-        $gailan = "";
+        $gailan = "0";
         $info = array();
 
         while (!feof($fp)) {
@@ -33,69 +33,82 @@ class ReadTxt extends BaseController
             $string = str_replace(array("/r/n", "/r", "/n", "\\ufeff"), "", $string);
             $string = self::replace_utf8bom($string);
             $left = mb_substr($string, 0, 4);
-            if ($left == "----") {
-                if($i == 0 && !isset($arr[0]))
-                {
-                    $i = 0;
-                } else {
-                    $i = $i + 1;
-                }
-                $arr[$i] = "";
-            }
-            if($left == "导出时间")
-            {
-                $first = mb_strpos($string, '：', 0) + 1;
-                $info['date'] = trim(mb_substr($string, $first));
-            }
-            if($left == "Mac地")
-            {
-                $first = strpos($string, ' ', 0) + 1;
-                $temp = substr($string, $first);
-                $temp = trim($temp);
-                if(isset($info['mac']))
-                {
-                    $info['mac'] = $info['mac'] . ' ' . $temp;
-                } else {
-                    $info['mac'] = $temp;
-                }
-            }
-            if(!isset($info['xinghao']) && $left == "电脑型号")
-            {
-                $first = mb_strpos($string, '号', 0) + 1;
-                $info['xinghao'] = trim(mb_substr($string, $first));
-            }
-            if($left == "主板序列")
-            {
-                $first = mb_strpos($string, ' ', 0) + 1;
-                $info['xuliehao'] = trim(mb_substr($string, $first));
-            }
-            if($left == "操作系统")
-            {
-                $first = mb_strpos($string, ' ', 0) + 1;
-                $info['xitong'] = trim(mb_substr($string, $first));
-            }
-            if($left == "系统安装")
-            {
-                $first = mb_strpos($string, ' ', 0) + 1;
-                $info['xitong_time'] = trim(mb_substr($string, $first));
-            }
-            if($left == "电脑概览")
-            {
-                $gailan = $i;
+
+            switch ($left) {
+                case '----':
+                    # code...
+                    if($i == 0 && !isset($arr[0]))
+                    {
+                        $i = 0;
+                    } else {
+                        $i = $i + 1;
+                    }
+                    $arr[$i] = "";
+                    break;
+                case '导出时间':
+                    # code...
+                    $first = mb_strpos($string, '：', 0) + 1;
+                    $info['date'] = trim(mb_substr($string, $first));
+                    break;
+                case 'Mac地':
+                    # code...
+                    $first = strpos($string, ' ', 0) + 1;
+                    $temp = substr($string, $first);
+                    $temp = trim($temp);
+                    if(isset($info['mac']))
+                    {
+                        $info['mac'] = $info['mac'] . ' ' . $temp;
+                    } else {
+                        $info['mac'] = $temp;
+                    }
+                    break;
+
+                case '电脑型号':
+                    # code...
+                    if(!isset($info['xinghao']))
+                    {
+                        $first = mb_strpos($string, '号', 0) + 1;
+                        $info['xinghao'] = trim(mb_substr($string, $first));
+                    }
+                    if($gailan == 0)
+                    {
+                        $gailan = $i;
+                    }
+                    
+                    break;
+                case '主板序列':
+                    # code...
+                    $first = mb_strpos($string, ' ', 0) + 1;
+                    $info['xuliehao'] = trim(mb_substr($string, $first));
+                    break;
+                case '操作系统':
+                    # code...
+                    $first = mb_strpos($string, ' ', 0) + 1;
+                    $info['xitong'] = trim(mb_substr($string, $first));
+                    break;
+                case '系统安装':
+                    # code...
+                    $first = mb_strpos($string, ' ', 0) + 1;
+                    $info['xitong_time'] = trim(mb_substr($string, $first));
+                    break;
+                case '电脑概览':
+                    # code...
+                    $gailan = $i;
+                    break;
             }
             if ($string == "") {
                 continue;
             }
             if(strlen($arr[$i])>0)
             {
-                $arr[$i] = $arr[$i] . '<br>' . trim($string);
+                $arr[$i] = $arr[$i]  . trim($string). '<br>';
             } else {
-                $arr[$i] = trim($string);
+                $arr[$i] = trim($string) . '<br>';
             }
             
         }
         $info['gailan'] = $arr[$gailan];
-        $info['info'] = implode('<br>', $arr);
+        $info['info'] = implode('', $arr);
         return json($info);
     }
 

@@ -40,8 +40,16 @@ class Composer extends BaseModel
             ->where('id', '>', 0)
             ->with(
                 [
-                    'glInfo'=>function($query){
-                        $query->field('id, title');
+                    'glInfo' => function ($query) {
+                        $query
+                        ->field('')
+                        ->order('update_time', 'desc')
+                            ->with([
+                                'glTeacher' => function ($q) {
+                                    $q->field('id, xingming');
+                                }
+                            ])    
+                        ->limit(1);
                     },
                 ]
             )
@@ -59,7 +67,7 @@ class Composer extends BaseModel
     // 分类关联
     public function glInfo()
     {
-        return $this->belongsTo(\app\composer\model\ComposerInfo::class, 'composer_id', 'id');
+        return $this->hasMany(\app\composer\model\ComposerInfo::class, 'composer_id', 'id');
     }
 
 }

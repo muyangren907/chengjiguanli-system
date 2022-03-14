@@ -48,28 +48,13 @@ class Index extends AdminBase
                 ,'xinghao'
                 ,'xuliehao'
                 ,'mac'
-                // ,'glInfo' => [
-                //     'id'
-                //     ,'composer_id'
-                //     ,'xitong'
-                //     ,'xitong_time'
-                //     ,'teacher_id'
-                //     ,'weizhi'
-                //     ,'ip'
-                //     ,'biaoqian_time'
-                //     ,'info'
-                //     ,'infos'
-                //     ,'shangchuan_id'
-                //     ,'create_time'
-                //     ,'update_time'
-                //     ,'delete_time'
-                // ]
+                ,'glInfo'
                 ,'update_time'
             ]);
         $src['all'] = true;
         $cnt = $comp->search($src)->count();
         $data = reset_data($data, $cnt);
-
+              
         return json($data);
     }
 
@@ -258,18 +243,4 @@ class Index extends AdminBase
         // 返回信息
         return json($data);
     }
-
-
-    // 获取最近6个电脑
-    // 查询单位列表
-    public function srccomp()
-    {
-        // 实例化单位模型
-        $comp = new Comp;
-        $data = $comp->lastcomp();
-        $data = reset_data($data, 6);
-
-        return json($data);
-    }
-    
 }

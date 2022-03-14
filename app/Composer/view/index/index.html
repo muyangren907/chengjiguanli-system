@@ -67,12 +67,27 @@
                     title: 'MAC',
                     sort: true,
                 }, {
-                    field: 'bfdate',
-                    title: '开始时间',
+                    field: 'id',
+                    title: '使用人',
+                    sort: true,
+                    templet: function(d) {
+                        console.log(1)
+                        if (d.glInfo) {
+                            console.log(d.glInfo)
+                            if(d.glInfo.glTeacher){
+                                console.log(3)
+                                return d.glInfo;
+                            }
+                            return d.glInfo;
+                        }
+				}
+                }, {
+                    field: 'glInfo.weizhi',
+                    title: '存放位置',
                     sort: true
                 }, {
                     field: 'enddate',
-                    title: '结束时间',
+                    title: '操作系统及安装时间',
                     sort: true
                 }, {
                     field: 'status',
