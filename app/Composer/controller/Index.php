@@ -111,27 +111,28 @@ class Index extends AdminBase
         // 保存数据
         try{
             $comp = new Comp;
-            $info = new CompInfo;
             $comp->xinghao = $list['xinghao'];
             $comp->xuliehao = $list['xuliehao'];
             $comp->mac = $list['mac'];
-            $info->teacher_id = $list['teacher_id'];
-            $info->xitong = $list['xitong'];
-
+            $comp->save();
+            $id = $comp->id;
+            $composer = $comp->find($id);
             $list['xitong_time'] = str_replace('/', '-', $list['xitong_time']);
             $list['xitong_time'] = $list['xitong_time'] . ' ' . '00:00:00';
             $list['xitong_time'] = strtotime($list['xitong_time'], time());
-
-            $info->xitong_time = $list['xitong_time'];
-            $info->xitong = $list['xitong'];
-            $info->weizhi = $list['weizhi'];
-            $info->biaoqian_time = $list['biaoqian_time'];
-            $info->ip = $list['ip'];
-            $info->info = $list['info'];
-            $info->infos = $list['infos'];
-            $info->shangchuan_id = $list['shangchuan_id'];
-            $comp->glInfo = $info;
-            $composer = $comp->together(['glInfo'])->save();
+            $info = [
+                'teacher_id' => $list['teacher_id'],
+                'xitong' => $list['xitong'],
+                'xitong_time' => $list['xitong_time'],
+                'xitong' => $list['xitong'],
+                'weizhi' => $list['weizhi'],
+                'biaoqian_time' => $list['biaoqian_time'],
+                'ip' => $list['ip'],
+                'info' => $list['info'],
+                'infos' => $list['infos'],
+                'shangchuan_id' => $list['shangchuan_id']
+            ];
+            $composer = $composer->glInfo()->save($info);
             if($composer)
             {
                 $data = ['msg' => '添加成功', 'val' => 1];

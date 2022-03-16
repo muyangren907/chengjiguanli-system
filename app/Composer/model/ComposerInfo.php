@@ -40,8 +40,8 @@ class ComposerInfo extends BaseModel
     public function setBiaoqianTimeAttr($value)
     {
         $value = $value . ' ' . '00:00:00';
-        $value = strtotime($value, time());
-        return$value;
+        $value = strtotime($value);
+        return $value;
     }
     
 

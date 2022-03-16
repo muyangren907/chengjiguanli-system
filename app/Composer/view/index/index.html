@@ -61,34 +61,54 @@
                 }, {
                     field: 'xuliehao',
                     title: '序列号',
-                    sort: true
+                    sort: true,
+                    minWidth: 140
                 }, {
                     field: "mac",
                     title: 'MAC',
                     sort: true,
+                    minWidth: 280
                 }, {
-                    field: 'id',
                     title: '使用人',
-                    sort: true,
+                    sort: false,
                     templet: function(d) {
-                        console.log(1)
-                        if (d.glInfo) {
-                            console.log(d.glInfo)
-                            if(d.glInfo.glTeacher){
-                                console.log(3)
-                                return d.glInfo;
+                        let str = ""
+                        if (d.glInfo[0]) {
+                            if (d.glInfo[0].glTeacher) {
+                                str = d.glInfo[0].glTeacher.xingming;
                             }
-                            return d.glInfo;
                         }
-				}
+                        return str
+                    }
                 }, {
-                    field: 'glInfo.weizhi',
                     title: '存放位置',
-                    sort: true
+                    sort: false,
+                    minWidth: 140,
+                    templet: function(d) {
+                        let str = ""
+                        if (d.glInfo[0]) {
+                            if (d.glInfo[0].weizhi) {
+                                str = d.glInfo[0].weizhi;
+                            }
+                        }
+                        return str
+                    }
                 }, {
-                    field: 'enddate',
                     title: '操作系统及安装时间',
-                    sort: true
+                    sort: false,
+                    minWidth: 240,
+                    templet: function(d) {
+                        let str = ""
+                        if (d.glInfo[0]) {
+                            if (d.glInfo[0].xitong) {
+                                str = d.glInfo[0].xitong;
+                            }
+                            if (d.glInfo[0].xitong_time) {
+                                str = str + ' (' + d.glInfo[0].xitong_time + ')';
+                            }
+                        }
+                        return str
+                    }
                 }, {
                     field: 'status',
                     title: '状态',
