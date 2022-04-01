@@ -378,7 +378,7 @@ class Student extends BaseModel
         // 实例验证
         $validate = new \app\student\validate\Student;
         // 整理数据
-        array_splice($stuinfo, 0, 4);       # 删除标题行
+        array_splice($stuinfo, 0, 3);       # 删除标题行
         $stuinfo = array_filter($stuinfo, function($q){ ## 过滤姓名、身份证号或班级为空的数据
             return $q[1] != null && strlen($q[3]) >0 && $q[4] != null;
         });
