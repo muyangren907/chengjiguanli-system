@@ -55,6 +55,7 @@
 			<input type="text" id="bfdate" lay-verify="required" name="bfdate" autocomplete="off" class="layui-input " value="{$list.data.bfdate|default=''}" placeholder="接到这个任务的开始时间">
 		</div>
 	</div>
+	<input type="hidden" name="school_id" value="{$list.data.fgBanji.school_id|default=''}"
 	<div class="layui-form-item" style="text-align: right;">
 		<button class="layui-btn" lay-filter="mysubmit" lay-submit="">
 			{$list.set.butname}
@@ -77,7 +78,6 @@ layui.use(['createInput', 'form', 'laydate'], function() {
 	// 监听学校下拉菜单
 	form.on('select(src)', function(data) {
 		data = form.val("myform");
-		data.school_id = 3;
 		if (data.school_id > 0 && data.ruxuenian > 0) {
 			cInput.banjiCheckbox('banji_id', data);
 		}

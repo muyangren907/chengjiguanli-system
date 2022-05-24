@@ -152,8 +152,15 @@ class FenGong extends AdminBase
     public function edit($id)
     {
         // 获取任务分工信息
-        $list['data'] = FG::field('id, title, jiancheng, category_id, kaoshi, lieming, paixu, status')
+        $list['data'] = FG::field('id, banji_id, subject_id, teacher_id, bfdate, xueqi_id')
+            ->with([
+                'fgBanji' => function ($query) {
+                    $query->field('id, ruxuenian, paixu, school_id')
+                        ->append(['banjiTitle']);
+                }
+            ])
             ->find($id);
+        $list['data']['nianji'] = \app\facade\Tools::nianJiNameList();
 
         // 设置页面标题
         $list['set'] = array(
