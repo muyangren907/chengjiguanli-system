@@ -147,7 +147,7 @@
 
 
 ## 演示地址
-[http://www.dl-sm.cn](http://www.dl-sm.cn) 或 [112.126.57.79](112.126.57.79)
+[http://demo.dl-sm.cn](http://demo.dl-sm.cn) 或 [112.126.57.79](112.126.57.79)
 
 演示帐号
 
@@ -165,7 +165,7 @@
     修改学生查看页面
     根据教师任务分工划分权限
 
-    更多更新日志（http://www.www.dl-sm.cn.cn/login/log）
+    更多更新日志（http://demo.dl-sm.cn/login/log）
 
 ## 可能会出现的错误
 学生名单提示error解决方法:
