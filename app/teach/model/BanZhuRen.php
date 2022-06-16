@@ -175,7 +175,8 @@ class BanZhuRen extends BaseModel
             ->group('banji_id')
             ->with([
                 'banjiTeachers' => function ($query) {
-                    $query->field('id, teacher_id, bfdate, banji_id');
+                    $query->field('id, teacher_id, bfdate, banji_id')
+                        ->order(['bfdate' => 'desc']);
                 }
                 ,'glBanji' => function ($query) {
                     $query->field('id, ruxuenian, paixu')->append(['banJiTitle', 'biye']);
