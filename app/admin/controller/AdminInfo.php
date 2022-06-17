@@ -167,6 +167,29 @@ class AdminInfo extends AdminBase
     }
 
 
+    // 查询任课情况
+    public function srcRenke()
+    {
+       // 获取参数
+        $src = $this->request
+            ->only([
+                'page' => '1'
+                ,'limit' => '10'
+                ,'field' => 'update_time'
+                ,'order' => 'desc'
+                ,'teacher_id' => ''
+            ], 'POST');
+
+        // 查询数据
+        $rk = new \app\teach\model\FenGong;
+        $data = $rk->teacherFengongList($src['teacher_id']);
+        $cnt = count($data);
+        $data = reset_data($data, $cnt);
+
+        return json($data); 
+    }
+
+
     // 查询担任班主任情况
     public function srcBzr()
     {

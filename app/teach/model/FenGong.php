@@ -31,7 +31,7 @@ class FenGong extends BaseModel
             'searchval' => ''
             ,'page' => 1
             ,'limit' => 10
-            ,'field' => 'id'
+            ,'field' => 'update_time'
             ,'order' => 'desc'
             ,'subject_id' => ''
             ,'banji_id' => ''
@@ -117,6 +117,71 @@ class FenGong extends BaseModel
             $dqfg = $this->subjectFengong($src);
             if($value->teacher_id == $dqfg->teacher_id) {
                 $list[$value->banji_id][$value->subject_id] = true;
+            }
+        }
+
+        return $list;
+    }
+
+
+    // 查教师现任务分工
+    public function teacherFengongList($teacher_id = 0, $time = 0)
+    {
+        $time == 0 ? $time = time() : $time;
+
+        // 查询学期
+        $xq = new \app\teach\model\Xueqi;
+        $xueqi_id = $xq->timeSrcXueqi($time);
+        $xueqi_id ? $xueqi_id = $xueqi_id->id : $xueqi_id = 0;
+
+        // 查询任务分工情况
+        $data = $this
+            ->where('teacher_id', $teacher_id)
+            ->where('xueqi_id', $xueqi_id)
+            ->where('bfdate', '<', $time)
+            ->with([
+                'fgXueqi' => function ($query) {
+                    $query->field('id, title');
+                }
+                ,'fgSubject' => function ($query) {
+                    $query->field('id, title, jiancheng, lieming');
+                }
+                ,'fgTeacher' => function ($query) {
+                    $query->field('id, xingming');
+                }
+                ,'fgBanji' => function ($query) {
+                    $query->field('id, ruxuenian, paixu')
+                        ->append(['banjiTitle']);
+                }
+            ])
+            ->field('any_value(id) as id
+                ,any_value(xueqi_id) as xueqi_id
+                ,any_value(banji_id) as banji_id
+                ,any_value(subject_id) as subject_id
+                ,any_value(teacher_id) as teacher_id
+                ,any_value(bfdate) as bfdate')
+            ->group('xueqi_id,banji_id,subject_id')
+            ->select();
+
+        $list = array();
+        foreach ($data as $key => $value) {
+            $src = [
+                'banji_id' => $value->banji_id
+                ,'subject_id' => $value->subject_id
+                ,'xueqi_id' => $value->xueqi_id
+                ,'time' => $time
+            ];
+            $dqfg = $this->subjectFengong($src);
+            if($value->teacher_id == $dqfg->teacher_id) {
+                $list[] = [
+                    'id' => $value->id,
+                    'banji_id' => $value->banji_id,
+                    'teacher_id' => $value->teacher_id,
+                    'bfdate' => $value->bfdate,
+                    'fgSubject' => $value->fgSubject,
+                    'fgTeacher' => $value->fgTeacher,
+                    'fgBanji' => $value->fgBanji,
+                ];
             }
         }
 

@@ -65,6 +65,7 @@ class Auth
                 'admin/admininfo/srcry',    # 获取当前教师荣誉列表
                 'admin/admininfo/srckt',    # 获取当前教师课题列表
                 'admin/admininfo/srcbzr',    # 获取当前教师担任班主任情况列表
+                'admin/admininfo/srcrenke',    # 获取当前教师任课情况列表
                 'admin/admininfo/edit',    # 修改自己信息
                 'admin/admininfo/update',    # 更新自己信息
                 'admin/admininfo/editpassword',    # 更新自己信息

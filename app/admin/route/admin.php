@@ -95,6 +95,7 @@ Route::group('info', function () {
     Route::rule('srcry','AdminInfo/srcRy','post');      # 查询荣誉
     Route::rule('srckt','AdminInfo/srcKt','post');      # 查询课题
     Route::rule('srcbzr','AdminInfo/srcBzr','post');      # 查询课题
+    Route::rule('srcrk','AdminInfo/srcRenke','post');      # 查询课题
     Route::rule('edit', 'AdminInfo/edit', 'get');              # 修改信息
     Route::rule('update/<id>', 'AdminInfo/update', 'put');          # 更新信息
 });

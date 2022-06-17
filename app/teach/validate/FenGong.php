@@ -1,4 +1,12 @@
 <?php
+/*
+ * @Author: 大连巴掌
+ * @Date: 2022-05-25 12:30:59
+ * @LastEditors: 大连巴掌
+ * @LastEditTime: 2022-06-17 09:03:55
+ * @Description: 
+ * @FilePath: \x.cj.cn\app\teach\validate\FenGong.php
+ */
 declare (strict_types = 1);
 
 namespace app\teach\validate;
@@ -19,6 +27,7 @@ class FenGong extends Validate
         'subject_id|学科'  =>      'require|array',
         'banji_id|班级'    =>      'require|array',
         'xueqi_id|学期'    =>      'require|number',
+        'yxueqi_id|源学期'    =>      'require|number',
         'bfdate|上任时间' =>  'require|date',
     ];
 
@@ -35,6 +44,10 @@ class FenGong extends Validate
             ,'banji_id'
             ,'xueqi_id'
             ,'bfdate'
+        ],
+        'copy'  =>  [
+            'yxueqi_id'
+            ,'xueqi_id'
         ]
     ];
 }

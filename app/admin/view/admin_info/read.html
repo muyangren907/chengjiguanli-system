@@ -88,6 +88,18 @@
 			</div>
 		</fieldset>
 		<fieldset class="layui-elem-field">
+			<legend>担任班主任情况</legend>
+			<div class="layui-field-box" style="width: 100%">
+				<table id="banzhuren" lay-filter="banzhuren" lay-size="sm" class="layui-table"></table>
+			</div>
+		</fieldset>
+		<fieldset class="layui-elem-field">
+			<legend>现在任课情况</legend>
+			<div class="layui-field-box" style="width: 100%">
+				<table id="renke" lay-filter="renke" lay-size="sm" class="layui-table"></table>
+			</div>
+		</fieldset>
+		<fieldset class="layui-elem-field">
 			<legend>获奖情况</legend>
 			<div class="layui-field-box" style="width: 100%">
 				<table id="rongyu" lay-filter="rongyu" lay-size="sm" class="layui-table"></table>
@@ -97,12 +109,6 @@
 			<legend>参与课题情况</legend>
 			<div class="layui-field-box" style="width: 100%">
 				<table id="keti" lay-filter="keti" lay-size="sm" class="layui-table"></table>
-			</div>
-		</fieldset>
-		<fieldset class="layui-elem-field">
-			<legend>担任班主任情况</legend>
-			<div class="layui-field-box" style="width: 100%">
-				<table id="banzhuren" lay-filter="banzhuren" lay-size="sm" class="layui-table"></table>
 			</div>
 		</fieldset>
 		<script>
@@ -158,7 +164,7 @@
 					})
 				});
 
-				//第一个实例
+				//第一个实例--荣誉
 				ry = table.render(options); //获取数据并渲染
 				var ry = table.render({
 					elem: '#rongyu',
@@ -235,7 +241,7 @@
 					]
 				});
 
-				//第二个实例
+				//第二个实例--课题
 				kt = table.render(options); //获取数据并渲染
 				var kt = table.render({
 					elem: '#keti',
@@ -307,7 +313,7 @@
 					]
 				});
 
-				//第三个实例
+				//第三个实例--班主任
 				bzr = table.render(options); //获取数据并渲染
 				var bzr = table.render({
 					elem: '#banzhuren',
@@ -349,7 +355,68 @@
 					]
 				});
 
+				//第四个实例--任课
+				renke = table.render(options); //获取数据并渲染
+				var bzr = table.render({
+					elem: '#renke',
+					method: "POST" //数据接口
+					,
+					url: '/admin/info/srcrk' //数据接口
+					,
+					where: {
+						'teacher_id': "{$list.id}"
+					},
+					cols: [
+						[ //表头
+							{
+								field: 'id', type: 'numbers', sort: true, width: 100, title: '序号'
+							}, {
+								field: 'bfdate',
+								sort: true,
+								title: '任职时间',
+								minWidth: 200,
+								templet: function (d) {
+									var str = '';
+									str = d.bfdate;
+									return str;
+								}
+							}, {
+								field: 'banji_id',
+								sort: true,
+								title: '任课班级',
+								minWidth: 200,
+								templet: function (d) {
+									var str = '';
+									if (d.fgBanji) {
+										if (d.fgBanji.banjiTitle) {
+											str = d.fgBanji.banjiTitle;
+										}
+									}
+									return str;
+								}
+							}
+							, {
+								field: 'subject_id',
+								sort: true,
+								title: '学科',
+								minWidth: 200,
+								templet: function (d) {
+									var str = '';
+									if (d.fgSubject) {
+										if (d.fgSubject.title) {
+											str = d.fgSubject.title;
+										}
+									}
+									return str;
+								}
+							}
+						]
+					]
+				});
+
 			});
+
+
 
 		</script>
 </body>

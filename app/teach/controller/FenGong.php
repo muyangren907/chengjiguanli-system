@@ -44,11 +44,12 @@ class FenGong extends AdminBase
                 'page' => '1'
                 ,'limit' => '10'
                 ,'field' => 'update_time'
-                ,'order' => 'asc'
+                ,'order' => 'desc'
                 ,'status' => ''
                 ,'delete_time' => ''
                 ,'searchval' => ''
                 ,'subject_id' => ''
+                ,'xueqi_id' => ''
                 ,'ruxuenian' => ''
             ],'POST');
 
@@ -305,6 +306,73 @@ class FenGong extends AdminBase
         $fg = new FG();
         $data = $fg->onlyLeiming($src);
 
+        return json($data);
+    }
+
+    // 创建任务分工
+    public function copy()
+    {
+        // 设置页面标题
+        $list['set'] = array(
+            'webtitle' => '复制任务分工'
+            ,'butname' => '复制'
+            ,'formpost' => 'POST'
+            ,'url' => 'savecopy'
+        );
+
+        // 模板赋值
+        $this->view->assign('list', $list);
+        // 渲染
+        return $this->view->fetch('copy');
+    }
+
+
+    // 保存信息
+    public function saveCopy()
+    {
+        // 获取表单数据
+        $list = request()->only([
+            'xueqi_id'
+            ,'yxueqi_id'
+            ,'bfdate'
+        ], 'post');
+
+        // 验证表单数据
+        $validate = new \app\teach\validate\FenGong;
+
+        $result = $validate->scene('copy')->check($list);
+        $msg = $validate->getError();
+        if(!$result){
+            return json(['msg' => $msg, 'val' => 0]);
+        }
+
+        $fg = new FG();
+        $src = [
+            'xueqi_id' => $list['yxueqi_id'],
+            'all' => true
+        ];
+        $yuan = $fg->search($src);
+        $data = array();
+        foreach($yuan as $key=>$value)
+        {
+            $data[] = [
+                'banji_id' => $value->banji_id,
+                'subject_id' => $value->subject_id,
+                'teacher_id' => $value->teacher_id,
+                'bfdate' => $list['bfdate'],
+                'xueqi_id' => $list['xueqi_id']
+            ];
+        }
+
+        // 保存数据
+        $fg = new FG();
+        $data = $fg->saveAll($data);
+
+        // 根据更新结果设置返回提示信息
+        $data ? $data = ['msg' => '添加成功', 'val' => 1]
+            : $data = ['msg' => '数据处理错误', 'val' => 0];
+
+        // 返回信息
         return json($data);
     }
 }

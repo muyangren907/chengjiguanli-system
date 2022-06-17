@@ -118,5 +118,6 @@ Route::group('fengong', function () {
 	    Route::rule('update/<id>','FenGong/update','put');		# 更新信息
 	    Route::rule('delete','FenGong/delete','delete');		# 删除信息
 	    Route::rule('status','FenGong/setStatus','post');		# 删除信息
-
+		Route::rule('copy','FenGong/copy','get');	# 添加信息
+	    Route::rule('savecopy','FenGong/saveCopy','post');		# 保存信息
 	});
