@@ -195,12 +195,12 @@ class Index extends BaseController
             {
                 $x = 0;
             }
-            $char .= $key{$x};
+            $char .= $key[$x];
             $x++;
         }
         for ($i = 0; $i < $len; $i++)
         {
-            $str .= chr(ord($data{$i}) + (ord($char{$i})) % 256);
+            $str .= chr(ord($data[$i]) + (ord($char[$i])) % 256);
         }
         return base64_encode($str);
     }
@@ -339,5 +339,5 @@ class Index extends BaseController
         $jinyong = strtotime("$now+".$jyshijian." day");
         return $jinyong;
     }
-    
+
 }
