@@ -130,6 +130,8 @@ class Student extends BaseModel
         $src = array_cover($srcfrom, $src);
         $src['banji_id'] = str_to_array($src['banji_id']);
 
+        halt($src);
+
         $njlist = \app\facade\Tools::nianJiNameList(time(), 'num');
         $zxnian = min($njlist); # 最近毕业年
         $banji = new \app\teach\model\Banji;

@@ -98,8 +98,17 @@ class File extends BaseController
 
         // 获取表单上传文件
         $file = request()->file('file');
-        $data = $this->saveFileInfo($file, $list, true);
+        $list['file'] = $file;
 
+        // 验证表单数据
+        $validate = new \app\tools\validate\File;
+        $result = $validate->check($list);
+        $msg = $validate->getError();
+        if(!$result){
+            return json(['msg' => $msg, 'val' => 0]);
+        }else {
+            $data = $this->saveFileInfo($file, $list, true);
+        }
         return json($data);
     }
 }
