@@ -237,7 +237,7 @@ class SearchMore extends BaseModel
                                 $data[$key][$val['lieming'] . 'qpaixu'] = $value->ksChengji[$val['lieming']]->qpaixu * 1;
                                 $data[$key][$val['lieming'] . 'qweizhi'] = $value->ksChengji[$val['lieming']]->qweizhi;
                                 $data[$key][$val['lieming'] . 'biaozhunfen'] = $value->ksChengji[$val['lieming']]->biaozhunfen;
-                                $dfsum = $dfsum + $data[$key][$val['lieming'] . 'defen'];
+                                $dfsum = $dfsum + $data[$key][$val['lieming'] . 'defen'] * 1;
                                 $sbjcnt++;
                             } else {
                                 $data[$key][$val['lieming'] . 'defen'] = null;
@@ -260,7 +260,7 @@ class SearchMore extends BaseModel
                             $data[$key][$val['lieming'] . 'qpaixu'] = $value->ksChengji[$val['lieming']]->qpaixu * 1;
                             $data[$key][$val['lieming'] . 'qweizhi'] = $value->ksChengji[$val['lieming']]->qweizhi;
                             $data[$key][$val['lieming'] . 'biaozhunfen'] = $value->ksChengji[$val['lieming']]->biaozhunfen;
-                            $dfsum = $dfsum + $data[$key][$val['lieming'] . 'defen'];
+                            $dfsum = $dfsum + $data[$key][$val['lieming'] . 'defen'] * 1;
                             $sbjcnt++;
                         }
                     }else{
