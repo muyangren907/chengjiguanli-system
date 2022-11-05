@@ -305,7 +305,6 @@ class Banji extends BaseModel
         $njlist = $this->gradeName(time(),'str');
         $bjlist = $this->className();
 
-        $len = strlen($str);
         $nj = '';
         $bj = '';
         // 获取年级
