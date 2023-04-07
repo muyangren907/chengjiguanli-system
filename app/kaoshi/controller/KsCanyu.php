@@ -70,6 +70,7 @@ class KsCanYu extends AdminBase
             ], 'POST');
         $khSrc = new \app\kaohao\model\SearchCanYu;
 
+        $src['all'] = true;
         $bj = $khSrc->class($src);
         $src['all'] = true;
         $cnt = count($khSrc->class($src));
@@ -118,8 +119,8 @@ class KsCanYu extends AdminBase
             ], 'POST');
 
         $ksset = new \app\kaoshi\model\KaoshiSet;
-        $sbj = $ksset->srcSubject($src);
         $src['all'] = true;
+        $sbj = $ksset->srcSubject($src);
         $cnt = count($ksset->srcSubject($src));
         $data = reset_data($sbj, $cnt);
 

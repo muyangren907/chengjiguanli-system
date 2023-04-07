@@ -74,19 +74,21 @@ class Subject extends BaseModel
         ];
         $src = array_cover($srcfrom, $src);
 
-        $list = $this::withTrashed()
+        $cnt = $this::withTrashed()
             ->where('lieming', $src['searchval'])
-            ->find();
+            ->when($src['id'] > 0, function ($query) use($src) {
+                $query->where('id', '<>', $src['id']);
+            })
+            ->count();
         $data = ['msg' => '列标识已经存在！', 'val' => 0];
 
-        if($list)
+        if($cnt > 0)
         {
-            if($src['id'] == $list->id){
-                $data = ['msg' => '', 'val' => 1];
-            }
+          $data = ['msg' => '列标识已经存在！', 'val' => 0];
         }else{
            $data = ['msg' => '', 'val' => 1];
         }
+        return $data;
     }
 
 

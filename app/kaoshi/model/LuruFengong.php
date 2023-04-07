@@ -156,6 +156,7 @@ class LuruFengong extends BaseModel
             'kaoshi_id' => ''
             ,'school_id' => ''
             ,'ruxuenian' => ''
+            ,'all' => false
         ];
         $src = array_cover($srcfrom, $src);
         $list = $this->srcMyLuruBase($src);

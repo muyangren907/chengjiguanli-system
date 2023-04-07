@@ -263,7 +263,7 @@ class Subject extends AdminBase
     public function srcLieming()
     {
         // 获取参数
-        $srcfrom = $this->request
+        $src = $this->request
             ->only([
                 'searchval' => ''
                 ,'id'

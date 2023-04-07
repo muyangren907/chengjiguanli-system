@@ -220,6 +220,7 @@ class LuruFengong extends AdminBase
                 ,'ruxuenian' => ''
                 ,'kaoshi_id' => ''
                 ,'limit' => 100
+                ,'all' => true
             ], 'POST');
         $lrfg = new \app\kaoshi\model\LuruFengong;
         $bj = $lrfg->srcMyLuruBanji($src);

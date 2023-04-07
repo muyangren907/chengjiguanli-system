@@ -86,6 +86,7 @@ class KaoshiSet extends AdminBase
             ,'formpost' => 'POST'
             ,'url' => '/kaoshi/kaoshiset/save'
             ,'kaoshi_id' => $kaoshi_id
+            ,'all' => true
         );
 
         // 获取考试时间
