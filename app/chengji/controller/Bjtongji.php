@@ -137,6 +137,7 @@ class Bjtongji extends AdminBase
                 ,'school_id' => array()
                 ,'banji_id' => array()
                 ,'auth' => []
+                ,'all' => true
             ], 'POST');
 
         if (count($src['banji_id'])==0) {

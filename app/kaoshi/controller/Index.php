@@ -370,7 +370,7 @@ class Index extends AdminBase
         $value = request()->post('value');
 
         // 获取考试信息
-        $data = KS::where('id', $id)->update(['luru' => $value]);
+        $data = KS::where('id', $id)->cache('kaoshiinfo')->update(['luru' => $value]);
         $data ? $data = ['msg' => '状态设置成功', 'val' => 1]
             : $data = ['msg' => '数据处理错误', 'val' => 0];
 
