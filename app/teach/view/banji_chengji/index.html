@@ -159,10 +159,14 @@ layui.use(['table', 'mytable', 'laydate', 'myEchart', 'createInput'], function()
 	// 条形统计图--平均分
 	function getDefenlv() {
 		val = form.val('search');
+		console.log(xk)
 		// 添加图表中内容
-		for (x in xk) {
-			echart.zhexian(xk[x].lieming, '/teach/banjicj/datatx', val, xk[x].title);
-		}
+		xk.forEach(element => {
+			console.log(element)
+			val.subject_id = element.id
+			console.log(val)
+			echart.zhexian(element.lieming, '/teach/banjicj/datatx', val, element.title);
+		});
 	}
 
 	// 监听筛选
